@@ -20,7 +20,7 @@
 	 */
 	class TBGGroup extends TBGIdentifiableScopedClass
 	{
-		
+
 		protected static $_groups = null;
 
 		protected $_members = null;
@@ -55,7 +55,7 @@
 			}
 			return self::$_groups;
 		}
-		
+
 		public static function postSave($is_new)
 		{
 			if ($is_new)
@@ -66,7 +66,7 @@
 				}
 			}
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$scope_id = $scope->getID();
@@ -87,7 +87,7 @@
 			$guest_group->setName('Guests');
 			$guest_group->setScope($scope);
 			$guest_group->save();
-			
+
 			// Set up initial users, and their permissions
 			if ($scope->isDefault())
 			{
@@ -105,7 +105,7 @@
 			}
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
-		
+
 		/**
 		 * Return the items name
 		 *
@@ -163,7 +163,7 @@
 
 			return $this->_num_members;
 		}
-		
+
 		public function removeMember(TBGUser $user)
 		{
 			if ($this->_members !== null)

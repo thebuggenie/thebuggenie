@@ -19,13 +19,13 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
-	 * 
+	 *
 	 * @Entity(class="TBGIssue")
 	 * @Table(name='issues')
 	 */
-	class TBGIssuesTable extends TBGB2DBTable 
+	class TBGIssuesTable extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
@@ -134,9 +134,9 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
-			
+
 			$crit2 = clone $crit;
-			
+
 			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
 			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
@@ -194,7 +194,7 @@
 
 			return $retarr;
 		}
-		
+
 		public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
 			$crit = $this->getCriteria();
@@ -211,7 +211,7 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
-			
+
 			$crit2 = clone $crit;
 			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
 			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
@@ -262,7 +262,7 @@
 		{
 			return $this->_getCountByProjectIDAndColumn($project_id, self::STATE);
 		}
-		
+
 		public function getIssuesByProjectID($id)
 		{
 			$crit = new Criteria();
@@ -274,15 +274,15 @@
 			{
 				return false;
 			}
-			
+
 			$data = array();
-			
+
 			/* Build revision details */
 			while ($results->next())
 			{
 				$data[] = TBGContext::factory()->TBGIssue($results->get(TBGIssuesTable::ID));
 			}
-			
+
 			return $data;
 		}
 
@@ -294,7 +294,7 @@
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
-		
+
 		public function getCountByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -303,7 +303,7 @@
 			$res = $this->doCount($crit);
 			return $res;
 		}
-		
+
 		public function getNextIssueNumberForProductID($p_id)
 		{
 			$crit = $this->getCriteria();
@@ -314,7 +314,7 @@
 			$issue_no = $row->get('issueno');
 			return ($issue_no < 1) ? 1 : $issue_no;
 		}
-		
+
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
 		{
 			$crit = $this->getCriteria();
@@ -341,7 +341,7 @@
 			$crit->addUpdate(self::DUPLICATE_OF, $duplicate_of);
 			$this->doUpdateById($crit, $issue_id);
 		}
-		
+
 		public function getByMilestone($milestone_id, $project_id)
 		{
 			$crit = $this->getCriteria();
@@ -359,7 +359,7 @@
 			}
 			return $this->select($crit);
 		}
-		
+
 		public function getPointsAndTimeByMilestone($milestone_id)
 		{
 			$crit = $this->getCriteria();
@@ -385,7 +385,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getByProjectIDandNoMilestone($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -395,7 +395,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getByProjectIDandNoMilestoneandTypes($project_id, $issuetypes)
 		{
 			$crit = $this->getCriteria();
@@ -406,7 +406,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getByProjectIDandNoMilestoneandTypesandState($project_id, $issuetypes, $state)
 		{
 			$crit = $this->getCriteria();
@@ -426,28 +426,28 @@
 			$crit->addWhere(self::MILESTONE, $milestone_id);
 			$this->doUpdate($crit);
 		}
-		
+
 		public function getOpenIssuesByTeamAssigned($team_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ASSIGNED_TEAM, $team_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			
+
 			$res = $this->doSelect($crit);
-			
+
 			return $res;
 		}
-				
+
 		public function getOpenIssuesByUserAssigned($user_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ASSIGNEE_USER, $user_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			
+
 			$res = $this->doSelect($crit);
-			
+
 			return $res;
 		}
 
@@ -458,10 +458,10 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			
+
 			if ($order_by != null)
 			{
-				$crit->addOrderBy($order_by);			
+				$crit->addOrderBy($order_by);
 			}
 
 			$res = $this->doSelect($crit);
@@ -483,7 +483,7 @@
 
 			return $res;
 		}
-		
+
 		public function getTotalPointsByMilestoneID($milestone_id)
 		{
 			$crit = $this->getCriteria();
@@ -688,16 +688,16 @@
 					}
 				}
 			}
-			
+
 			$crit->addSelectionColumn(self::ID);
 			$crit->setDistinct();
-			
+
 			if ($offset != 0)
 				$crit->setOffset($offset);
-			
+
 			$crit2 = clone $crit;
 			$count = $this->doCount($crit2);
-			
+
 			if ($count > 0)
 			{
 				$crit3 = $this->getCriteria();
@@ -815,7 +815,7 @@
 							break;
 					}
 				}
-				
+
 				$crit->addSelectionColumn(self::LAST_UPDATED);
 				$crit->addOrderBy(self::LAST_UPDATED, $dateorder);
 
@@ -826,16 +826,16 @@
 				{
 					$ids[] = $row->get(self::ID);
 				}
-				
+
 				$ids = array_reverse($ids);
-				
+
 				$crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
 				$crit3->addOrderBy(self::LAST_UPDATED, $dateorder);
-				
+
 				$res = $this->doSelect($crit3);
 				$rows = $res->getAllRows();
 				unset($res);
-				
+
 				return array($rows, $count, $ids);
 			}
 			else
@@ -844,14 +844,14 @@
 			}
 
 		}
-		
+
 		public function getDuplicateIssuesByIssueNo($issue_no)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
 			$crit->addSelectionColumn(self::ID);
 			$crit->addWhere(self::DUPLICATE_OF, $issue_no);
-			
+
 			return $this->doSelect($crit);
 		}
 
@@ -883,7 +883,7 @@
 			{
 				$crit->setLimit($limit);
 			}
-			
+
 			return $this->doSelect($crit);
 		}
 
@@ -892,7 +892,7 @@
 		 * @param TBGProject $project
 		 * @param TBGIssuetype $type
 		 * @param array $conversions
-		 * 
+		 *
 		 * $conversions should be an array containing arrays:
 		 * array (
 		 * 		array(oldstep, newstep)
@@ -907,7 +907,7 @@
 				$crit->addWhere(self::PROJECT_ID, $project->getID());
 				$crit->addWhere(self::ISSUE_TYPE, $type->getID());
 				$crit->addWhere(self::WORKFLOW_STEP_ID, $conversion[0]);
-				
+
 				$crit->addUpdate(self::WORKFLOW_STEP_ID, $conversion[1]);
 				$this->doUpdate($crit);
 			}

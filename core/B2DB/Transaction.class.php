@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Transaction class
 	 *
@@ -21,13 +21,13 @@
 	class Transaction
 	{
 		protected $state = 0;
-		
+
 		const DB_TRANSACTION_UNSTARTED = 0;
 		const DB_TRANSACTION_STARTED = 1;
 		const DB_TRANSACTION_COMMITED = 2;
 		const DB_TRANSACTION_ROLLEDBACK = 3;
 		const DB_TRANSACTION_ENDED = 4;
-		
+
 		public function __construct()
 		{
 			if (Core::getDBLink()->beginTransaction())
@@ -37,7 +37,7 @@
 			}
 			return $this;
 		}
-		
+
 		public function __destruct()
 		{
 			if ($this->state == self::DB_TRANSACTION_STARTED)
@@ -45,7 +45,7 @@
 				echo 'forcing transaction rollback';
 			}
 		}
-		
+
 		public function end()
 		{
 			if ($this->state == self::DB_TRANSACTION_COMMITED)
@@ -54,13 +54,13 @@
 				Core::setTransaction(false);
 			}
 		}
-		
+
 		public function commitAndEnd()
 		{
 			$this->commit();
 			$this->end();
 		}
-		
+
 		public function commit()
 		{
 			if ($this->state == self::DB_TRANSACTION_STARTED)
@@ -80,7 +80,7 @@
 				throw new Exception('There is no active transaction');
 			}
 		}
-		
+
 		public function rollback()
 		{
 			if ($this->state == self::DB_TRANSACTION_STARTED)
@@ -100,5 +100,5 @@
 				throw new Exception('There is no active transaction');
 			}
 		}
-		
+
 	}

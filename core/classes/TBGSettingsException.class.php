@@ -18,6 +18,6 @@
 	 */
 	class TBGSettingsException extends Exception
 	{
-		
+
 	}
 

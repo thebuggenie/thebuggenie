@@ -67,7 +67,7 @@
 			$crit->addWhere(self::ARTICLE_ID, $article_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
-			
+
 			$ret_arr = array();
 
 			if ($res)
@@ -86,7 +86,7 @@
 					}
 				}
 			}
-			
+
 			return $ret_arr;
 		}
 
@@ -101,7 +101,7 @@
 			}
 			return $res;
 		}
-		
+
 		public function deleteFilesByArticleID($article_id)
 		{
 			$crit = $this->getCriteria();

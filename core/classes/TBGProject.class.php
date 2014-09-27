@@ -45,7 +45,7 @@
 		 * @Column(type="string", length=25)
 		 */
 		protected $_prefix = '';
-		
+
 		/**
 		 * Whether or not the project uses prefix
 		 *
@@ -85,7 +85,7 @@
 		 * @var array|TBGBuild
 		 */
 		protected $_builds = null;
-		
+
 		/**
 		 * Whether or not the project uses editions
 		 *
@@ -93,7 +93,7 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_enable_editions = null;
-		
+
 		/**
 		 * Whether or not the project uses components
 		 *
@@ -101,7 +101,7 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_enable_components = null;
-		
+
 		/**
 		 * Project key
 		 *
@@ -109,7 +109,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_key = null;
-		
+
 		/**
 		 * List of editions for this project
 		 *
@@ -117,15 +117,15 @@
 		 * @Relates(class="TBGEdition", collection=true, foreign_column="project")
 		 */
 		protected $_editions = null;
-		
+
 		/**
-		 * The projects homepage 
-		 * 
+		 * The projects homepage
+		 *
 		 * @var string
 		 * @Column(type="string", length=200)
 		 */
 		protected $_homepage = '';
-		
+
 		/**
 		 * List of milestones for this project
 		 *
@@ -141,26 +141,26 @@
 		 * @Relates(class="TBGComponent", collection=true, foreign_column="project")
 		 */
 		protected $_components = null;
-		
+
 		/**
 		 * Count of issues registered for this project
 		 *
 		 * @var integer
 		 */
 		protected $_issuecounts = null;
-		
+
 		/**
 		 * The small project icon, if set
-		 * 
+		 *
 		 * @var TBGFile
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_small_icon = null;
-		
+
 		/**
 		 * The large project icon, if set
-		 * 
+		 *
 		 * @var TBGFile
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
@@ -173,7 +173,7 @@
 		 * @var array
 		 */
 		protected $_unassignedissues = null;
-		
+
 		/**
 		 * Developer reports registered for this project with no milestone assigned
 		 *
@@ -183,57 +183,57 @@
 
 		/**
 		 * The projects documentation URL
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url = '';
-		
+
 		/**
 		 * The project description
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="text")
 		 */
 		protected $_description = '';
-		
+
 		/**
 		 * Available / applicable issue types for this project
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_issuetypes = null;
-		
+
 		/**
 		 * Issue types visible in the frontpage summary
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_visible_issuetypes = null;
 
 		/**
 		 * Milestones visible in the frontpage summary
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_visible_milestones = null;
-		
+
 		/**
 		 * Whether or not this project is visible in the frontpage summary
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean", default_value=true)
 		 */
 		protected $_show_in_summary = null;
-		
+
 		/**
 		 * What to show on the frontpage summary
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="string", length=15, default_value="issuetypes")
 		 */
 		protected $_summary_display = null;
-		
+
 		/**
 		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGProjectAssignedUsersTable")
 		 */
@@ -250,22 +250,22 @@
 
 		/**
 		 * List of issue fields per issue type
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_fieldsarrays = array();
-		
+
 		/**
 		 * Whether a user can change details about an issue without working on the issue
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_allow_freelancing = false;
-		
+
 		/**
 		 * Is project deleted
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
@@ -343,83 +343,83 @@
 
 		/**
 		 * The selected workflow scheme
-		 * 
+		 *
 		 * @var TBGWorkflowScheme
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowScheme")
 		 */
 		protected $_workflow_scheme_id = 1;
-		
+
 		/**
 		 * The selected workflow scheme
-		 * 
+		 *
 		 * @var TBGIssuetypeScheme
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssuetypeScheme")
 		 */
 		protected $_issuetype_scheme_id = 1;
-		
+
 		/**
 		 * Assigned client
-		 * 
+		 *
 		 * @var TBGClient
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGClient")
 		 */
 		protected $_client = null;
-		
+
 		/**
 		 * Autoassignment
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_autoassign = null;
-		
+
 		/**
 		 * Parent project
-		 * 
+		 *
 		 * @var TBGProject
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_parent = null;
-		
+
 		/**
 		 * Child projects
-		 * 
+		 *
 		 * @var Array
 		 */
 		protected $_children = null;
-		
+
 		/**
 		 * Recent activities
-		 * 
+		 *
 		 * @var Array
 		 */
 		protected $_recentactivities = null;
-		
+
 		/**
 		 * Whether to show a "Download" link and corresponding section
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_has_downloads = true;
-		
+
 		/**
 		 * Whether a project is archived (read-only mode)
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_archived = false;
-		
+
 		/**
 		 * Make a project default
-		 * 
+		 *
 		 * @param $p_id integer The id for the default project
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function setDefault($p_id)
@@ -444,7 +444,7 @@
 				return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
 			}
 		}
-		
+
 		public static function getValidSubprojects(TBGProject $project)
 		{
 			$valid_subproject_targets = array();
@@ -462,10 +462,10 @@
 					unset($valid_subproject_targets[$child->getKey()]);
 				}
 			}
-			
+
 			return $valid_subproject_targets;
 		}
-		
+
 		/**
 		 * Populates the projects array
 		 */
@@ -476,10 +476,10 @@
 				self::$_projects = TBGProjectsTable::getTable()->getAll();
 			}
 		}
-		
+
 		/**
 		 * Retrieve all projects
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAll()
@@ -487,10 +487,10 @@
 			self::_populateProjects();
 			return self::$_projects;
 		}
-		
+
 		/**
 		 * Retrieve all projects by parent ID
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAllByParentID($id)
@@ -506,12 +506,12 @@
 			}
 			return $final;
 		}
-		
+
 		/**
 		 * Retrieve all projects with no parent. If the parent is archived, the project will not be shown
-		 * 
+		 *
 		 * @param bool $archived[optional] Show archived projects instead
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAllRootProjects($archived = false)
@@ -551,10 +551,10 @@
 
 			return self::$_num_projects;
 		}
-		
+
 		/**
 		 * Retrieve all projects by client ID
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAllByClientID($id)
@@ -570,10 +570,10 @@
 			}
 			return $final;
 		}
-		
+
 		/**
 		 * Retrieve all projects by leader
-		 * 
+		 *
 		 * @param TBGUser or TBGTeam
 		 * @return array
 		 */
@@ -584,7 +584,7 @@
 			$class = get_class($leader);
 
 			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam)) return false;
-			
+
 			foreach (self::$_projects as $project)
 			{
 				if ($project->getLeader() instanceof $class && $project->getLeader()->getID() == $leader->getID())
@@ -594,10 +594,10 @@
 			}
 			return $final;
 		}
-		
+
 		/**
 		 * Retrieve all projects by owner
-		 * 
+		 *
 		 * @param TBGUser or TBGTeam
 		 * @return array
 		 */
@@ -606,9 +606,9 @@
 			self::_populateProjects();
 			$final = array();
 			$class = get_class($owner);
-			
+
 			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam)) return false;
-			
+
 			foreach (self::$_projects as $project)
 			{
 				if ($project->getOwner() instanceof $class && $project->getOwner()->getID() == $owner->getID())
@@ -618,10 +618,10 @@
 			}
 			return $final;
 		}
-		
+
 		/**
 		 * Retrieve all projects by qa
-		 * 
+		 *
 		 * @param TBGUser or TBGTeam
 		 * @return array
 		 */
@@ -642,10 +642,10 @@
 			}
 			return $final;
 		}
-				
+
 		/**
 		 * Retrieve the default project
-		 * 
+		 *
 		 * @return TBGProject
 		 */
 		static function getDefaultProject()
@@ -663,7 +663,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Pre save check for conflicting keys
 		 *
@@ -713,10 +713,10 @@
 				$this->_dodelete = false;
 			}
 		}
-		
+
 		/**
 		 * Returns the project for a specified prefix
-		 * 
+		 *
 		 * @return TBGProject
 		 */
 		static function getByPrefix($prefix)
@@ -727,7 +727,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Returns the prefix for this project
 		 *
@@ -737,10 +737,10 @@
 		{
 			return $this->_prefix;
 		}
-		
+
 		/**
 		 * Returns whether or not the project has a prefix set (regardless of whether it uses prefix or not)
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasPrefix()
@@ -767,12 +767,12 @@
 		{
 			return (bool) $this->_use_scrum;
 		}
-		
+
 		/**
 		 * Set the project prefix
 		 *
 		 * @param string $prefix
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function setPrefix($prefix)
@@ -787,7 +787,7 @@
 				return true;
 			}
 		}
-		
+
 		/**
 		 * Set autoassign setting
 		 *
@@ -797,7 +797,7 @@
 		{
 			$this->_autoassign = $autoassign;
 		}
-		
+
 		/**
 		 * Mark the project as deleted
 		 *
@@ -827,7 +827,7 @@
 			$this->_key = mb_strtolower($this->getStrippedProjectName());
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
-		
+
 		/**
 		 * Return the items name
 		 *
@@ -840,19 +840,19 @@
 
 		/**
 		 * Return project key
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getKey()
 		{
 			return $this->_key;
 		}
-		
+
 		public function setKey($key)
 		{
 			$this->_key = $key;
 		}
-		
+
 		/**
 		 * Returns homepage
 		 *
@@ -862,20 +862,20 @@
 		{
 			return $this->_homepage;
 		}
-		
+
 		/**
 		 * Returns whether or not this project has a homepage set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasHomepage()
 		{
 			return ($this->_homepage != '') ? true : false;
 		}
-		
+
 		/**
 		 * Whether or not this project has any editions
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function hasEditions()
@@ -892,7 +892,7 @@
 		{
 			$this->_homepage = $homepage;
 		}
-		
+
 		/**
 		 * Returns the description
 		 *
@@ -902,17 +902,17 @@
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Returns whether or not this project has any description set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasDescription()
 		{
 			return ($this->_description != '') ? true : false;
 		}
-		
+
 		/**
 		 * Set the project description
 		 *
@@ -922,7 +922,7 @@
 		{
 			$this->_description = $description;
 		}
-		
+
 		/**
 		 * Returns the documentation url
 		 *
@@ -932,17 +932,17 @@
 		{
 			return $this->_doc_url;
 		}
-		
+
 		/**
 		 * Returns whether or not this project has a homepage set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasDocumentationURL()
 		{
 			return ($this->_doc_url != '') ? true : false;
 		}
-		
+
 		/**
 		 * Set the projects documentation url
 		 *
@@ -952,7 +952,7 @@
 		{
 			$this->_doc_url = $doc_url;
 		}
-		
+
 		/**
 		 * Is builds enabled
 		 *
@@ -982,7 +982,7 @@
 		{
 			return $this->_enable_editions;
 		}
-		
+
 		/**
 		 * Set if the project uses editions
 		 *
@@ -992,7 +992,7 @@
 		{
 			$this->_enable_editions = (bool) $editions_enabled;
 		}
-		
+
 		/**
 		 * Is components enabled
 		 *
@@ -1002,7 +1002,7 @@
 		{
 			return $this->_enable_components;
 		}
-		
+
 		/**
 		 * Set if the project uses components
 		 *
@@ -1012,7 +1012,7 @@
 		{
 			$this->_enable_components = (bool) $components_enabled;
 		}
-		
+
 		/**
 		 * Populates editions inside the project
 		 *
@@ -1035,12 +1035,12 @@
 		{
 			return $this->_use_prefix;
 		}
-		
+
 		public function doesUsePrefix()
 		{
 			return $this->usePrefix();
 		}
-		
+
 		/**
 		 * Returns whether or not the project has been deleted
 		 *
@@ -1063,7 +1063,7 @@
 
 		/**
 		 * Set the archived state
-		 * 
+		 *
 		 * @var boolean $archived
 		 */
 		public function setArchived($archived)
@@ -1080,7 +1080,7 @@
 		{
 			$this->_use_prefix = (bool) $use_prefix;
 		}
-		
+
 		/**
 		 * Returns an array of all the projects editions
 		 *
@@ -1100,12 +1100,12 @@
 			}
 			return $this->_b2dbLazycount('_editions');
 		}
-		
+
 		/**
 		 * Adds an edition to the project
 		 *
 		 * @param string $e_name
-		 * 
+		 *
 		 * @return TBGEdition
 		 */
 		public function addEdition($e_name)
@@ -1115,10 +1115,10 @@
 			$edition->setName($e_name);
 			$edition->setProject($this);
 			$edition->save();
-			
+
 			return $edition;
 		}
-		
+
 		/**
 		 * Populates components inside the project
 		 *
@@ -1131,7 +1131,7 @@
 				$this->_b2dbLazyload('_components');
 			}
 		}
-		
+
 		/**
 		 * Returns an array with all components
 		 *
@@ -1151,7 +1151,7 @@
 			}
 			return $this->_b2dbLazycount('_components');
 		}
-		
+
 		/**
 		 * Adds a new component to the project
 		 *
@@ -1165,10 +1165,10 @@
 			$component->setName($c_name);
 			$component->setProject($this);
 			$component->save();
-			
+
 			return $component;
 		}
-		
+
 		/**
 		 * Populates the milestones array
 		 *
@@ -1222,9 +1222,9 @@
 
 		/**
 		 * Returns a list of upcoming milestones
-		 * 
-		 * @param integer $days[optional] Number of days, default 21 
-		 * 
+		 *
+		 * @param integer $days[optional] Number of days, default 21
+		 *
 		 * @return array
 		 */
 		public function getUpcomingMilestones($days = 21)
@@ -1243,12 +1243,12 @@
 			}
 			return $return_array;
 		}
-		
+
 		/**
 		 * Returns a list of milestones starting soon
-		 * 
-		 * @param integer $days[optional] Number of days, default 21 
-		 * 
+		 *
+		 * @param integer $days[optional] Number of days, default 21
+		 *
 		 * @return array
 		 */
 		public function getStartingMilestones($days = 21)
@@ -1267,7 +1267,7 @@
 			}
 			return $return_array;
 		}
-		
+
 		public function removeAssignee(TBGIdentifiableClass $assignee)
 		{
 			$user_id = 0;
@@ -1295,10 +1295,10 @@
 
 		/**
 		 * Adds an assignee with a given role
-		 * 
+		 *
 		 * @param TBGIdentifiable $assignee The user or team to add
 		 * @param integer $role The role to add
-		 *  
+		 *
 		 * @return null
 		 */
 		public function addAssignee($assignee, $role = null)
@@ -1337,7 +1337,7 @@
 			$this->_populateAssignedUsers();
 			return $this->_assigned_users;
 		}
-		
+
 		protected function _populateAssignedTeams()
 		{
 			if ($this->_assigned_teams === null) {
@@ -1353,24 +1353,24 @@
 
 		/**
 		 * Return whether a user can change details about an issue without working on the issue
-		 *  
+		 *
 		 * @return boolean
 		 */
 		public function canChangeIssuesWithoutWorkingOnThem()
 		{
 			return (bool) $this->_allow_freelancing;
 		}
-		
+
 		/**
 		 * Set whether a user can change details about an issue without working on the issue
-		 * 
+		 *
 		 * @param boolean $val
 		 */
 		public function setChangeIssuesWithoutWorkingOnThem($val)
 		{
 			$this->_allow_freelancing = (bool) $val;
 		}
-		
+
 		/**
 		 * Populates builds inside the project
 		 *
@@ -1390,7 +1390,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns an array with all builds
 		 *
@@ -1401,7 +1401,7 @@
 			$this->_populateBuilds();
 			return $this->_builds;
 		}
-		
+
 		public function getActiveBuilds()
 		{
 			$builds = $this->getBuilds();
@@ -1409,7 +1409,7 @@
 			{
 				if ($build->isLocked()) unset($builds[$id]);
 			}
-			
+
 			return $builds;
 		}
 
@@ -1443,7 +1443,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Populates the internal array with unassigned user stories for the scrum page
 		 */
@@ -1453,7 +1453,7 @@
 			{
 				$this->_unassignedstories = array();
 				$issuetypes = array();
-				
+
 				foreach (TBGIssuetype::getAll() as $issuetype)
 				{
 					if ($issuetype->getIcon() == 'developer_report')
@@ -1461,7 +1461,7 @@
 						$issuetypes[] = $issuetype->getID();
 					}
 				}
-				
+
 				if (count($issuetypes) > 0)
 				{
 					if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypesAndState($this->getID(), $issuetypes, TBGIssue::STATE_OPEN))
@@ -1527,7 +1527,7 @@
 
 		/**
 		 * Returns all milestones visible in the project summary block
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getVisibleMilestones()
@@ -1535,10 +1535,10 @@
 			$this->_populateVisibleMilestones();
 			return $this->_visible_milestones;
 		}
-		
+
 		/**
 		 * Removes all milestones from being visible in the project summary block
-		 * 
+		 *
 		 * @return null
 		 */
 		public function clearVisibleMilestones()
@@ -1546,12 +1546,12 @@
 			$this->_visible_milestones = null;
 			\b2db\Core::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
 		}
-		
+
 		/**
 		 * Adds a milestone to list of visible milestones in project summary block
-		 * 
+		 *
 		 * @param integer $milestone_id The ID of the added milestone
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addVisibleMilestone($milestone_id)
@@ -1567,12 +1567,12 @@
 				return false;
 			}
 		}
-		
+
 		/**
 		 * Returns whether or not a milestone is visible in the project summary block
-		 * 
+		 *
 		 * @param integer $milestone_id The ID of the milestone
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isMilestoneVisible($milestone_id)
@@ -1580,7 +1580,7 @@
 			$milestones = $this->getVisibleMilestones();
 			return array_key_exists($milestone_id, $milestones);
 		}
-		
+
 		protected function _populateIssueCounts()
 		{
 			if (!is_array($this->_issuecounts))
@@ -1602,7 +1602,7 @@
 				$this->_issuecounts['last15']['closed'] = $closed;
 			}
 		}
-		
+
 		protected function _populateIssueCountsByIssueType($issuetype_id)
 		{
 			if ($this->_issuecounts === null)
@@ -1657,10 +1657,10 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns all issue types visible in the project summary block
-		 * 
+		 *
 		 * @return array|TBGIssuetype
 		 */
 		public function getVisibleIssuetypes()
@@ -1668,10 +1668,10 @@
 			$this->_populateVisibleIssuetypes();
 			return $this->_visible_issuetypes;
 		}
-		
+
 		/**
 		 * Removes all issue types from being visible in the project summary block
-		 * 
+		 *
 		 * @return null
 		 */
 		public function clearVisibleIssuetypes()
@@ -1679,12 +1679,12 @@
 			$this->_visible_issuetypes = null;
 			\b2db\Core::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
 		}
-		
+
 		/**
 		 * Adds an issue type to list of visible issue types in project summary block
-		 * 
+		 *
 		 * @param integer $issuetype_id The ID of the added issue type
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function addVisibleIssuetype($issuetype_id)
@@ -1699,12 +1699,12 @@
 				return false;
 			}
 		}
-		
+
 		/**
 		 * Returns whether or not an issue type is visible in the project summary block
-		 * 
+		 *
 		 * @param integer $issuetype_id The ID of the issue type
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function isIssuetypeVisible($issuetype_id)
@@ -1712,10 +1712,10 @@
 			$issuetypes = $this->getVisibleIssuetypes();
 			return array_key_exists($issuetype_id, $issuetypes);
 		}
-		
+
 		/**
 		 * Returns the number of issues for this project
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countAllIssues()
@@ -1729,12 +1729,12 @@
 			$this->_populateIssueCounts();
 			return $this->_issuecounts['last15'];
 		}
-		
+
 		/**
 		 * Returns the number of issues for this project with a specific issue type
-		 * 
+		 *
 		 * @param integer $issue_type ID of the issue type
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countIssuesByType($issuetype)
@@ -1745,10 +1745,10 @@
 
 		/**
 		 * Returns the number of issues for this project with a specific milestone
-		 * 
+		 *
 		 * @param integer $milestone ID of the milestone
 		 * @param boolean $exclude_tasks Whether to exclude tasks
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countIssuesByMilestone($milestone, $exclude_tasks = false)
@@ -1756,10 +1756,10 @@
 			$this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
 			return $this->_issuecounts['milestone'][$milestone]['closed'] + $this->_issuecounts['milestone'][$milestone]['open'];
 		}
-		
+
 		/**
 		 * Returns the number of open issues for this project
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countAllOpenIssues()
@@ -1767,12 +1767,12 @@
 			$this->_populateIssueCounts();
 			return $this->_issuecounts['all']['open'];
 		}
-		
+
 		/**
 		 * Returns the number of open issues for this project with a specific issue type
-		 * 
+		 *
 		 * @param integer $issue_type ID of the issue type
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countOpenIssuesByType($issue_type)
@@ -1783,9 +1783,9 @@
 
 		/**
 		 * Returns the number of open issues for this project with a specific milestone
-		 * 
+		 *
 		 * @param integer $milestone ID of the milestone
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countOpenIssuesByMilestone($milestone)
@@ -1793,10 +1793,10 @@
 			$this->_populateIssueCountsByMilestone($milestone);
 			return $this->_issuecounts['milestone'][$milestone]['open'];
 		}
-		
+
 		/**
 		 * Returns the number of closed issues for this project
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countAllClosedIssues()
@@ -1804,12 +1804,12 @@
 			$this->_populateIssueCounts();
 			return $this->_issuecounts['all']['closed'];
 		}
-		
+
 		/**
 		 * Returns the number of closed issues for this project with a specific issue type
-		 * 
+		 *
 		 * @param integer $issue_type ID of the issue type
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countClosedIssuesByType($issue_type)
@@ -1820,9 +1820,9 @@
 
 		/**
 		 * Returns the number of closed issues for this project with a specific milestone
-		 * 
+		 *
 		 * @param integer $milestone ID of the milestone
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function countClosedIssuesByMilestone($milestone, $exclude_tasks = false)
@@ -1830,43 +1830,43 @@
 			$this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
 			return $this->_issuecounts['milestone'][$milestone]['closed'];
 		}
-		
+
 		/**
 		 * Returns the percentage of a given number related to another given number
-		 * 
+		 *
 		 * @param integer $num_1 percentage number
 		 * @param integer $num_max total number
-		 * 
+		 *
 		 * @return integer The percentage
 		 */
 		protected function _getPercentage($num_1, $num_max)
 		{
 			$pct = 0;
-			
+
 			if ($num_max > 0 && $num_1 > 0)
 			{
 				$multiplier = 100 / $num_max;
 				$pct = $num_1 * $multiplier;
 			}
-			
+
 			return (int) $pct;
 		}
-		
+
 		/**
 		 * Returns the percentage of closed issues for this project
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getClosedPercentageForAllIssues()
 		{
 			return $this->_getPercentage($this->countAllClosedIssues(), $this->countAllIssues());
 		}
-		
+
 		/**
 		 * Returns the percentage of closed issues for this project with a specific issue type
-		 * 
+		 *
 		 * @param integer $issue_type ID of the issue type
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getClosedPercentageByType($issue_type)
@@ -1876,63 +1876,63 @@
 
 		/**
 		 * Returns the percentage of closed issues for this project with a specific milestone
-		 * 
+		 *
 		 * @param integer $milestone ID of the milestone
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getClosedPercentageByMilestone($milestone)
 		{
 			return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
 		}
-		
+
 		/**
 		 * Whether or not this project is visible in the frontpage summary
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isShownInFrontpageSummary()
 		{
 			return $this->_show_in_summary;
 		}
-		
+
 		/**
 		 * Set whether or not this project is visible in the frontpage summary
-		 * 
+		 *
 		 * @param boolean $visibility Visible or not
-		 * 
+		 *
 		 * @return null
 		 */
 		public function setFrontpageSummaryVisibility($visibility)
 		{
 			$this->_show_in_summary = (bool) $visibility;
 		}
-		
+
 		/**
 		 * Set what to display in the frontpage summary
-		 * 
+		 *
 		 * @param string $summary_type "milestones" or "issuetypes"
-		 * 
+		 *
 		 * @return null
 		 */
 		public function setFrontpageSummaryType($summary_type)
 		{
-			$this->_summary_display = $summary_type; 
+			$this->_summary_display = $summary_type;
 		}
-		
+
 		/**
 		 * Returns what is displayed in the frontpage summary
-		 * 
+		 *
 		 * @return string "milestones" or "issuetypes"
 		 */
 		public function getFrontpageSummaryType()
 		{
 			return $this->_summary_display;
 		}
-		
+
 		/**
 		 * Checks to see if milestones are shown in the frontpage summary
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isMilestonesVisibleInFrontpageSummary()
@@ -1995,7 +1995,7 @@
 
 		/**
 		 * Checks to see if anything is shown in the frontpage summary
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isAnythingVisibleInFrontpageSummary()
@@ -2005,9 +2005,9 @@
 
 		/**
 		 * Return an array specifying visibility, requirement and choices for fields in reporting wizard
-		 * 
+		 *
 		 * @param integer $issue_type
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getReportableFieldsArray($issue_type)
@@ -2017,22 +2017,22 @@
 
 		/**
 		 * Return an array specifying visibility, requirement and choices for fields in the "View issue" page
-		 * 
+		 *
 		 * @param integer $issue_type
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getVisibleFieldsArray($issue_type)
 		{
 			return $this->_getFieldsArray($issue_type, false);
 		}
-		
+
 		/**
 		 * Return an array specifying visibility, requirement and choices for fields in issues
-		 * 
+		 *
 		 * @param integer $issue_type
 		 * @param boolean $reportable[optional] Whether to only include fields that can be reported
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _getFieldsArray($issue_type, $reportable = true)
@@ -2077,7 +2077,7 @@
 						$retval['pain_likelihood'] = array('required' => $retval['user_pain']['required']);
 						$retval['pain_effect'] = array('required' => $retval['user_pain']['required']);
 					}
-					
+
 					if ($reportable)
 					{
 						foreach ($retval as $key => $return_details)
@@ -2199,13 +2199,13 @@
 				}
 				$this->_fieldsarrays[$issue_type][(int) $reportable] = $retval;
 			}
-			
+
 			return $this->_fieldsarrays[$issue_type][(int) $reportable];
 		}
-				
+
 		/**
 		 * Whether or not the current user can access the project
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
@@ -2216,7 +2216,7 @@
 
 			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID());
 		}
-		
+
 		protected function _populateLogItems($limit = null, $important = true, $offset = null)
 		{
 			$varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
@@ -2454,7 +2454,7 @@
 						$this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
 					}
 				}
-				
+
 				foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
 				{
 					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
@@ -2463,7 +2463,7 @@
 					}
 					$this->_recentactivities[$log_item['timestamp']][] = $log_item;
 				}
-				
+
 				krsort($this->_recentactivities, SORT_NUMERIC);
 			}
 		}
@@ -2485,10 +2485,10 @@
 			{
 				$recent_activities = $this->_recentactivities;
 			}
-			
+
 			return $recent_activities;
 		}
-		
+
 		public function getRecentImportantActivities($limit = null)
 		{
 			return $this->getRecentActivities($limit, true);
@@ -2501,11 +2501,11 @@
 			$this->_recentfeatures = null;
 			$this->_recentlogitems = null;
 		}
-		
+
 		/**
 		 * Return the projects' associated workflow scheme
-		 * 
-		 * @return TBGWorkflowScheme 
+		 *
+		 * @return TBGWorkflowScheme
 		 */
 		public function getWorkflowScheme()
 		{
@@ -2514,20 +2514,20 @@
 
 			return $this->_workflow_scheme_id;
 		}
-		
+
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
 		{
 			$this->_workflow_scheme_id = $scheme;
 		}
-		
+
 		public function hasWorkflowScheme()
 		{
 			return (bool) ($this->getWorkflowScheme() instanceof TBGWorkflowScheme);
 		}
-		
+
 		/**
 		 * Return the projects' associated issuetype scheme
-		 * 
+		 *
 		 * @return TBGIssuetypeScheme
 		 */
 		public function getIssuetypeScheme()
@@ -2537,7 +2537,7 @@
 
 			return $this->_issuetype_scheme_id;
 		}
-		
+
 		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
 		{
 			$this->_issuetype_scheme_id = $scheme;
@@ -2604,27 +2604,27 @@
 
 			return $fields;
 		}
-		
+
 		/**
 		 * Return the client assigned to the project, or null if there is none
-		 * 
+		 *
 		 * @return TBGClient
 		 */
 		public function getClient()
 		{
 			return $this->_b2dbLazyload('_client');
 		}
-		
+
 		/**
 		 * Return whether or not this project has a client associated
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasClient()
 		{
 			return (bool) ($this->getClient() instanceof TBGClient);
 		}
-		
+
 		/**
 		 * Set the client
 		 */
@@ -2653,7 +2653,7 @@
 			{
 				$retval = ($retval !== null) ? $retval : TBGContext::getUser()->hasPermission($key);
 			}
-			
+
 			return $retval;
 		}
 
@@ -2682,7 +2682,7 @@
 		{
 			$retval = $this->permissionCheck($permission_1);
 			$retval = ($retval === null) ? $this->permissionCheck($permission_2) : $retval;
-			
+
 			if ($retval !== null)
 			{
 				return $retval;
@@ -2692,53 +2692,53 @@
 				return ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
 			}
 		}
-		
+
 		public function canSeeAllEditions()
 		{
 			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojecteditions');
 		}
-		
+
 		public function canSeeAllComponents()
 		{
 			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectcomponents');
 		}
-		
+
 		public function canSeeAllBuilds()
 		{
 			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectbuilds');
 		}
-		
+
 		public function canSeeAllMilestones()
 		{
 			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectmilestones');
 		}
-		
+
 		public function canVoteOnIssues()
 		{
 			return (bool) $this->permissionCheck('canvoteforissues');
 		}
-		
+
 		public function canAutoassign()
 		{
 			return (bool) ($this->_autoassign);
 		}
-		
+
 		public function hasParent()
 		{
 			return ($this->getParent() instanceof TBGProject);
 		}
-		
+
 		public function hasChildren()
 		{
 			return (bool) count($this->getChildren());
 		}
-		
+
 		public function getParent()
 		{
 //			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
 			return $this->_b2dbLazyload('_parent');
 		}
-		
+
 		public function clearParent()
 		{
 			$this->_parent = null;
@@ -2748,7 +2748,7 @@
 		{
 			$this->_parent = $project;
 		}
-		
+
 		/**
 		 * Get all children
 		 * @param bool $archived[optional] Show archived projects
@@ -2757,7 +2757,7 @@
 		{
 			$this->_populateChildren();
 			$f_projects = array();
-			
+
 			foreach ($this->_children as $project)
 			{
 				if ($archived)
@@ -2769,10 +2769,10 @@
 					if (!$project->isArchived() && $project->hasAccess()): $f_projects[] = $project; endif;
 				}
 			}
-			
+
 			return $f_projects;
 		}
-		
+
 		protected function _populateChildren()
 		{
 			if ($this->_children === null)
@@ -2791,47 +2791,47 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Whether or not this project has downloads enabled
-		 * 
+		 *
 		 * @return boolean
 		 */
-		public function hasDownloads() 
+		public function hasDownloads()
 		{
 			return (bool) $this->_has_downloads;
 		}
-		
+
 		/**
 		 * Set whether this project has downloads enabled
-		 * 
+		 *
 		 * @param boolean $value
 		 */
 		public function setDownloadsEnabled($value = true)
 		{
 			$this->_has_downloads = $value;
 		}
-		
+
 		public function setSmallIcon(TBGFile $icon)
 		{
 			$this->_small_icon = $icon;
 		}
-		
+
 		public function clearSmallIcon()
 		{
 			$this->_small_icon = null;
 		}
-		
+
 		/**
 		 * Return the small icon file object
-		 * 
+		 *
 		 * @return TBGFile
 		 */
 		public function getSmallIcon()
 		{
 			return $this->_b2dbLazyload('_small_icon');
 		}
-		
+
 		public function getSmallIconName()
 		{
 			return ($this->hasSmallIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getSmallIcon()->getID())) : 'icon_project.png';
@@ -2841,22 +2841,22 @@
 		{
 			return ($this->getSmallIcon() instanceof TBGFile);
 		}
-		
+
 		public function setLargeIcon(TBGFile $icon)
 		{
 			$this->_large_icon = $icon;
 		}
-		
+
 		public function clearLargeIcon()
 		{
 			$this->_large_icon = null;
 		}
-		
+
 		public function getLargeIcon()
 		{
 			return $this->_b2dbLazyload('_large_icon');
 		}
-		
+
 		public function getLargeIconName()
 		{
 			return ($this->hasLargeIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getLargeIcon()->getID())) : 'icon_project_large.png';
@@ -2866,12 +2866,12 @@
 		{
 			return ($this->getLargeIcon() instanceof TBGFile);
 		}
-		
+
 		/**
 		 * Move issues from one step to another for a given issue type and conversions
 		 * @param TBGIssuetype $issuetype
 		 * @param array $conversions
-		 * 
+		 *
 		 * $conversions should be an array containing arrays:
 		 * array (
 		 * 		array(oldstep, newstep)

@@ -134,10 +134,10 @@
 			TBGContext::loadLibrary('common');
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications', 'cli_mailing_url',
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f', 'activation_needed');
-			
+
 			$event = TBGEvent::createNew('mailing', 'TBGMailing::postConfigSettings', null, compact($request));
 			$event->trigger();
-			
+
 			if (!$event->isProcessed())
 			{
 				foreach ($settings as $setting)

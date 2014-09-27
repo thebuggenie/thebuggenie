@@ -22,7 +22,7 @@
 	{
 
 		protected static $_workflows = null;
-		
+
 		protected static $_num_workflows = null;
 
 		/**
@@ -66,7 +66,7 @@
 		 * @Relates(class="TBGWorkflowTransition", collection=true, foreign_column="workflow_id")
 		 */
 		protected $_transitions = null;
-		
+
 		/**
 		 * This workflow's schemes
 		 *
@@ -76,7 +76,7 @@
 		protected $_schemes = null;
 
 		protected $_num_schemes = null;
-		
+
 		protected static function _populateWorkflows()
 		{
 			if (self::$_workflows === null)
@@ -84,7 +84,7 @@
 				self::$_workflows = TBGWorkflowsTable::getTable()->getAll();
 			}
 		}
-		
+
 		/**
 		 * Return all workflows in the system
 		 *
@@ -95,7 +95,7 @@
 			self::_populateWorkflows();
 			return self::$_workflows;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$workflow = new TBGWorkflow();
@@ -125,7 +125,7 @@
 		{
 			return self::getWorkflowsCount() - 1;
 		}
-		
+
 		/**
 		 * Returns the workflows description
 		 *
@@ -174,7 +174,7 @@
 				$this->_b2dbLazyload('_transitions');
 			}
 		}
-		
+
 		/**
 		 * Get all transitions in this workflow
 		 *
@@ -233,7 +233,7 @@
 		{
 			return (bool) $this->getNumberOfSchemes();
 		}
-		
+
 		public function getNumberOfSchemes()
 		{
 			if ($this->_num_schemes === null && $this->_schemes !== null)
@@ -246,7 +246,7 @@
 			}
 			return $this->_num_schemes;
 		}
-		
+
 		public function copy($new_name)
 		{
 			$new_workflow = new TBGWorkflow();
@@ -269,19 +269,19 @@
 			TBGWorkflowStepTransitionsTable::getTable()->reMapStepIDsByWorkflowID($new_workflow->getID(), $step_mapper);
 			TBGWorkflowTransitionsTable::getTable()->reMapByWorkflowID($new_workflow->getID(), $step_mapper);
 			TBGWorkflowStepTransitionsTable::getTable()->reMapTransitionIDsByWorkflowID($new_workflow->getID(), $transition_mapper);
-			
+
 			return $new_workflow;
 		}
 
 		public function moveIssueToMatchingWorkflowStep(TBGIssue $issue)
 		{
 			$change_step = false;
-			
+
 			if ($issue->isStatusChanged() || $issue->isResolutionChanged())
 			{
 				$change_step = true;
 			}
-			
+
 			if ($change_step)
 			{
 				foreach ($this->getSteps() as $step)
@@ -312,7 +312,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

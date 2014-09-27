@@ -30,18 +30,18 @@
 		const PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES = 4;
 		const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
 		const PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES = 11;
-		
+
 		protected static $_environment = 2;
 
 		protected static $_debug_mode = true;
 
 		protected static $debug_id = null;
-		
+
 		protected static $_partials_visited = array();
-		
+
 		/**
 		 * Outdated modules
-		 * 
+		 *
 		 * @var array
 		 */
 		protected static $_outdated_modules = null;
@@ -52,86 +52,86 @@
 		 * @var TBGUser
 		 */
 		protected static $_user = null;
-		
+
 		/**
-		 * List of modules 
-		 * 
+		 * List of modules
+		 *
 		 * @var array
 		 */
 		protected static $_modules = array();
-		
+
 		/**
 		 * List of permissions
-		 *  
+		 *
 		 * @var array
 		 */
 		protected static $_permissions = array();
-		
+
 		/**
 		 * List of available permissions
-		 * 
+		 *
 		 * @var array
 		 */
 		protected static $_available_permissions = null;
-		
+
 		/**
 		 * The include path
-		 * 
+		 *
 		 * @var string
 		 */
 		protected static $_includepath = null;
-		
+
 		/**
 		 * The path to thebuggenie relative from url server root
-		 * 
+		 *
 		 * @var string
 		 */
 		protected static $_tbgpath = null;
-		
+
 		/**
 		 * Stripped version of the $_tbgpath
-		 * 
+		 *
 		 * @see $_tbgpath
-		 * 
+		 *
 		 * @var string
 		 */
 		protected static $_stripped_tbgpath = null;
-		
+
 		/**
 		 * Whether we're in installmode or not
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected static $_installmode = false;
-		
+
 		/**
 		 * Whether we're in upgrademode or not
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected static $_upgrademode = false;
-		
+
 		/**
 		 * The i18n object
 		 *
 		 * @var TBGI18n
 		 */
 		protected static $_i18n = null;
-		
+
 		/**
 		 * The request object
-		 * 
+		 *
 		 * @var TBGRequest
 		 */
 		protected static $_request = null;
-		
+
 		/**
 		 * The response object
-		 * 
+		 *
 		 * @var TBGResponse
 		 */
 		protected static $_response = null;
-		
+
 		/**
 		 * The current scope object
 		 *
@@ -145,45 +145,45 @@
 		 * @var TBGFactory
 		 */
 		protected static $_factory = null;
-		
+
 		/**
 		 * The currently selected project, if any
-		 * 
+		 *
 		 * @var TBGProject
 		 */
 		protected static $_selected_project = null;
-		
+
 		/**
 		 * The currently selected client, if any
-		 * 
+		 *
 		 * @var TBGClient
 		 */
 		protected static $_selected_client = null;
-		
+
 		/**
 		 * Used to determine when the b2 engine started loading
-		 * 
+		 *
 		 * @var integer
 		 */
 		protected static $_loadstart = null;
-		
+
 		/**
 		 * List of classpaths
-		 * 
+		 *
 		 * @var array
 		 */
 		protected static $_classpaths = array();
-		
+
 		/**
 		 * List of loaded libraries
-		 * 
+		 *
 		 * @var string
 		 */
 		protected static $_libs = array();
-		
+
 		/**
 		 * The routing object
-		 * 
+		 *
 		 * @var TBGRouting
 		 */
 		protected static $_routing = null;
@@ -196,27 +196,27 @@
 		protected static $_messages = null;
 
 		protected static $_redirect_login = null;
-		
+
 		/**
 		 * Do you want to enable minifcation of javascript and css?
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected static $_minify_enabled = false;
 
 		/**
 		 * Returns whether or not we're in install mode
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function isInstallmode()
 		{
 			return self::$_installmode;
 		}
-		
+
 		/**
 		 * Returns whether or minify is enabled
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function isMinifyEnabled()
@@ -231,7 +231,7 @@
 
 		/**
 		 * Returns whether or not we're in upgrade mode
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function isUpgrademode()
@@ -405,9 +405,9 @@
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class
 		 * in the form of Classname.class.php
-		 * 
+		 *
 		 * @param string $path The path where the class files are
-		 * 
+		 *
 		 * @return null
 		 */
 		public static function autoloadNamespace($namespace, $path)
@@ -416,7 +416,7 @@
 			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
 			self::$_classpaths[$namespace] = $path;
 		}
-		
+
 		public static function addAutoloaderClassPath($path)
 		{
 			$path = realpath($path);
@@ -430,7 +430,7 @@
 
 			self::$_classpaths[0][] = $path;
 		}
-		
+
 		/**
 		 * Returns the classpaths that has been registered to the autoloader
 		 *
@@ -441,10 +441,10 @@
 			if (!array_key_exists(0, self::$_classpaths)) self::$_classpaths[0] = array();
 			return self::$_classpaths;
 		}
-		
+
 		/**
 		 * Magic autoload function to make sure classes are autoloaded when used
-		 * 
+		 *
 		 * @param $classname
 		 */
 		public static function autoload($classname)
@@ -522,7 +522,7 @@
 
 		/**
 		 * Returns the routing object
-		 * 
+		 *
 		 * @return TBGRouting
 		 */
 		public static function getRouting()
@@ -533,10 +533,10 @@
 			}
 			return self::$_routing;
 		}
-		
+
 		/**
 		 * Get the subdirectory part of the url
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function getTBGPath()
@@ -547,10 +547,10 @@
 			}
 			return self::$_tbgpath;
 		}
-		
+
 		/**
 		 * Get the subdirectory part of the url, stripped
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function getStrippedTBGPath()
@@ -571,20 +571,20 @@
 			if (stristr(PHP_OS, 'WIN')) { self::$_tbgpath = str_replace("\\", "/", self::$_tbgpath); /* Windows adds a \ to the URL which we don't want */ }
 			if (self::$_tbgpath[strlen(self::$_tbgpath) - 1] != '/') self::$_tbgpath .= '/';
 		}
-		
+
 		/**
 		 * Set that we've started loading
-		 * 
+		 *
 		 * @param integer $when
 		 */
 		public static function setLoadStart($when)
 		{
 			self::$_loadstart = $when;
 		}
-		
+
 		/**
 		 * Get the time from when we started loading
-		 * 
+		 *
 		 * @param integer $precision
 		 * @return integer
 		 */
@@ -593,7 +593,7 @@
 			$endtime = explode(' ', microtime());
 			return round((($endtime[1] + $endtime[0]) - self::$_loadstart), $precision);
 		}
-		
+
 		public static function checkInstallMode()
 		{
 			if (!is_readable(THEBUGGENIE_PATH . 'installed'))
@@ -622,7 +622,7 @@
 
 		/**
 		 * Initialize the context
-		 * 
+		 *
 		 * @return null
 		 */
 		public static function initialize()
@@ -687,7 +687,7 @@
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
 
-				if (!self::getRouting()->hasCachedRoutes()) self::loadPreModuleRoutes(); 
+				if (!self::getRouting()->hasCachedRoutes()) self::loadPreModuleRoutes();
 
 				if (!self::$_installmode) self::setupCoreListeners();
 
@@ -722,19 +722,19 @@
 					throw $e;
 			}
 		}
-		
+
 		protected static function setupI18n()
 		{
 			if (TBGContext::isCLI())
 				return null;
 
 			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
-			
+
 			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
 			{
 				$language = TBGSettings::getLanguage();
 			}
-			
+
 			TBGLogging::log('Loading i18n strings');
 			if (!self::$_i18n = TBGCache::get(TBGCache::KEY_I18N.$language, false))
 			{
@@ -853,7 +853,7 @@
 
 			if (!$routes)
 			{
-				throw new \Exception('Routes should be cached, but no routes found!'); 
+				throw new \Exception('Routes should be cached, but no routes found!');
 			}
 			else
 			{
@@ -861,7 +861,7 @@
 				TBGLogging::log('Setting routes from cache', 'routing');
 				self::getRouting()->setRoutes($routes);
 			}
-			TBGLogging::log('...done', 'routing'); 
+			TBGLogging::log('...done', 'routing');
 		}
 		/**
 		 * Returns the factory object
@@ -879,7 +879,7 @@
 
 		/**
 		 * Returns the request object
-		 * 
+		 *
 		 * @return TBGRequest
 		 */
 		public static function getRequest()
@@ -890,10 +890,10 @@
 			}
 			return self::$_request;
 		}
-		
+
 		/**
 		 * Returns the response object
-		 * 
+		 *
 		 * @return TBGResponse
 		 */
 		public static function getResponse()
@@ -904,13 +904,13 @@
 			}
 			return self::$_response;
 		}
-		
+
 		/**
 		 * Reinitialize the i18n object, used only when changing the language in the middle of something
-		 * 
+		 *
 		 * @param string $language The language code to change to
 		 */
-		public static function reinitializeI18n($language = null) 
+		public static function reinitializeI18n($language = null)
 		{
 			if (!$language)
 			{
@@ -923,7 +923,7 @@
 				self::$_i18n->initialize();
 			}
 		}
-		
+
 		/**
 		 * Get the i18n object
 		 *
@@ -944,25 +944,25 @@
 		{
 			return (self::$_i18n instanceof TBGI18n);
 		}
-		
+
 		/**
 		 * Get available themes
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getThemes()
 		{
 			$theme_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
 			$themes = array();
-			
+
 			while ($theme = readdir($theme_path_handle))
 			{
-				if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php')) 
-				{ 
-					$themes[] = $theme; 
+				if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php'))
+				{
+					$themes[] = $theme;
 				}
 			}
-			
+
 			return $themes;
 		}
 
@@ -970,21 +970,21 @@
 		{
 			$icon_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS);
 			$icons = array();
-			
+
 			while ($icon = readdir($icon_path_handle))
 			{
-				if ($icon != '.' && $icon != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . $icon)) 
-				{ 
-					$icons[] = $icon; 
+				if ($icon != '.' && $icon != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . $icon))
+				{
+					$icons[] = $icon;
 				}
 			}
-			
+
 			return $icons;
 		}
-		
+
 		/**
 		 * Load the user object into the user property
-		 * 
+		 *
 		 * @return TBGUser
 		 */
 		public static function loadUser($user = null)
@@ -1022,7 +1022,7 @@
 			}
 			return self::$_user;
 		}
-		
+
 		/**
 		 * Returns the user object
 		 *
@@ -1032,11 +1032,11 @@
 		{
 			return self::$_user;
 		}
-		
+
 		/**
 		 * Set the current user
-		 * 
-		 * @param TBGUser $user 
+		 *
+		 * @param TBGUser $user
 		 */
 		public static function setUser(TBGUser $user)
 		{
@@ -1095,7 +1095,7 @@
 			}
 			TBGLogging::log('...done');
 		}
-		
+
 		/**
 		 * Adds a module to the module list
 		 *
@@ -1109,7 +1109,7 @@
 			}
 			self::$_modules[$module_name] = $module;
 		}
-		
+
 		/**
 		 * Returns an array of modules
 		 *
@@ -1119,10 +1119,10 @@
 		{
 			return self::$_modules;
 		}
-		
+
 		/**
 		 * Returns an array of modules which need upgrading
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getOutdatedModules()
@@ -1138,7 +1138,7 @@
 					}
 				}
 			}
-			
+
 			return self::$_outdated_modules;
 		}
 
@@ -1161,12 +1161,12 @@
 			}
 			return $modules;
 		}
-		
+
 		/**
 		 * Returns a specified module
 		 *
 		 * @param string $module_name
-		 * 
+		 *
 		 * @return TBGModule
 		 */
 		public static function getModule($module_name)
@@ -1177,15 +1177,15 @@
 			}
 			else
 			{
-				return self::$_modules[$module_name];	
+				return self::$_modules[$module_name];
 			}
 		}
-		
+
 		/**
 		 * Whether or not a module is loaded
 		 *
 		 * @param string $module_name
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function isModuleLoaded($module_name)
@@ -1202,7 +1202,7 @@
 
 		/**
 		 * Return all permissions available
-		 * 
+		 *
 		 * @param string $type
 		 * @param integer $uid
 		 * @param integer $tid
@@ -1240,7 +1240,7 @@
 			{
 				$crit->addWhere(TBGPermissionsTable::TARGET_ID, $target_id);
 			}
-	
+
 			$permissions = array();
 
 			if ($res = \b2db\Core::getTable('TBGPermissionsTable')->doSelect($crit))
@@ -1250,10 +1250,10 @@
 					$permissions[] = array('p_type' => $row->get(TBGPermissionsTable::PERMISSION_TYPE), 'target_id' => $row->get(TBGPermissionsTable::TARGET_ID), 'allowed' => $row->get(TBGPermissionsTable::ALLOWED), 'uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'id' => $row->get(TBGPermissionsTable::ID));
 				}
 			}
-	
+
 			return $permissions;
 		}
-		
+
 		/**
 		 * Cache all permissions
 		 */
@@ -1261,7 +1261,7 @@
 		{
 			TBGLogging::log('caches permissions');
 			self::$_permissions = array();
-			
+
 			if (!self::isInstallmode() && $permissions = TBGCache::get(TBGCache::KEY_PERMISSIONS_CACHE))
 			{
 				self::$_permissions = $permissions;
@@ -1323,8 +1323,8 @@
 
 		/**
 		 * Remove a saved permission
-		 * 
-		 * @param string $permission_type The permission type 
+		 *
+		 * @param string $permission_type The permission type
 		 * @param mixed $target_id The target id
 		 * @param string $module The name of the module for which the permission is valid
 		 * @param integer $uid The user id for which the permission is valid, 0 for none
@@ -1336,7 +1336,7 @@
 		public static function removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, $recache = true, $scope = null)
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
-			
+
 			TBGPermissionsTable::getTable()->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
 			self::clearPermissionsCache();
 
@@ -1352,8 +1352,8 @@
 
 		/**
 		 * Save a permission setting
-		 * 
-		 * @param string $permission_type The permission type 
+		 *
+		 * @param string $permission_type The permission type
 		 * @param mixed $target_id The target id
 		 * @param string $module The name of the module for which the permission is valid
 		 * @param integer $uid The user id for which the permission is valid, 0 for none
@@ -1365,7 +1365,7 @@
 		public static function setPermission($permission_type, $target_id, $module, $uid, $gid, $tid, $allowed, $scope = null)
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
-			
+
 			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
 			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
 			self::clearPermissionsCache();
@@ -1413,7 +1413,7 @@
 			}
 			return null;
 		}
-		
+
 		protected static function _permissionsCheck($permissions, $uid, $gid, $tid)
 		{
 			try
@@ -1436,7 +1436,7 @@
 							elseif ($permission['uid'] == $uid) return $permission['allowed'];
 						}
 					}
-	
+
 					if (is_array($tid) || $tid != 0)
 					{
 						foreach ($permissions as $key => $permission)
@@ -1457,7 +1457,7 @@
 							}
 						}
 					}
-	
+
 					if ($gid != 0)
 					{
 						foreach ($permissions as $key => $permission)
@@ -1473,7 +1473,7 @@
 						}
 					}
 				}
-	
+
 				foreach ($permissions as $key => $permission)
 				{
 					if (!array_key_exists('uid', $permission))
@@ -1487,14 +1487,14 @@
 				}
 			}
 			catch (Exception $e) { }
-			
+
 			return null;
 		}
-	
+
 		/**
 		 * Check to see if a specified user/group/team has access
-		 * 
-		 * @param string $permission_type The permission type 
+		 *
+		 * @param string $permission_type The permission type
 		 * @param integer $uid The user id for which the permission is valid, 0 for all
 		 * @param integer $gid The group id for which the permission is valid, 0 for all
 		 * @param integer $tid The team id for which the permission is valid, 0 for all
@@ -1502,7 +1502,7 @@
 		 * @param string $module_name[optional] The name of the module for which the permission is valid
 		 * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
 		 * @param boolean $permissive[optional] whether to return false or true when explicit fails
-		 * 
+		 *
 		 * @return unknown_type
 		 */
 		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core')
@@ -1518,16 +1518,16 @@
 				{
 					$permissions_notarget = self::$_permissions[$module_name][$permission_type][0];
 				}
-				
+
 				$permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
-				
+
 				$retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid);
-				
+
 				if (array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
 				{
 					$retval = ($retval !== null) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid);
 				}
-				
+
 				if ($retval !== null) return $retval;
 			}
 
@@ -1538,7 +1538,7 @@
 		{
 			return self::$_permissions;
 		}
-		
+
 		public static function getPermissionDetails($permission, $permissions_list = null)
 		{
 			self::_cacheAvailablePermissions();
@@ -1547,7 +1547,7 @@
 			{
 				if (is_numeric($permission_key)) return null;
 				if ($permission_key == $permission) return $permission_info;
-				
+
 				if (in_array($permission_key, array_keys(self::$_available_permissions)) || (array_key_exists('details', $permission_info) && is_array($permission_info['details']) && count($permission_info['details'])))
 				{
 					$p_info = (in_array($permission_key, array_keys(self::$_available_permissions))) ? $permission_info : $permission_info['details'];
@@ -1665,7 +1665,7 @@
 				{
 					self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfields'.$cdf->getKey().'own'] = array('description' => $i18n->__('Can change custom field "%field_name%" for issues reported by the user', array('%field_name%' => $cdf->getDescription())));
 					self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields'.$cdf->getKey()] = array('description' => $i18n->__('Can change custom field "%field_name%" for any issues', array('%field_name%' => $cdf->getDescription())));
-					
+
 					// Set permissions for custom option types
 					if ($cdf->hasCustomOptions())
 					{
@@ -1706,12 +1706,12 @@
 				//self::trigger('core', 'cachepermissions', array('permissions' => &self::$_available_permissions));
 			}
 		}
-		
+
 		/**
 		 * Returns all permissions available for a specific identifier
-		 *  
+		 *
 		 * @param string $applies_to The identifier
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAvailablePermissions($applies_to = null)
@@ -1755,7 +1755,7 @@
 				return array();
 			}
 		}
-		
+
 		/**
 		 * Log out the current user (does not work when auth method is set to http)
 		 */
@@ -1766,7 +1766,7 @@
 				$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
 				$mod->logout();
 			}
-			
+
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
@@ -1778,7 +1778,7 @@
 
 		/**
 		 * Find and set the current scope
-		 * 
+		 *
 		 * @param integer $scope Specify a scope to set for this request
 		 */
 		public static function setScope($scope = null)
@@ -1792,7 +1792,7 @@
 				TBGLogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}
-	
+
 			$row = null;
 			try
 			{
@@ -1802,10 +1802,10 @@
 					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
 					$hostname = $_SERVER['HTTP_HOST'];
 				}
-				
+
 				if (!self::isUpgrademode() && !self::isInstallmode())
 					$scope = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
-				
+
 				if (!$scope instanceof TBGScope)
 				{
 					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
@@ -1814,7 +1814,7 @@
 					else
 						return;
 				}
-				
+
 				TBGLogging::log("Setting scope {$scope->getID()} from hostname");
 				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
@@ -1852,25 +1852,25 @@
 		{
 			return self::$_scope;
 		}
-		
+
 		public static function populateBreadcrumbs()
 		{
 			$childbreadcrumbs = array();
-			
+
 			if (self::$_selected_project instanceof TBGProject)
 			{
 				$t = self::$_selected_project;
-				
+
 				$hierarchy_breadcrumbs = array();
 				$projects_processed = array();
-				
+
 				while ($t instanceof TBGProject)
 				{
 					if (array_key_exists($t->getKey(), $projects_processed))
 					{
 						// We have a cyclic dependency! Oh no!
 						// If this happens, throw an exception
-						
+
 						throw new Exception(TBGContext::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
 						continue;
 					}
@@ -1886,20 +1886,20 @@
 								if (!$child->hasAccess()) continue;
 								$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
 							}
-							
+
 							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
-							
+
 							$projects_processed[$t->getKey()] = $t;
-							
+
 							$t = null;
 							continue;
 						}
 						elseif (!($t->hasParent()))
 						{
 							$hierarchy_breadcrumbs[] = array($t, null);
-							
+
 							$projects_processed[$t->getKey()] = $t;
-							
+
 							$t = null;
 							continue;
 						}
@@ -1908,9 +1908,9 @@
 							// What we want to do here is to build a list of the children of the parent unless we are the only one
 							$parent = $t->getParent();
 							$children = $parent->getChildren();
-							
+
 							$itemsubmenulinks = null;
-							
+
 							if ($parent->hasChildren() && count($children) > 1)
 							{
 								$itemsubmenulinks = array();
@@ -1920,17 +1920,17 @@
 									$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
 								}
 							}
-							
+
 							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
-							
+
 							$projects_processed[$t->getKey()] = $t;
-							
+
 							$t = $parent;
 							continue;
 						}
 					}
 				}
-				
+
 				$clientsubmenulinks = null;
 				if (self::$_selected_project->hasClient())
 				{
@@ -1950,10 +1950,10 @@
 						self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
 					}
 				}
-				
+
 				// Add root breadcrumb first, so reverse order
 				$hierarchy_breadcrumbs = array_reverse($hierarchy_breadcrumbs);
-				
+
 				foreach ($hierarchy_breadcrumbs as $breadcrumb)
 				{
 					$class = null;
@@ -1961,7 +1961,7 @@
 					{
 						$class = 'selected_project';
 					}
-					self::getResponse()->addBreadcrumb($breadcrumb[0]->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => $breadcrumb[0]->getKey())), $breadcrumb[1], $class);					
+					self::getResponse()->addBreadcrumb($breadcrumb[0]->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => $breadcrumb[0]->getKey())), $breadcrumb[1], $class);
 				}
 			}
 			else
@@ -1969,10 +1969,10 @@
 				self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
 			}
 		}
-		
+
 		/**
 		 * Set the currently selected project
-		 * 
+		 *
 		 * @param TBGProject $project The project, or null if none
 		 */
 		public static function setCurrentProject($project)
@@ -1980,10 +1980,10 @@
 			self::getResponse()->setBreadcrumb(null);
 			self::$_selected_project = $project;
 		}
-		
+
 		/**
 		 * Return the currently selected project if any, or null
-		 * 
+		 *
 		 * @return TBGProject
 		 */
 		public static function getCurrentProject()
@@ -2000,20 +2000,20 @@
 		{
 			return (bool) (self::getCurrentProject() instanceof TBGProject);
 		}
-		
+
 		/**
 		 * Set the currently selected client
-		 * 
+		 *
 		 * @param TBGClient $client The client, or null if none
 		 */
 		public static function setCurrentClient($client)
 		{
 			self::$_selected_client = $client;
 		}
-		
+
 		/**
 		 * Return the currently selected client if any, or null
-		 * 
+		 *
 		 * @return TBGClient
 		 */
 		public static function getCurrentClient()
@@ -2030,10 +2030,10 @@
 		{
 			return (bool) (self::getCurrentClient() instanceof TBGClient);
 		}
-		
+
 		/**
 		 * Set a message to be retrieved in the next request
-		 * 
+		 *
 		 * @param string $key The key
 		 * @param string $message The message
 		 */
@@ -2061,7 +2061,7 @@
 
 		/**
 		 * Whether or not there is a message in the next request
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function hasMessage($key)
@@ -2069,7 +2069,7 @@
 			self::_setupMessages();
 			return array_key_exists($key, self::$_messages);
 		}
-		
+
 		/**
 		 * Retrieve a message passed on from the previous request
 		 *
@@ -2081,7 +2081,7 @@
 		{
 			return (self::hasMessage($key)) ? self::$_messages[$key] : null;
 		}
-		
+
 		/**
 		 * Clear the message
 		 */
@@ -2095,7 +2095,7 @@
 
 		/**
 		 * Retrieve the message and clear it
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function getMessageAndClear($key)
@@ -2128,7 +2128,7 @@
 
 		/**
 		 * Loads a function library
-		 * 
+		 *
 		 * @param string $lib_name The name of the library
 		 */
 		public static function loadLibrary($lib_name)
@@ -2169,7 +2169,7 @@
 				}
 			}
 		}
-		
+
 		public static function visitPartial($template_name, $time)
 		{
 			if (!self::$_debug_mode) return;
@@ -2183,15 +2183,15 @@
 				self::$_partials_visited[$template_name]['time'] += $time;
 			}
 		}
-		
+
 		protected static function getVisitedPartials()
 		{
 			return self::$_partials_visited;
 		}
-		
+
 		/**
 		 * Performs an action
-		 * 
+		 *
 		 * @param string $action Name of the action
 		 * @param string $method Name of the action method to run
 		 */
@@ -2199,7 +2199,7 @@
 		{
 			// Set content variable
 			$content = null;
-			
+
 			// Set the template to be used when rendering the html (or other) output
 			$templatePath = THEBUGGENIE_MODULES_PATH . $action . DS . 'templates' . DS;
 
@@ -2213,7 +2213,7 @@
 			self::getResponse()->setTemplate(mb_strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
 			self::setCurrentProject(null);
-			
+
 			// Set up the action object
 			$actionObject = new $actionClassName();
 
@@ -2327,7 +2327,7 @@
 				{
 					$time = explode(' ', microtime());
 					$posttime = $time[1] + $time[0];
-					TBGContext::visitPartial($visited_templatename, $posttime - $pretime);					
+					TBGContext::visitPartial($visited_templatename, $posttime - $pretime);
 				}
 
 				if (!isset($tbg_response))
@@ -2353,7 +2353,7 @@
 
 				self::loadLibrary('common');
 				TBGLogging::log('rendering final content');
-				
+
 				if (TBGSettings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
 				{
 					if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
@@ -2409,7 +2409,7 @@
 				TBGLogging::log('done (rendering final content)');
 
 				if (self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
-				
+
 				return true;
 			}
 			else
@@ -2421,7 +2421,7 @@
 
 		/**
 		 * Returns all the links on the frontpage
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getMainLinks()
@@ -2433,7 +2433,7 @@
 			}
 			return $links;
 		}
-		
+
 		/**
 		 * Launches the MVC framework
 		 */
@@ -2566,7 +2566,7 @@
 		{
 			if (!array_key_exists('___DEBUGINFO___', $_SESSION)) return null;
 			if (!array_key_exists($debug_id, $_SESSION['___DEBUGINFO___'])) return null;
-			
+
 			return $_SESSION['___DEBUGINFO___'][$debug_id];
 		}
 

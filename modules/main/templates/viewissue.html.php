@@ -4,7 +4,7 @@
 		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 		$tbg_response->addBreadcrumb($issue->getFormattedIssueNo(true, true), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issuelist);
 		$tbg_response->setTitle('['.(($issue->isClosed()) ? mb_strtoupper(__('Closed')) : mb_strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . tbg_decodeUTF8($issue->getTitle()));
-	
+
 	?>
 	<?php TBGEvent::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
 	<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
@@ -139,7 +139,7 @@
 								<?php echo __('The following actions could not be performed because of missing or invalid values: %list%', array('%list%' => '')); ?><br>
 								<ul>
 									<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
-										<li><?php 
+										<li><?php
 
 											switch ($error_field)
 											{

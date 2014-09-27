@@ -54,7 +54,7 @@
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 		const AUTOASSIGN = 'projects.autoassign';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

@@ -23,15 +23,15 @@
 		const LEVEL_WARNING = 10;
 		const LEVEL_WARNING_RISK = 15;
 		const LEVEL_FATAL = 20;
-		
+
 		protected static $_logging_enabled = true;
-		
+
 		protected static $_logfile;
-		
+
 		protected static $_logonajaxcalls = true;
-		
+
 		protected static $_entries = array();
-		
+
 		protected static $_categorized_entries = array();
 
 		protected static $_loglevel = 1;
@@ -62,7 +62,7 @@
 					file_put_contents(self::$_logfile, mb_strtoupper(self::getLevelName($level)) . " [{$category}] {$message}\n", FILE_APPEND);
 				}
 				$time_msg = (TBGContext::isDebugMode()) ? (($load_time = TBGContext::getLoadtime()) >= 1) ? round($load_time, 2) . ' seconds' : round(($load_time * 1000), 3) . ' ms' : '';
-				
+
 				self::$_entries[] = array('category' => $category, 'time' => $time_msg, 'message' => $message, 'level' => $level);
 				self::$_categorized_entries[$category][] = array('time' => $time_msg, 'message' => $message, 'level' => $level);
 			}
@@ -93,7 +93,7 @@
 					return 'unknown';
 			}
 		}
-		
+
 		public static function setLogFilePath($filename)
 		{
 			if (!file_exists($filename))
@@ -128,7 +128,7 @@
 					return "2FA";
 				case 'publish':
 					return "A79";
-				default: 
+				default:
 					return "999";
 			}
 		}
@@ -148,7 +148,7 @@
 		 *
 		 * @param string $category
 		 * @param integer $min_level[optional]
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getEntriesForCategory($category, $min_level = 1)
@@ -163,7 +163,7 @@
 			}
 			return $retval;
 		}
-		
+
 		/**
 		 * Get log messages for a specific category
 		 *
@@ -199,6 +199,6 @@
 		{
 			self::$_cli_log_to_screen_in_debug_mode = $value;
 		}
-		
+
 	}
-	
+

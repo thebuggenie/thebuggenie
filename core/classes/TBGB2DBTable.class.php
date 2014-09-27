@@ -18,12 +18,12 @@
 	 */
 	class TBGB2DBTable extends \b2db\Table
 	{
-		
+
 		/**
 		 * Return a row for the specified id in the current scope, if defined
-		 * 
+		 *
 		 * @param integer $id
-		 * 
+		 *
 		 * @return \b2db\Row
 		 */
 		public function getByID($id)

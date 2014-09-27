@@ -75,7 +75,7 @@
 			return self::$additional_regexes;
 		}
 
-		/** 
+		/**
 		 * Returns an array of regular expressions that should be used for matching
 		 * the issue numbers and workflow transitions in a VCS commit.
 		 *
@@ -88,7 +88,7 @@
 		 * Simple example would be:
 		 *
 		 * '#fixes issue #(?P<issues>([A-Z0-9]+\-)?\d+) (?P<transitions> \(.*?\))?#i'
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getIssueRegex()
@@ -170,7 +170,7 @@
 			{
 				return $matches[0] . "\n";
 			}
-			
+
 			$level = mb_strlen($matches[1]);
 			$content = $matches[2];
 			$this->stop = true;
@@ -227,7 +227,7 @@
 				{
 					$listtype = '/'.array_pop($this->list_level_types);
 					if ($this->list_level > $newlevel) $this->list_level--;
-				} 
+				}
 				else
 				{
 					$this->list_level++;
@@ -268,7 +268,7 @@
 					{
 						list($term, $definition) = explode(':', $term);
 						$output .= "<dt>{$term}</dt><dd>{$definition}</dd>";
-					} 
+					}
 					else
 					{
 						$output .= "<dt>{$term}</dt>";
@@ -364,7 +364,7 @@
 		protected function _parse_internallink($matches)
 		{
 			$href = html_entity_decode($matches[4], ENT_QUOTES, 'UTF-8');
-			
+
 			if (isset($matches[6]) && $matches[6])
 			{
 				$title = $matches[6];
@@ -391,7 +391,7 @@
 			if (mb_strtolower($namespace) == 'wikipedia')
 			{
 				if (TBGContext::isCLI()) return $href;
-				
+
 				$options = explode('|', $title);
 				$title = (array_key_exists(5, $matches) && (mb_strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
@@ -411,7 +411,7 @@
 					$file = null;
 					$file_link = $filename;
 					$caption = $filename;
-					
+
 					if ($issuemode)
 					{
 						$file = $this->options['issue']->getFileByFilename($filename);
@@ -512,7 +512,7 @@
 			if (mb_substr($href, 0, 1) == '/')
 			{
 				if (TBGContext::isCLI()) return $href;
-				
+
 				$options = explode('|', $title);
 				$title = array_pop($options);
 
@@ -530,7 +530,7 @@
 				$this->addInternalLinkOccurrence($href);
 
 				if (TBGContext::isCLI()) return $href;
-				
+
 				$href = TBGContext::getRouting()->generate('publish_article', array('article_name' => $href));
 			}
 			else
@@ -539,7 +539,7 @@
 			}
 
 			if (TBGContext::isCLI()) return $href;
-			
+
 			return link_tag($href, $title);
 		}
 
@@ -791,7 +791,7 @@
 		protected function _parse_line($line, $options = array())
 		{
 			$line_regexes = array();
-			
+
 			$line_regexes['preformat'] = '^\s{1}(.*?)$';
 			$line_regexes['quote'] = '^(\&gt\;)(.*?)$';
 			$line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
@@ -837,7 +837,7 @@
 					if ($this->stop || $this->stop_all) break;
 				}
 			}
-			
+
 			if (!$this->stop_all)
 			{
 				$this->stop = false;
@@ -867,28 +867,28 @@
 
 			return $line;
 		}
-		
+
 		protected function _parseText($options = array())
 		{
 			$options = array_merge($options, $this->options);
 			TBGContext::loadLibrary('common');
-			
+
 			self::$current_parser = $this;
 			$this->list_level_types = array();
 			$this->list_level = 0;
 			$this->deflist = false;
 			$this->ignore_newline = false;
-			
+
 			$output = "";
 			$text = $this->text;
-			
+
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
 			$text = tbg_decodeUTF8($text, true);
 			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br|code)&gt;/ism', '<\\1>' ,$text);
-			
+
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)
 			{
@@ -904,11 +904,11 @@
 			if ($this->deflist) $output .= $this->_parse_definitionlist(false, true);
 			if ($this->preformat) $output .= $this->_parse_preformat(false, true);
 			if ($this->quote) $output .= $this->_parse_quote(false, true);
-			
+
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
 			$this->elinks = array_reverse($this->elinks);
-			
+
 			if (!array_key_exists('ignore_toc', $options))
 			{
 				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
@@ -950,7 +950,7 @@
 		protected function _parse_add_toc($matches)
 		{
 			if (TBGContext::isCLI()) return '';
-			
+
 			return TBGAction::returnTemplateHTML('publish/toc', array('toc' => $this->toc));
 		}
 
@@ -959,24 +959,24 @@
 			array_push($this->nowikis, $matches[1]);
 			return "|||NOWIKI|||";
 		}
-		
+
 		protected function _parse_save_ilink($matches)
 		{
 			array_push($this->ilinks, $matches);
 			return "~~~ILINK~~~";
 		}
-		
+
 		protected function _parse_save_elink($matches)
 		{
 			array_push($this->elinks, $matches);
 			return "~~~ELINK~~~";
 		}
-		
+
 		protected function _parse_restore_ilink($matches)
 		{
 			return $this->_parse_internallink(array_shift($this->ilinks));
 		}
-		
+
 		protected function _parse_restore_elink($matches)
 		{
 			return $this->_parse_externallink(array_pop($this->elinks));

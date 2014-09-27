@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	$tbg_response->setTitle(__('Frontpage'));
 	$tbg_response->addBreadcrumb(__('Frontpage'), make_url('home'), tbg_get_breadcrumblinks('main_links'));

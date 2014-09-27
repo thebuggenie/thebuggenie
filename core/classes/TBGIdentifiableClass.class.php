@@ -20,7 +20,7 @@
 	 */
 	abstract class TBGIdentifiableClass extends Saveable implements TBGIdentifiable
 	{
-		
+
 		/**
 		 * The id for this item, usually identified by a record in the database
 		 *
@@ -29,10 +29,10 @@
 		 * @Column(type="integer", not_null=true, auto_increment=1, length=10, unsigned=true)
 		 */
 		protected $_id;
-		
+
 		/**
 		 * Return the items id
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getID()

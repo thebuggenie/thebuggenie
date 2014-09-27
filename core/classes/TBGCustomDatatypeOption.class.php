@@ -15,7 +15,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_value = null;
-		
+
 		/**
 		 * Custom field key value
 		 *
@@ -27,14 +27,14 @@
 
 		/**
 		 * Return the options color (if applicable)
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getColor()
 		{
 			return $this->_itemdata;
 		}
-		
+
 		public function canBeDeleted()
 		{
 			return true;
@@ -42,7 +42,7 @@
 
 		/**
 		 * Return the options icon (if applicable)
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getIcon()

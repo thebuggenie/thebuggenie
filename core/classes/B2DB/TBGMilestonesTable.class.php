@@ -23,7 +23,7 @@
 	 * @Table(name="milestones")
 	 * @Entity(class="TBGMilestone")
 	 */
-	class TBGMilestonesTable extends TBGB2DBTable 
+	class TBGMilestonesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -50,7 +50,7 @@
 //			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function getAllByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

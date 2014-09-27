@@ -3,7 +3,7 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGResolution extends TBGDatatype 
+	class TBGResolution extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::RESOLUTION;
@@ -11,7 +11,7 @@
 		protected static $_items = null;
 
 		protected $_key = null;
-		
+
 		protected $_itemtype = TBGDatatype::RESOLUTION;
 
 		public static function loadFixtures(TBGScope $scope)
@@ -50,7 +50,7 @@
 		{
 			$this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($this->getName()));
 		}
-		
+
 		public function getKey()
 		{
 			if ($this->_key == null)
@@ -59,5 +59,5 @@
 			}
 			return $this->_key;
 		}
-		
+
 	}

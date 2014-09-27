@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="visible_milestones")
 	 */
-	class TBGVisibleMilestonesTable extends TBGB2DBTable 
+	class TBGVisibleMilestonesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -31,7 +31,7 @@
 		const SCOPE = 'visible_milestones.scope';
 		const PROJECT_ID = 'visible_milestones.project_id';
 		const MILESTONE_ID = 'visible_milestones.milestone_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -39,7 +39,7 @@
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function getAllByProjectID($project_id)
 		{
 			$milestones = array();
@@ -49,7 +49,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function clearByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -57,7 +57,7 @@
 			$this->doDelete($crit);
 			return true;
 		}
-		
+
 		public function addByProjectIDAndMilestoneID($project_id, $milestone_id)
 		{
 			$crit = $this->getCriteria();
@@ -67,5 +67,5 @@
 			$res = $this->doInsert($crit);
 			return true;
 		}
-		
+
 	}

@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure authentication'));
-	
+
 ?>
 
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

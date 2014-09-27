@@ -8,7 +8,7 @@
 	 * @Table(name="articles")
 	 * @Entity(class="TBGWikiArticle")
 	 */
-	class TBGArticlesTable extends TBGB2DBTable 
+	class TBGArticlesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -20,7 +20,7 @@
 		const DATE = 'articles.date';
 		const AUTHOR = 'articles.author';
 		const SCOPE = 'articles.scope';
-		
+
 //		public function __construct()
 //		{
 //			parent::__construct(self::B2DBNAME, self::ID);
@@ -57,12 +57,12 @@
 
 			return $articles;
 		}
-		
+
 		public function getArticles(TBGProject $project = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			
+
 			if ($project instanceof TBGProject)
 			{
 				$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
@@ -78,9 +78,9 @@
 			}
 
 			$crit->addOrderBy(self::DATE, 'desc');
-			
+
 			$articles = array();
-			
+
 			if ($res = self::getTable()->doSelect($crit))
 			{
 				while (($row = $res->getNextRow()) && (count($articles) < 10))
@@ -89,18 +89,18 @@
 					{
 						$article = PublishFactory::article($row->get(self::ID), $row);
 					}
-					catch (Exception $e) 
+					catch (Exception $e)
 					{
 						continue;
 					}
-					
+
 					if ($article->hasAccess())
 					{
 						$articles[] = $article;
 					}
 				}
 			}
-	
+
 			return $articles;
 		}
 
@@ -165,7 +165,7 @@
 
 			return (bool) ($res = $this->doSelect($crit));
 		}
-		
+
 		public function findArticlesContaining($content, $project = null, $limit = 5, $offset = 0)
 		{
 			$crit = $this->getCriteria();
@@ -174,11 +174,11 @@
 				$ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
 				$ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addWhere($ctn);
-				
+
 				$ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
 				$ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addOr($ctn);
-				
+
 				$ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
 				$ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addOr($ctn);
@@ -188,9 +188,9 @@
 				$crit->addWhere(self::NAME, "%{$content}%", Criteria::DB_LIKE);
 				$crit->addOr(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
 			}
-			
+
 			$resultcount = $this->doCount($crit);
-			
+
 			if ($resultcount)
 			{
 				$crit->setLimit($limit);

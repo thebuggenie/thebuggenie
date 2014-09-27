@@ -19,11 +19,11 @@
 
 	/**
 	 * Truncate a string, and optionally add padding dots
-	 * 
+	 *
 	 * @param string $text
 	 * @param integer $length
 	 * @param boolean $add_dots[optional] defaults to true
-	 * 
+	 *
 	 * @return string The truncated string
 	 */
 	function tbg_truncateText($text, $length, $add_dots = true, $ignore_linebreaks = false)
@@ -39,7 +39,7 @@
 
 	/**
 	 * Returns a random number
-	 * 
+	 *
 	 * @return integer
 	 */
 	function tbg_printRandomNumber()
@@ -69,7 +69,7 @@
 		{
 			$tstamp += tbg_get_timezone_offset($skiptimestamp);
 		}
-			
+
 		switch ($format)
 		{
 			case 1:
@@ -211,12 +211,12 @@
 				{
 					$offset = TBGSettings::getGMToffset() * 100;
 				}
-				
+
 				if (!isset($offset))
 				{
 					$offset = 'GMT';
 				}
-				
+
 				if ($offset == 0)
 				{
 					$offset = 'GMT';
@@ -229,12 +229,12 @@
 						$offset = trim($offset, '-');
 						$negative = true;
 					}
-					
+
 					if ($offset < 1000)
 					{
 						$offset = '0'.$offset;
 					}
-					
+
 					if ($negative)
 					{
 						$offset = '-'.$offset;
@@ -294,7 +294,7 @@
 	 *
 	 * @param string $str the encode string
 	 * @param boolean $htmlentities [optional] whether to convert applicable characters to HTML entities
-	 * 
+	 *
 	 * @return string
 	 */
 	function tbg_decodeUTF8($str, $htmlentities = false)
@@ -303,22 +303,22 @@
 		{
 			$str = utf8_decode($str);
 		}
-		
+
 		if ($htmlentities)
 		{
 			$str = htmlentities($str, ENT_NOQUOTES+ENT_IGNORE, TBGContext::getI18n()->getCharset());
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * Determine if a string is UTF-8 encoded
 	 * @filesource http://www.php.net/manual/en/function.mb-detect-encoding.php#68607
 	 *
 	 * @param string $str the string
-	 * 
+	 *
 	 * @return boolean
-	 */	
+	 */
 	function tbg_isUTF8($str)
 	{
         return preg_match('%(?:
@@ -336,12 +336,12 @@
 	 * Determine if a string valid regarding a specific syntax (email address, DNS name, IP...)
 	 *
 	 * @param string $str the string to be checked
-	 * @param string $format the referal syntax 
+	 * @param string $format the referal syntax
 	 * @param boolean $exact_match [option] set if the string must only contain this syntax (default=true)
 	 * @param boolean $case_sensitive [option] set if the match is case sensitive (default=false)
-	 * 
+	 *
 	 * @return boolean
-	 */		
+	 */
 	function tbg_check_syntax($str, $format, $exact_match=true, $case_sensitive = false)
 	{
 		// based on RFC 2822
@@ -351,7 +351,7 @@
 		$serv_regex = '(ssl:\/\/)?(' . $dns_regex . ')';
 		// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
 		$charset_regex = '((ISO-?8859-1)|(ISO-?8859-15)|(UTF-8)|((cp|ibm)?866)|((cp|Windows-|win-)+1251)|((cp|Windows-)+1252)|(KOI8-?RU?)|(BIG5)|(950)|(GB2312)|(936)|(BIG5-HKSCS)|(S(hift_)?JIS)|(932)|(EUC-?JP))';
-		
+
 		switch ($format)
 		{
 			case "IP":
@@ -368,7 +368,7 @@
 				break;
 			case "CHARSET":
 				$regex = $charset_regex;
-				break;		
+				break;
 		}
 		return preg_match("/" . ($exact_match ? '^' : '') . $regex . ($exact_match ? '$' : '') . "/" . ($case_sensitive ? '' : 'i'), $str);
 	}
@@ -427,11 +427,11 @@
 
 		return array($cssstrings, $sepcss);
 	}
-	
+
 	function tbg_get_timezone_offset($skipusertimestamp = false)
 	{
 		$tstamp = 0;
-		
+
 		// offset the timestamp properly
 		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
 		{
@@ -444,7 +444,7 @@
 		{
 			$tstamp = TBGSettings::getGMToffset() * 60 * 60;
 		}
-		
+
 		return $tstamp;
 	}
-	
+

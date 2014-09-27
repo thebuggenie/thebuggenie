@@ -23,7 +23,7 @@
 	 * @Table(name="projects")
 	 * @Entity(class="TBGProject")
 	 */
-	class TBGProjectsTable extends TBGB2DBTable 
+	class TBGProjectsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -64,7 +64,7 @@
 		const AUTOASSIGN = 'projects.autoassign';
 		const PARENT_PROJECT_ID = 'projects.parent';
 		const ARCHIVED = 'projects.archived';
-		
+
 		public function _setupIndexes()
 		{
 			$this->_addIndex('scope', self::SCOPE);
@@ -104,14 +104,14 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doUpdate($crit);
 		}
-		
+
 		public function setDefaultProject($project_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, true);
 			$res = $this->doUpdateById($crit, $project_id);
 		}
-		
+
 		public function getByPrefix($prefix)
 		{
 			$crit = $this->getCriteria();
@@ -120,7 +120,7 @@
 			$row = $this->doSelectOne($crit);
 			return $row;
 		}
-		
+
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
@@ -131,7 +131,7 @@
 			$res = $this->select($crit, false);
 			return $res;
 		}
-		
+
 		public function getAllIncludingDeleted()
 		{
 			$crit = $this->getCriteria();
@@ -151,7 +151,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getByID($id, $scoped = true)
 		{
 			if ($scoped)
@@ -166,7 +166,7 @@
 			}
 			return $row;
 		}
-		
+
 		public function getByClientID($id)
 		{
 			$crit = $this->getCriteria();
@@ -175,7 +175,7 @@
 			$row = $this->doSelect($crit, false);
 			return $row;
 		}
-		
+
 		public function getByParentID($id)
 		{
 			$crit = $this->getCriteria();
@@ -184,7 +184,7 @@
 			$row = $this->doSelect($crit, false);
 			return $row;
 		}
-		
+
 		public function getByKey($key)
 		{
 			$crit = $this->getCriteria();
@@ -194,7 +194,7 @@
 			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}
-		
+
 		public function countByIssuetypeSchemeID($scheme_id)
 		{
 			$crit = $this->getCriteria();
@@ -202,10 +202,10 @@
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ARCHIVED, false);
-			
+
 			return $this->doCount($crit);
 		}
-		
+
 		public function countByWorkflowSchemeID($scheme_id)
 		{
 			$crit = $this->getCriteria();
@@ -213,10 +213,10 @@
 			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ARCHIVED, false);
-			
+
 			return $this->doCount($crit);
 		}
-		
+
 		public function countProjects($scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
@@ -248,13 +248,13 @@
 			{
 				break;
 			}
-			
+
 			$crit = $this->getCriteria();
-			
+
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addUpdate(self::ISSUETYPE_SCHEME_ID, $default_scheme_id);
-			
+
 			$res = $this->doUpdate($crit);
 		}
 
@@ -268,5 +268,5 @@
 
 			return $this->select($crit);
 		}
-		
+
 	}

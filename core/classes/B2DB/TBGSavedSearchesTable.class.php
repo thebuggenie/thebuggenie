@@ -7,7 +7,7 @@
 	/**
 	 * @Table(name="savedsearches")
 	 */
-	class TBGSavedSearchesTable extends TBGB2DBTable 
+	class TBGSavedSearchesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -156,13 +156,13 @@
 			$ctn = $crit->returnCriterion(self::UID, $user_id);
 			$ctn->addOr(self::UID, 0);
 			$crit->addWhere($ctn);
-			if ($project_id !== 0 ) 
+			if ($project_id !== 0 )
 			{
-				$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);	
+				$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
 			}
 
 			$retarr = array('user' => array(), 'public' => array());
-			
+
 			if ($res = $this->doSelect($crit, 'none'))
 			{
 				while ($row = $res->getNextRow())

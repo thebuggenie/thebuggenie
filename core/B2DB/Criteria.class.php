@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Criteria class
 	 *
@@ -475,7 +475,7 @@
 					$this->_cached_cols[$column] = $retval;
 					return $retval;
 				}
-				if (isset($this->jointables[$table_name])) 
+				if (isset($this->jointables[$table_name]))
 				{
 					$retval = $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name;
 					$this->_cached_cols[$column] = $retval;
@@ -491,7 +491,7 @@
 					return $retval;
 				}
 			}
-			
+
 			if ($throw_exceptions)
 			{
 				throw new Exception("Couldn't find table name '{$table_name}' for column '{$column_name}', column was '{$column}'. If this is a column from a foreign table, make sure the foreign table is joined.", $this->getSQL());
@@ -1011,7 +1011,7 @@
 				{
 					if (!in_array($a_crit['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
 						throw new Exception("Invalid operator", $this->getSQL());
-					
+
 					if (isset($a_crit['special']) && $a_crit['special'] != '')
 					{
 						$sql .= $a_crit['special'] . '(';
@@ -1023,7 +1023,7 @@
 					}
 					if (is_null($a_crit['value']) && !in_array($a_crit['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))
 					{
-						$a_crit['operator'] = ($a_crit['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL; 
+						$a_crit['operator'] = ($a_crit['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL;
 					}
 					$sql .= ' ' . $a_crit['operator'] . ' ';
 					if (is_numeric($a_crit['value']) && $a_crit['operator'] != self::DB_IN)
@@ -1078,11 +1078,11 @@
 				{
 					if (!in_array($an_or['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
 						throw new Exception("Invalid operator", $this->getSQL());
-					
+
 					$sql .= ($strip) ? $this->_getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
 					if (is_null($an_or['value']) && !in_array($an_or['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))
 					{
-						$an_or['operator'] = ($an_or['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL; 
+						$an_or['operator'] = ($an_or['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL;
 					}
 					$sql .= ' ' . $an_or['operator'] . ' ';
 					if (is_numeric($an_or['value']))

@@ -3,15 +3,15 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGStatus extends TBGDatatype 
+	class TBGStatus extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::STATUS;
 
 		protected static $_items = null;
-		
+
 		protected $_itemtype = TBGDatatype::STATUS;
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$statuses = array();
@@ -49,22 +49,22 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Return the status color
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getColor()
 		{
 			return $this->_itemdata;
 		}
-		
+
 		public function hasLinkedWorkflowStep()
 		{
 			return (bool) \b2db\Core::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
 		}
-		
+
 		public function canBeDeleted()
 		{
 			return !$this->hasLinkedWorkflowStep();

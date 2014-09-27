@@ -43,7 +43,7 @@
 			{
 				$this->cliEcho('Listing available transitions for issue ');
 				$print_issue_number = $this->getProvidedArgument('issue_number');
-				
+
 				if (is_numeric($print_issue_number))
 					$print_issue_number = '#' . $print_issue_number;
 

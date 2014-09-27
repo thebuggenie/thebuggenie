@@ -18,6 +18,6 @@
 	 */
 	class TBGTemplateNotFoundException extends Exception
 	{
-		
+
 	}
 

@@ -6,7 +6,7 @@
 
 	gc_enable();
 	date_default_timezone_set('UTC');
-	
+
 	if (!defined('THEBUGGENIE_PATH'))
 		throw new Exception('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
 

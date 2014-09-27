@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-	TBGContext::loadLibrary('ui'); 
+	TBGContext::loadLibrary('ui');
 	$assigned_users = $project->getAssignedUsers();
 	$assigned_teams = $project->getAssignedTeams();
 

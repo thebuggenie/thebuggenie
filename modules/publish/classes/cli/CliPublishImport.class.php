@@ -31,7 +31,7 @@
 			$this->cliEcho("Importing articles ... \n", 'white', 'bold');
 			TBGEvent::listen('publish', 'fixture_article_loaded', array($this, 'listenPublishFixtureArticleCreated'));
 			$overwrite = (bool) ($this->getProvidedArgument('overwrite', 'no') == 'yes');
-			
+
 			TBGPublish::getModule()->loadFixturesArticles(TBGContext::getScope()->getID(), $overwrite);
 		}
 

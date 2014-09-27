@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="issueaffectsedition")
 	 */
-	class TBGIssueAffectsEditionTable extends TBGB2DBTable 
+	class TBGIssueAffectsEditionTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -33,7 +33,7 @@
 		const EDITION = 'issueaffectsedition.edition';
 		const CONFIRMED = 'issueaffectsedition.confirmed';
 		const STATUS = 'issueaffectsedition.status';
-		
+
 		protected $_preloaded_values = null;
 
 		protected function _initialize()
@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
-		
+
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('issue', self::ISSUE);
@@ -71,7 +71,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getByIssueIDs($issue_ids)
 		{
 			$crit = $this->getCriteria();
@@ -139,7 +139,7 @@
 			$res = $this->doSelectOne($crit);
 			return $res;
 		}
-		
+
 		public function setIssueAffected($issue_id, $edition_id)
 		{
 			if (!$this->getByIssueIDandEditionID($issue_id, $edition_id))
@@ -172,7 +172,7 @@
 				return true;
 			}
 		}
-		
+
 		public function confirmByIssueIDandEditionID($issue_id, $edition_id, $confirmed = true)
 		{
 			if (!($res = $this->getByIssueIDandEditionID($issue_id, $edition_id)))
@@ -184,11 +184,11 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::CONFIRMED, $confirmed);
 				$this->doUpdateById($crit, $res->get(self::ID));
-				
+
 				return true;
-			}				
+			}
 		}
-		
+
 		public function setStatusByIssueIDandEditionID($issue_id, $edition_id, $status_id)
 		{
 			if (!($res = $this->getByIssueIDandEditionID($issue_id, $edition_id)))
@@ -200,9 +200,9 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::STATUS, $status_id);
 				$this->doUpdateById($crit, $res->get(self::ID));
-				
+
 				return true;
-			}				
+			}
 		}
-		
+
 	}

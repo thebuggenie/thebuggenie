@@ -49,7 +49,7 @@
 			</script>
 		<?php endif; ?>
 	</td>
-	<?php 
+	<?php
 	/*
 	<td id="scrum_unassigned" class="milestone_issues_container">
 		<div class="rounded_box lightgrey borderless" style="margin-top: 5px; padding: 7px;" id="scrum_sprint_0">

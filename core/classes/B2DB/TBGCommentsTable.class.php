@@ -25,7 +25,7 @@
 	 * @Discriminator(column="target_type")
 	 * @Discriminators(TBGIssue=1, TBGArticle=2)
 	 */
-	class TBGCommentsTable extends TBGB2DBTable 
+	class TBGCommentsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -56,30 +56,30 @@
 		public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
 		{
 			$crit = $this->getCriteria();
-			if($target_id != 0) 
+			if($target_id != 0)
 			{
-				$crit->addWhere(self::TARGET_ID, $target_id);		
+				$crit->addWhere(self::TARGET_ID, $target_id);
 			}
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
 			$crit->addOrderBy(self::POSTED, $sort_order);
 			$res = $this->select($crit, false);
-			
+
 			return $res;
 		}
 
 		public function countComments($target_id, $target_type, $include_system_comments = true)
 		{
 			$crit = $this->getCriteria();
-			if($target_id != 0) 
+			if($target_id != 0)
 			{
-				$crit->addWhere(self::TARGET_ID, $target_id);		
+				$crit->addWhere(self::TARGET_ID, $target_id);
 			}
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
 			if (!$include_system_comments)
 				$crit->addWhere(self::SYSTEM_COMMENT, false);
-			
+
 			return $this->doCount($crit);
 		}
 
@@ -133,7 +133,7 @@
 			$row = $this->doSelectOne($crit);
 			return ($row->get('max_no')) ? $row->get('max_no') : 1;
 		}
-		
+
 		public function getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit = 10)
 		{
 			$crit = $this->getCriteria();
@@ -142,8 +142,8 @@
 			$crit->addWhere(self::SYSTEM_COMMENT, false);
 			$crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
 			$crit->setLimit($limit);
-			
+
 			return $this->doSelect($crit);
-		}		
+		}
 
 	}

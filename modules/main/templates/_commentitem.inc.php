@@ -4,12 +4,12 @@
 		<td style="padding-bottom: <?php if (isset($extra_padding) && $extra_padding == true): ?>10<?php else: ?>5<?php endif; ?>px;">
 			<?php if (isset($include_time) && $include_time == true): ?><span class="time"><?php echo tbg_formatTime($comment->getPosted(), 19); ?></span>&nbsp;<?php endif; ?>
 			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
-			<?php 
+			<?php
 				$issue_title = tbg_decodeUTF8($issue->getFormattedTitle(true));
 				if (isset($pad_length))
 				{
 					$issue_title = tbg_truncateText($issue_title, $pad_length);
-				}			
+				}
 			?>
 			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => 'issue_open')); ?>
 			<br>

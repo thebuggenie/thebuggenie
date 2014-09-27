@@ -50,7 +50,7 @@
 //			parent::_addBlob(self::CONTENT);
 //			parent::_addText(self::DESCRIPTION, false);
 //		}
-		
+
 		public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
 		{
 			$crit = $this->getCriteria();

@@ -113,13 +113,13 @@
 			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
 			$this->doInsert($crit);
 		}
-		
+
 		public function copyByWorkflowIDs($old_workflow_id, $new_workflow_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::WORKFLOW_ID, $old_workflow_id);
-			
+
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
@@ -155,7 +155,7 @@
 				$this->doUpdate($crit);
 			}
 		}
-		
+
 		public function reMapTransitionIDsByWorkflowID($workflow_id, $mapper_array)
 		{
 			foreach ($mapper_array as $old_transition_id => $new_transition_id)
@@ -167,5 +167,5 @@
 				$this->doUpdate($crit);
 			}
 		}
-		
+
 	}

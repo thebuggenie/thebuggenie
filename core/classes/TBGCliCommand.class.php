@@ -32,9 +32,9 @@
 		protected $_required_arguments = array();
 
 		protected $_optional_arguments = array();
-		
+
 		protected $_module = null;
-		
+
 		protected $_scoped = false;
 
 		abstract protected function do_execute();
@@ -51,11 +51,11 @@
 			$this->_prepare();
 			$this->do_execute();
 		}
-		
+
 		/**
 		 * Return the associated module for this command if any
-		 * 
-		 * @return TBGModule 
+		 *
+		 * @return TBGModule
 		 */
 		final protected function getModule()
 		{
@@ -66,7 +66,7 @@
 		{
 			return $this->_description;
 		}
-		
+
 		protected function setScoped($val = true)
 		{
 			$this->_scoped = $val;
@@ -164,7 +164,7 @@
 				TBGContext::setScope($scope);
 			}
 		}
-		
+
 		protected function _prepare() { }
 
 		public function getCommandName()

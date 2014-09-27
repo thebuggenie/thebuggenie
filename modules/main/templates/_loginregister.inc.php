@@ -18,7 +18,7 @@ else
 						<tr>
 							<td><label class="login_fieldheader" for="fieldusername">*&nbsp;<?php echo __('Username'); ?></label></td>
 							<td><input type="text" class="required" id="fieldusername" name="fieldusername" style="width: 200px;"></td>
-						</tr>					
+						</tr>
 						<tr>
 							<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Display name'); ?></label></td>
 							<td><input type="text" class="required" id="buddyname" name="buddyname" style="width: 200px;"></td>
@@ -40,9 +40,9 @@ else
 						</tr>
 					</table>
 					<br>
-					
+
 					<?php TBGActionComponent::includeComponent('main/captcha'); ?>
-					
+
 					<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 					<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label>
 					<input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" style="width: 100px;"><br><br>

@@ -29,16 +29,16 @@
 					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
 					$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
 				}
-				
+
 				if ($namespace != '')
 				{
 					$key = mb_strtolower($namespace);
 					$row = TBGProjectsTable::getTable()->getByKey($key);
-					
+
 					if ($row instanceof \b2db\Row)
 					{
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						
+
 						if ($project instanceof TBGProject)
 							$this->forward403unless($project->hasAccess());
 
@@ -53,7 +53,7 @@
 					if ($project_key = $request['project_key'])
 					{
 						$row = TBGProjectsTable::getTable()->getByKey($project_key);
-						
+
 						$this->selected_project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 					}
 					elseif ($project_id = (int) $request['project_id'])
@@ -65,9 +65,9 @@
 					TBGContext::setCurrentProject($this->selected_project);
 				}
 				catch (Exception $e) {}
-				
+
 			}
-			
+
 			if ($row = TBGArticlesTable::getTable()->getArticleByName($this->article_name))
 			{
 				$this->article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
@@ -124,9 +124,9 @@
 
 		public function runArticleAttachments(TBGRequest $request)
 		{
-			
+
 		}
-		
+
 		public function runArticlePermissions(TBGRequest $request)
 		{
 			if ($this->article instanceof TBGWikiArticle)
@@ -138,12 +138,12 @@
 				$this->namespaces = array_reverse($namespaces);
 			}
 		}
-		
+
 		public function runArticleHistory(TBGRequest $request)
 		{
 			$this->history_action = $request['history_action'];
 			if ($this->article instanceof TBGWikiArticle)
-			{	
+			{
 				$this->history = $this->article->getHistory();
 				$this->revision_count = count($this->history);
 
@@ -320,7 +320,7 @@
 			$this->article_content = null;
 			$this->article_intro = null;
 			$this->change_reason = null;
-			
+
 			if ($this->article instanceof TBGWikiArticle)
 			{
 				$this->forward403unless($this->article->canEdit());
@@ -351,16 +351,16 @@
 				{
 					$this->article_content = $request->getRawParameter('new_article_content');
 				}
-					
+
 				TBGContext::loadLibrary('publish');
 				$this->article_title = str_replace(array(':', '_'), array(' ', ' '), get_spaced_name($this->article_name));
 			}
 		}
-		
+
 		public function runFindArticles(TBGRequest $request)
 		{
 			$this->articlename = $request['articlename'];
-			
+
 			if ($this->articlename)
 			{
 				list ($this->resultcount, $this->articles) = TBGWikiArticle::findArticlesByContentAndProject($this->articlename, TBGContext::getCurrentProject(), 10);

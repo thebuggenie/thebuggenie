@@ -64,17 +64,17 @@
 
 		/**
 		 * Set all routes manually (used by cache functions)
-		 * 
+		 *
 		 * @param array $routes
 		 */
 		public function setRoutes($routes)
 		{
 			$this->routes = $routes;
 		}
-		
+
 		/**
 		 * Get all the routes
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getRoutes()
@@ -86,13 +86,13 @@
 		{
 			return array_key_exists($route, $this->routes);
 		}
-		
+
 		public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false)
 		{
 			$names = array();
 			$names_hash = array();
 			$r = null;
-			
+
 			if (($route == '') || ($route == '/'))
 			{
 				$regexp = '/^[\/]*$/';
@@ -105,9 +105,9 @@
 				{
 					if (trim($element)) $elements[] = $element;
 				}
-	
+
 				if (!isset($elements[0])) return false;
-	
+
 				// specific suffix for this route?
 				// or /$ directory
 				$suffix = '';
@@ -121,9 +121,9 @@
 				{
 					$suffix = '/';
 				}
-				
+
 				$route = $route.$suffix;
-	
+
 				$regexp_suffix = preg_quote($suffix);
 
 				foreach ($elements as $element)
@@ -131,7 +131,7 @@
 					if (preg_match('/^:(.+)$/', $element, $r))
 					{
 						$element = $r[1];
-	
+
 						// regex is [^\/]+ or the requirement regex
 						if (isset($requirements[$element]))
 						{
@@ -149,7 +149,7 @@
 						{
 							$regex = '[^\/]+';
 						}
-	
+
 						$parsed[] = '(?:\/('.$regex.'))?';
 						$names[] = $element;
 						$names_hash[$element] = 1;
@@ -164,7 +164,7 @@
 					}
 				}
 				$regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
-					
+
 				$this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled);
 			}
 		}
@@ -173,7 +173,7 @@
 		 * Get route details from a given url
 		 *
 		 * @param string $url The url to retrieve details from
-		 * 
+		 *
 		 * @return array Route details
 		 */
 		public function getRouteFromUrl($url)
@@ -185,15 +185,15 @@
 				$url = '/'.$url;
 			}
 			TBGLogging::log("URL is now '{$url}'", 'routing');
-	
+
 			// we remove the query string
 			if ($pos = mb_strpos($url, '?'))
 			{
 				$url = mb_substr($url, 0, $pos);
 			}
-	
+
 			$break = false;
-			
+
 			// we remove multiple /
 			$url = preg_replace('#/+#', '/', $url);
 			TBGLogging::log("URL is now '{$url}'", 'routing');
@@ -201,24 +201,24 @@
 			{
 				$out = array();
 				$r = null;
-	
+
 				list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled) = $route;
-	
+
 				$break = false;
-				
+
 				if (preg_match($regexp, $url, $r))
 				{
 					$break = true;
-	
+
 					// remove the first element, which is the url
 					array_shift($r);
-	
+
 					// hack, pre-fill the default route names
 					foreach ($names as $name)
 					{
 						$out[$name] = null;
 					}
-	
+
 					// parameters
 					$params['module'] = $module;
 					$params['action'] = $action;
@@ -233,7 +233,7 @@
 							$out[$value] = true;
 						}
 					}
-	
+
 					$pos = 0;
 					foreach ($r as $found)
 					{
@@ -250,12 +250,12 @@
 							for ($i = 0, $max = count($pass); $i < $max; $i += 2)
 							{
 								if (!isset($pass[$i + 1])) continue;
-	
+
 								$found .= $pass[$i].'='.$pass[$i + 1].'&';
 							}
-	
+
 							parse_str($found, $pass);
-	
+
 							foreach ($pass as $key => $value)
 							{
 								// we add this parameters if not in conflict with named url element (i.e. ':action')
@@ -267,7 +267,7 @@
 						}
 						$pos++;
 					}
-	
+
 					// we must have found all :var stuffs in url? except if default values exists
 					foreach ($names as $name)
 					{
@@ -276,27 +276,27 @@
 							$break = false;
 						}
 					}
-	
+
 					if ($break)
 					{
 						// we store route name
 						$this->_setCurrentRouteDetails($route_name, $out['module'], $out['action'], $csrf_enabled);
-	
+
 						TBGLogging::log('match route ['.$route_name.'] "'.$route.'"', 'routing');
-	
+
 						break;
 					}
 				}
 			}
-	
+
 			// no route found
 			if (!$break)
 			{
 				TBGLogging::log('no matching route found', 'routing');
-	
+
 				return null;
 			}
-	
+
 			foreach ($out as $key => $val)
 			{
 				TBGContext::getRequest()->setParameter($key, $val);
@@ -307,7 +307,7 @@
 
 		/**
 		 * Set the route details for the current route
-		 * 
+		 *
 		 * @param string $name Current route name
 		 * @param string $module Current route module
 		 * @param string $action Current route action
@@ -332,7 +332,7 @@
 
 		/**
 		 * Returns the current route name
-		 * 
+		 *
 		 * @return string The current route name
 		 */
 		public function getCurrentRouteName()
@@ -415,14 +415,14 @@
 			}
 			return $this->current_route_action;
 		}
-		
+
 		/**
 		 * Generate a url based on a route
-		 * 
+		 *
 		 * @param string $name The route key
 		 * @param array $params key=>value pairs of route parameters
-		 * @param boolean $relative Whether to generate an url relative to web root or an absolute 
-		 * 
+		 * @param boolean $relative Whether to generate an url relative to web root or an absolute
+		 *
 		 * @return string
 		 */
 		public function generate($name, $params = array(), $relative = true, $querydiv = '/', $divider = '/', $equals = '/')
@@ -453,7 +453,7 @@
 			list($url, $regexp, $names, $names_hash, $action, $module, $defaults, $csrf_enabled) = $this->routes[$name];
 
 			$defaults = array('action' => $action, 'module' => $module);
-			
+
 			// all params must be given
 			foreach ($names as $tmp)
 			{
@@ -462,7 +462,7 @@
 					throw new Exception(sprintf('Route named "%s" have a mandatory "%s" parameter', $name, $tmp));
 				}
 			}
-	
+
 			$params = self::arrayDeepMerge($defaults, $params);
 			if ($csrf_enabled)
 			{
@@ -475,7 +475,7 @@
 					return urlencode($params[$match[1]]);
 				},
 				$url
-			);	
+			);
 			// we add all other params if *
 			if (mb_strpos($real_url, '*'))
 			{
@@ -483,7 +483,7 @@
 				foreach ($params as $key => $value)
 				{
 					if (isset($names_hash[$key]) || isset($defaults[$key])) continue;
-	
+
 					if (is_array($value))
 					{
 						foreach ($value as $k => $v)
@@ -523,7 +523,7 @@
 				}
 				$real_url = preg_replace('/\/\*(\/|$)/', "$tmp$1", $real_url);
 			}
-	
+
 			// strip off last divider character
 			if (mb_strlen($real_url) > 1)
 			{
@@ -535,8 +535,8 @@
 			}
 			return TBGContext::getStrippedTBGPath() . $real_url;
 		}
-		
-		
+
+
 		// code from php at moechofe dot com (array_merge comment on php.net)
 		/*
 		 * array arrayDeepMerge ( array array1 [, array array2 [, array ...]] )
@@ -604,5 +604,5 @@
 					break;
 			}
 		}
-		
+
 	}

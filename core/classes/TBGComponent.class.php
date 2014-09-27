@@ -20,7 +20,7 @@
 	 */
 	class TBGComponent extends TBGQaLeadableItem
 	{
-		
+
 		/**
 		 * The name of the object
 		 *
@@ -37,7 +37,7 @@
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
-		
+
 		/**
 		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGComponentAssignedUsersTable")
 		 */
@@ -47,7 +47,7 @@
 		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGComponentAssignedTeamsTable")
 		 */
 		protected $_assigned_teams;
-		
+
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
@@ -56,7 +56,7 @@
 				TBGEvent::createNew('core', 'TBGComponent::createNew', $this)->trigger();
 			}
 		}
-		
+
 		/**
 		 * Returns the parent project
 		 *
@@ -66,12 +66,12 @@
 		{
 			return $this->_b2dbLazyload('_project');
 		}
-		
+
 		public function setProject($project)
 		{
 			$this->_project = $project;
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGIssueAffectsComponentTable::getTable()->deleteByComponentID($this->getID());
@@ -79,7 +79,7 @@
 			TBGComponentAssignedUsersTable::getTable()->deleteByComponentID($this->getID());
 			TBGComponentAssignedTeamsTable::getTable()->deleteByComponentID($this->getID());
 		}
-		
+
 		/**
 		 * Add an assignee to the component
 		 *
@@ -139,14 +139,14 @@
 
 		/**
 		 * Whether or not the current user can access the component
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
 		{
 			return ($this->getProject()->canSeeAllComponents() || TBGContext::getUser()->hasPermission('canseecomponent', $this->getID()));
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

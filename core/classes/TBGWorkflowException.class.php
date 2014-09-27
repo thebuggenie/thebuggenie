@@ -18,6 +18,6 @@
 	 */
 	class TBGWorkflowException extends Exception
 	{
-		
+
 	}
 

@@ -18,7 +18,7 @@
 	 */
 	class CliMailingProcessMailQueue extends TBGCliCommand
 	{
-		
+
 		protected function _setup()
 		{
 			$this->_command_name = 'process_mail_queue';

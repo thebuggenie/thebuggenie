@@ -44,7 +44,7 @@
 //			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
 //			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 //		}
-		
+
 		public function getByTransitionID($transition_id)
 		{
 			$crit = $this->getCriteria();

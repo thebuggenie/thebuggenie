@@ -24,13 +24,13 @@
 	 */
 	class TBGScopeHostnamesTable extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'scopehostnames';
 		const ID = 'scopehostnames.id';
 		const SCOPE_ID = 'scopehostnames.scope_id';
 		const HOSTNAME = 'scopehostnames.hostname';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

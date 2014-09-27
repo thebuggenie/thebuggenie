@@ -23,7 +23,7 @@
 	 * @Table(name="issuetypes")
 	 * @Entity(class="TBGIssuetype")
 	 */
-	class TBGIssueTypesTable extends TBGB2DBTable 
+	class TBGIssueTypesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;

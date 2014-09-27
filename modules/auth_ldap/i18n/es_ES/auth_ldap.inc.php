@@ -1,5 +1,5 @@
 <?php
-  
+
   $strings['Use this page to set up the connection details for your LDAP or Active Directory server. The user you select here will need access to the user list, so the username and password users log in with can be verified, but no write access is necessary.'] = 'Utilice esta página para establecer los detalles de la conexión para su servidor LDAP o Active Directory. El usuario que aquí seleccione necesitará acceso a la lista de usuarios, para que los usuarios que quieran ingresar sean verificados, pero no es necesario el permiso de escritura.';
   $strings['Important information'] = 'Información importante';
   $strings['When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'] = 'Cuando LDAP esté habilitado como su método de autenticación en la configuración de autentificación, perderá el acceso a todas las cuentas que no existan en la base de datos de LDAP. Esto quiere decir que perderá los accesos de administración';
@@ -7,7 +7,7 @@
   $strings['Hostname'] = 'Nombre de servidor';
   $strings['Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'] = 'Utilice la sintáxis de URL (ldap://nombre_de_servidor:puerto). Si su servidor solicita SSL, utilice ldaps://nombre_de_servidor/ en este campo';
   $strings['Connection details'] = 'Detalles de conexión';
-  $strings['Port'] = 'Puerto';  
+  $strings['Port'] = 'Puerto';
   $strings['Warning: The password will be stored unencrypted in the database.'] = 'Atención: La contraseña será almacenada en forma desencriptada en la base de datos.';
   $strings['Base DN'] = 'DN base';
   $strings['This should be the DN string for the OU containing the user list. For example, OU=People,OU=staff,DN=ldap,DN=example,DN=com.'] = 'Esta prodría ser la cadena DN para el OU que contenga la lista de usuarios. Por ejemplo, OU=People, OU=staff,DN=ldap,DN=example,DN=com.';

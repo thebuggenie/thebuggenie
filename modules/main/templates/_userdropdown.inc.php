@@ -21,7 +21,7 @@
 				<?php if(!$user->getLastSeen()): ?>
 					<b><?php echo __('This user has not logged in yet'); ?></b>
 				<?php else: ?>
-					<b><?php echo __('This user was last seen online at %time%', array('%time%' => '')); ?></b><?php echo tbg_formatTime($user->getLastSeen(), 11); ?> 
+					<b><?php echo __('This user was last seen online at %time%', array('%time%' => '')); ?></b><?php echo tbg_formatTime($user->getLastSeen(), 11); ?>
 				<?php endif; ?>
 			</div>
 			<?php TBGEvent::createNew('core', 'useractions_top', $user)->trigger(); ?>

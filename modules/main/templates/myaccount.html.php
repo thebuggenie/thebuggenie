@@ -2,7 +2,7 @@
 
 	$tbg_response->setTitle('Your account details');
 	$tbg_response->addBreadcrumb(__('Account details'), make_url('account'), tbg_get_breadcrumblinks('main_links'));
-	
+
 ?>
 <div id="account_info_container">
 	<div id="account_user_info">

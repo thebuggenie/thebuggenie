@@ -61,16 +61,16 @@
 		protected $_account_settings_name = null;
 		protected $_account_settings_logo = null;
 		protected $_has_config_settings = false;
-		
+
 		protected static $_permissions = array();
-		
+
 		const MODULE_NORMAL = 1;
 		const MODULE_AUTH = 2;
 		const MODULE_GRAPH = 3;
 
 		/**
 		 * Installs a module
-		 * 
+		 *
 		 * @param string $module_name the module key
 		 * @return boolean Whether the install succeeded or not
 		 */
@@ -81,7 +81,7 @@
 
 			if ($scope === null || $scope->getID() == TBGContext::getScope()->getID())
 				TBGContext::addAutoloaderClassPath($module_classpath);
-			
+
 			$scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
 			$module_details = file_get_contents($module_basepath . DS . 'class');
 
@@ -128,13 +128,13 @@
 
 			return $module;
 		}
-		
+
 		/**
 		 * Upload a new module from ZIP archive
-		 * 
+		 *
 		 * @param file $module_archive the module archive file (.zip)
 		 * @return string the module name uploaded
-		 */		
+		 */
 		public static function uploadModule($module_archive, $scope = null)
 		{
 			$zip = new ZipArchive();
@@ -148,12 +148,12 @@
 				$module_details = explode('|',$zip->getFromName('class'));
 				list($module_classname, $module_version) = $module_details;
 				$module_basepath = THEBUGGENIE_MODULES_PATH . $module_name;
-				
+
 				if (($module_info & $module_details) === false)
 				{
 					throw new Exception('Invalid module archive ' . $module_archive['name']);
 				}
-				
+
 				$modules = TBGContext::getModules();
 				foreach($modules as $module)
 				{
@@ -162,12 +162,12 @@
 						throw new Exception('Conflict with the module ' . $module->getLongName() . ' that is already installed with version ' . $module->getVersion());
 					}
 				}
-				
+
 				if (is_dir($module_basepath) === false)
 				{
 					if (mkdir($module_basepath) === false)
 					{
-						TBGLogging::log('Try to upload module archive ' . $module_archive['name'] . ': unable to create module directory ' . $module_basepath); 
+						TBGLogging::log('Try to upload module archive ' . $module_archive['name'] . ': unable to create module directory ' . $module_basepath);
 						throw new Exception('Unable to create module directory ' . $module_basepath);
 					}
 					if ($zip->extractTo($module_basepath) === false)
@@ -179,7 +179,7 @@
 				return $module_name;
 			}
 			return null;
-		}		
+		}
 
 		protected function _addAvailablePermissions() { }
 
@@ -236,12 +236,12 @@
 				throw $e;
 			}
 		}
-		
+
 		public function log($message, $level = 1)
 		{
 			TBGLogging::log($message, $this->getName(), $level);
 		}
-		
+
 		public static function disableModule($module_id)
 		{
 			TBGModulesTable::getTable()->disableModuleByID($module_id);
@@ -270,7 +270,7 @@
 			\b2db\Core::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = true;
 		}
-		
+
 		final public function upgrade()
 		{
 			TBGContext::clearRoutingCache();
@@ -292,22 +292,22 @@
 			TBGContext::clearRoutingCache();
 			TBGContext::clearPermissionsCache();
 		}
-		
+
 		public function getClassname()
 		{
 			return $this->_classname;
 		}
-		
+
 		public function __toString()
 		{
 			return $this->_name;
 		}
-		
+
 		public function __call($func, $args)
 		{
 			throw new Exception('Trying to call function ' . $func . '() in module ' . $this->_shortname . ', but the function does not exist');
 		}
-		
+
 		public function setLongName($name)
 		{
 			$this->_longname = $name;
@@ -322,7 +322,7 @@
 		{
 			$this->_availablepermissions[$permission_name] = array('description' => TBGContext::getI18n()->__($description), 'target_id' => $target);
 		}
-		
+
 		public function getAvailablePermissions()
 		{
 			return $this->_availablepermissions;
@@ -332,7 +332,7 @@
 		{
 			return array();
 		}
-		
+
 		public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
@@ -343,7 +343,7 @@
 				self::cacheAccessPermission($this->getName(), $uid, $gid, $tid, 0, $allowed);
 			}
 		}
-		
+
 		public function setConfigTitle($title)
 		{
 			$this->_module_config_title = $title;
@@ -358,46 +358,46 @@
 		{
 			$this->_module_config_description = $description;
 		}
-		
+
 		public function getConfigDescription()
 		{
 			return $this->_module_config_description;
 		}
-		
+
 		public function getVersion()
 		{
 			return $this->_version;
 		}
-		
+
 		public function getType()
 		{
 			return self::MODULE_NORMAL;
 		}
-		
+
 		/**
 		 * Shortcut for the global settings function
-		 * 
+		 *
 		 * @param string  $setting the name of the setting
 		 * @param integer $uid     the uid for the user to check
-		 * 
+		 *
 		 * @return mixed
 		 */
 		public function getSetting($setting, $uid = 0)
 		{
 			return TBGSettings::get($setting, $this->getName(), TBGContext::getScope()->getID(), $uid);
 		}
-		
+
 		public function saveSetting($setting, $value, $uid = 0, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			return TBGSettings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
 		}
-		
+
 		public function deleteSetting($setting, $uid = null, $scope = null)
 		{
 			return TBGSettings::deleteSetting($setting, $this->getName(), $scope, $uid);
 		}
-		
+
 		/**
 		 * Returns whether the module is enabled
 		 *
@@ -412,10 +412,10 @@
 			}
 			return $this->_enabled;
 		}
-		
+
 		/**
 		 * Returns whether the module is out of date
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isOutdated()
@@ -426,7 +426,7 @@
 			}
 			return false;
 		}
-		
+
 		public function addRoute($key, $url, $function, $params = array(), $csrf_enabled = false, $module_name = null)
 		{
 			$module_name = ($module_name !== null) ? $module_name : $this->getName();
@@ -457,7 +457,7 @@
 				$this->log('done (adding route ' . $route[0] . ')');
 			}
 		}
-		
+
 		public function setDescription($description)
 		{
 			$this->_description = $description;
@@ -467,10 +467,10 @@
 		{
 			return $this->_description;
 		}
-		
+
 		public static function getAllModulePermissions($module, $uid, $tid, $gid)
 		{
-	
+
 			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGModulePermissionsTable::MODULE_NAME, $module);
 			//$sql = "select b2mp.allowed from tbg_2_modulepermissions b2mp where b2mp.module_name = '$module'";
@@ -493,30 +493,30 @@
 				$crit->addWhere(TBGModulePermissionsTable::TID, $tid);
 				$crit->addWhere(TBGModulePermissionsTable::GID, $gid);
 			}
-			
+
 			//$sql .= " AND b2mp.scope = " . TBGContext::getScope()->getID();
 			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
-	
+
 			//$res = b2db_sql_query($sql, \b2db\Core::getDBlink());
-	
+
 			#print $sql;
-	
+
 			$permissions = array();
 			$res = \b2db\Core::getTable('TBGModulePermissionsTable')->doSelect($crit);
-	
+
 			while ($row = $res->getNextRow())
 			{
 				$permissions[] = array('allowed' => $row->get(TBGModulePermissionsTable::ALLOWED));
 			}
-	
+
 			return $permissions;
 		}
-	
+
 		public function loadHelpTitle($topic)
 		{
 			return $topic;
 		}
-		
+
 		public function getRoute()
 		{
 			return 'login';
@@ -561,7 +561,7 @@
 		{
 			/* If the module is outdated, we may not access its settings */
 			if ($this->isOutdated()): return false; endif;
-			
+
 			return $this->_has_config_settings;
 		}
 

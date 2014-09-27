@@ -24,7 +24,7 @@
 			<?php echo image_tag('spinning_20.gif', array('id' => 'relate_issues_indicator', 'style' => 'display: none;')); ?><br>
 		</div>
 	</form>
-	
+
 <?php else: ?>
 	<span class="faded_out"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
 <?php endif; ?>

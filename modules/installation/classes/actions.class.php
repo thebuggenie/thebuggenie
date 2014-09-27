@@ -2,7 +2,7 @@
 
 	class installationActions extends TBGAction
 	{
-		
+
 		/**
 		 * Sample docblock used to test docblock retrieval
 		 */
@@ -15,15 +15,15 @@
 
 		/**
 		 * Runs the installation action
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallIntro(TBGRequest $request)
 		{
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
-			
+
 			if (($step = $request['step']) && $step >= 1 && $step <= 6)
 			{
 				if ($step >= 5)
@@ -34,12 +34,12 @@
 				return $this->redirect('installStep'.$step);
 			}
 		}
-		
+
 		/**
 		 * Runs the action for the first step of the installation
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep1(TBGRequest $request)
@@ -70,7 +70,7 @@
 			{
 				$this->pcre_ok = false;
 				$this->all_well = false;
-			}			
+			}
 			if (file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
@@ -80,22 +80,22 @@
 			{
 				$this->b2db_param_folder_ok = false;
 				$this->all_well = false;
-			}			
+			}
 			if (!is_writable(THEBUGGENIE_PATH))
 			{
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			
+
 			if (!is_writable(THEBUGGENIE_PATH))
 			{
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			
+
 			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') && is_writable(THEBUGGENIE_CORE_PATH)) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
 			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') && is_writable(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
-			
+
 			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') || !file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
 			{
 				$this->cache_folder_perm_ok = false;
@@ -128,7 +128,7 @@
 				$this->mb_ok = false;
 				$this->all_well = false;
 			}
-			
+
 			$reflection = new ReflectionProperty(get_class($this), '_sampleproperty');
 			$docblock = $reflection->getDocComment();
 			if ($docblock)
@@ -139,27 +139,27 @@
 			{
 				$this->all_well = false;
 			}
-			
+
 			if (!$this->mysql_ok && !$this->pgsql_ok)
 			{
 				$this->all_well = false;
 			}
 
 		}
-		
+
 		/**
 		 * Runs the action for the second step of the installation
 		 * where you enter database information
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep2(TBGRequest $request)
 		{
 			$this->preloaded = false;
 			$this->selected_connection_detail = 'custom';
-			
+
 			if (!$this->error)
 			{
 				try
@@ -182,13 +182,13 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Runs the action for the third step of the installation
 		 * where it tests the connection, sets up the database and the initial scope
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep3(TBGRequest $request)
@@ -233,10 +233,10 @@
 							throw new Exception('You must provide a database type');
 						}
 					}
-					
+
 					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 					\b2db\Core::doConnect();
-					
+
 					if (\b2db\Core::getDBname() == '')
 						throw new Exception('You must provide a database to use');
 
@@ -246,15 +246,15 @@
 				{
 					throw new Exception('You must provide a database username');
 				}
-				
-				// Add table classes to classpath 
+
+				// Add table classes to classpath
 				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
 				TBGContext::addAutoloaderClassPath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
 				while ($table_class_file = readdir($tables_path_handle))
 				{
-					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '') 
+					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
 					{
 						\b2db\Core::getTable($tablename)->create();
 						\b2db\Core::getTable($tablename)->createIndexes();
@@ -263,9 +263,9 @@
 				}
 				sort($tables_created);
 				$this->tables_created = $tables_created;
-				
+
 				//TBGScope::setupInitialScope();
-				
+
 			}
 			catch (Exception $e)
 			{
@@ -273,13 +273,13 @@
 				$this->error = $e->getMessage();
 			}
 		}
-		
+
 		/**
 		 * Runs the action for the fourth step of the installation
 		 * where it loads fixtures and saves settings for url
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep4(TBGRequest $request)
@@ -296,7 +296,7 @@
 				$scope->setEnabled(true);
 				TBGContext::setScope($scope);
 				$scope->save();
-				
+
 				TBGLogging::log('Setting up default users and groups');
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
 
@@ -326,13 +326,13 @@
 				throw $e;
 			}
 		}
-		
+
 		/**
 		 * Runs the action for the fifth step of the installation
 		 * where it enables modules on demand
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep5(TBGRequest $request)
@@ -361,13 +361,13 @@
 				$this->error = $e->getMessage();
 			}
 		}
-		
+
 		/**
 		 * Runs the action for the sixth step of the installation
 		 * where it finalizes the installation
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 * @return null
 		 */
 		public function runInstallStep6(TBGRequest $request)
@@ -387,10 +387,10 @@
 		{
 			// Add new tables
 			TBGScopeHostnamesTable::getTable()->create();
-			
+
 			// Add classpath for existing old tables used for upgrade
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
-			
+
 			// Upgrade old tables
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());
 			TBGIssueFieldsTable::getTable()->upgrade(TBGIssueFieldsTable3dot0::getTable());
@@ -403,10 +403,10 @@
 					$module->upgradeFrom3dot0();
 				}
 			}
-			
+
 			// Start a transaction to preserve the upgrade path
 			$transaction = \b2db\Core::startTransaction();
-			
+
 			// Add votes to feature requests for default issue type scheme
 			$its = new TBGIssuetypeScheme(1);
 			foreach (TBGIssuetype::getAll() as $fr)
@@ -419,15 +419,15 @@
 					}
 				}
 			}
-			
+
 			$ut = TBGUsersTable::getTable();
 			$crit = $ut->getCriteria();
 			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, true);
 			$ut->doUpdate($crit);
-			
+
 			// Add default gravatar setting
 			TBGSettings::saveSetting(TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
-			
+
 			$trans_crit = TBGWorkflowTransitionsTable::getTable()->getCriteria();
 			$trans_crit->addWhere(TBGWorkflowTransitionsTable::NAME, 'Request more information');
 			$trans_crit->addWhere(TBGWorkflowTransitionsTable::WORKFLOW_ID, 1);
@@ -452,7 +452,7 @@
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
-				
+
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
@@ -478,10 +478,10 @@
 			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
 			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
 			TBGIssueCustomFieldsTable::getTable()->upgrade(TBGIssueCustomFieldsTable3dot1::getTable());
-			
+
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
-			
+
 			// Add new indexes
 			TBGArticlesTable::getTable()->createIndexes();
 			TBGCommentsTable::getTable()->createIndexes();
@@ -499,7 +499,7 @@
 			TBGUserIssuesTable::getTable()->createIndexes();
 			TBGUsersTable::getTable()->createIndexes();
 			TBGUserScopesTable::getTable()->createIndexes();
-			
+
 			if (TBGContext::getRequest()->getParameter('fix_my_timestamps', false)) $this->_fixTimestamps();
 
 			foreach (TBGScope::getAll() as $scope)
@@ -565,7 +565,7 @@
 			$crit->addUpdate(TBGListTypesTable::ITEMTYPE, 'role');
 			$crit->addWhere(TBGListTypesTable::ITEMTYPE, 'projectrole');
 			$listtypestable->doUpdate($crit);
-			
+
 			$crit = $listtypestable->getCriteria();
 			$crit->addUpdate(TBGListTypesTable::ITEMTYPE, 'priority');
 			$crit->addWhere(TBGListTypesTable::ITEMTYPE, 'b2_prioritytypes');
@@ -574,7 +574,7 @@
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			TBGContext::setPermission('readarticle', 0, 'publish', 0, 0, 0, true);
-			
+
 			foreach (TBGProject::getAll() as $project)
 			{
 				TBGDashboardViewsTable::getTable()->setDefaultViews($project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
@@ -583,7 +583,7 @@
 					$project->setName($project->getName());
 				}
 			}
-			
+
 			$this->upgrade_complete = true;
 		}
 
@@ -591,20 +591,20 @@
 		{
 			// Unlimited execution time
 			set_time_limit(0);
-			
+
 			foreach (TBGScope::getAll() as $scope)
 			{
 				TBGContext::setScope($scope);
-				
+
 				// The first job is to work out the offsets that need applying
 				$offsets = array('system', 'users');
 				$offsets['users'] = array();
-				
+
 				$offsets['system'] = (int) TBGSettings::getGMToffset() * 3600;
-				
+
 				$settingstable = TBGSettingsTable::getTable();
 				$crit = $settingstable->getCriteria();
-				
+
 				$crit->addWhere(TBGSettingsTable::NAME, 'timezone');
 				$crit->addWhere(TBGSettingsTable::MODULE, 'core');
 				$crit->addWhere(TBGSettingsTable::UID, 0, \b2db\Criteria::DB_NOT_EQUALS);
@@ -613,7 +613,7 @@
 				$crit->addWhere(TBGSettingsTable::SCOPE, $scope->getID());
 
 				$res = $settingstable->doSelect($crit);
-				
+
 				if ($res instanceof \b2db\Resultset)
 				{
 					while ($user = $res->getNextRow())
@@ -635,13 +635,13 @@
 				// BUILDS
 				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, $scope, TBGBuildsTable::RELEASED);
 
-				// COMMENTS		
+				// COMMENTS
 				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED), $scope);
 
 				// EDITIONS
 				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, $scope, TBGEditionsTable::RELEASED);
 
-				
+
 				// ISSUES
 				// This is a bit more complex so do this manually - we have to poke around with the issue log
 				$table = TBGIssuesTable::getTable();
@@ -729,13 +729,13 @@
 
 				// LOG
 				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME, $scope);
-				
+
 				// MILESTONES
 				// The conditions are a bit different here so do it manually
 				$table = TBGMilestonesTable::getTable();
 				$crit = $table->getCriteria();
 				$crit->addWhere(TBGMilestonesTable::SCOPE, $scope->getID());
-				
+
 				$res = $table->doSelect($crit);
 				if ($res)
 				{
@@ -773,15 +773,15 @@
 						}
 					}
 				}
-				
+
 				// PROJECTS
 				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, $scope, TBGProjectsTable::RELEASED);
-				
+
 				// VCS INTEGRATION
 				// check if module is loaded
-				
+
 				$modules = TBGModulesTable::getTable()->getModulesForScope($scope->getID());
-				
+
 				if ($modules['vcs_integration'] == true)
 				{
 					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes' . DS . 'B2DB');
@@ -803,7 +803,7 @@
 				return; // nothing to update
 			}
 			while ($row = $res->getNextRow())
-			{				
+			{
 				if ($testfield !== null)
 				{
 					if ($row->get($testfield) != 1)
@@ -811,20 +811,20 @@
 						continue;
 					}
 				}
-				
+
 				if (!is_array($correctionfield))
 				{
 					$correctionfield = array('a' => $correctionfield);
 				}
-				
+
 				if (!is_array($author_field))
 				{
 					$author_field = array('a' => $author_field);
 				}
-				
+
 				$crit2 = $table->getCriteria();
 				$added = 0;
-			
+
 				foreach ($author_field as $key => $field)
 				{
 					if (array_key_exists('uid_'.$row->get($field), $offsets['users']))
@@ -844,7 +844,7 @@
 					$crit2->addUpdate($correctionfield[$key], (int) $row->get($correctionfield[$key]) + $offset);
 					$added = 1; // Mark that we have actually added something
 				}
-				
+
 				// Don't update if no addUpdate calls made
 				if ($added == 1)
 				{
@@ -858,14 +858,14 @@
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
-			
+
 			$res = $table->doSelect($crit);
-			
+
 			if (is_null($res))
 			{
 				return; // nothing to update
 			}
-			
+
 			while ($row = $res->getNextRow())
 			{
 				if ($testfield !== null)
@@ -875,18 +875,18 @@
 						continue;
 					}
 				}
-				
+
 				$offset = $offsets['system'];
 
 				$crit2 = $table->getCriteria();
-				
+
 				if (!is_array($correctionfield))
 				{
 					$correctionfield = array($correctionfield);
 				}
-				
+
 				$added = 0;
-				
+
 				foreach ($correctionfield as $field)
 				{
 					// If the timestamp is 0, don't correct as it is unset
@@ -898,7 +898,7 @@
 					$crit2->addUpdate($field, (int) $row->get($field) + $offset);
 					$added = 1; // Mark that we have actually added something
 				}
-				
+
 				// Don't update if no addUpdate calls made
 				if ($added == 1)
 				{
@@ -914,7 +914,7 @@
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
 			$this->current_version = $version_info[0];
 			$this->upgrade_available = ($this->current_version != '3.2');
-			
+
 			if ($this->upgrade_available)
 			{
 				$scope = new TBGScope();
@@ -934,7 +934,7 @@
 					case '3.1':
 						$this->_upgradeFrom3dot1();
 				}
-				
+
 				if ($this->upgrade_complete)
 				{
 					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');

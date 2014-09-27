@@ -2,7 +2,7 @@
 
 	class publishActionComponents extends TBGActionComponent
 	{
-		
+
 		public function componentLatestArticles()
 		{
 			$this->latest_articles = TBGPublish::getModule()->getLatestArticles(TBGContext::getCurrentProject());
@@ -40,7 +40,7 @@
 					{
 						$category = '';
 					}
-					
+
 					$articles[$article_name] = array('exists' => TBGWikiArticle::doesArticleExist(urldecode($article_name)), 'category' => mb_strtolower($category));
 				}
 			}

@@ -19,7 +19,7 @@
 	 */
 	class TBGVCSIntegrationIssueLink extends TBGIdentifiableScopedClass
 	{
-		
+
 		/**
 		 * Affected issue
 		 * @var TBGIssue
@@ -27,7 +27,7 @@
 		 * @Relates(class="TBGIssue")
 		 */
 		protected $_issue = null;
-		
+
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
@@ -35,7 +35,7 @@
 		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
 		protected $_commit = null;
-		
+
 		/**
 		 * Get the issue for this link
 		 * @return TBGIssue
@@ -44,7 +44,7 @@
 		{
 			return $this->_b2dbLazyload('_issue');
 		}
-		
+
 		/**
 		 * Get the commit with this link
 		 * @return TBGVCSIntegrationCommit
@@ -53,7 +53,7 @@
 		{
 			return $this->_b2dbLazyload('_commit');
 		}
-		
+
 		/**
 		 * Set the issue in this link
 		 * @param TBGIssue $issue
@@ -62,7 +62,7 @@
 		{
 			$this->_issue = $issue;
 		}
-		
+
 		/**
 		 * Set the commit in this link
 		 * @param TBGVCSIntegrationCommit $commit
@@ -71,7 +71,7 @@
 		{
 			$this->_commit = $commit;
 		}
-		
+
 		/**
 		 * Return all commits for a given issue
 		 * @param TBGIssue $issue
@@ -85,7 +85,7 @@
 			{
 				return array();
 			}
-			
+
 			foreach (TBGVCSIntegrationIssueLinksTable::getTable()->getByIssueID($issue->getID())->getAllRows() as $row)
 			{
 				$data[] = TBGContext::factory()->TBGVCSIntegrationIssueLink($row->get(TBGVCSIntegrationIssueLinksTable::ID), $row);
@@ -93,7 +93,7 @@
 
 			return $data;
 		}
-		
+
 		/**
 		 * Return all issues for a given commit
 		 * @param TBGVCSIntegrationCommit $commit
@@ -103,12 +103,12 @@
 		{
 			$rows = TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($commit->getID());
 			$data = array();
-			
+
 			if (!is_object($rows))
 			{
 				return false;
 			}
-			
+
 			foreach ($rows->getAllRows() as $row)
 			{
 				$data[] = TBGContext::factory()->TBGVCSIntegrationIssueLink($row->get(TBGVCSIntegrationIssueLinksTable::ID), $row);

@@ -42,7 +42,7 @@
 					<?php endif; ?>
 				</div>
 			<?php else: ?>
-				<?php 
+				<?php
 
 					if (!$project->isAnythingVisibleInFrontpageSummary()) echo __('%on_frontpage_comma_show% only project information', array('%on_frontpage_comma_show%' => ''));
 					elseif ($project->isMilestonesVisibleInFrontpageSummary()) echo __('%on_frontpage_comma_show% status per milestone', array('%on_frontpage_comma_show%' => ''));

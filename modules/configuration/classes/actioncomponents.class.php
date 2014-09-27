@@ -34,10 +34,10 @@
 		{
 			$this->languages = TBGI18n::getLanguages();
 		}
-		
+
 		public function componentOffline()
 		{
-			
+
 		}
 
 		public function componentLeftmenu()
@@ -55,7 +55,7 @@
 
 			if (TBGContext::getScope()->isUploadsEnabled())
 				$config_sections[TBGSettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads &amp; attachments'), 'icon' => 'files', 'module' => 'core');
-			
+
 			$config_sections[TBGSettings::CONFIGURATION_SECTION_IMPORT] = array('route' => 'configure_import', 'description' => $i18n->__('Import data'), 'icon' => 'import', 'module' => 'core');
 			$config_sections[TBGSettings::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'icon' => 'projects', 'module' => 'core');
 			$config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => $i18n->__('Issue types'), 'route' => 'configure_issuetypes', 'module' => 'core');
@@ -148,15 +148,15 @@
 		{
 			$this->icons = TBGIssuetype::getIcons();
 		}
-		
+
 		public function componentIssuetypescheme()
 		{
-			
+
 		}
 
 		public function componentIssueFields_CustomType()
 		{
-			
+
 		}
 
 		public function componentPermissionsinfo()
@@ -164,16 +164,16 @@
 			switch ($this->mode)
 			{
 				case 'datatype':
-					
+
 					break;
 			}
 		}
 
 		public function componentPermissionsinfoitem()
 		{
-			
+
 		}
-		
+
 		protected function _getPermissionListFromKey($key, $permissions = null)
 		{
 			if ($permissions === null)
@@ -193,7 +193,7 @@
 			}
 			return array();
 		}
-		
+
 		public function componentPermissionsblock()
 		{
 			if (!is_array($this->permissions_list))
@@ -229,7 +229,7 @@
 		{
 			$this->scopes = TBGScope::getAll();
 		}
-		
+
 		public function componentSiteicons()
 		{
 		}

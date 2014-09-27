@@ -22,12 +22,12 @@
 	 *
 	 * @Table(name="log")
 	 */
-	class TBGLogTable extends TBGB2DBTable 
+	class TBGLogTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
 		const TYPE_ISSUE = 1;
-		
+
 		const LOG_MILESTONE_REMOVE = 1;
 		const LOG_MILESTONE_ADD = 2;
 		const LOG_ISSUE_STATUS = 3;
@@ -70,7 +70,7 @@
 		const LOG_ISSUE_PAIN_CALCULATED = 40;
 		const LOG_ISSUE_BLOCKED = 41;
 		const LOG_ISSUE_UNBLOCKED = 42;
-		
+
 		const B2DBNAME = 'log';
 		const ID = 'log.id';
 		const SCOPE = 'log.scope';
@@ -96,7 +96,7 @@
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function createNew($target, $target_type, $change_type, $text = null, $uid = 0, $time = null)
 		{
 			$crit = $this->getCriteria();
@@ -120,14 +120,14 @@
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}
-		
+
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TARGET, $issue_id);
 			$crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
 			$crit->addOrderBy(self::TIME, Criteria::SORT_ASC);
-			
+
 			$ret_arr = array();
 			if ($res = $this->doSelect($crit))
 			{
@@ -136,11 +136,11 @@
 					$ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
 				}
 			}
-	
+
 			return $ret_arr;
-			
+
 		}
-		
+
 		public function getByUserID($user_id, $limit = null)
 		{
 			$crit = $this->getCriteria();
@@ -150,7 +150,7 @@
 			{
 				$crit->setLimit($limit);
 			}
-			
+
 			$ret_arr = array();
 			if ($res = $this->doSelect($crit))
 			{
@@ -159,9 +159,9 @@
 					$ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
 				}
 			}
-	
+
 			return $ret_arr;
-			
+
 		}
 
 		public function getByProjectID($project_id, $limit = 20, $offset = null)
@@ -178,7 +178,7 @@
 			{
 				$crit->setOffset($offset);
 			}
-			
+
 			$crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
 
 			$ret_arr = array();

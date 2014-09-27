@@ -18,7 +18,7 @@
 		</image>
 <?php if ($issues != false): ?>
 <?php foreach ($issues as $issue): ?>
-		
+
 		<item>
 			<title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . strip_tags($issue->getTitle()); ?></title>
 			<?php if ($issue->getDescription() == ''): ?>

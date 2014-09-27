@@ -22,9 +22,9 @@
 	 *
 	 * @Table(name="notifications")
 	 */
-	class TBGNotificationsTable extends TBGB2DBTable 
+	class TBGNotificationsTable extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'notifications';
 		const ID = 'notifications.id';
@@ -53,6 +53,6 @@
 			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
-		
+
+
 	}

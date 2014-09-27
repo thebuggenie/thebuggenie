@@ -65,7 +65,7 @@
 
 			$url_options = array('project_key' => $this->project_key, 'issue_no' => $this->issue_number);
 			$post_data = $this->getNamedArguments();
-			
+
 			foreach (array('server', 'username', 'project_key', 'issue_number', 'm') as $key)
 			{
 				if (array_key_exists($key, $post_data)) unset($post_data[$key]);
@@ -86,9 +86,9 @@
 				unset($post_data[$key]);
 			}
 			$post_data['message'] = $message;
-			
+
 			$this->cliEcho("\n");
-			
+
 			if (array_key_exists('workflow_transition', $url_options))
 				$this->cliEcho("Transitioning issue: \n", 'white', 'bold');
 			else

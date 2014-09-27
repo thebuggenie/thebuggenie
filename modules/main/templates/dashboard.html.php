@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	$tbg_response->setTitle(__('Dashboard'));
 	$tbg_response->addBreadcrumb(__('Personal dashboard'), make_url('dashboard'), tbg_get_breadcrumblinks('main_links'));

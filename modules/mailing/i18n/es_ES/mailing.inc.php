@@ -47,7 +47,7 @@
 	$strings['Notify me when an issue I posted gets updated'] = 'Avisarme cuando una petición que publiqué sea actualizada';
 	$strings['Send me a notification email when I update an issue'] = 'Enviarme un correo cuando actualice una petición';
 	$strings['Notify me when someone comments on an issue I posted'] = 'Avisarme cuando alguien comenta una petición que publiqué';
-  	$strings['Notify me when an issue I commented on gets updated'] = 'Avisarme cuando un pedido que comenté sea actualizado';	
+  	$strings['Notify me when an issue I commented on gets updated'] = 'Avisarme cuando un pedido que comenté sea actualizado';
 	$strings['Outgoing settings'] = 'Configuración saliente';
 	$strings['Incoming settings'] = 'Configuración entrante';
 	$strings['Outgoing emails'] = 'Correos salientes';
@@ -106,9 +106,8 @@
 	$strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='No se recibió un mensaje de confirmación desde el servidor de correo. \nDe todas maneras, recibimos: %rv%';
 	$strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
 	$strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
-	$strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\''; 
+	$strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\'';
 	$strings['Don\'t use the \'-f\' sendmail parameter (some systems may not allow it)'] = 'No utiliza el parámetro \'-f\' de sendmail (algunos sistemas no lo permiten)';
 	$strings['Require email activation for new accounts']  ='Solicitar activación por correo para las nuevas cuentas';
 	$strings['If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user\'s password will also be provided in the email, instead of in the registration screen'] = 'Si esta opción está marcada, las nuevas cuentas requerirán activación a través del enlace del correo. También la contraseña del usuario será provista en el correo, en lugar del registro en pantalla';
-	$strings['Incoming email accounts'] = 'Cuentas de correo entrantes';	
-	
+	$strings['Incoming email accounts'] = 'Cuentas de correo entrantes';

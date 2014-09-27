@@ -2,7 +2,7 @@
 
 	$themes = TBGContext::getThemes();
 	$languages = TBGI18n::getLanguages();
-	
+
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
@@ -144,7 +144,7 @@
 			<select name="<?php echo TBGSettings::SETTING_RETURN_FROM_LOGIN; ?>" id="returnfromlogin" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage'), 'dashboard' => __('Dashboard'), 'account' => __('Account details'), 'referer' => __('Page before login')); ?>
 				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogin', null, array(), $return_routes)->trigger()->getReturnList(); ?>
-				<?php foreach ($return_routes as $route => $description): ?> 
+				<?php foreach ($return_routes as $route => $description): ?>
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLoginReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>
 			</select>
@@ -156,7 +156,7 @@
 			<select name="<?php echo TBGSettings::SETTING_RETURN_FROM_LOGOUT; ?>" id="returnfromlogout" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage')); ?>
 				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogout', null, array(), $return_routes)->trigger()->getReturnList(); ?>
-				<?php foreach ($return_routes as $route => $description): ?> 
+				<?php foreach ($return_routes as $route => $description): ?>
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLogoutReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>
 			</select>

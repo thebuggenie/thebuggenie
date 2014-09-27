@@ -3,7 +3,7 @@
 	use b2db\Core,
 		b2db\Criteria,
 		b2db\Criterion;
-	
+
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
 	 *
@@ -23,7 +23,7 @@
 	 * @Entity(class="TBGVCSIntegrationFile")
 	 * @Table(name="vcsintegration_files")
 	 */
-	class TBGVCSIntegrationFilesTable extends TBGB2DBTable 
+	class TBGVCSIntegrationFilesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -49,9 +49,9 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addWhere(self::COMMIT_ID, $id);
-			
+
 			$res = $this->doSelect($crit);
-			
+
 			return $res;
 		}
 

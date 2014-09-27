@@ -33,7 +33,7 @@
 			<b>PCRE librairies version is too old</b><br>
 			The Bug Genie 3 requires PCRE librairies 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
 			</div>
-		<?php endif; ?>		
+		<?php endif; ?>
 		<?php if ($docblock_ok): ?>
 			<div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
 		<?php else: ?>

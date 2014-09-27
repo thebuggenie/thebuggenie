@@ -13,9 +13,9 @@
 	<br>
 	<h4>If you have anything you would like to tell us, please let us know by emailing us: <a href="mailto:feedback@thebuggenie.com">feedback@thebuggenie.com</a></h4>
 	<br>
-	<h2>License information</h2> 
+	<h2>License information</h2>
 	<b>This software is Open Source Initiative approved Open Source Software. Open Source Initiative Approved is a trademark of the Open Source Initiative.</b><br>
-	True to the <a target="_blank" href="http://opensource.org/docs/definition.php">the Open Source Definition</a>, The Bug Genie is released under the MPL 1.1 only. <a target="_blank" href="http://www.opensource.org/licenses/mozilla1.1.php" target="_blank" style="font-weight: bold;">Read the license here</a>. <i>(opens in a new window)</i><br> 
+	True to the <a target="_blank" href="http://opensource.org/docs/definition.php">the Open Source Definition</a>, The Bug Genie is released under the MPL 1.1 only. <a target="_blank" href="http://www.opensource.org/licenses/mozilla1.1.php" target="_blank" style="font-weight: bold;">Read the license here</a>. <i>(opens in a new window)</i><br>
 	<br>
 	Before you can continue the installation, you need to confirm that you agree to be bound by the terms in this license.<br>
 	<br>

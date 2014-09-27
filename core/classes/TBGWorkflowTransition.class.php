@@ -56,16 +56,16 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_template = null;
-		
+
 		/**
 		 * The originating request
-		 * 
+		 *
 		 * @var TBGRequest
 		 */
 		protected $_request = null;
-		
+
 		protected $_pre_validation_rules = null;
-		
+
 		protected $_validation_errors = array();
 
 		/**
@@ -81,10 +81,10 @@
 		{
 			$templates = array('main/updateissueproperties' => 'Set issue properties or add comment');
 			$event = TBGEvent::createNew('core', 'workflow_templates', null, array(), $templates)->trigger();
-			
+
 			return $event->getReturnList();
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope, TBGWorkflow $workflow, $steps)
 		{
 			$rejected_resolutions = array();
@@ -127,7 +127,7 @@
 				$transition_object->setWorkflow($workflow);
 				$transition_object->save();
 				$transitions[$key] = $transition_object;
-				
+
 				if (array_key_exists('pre_validations', $transition) && is_array($transition['pre_validations']))
 				{
 					foreach ($transition['pre_validations'] as $type => $validation)
@@ -167,10 +167,10 @@
 					}
 				}
 			}
-			
+
 			return $transitions;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *
@@ -241,11 +241,11 @@
 		{
 			return $this->_template;
 		}
-		
+
 		/**
 		 * Set the template to be used
-		 * 
-		 * @param string $template 
+		 *
+		 * @param string $template
 		 */
 		public function setTemplate($template)
 		{
@@ -302,17 +302,17 @@
 		{
 			return $this->_b2dbLazyload('_outgoing_step_id');
 		}
-		
+
 		/**
 		 * Set the outgoing step
-		 * 
+		 *
 		 * @param TBGWorkflowStep $step A workflow step
 		 */
 		public function setOutgoingStep(TBGWorkflowStep $step)
 		{
 			$this->_outgoing_step_id = $step;
 		}
-		
+
 		public function deleteTransition($direction)
 		{
 			if ($direction == 'incoming')
@@ -324,7 +324,7 @@
 				$this->_preDelete();
 			}
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
@@ -339,7 +339,7 @@
 				$this->_post_validation_rules = $rules['post'];
 			}
 		}
-		
+
 		public function getPreValidationRules()
 		{
 			$this->_populateValidationRules();
@@ -350,19 +350,19 @@
 		{
 			return (bool) count($this->getPreValidationRules());
 		}
-		
+
 		public function hasPreValidationRule($rule)
 		{
 			$rules = $this->getPreValidationRules();
 			return (array_key_exists($rule, $rules));
 		}
-		
+
 		public function getPreValidationRule($rule)
 		{
 			$rules = $this->getPreValidationRules();
 			return (array_key_exists($rule, $rules)) ? $rules[$rule] : null;
 		}
-		
+
 		public function getPostValidationRules()
 		{
 			$this->_populateValidationRules();
@@ -373,19 +373,19 @@
 		{
 			return (bool) count($this->getPostValidationRules());
 		}
-		
+
 		public function hasPostValidationRule($rule)
 		{
 			$rules = $this->getPostValidationRules();
 			return (array_key_exists($rule, $rules));
 		}
-		
+
 		public function getPostValidationRule($rule)
 		{
 			$rules = $this->getPostValidationRules();
 			return (array_key_exists($rule, $rules)) ? $rules[$rule] : null;
 		}
-		
+
 		public function isAvailableForIssue(TBGIssue $issue)
 		{
 			foreach ($this->getPreValidationRules() as $validation_rule)
@@ -397,7 +397,7 @@
 			}
 			return true;
 		}
-		
+
 		public function getProperties()
 		{
 			return ($this->getOutgoingStep()->isClosed()) ? array('resolution', 'status') : array();
@@ -410,30 +410,30 @@
 				$this->_actions = TBGWorkflowTransitionAction::getByTransitionID($this->getID());
 			}
 		}
-		
+
 		public function getActions()
 		{
 			$this->_populateActions();
 			return $this->_actions;
 		}
-		
+
 		public function hasActions()
 		{
 			return (bool) count($this->getActions());
 		}
-		
+
 		public function hasAction($action_type)
 		{
 			$actions = $this->getActions();
 			return array_key_exists($action_type, $actions);
 		}
-		
+
 		public function getAction($action_type)
 		{
 			$actions = $this->getActions();
 			return (array_key_exists($action_type, $actions)) ? $actions[$action_type] : null;
 		}
-		
+
 		public function validateFromRequest(TBGRequest $request)
 		{
 			$this->_request = $request;
@@ -453,12 +453,12 @@
 			}
 			return empty($this->_validation_errors);
 		}
-		
+
 		public function getValidationErrors()
 		{
 			return array_keys($this->_validation_errors);
 		}
-		
+
 		public function listenIssueSaveAddComment(TBGEvent $event)
 		{
 			$comment = $event->getParameter('comment');
@@ -469,9 +469,9 @@
 
 		/**
 		 * Transition an issue to the outgoing step, based on request data if available
-		 * 
+		 *
 		 * @param TBGIssue $issue
-		 * @param TBGRequest $request 
+		 * @param TBGRequest $request
 		 */
 		public function transitionIssueToOutgoingStepFromRequest(TBGIssue $issue, $request = null)
 		{
@@ -481,14 +481,14 @@
 				$this->_request = $request;
 				TBGEvent::listen('core', 'TBGIssue::preaddSystemComment', array($this, 'listenIssueSaveAddComment'));
 			}
-			
+
 			if (!empty($this->_validation_errors)) return false;
-			
+
 			foreach ($this->getActions() as $action)
 			{
 				$action->perform($issue, $request);
 			}
-			
+
 			$issue->save();
 		}
 
@@ -497,7 +497,7 @@
 			$new_transition = clone $this;
 			$new_transition->setWorkflow($new_workflow);
 			$new_transition->save();
-			
+
 			foreach ($this->getPreValidationRules() as $rule)
 			{
 				$new_rule = clone $rule;
@@ -505,7 +505,7 @@
 				$new_rule->setWorkflow($new_workflow);
 				$new_rule->save();
 			}
-			
+
 			foreach ($this->getPostValidationRules() as $rule)
 			{
 				$new_rule = clone $rule;
@@ -513,7 +513,7 @@
 				$new_rule->setWorkflow($new_workflow);
 				$new_rule->save();
 			}
-			
+
 			foreach ($this->getActions() as $action)
 			{
 				$new_action = clone $action;
@@ -521,7 +521,7 @@
 				$new_action->setWorkflow($new_workflow);
 				$new_action->save();
 			}
-			
+
 			return $new_transition;
 		}
 

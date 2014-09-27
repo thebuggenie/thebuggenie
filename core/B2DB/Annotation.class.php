@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	class Annotation
 	{
 
@@ -11,7 +11,7 @@
 		public function __construct($key, $annotation_data)
 		{
 			$this->_key = $key;
-			
+
 			$this->_data = array();
 			$ad = explode(',', $annotation_data);
 			$ad_size = count($ad);

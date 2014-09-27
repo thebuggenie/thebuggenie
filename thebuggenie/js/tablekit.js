@@ -3,7 +3,7 @@
 * Copyright (c) 2007 Andrew Tetlaw & Millstream Web Software
 * http://www.millstream.com.au/view/code/tablekit/
 * Version: 1.3b 2008-03-23
-* 
+*
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
 * files (the "Software"), to deal in the Software without
@@ -11,10 +11,10 @@
 * modify, merge, publish, distribute, sublicense, and/or sell copies
 * of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be
 * included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -23,7 +23,7 @@
 * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
-* * 
+* *
 */
 
 // Use the TableKit class constructure if you'd prefer to init your tables as JS objects
@@ -40,7 +40,7 @@ TableKit.prototype = {
 		var op = TableKit.option('sortable resizable editable', this.id);
 		if(op.sortable) {
 			TableKit.Sortable.init(table);
-		} 
+		}
 		if(op.resizable) {
 			TableKit.Resizable.init(table);
 		}
@@ -108,8 +108,8 @@ Object.extend(TableKit, {
 			table.id = "tablekit-table-" + TableKit._getc();
 		}
 		var id = table.id;
-		TableKit.tables[id] = TableKit.tables[id] ? 
-		                        Object.extend(TableKit.tables[id], options || {}) : 
+		TableKit.tables[id] = TableKit.tables[id] ?
+		                        Object.extend(TableKit.tables[id], options || {}) :
 		                        Object.extend(
 		                          {dom : {head:null,rows:null,cells:{}},sortable:false,resizable:false,editable:false},
 		                          options || {}
@@ -210,7 +210,7 @@ Object.extend(TableKit, {
   				} else if (c.hasClassName(op.descendingClass)) {
   				  c.removeClassName(op.descendingClass);
   				  c.addClassName(op.sortFirstDecendingClass)
-  				}  				
+  				}
   			}
 		  }
 		  if(op.resizable) {
@@ -365,8 +365,8 @@ TableKit.Sortable = {
 			index = TableKit.getCellIndex(cell);
 		}
 		var op = TableKit.option('noSortClass descendingClass ascendingClass defaultSortDirection', table.id);
-		
-		if(cell.hasClassName(op.noSortClass)) {return;}	
+
+		if(cell.hasClassName(op.noSortClass)) {return;}
 		//TableKit.notify('onSortStart', table);
 		order = order ? order : op.defaultSortDirection;
 		var rows = TableKit.getBodyRows(table);
@@ -411,10 +411,10 @@ TableKit.Sortable = {
 	getDataType : function(cell,index,table) {
 		cell = $(cell);
 		index = (index || index === 0) ? index : TableKit.getCellIndex(cell);
-		
+
 		var colcache = TableKit.Sortable._coltypecache;
 		var cache = colcache[table.id] ? colcache[table.id] : (colcache[table.id] = {});
-		
+
 		if(!cache[index]) {
 			var t = false;
 			// first look for a data type id on the heading row cell
@@ -498,7 +498,7 @@ TableKit.Sortable.addSortType(
 				case  'k':
 					result = b * 1024;
 					break;
-				case  'm':				
+				case  'm':
 					result = b * 1024 * 1024;
 					break;
 				case  'g':
@@ -526,7 +526,7 @@ TableKit.Sortable.addSortType(
 				} else if(r[7].toLowerCase().indexOf('a') !== -1) {
 					hr_num = chr < 12 ? chr : 0;
 				}
-			} 
+			}
 			var min_num = r[5] ? r[5] : 0;
 			var sec_num = r[6] ? r[6] : 0;
 			return new Date(yr_num, mo_num, day_num, hr_num, min_num, sec_num, 0).valueOf();
@@ -547,7 +547,7 @@ TableKit.Sortable.addSortType(
 				} else if(r[7].toLowerCase().indexOf('a') !== -1) {
 					hr_num = chr < 12 ? chr : 0;
 				}
-			} 
+			}
 			var min_num = r[5] ? r[5] : 0;
 			var sec_num = r[6] ? r[6] : 0;
 			return new Date(yr_num, mo_num, day_num, hr_num, min_num, sec_num, 0).valueOf();
@@ -566,7 +566,7 @@ TableKit.Sortable.addSortType(
 		pattern : /[\d]{4}-[\d]{2}-[\d]{2}(?:T[\d]{2}\:[\d]{2}(?:\:[\d]{2}(?:\.[\d]+)?)?(Z|([-+][\d]{2}:[\d]{2})?)?)?/, // 2005-03-26T19:51:34Z
 		normal : function(v) {
 			if(!this.pattern.test(v)) {return 0;}
-		    var d = v.match(/([\d]{4})(-([\d]{2})(-([\d]{2})(T([\d]{2}):([\d]{2})(:([\d]{2})(\.([\d]+))?)?(Z|(([-+])([\d]{2}):([\d]{2})))?)?)?)?/);		
+		    var d = v.match(/([\d]{4})(-([\d]{2})(-([\d]{2})(T([\d]{2}):([\d]{2})(:([\d]{2})(\.([\d]+))?)?(Z|(([-+])([\d]{2}):([\d]{2})))?)?)?)?/);
 		    var offset = 0;
 		    var date = new Date(d[1], 0, 1);
 		    if (d[3]) { date.setMonth(d[3] - 1) ;}
@@ -613,7 +613,7 @@ TableKit.Resizable = {
 	init : function(elm, options){
 		var table = $(elm);
 		if(table.tagName !== "TABLE") {return;}
-		TableKit.register(table,Object.extend(options || {},{resizable:true}));		 
+		TableKit.register(table,Object.extend(options || {},{resizable:true}));
 		var cells = TableKit.getHeaderCells(table);
 		cells.each(function(c){
 			c = $(c);
@@ -637,7 +637,7 @@ TableKit.Resizable = {
 		}
 		var pad = parseInt(cell.getStyle('paddingLeft'),10) + parseInt(cell.getStyle('paddingRight'),10);
 		w = Math.max(w-pad, TableKit.option('minWidth', table.id)[0]);
-		
+
 		cell.setStyle({'width' : w + 'px'});
 	},
 	initDetect : function(e) {
@@ -763,10 +763,10 @@ TableKit.Editable = {
 		}
 		var op = TableKit.option('noEditClass', table.id);
 		if(cell.hasClassName(op.noEditClass)) {return;}
-		
+
 		var head = $(TableKit.getHeaderCells(table, cell)[TableKit.getCellIndex(cell)]);
 		if(head.hasClassName(op.noEditClass)) {return;}
-		
+
 		var data = TableKit.getCellData(cell);
 		if(data.active) {return;}
 		data.htmlContent = cell.innerHTML;
@@ -813,12 +813,12 @@ TableKit.Editable.CellEditor.prototype = {
 		cell = $(cell);
 		var op = this.options;
 		var table = cell.up('table');
-		
+
 		var form = $(document.createElement("form"));
 		form.id = cell.id + '-form';
 		form.addClassName(TableKit.option('formClassName', table.id)[0]);
 		form.onsubmit = this._submit.bindAsEventListener(this);
-		
+
 		var field = document.createElement(op.element);
 			$H(op.attributes).each(function(v){
 				field[v.key] = v.value;
@@ -828,7 +828,7 @@ TableKit.Editable.CellEditor.prototype = {
 				case 'textarea':
 				field.value = TableKit.getCellText(cell);
 				break;
-				
+
 				case 'select':
 				var txt = TableKit.getCellText(cell);
 				$A(op.selectOptions).each(function(v){
@@ -855,7 +855,7 @@ TableKit.Editable.CellEditor.prototype = {
 				cancelLink.href = "#";
 				cancelLink.appendChild(document.createTextNode(op.cancelText));
 				cancelLink.onclick = this._cancel.bindAsEventListener(this);
-				cancelLink.className = 'editor_cancel';      
+				cancelLink.className = 'editor_cancel';
 				form.appendChild(cancelLink);
 			}
 			cell.innerHTML = '';
@@ -910,8 +910,8 @@ TableKit.Editable.multiLineInput = function(n,attributes) {
 	TableKit.Editable.addCellEditor(new TableKit.Editable.CellEditor(n, {
 		element : 'textarea',
 		attributes : Object.extend({name : 'value', rows : '5', cols : '20'}, attributes||{})
-	}));	
-};	
+	}));
+};
 TableKit.Editable.multiLineInput('multi-line-input');
 
 TableKit.Editable.selectInput = function(n,attributes,selectOptions) {
@@ -919,7 +919,7 @@ TableKit.Editable.selectInput = function(n,attributes,selectOptions) {
 		element : 'select',
 		attributes : Object.extend({name : 'value'}, attributes||{}),
 		'selectOptions' : selectOptions
-	}));	
+	}));
 };
 
 /*

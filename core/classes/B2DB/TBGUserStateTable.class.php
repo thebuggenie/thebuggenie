@@ -23,7 +23,7 @@
 	 * @Table(name="userstate")
 	 * @Entity(class="TBGUserstate")
 	 */
-	class TBGUserStateTable extends TBGB2DBTable 
+	class TBGUserStateTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -59,5 +59,5 @@
 
 			return $this->select($crit);
 		}
-		
+
 	}

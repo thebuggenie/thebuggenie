@@ -1,5 +1,5 @@
-/* HTML Color Picker    
- * http://cpicker.com/ 
+/* HTML Color Picker
+ * http://cpicker.com/
  */
 
 /*
@@ -17,7 +17,7 @@ ColorPicker.prototype = {
 	landing:	null,
 	options:	{},
 	cnumber:	7,
-	
+
 	initialize: function() {
 		var options = Object.extend({
 			cubeLandingClass: 'picker-cube-landing',
@@ -44,41 +44,41 @@ ColorPicker.prototype = {
 			pixelMargin:	1,
 			iconPath:		'/js/cpicker/images/' // change by Edno
 		}, arguments[0] || {});
-		
+
 		//
 		// picker header
-		// 
+		//
 		this.header = document.createElement('DIV');
 		this.header.className = options.headerClass;
-		
+
 		//
 		// picker sample
 		//
 		this.sample = document.createElement('DIV');
 		this.sample.className = options.sampleClass;
 		this.header.appendChild(this.sample);
-		
+
 		//
 		// picker sample text
 		//
 		this.textValue = document.createElement('SPAN');
 		this.textValue.className = options.textValueClass;
 		this.header.appendChild(this.textValue);
-		
-		
+
+
 		//
 		// picker landing
 		//
 		this.landing = document.createElement('DIV');
 		this.landing.id = options.pickerID;
 		this.landing.className = options.landingClass;
-		this.landing.style.width = (options.pixelSize + options.pixelMargin) * 
+		this.landing.style.width = (options.pixelSize + options.pixelMargin) *
 				(Math.floor(this.web_values.length * this.web_values.length / 2)  + 3) + 1 + 'px';
-				
+
 		Event.observe(this.landing, 'mouseover', this.onPickerMove.bindAsEventListener(this));
 		Event.observe(this.landing, 'click', this.onPickerClick.bindAsEventListener(this));
 		Event.observe(this.landing, 'mousedown', this.dragStart.bindAsEventListener(this));
-		this.landing.onselectstart = function(event) { 
+		this.landing.onselectstart = function(event) {
 			event = event || window.event;
 			var element = Event.element(event);
 			if (element.className != options.textValueClass)
@@ -86,7 +86,7 @@ ColorPicker.prototype = {
 		};
 
 		this.landing.appendChild(this.header);
-		
+
 		// cube icon
 		this.iconCube = document.createElement('A');
 		this.iconCube.className = options.iconClass + ' ' + options.iconCubeClass;
@@ -111,7 +111,7 @@ ColorPicker.prototype = {
 		this.iconGrayscale.style.backgroundImage = "url('" + options.iconPath + "icon-grayscale.gif')"; // change by Edno
 		this.iconGrayscale.onclick = this.onIconSelect.bind(this, 'grayscale');
 		this.header.appendChild(this.iconGrayscale);
-		
+
 		// close icon
 		var closeIcon = document.createElement('DIV');
 		closeIcon.className = options.closeClass;
@@ -119,14 +119,14 @@ ColorPicker.prototype = {
 		closeIcon.title = 'Close picker';
 		closeIcon.onclick = this.hide.bind(this);
 		this.header.appendChild(closeIcon);
-		
+
 		this.options = options;
 	/*
 		this.setColor(options.defaultColor);
 		this.findColor(options.defaultColor);
 	*/
 		this.setClear(this.header);
-		
+
 		//
 		// fictive loading
 		//
@@ -135,10 +135,10 @@ ColorPicker.prototype = {
 		this.loading.backgroundImage = "url('" + options.iconPath + "load-cube.png')"; // change by Edno
 		this.landing.appendChild(this.loading);
 		this.preloadLoadings();
-		
+
 //		this.onIconSelect('cube');
 	},
-	
+
 	onIconSelect: function(iType) {
 		switch (iType) {
 			case 'continious':
@@ -158,10 +158,10 @@ ColorPicker.prototype = {
 					this.cube();
 				iType = 'cube';
 		}
-		
+
 		if (this.loading)
 			this.loading.style.display = 'none';
-			
+
 		if (this.module_grayscale) {
 			this.module_grayscale.style.display = (iType == 'grayscale') ? 'block' : 'none';
 			this.iconGrayscale.style.borderBottom = (iType == 'grayscale') ? '2px solid #7f9db9' : 'none';
@@ -179,14 +179,14 @@ ColorPicker.prototype = {
 			this.iconCube.style.borderBottom =  (iType == 'cube') ? '2px solid #7f9db9' : 'none';
 		}
 	},
-	
+
 	getPixel: function(color) {
 		var pixel = document.createElement('DIV');
 			pixel.className = this.options.cubePixelClass;
 			pixel.style.backgroundColor = color;
 			pixel.style.width = this.options.pixelSize + 'px';
 			pixel.style.height = this.options.pixelSize + 'px';
-			
+
 		var colors = this.RGB(color);
 		pixel.color_r = colors[0];
 		pixel.color_g = colors[1];
@@ -194,25 +194,25 @@ ColorPicker.prototype = {
 		pixel.color = '#' + this.d2h(colors[0], 2) + this.d2h(colors[1], 2) + this.d2h(colors[2], 2);
 		return pixel;
 	},
-	
+
 	setClear: function(element) {
 		var div = document.createElement('DIV');
 		div.className = this.options.clearClass;
 		element.appendChild(div);
 	},
-	
+
 	cube: function() {
-		
+
 		this.cube_model = document.createElement('DIV');
 		this.cube_model.className = this.options.cubeLandingClass;
-		this.cube_model.style.width = Math.floor(this.web_values.length / 2) * 
-				((this.options.pixelSize * this.web_values.length) + 
+		this.cube_model.style.width = Math.floor(this.web_values.length / 2) *
+				((this.options.pixelSize * this.web_values.length) +
 				  this.web_values.length * this.options.pixelMargin) + 'px';
-		
+
 		for (var r = 0; r < this.web_values.length; r++) {
 		 var cube = document.createElement('DIV');
 		 	cube.className = this.options.cubeClass;
-			cube.style.width = (this.options.pixelSize * this.web_values.length) + 
+			cube.style.width = (this.options.pixelSize * this.web_values.length) +
 					this.web_values.length * this.options.pixelMargin + 'px';
 
 		 for (var b = 0; b < this.web_values.length; b++)
@@ -220,7 +220,7 @@ ColorPicker.prototype = {
 			var pixel = this.getPixel('rgb('+ this.web_values[r] +','+ this.web_values[g] +','+ this.web_values[b] +')');
 			cube.appendChild(pixel);
 		  }
-		 
+
 		 this.cube_model.appendChild(cube);
 		}
 
@@ -229,35 +229,35 @@ ColorPicker.prototype = {
 		var fixed_colors = document.createElement('DIV');
 		fixed_colors.className = this.options.fixedClass;
 		fixed_colors.style.width = (this.options.pixelSize + this.options.pixelMargin) * 3 + 'px';
-		
+
 		for (var i = 0; i < this.fixed_values.length * 3; i++) {
-			var pixel = this.getPixel(((i - 1) % 3 == 0) 
+			var pixel = this.getPixel(((i - 1) % 3 == 0)
 					? '#' + this.fixed_values[Math.round((i - 2) / 3)] : '#000');
 			fixed_colors.appendChild(pixel);
 		}
-		
+
 		// module
 		var module = document.createElement('DIV');
 		module.appendChild(fixed_colors);
 		module.appendChild(this.cube_model);
 		this.module_cube = module;
-		
+
 		this.setClear(module);
 		this.landing.appendChild(module);
 	},
-	
+
 	continious: function() {
-		
+
 		this.continious_model = document.createElement('DIV');
 		this.continious_model.className = this.options.cubeLandingClass;
-		this.continious_model.style.width = Math.floor(this.web_values.length / 2) * 
-				((this.options.pixelSize * this.web_values.length) + 
+		this.continious_model.style.width = Math.floor(this.web_values.length / 2) *
+				((this.options.pixelSize * this.web_values.length) +
 				  this.web_values.length * this.options.pixelMargin) + 'px';
-		
+
 		for (var r = 0; r < this.r_values.length; r++) {
 		 var cube = document.createElement('DIV');
 		 	cube.className = this.options.cubeClass;
-			cube.style.width = (this.options.pixelSize * this.web_values.length) + 
+			cube.style.width = (this.options.pixelSize * this.web_values.length) +
 					this.web_values.length * this.options.pixelMargin + 'px';
 
 		  var b_start = ((r % 2) && (r > 2)) || ((r % 2 == 0) && (r <= 2))
@@ -271,7 +271,7 @@ ColorPicker.prototype = {
 		  var g_finish = (r <= 2) ? -1 : this.web_values.length;
 		  var g_step = (r <= 2) ? -1 : 1;
 
-		 for (var g = g_start; g != g_finish; g = g + g_step) 
+		 for (var g = g_start; g != g_finish; g = g + g_step)
 		  for (var b = b_start; b != b_finish; b = b + b_step) {
 
 			var pixel = this.getPixel('rgb('+ this.r_values[r] +','+ this.web_values[g] +','+ this.web_values[b] +')');
@@ -286,27 +286,27 @@ ColorPicker.prototype = {
 		var fixed_colors = document.createElement('DIV');
 		fixed_colors.className = this.options.fixedClass;
 		fixed_colors.style.width = (this.options.pixelSize + this.options.pixelMargin) * 3 + 'px';
-		
+
 		for (var i = 0; i < this.fixed_values.length * 3; i++) {
-			var pixel = this.getPixel(((i - 1) % 3 == 0) 
+			var pixel = this.getPixel(((i - 1) % 3 == 0)
 					? '#' + this.fixed_values[Math.round((i - 2) / 3)] : '#000');
 			fixed_colors.appendChild(pixel);
 		}
-		
+
 		// module
 		var module = document.createElement('DIV');
 		module.appendChild(fixed_colors);
 		module.appendChild(this.continious_model);
 		this.module_continious = module;
-		
+
 		this.setClear(module);
 		this.landing.appendChild(module);
 	},
-	
+
 	grayscale: function() {
 		this.grayscale_model = document.createElement('DIV');
 		this.grayscale_model.className = this.options.grayscaleLandingClass;
-		
+
 		for (var c = 255; c >= 0; c--) {
 			var pixel = this.getPixel('rgb('+ c +','+ c +','+ c +')');
 			this.grayscale_model.appendChild(pixel);
@@ -321,11 +321,11 @@ ColorPicker.prototype = {
 		var module = document.createElement('DIV');
 		module.appendChild(this.grayscale_model);
 		this.module_grayscale = module;
-		
+
 		this.setClear(module);
 		this.landing.appendChild(module);
 	},
-	
+
 	rainbow: function() {
 		this.rainbow_model = document.createElement('DIV');
 		this.rainbow_model.className = this.options.rainbowLandingClass;
@@ -344,22 +344,22 @@ ColorPicker.prototype = {
 				this.rainbow_model.appendChild(pixel);
 			}
 		}
-		
+
 		// module
 		this.module_rainbow = this.rainbow_model;
 		this.setClear(this.rainbow_model);
 		this.landing.appendChild(this.rainbow_model);
 	},
-	
+
 	onPickerClick: function(event) {
 		var element = Event.element(event);
 		if (!element.color) return;
-		
+
 		if (this.callback && typeof(this.callback) == 'function') {
 			this.callback(this.textValue.innerHTML);
 			return;
 		}
-		
+
 		if (this.selector)
 		{
 			switch (this.selector.textValue) {
@@ -378,7 +378,7 @@ ColorPicker.prototype = {
 		}
 		this.hide();
 	},
-	
+
 	onPickerMove: function(event) {
 		var element = Event.element(event);
 		if (!element.color) return;
@@ -389,64 +389,64 @@ ColorPicker.prototype = {
 			this.lastHover.style.height = this.options.pixelSize + 'px';
 		}
 
-		if (element.className == this.options.cubePixelClass) 
+		if (element.className == this.options.cubePixelClass)
 		{
 			this.lastHover = element;
 			element.style.border = '1px solid #' + ((element.color_r + element.color_g + element.color_b) / 3 < 127 ? 'fff' : '000');
 			element.style.width = this.options.pixelSize - 2 + 'px';
 			element.style.height = this.options.pixelSize - 2 + 'px';
 		}
-		
+
 		this.setColor(element.color);
 	},
-	
+
 	setColor: function(color) {
 		this.textValue.innerHTML = color;
 		this.sample.style.backgroundColor = color;
 	},
-	
+
 	findColor: function(color) {
 		if (!this.cube_model) return;
-		
+
 		var divs = this.cube_model.getElementsByTagName('DIV');
 		var colors = this.RGB(color);
-		
+
 		for(var i=0; i < divs.length; i++) {
 			var element = divs[i];
 			if ((element.color_r == colors[0]) &&
-				(element.color_g == colors[1]) && 
+				(element.color_g == colors[1]) &&
 				(element.color_b == colors[2])) {
 				this.lastHover = element;
-				element.style.border = '1px solid #' + 
+				element.style.border = '1px solid #' +
 					((element.color_r + element.color_g + element.color_b) / 3 < 127 ? 'fff' : '000');
 				element.style.width = this.options.pixelSize - 2 + 'px';
 				element.style.height = this.options.pixelSize - 2 + 'px';
 			}
 		}
 	},
-	
+
 	RGB: function(color) {
-		if (!color) 
+		if (!color)
 			return [0,0,0];
-		
+
 		if (color.indexOf('rgb') != -1) {
 			if (/rgb[^0-9]+([0-9]+)[^0-9]+([0-9]+)[^0-9]+([0-9]+)/i.exec(color))
 				return [parseInt(RegExp.$1), parseInt(RegExp.$2), parseInt(RegExp.$3)];
 		}
-		
+
 		if (color.length > 5) {
 			if (/^\#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2}$)/i.exec(color))
 				return [this.h2d(RegExp.$1), this.h2d(RegExp.$2), this.h2d(RegExp.$3)];
 		}
-		
+
 		if (/^\#?([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(color))
-			return [this.h2d(RegExp.$1 + '' + RegExp.$1), 
-					this.h2d(RegExp.$2 + '' + RegExp.$2), 
+			return [this.h2d(RegExp.$1 + '' + RegExp.$1),
+					this.h2d(RegExp.$2 + '' + RegExp.$2),
 					this.h2d(RegExp.$3 + '' + RegExp.$3)];
-		
+
 		return [0,0,0];
 	},
-	
+
 	h2d: function(color) {
 		eval('color = 0x' + color + ';');
 		return parseInt(color);
@@ -455,11 +455,11 @@ ColorPicker.prototype = {
 	d2h: function(number, len) {
 		if (number < 16) {
 			var res = this.hex[number];
-			while (res.length < len) 
+			while (res.length < len)
 				res = '0' + res;
 			return res;
 		}
-			
+
 		var mod = number % 16;
 		return this.d2h((number - mod) / 16, len-1).toString() + this.hex[mod];
 	},
@@ -467,7 +467,7 @@ ColorPicker.prototype = {
 	invert: function(color) {
 		return 255 - color;
 	},
-	
+
 	show: function(element, selector, pickerType) {
 		var element = $(element);
 		var landing = $(this.options.pickerID);
@@ -475,50 +475,50 @@ ColorPicker.prototype = {
 			document.body.appendChild(this.landing);
 			landing = this.landing;
 		}
-		
+
 		var pos = Position.cumulativeOffset(element);
 
 		landing.style.left = pos[0] + 'px';
 		landing.style.top = pos[1] + element.offsetHeight + 'px';
 		landing.style.display = 'block';
-		
+
 		this.selector = element;
 		this.selector.textValue = selector;
 		Event.observe(document.body, 'mouseup', this.dragStop.bindAsEventListener(this));
 		Event.observe(document.body, 'mousemove', this.dragDrag.bindAsEventListener(this));
-		
+
 		window.setTimeout(this.onIconSelect.bind(this, pickerType), 10);
 	},
-	
+
 	hide: function() {
 		this.landing.style.display = 'none';
 		Event.stopObserving(document.body, 'mouseup', this.dragStop.bindAsEventListener(this));
 		Event.stopObserving(document.body, 'mousemove', this.dragDrag.bindAsEventListener(this));
 	},
-	
+
 	dragStart: function(event) {
 		var element = Event.element(event);
 		if (element.className != this.options.headerClass &&
 			element.className != this.options.sampleClass) return;
-		
+
 		this.dragging = true;
 		this.startPoint = [Event.pointerX(event), Event.pointerY(event)];
 		this.startOffset = Position.cumulativeOffset(this.landing);
 	},
-	
+
 	dragStop: function(event) {
 		this.dragging = false;
 	},
-	
+
 	dragDrag: function(event) {
 		if (!this.dragging) return;
-		
+
 	    var pointer = [Event.pointerX(event), Event.pointerY(event)];
 		var shifting = [pointer[0] - this.startPoint[0], pointer[1] - this.startPoint[1]];
 		this.landing.style.left = this.startOffset[0] + shifting[0] + 'px';
 		this.landing.style.top = this.startOffset[1] + shifting[1] + 'px';
 	},
-	
+
 	preloadLoadings: function() {
 		var loadings = ['load-cube.png'];
 		for(var i=0; i < loadings.length; i++) {
@@ -526,7 +526,7 @@ ColorPicker.prototype = {
 			newImg.src = this.options.iconPath + loadings[i]; // change by Edno
 		}
 	},
-	
+
 	setCallback: function(callback) {
 		this.callback = callback;
 	}

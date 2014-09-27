@@ -77,4 +77,4 @@
 	$strings['Subcategories'] = 'Subcategories';
 	$strings['No other articles links to this article'] = 'No other articles links to this article';
 	$strings['Table of contents'] = 'Table of contents';
-	$strings['Move your mouse here to toggle the table of contents'] = 'Move your mouse here to toggle the table of contents';	
+	$strings['Move your mouse here to toggle the table of contents'] = 'Move your mouse here to toggle the table of contents';

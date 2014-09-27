@@ -1,11 +1,11 @@
 /**
  * This code is released to the public domain by Jim Studt, 2007.
  * He may keep some sort of up to date copy at http://www.federated.com/~jim/canvastext/
- * It as been modified by Fabien Ménager to handle font style like size, weight, color and rotation. 
+ * It as been modified by Fabien Ménager to handle font style like size, weight, color and rotation.
  * A partial support for accentuated letters as been added too.
  */
 var CanvasText = {
-	/** The letters definition. It is a list of letters, 
+	/** The letters definition. It is a list of letters,
 	 * with their width, and the coordinates of points compositing them.
 	 * The syntax for the points is : [x, y], null value means "pen up"
 	 */
@@ -123,11 +123,11 @@ var CanvasText = {
     'Ñ': { diacritic: '~', letter: 'N' },
     'Ô': { diacritic: '^', letter: 'O' }
   },
-  
+
   specialchars: {
   	'pi': { width: 19, points: [[6,14],[6,0],null,[14,14],[14,0],null,[2,13],[6,16],[13,13],[17,16]] }
   },
-  
+
   /** Diacritics, used to draw accentuated letters */
   diacritics: {
     '¸': { entity: 'cedil', points: [[6,-4],[4,-6],[2,-7],[1,-7]] },
@@ -137,45 +137,45 @@ var CanvasText = {
     '¨': { entity: 'trema', points: [[5,21],[6,20],[7,21],[6,22],[5,21],null,[12,21],[13,20],[14,21],[13,22],[12,21]] },
     '~': { entity: 'tilde', points: [[4,18],[7,22],[10,18],[13,22]] }
   },
-  
+
   /** The default font styling */
   style: {
     size: 8,          // font height in pixels
     font: null,       // not yet implemented
-    color: '#000000', // 
+    color: '#000000', //
     weight: 1,        // float, 1 for 'normal'
     halign: 'l',      // l: left, r: right, c: center
-    valign: 'b',      // t: top, m: middle, b: bottom 
+    valign: 'b',      // t: top, m: middle, b: bottom
     adjustAlign: false, // modifies the alignments if the angle is different from 0 to make the spin point always at the good position
     angle: 0,         // in radians, anticlockwise
     tracking: 1,      // space between the letters, float, 1 for 'normal'
     boundingBoxColor: '#ff0000', //null // color of the bounding box (null to hide), can be used for debug and font drawing
     originPointColor: '#000000' //null // color of the bounding box (null to hide), can be used for debug and font drawing
   },
-  
+
   debug: false,
   _bufferLexemes: {},
-  
+
   /** Get the letter data corresponding to a char
    * @param {String} ch - The char
    */
   letter: function(ch) {
     return CanvasText.letters[ch];
   },
-  
+
   parseLexemes: function(str) {
-    if (CanvasText._bufferLexemes[str]) 
+    if (CanvasText._bufferLexemes[str])
       return CanvasText._bufferLexemes[str];
-    
+
   	var i, c, matches = str.match(/&[A-Za-z]{2,5};|\s|./g);
   	var result = [], chars = [];
   	for (i = 0; i < matches.length; i++) {
   		c = matches[i];
-  		if (c.length == 1) 
+  		if (c.length == 1)
   			chars.push(c);
   		else {
   			var entity = c.substring(1, c.length-1);
-  			if (CanvasText.specialchars[entity]) 
+  			if (CanvasText.specialchars[entity])
   				chars.push(entity);
   			else
   				chars = chars.concat(c.toArray());
@@ -196,23 +196,23 @@ var CanvasText = {
   	style = style || {};
     return (style.size || CanvasText.style.size);
   },
-  
-  /** Get the font descent for a given style 
+
+  /** Get the font descent for a given style
    * @param {Object} style - The reference style
    * */
   descent: function(style) {
   	style = style || {};
     return 7.0*(style.size || CanvasText.style.size)/25.0;
   },
-  
-  /** Measure the text horizontal size 
+
+  /** Measure the text horizontal size
    * @param {String} str - The text
    * @param {Object} style - Text style
    * */
   measure: function(str, style) {
     if (!str) return;
     style = style || {};
-    
+
     var i, width, lexemes = CanvasText.parseLexemes(str),
         total = 0;
 
@@ -223,7 +223,7 @@ var CanvasText = {
     }
     return total;
   },
-  
+
   getDimensions: function(str, style) {
     var width = CanvasText.measure(str, style),
         height = style.size || CanvasText.style.size,
@@ -235,18 +235,18 @@ var CanvasText = {
       height: Math.abs(Math.sin(angle) * width) + Math.abs(Math.cos(angle) * height)
     }
   },
-  
+
   getBestAlign: function(angle, style) {
     angle += CanvasText.getAngleFromAlign(style.halign, style.valign);
     var a = {h:'c', v:'m'};
-    if (Math.round(Math.cos(angle)*1000)/1000 != 0) 
+    if (Math.round(Math.cos(angle)*1000)/1000 != 0)
       a.h = (Math.cos(angle) > 0 ? 'r' : 'l');
-    
-    if (Math.round(Math.sin(angle)*1000)/1000 != 0) 
+
+    if (Math.round(Math.sin(angle)*1000)/1000 != 0)
       a.v = (Math.sin(angle) > 0 ? 't' : 'b');
     return a;
   },
-  
+
   getAngleFromAlign: function(halign, valign) {
     var pi = Math.PI, table = {
       'rm': 0,
@@ -261,18 +261,18 @@ var CanvasText = {
     }
     return table[halign+valign];
   },
-  
-  /** Draws serie of points at given coordinates 
+
+  /** Draws serie of points at given coordinates
    * @param {Canvas context} ctx - The canvas context
    * @param {Array} points - The points to draw
    * @param {Number} x - The X coordinate
    * @param {Number} y - The Y coordinate
-   * @param {Number} mag - The scale 
+   * @param {Number} mag - The scale
    */
   drawPoints: function (ctx, points, x, y, mag, offset) {
     var i, a, penUp = true, needStroke = 0;
     offset = offset || {x:0, y:0};
-    
+
     ctx.beginPath();
     for (i = 0; i < points.length; i++) {
       a = points[i];
@@ -290,7 +290,7 @@ var CanvasText = {
     }
     ctx.stroke();
   },
-  
+
   /** Draws a text at given coordinates and with a given style
    * @param {Canvas context} ctx - The canvas context
    * @param {String} str - The text to draw
@@ -306,41 +306,41 @@ var CanvasText = {
     style.angle = style.angle || CanvasText.style.angle;
     style.size = style.size || CanvasText.style.size;
     style.adjustAlign = style.adjustAlign || CanvasText.style.adjustAlign;
-    
+
     var i, c, total = 0,
         mag = style.size / 25.0,
         x = 0, y = 0,
         lexemes = CanvasText.parseLexemes(str);
-    
-    var offset = {x:0, y:0}, 
+
+    var offset = {x:0, y:0},
         measure = CanvasText.measure(str, style),
         align;
-        
+
     if (style.adjustAlign) {
       align = CanvasText.getBestAlign(style.angle, style);
       style.halign = align.h;
       style.valign = align.v;
     }
-        
+
     switch (style.halign) {
       case 'l': break;
       case 'c': offset.x = -measure / 2; break;
       case 'r': offset.x = -measure; break;
     }
-    
+
     switch (style.valign) {
       case 'b': break;
       case 'm': offset.y = style.size / 2; break;
       case 't': offset.y = style.size; break;
     }
-    
+
     ctx.save();
     ctx.translate(xOrig, yOrig);
     ctx.rotate(style.angle);
     ctx.lineCap = "round";
     ctx.lineWidth = 2.0 * mag * (style.weight || CanvasText.style.weight);
     ctx.strokeStyle = style.color || CanvasText.style.color;
-    
+
     for (i = 0; i < lexemes.length; i++) {
     	c = lexemes[i];
       if (c.width == -1) {
@@ -348,10 +348,10 @@ var CanvasText = {
         y = style.size * 1.4;
         continue;
       }
-    
+
       var points = c.points,
           width = c.width;
-          
+
       if (c.diacritic) {
         var dia = CanvasText.diacritics[c.diacritic];
         var char = CanvasText.letter(c.letter);
@@ -362,28 +362,28 @@ var CanvasText = {
       }
 
       CanvasText.drawPoints(ctx, points, x, y, mag, offset);
-      
+
       if (CanvasText.debug) {
       	ctx.save();
         ctx.lineJoin = "miter";
         ctx.lineWidth = 0.5;
         ctx.strokeStyle = (style.boundingBoxColor || CanvasText.style.boundingBoxColor);
       	ctx.strokeRect(x+offset.x, y+offset.y, width*mag, -style.size);
-        
+
         ctx.fillStyle = (style.originPointColor || CanvasText.style.originPointColor);
         ctx.beginPath();
         ctx.arc(0, 0, 1.5, 0, Math.PI*2, true);
         ctx.fill();
-        
+
       	ctx.restore();
       }
-      
+
       x += width*mag*(style.tracking || CanvasText.style.tracking);
     }
     ctx.restore();
     return total;
   },
-  
+
   /** Enables the text function for a Canvas context
    * @param {Canvas context} ctx - The canvas context
    */

@@ -91,12 +91,12 @@
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
-		
+
 		public function countByStatusID($status_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::STATUS_ID, $status_id);
-			
+
 			return $this->doCount($crit);
 		}
 

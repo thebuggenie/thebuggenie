@@ -8,7 +8,7 @@
 
 		/**
 		 * The currently selected project
-		 * 
+		 *
 		 * @var TBGProject
 		 * @access protected
 		 * @property $selected_project
@@ -16,7 +16,7 @@
 
 		/**
 		 * The currently selected client
-		 * 
+		 *
 		 * @var TBGClient
 		 * @access protected
 		 * @property $selected_client
@@ -61,16 +61,16 @@
 		{
 			return TBGContext::getUser()->hasProjectPageAccess($page, $this->selected_project);
 		}
-		
+
 		/**
 		 * The project dashboard
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
-			
+
 			if ($request->isPost() && $request['setup_default_dashboard'] && $this->getUser()->canEditProjectDetails($this->selected_project))
 			{
 				TBGDashboardViewsTable::getTable()->setDefaultViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
@@ -118,7 +118,7 @@
 				$this->important = false;
 				$this->recent_activities = $this->selected_project->getRecentActivities(40, false, $offset);
 			}
-			
+
 			if ($offset)
 			{
 				return $this->renderJSON(array('content' => $this->getComponentHTML('project/timeline', array('activities' => $this->recent_activities)), 'offset' => $offset + 40));
@@ -235,7 +235,7 @@
 		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-			
+
 			$milestone = null;
 			$maxEstimation = 0;
 
@@ -259,7 +259,7 @@
 				$datasets = array();
 
 				$burndown_data = $milestone->getBurndownData();
-				
+
 				if (count($burndown_data['estimations']['hours']))
 				{
 					foreach ($burndown_data['estimations']['hours'] as $key => $e)
@@ -324,14 +324,14 @@
 						$spent_sprint_hours = ($sprint_id !== 0) ? $issue->getMilestone()->getHoursSpent() : 0;
 						$remaining_points = $new_sprint_points - $spent_sprint_points;
 						$remaining_hours = $new_sprint_hours - $spent_sprint_hours;
-						
+
 						return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'hours' => $issue->getEstimatedHours(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points, 'new_estimated_hours' => $new_sprint_hours, 'new_remaining_points' => $remaining_points, 'new_remaining_hours' => $remaining_points));
 						break;
 				}
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
 		}
-		
+
 		public function runUpdateMilestoneIssues(TBGRequest $request)
 		{
 			if ($request['milestone_id'])
@@ -389,7 +389,7 @@
 			}
 			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num% issue(s) updated', array('%num%' => count($request['issue_id'])))));
 		}
-		
+
 		/**
 		 * Assign a user story to a milestone id
 		 *
@@ -434,10 +434,10 @@
 				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 			}
 		}
-		
+
 		/**
 		 * Add a new sprint type milestone to a project
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runScrumAddSprint(TBGRequest $request)
@@ -498,7 +498,7 @@
 			{
 				return $this->return404(TBGContext::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
 			}
-			
+
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
@@ -784,7 +784,7 @@
 						catch (Exception $e) {}
 						break;
 				}
-				
+
 				$filters['assignee_user'] = array('operator' => '=', 'value' => $user_id);
 			}
 
@@ -865,7 +865,7 @@
 						}
 						//echo "no";
 					}
-					
+
 					if (!$workflow_transition instanceof TBGWorkflowTransition)
 						throw new Exception("This transition ({$key}) is not valid");
 				}
@@ -1014,7 +1014,7 @@
 					$comment->setSystemComment(false);
 					$comment->save();
 				});
-				
+
 				if (!$workflow_transition instanceof TBGWorkflowTransition)
 					$issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
 
@@ -1101,16 +1101,16 @@
 			}
 
 		}
-		
+
 		public function runGetMilestone(TBGRequest $request)
 		{
 			$milestone = new TBGMilestone($request['milestone_id']);
 			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestones())));
 		}
-		
+
 		public function runRemoveMilestone(TBGRequest $request)
 		{
-			if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)) 
+			if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
 			{
 				$milestone = new TBGMilestone($request['milestone_id']);
 				$no_milestone = new TBGMilestone(0);
@@ -1124,9 +1124,9 @@
 
 		public function runMilestone(TBGRequest $request)
 		{
-			if ($request->isPost()) 
+			if ($request->isPost())
 			{
-				if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)) 
+				if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
 				{
 					try
 					{
@@ -1193,7 +1193,7 @@
 				{
 					throw new Exception(TBGContext::getI18n()->__('You are not allowed to perform any workflow transitions on this issue'));
 				}
-				
+
 				if ($transition->validateFromRequest($request))
 				{
 					$transition->transitionIssueToOutgoingStepFromRequest($issue);
@@ -1211,7 +1211,7 @@
 				return $this->return404();
 			}
 		}
-		
+
 		public function runTransitionIssues(TBGRequest $request)
 		{
 			try
@@ -1228,7 +1228,7 @@
 				$issue_ids = $request['issue_ids'];
 				$status = null;
 				$closed = false;
-				foreach ($issue_ids as $issue_id) 
+				foreach ($issue_ids as $issue_id)
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
 					if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
@@ -1251,7 +1251,7 @@
 					if ($status === null) $status = $issue->getStatus();
 					$closed = $issue->isClosed();
 				}
-				
+
 				TBGContext::loadLibrary('common');
 				$options = array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20), 'closed' => $closed);
 				$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName(), 'id' => $status->getID());
@@ -1297,38 +1297,38 @@
 				return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to apply the transition')));
 			}
 		}
-		
+
 		public function runSettings(TBGRequest $request)
 		{
 			$this->forward403if(TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canEditProjectDetails(TBGContext::getCurrentProject()));
 			$this->settings_saved = TBGContext::getMessageAndClear('project_settings_saved');
 		}
-		
+
 		public function runReleaseCenter(TBGRequest $request)
 		{
 			$this->forward403if(TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canManageProjectReleases(TBGContext::getCurrentProject()));
 			$this->build_error = TBGContext::getMessageAndClear('build_error');
 			$this->_setupBuilds();
 		}
-		
+
 		public function runReleases(TBGRequest $request)
 		{
 			$this->_setupBuilds();
 		}
-		
+
 		protected function _setupBuilds()
 		{
 			$builds = $this->selected_project->getBuilds();
-			
+
 			$active_builds = array(0 => array());
 			$archived_builds = array(0 => array());
-			
+
 			foreach ($this->selected_project->getEditions() as $edition_id => $edition)
 			{
 				$active_builds[$edition_id] = array();
 				$archived_builds[$edition_id] = array();
 			}
-			
+
 			foreach ($builds as $build)
 			{
 				if ($build->isLocked())
@@ -1336,11 +1336,11 @@
 				else
 					$active_builds[$build->getEditionID()][$build->getID()] = $build;
 			}
-			
+
 			$this->active_builds = $active_builds;
 			$this->archived_builds = $archived_builds;
 		}
-		
+
 		/**
 		 * Find users and show selection box
 		 *

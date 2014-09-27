@@ -20,12 +20,12 @@
 	 */
 	class TBGComment extends TBGIdentifiableScopedClass
 	{
-		
+
 		/**
 		 * Issue comment
 		 */
 		const TYPE_ISSUE = 1;
-		
+
 		/**
 		 * Article comment
 		 */
@@ -35,19 +35,19 @@
 		 * @Column(type="text")
 		 */
 		protected $_content;
-		
+
 		/**
 		 * Who posted the comment
-		 * 
+		 *
 		 * @var TBGUser
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
-		
+
 		/**
 		 * Who last updated the comment
-		 * 
+		 *
 		 * @var TBGUser
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
@@ -63,32 +63,32 @@
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_updated;
-		
+
 		/**
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_target_id;
-		
+
 		/**
 		 * @Column(type="integer", length=5)
 		 */
 		protected $_target_type = self::TYPE_ISSUE;
-		
+
 		/**
 		 * @Column(type="boolean")
 		 */
 		protected $_is_public = true;
-		
+
 		/**
 		 * @Column(type="string", length=100)
 		 */
 		protected $_module = 'core';
-		
+
 		/**
 		 * @Column(type="boolean")
 		 */
 		protected $_deleted = false;
-		
+
 		/**
 		 * @Column(type="boolean")
 		 */
@@ -119,7 +119,7 @@
 
 			return $comments;
 		}
-		
+
 		static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)
 		{
 			$retval = array();
@@ -133,7 +133,7 @@
 			}
 			return $retval;
 		}
-		
+
 		static function countComments($target_id, $target_type, $include_system_comments = true)
 		{
 			if (!array_key_exists($target_type, self::$_comment_count))
@@ -147,7 +147,7 @@
 
 			return (int) self::$_comment_count[$target_type][$target_id][(int) $include_system_comments];
 		}
-		
+
 		public function setTitle($var)
 		{
 			$this->_name = $var;
@@ -157,7 +157,7 @@
 		{
 			$this->_is_public = (bool) $var;
 		}
-		
+
 		public function setContent($var)
 		{
 			$this->_content = $var;
@@ -234,7 +234,7 @@
 					self::$_comment_count[$tty][$tid][(int) $this->isSystemComment()]++;
 			}
 		}
-		
+
 		protected function _canPermissionOrSeeAndEditAllComments($permission)
 		{
 			$retval = $this->_permissionCheck($permission);
@@ -311,10 +311,10 @@
 		public function canUserDelete(TBGUser $user)
 		{
 			$can_delete = false;
-			
+
 			try
 			{
-				// Delete comment if valid user and... 
+				// Delete comment if valid user and...
 				if ($user instanceof TBGUser)
 				{
 					if (($this->postedByUser($user->getID()) && $this->canUserDeleteOwnComment()) // the user posted the comment AND the user can delete own comments
@@ -338,10 +338,10 @@
 		public function canUserEdit(TBGUser $user)
 		{
 			$can_edit = false;
-			
+
 			try
 			{
-				// Edit comment if valid user and... 
+				// Edit comment if valid user and...
 				if ($user instanceof TBGUser)
 				{
 					if (($this->postedByUser($user->getID()) && $this->canUserEditOwnComment()) // the user posted the comment AND the user can edit own comments
@@ -354,7 +354,7 @@
 			catch (Exception $e){ }
 			return $can_edit;
 		}
-		
+
 		/**
 		 * Return if the specified user can view this comment
 		 *
@@ -365,20 +365,20 @@
 		public function isViewableByUser(TBGUser $user)
 		{
 			$can_view = false;
-			
+
 			try
 			{
-				// Show comment if valid user and... 
+				// Show comment if valid user and...
 				if ($user instanceof TBGUser)
 				{
-					
+
 					if ((!$this->isPublic() && $user->canSeeNonPublicComments()) // the comment is hidden and the user can see hidden comments
 						|| ($this->isPublic() && $user->canViewComments()) // OR the comment is public and  user can see public comments
 						|| ($this->postedByUser($user->getID()))) // OR the user posted the comment
 					{
 						$can_view = true;
 					}//endif
-					
+
 				}//endif
 			}//endtry
 			catch (Exception $e){ }
@@ -389,7 +389,7 @@
 		{
 			return $this->_name;
 		}
-		
+
 		/**
 		 * Returns the user who last updated the comment
 		 *
@@ -399,7 +399,7 @@
 		{
 			return ($this->_updated_by instanceof TBGUser) ? $this->_updated_by : TBGContext::factory()->TBGUser($this->_updated_by);
 		}
-		
+
 		/**
 		 * Returns the user who posted the comment
 		 *
@@ -443,11 +443,11 @@
 		public function postedByUser($user_id)
 		{
 			$posted_by_id = null;
-			
+
 			try
 			{
 				$posted_by_id = $this->getPostedByID();
-				
+
 				if (!empty($posted_by_id) && !empty($user_id))
 				{
 					if ($posted_by_id == $user_id)
@@ -477,32 +477,32 @@
 		{
 			return $this->_name;
 		}
-		
+
 		public function isPublic()
 		{
 			return $this->_is_public;
 		}
-		
+
 		public function getContent()
 		{
 			return $this->_content;
 		}
-		
+
 		public function getUpdated()
 		{
 			return $this->_updated;
 		}
-		
+
 		public function getPosted()
 		{
 			return $this->_posted;
 		}
-		
+
 		public function isSystemComment()
 		{
 			return $this->_system_comment;
 		}
-		
+
 		public function getTargetID()
 		{
 			return $this->_target_id;
@@ -512,17 +512,17 @@
 		{
 			$this->_target_id = $var;
 		}
-		
+
 		public function getTargetType()
 		{
 			return $this->_target_type;
 		}
-		
+
 		public function setTargetType($var)
 		{
 			$this->_target_type = $var;
 		}
-		
+
 		public function setSystemComment($val = true)
 		{
 			$this->_system_comment = $val;

@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="issueaffectscomponent")
 	 */
-	class TBGIssueAffectsComponentTable extends TBGB2DBTable 
+	class TBGIssueAffectsComponentTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -33,7 +33,7 @@
 		const COMPONENT = 'issueaffectscomponent.component';
 		const CONFIRMED = 'issueaffectscomponent.confirmed';
 		const STATUS = 'issueaffectscomponent.status';
-		
+
 		protected $_preloaded_values = null;
 
 		protected function _initialize()
@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
-		
+
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('issue', self::ISSUE);
@@ -134,7 +134,7 @@
 				return true;
 			}
 		}
-		
+
 		public function confirmByIssueIDandComponentID($issue_id, $component_id, $confirmed = true)
 		{
 			if (!($res = $this->getByIssueIDandComponentID($issue_id, $component_id)))
@@ -147,9 +147,9 @@
 				$crit->addUpdate(self::CONFIRMED, $confirmed);
 				$this->doUpdateById($crit, $res->get(self::ID));
 				return true;
-			}				
+			}
 		}
-		
+
 		public function setStatusByIssueIDandComponentID($issue_id, $component_id, $status_id)
 		{
 			if (!($res = $this->getByIssueIDandComponentID($issue_id, $component_id)))
@@ -161,11 +161,11 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::STATUS, $status_id);
 				$this->doUpdateById($crit, $res->get(self::ID));
-				
+
 				return true;
-			}				
+			}
 		}
-		
+
 		public function setIssueAffected($issue_id, $component_id)
 		{
 			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
@@ -182,7 +182,7 @@
 				return false;
 			}
 		}
-		
+
 		public function deleteByComponentID($component_id)
 		{
 			$crit = $this->getCriteria();

@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Statement class
 	 *
@@ -27,7 +27,7 @@
 		 * @var Criteria
 		 */
 		protected $crit;
-		
+
 		/**
 		 * PDO statement
 		 *
@@ -40,7 +40,7 @@
 		public $params = array();
 
 		protected $insert_id = null;
-		
+
 		public $custom_sql = '';
 
 		/**
@@ -72,7 +72,7 @@
 					$this->crit = $crit;
 				else
 					$this->custom_sql = $crit;
-				
+
 				$this->_prepare();
 			}
 			catch (\Exception $e)
@@ -146,7 +146,7 @@
 				throw $e;
 			}
 		}
-		
+
 		/**
 		 * Returns the criteria object
 		 *
@@ -169,7 +169,7 @@
 		{
 			return $this->values;
 		}
-		
+
 		/**
 		 * Return the number of affected rows
 		 */
@@ -225,12 +225,12 @@
 				throw $e;
 			}
 		}
-		
+
 		public function resetPtr()
 		{
 			$this->statement->reset();
 		}
-		
+
 		public function printSQL()
 		{
 			$str = '';
@@ -260,5 +260,5 @@
 			}
 			return $str;
 		}
-		
+
 	}

@@ -23,7 +23,7 @@
 		 * Get module and template for a module/template combination
 		 *
 		 * @param string $template
-		 * 
+		 *
 		 * @return array
 		 */
 		protected static function getModuleAndTemplate($template)
@@ -165,22 +165,22 @@
 			}
 			if (array_key_exists('key', $params)) $key = $params['key'];
 			if (array_key_exists('val', $params)) $val = $params['val'];
-			
+
 			/**
 			 * @global TBGRequest The request object
 			 */
 			$tbg_request = TBGContext::getRequest();
-			
+
 			/**
 			 * @global TBGResponse The response object
 			 */
 			$tbg_response = TBGContext::getResponse();
-			
+
 			/**
 			 * @global TBGRequest The request object
 			 */
 			$tbg_routing = TBGContext::getRouting();
-			
+
 			/**
 			 * @global TBGUser The user object
 			 */
@@ -202,30 +202,30 @@
 		{
 			return TBGContext::getResponse();
 		}
-		
+
 		/**
 		 * Return the routing object
-		 * 
+		 *
 		 * @return TBGRouting
 		 */
 		protected function getRouting()
 		{
 			return TBGContext::getRouting();
 		}
-		
+
 		/**
 		 * Return the i18n object
-		 * 
+		 *
 		 * @return TBGI18n
 		 */
 		protected function getI18n()
 		{
 			return TBGContext::getI18n();
 		}
-		
+
 		/**
 		 * Return the current logged in user
-		 * 
+		 *
 		 * @return TBGUser
 		 */
 		protected function getUser()

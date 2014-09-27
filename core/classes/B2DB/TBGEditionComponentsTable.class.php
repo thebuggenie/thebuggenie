@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="editioncomponents")
 	 */
-	class TBGEditionComponentsTable extends TBGB2DBTable 
+	class TBGEditionComponentsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;

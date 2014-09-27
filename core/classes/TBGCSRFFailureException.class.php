@@ -18,6 +18,6 @@
 	 */
 	class TBGCSRFFailureException extends Exception
 	{
-		
+
 	}
 

@@ -2,9 +2,9 @@
 	/*
 	 * Generate link for browser
 	 */
-	 
+
 	$link_repo = TBGContext::getModule('vcs_integration')->getSetting('browser_url_' . TBGContext::getCurrentProject()->getID());
-	
+
 	if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) != TBGVCSIntegration::MODE_DISABLED)
 	{
 			echo link_tag(make_url('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Commits'), (($tbg_response->getPage() == 'vcs_commitspage') ? array('class' => 'selected') : array()));

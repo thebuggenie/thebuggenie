@@ -20,17 +20,17 @@
 	 */
 	class TBGIssue extends TBGChangeableItem
 	{
-	
+
 		/**
 		 * Open issue state
-		 * 
+		 *
 		 * @static integer
 		 */
 		const STATE_OPEN = 0;
-		
+
 		/**
 		 * Closed issue state
-		 * 
+		 *
 		 * @static integer
 		 */
 		const STATE_CLOSED = 1;
@@ -46,7 +46,7 @@
 		 * @var array
 		 */
 		protected $_links = null;
-	
+
 		/**
 		 * Array of files attached to this issue
 		 *
@@ -60,7 +60,7 @@
 		 * @var integer
 		 */
 		protected $_num_files = null;
-		
+
 		/**
 		 * The issue number
 		 *
@@ -68,7 +68,7 @@
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_issue_no;
-		
+
 		/**
 		 * The issue type
 		 *
@@ -77,7 +77,7 @@
 		 * @Relates(class="TBGIssuetype")
 		 */
 		protected $_issuetype;
-		
+
 		/**
 		 * The project which this issue affects
 		 *
@@ -87,69 +87,69 @@
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project_id;
-		
+
 		/**
 		 * The affected editions for this issue
 		 *
 		 * @var array
 		 */
 		protected $_editions = null;
-		
+
 		/**
 		 * The affected builds for this issue
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_builds = null;
-		
+
 		/**
 		 * The affected components for this issue
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_components = null;
 
 		/**
 		 * This issues long description
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="text")
 		 */
 		protected $_description;
-		
+
 		/**
 		 * This issues reproduction steps
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="text")
 		 */
 		protected $_reproduction_steps;
-		
+
 		/**
 		 * When the issue was posted
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_posted;
-		
+
 		/**
 		 * When the issue was last updated
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_last_updated;
-		
+
 		/**
 		 * Who posted the issue
-		 * 
+		 *
 		 * @var TBGUser
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
-		
+
 		/**
 		 * The project assignee if team
 		 *
@@ -170,7 +170,7 @@
 
 		/**
 		 * What kind of bug this is
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=3)
 		 */
@@ -194,68 +194,68 @@
 
 		/**
 		 * Calculated user pain score
-		 * 
+		 *
 		 * @var float
 		 * @Column(type="float")
 		 */
 		protected $_user_pain = 0.00;
-		
+
 		/**
 		 * The resolution
-		 * 
+		 *
 		 * @var TBGResolution
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGResolution")
 		 */
 		protected $_resolution;
-		
+
 		/**
 		 * The issues' state (open or closed)
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=2)
 		 */
 		protected $_state = self::STATE_OPEN;
-		
+
 		/**
 		 * The category
-		 * 
+		 *
 		 * @var TBGCategory
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGCategory")
 		 */
 		protected $_category;
-		
+
 		/**
 		 * The status
-		 * 
+		 *
 		 * @var TBGStatus
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGStatus")
 		 */
 		protected $_status;
-		
+
 		/**
 		 * The prioroty
-		 * 
+		 *
 		 * @var TBGPriority
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGPriority")
 		 */
 		protected $_priority;
-		
+
 		/**
 		 * The reproducability
-		 * 
+		 *
 		 * @var TBGReproducability
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGReproducability")
 		 */
 		protected $_reproducability;
-		
+
 		/**
 		 * The severity
-		 * 
+		 *
 		 * @var TBGSeverity
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGSeverity")
@@ -272,7 +272,7 @@
 
 		/**
 		 * The estimated time (months) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -280,7 +280,7 @@
 
 		/**
 		 * The estimated time (weeks) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -288,7 +288,7 @@
 
 		/**
 		 * The estimated time (days) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -296,7 +296,7 @@
 
 		/**
 		 * The estimated time (hours) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -304,7 +304,7 @@
 
 		/**
 		 * The estimated time (points) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -312,7 +312,7 @@
 
 		/**
 		 * The time spent (months) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -320,7 +320,7 @@
 
 		/**
 		 * The time spent (weeks) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -328,7 +328,7 @@
 
 		/**
 		 * The time spent (days) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -336,7 +336,7 @@
 
 		/**
 		 * The time spent (hours) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -344,41 +344,41 @@
 
 		/**
 		 * The time spent (points) to fix this issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_points;
-		
+
 		/**
 		 * How far along the issus is
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=2)
 		 */
 		protected $_percent_complete;
-		
+
 		/**
 		 * Which user is currently working on this issue
-		 * 
+		 *
 		 * @var TBGUser
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_being_worked_on_by_user;
-		
+
 		/**
 		 * When the last user started working on the issue
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_being_worked_on_by_user_since;
-		
+
 		/**
 		 * List of tasks for this issue
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_tasks;
@@ -392,15 +392,15 @@
 
 		/**
 		 * Whether the issue is deleted
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_deleted = false;
-		
+
 		/**
 		 * Whether the issue is blocking the next release
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
@@ -408,7 +408,7 @@
 
 		/**
 		 * Votes for this issue
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_votes = null;
@@ -420,49 +420,49 @@
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_votes_total = null;
-		
+
 		/**
 		 * The issue this issue is a duplicate of
-		 * 
+		 *
 		 * @var TBGIssue
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssue")
 		 */
 		protected $_duplicate_of;
-		
+
 		/**
 		 * The milestone this issue is assigned to
-		 * 
+		 *
 		 * @var TBGMilestone
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone;
-		
+
 		/**
 		 * List of issues this issue depends on
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_parent_issues;
-		
+
 		/**
 		 * List of issues that depends on this issue
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_child_issues;
-		
+
 		/**
 		 * List of issues which are duplicates of this one
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_duplicate_issues;
-		
+
 		/**
 		 * List of log entries
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_log_entries;
@@ -486,7 +486,7 @@
 
 		/**
 		 * An array of TBGComments
-		 * 
+		 *
 		 * @var array
 		 * @Relates(class="TBGComment", collection=true, foreign_column="target_id")
 		 */
@@ -510,12 +510,12 @@
 		 * @property $_customfield*
 		 * @var mixed
 		 */
-		
+
 		/**
 		 * Count the number of open and closed issues for a specific project id
-		 * 
+		 *
 		 * @param integer $project_id The project ID
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getIssueCountsByProjectID($project_id)
@@ -571,10 +571,10 @@
 		/**
 		 * Count the number of open and closed issues for a specific project id
 		 * and issue type id
-		 * 
+		 *
 		 * @param integer $project_id The project ID
 		 * @param integer $issuetype_id The issue type ID
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getIssueCountsByProjectIDandIssuetype($project_id, $issuetype_id)
@@ -585,23 +585,23 @@
 		/**
 		 * Count the number of open and closed issues for a specific project id
 		 * and milestone id
-		 * 
+		 *
 		 * @param integer $project_id The project ID
 		 * @param integer $milestone_id The milestone ID
 		 * @param boolean $exclude_tasks Whether to exclude tasks
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
 			return TBGIssuesTable::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks);
 		}
-		
+
 		/**
 		 * Returns a TBGIssue from an issue no
 		 *
 		 * @param string $issue_no An integer or issue number
-		 * 
+		 *
 		 * @return TBGIssue
 		 */
 		public static function getIssueFromLink($issue_no, $project = null)
@@ -637,7 +637,7 @@
 				}
 				TBGLogging::log('exploding done');
 			}
-		
+
 			return ($theIssue instanceof TBGIssue) ? $theIssue : null;
 		}
 
@@ -679,7 +679,7 @@
 			$issue = self::getIssueFromLink($text);
 			if ($issue instanceof TBGIssue)
 				return array(array($issue), 1);
-			
+
 			$filters = array('text' => array('value' => $text, 'operator' => '='));
 			if ($project instanceof TBGProject)
 			{
@@ -688,7 +688,7 @@
 			return self::findIssues($filters);
 		}
 
-		/** 
+		/**
 		 * Runs one or more regular expressions against a supplied text, extracts
 		 * issue numbers from it, and then obtains corresponding issues. The
 		 * function will also obtain information about transitions (if this was
@@ -714,7 +714,7 @@
 		 * transition step:
 		 *
 		 * array( 'PARAM1' => 'VALUE1', 'PARAM2' => 'VALUE2', ...)
-		 * 
+		 *
 		 *
 		 * @param text Text that should be parsed for issue numbers and transitions.
 		 *
@@ -724,7 +724,7 @@
 		 * regular expressions should contain two named parameters - 'issues' and
 		 * 'transitions'. These two will be used for extracting the issue number and
 		 * transition information.
-		 * 
+		 *
 		 * @return An array with two elements, one denoting the matched issues, one
 		 * denoting the transitions for issues. These elements can be accessed using
 		 * keys 'issues', and 'transitions'. The key 'issues' can be used for
@@ -796,7 +796,7 @@
 											list($param_key, $param_value) = explode('=', $parameter);
 											$transition_parameters[$param_key] = $param_value;
 										}
-									}					
+									}
 								}
 								// Append the transition information for the current issue number.
 								$transitions[$issue_number][] = array($transition_command, $transition_parameters);
@@ -806,14 +806,14 @@
 						// Add the issue number to the list.
 						$issue_numbers[] = $issue_number;
 					}
-					
+
 				}
 			}
 
 			// Make sure that each issue gets procssed only once for a single commit
 			// (avoid duplication of commits).
 			$issue_numbers = array_unique($issue_numbers);
-			
+
 			// Fetch all issues affected by the commit.
 			foreach ($issue_numbers as $issue_no)
 			{
@@ -843,7 +843,7 @@
 //				throw new Exception(TBGContext::geti18n()->__('This issue has been deleted'));
 //			}
 		}
-		
+
 		/**
 		 * Print the issue number and title nicely formatted
 		 *
@@ -861,10 +861,10 @@
 			$permissions = TBGPermissionsTable::getTable()->getByPermissionTargetIDAndModule('canviewissue', $this->getID());
 			return $permissions;
 		}
-		
+
 		/**
 		 * Whether or not the current user can access the issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
@@ -924,7 +924,7 @@
 			TBGLogging::log('done checking, denied');
 			return false;
 		}
-		
+
 		public function setProject($project)
 		{
 			$this->_project_id = $project;
@@ -939,10 +939,10 @@
 		{
 			return $this->_b2dbLazyload('_project_id');
 		}
-		
+
 		/**
 		 * Returns the project id for this issue
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getProjectID()
@@ -953,7 +953,7 @@
 
 		/**
 		 * Return the issues current step in the workflow
-		 * 
+		 *
 		 * @return TBGWorkflowStep
 		 */
 		public function getWorkflowStep()
@@ -965,12 +965,12 @@
 		{
 			return $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType());
 		}
-		
+
 		public function setWorkflowStep(TBGWorkflowStep $step)
 		{
 			$this->_addChangedProperty('_workflow_step_id', $step->getID());
 		}
-		
+
 		public function getAvailableWorkflowTransitions()
 		{
 			return ($this->getWorkflowStep() instanceof TBGWorkflowStep) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
@@ -1020,7 +1020,7 @@
 				$this->_editions = array();
 				$this->_builds = array();
 				$this->_components = array();
-		
+
 				if ($res = TBGIssueAffectsEditionTable::getTable()->getByIssueID($this->getID()))
 				{
 					foreach($res as $row)
@@ -1036,7 +1036,7 @@
 						catch (Exception $e) {}
 					}
 				}
-				
+
 				if ($res = TBGIssueAffectsBuildTable::getTable()->getByIssueID($this->getID()))
 				{
 					foreach($res as $row)
@@ -1052,7 +1052,7 @@
 						catch (Exception $e) {}
 					}
 				}
-				
+
 				if ($res = TBGIssueAffectsComponentTable::getTable()->getByIssueID($this->getID()))
 				{
 					foreach($res as $row)
@@ -1070,7 +1070,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns the unique id for this issue
 		 *
@@ -1080,17 +1080,17 @@
 		{
 			return $this->_id;
 		}
-		
+
 		/**
 		 * Returns the issue no for this issue
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getIssueNo()
 		{
 			return $this->_issue_no;
 		}
-		
+
 		/**
 		 * Returns the title for this issue
 		 *
@@ -1100,20 +1100,20 @@
 		{
 			return $this->getTitle();
 		}
-		
+
 		/**
 		 * Whether or not this issue is a duplicate of another issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isDuplicate()
 		{
 			return ($this->getDuplicateOf() instanceof TBGIssue) ? true : false;
 		}
-		
+
 		/**
 		 * Mark this issue as a duplicate of another issue
-		 * 
+		 *
 		 * @param integer $d_id Issue ID for the duplicated issue
 		 */
 		public function setDuplicateOf($d_id)
@@ -1125,7 +1125,7 @@
 			}
 			$this->_duplicate_of = $d_id;
 		}
-		
+
 		/**
 		 * Clears the issue from being a duplicate
 		 */
@@ -1133,7 +1133,7 @@
 		{
 			$this->setDuplicateOf(0);
 		}
-		
+
 		/**
 		 * Returns the issue which this is a duplicate of
 		 *
@@ -1147,7 +1147,7 @@
 				{
 					$this->_duplicate_of = TBGContext::factory()->TBGIssue($this->_duplicate_of);
 				}
-				catch (Exception $e) 
+				catch (Exception $e)
 				{
 					$this->_duplicate_of = null;
 				}
@@ -1155,10 +1155,10 @@
 			return $this->_duplicate_of;*/
 			return $this->_b2dbLazyload('_duplicate_of');
 		}
-		
+
 		/**
 		 * Returns an array of all issues which are duplicates of this one
-		 * 
+		 *
 		 * @return array of TBGIssues
 		 */
 		public function getDuplicateIssues()
@@ -1166,7 +1166,7 @@
 			$this->_populateDuplicateIssues();
 			return $this->_duplicate_issues;
 		}
-		
+
 		/**
 		 * Returns whether or not this item is locked
 		 *
@@ -1208,7 +1208,7 @@
 
 			return $this->_editable;
 		}
-		
+
 		public function isUpdateable()
 		{
 			if ($this->_updateable !== null) return $this->_updateable;
@@ -1218,7 +1218,7 @@
 
 			return $this->_updateable;
 		}
-		
+
 		/**
 		 * Perform a permission check based on a key, and whether or not to
 		 * check for the equivalent "*own" permission if the issue is posted
@@ -1251,7 +1251,7 @@
 			$user_id = TBGContext::getUser()->getID();
 			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee() instanceof TBGUser) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner() instanceof TBGUser));
 		}
-		
+
 		/**
 		 * Return if the user can edit title
 		 *
@@ -1264,7 +1264,7 @@
 
 		/**
 		 * Check whether or not this user can edit issue details
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function canEditIssueDetails()
@@ -1280,7 +1280,7 @@
 
 			return $retval;
 		}
-		
+
 		/**
 		 * Return if the user can edit title
 		 *
@@ -1290,7 +1290,7 @@
 		{
 			$retval = $this->_permissionCheck('caneditissuetitle');
 			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-			
+
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
@@ -1323,7 +1323,7 @@
 		{
 			$retval = $this->_permissionCheck('caneditissuedescription');
 			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-			
+
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
@@ -1336,7 +1336,7 @@
 		{
 			$retval = $this->_permissionCheck('caneditissuereproduction_steps');
 			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-			
+
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
@@ -1349,14 +1349,14 @@
 		{
 			return (bool) ($this->_permissionCheck('caneditissue', true));
 		}
-		
+
 		protected function _canPermissionOrEditIssue($permission, $fallback = null)
 		{
 			if (isset($this->_can_permission_cache[$permission])) return $this->_can_permission_cache[$permission];
-			
+
 			$retval = $this->_permissionCheck($permission);
 			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
-			
+
 			if ($retval === null)
 			{
 				$retval = ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
@@ -1365,7 +1365,7 @@
 			$this->_can_permission_cache[$permission] = $retval;
 			return $retval;
 		}
-		
+
 		/**
 		 * Return if the user can edit posted by
 		 *
@@ -1385,7 +1385,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissueassigned_to');
 		}
-		
+
 		/**
 		 * Return if the user can edit owned by
 		 *
@@ -1395,7 +1395,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissueowned_by');
 		}
-		
+
 		/**
 		 * Return if the user can edit status
 		 *
@@ -1405,7 +1405,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuestatus');
 		}
-		
+
 		/**
 		 * Return if the user can edit category
 		 *
@@ -1415,7 +1415,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuecategory');
 		}
-		
+
 		/**
 		 * Return if the user can edit resolution
 		 *
@@ -1425,7 +1425,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissueresolution');
 		}
-		
+
 		/**
 		 * Return if the user can edit reproducability
 		 *
@@ -1435,7 +1435,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuereproducability');
 		}
-		
+
 		/**
 		 * Return if the user can edit severity
 		 *
@@ -1445,7 +1445,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissueseverity');
 		}
-		
+
 		/**
 		 * Return if the user can edit priority
 		 *
@@ -1455,7 +1455,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuepriority');
 		}
-		
+
 		/**
 		 * Return if the user can edit estimated time
 		 *
@@ -1465,7 +1465,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissueestimated_time');
 		}
-		
+
 		/**
 		 * Return if the user can edit spent time
 		 *
@@ -1475,7 +1475,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuespent_time');
 		}
-		
+
 		/**
 		 * Return if the user can edit progress (percent)
 		 *
@@ -1495,7 +1495,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('caneditissuemilestone');
 		}
-		
+
 		/**
 		 * Return if the user can delete the issue
 		 *
@@ -1505,7 +1505,7 @@
 		{
 			return $this->_canPermissionOrEditIssue('candeleteissues', false);
 		}
-		
+
 		/**
 		 * Return if the user can edit any custom fields
 		 *
@@ -1556,10 +1556,10 @@
 		{
 			$retval = $this->_permissionCheck($permission_1);
 			$retval = ($retval === null) ? $this->_permissionCheck($permission_2) : $retval;
-			
+
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
-		
+
 		/**
 		 * Return if the user can add/modify extra data for an issue
 		 *
@@ -1579,7 +1579,7 @@
 			$this->_can_permission_cache[$permission] = $retval;
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
-		
+
 		/**
 		 * Return if the user can post comments on this issue
 		 *
@@ -1667,7 +1667,7 @@
 
 		/**
 		 * Return if the user can start working on the issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function canStartWorkingOnIssue()
@@ -1675,12 +1675,12 @@
 			if ($this->isBeingWorkedOn()) return false;
 			return $this->canEditSpentTime();
 		}
-	
+
 		/**
 		 * Returns a complete issue no
-		 * 
+		 *
 		 * @param boolean $link_formatted[optional] Whether to include the # if it's only numeric (default false)
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getFormattedIssueNo($link_formatted = false, $include_issuetype = false)
@@ -1704,7 +1704,7 @@
 			}
 			return $issuetype_description . $issue_no;
 		}
-	
+
 		/**
 		 * Returns the issue type for this issue
 		 *
@@ -1726,7 +1726,7 @@
 				return false;
 			}
 		}
-		
+
 		/**
 		 * Return timestamp for when the issue was posted
 		 *
@@ -1736,28 +1736,28 @@
 		{
 			return $this->_posted;
 		}
-		
+
 		/**
 		 * Set the posted time
-		 * 
-		 * @param integer $time 
+		 *
+		 * @param integer $time
 		 */
 		public function setPosted($time)
 		{
 			$this->_posted = $time;
 		}
-		
+
 		/**
 		 * Set the created at time
-		 * 
+		 *
 		 * @see TBGIssue::setPosted()
-		 * @param integer $time 
+		 * @param integer $time
 		 */
 		public function setCreatedAt($time)
 		{
 			$this->setPosted($time);
 		}
-		
+
 		/**
 		 * Returns the issue status
 		 *
@@ -1767,7 +1767,7 @@
 		{
 			return $this->_b2dbLazyload('_status');
 		}
-	
+
 		/**
 		 * Returns the editions for this issue
 		 *
@@ -1778,7 +1778,7 @@
 			$this->_populateAffected();
 			return $this->_editions;
 		}
-		
+
 		public function isEditionAffected(TBGEdition $edition)
 		{
 			return $this->isEditionIDAffected($edition->getID());
@@ -1797,7 +1797,7 @@
 			}
 			return false;
 		}
-		
+
 		public function getFirstAffectedEdition()
 		{
 			$editions = $this->getEditions();
@@ -1809,7 +1809,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns the builds for this issue
 		 *
@@ -1820,7 +1820,7 @@
 			$this->_populateAffected();
 			return $this->_builds;
 		}
-	
+
 		public function isBuildAffected(TBGBuild $build)
 		{
 			return $this->isBuildIDAffected($build->getID());
@@ -1839,7 +1839,7 @@
 			}
 			return false;
 		}
-		
+
 		public function getFirstAffectedBuild()
 		{
 			$builds = $this->getBuilds();
@@ -1851,7 +1851,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns the components for this issue
 		 *
@@ -1862,7 +1862,7 @@
 			$this->_populateAffected();
 			return $this->_components;
 		}
-		
+
 		public function isComponentAffected(TBGComponent $component)
 		{
 			return $this->isComponentIDAffected($component->getID());
@@ -1893,7 +1893,7 @@
 
 			return $names;
 		}
-		
+
 		public function getFirstAffectedComponent()
 		{
 			$components = $this->getComponents();
@@ -1905,12 +1905,12 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns a string-formatted time based on project setting
 		 *
 		 * @param array $time array of weeks, days and hours
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getFormattedTime($time)
@@ -1935,7 +1935,7 @@
 				$values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of% hours', array('%number_of%' => $time['hours']));
 			}
 			$retval = join(', ', $values);
-			
+
 			if (array_key_exists('points', $time) && $time['points'] > 0)
 			{
 				if (!empty($values))
@@ -1947,10 +1947,10 @@
 
 			return ($retval != '') ? $retval : $i18n->__('No time');
 		}
-	
+
 		/**
 		 * Attach a link to the issue
-		 * 
+		 *
 		 * @param string $url The url of the link
 		 * @param string $description[optional] a description
 		 */
@@ -1962,7 +1962,7 @@
 
 		/**
 		 * Attach a file to the issue
-		 * 
+		 *
 		 * @param TBGFile $file The file to attach
 		 */
 		public function attachFile(TBGFile $file, $file_comment = '', $description = '')
@@ -1996,7 +1996,7 @@
 			{
 				$this->_parent_issues = array();
 				$this->_child_issues = array();
-				
+
 				if ($res = \b2db\Core::getTable('TBGIssueRelationsTable')->getRelatedIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
@@ -2014,14 +2014,14 @@
 								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
 						}
-						catch (Exception $e) 
+						catch (Exception $e)
 						{
 						}
 					}
 				}
 			}
 		}
-		
+
 		/**
 		 * populates list of issues which are duplicates of this one
 		 */
@@ -2030,7 +2030,7 @@
 			if ($this->_duplicate_issues === null)
 			{
 				$this->_duplicate_issues = array();
-				
+
 				if ($res = TBGIssuesTable::getTable()->getDuplicateIssuesByIssueNo($this->getID()))
 				{
 					while ($row = $res->getNextRow())
@@ -2040,17 +2040,17 @@
 							$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
 							$this->_duplicate_issues[$row->get(TBGIssuesTable::ID)] = $issue;
 						}
-						catch (Exception $e) 
+						catch (Exception $e)
 						{
 						}
 					}
 				}
 			}
 		}
-		
+
 		/**
 		 * Return issues relating to this
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getParentIssues()
@@ -2066,18 +2066,18 @@
 
 		/**
 		 * Return related issues
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getChildIssues()
 		{
 			$this->_populateRelatedIssues();
 			return $this->_child_issues;
-		} 
-		
+		}
+
 		/**
 		 * Returns the vote sum for this issue
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getVotes()
@@ -2087,14 +2087,14 @@
 
 		/**
 		 * Set total number of votes
-		 * 
+		 *
 		 * @param integer
 		 */
 		public function setVotes($votes)
 		{
 			$this->_votes_total = $votes;
 		}
-		
+
 		/**
 		 * Load user votes
 		 */
@@ -2123,12 +2123,12 @@
 		{
 			$user_id = (is_object($user_id)) ? $user_id->getID() : $user_id;
 			$this->_setupVotes();
-			
+
 			if (($user_id == TBGSettings::getDefaultUserID() && TBGSettings::isDefaultUserGuest()) || !$this->getProject()->canVoteOnIssues())
 			{
 				return true;
 			}
-			
+
 			if (array_key_exists($user_id, $this->_votes))
 			{
 				return ($up) ? ((int) $this->_votes[$user_id] > 0) : ((int) $this->_votes[$user_id] < 0);
@@ -2141,7 +2141,7 @@
 
 		/**
 		 * Vote for this issue, returns false if user cant vote or has voted the same before
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function vote($up = true)
@@ -2160,7 +2160,7 @@
 				return false;
 			}
 		}
-	
+
 		/**
 		 * Returns an array with tasks
 		 *
@@ -2182,7 +2182,7 @@
 					}
 				}
 			}
-	
+
 			return $this->_tasks;
 		}
 
@@ -2217,7 +2217,7 @@
 		{
 			return $this->_deleted;
 		}
-	
+
 		/**
 		 * Returns the issue title
 		 *
@@ -2227,7 +2227,7 @@
 		{
 			return htmlentities($this->_title, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 		}
-		
+
 		/**
 		 * Returns the issue title
 		 *
@@ -2237,10 +2237,10 @@
 		{
 			return $this->_title;
 		}
-		
+
 		/**
 		 * Set the title
-		 * 
+		 *
 		 * @param string $title The new title to set
 		 */
 		public function setTitle($title)
@@ -2251,7 +2251,7 @@
 			}
 			$this->_addChangedProperty('_title', $title);
 		}
-		
+
 		/**
 		 * Returns the description
 		 *
@@ -2261,27 +2261,27 @@
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Return whether or not this issue has a description set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasDescription()
 		{
 			return (bool) (trim($this->getDescription()) != '');
 		}
-	
+
 		/**
 		 * Set the description
-		 * 
+		 *
 		 * @param string $description
 		 */
 		public function setDescription($description)
 		{
 			$this->_addChangedProperty('_description', $description);
 		}
-	
+
 		/**
 		 * Returns the issues reproduction steps
 		 *
@@ -2291,17 +2291,17 @@
 		{
 			return $this->_reproduction_steps;
 		}
-		
+
 		/**
 		 * Set the reproduction steps
-		 * 
+		 *
 		 * @param string $reproduction_steps
 		 */
 		public function setReproductionSteps($reproduction_steps)
 		{
 			$this->_addChangedProperty('_reproduction_steps', $reproduction_steps);
 		}
-		
+
 		/**
 		 * Returns the category
 		 *
@@ -2311,10 +2311,10 @@
 		{
 			return $this->_b2dbLazyload('_category');
 		}
-		
+
 		/**
 		 * Set the category
-		 * 
+		 *
 		 * @param integer $category_id The category ID to change to
 		 */
 		public function setCategory($category_id)
@@ -2324,14 +2324,14 @@
 
 		/**
 		 * Set the status
-		 * 
+		 *
 		 * @param integer $status_id The status ID to change to
 		 */
 		public function setStatus($status_id)
 		{
-			$this->_addChangedProperty('_status', $status_id);			
+			$this->_addChangedProperty('_status', $status_id);
 		}
-		
+
 		/**
 		 * Returns the reproducability
 		 *
@@ -2352,17 +2352,17 @@
 			}
 			return $this->_reproducability;
 		}
-		
+
 		/**
 		 * Set the reproducability
-		 * 
+		 *
 		 * @param integer $reproducability_id The reproducability id to change to
 		 */
 		public function setReproducability($reproducability_id)
 		{
 			$this->_addChangedProperty('_reproducability', $reproducability_id);
 		}
-	
+
 		/**
 		 * Returns the priority
 		 *
@@ -2425,7 +2425,7 @@
 		 * Return the value of a custom field
 		 *
 		 * @param string $key
-		 * 
+		 *
 		 * @return mixed
 		 */
 		public function getCustomField($key)
@@ -2524,10 +2524,10 @@
 			return $this->_milestone;*/
 			return $this->_b2dbLazyload('_milestone');
 		}
-		
+
 		/**
 		 * Set the milestone
-		 * 
+		 *
 		 * @param integer $milestone_id The milestone id to assign
 		 */
 		public function setMilestone($milestone_id)
@@ -2542,10 +2542,10 @@
 		{
 			$this->setMilestone(0);
 		}
-	
+
 		/**
 		 * Remove a dependant issue
-		 * 
+		 *
 		 * @param integer $issue_id The issue ID to remove
 		 */
 		public function removeDependantIssue($issue_id)
@@ -2565,12 +2565,12 @@
 				TBGIssueRelationsTable::getTable()->doDeleteById($relation_id);
 			}
 		}
-		
+
 		/**
 		 * Removes a related issue
 		 *
 		 * @see removeDependantIssue()
-		 * 
+		 *
 		 * @param TBGIssue $related_issue The issue to remove relations from
 		 * @param integer $relation_id The relation id to delete
 		 */
@@ -2578,21 +2578,21 @@
 		{
 			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 			$this->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
+
 			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
 			$related_issue->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
+
 			if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
 			{
 				unset($this->_parent_issues[$relation_id]);
 			}
 		}
-		
+
 		/**
 		 * Removes a related issue
-		 * 
+		 *
 		 * @see removeDependantIssue()
-		 * 
+		 *
 		 * @param TBGIssue $related_issue The issue to remove relations from
 		 * @param integer $relation_id The relation id to delete
 		 */
@@ -2600,10 +2600,10 @@
 		{
 			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 			$this->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
+
 			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
 			$related_issue->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
+
 			if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
 			{
 				unset($this->_child_issues[$relation_id]);
@@ -2612,9 +2612,9 @@
 
 		/**
 		 * Add a related issue
-		 * 
+		 *
 		 * @param TBGIssue $related_issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addParentIssue(TBGIssue $related_issue)
@@ -2623,13 +2623,13 @@
 			{
 				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
 				$this->_parent_issues = null;
-				
+
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
+
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
 				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
+
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
 			return false;
@@ -2637,9 +2637,9 @@
 
 		/**
 		 * Add a related issue
-		 * 
+		 *
 		 * @param TBGIssue $related_issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addChildIssue(TBGIssue $related_issue)
@@ -2648,13 +2648,13 @@
 			{
 				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
 				$this->_child_issues = null;
-				
+
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
+
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
 				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
+
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
 			return false;
@@ -2678,10 +2678,10 @@
 					$this->_posted_by = null;
 				}
 			}
-	
+
 			return $this->_posted_by;
 		}
-		
+
 		/**
 		 * Whether or not the issue is posted by someone
 		 *
@@ -2702,10 +2702,10 @@
 			$poster = $this->getPostedBy();
 			return ($poster instanceof TBGIdentifiable) ? $poster->getID() : null;
 		}
-		
+
 		/**
 		 * Set issue poster
-		 * 
+		 *
 		 * @param TBGIdentifiableClass $poster The user/team you want to have posted the issue
 		 */
 		public function setPostedBy(TBGIdentifiableClass $poster)
@@ -2720,27 +2720,27 @@
 		{
 			return $this->_isPropertyChanged('_posted_by');
 		}
-		
+
 		/**
 		 * Returns the percentage completed
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getPercentCompleted()
 		{
 			return (int) $this->_percent_complete;
 		}
-		
+
 		/**
 		 * Set percentage completed
-		 * 
+		 *
 		 * @param integer $percentage
 		 */
 		public function setPercentCompleted($percentage)
 		{
 			$this->_addChangedProperty('_percent_complete', (int) $percentage);
 		}
-	
+
 		/**
 		 * Returns the resolution
 		 *
@@ -2750,10 +2750,10 @@
 		{
 			return $this->_b2dbLazyload('_resolution');
 		}
-		
+
 		/**
 		 * Set the resolution
-		 * 
+		 *
 		 * @param integer $resolution_id The resolution ID you want to set it to
 		 */
 		public function setResolution($resolution_id)
@@ -2773,24 +2773,24 @@
 
 		/**
 		 * Set the severity
-		 * 
+		 *
 		 * @param integer $severity_id The severity ID you want to set it to
 		 */
 		public function setSeverity($severity_id)
 		{
 			$this->_addChangedProperty('_severity', $severity_id);
 		}
-	
+
 		/**
 		 * Set the issue type
-		 * 
+		 *
 		 * @param integer $issuetype_id The issue type ID you want to set
 		 */
 		public function setIssuetype($issuetype_id)
 		{
 			$this->_addChangedProperty('_issuetype', $issuetype_id);
 		}
-	
+
 		/**
 		 * Returns an array with the estimated time
 		 *
@@ -2800,10 +2800,10 @@
 		{
 			return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->_estimated_hours, 'points' => (int) $this->_estimated_points);
 		}
-		
+
 		/**
 		 * Returns the estimated months
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getEstimatedMonths()
@@ -2813,7 +2813,7 @@
 
 		/**
 		 * Returns the estimated weeks
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getEstimatedWeeks()
@@ -2823,39 +2823,39 @@
 
 		/**
 		 * Returns the estimated days
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getEstimatedDays()
 		{
 			return (int) $this->_estimated_days;
 		}
-		
+
 		/**
 		 * Returns the estimated hours
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getEstimatedHours()
 		{
 			return (int) $this->_estimated_hours;
 		}
-		
+
 		/**
 		 * Returns the estimated points
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getEstimatedPoints()
 		{
 			return (int) $this->_estimated_points;
 		}
-		
+
 		/**
 		 * Turns a string into a months/weeks/days/hours/points array
-		 * 
+		 *
 		 * @param string $string The string to convert
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _convertFancyStringToTime($string)
@@ -2890,10 +2890,10 @@
 			}
 			return $retarr;
 		}
-		
+
 		/**
 		 * Returns whether or not there is an estimated time for this issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasEstimatedTime()
@@ -2901,7 +2901,7 @@
 			$time = $this->getEstimatedTime();
 			return (array_sum($time) > 0) ? true : false;
 		}
-		
+
 		/**
 		 * Set estimated time
 		 *
@@ -2927,70 +2927,70 @@
 				$this->_addChangedProperty('_estimated_points', $time['points']);
 			}
 		}
-		
+
 		/**
 		 * Set estimated months
-		 * 
+		 *
 		 * @param integer $months The number of months estimated
 		 */
 		public function setEstimatedMonths($months)
 		{
 			$this->_addChangedProperty('_estimated_months', $months);
 		}
-	
+
 		/**
 		 * Set estimated weeks
-		 * 
+		 *
 		 * @param integer $weeks The number of weeks estimated
 		 */
 		public function setEstimatedWeeks($weeks)
 		{
 			$this->_addChangedProperty('_estimated_weeks', $weeks);
 		}
-	
+
 		/**
 		 * Set estimated days
-		 * 
+		 *
 		 * @param integer $days The number of days estimated
 		 */
 		public function setEstimatedDays($days)
 		{
 			$this->_addChangedProperty('_estimated_days', $days);
 		}
-	
+
 		/**
 		 * Set estimated hours
-		 * 
+		 *
 		 * @param integer $hours The number of hours estimated
 		 */
 		public function setEstimatedHours($hours)
 		{
 			$this->_addChangedProperty('_estimated_hours', $hours);
 		}
-		
+
 		/**
 		 * Set issue number
-		 * 
+		 *
 		 * @param integer $no New issue number
 		 */
 		public function setIssueNumber($no)
 		{
 			$this->_issue_no = $no;
 		}
-	
+
 		/**
 		 * Set estimated points
-		 * 
+		 *
 		 * @param integer $points The number of points estimated
 		 */
 		public function setEstimatedPoints($points)
 		{
 			$this->_addChangedProperty('_estimated_points', $points);
 		}
-		
+
 		/**
 		 * Check to see whether the estimated time is changed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isEstimatedTimeChanged()
@@ -3000,14 +3000,14 @@
 
 		/**
 		 * Check to see whether the estimated time is merged
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isEstimatedTimeMerged()
 		{
 			return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_PointsMerged());
 		}
-		
+
 		/**
 		 * Reverts estimated time
 		 */
@@ -3019,7 +3019,7 @@
 			$this->revertEstimated_Hours();
 			$this->revertEstimated_Points();
 		}
-	
+
 		/**
 		 * Check to see whether the percent completed is changed
 		 *
@@ -3124,7 +3124,7 @@
 
 		/**
 		 * Check to see whether the assignee is changed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isAssigneeUserChanged()
@@ -3134,14 +3134,14 @@
 
 		/**
 		 * Check to see whether the owner is merged
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isAssigneeUserMerged()
 		{
 			return $this->_isPropertyMerged('_assignee_user');
 		}
-		
+
 		/**
 		 * Reverts estimated time
 		 */
@@ -3205,10 +3205,10 @@
 		{
 			return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => (int) $this->_spent_hours, 'points' => (int) $this->_spent_points);
 		}
-		
+
 		/**
 		 * Returns the spent months
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getSpentMonths()
@@ -3218,7 +3218,7 @@
 
 		/**
 		 * Returns the spent weeks
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getSpentWeeks()
@@ -3228,34 +3228,34 @@
 
 		/**
 		 * Returns the spent days
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getSpentDays()
 		{
 			return (int) $this->_spent_days;
 		}
-		
+
 		/**
 		 * Returns the spent hours
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getSpentHours()
 		{
 			return (int) $this->_spent_hours;
 		}
-		
+
 		/**
 		 * Returns the spent points
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getSpentPoints()
 		{
 			return (int) $this->_spent_points;
 		}
-		
+
 		/**
 		 * Returns an array with the spent time
 		 *
@@ -3301,7 +3301,7 @@
 				$this->_addChangedProperty('_spent_points', $time['points']);
 			}
 		}
-		
+
 		/**
 		 * Add to spent time
 		 *
@@ -3329,51 +3329,51 @@
 				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $time['hours']);
 				$this->_addChangedProperty('_spent_points', $this->_spent_points + $time['points']);
 			}
-		}		
+		}
 
 		/**
 		 * Set spent months
-		 * 
+		 *
 		 * @param integer $months The number of months spent
 		 */
 		public function setSpentMonths($months)
 		{
 			$this->_addChangedProperty('_spent_months', $months);
 		}
-	
+
 		/**
 		 * Set spent weeks
-		 * 
+		 *
 		 * @param integer $weeks The number of weeks spent
 		 */
 		public function setSpentWeeks($weeks)
 		{
 			$this->_addChangedProperty('_spent_weeks', $weeks);
 		}
-	
+
 		/**
 		 * Set spent days
-		 * 
+		 *
 		 * @param integer $days The number of days spent
 		 */
 		public function setSpentDays($days)
 		{
 			$this->_addChangedProperty('_spent_days', $days);
 		}
-	
+
 		/**
 		 * Set spent hours
-		 * 
+		 *
 		 * @param integer $hours The number of hours spent
 		 */
 		public function setSpentHours($hours)
 		{
 			$this->_addChangedProperty('_spent_hours', $hours);
 		}
-	
+
 		/**
 		 * Set spent points
-		 * 
+		 *
 		 * @param integer $points The number of points spent
 		 */
 		public function setSpentPoints($points)
@@ -3383,57 +3383,57 @@
 
 		/**
 		 * Add spent months
-		 * 
+		 *
 		 * @param integer $months The number of months spent
 		 */
 		public function addSpentMonths($months)
 		{
 			$this->_addChangedProperty('_spent_months', $this->_spent_months + $months);
 		}
-	
+
 		/**
 		 * Add spent weeks
-		 * 
+		 *
 		 * @param integer $weeks The number of weeks spent
 		 */
 		public function addSpentWeeks($weeks)
 		{
 			$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks);
 		}
-	
+
 		/**
 		 * Add spent days
-		 * 
+		 *
 		 * @param integer $days The number of days spent
 		 */
 		public function addSpentDays($days)
 		{
 			$this->_addChangedProperty('_spent_days', $this->_spent_days + $days);
 		}
-	
+
 		/**
 		 * Add spent hours
-		 * 
+		 *
 		 * @param integer $hours The number of hours spent
 		 */
 		public function addSpentHours($hours)
 		{
 			$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours);
 		}
-	
+
 		/**
 		 * Add spent points
-		 * 
+		 *
 		 * @param integer $points The number of points spent
 		 */
 		public function addSpentPoints($points)
 		{
 			$this->_addChangedProperty('_spent_points', $this->_spent_points + $points);
 		}
-		
+
 		/**
 		 * Check to see whether the spent time is changed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isSpentTimeChanged()
@@ -3443,14 +3443,14 @@
 
 		/**
 		 * Check to see whether the spent time is merged
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isSpentTimeMerged()
 		{
 			return (bool) ($this->isSpent_MonthsMerged() || $this->isSpent_WeeksMerged() || $this->isSpent_DaysMerged() || $this->isSpent_HoursMerged() || $this->isSpent_PointsMerged());
 		}
-		
+
 		/**
 		 * Reverts spent time
 		 */
@@ -3462,10 +3462,10 @@
 			$this->revertSpent_Hours();
 			$this->revertSpent_Points();
 		}
-		
+
 		/**
 		 * Returns whether or not there is an spent time for this issue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasSpentTime()
@@ -3473,7 +3473,7 @@
 			$time = $this->getSpentTime();
 			return (array_sum($time) > 0) ? true : false;
 		}
-		
+
 		/**
 		 * Returns the timestamp for when the issue was last updated
 		 *
@@ -3483,7 +3483,7 @@
 		{
 			return $this->_last_updated;
 		}
-	
+
 		/**
 		 * Returns the issues state
 		 *
@@ -3493,36 +3493,36 @@
 		{
 			return $this->_state;
 		}
-		
+
 		/**
 		 * Whether or not the issue is closed
-		 * 
+		 *
 		 * @see getState()
 		 * @see isOpen()
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isClosed()
 		{
 			return ($this->getState() == self::STATE_CLOSED) ? true : false;
 		}
-		
+
 		/**
 		 * Whether or not the issue is open
-		 * 
+		 *
 		 * @see getState()
 		 * @see isClosed()
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isOpen()
 		{
 			return !$this->isClosed();
 		}
-		
+
 		/**
 		 * Set the issue state
-		 * 
+		 *
 		 * @param integer $state The state
 		 */
 		public function setState($state)
@@ -3533,10 +3533,10 @@
 			}
 
 			$this->_addChangedProperty('_state', $state);
-			
+
 			return true;
 		}
-		
+
 		/**
 		 * Close the issue
 		 */
@@ -3544,7 +3544,7 @@
 		{
 			$this->setState(self::STATE_CLOSED);
 		}
-	
+
 		/**
 		 * (Re-)open the issue
 		 */
@@ -3552,12 +3552,12 @@
 		{
 			$this->setState(self::STATE_OPEN);
 		}
-	
+
 		/**
 		 * Add a build to the list of affected builds
-		 * 
+		 *
 		 * @param TBGBuild $build The build to add
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addAffectedBuild($build)
@@ -3574,12 +3574,12 @@
 			}
 			return false;
 		}
-	
+
 		/**
 		 * Add an edition to the list of affected editions
-		 * 
+		 *
 		 * @param TBGEdition $edition The edition to add
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addAffectedEdition($edition)
@@ -3596,12 +3596,12 @@
 			}
 			return false;
 		}
-	
+
 		/**
 		 * Add a component to the list of affected components
-		 * 
+		 *
 		 * @param TBGComponent $component The component to add
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addAffectedComponent($component)
@@ -3618,16 +3618,16 @@
 			}
 			return false;
 		}
-		
+
 			/**
 		 * Remove an affected edition
-		 * 
+		 *
 		 * @see removeAffectedItem()
 		 * @see removeAffectedBuild()
 		 * @see removeAffectedComponent()
-		 * 
+		 *
 		 * @param TBGEdition $item The edition to remove
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function removeAffectedEdition($item)
@@ -3640,16 +3640,16 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Remove an affected build
 		 *
 		 * @see removeAffectedItem()
 		 * @see removeAffectedEdition()
 		 * @see removeAffectedComponent()
-		 * 
+		 *
 		 * @param TBGBuild $item The build to remove
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function removeAffectedBuild($item)
@@ -3662,16 +3662,16 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Remove an affected component
 		 *
 		 * @see removeAffectedItem()
 		 * @see removeAffectedEdition()
 		 * @see removeAffectedBuild()
-		 * 
+		 *
 		 * @param TBGComponent $item The component to remove
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function removeAffectedComponent($item)
@@ -3684,17 +3684,17 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Remove an affected edition
-		 * 
+		 *
 		 * @see confirmAffectedItem()
 		 * @see confirmAffectedBuild()
 		 * @see confirmAffectedComponent()
-		 * 
+		 *
 		 * @param TBGEdition $item The edition to remove
 		 * @param boolean $confirmed[optional] Whether it's confirmed or not
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function confirmAffectedEdition($item, $confirmed = true)
@@ -3714,17 +3714,17 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Remove an affected build
 		 *
 		 * @see confirmAffectedItem()
 		 * @see confirmAffectedEdition()
 		 * @see confirmAffectedComponent()
-		 * 
+		 *
 		 * @param TBGBuild $item The build to remove
 		 * @param boolean $confirmed[optional] Whether it's confirmed or not
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function confirmAffectedBuild($item, $confirmed = true)
@@ -3744,17 +3744,17 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Remove an affected component
 		 *
 		 * @see confirmAffectedItem()
 		 * @see confirmAffectedEdition()
 		 * @see confirmAffectedBuild()
-		 * 
+		 *
 		 * @param TBGComponent $item The component to remove
 		 * @param boolean $confirmed[optional] Whether it's confirmed or not
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function confirmAffectedComponent($item, $confirmed = true)
@@ -3762,7 +3762,7 @@
 			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
-				
+
 				if ($confirmed)
 				{
 					$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now confirmed for this issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
@@ -3778,14 +3778,14 @@
 
 		/**
 		 * Set status for affected edition
-		 * 
+		 *
 		 * @see setAffectedItemStatus()
 		 * @see setAffectedBuildStatus()
 		 * @see setAffectedComponentStatus()
-		 * 
+		 *
 		 * @param TBGEdition $item The edition to set status for
 		 * @param TBGDatatype $status The status to set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function setAffectedEditionStatus($item, $status)
@@ -3798,17 +3798,17 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Set status for affected build
-		 * 
+		 *
 		 * @see setAffectedItemStatus()
 		 * @see setAffectedEditionStatus()
 		 * @see setAffectedComponentStatus()
-		 * 
+		 *
 		 * @param TBGBuild $item The build to set status for
 		 * @param TBGDatatype $status The status to set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function setAffectedBuildStatus($item, $status)
@@ -3821,17 +3821,17 @@
 			}
 			return false;
 		}
-				
+
 		/**
 		 * Set status for affected component
-		 * 
+		 *
 		 * @see setAffectedItemStatus()
 		 * @see setAffectedBuildStatus()
 		 * @see setAffectedEditionStatus()
-		 * 
+		 *
 		 * @param TBGComponent $item The component to set status for
 		 * @param TBGDatatype $status The status to set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function setAffectedComponentStatus($item, $status)
@@ -3844,7 +3844,7 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Updates the issue's last_updated time to "now"
 		 */
@@ -3860,10 +3860,10 @@
 		{
 			$this->_deleted = true;
 		}
-	
+
 		/**
 		 * Adds a log entry
-		 * 
+		 *
 		 * @param integer $change_type Type of log entry
 		 * @param string $text The text to log
 		 * @param boolean $system Whether this is a user entry or a system entry
@@ -3873,14 +3873,14 @@
 			$uid = ($system) ? 0 : TBGContext::getUser()->getID();
 			TBGLogTable::getTable()->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid, $time);
 		}
-	
+
 		/**
 		 * Adds a system comment
-		 * 
+		 *
 		 * @param string $title Comment title
 		 * @param string $text Comment text
 		 * @param integer $uid The user ID that posted the comment
-		 * 
+		 *
 		 * @return TBGComment
 		 */
 		public function addSystemComment($title, $text, $uid)
@@ -3900,11 +3900,11 @@
 			TBGEvent::createNew('core', 'TBGIssue::addSystemComment', $this, array('comment' => $comment))->trigger();
 			return $comment;
 		}
-	
+
 		/**
 		 * Return an array with all the links:
 		 * 		'id' => array('url', 'description')
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getLinks()
@@ -3912,7 +3912,7 @@
 			$this->_populateLinks();
 			return $this->_links;
 		}
-		
+
 		/**
 		 * Populate the internal links array
 		 */
@@ -3923,10 +3923,10 @@
 				$this->_links = \b2db\Core::getTable('TBGLinksTable')->getByIssueID($this->getID());
 			}
 		}
-	
+
 		/**
 		 * Remove a link
-		 * 
+		 *
 		 * @param integer $link_id The link ID to remove
 		 */
 		public function removeLink($link_id)
@@ -3939,7 +3939,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Populate the files array
 		 */
@@ -3953,7 +3953,7 @@
 
 		/**
 		 * Return an array with all files attached to this issue
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getFiles()
@@ -3981,7 +3981,7 @@
 
 		/**
 		 * Return a file by the filename if it is attached to this issue
-		 * 
+		 *
 		 * @param string $filename The original filename to match against
 		 *
 		 * @return TBGFile
@@ -3997,12 +3997,12 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Remove a file
-		 * 
+		 *
 		 * @param TBGFile $file The file to be removed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function removeFile(TBGFile $file)
@@ -4014,10 +4014,10 @@
 			}
 			$file->delete();
 		}
-	
+
 		/**
 		 * Retrieve all log entries for this issue
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getLogEntries()
@@ -4025,7 +4025,7 @@
 			$this->_populateLogEntries();
 			return $this->_log_entries;
 		}
-		
+
 		/**
 		 * Populate log entries array
 		 */
@@ -4033,33 +4033,33 @@
 		{
 			if ($this->_log_entries === null)
 			{
-				$this->_log_entries = TBGLogTable::getTable()->getByIssueID($this->getID()); 
+				$this->_log_entries = TBGLogTable::getTable()->getByIssueID($this->getID());
 			}
 		}
 
 		/**
 		 * Mark issue as blocking or not blocking
-		 * 
+		 *
 		 * @param boolean $blocking[optional] Whether it's blocking or not
 		 */
 		public function setBlocking($blocking = true)
 		{
 			$this->_addChangedProperty('_blocking', (bool) $blocking);
 		}
-		
+
 		/**
 		 * Return whether the issue is blocking the next release or not
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isBlocking()
 		{
 			return $this->_blocking;
 		}
-		
+
 		/**
 		 * Retrieve all comments for this issue
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getComments()
@@ -4067,7 +4067,7 @@
 			$this->_populateComments();
 			return $this->_comments;
 		}
-		
+
 		/**
 		 * Populate comments array
 		 */
@@ -4087,10 +4087,10 @@
 				$this->_b2dbLazyload('_comments');
 			}
 		}
-		
+
 		/**
 		 * Return the number of comments
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getCommentCount()
@@ -4120,7 +4120,7 @@
 
 			return (int) $this->_num_user_comments;
 		}
-		
+
 		public function isReproductionStepsChanged()
 		{
 			return $this->isReproduction_StepsChanged();
@@ -4128,9 +4128,9 @@
 
 		/**
 		 * Return whether or not a specific field is visible
-		 *  
+		 *
 		 * @param string $fieldname the fieldname key
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isFieldVisible($fieldname)
@@ -4169,7 +4169,7 @@
 
 		/**
 		 * Return whether or not the "description" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isDescriptionVisible()
@@ -4179,127 +4179,127 @@
 
 		/**
 		 * Return whether or not the "reproduction steps" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isReproductionStepsVisible()
 		{
 			return (bool) ($this->isFieldVisible('reproduction_steps') || $this->getReproductionSteps());
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "category" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isCategoryVisible()
 		{
 			return (bool) ($this->isFieldVisible('category') || $this->getCategory() instanceof TBGDatatype);
-		} 
+		}
 
 		/**
 		 * Return whether or not the "resolution" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isResolutionVisible()
 		{
 			return (bool) ($this->isFieldVisible('resolution') || $this->getResolution() instanceof TBGDatatype);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "editions" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isEditionsVisible()
 		{
 			return (bool) ($this->isFieldVisible('edition') || count($this->getEditions()) > 0);
-		} 
+		}
 
 		/**
 		 * Return whether or not the "builds" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isBuildsVisible()
 		{
 			return (bool) ($this->isFieldVisible('build') || count($this->getBuilds()) > 0);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "components" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isComponentsVisible()
 		{
 			return (bool) ($this->isFieldVisible('component') || count($this->getComponents()) > 0);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "reproducability" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isReproducabilityVisible()
 		{
 			return (bool) ($this->isFieldVisible('reproducability') || $this->getReproducability() instanceof TBGDatatype);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "severity" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isSeverityVisible()
 		{
 			return (bool) ($this->isFieldVisible('severity') || $this->getSeverity() instanceof TBGDatatype);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "priority" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isPriorityVisible()
 		{
 			return (bool) ($this->isFieldVisible('priority') || $this->getPriority() instanceof  TBGDatatype);
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "estimated time" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isEstimatedTimeVisible()
 		{
 			return (bool) ($this->isFieldVisible('estimated_time') || $this->hasEstimatedTime());
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "spent time" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isSpentTimeVisible()
 		{
 			return (bool) ($this->isFieldVisible('spent_time') || $this->hasSpentTime());
-		} 
-		
+		}
+
 		/**
 		 * Return whether or not the "milestone" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isMilestoneVisible()
 		{
 			return (bool) ($this->isFieldVisible('milestone') || $this->getMilestone() instanceof TBGMilestone);
-		} 
+		}
 
 		/**
 		 * Return whether or not the "percent_complete" field is visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isPercentCompletedVisible()
@@ -4309,7 +4309,7 @@
 
 		/**
 		 * Return the time when the issue was closed
-		 * 
+		 *
 		 * @return false if closed, otherwise a timestamp
 		 */
 		public function whenClosed()
@@ -4322,16 +4322,16 @@
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 14);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
 			$res = TBGLogTable::getTable()->doSelect($crit);
-			
+
 			$ret_arr = array();
 
 			$row = $res->getNextRow();
 			return($row->get(TBGLogTable::TIME));
-		}	
+		}
 
 		/**
 		 * Return the time when the issue was reopened
-		 * 
+		 *
 		 * @return false if closed, otherwise a timestamp
 		 */
 		public function whenReopened()
@@ -4344,14 +4344,14 @@
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 22);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
 			$res = TBGLogTable::getTable()->doSelect($crit);
-			
+
 			$ret_arr = array();
 
 			if (count($res) == 0)
 			{
 				return false;
 			}
-			
+
 			$row = $res->getNextRow();
 			return($row->get(TBGLogTable::TIME));
 		}
@@ -4402,10 +4402,10 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Save changes made to the issue since last time
-		 * 
+		 *
 		 * @return boolean
 		 */
 		protected function _preSave($is_new)
@@ -4415,11 +4415,11 @@
 			{
 				if (!$this->_issue_no)
 					$this->_issue_no = TBGIssuesTable::getTable()->getNextIssueNumberForProductID($this->getProject()->getID());
-				
+
 				if (!$this->_posted) $this->_posted = NOW;
 				if (!$this->_last_updated) $this->_last_updated = NOW;
 				if (!$this->_posted_by) $this->_posted_by = TBGContext::getUser();
-				
+
 				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
 				$step->applyToIssue($this);
 				return;
@@ -4433,9 +4433,9 @@
 			$is_saved_assignee = false;
 			$is_saved_owner = false;
 			$changed_properties = $this->_getChangedProperties();
-			
+
 			if (count($changed_properties) == 0) return false;
-			
+
 			foreach ($changed_properties as $property => $value)
 			{
 				$compare_value = (is_object($this->$property)) ? $this->$property->getID() : $this->$property;
@@ -4465,7 +4465,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The category has been updated, from '''%previous_category%''' to '''%new_category%'''.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
 							break;
@@ -4525,7 +4525,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The status has been updated, from '''%previous_status%''' to '''%new_status%'''.", array('%previous_status%' => $old_name, '%new_status%' => $new_name));
 							break;
@@ -4539,10 +4539,10 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''.", array('%previous_reproducability%' => $old_name, '%new_reproducability%' => $new_name));
-							
+
 							break;
 						case '_priority':
 							if ($value['original_value'] != 0)
@@ -4554,7 +4554,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
 							break;
@@ -4563,12 +4563,12 @@
 							if (!$is_saved_assignee)
 							{
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiable) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
-								
+
 								if ($this->getAssignee() instanceof TBGUser)
 								{
 									$this->startWorkingOnIssue($this->getAssignee());
 								}
-								
+
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $new_name);
 								$comment_lines[] = TBGContext::getI18n()->__("The assignee has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
 								$is_saved_assignee = true;
@@ -4578,7 +4578,7 @@
 							$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
 							$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							$new_name = $this->getPostedBy()->getName();
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
@@ -4602,7 +4602,7 @@
 							if (!$is_saved_owner)
 							{
 								$new_name = ($this->getOwner() instanceof TBGIdentifiable) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
-								
+
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $new_name);
 								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
 								$is_saved_owner = true;
@@ -4622,7 +4622,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''.", array('%previous_resolution%' => $old_name, '%new_resolution%' => $new_name));
 							break;
@@ -4636,7 +4636,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''.", array('%previous_severity%' => $old_name, '%new_severity%' => $new_name));
 							break;
@@ -4650,7 +4650,7 @@
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
 							$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : TBGContext::getI18n()->__('Not determined');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
 							break;
@@ -4664,7 +4664,7 @@
 								$old_name = TBGContext::getI18n()->__('Unknown');
 							}
 							$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : TBGContext::getI18n()->__('Unknown');
-							
+
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
 							break;
@@ -4762,7 +4762,7 @@
 							{
 								$key = mb_substr($property, 12);
 								$customdatatype = TBGCustomDatatype::getByKey($key);
-								
+
 								switch ($customdatatype->getType())
 								{
 									case TBGCustomDatatype::INPUT_TEXT:
@@ -4871,7 +4871,7 @@
 			$this->related_issues_to_save = $related_issues_to_save;
 			$this->_clearChangedProperties();
 		}
-		
+
 		protected function _postSave($is_new)
 		{
 			$this->_clearChangedProperties();
@@ -4904,11 +4904,11 @@
 			{
 				$this->getMilestone()->updateStatus();
 			}
-			
+
 			unset($this->related_issues_to_save, $this->comment, $this->comment_lines);
 			return true;
 		}
-		
+
 		public function checkTaskStates()
 		{
 			if ($this->isOpen())
@@ -4943,10 +4943,10 @@
 		{
 			return $this->_b2dbLazyload('_being_worked_on_by_user');
 		}
-		
+
 		/**
 		 * Clear the user currently working on this issue
-		 * 
+		 *
 		 * @return null
 		 */
 		public function clearUserWorkingOnIssue()
@@ -4954,10 +4954,10 @@
 			$this->_addChangedProperty('_being_worked_on_by_user', null);
 			$this->_being_worked_on_by_user_since = null;
 		}
-		
+
 		/**
 		 * Register a user as working on the issue
-		 * 
+		 *
 		 * @param TBGUser $user
 		 */
 		public function startWorkingOnIssue(TBGUser $user)
@@ -4965,7 +4965,7 @@
 			$this->_addChangedProperty('_being_worked_on_by_user', $user->getID());
 			$this->_being_worked_on_by_user_since = NOW;
 		}
-		
+
 		public function calculateTimeSpent()
 		{
 			$ts_array = array('hours' => 0, 'days' => 0, 'weeks' => 0);
@@ -4975,7 +4975,7 @@
 				$weeks_spent = 0;
 				$days_spent = 0;
 				$hours_spent = 0;
-				
+
 				$weeks_spent = floor($time_spent / 604800);
 				$days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
 				$hours_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
@@ -4989,7 +4989,7 @@
 
 		/**
 		 * Stop working on the issue, and save time spent
-		 * 
+		 *
 		 * @return null
 		 */
 		public function stopWorkingOnIssue()
@@ -5000,17 +5000,17 @@
 			if ($time_spent['days'] > 0) $this->addSpentDays($time_spent['days']);
 			if ($time_spent['weeks'] > 0) $this->addSpentWeeks($time_spent['weeks']);
 		}
-		
+
 		/**
 		 * Return whether or not this issue is being worked on by a user
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isBeingWorkedOn()
 		{
 			return ($this->getUserWorkingOnIssue() instanceof TBGUser) ? true : false;
 		}
-		
+
 		public function getWorkedOnSince()
 		{
 			return $this->_being_worked_on_by_user_since;

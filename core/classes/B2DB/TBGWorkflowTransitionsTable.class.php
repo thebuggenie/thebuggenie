@@ -100,7 +100,7 @@
 		{
 			return $this->_getByTypeID('workflow', $workflow_id);
 		}
-		
+
 		public function reMapByWorkflowID($workflow_id, $mapper_array)
 		{
 			foreach ($mapper_array as $old_step_id => $new_step_id)

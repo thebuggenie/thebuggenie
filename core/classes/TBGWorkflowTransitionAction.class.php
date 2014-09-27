@@ -20,7 +20,7 @@
 	 */
 	class TBGWorkflowTransitionAction extends TBGIdentifiableScopedClass
 	{
-		
+
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
 		const ACTION_ASSIGN_ISSUE = 'assign_user';
 		const ACTION_CLEAR_ASSIGNEE = 'clear_assignee';
@@ -43,7 +43,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_action_type;
-		
+
 		/**
 		 * @Column(type="string", length=200)
 		 */
@@ -78,10 +78,10 @@
 					$actions[$action->getActionType()] = $action;
 				}
 			}
-			
+
 			return $actions;
 		}
-		
+
 		/**
 		 * Return the workflow
 		 *
@@ -101,7 +101,7 @@
 		{
 			$this->_transition_id = $transition;
 		}
-		
+
 		public function getTransition()
 		{
 			return $this->_b2dbLazyload('_transition_id');
@@ -111,27 +111,27 @@
 		{
 			$this->_action_type = $action_type;
 		}
-		
+
 		public function getActionType()
 		{
 			return $this->_action_type;
 		}
-		
+
 		public function setTargetValue($target_value)
 		{
 			$this->_target_value = $target_value;
 		}
-		
+
 		public function getTargetValue()
 		{
 			return $this->_target_value;
 		}
-		
+
 		public function hasTargetValue()
 		{
 			return (bool) $this->_target_value;
 		}
-		
+
 		public function perform(TBGIssue $issue, $request = null)
 		{
 			switch ($this->_action_type)
@@ -270,7 +270,7 @@
 					break;
 			}
 		}
-		
+
 		public function hasValidTarget()
 		{
 			if (!$this->_target_value) return true;
@@ -306,7 +306,7 @@
 		public function isValid(TBGRequest $request)
 		{
 			if ($this->_target_value) return true;
-			
+
 			switch ($this->_action_type)
 			{
 				case self::ACTION_ASSIGN_ISSUE:

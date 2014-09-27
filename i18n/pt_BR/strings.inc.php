@@ -619,7 +619,7 @@
   $strings['The password was changed'] = 'A senha foi alterada';
   $strings['This user could not be updated: %message%'] = 'Este usuário não pôde ser atualizado: %message%';
   $strings['This user could not be updated'] = 'Este usuário não pode ser alterado';
-  $strings["The user's scope access was successfully updated"] = "O acesso ao escopo 
+  $strings["The user's scope access was successfully updated"] = "O acesso ao escopo
 The user's scope access was successfully updated";
   $strings['New'] = 'Novo';
   $strings['The workflow scheme was deleted'] = 'O esquema de fluxo de trabalho foi excluído';

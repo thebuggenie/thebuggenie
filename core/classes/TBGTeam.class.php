@@ -20,9 +20,9 @@
 	 */
 	class TBGTeam extends TBGIdentifiableScopedClass
 	{
-		
+
 		protected static $_teams = null;
-		
+
 		protected static $_num_teams = null;
 
 		protected $_members = null;
@@ -41,9 +41,9 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_ondemand = false;
-		
+
 		protected $_associated_projects = null;
-		
+
 		public static function doesTeamNameExist($team_name)
 		{
 			return TBGTeamsTable::getTable()->doesTeamNameExist($team_name);
@@ -57,25 +57,25 @@
 			}
 			return self::$_teams;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$staff_members = new TBGTeam();
 			$staff_members->setName('Staff members');
 			$staff_members->save();
-			
+
 			$developers = new TBGTeam();
 			$developers->setName('Developers');
 			$developers->save();
-			
+
 			$team_leaders = new TBGTeam();
 			$team_leaders->setName('Team leaders');
 			$team_leaders->save();
-			
+
 			$testers = new TBGTeam();
 			$testers->setName('Testers');
 			$testers->save();
-			
+
 			$translators = new TBGTeam();
 			$translators->setName('Translators');
 			$translators->save();
@@ -93,12 +93,12 @@
 
 			return self::$_num_teams;
 		}
-		
+
 		public function __toString()
 		{
 			return "" . $this->_name;
 		}
-		
+
 		/**
 		 * Adds a user to the team
 		 *
@@ -107,11 +107,11 @@
 		public function addMember(TBGUser $user)
 		{
 			TBGTeamMembersTable::getTable()->addUserToTeam($user->getID(), $this->getID());
-			
+
 			if (is_array($this->_members))
 				$this->_members[$user->getID()] = $user->getID();
 		}
-		
+
 		public function getMembers()
 		{
 			if ($this->_members === null)
@@ -136,14 +136,14 @@
 				$this->_num_members--;
 			}
 		}
-		
+
 		protected function _preDelete()
 		{
 			$crit = TBGTeamMembersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGTeamMembersTable::TID, $this->getID());
 			$res = TBGTeamMembersTable::getTable()->doDelete($crit);
 		}
-		
+
 		public static function findTeams($details)
 		{
 			$crit = new \b2db\Criteria();
@@ -175,10 +175,10 @@
 
 			return $this->_num_members;
 		}
-		
+
 		/**
 		 * Get all the projects a team is associated with
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getAssociatedProjects()
@@ -186,22 +186,22 @@
 			if ($this->_associated_projects === null)
 			{
 				$this->_associated_projects = array();
-				
+
 				$project_ids = TBGProjectAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
 				foreach ($project_ids as $project_id)
 				{
 					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);
 				}
 			}
-			
+
 			return $this->_associated_projects;
 		}
-		
+
 		public function isOndemand()
 		{
 			return $this->_ondemand;
 		}
-		
+
 		public function setOndemand($val = true)
 		{
 			$this->_ondemand = $val;

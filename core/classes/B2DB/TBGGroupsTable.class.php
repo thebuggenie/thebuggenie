@@ -23,7 +23,7 @@
 	 * @Table(name="groups")
 	 * @Entity(class="TBGGroup")
 	 */
-	class TBGGroupsTable extends TBGB2DBTable 
+	class TBGGroupsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -45,9 +45,9 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
-			
+
 			$res = $this->doSelect($crit);
-			
+
 			return $res;
 		}
 
@@ -59,5 +59,5 @@
 
 			return (bool) $this->doCount($crit);
 		}
-		
+
 	}

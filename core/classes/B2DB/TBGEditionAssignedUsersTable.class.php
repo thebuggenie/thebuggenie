@@ -32,7 +32,7 @@
 		const USER_ID = 'editionassignedusers.uid';
 		const ROLE_ID = 'editionassignedusers.role_id';
 		const EDITION_ID = 'editionassignedusers.edition_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		public function deleteByEditionID($edition_id)
 		{
 			$crit = $this->getCriteria();

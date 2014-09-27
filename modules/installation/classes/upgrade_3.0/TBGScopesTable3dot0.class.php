@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
-	 * 
+	 *
 	 * @Table(name="scopes")
 	 */
-	class TBGScopesTable3dot0 extends TBGB2DBTable 
+	class TBGScopesTable3dot0 extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'scopes';
 		const ID = 'scopes.id';
@@ -28,7 +28,7 @@
 		const DESCRIPTION = 'scopes.description';
 		const ADMINISTRATOR = 'scopes.administrator';
 		const HOSTNAME = 'scopes.hostname';
-		
+
 		protected function _initialize()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

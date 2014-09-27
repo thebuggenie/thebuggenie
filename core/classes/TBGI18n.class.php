@@ -20,15 +20,15 @@
 	{
 
 		protected $_strings = null;
-		
+
 		protected $_missing_strings = array();
-		
+
 		protected $_language = null;
-		
+
 		protected $_charset = 'utf-8';
-		
+
 		protected $_datetime_formats = array();
-		
+
 		public static function setup($language)
 		{
 			return $_i18n;
@@ -53,7 +53,7 @@
 			$language = ($language === null) ? $this->_language : $language;
 			return THEBUGGENIE_PATH . 'i18n' . DS . $language . DS . 'strings.inc.php';
 		}
-		
+
 		public function initialize()
 		{
 			$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . 'initialize.inc.php';
@@ -71,7 +71,7 @@
 				}
 			}
 		}
-		
+
 		public function setLanguage($language)
 		{
 			if ($language != $this->_language)
@@ -80,7 +80,7 @@
 				$this->initialize();
 			}
 		}
-		
+
 		public function getMissingStrings()
 		{
 			return $this->_missing_strings;
@@ -108,7 +108,7 @@
 			}
 			file_put_contents("\n\t".$this->getStringsFilename(), join("\n\t", $strings), FILE_APPEND);
 		}
-		
+
 		public function setCharset($charset)
 		{
 			$this->_charset = $charset;
@@ -118,23 +118,23 @@
 		{
 			return $this->_language;
 		}
-		
+
 		public function getCharset()
 		{
 			if (TBGContext::isInstallmode()) return $this->_charset;
 			return (TBGSettings::get('charset') != '') ? TBGSettings::get('charset') : $this->_charset;
 		}
-		
+
 		public function getLangCharset()
 		{
 			return $this->_charset;
 		}
-		
+
 		public function loadModuleStrings($module)
 		{
 			$this->loadStrings($module);
 		}
-		
+
 		protected function loadStrings($module = null)
 		{
 			if ($this->_strings === null) $this->_strings = array();
@@ -164,12 +164,12 @@
 			}
 			$this->addStrings($strings);
 		}
-		
+
 		public function addString($key, $translation)
 		{
 			$this->_strings[$key] = $translation;
 		}
-		
+
 		public function addStrings($strings)
 		{
 			if (is_array($strings))
@@ -180,19 +180,19 @@
 				}
 			}
 		}
-		
+
 		public static function getLanguages()
 		{
 			$retarr = array();
 			$cp_handle = opendir(THEBUGGENIE_PATH . 'i18n');
 			while ($classfile = readdir($cp_handle))
 			{
-				if (mb_strstr($classfile, '.') == '' && file_exists(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language')) 
-				{ 
+				if (mb_strstr($classfile, '.') == '' && file_exists(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language'))
+				{
 					$retarr[$classfile] = file_get_contents(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language');
 				}
 			}
-			
+
 			return $retarr;
 		}
 
@@ -246,12 +246,12 @@
 			}
 			return $retstring;
 		}
-		
-		/** 
+
+		/**
 		 * Set local date and time formats
-		 * 
+		 *
 		 * @param $formats array list of applicable formats for this local
-		 * 
+		 *
 		 */
 		public function setDateTimeFormats($formats)
 		{
@@ -260,15 +260,15 @@
 				$this->_datetime_formats = $formats;
 			}
 		}
-		
-		/** 
+
+		/**
 		 * Return localized date and time format
 		 * @see http://php.net/manual/en/function.date.php
-		 * 
+		 *
 		 * @param $id integer ID of format
-		 * 
+		 *
 		 * @return string
-		 * 
+		 *
 		 */
 		public function getDateTimeFormat($id)
 		{
@@ -333,6 +333,6 @@
 					$format = '%c';
 			}
 			return $format;
-		}		
-		
+		}
+
 	}

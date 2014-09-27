@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Criterion class
 	 *
@@ -79,4 +79,3 @@
 			}
 		}
 	}
-	

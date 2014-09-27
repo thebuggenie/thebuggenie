@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="links")
 	 */
-	class TBGLinksTable extends TBGB2DBTable 
+	class TBGLinksTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -47,10 +47,10 @@
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function addLink($target_type, $target_id = 0, $url = null, $description = null, $link_order = null, $scope = null)
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope; 
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			if ($link_order === null)
 			{
 				$crit = $this->getCriteria();
@@ -58,11 +58,11 @@
 				$crit->addWhere(self::TARGET_TYPE, $target_type);
 				$crit->addWhere(self::TARGET_ID, $target_id);
 				$crit->addWhere(self::SCOPE, $scope);
-	
+
 				$row = $this->doSelectOne($crit);
 				$link_order = ($row->get('max_order')) ? $row->get('max_order') : 1;
 			}
-			
+
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::TARGET_TYPE, $target_type);
 			$crit->addInsert(self::TARGET_ID, $target_id);
@@ -77,7 +77,7 @@
 
 			return $res->getInsertID();
 		}
-		
+
 		public function getLinks($target_type, $target_id = 0)
 		{
 			$links = array();
@@ -95,22 +95,22 @@
 			}
 			return $links;
 		}
-		
+
 		public function addLinkToIssue($issue_id, $url, $description = null)
 		{
 			return $this->addLink('issue', $issue_id, $url, $description);
 		}
-		
+
 		public function getMainLinks()
 		{
 			return $this->getLinks('main_menu');
 		}
-		
+
 		public function getByIssueID($issue_id)
 		{
 			return $this->getLinks('issue', $issue_id);
 		}
-		
+
 		public function removeByTargetTypeTargetIDandLinkID($target_type, $target_id, $link_id = null)
 		{
 			$crit = $this->getCriteria();
@@ -124,7 +124,7 @@
 			$res = $this->doDelete($crit);
 
 			TBGCache::clearCacheKeys(array(TBGCache::KEY_MAIN_MENU_LINKS));
-			
+
 			return true;
 		}
 
@@ -132,7 +132,7 @@
 		{
 			return $this->removeByTargetTypeTargetIDandLinkID('issue', $issue_id, $link_id);
 		}
-		
+
 		public function addMainMenuLink($url = null, $description = null, $link_order = null, $scope = null)
 		{
 			return $this->addLink('main_menu', 0, $url, $description, $link_order, $scope);
@@ -153,7 +153,7 @@
 		public function loadFixtures(TBGScope $scope)
 		{
 			$scope_id = $scope->getID();
-			
+
 			$this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
 			$this->addMainMenuLink('http://forum.thebuggenie.com', 'The Bug Genie forums', 2, $scope_id);
 			$this->addMainMenuLink(null, null, 3, $scope_id);
@@ -163,5 +163,5 @@
 			$this->addMainMenuLink('http://thebuggenie.wordpress.com/', 'The Bug Genie team blog', 7, $scope_id);
 			$this->addMainMenuLink('', "''Stay up to date on the latest development''", 8, $scope_id);
 		}
-		
+
 	}

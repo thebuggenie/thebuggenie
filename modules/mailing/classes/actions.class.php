@@ -86,7 +86,7 @@
 			}
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
 		}
-		
+
 		public function runSaveIncomingAccount(TBGRequest $request)
 		{
 			$project = null;
@@ -136,7 +136,7 @@
 				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid project')));
 			}
 		}
-		
+
 		public function runCheckIncomingAccount(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('common');
@@ -173,7 +173,7 @@
 				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
 			}
 		}
-		
+
 		public function runDeleteIncomingAccount(TBGRequest $request)
 		{
 			if ($account_id = $request['account_id'])

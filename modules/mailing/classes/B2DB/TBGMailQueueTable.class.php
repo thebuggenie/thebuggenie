@@ -9,7 +9,7 @@
 	 */
 	class TBGMailQueueTable extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'mailing_queue';
 		const ID = 'mailing_queue.id';
@@ -71,5 +71,5 @@
 
 			$res = $this->doDelete($crit);
 		}
-		
+
 	}

@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="users")
 	 */
-	class TBGUsersTable3dot1 extends TBGB2DBTable 
+	class TBGUsersTable3dot1 extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -44,7 +44,7 @@
 		const PRIVATE_EMAIL = 'users.private_email';
 		const JOINED = 'users.joined';
 		const GROUP_ID = 'users.group_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

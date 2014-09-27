@@ -18,7 +18,7 @@
 				<?php if ($article instanceof TBGWikiArticle): ?>
 					<?php include_component('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
 				<?php endif; ?>
-				<div class="logindiv regular">			
+				<div class="logindiv regular">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
 						<?php if (!TBGContext::hasMessage('login_force_redirect') || TBGContext::getMessage('login_force_redirect') !== true): ?>
 							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
@@ -61,7 +61,7 @@
 			<?php if (TBGSettings::get('allowreg') == true): ?>
 				<?php include_template('main/loginregister', array('selected_tab' => $selected_tab)); ?>
 			<?php endif; ?>
-			
+
 		</div>
 		<div id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
 			<?php echo image_tag('spinning_32.gif'); ?>

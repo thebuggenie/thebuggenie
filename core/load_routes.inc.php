@@ -9,7 +9,7 @@
 	$routes[] = array('attach_link', '/attach/link/to/:target_type/:target_id', 'main', 'attachLink');
 	$routes[] = array('remove_link', '/upload/remove/link/:link_id/from/other/:target_type/:target_id', 'main', 'removeLink');
 	$routes[] = array('client_dashboard', '/clients/:client_id', 'main', 'clientdashboard');
-	$routes[] = array('team_dashboard', '/teams/:team_id', 'main', 'teamdashboard');	
+	$routes[] = array('team_dashboard', '/teams/:team_id', 'main', 'teamdashboard');
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('dashboard_save', '/dashboard/save/:target_type/:tid', 'main', 'dashboardSave');
 	$routes[] = array('dashboard_view', '/dashboard/views', 'main', 'dashboardView');
@@ -38,7 +38,7 @@
 	$routes[] = array('issues_bulk_update', '/issues/bulk', 'search', 'bulkUpdateIssues');
 	$routes[] = array('get_temp_identifiable', '/get/temp/identifiable', 'main', 'getTempIdentifiable');
 	$routes[] = array('search', '/issues/*', 'search', 'findIssues');
-	
+
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
 	$routes[] = array('opensearch', '/opensearch.xml', 'search', 'opensearch', array('format' => 'xml'));
 	$routes[] = array('about', '/about', 'main', 'about');
@@ -220,7 +220,7 @@
 	$routes[] = array('publish_find_project_articles', '/wiki/:project_key/find/*', 'publish', 'findArticles');
 	$routes[] = array('publish_find_articles', '/wiki/find/*', 'publish', 'findArticles');
 	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
-	
+
 	foreach ($routes as $route)
 	{
 		call_user_func_array(array(TBGContext::getRouting(), 'addRoute'), $route);

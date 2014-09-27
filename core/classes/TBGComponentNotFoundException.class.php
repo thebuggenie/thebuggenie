@@ -18,6 +18,6 @@
 	 */
 	class TBGComponentNotFoundException extends Exception
 	{
-		
+
 	}
 

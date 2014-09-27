@@ -20,11 +20,11 @@
 	 */
 	class TBGClient extends TBGIdentifiableScopedClass
 	{
-		
+
 		protected $_members = null;
 
 		protected $_num_members = null;
-		
+
 		/**
 		 * The name of the object
 		 *
@@ -35,38 +35,38 @@
 
 		/**
 		 * Email of client
-		 * 
+		 *
 		 * @param string
 		 * @Column(type="string", length=200)
 		 */
 		protected $_email = null;
-		
+
 		/**
 		 * Telephone number of client
-		 * 
+		 *
 		 * @param integer
 		 * @Column(type="string", length=200)
 		 */
 		protected $_telephone = null;
-		
+
 		/**
 		 * URL for client website
-		 * 
+		 *
 		 * @param string
 		 * @Column(type="string", length=200)
 		 */
 		protected $_website = null;
-		
+
 		/**
 		 * Fax number of client
-		 * 
+		 *
 		 * @param integer
 		 * @Column(type="string", length=200)
 		 */
 		protected $_fax = null;
-		
+
 		protected static $_clients = null;
-		
+
 		public static function doesClientNameExist($client_name)
 		{
 			return TBGClientsTable::getTable()->doesClientNameExist($client_name);
@@ -80,97 +80,97 @@
 			}
 			return self::$_clients;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 
 		}
-		
+
 		public function __toString()
 		{
 			return "" . $this->_name;
 		}
-		
+
 		/**
 		 * Get the client's website
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getWebsite()
 		{
 			return $this->_website;
 		}
-		
+
 		/**
 		 * Get the client's email address
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getEmail()
 		{
 			return $this->_email;
 		}
-		
+
 		/**
 		 * Get the client's telephone number
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getTelephone()
 		{
 			return $this->_telephone;
 		}
-		
+
 		/**
 		 * Get the client's fax number
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getFax()
 		{
 			return $this->_fax;
 		}
-		
+
 		/**
 		 * Set the client's website
-		 * 
+		 *
 		 * @param string
 		 */
 		public function setWebsite($website)
 		{
 			$this->_website = $website;
 		}
-		
+
 		/**
 		 * Set the client's email address
-		 * 
+		 *
 		 * @param string
 		 */
 		public function setEmail($email)
 		{
 			$this->_email = $email;
 		}
-		
+
 		/**
 		 * Set the client's telephone number
-		 * 
+		 *
 		 * @param integer
 		 */
 		public function setTelephone($telephone)
 		{
 			$this->_telephone = $telephone;
 		}
-		
+
 		/**
 		 * Set the client's fax number
-		 * 
+		 *
 		 * @param integer
 		 */
 		public function setFax($fax)
 		{
 			$this->_fax = $fax;
 		}
-		
+
 		/**
 		 * Adds a user to the client
 		 *
@@ -190,7 +190,7 @@
 			$this->_members[] = $user->getID();
 			array_unique($this->_members);
 		}
-		
+
 		public function getMembers()
 		{
 			if ($this->_members === null)
@@ -216,14 +216,14 @@
 			$crit->addWhere(TBGClientMembersTable::CID, $this->_id);
 			\b2db\Core::getTable('TBGClientMembersTable')->doDelete($crit);
 		}
-		
+
 		protected function _preDelete()
 		{
 			$crit = TBGClientMembersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGClientMembersTable::CID, $this->getID());
 			$res = TBGClientMembersTable::getTable()->doDelete($crit);
 		}
-		
+
 		public static function findClients($details)
 		{
 			$crit = new \b2db\Criteria();
@@ -258,7 +258,7 @@
 		{
 			return (bool) (TBGContext::getUser()->hasPageAccess('clientlist') || TBGContext::getUser()->isMemberOfClient($this));
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

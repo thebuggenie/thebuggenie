@@ -96,7 +96,7 @@
 		{
 			$module = $event->getModule();
 			$identifier = $event->getIdentifier();
-			
+
 			TBGLogging::log("Triggering $module - $identifier");
 			if (isset(self::$_registeredlisteners[$module][$identifier]))
 			{

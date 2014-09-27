@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="votes")
 	 */
-	class TBGVotesTable extends TBGB2DBTable 
+	class TBGVotesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function getVoteSumForIssue($issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -51,7 +51,7 @@
 
 			return ($res) ? $res->get('votes_total') : 0;
 		}
-		
+
 		public function getByIssueId($issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -59,7 +59,7 @@
 			$res = $this->doSelect($crit, false);
 			return $res;
 		}
-		
+
 		public function addByUserIdAndIssueId($user_id, $issue_id, $up = true)
 		{
 			$crit = $this->getCriteria();
@@ -67,7 +67,7 @@
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
-			
+
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::TARGET, $issue_id);
 			$crit->addInsert(self::UID, $user_id);
@@ -76,5 +76,5 @@
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}
-		
+
 	}

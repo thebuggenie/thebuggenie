@@ -28,7 +28,7 @@
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
 			$this->addRequiredArgument('changed', "List of added, deleted and modified files, one per line prefixed with A/D/U as appropriate");
-			
+
 			$this->addOptionalArgument('oldrev', "Revision number or hash of previous revision");
 			$this->addOptionalArgument('date', "POSIX timestamp of commit");
 			$this->addOptionalArgument('branch', "Branch this commit affects");
@@ -36,7 +36,7 @@
 
 		public function do_execute()
 		{
-			/* Prepare variables */			
+			/* Prepare variables */
 			try
 			{
 				$project_id = $this->getProvidedArgument('projectid');
@@ -50,7 +50,7 @@
 				$this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
 				exit;
 			}
-			
+
 			$author = $this->getProvidedArgument('author');
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
@@ -58,7 +58,7 @@
 			$old_rev = $this->getProvidedArgument('oldrev', null);
 			$date = $this->getProvidedArgument('date', null);
 			$branch = $this->getProvidedArgument('branch', null);
-			
+
 			if (TBGSettings::get('access_method_'.$project->getKey()) == TBGVCSIntegration::ACCESS_HTTP)
 			{
 				$this->cliEcho("This project uses the HTTP access method, and so access via the CLI has been disabled\n", 'red', 'bold');

@@ -3,7 +3,7 @@
 	use b2db\Core,
 		b2db\Criteria,
 		b2db\Criterion;
-	
+
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
 	 *
@@ -23,7 +23,7 @@
 	 * @Entity(class="TBGVCSIntegrationCommit")
 	 * @Table(name="vcsintegration_commits")
 	 */
-	class TBGVCSIntegrationCommitsTable extends TBGB2DBTable 
+	class TBGVCSIntegrationCommitsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -52,24 +52,24 @@
 		public function getCommitsByProject($id, $limit = 40, $offset = null)
 		{
 			$crit = new Criteria();
-			
+
 			$crit->addWhere(self::PROJECT_ID, $id);
 			$crit->addOrderBy(self::DATE, Criteria::SORT_DESC);
-		
+
 			if ($limit !== null)
 			{
 				$crit->setLimit($limit);
 			}
-			
+
 			if ($offset !== null)
 			{
 				$crit->setOffset($offset);
 			}
-				
+
 			$results = $this->doSelect($crit);
 			return $results;
 		}
-		
+
 		/**
 		 * Get commit for a given commit id
 		 * @param string $id
@@ -78,10 +78,10 @@
 		public function getCommitByCommitId($id, $project)
 		{
 			$crit = new Criteria();
-			
+
 			$crit->addWhere(self::NEW_REV, $id);
 			$crit->addWhere(self::PROJECT_ID, $project);
-				
+
 			$result = $this->doSelectOne($crit);
 			return $result;
 		}

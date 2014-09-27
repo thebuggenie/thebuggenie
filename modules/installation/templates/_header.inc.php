@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
@@ -8,7 +8,7 @@
     $step = $tbg_request->getParameter('step', 0);
 
 	$mode = (isset($mode)) ? $mode : 'install';
-    
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -59,7 +59,7 @@
 			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.eot');
 			  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.ttf') format('truetype');
 			}
-		
+
 			body, html, div, p, td, input { font-family: "Open Sans", arial; font-size: 12px; }
 			h1, h2, h3, h4 { text-shadow: 1px 1px 2px #DDD; }
 			h1 { font-size: 1.4em; }
@@ -106,14 +106,14 @@
 				box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 				height: 60px !important;
 			}
-			
+
 			.footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
 			.footer_container img { margin-right: 10px; }
 			.padded_box { padding: 3px 10px 10px 10px; }
 			.error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
 			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
 			.error:first-line, .ok:first-line { font-weight: bold; }
-			
+
 			.logo_small { font-size: 0.9em; color: white; white-space: nowrap; }
 
 			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
@@ -121,7 +121,7 @@
 
 			ul.outlined { margin-top: 5px; }
 			ul.outlined li { font-weight: bold; }
-			
+
 			#logo_container .logo { margin-right: 10px; }
 			#logo_container .logo_name { font-size: 1.7em; float: none; }
 		</style>

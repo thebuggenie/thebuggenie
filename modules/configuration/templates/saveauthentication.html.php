@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure authentication'));
-	
+
 ?>
 <center>
 <h1><?php echo __('Settings saved'); ?></h1>

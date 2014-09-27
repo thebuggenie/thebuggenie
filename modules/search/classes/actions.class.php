@@ -36,9 +36,9 @@
 
 		/**
 		 * Performs quicksearch
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 */		
+		 */
 		public function runQuickSearch(TBGRequest $request)
 		{
 		}
@@ -91,7 +91,7 @@
 			if ($this->searchterm)
 			{
 				preg_replace_callback(TBGTextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
-				
+
 				if (!count($this->foundissues))
 				{
 					$issue = TBGIssue::getIssueFromLink($this->searchterm);
@@ -148,7 +148,7 @@
 					usort($this->foundissues, array('searchActions', 'userPainSort'));
 				}
 			}
-			
+
 			if ($request->hasParameter('predefined_search'))
 			{
 				switch ((int) $request['predefined_search'])
@@ -318,10 +318,10 @@
 				}
 			}
 		}
-		
+
 		public function runOpensearch(TBGRequest $request)
 		{
-			
+
 		}
 
 		static function resultGrouping(TBGIssue $issue, $groupby, $cc, $prevgroup_id)
@@ -525,7 +525,7 @@
 			}
 			return ($first_issue_pain < $second_issue_pain) ? -1 : 1;
 		}
-		
+
 		public function runSaveColumnSettings(TBGRequest $request)
 		{
 			TBGSettings::saveSetting('search_scs_'.$request['template'], join(',', $request['columns']));

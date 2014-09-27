@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="openid_accounts")
 	 */
-	class TBGOpenIdAccountsTable extends TBGB2DBTable 
+	class TBGOpenIdAccountsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -59,7 +59,7 @@
 			parent::_addVarchar(self::TYPE, 300);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
-		
+
 		public function addIdentity($identity, $email, $user_id)
 		{
 			$crit = $this->getCriteria();
@@ -80,7 +80,7 @@
 
 			$this->doInsert($crit);
 		}
-		
+
 		public function getUserIDfromIdentity($identity)
 		{
 			$crit = $this->getCriteria();
@@ -91,7 +91,7 @@
 			}
 			return null;
 		}
-		
+
 		public function getUserIDfromIdentityHash($identity_hash)
 		{
 			$crit = $this->getCriteria();
@@ -102,13 +102,13 @@
 			}
 			return null;
 		}
-		
+
 		public function getIdentityFromID($id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::IDENTITY);
 			$row = $this->doSelectById($id, $crit);
-			
+
 			return ($row instanceof \b2db\Row) ? $row->get(self::IDENTITY) : null;
 		}
 
@@ -117,7 +117,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$identities = array();
-			
+
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
@@ -125,7 +125,7 @@
 					$identities[$row->get(self::IDENTITY)] = array('identity' => $row->get(self::IDENTITY), 'email' => $row->get(self::EMAIL), 'type' => $row->get(self::TYPE), 'id' => $row->getID());
 				}
 			}
-			
+
 			return $identities;
 		}
 

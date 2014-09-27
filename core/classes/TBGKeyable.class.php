@@ -32,12 +32,12 @@
 			if ($this->_key === null)
 				$this->_key = preg_replace("/[^\pL0-9]/iu", '', mb_strtolower($this->getName()));
 		}
-		
+
 		public function getKey()
 		{
 			$this->_generateKey();
 			return $this->_key;
-		}		
+		}
 
 		public function setKey($key)
 		{

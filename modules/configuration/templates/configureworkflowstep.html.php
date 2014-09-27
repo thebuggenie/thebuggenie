@@ -9,7 +9,7 @@
 	{
 		$tbg_response->setTitle(__('Configure workflows'));
 	}
-	
+
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
@@ -120,8 +120,8 @@
 							<?php if ($step->getNumberOfOutgoingTransitions() == 0): ?>
 								<div class="faded_out"><?php echo __("This step doesn't have any outgoing transitions"); ?></div>
 							<?php else: ?>
-								<?php 
-								
+								<?php
+
 								$output = array();
 								foreach ($step->getOutgoingTransitions() as $transition)
 								{

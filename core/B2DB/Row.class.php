@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Row class
 	 *
@@ -21,7 +21,7 @@
 	class Row implements \ArrayAccess
 	{
 		protected $_fields = array();
-		
+
 		/**
 		 * Statement
 		 *
@@ -30,10 +30,10 @@
 		protected $_statement = null;
 
 		protected $id_col = null;
-		
+
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param Statement $statement
 		 */
 		public function __construct($row, $statement)
@@ -49,7 +49,7 @@
 		{
 			return $this->_statement->getCriteria()->getForeignTables();
 		}
-		
+
 		protected function _getColumnName($column, $foreign_key = null)
 		{
 			if ($foreign_key !== null)
@@ -82,10 +82,10 @@
 			else
 				return null;
 		}
-		
+
 		/**
 		 * Return the associated Criteria
-		 * 
+		 *
 		 * @return Criteria
 		 */
 		public function getCriteria()
@@ -124,4 +124,3 @@
 		}
 
 	}
-	

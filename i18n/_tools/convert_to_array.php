@@ -78,40 +78,40 @@ if($fromFile->getExtension() == "po") {
         $previousLine = $line;
     }
 } elseif($fromFile->getExtension() == "ts") {
-    
+
     $xmlReader = new XMLReader();
     $xmlReader->open($fromFilePointer, "utf-8");
-    
+
     $value = '';
     while($xmlReader->read()) {
-        
+
         if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'name') {
             $category = $xmlReader->readString();
             $current_key = '';
         }
-        
+
         if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'source') {
             $current_key = str_replace(array('"', '&'), array('\"', "&amp;") ,$xmlReader->readString());
             $nbstrings++;
         }
-        
+
         if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'translation') {
-            
+
             if($xmlReader->getAttribute('type') == 'unfinished') {
                 $value = '';
             } else {
                 $value = str_replace(array('"', '&'), array('\"', "&amp;") ,$xmlReader->readString());
             }
-            
+
         }
-        
+
         if(!empty($category) && !empty($current_key)) {
             $translations[$category][$current_key] = $value;
         }
     }
-    
+
 } else {
-    
+
     echo 'Not valid extension!';
     exit;
 

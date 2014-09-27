@@ -24,7 +24,7 @@
 	 * @Table(name="users")
 	 * @Entity(class="TBGUser")
 	 */
-	class TBGUsersTable extends TBGB2DBTable 
+	class TBGUsersTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -50,11 +50,11 @@
 		const JOINED = 'users.joined';
 		const GROUP_ID = 'users.group_id';
 		const OPENID_LOCKED = 'users.openid_locked';
-		
+
 		public function getAll()
 		{
 			$res = $this->doSelectAll();
-			
+
 			return $res;
 		}
 
@@ -102,24 +102,24 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UNAME, $username);
 			$crit->addWhere(self::DELETED, false);
-			
+
 			return $this->selectOne($crit);
 		}
-		
+
 		public function getByEmail($email)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::EMAIL, $email);
 			$crit->addWhere(self::DELETED, false);
-			
+
 			return $this->selectOne($crit);
 		}
-		
+
 		public function isUsernameAvailable($username)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UNAME, $username);
-			
+
 			return !(bool) $this->doCount($crit);
 		}
 
@@ -159,7 +159,7 @@
 			{
 				$crit->addWhere(self::UNAME, "%$details%", Criteria::DB_LIKE);
 			}
-	
+
 			if ($limit)
 			{
 				$crit->setLimit($limit);
@@ -190,7 +190,7 @@
 					}
 				}
 			}
-			
+
 			return $users;
 		}
 
@@ -245,10 +245,10 @@
 		public function getAllUserIDs()
 		{
 			$crit = $this->getCriteria();
-			
+
 			$crit->addSelectionColumn(self::ID, 'uid');
 			$res = $this->doSelect($crit);
-			
+
 			$uids = array();
 			if ($res)
 			{
@@ -258,7 +258,7 @@
 					$uids[$uid] = $uid;
 				}
 			}
-			
+
 			return $uids;
 		}
 

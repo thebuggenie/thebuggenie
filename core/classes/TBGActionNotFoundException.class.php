@@ -18,6 +18,6 @@
 	 */
 	class TBGActionNotFoundException extends Exception
 	{
-		
+
 	}
 

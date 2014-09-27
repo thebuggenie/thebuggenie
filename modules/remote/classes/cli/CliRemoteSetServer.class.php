@@ -34,7 +34,7 @@
 			$this->cliEcho("\n");
 
 			$path = THEBUGGENIE_CONFIG_PATH;
-			try 
+			try
 			{
 				file_put_contents($path . '.remote_server', $this->getProvidedArgument('server_url'));
 			}

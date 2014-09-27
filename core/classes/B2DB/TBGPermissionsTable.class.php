@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="permissions")
 	 */
-	class TBGPermissionsTable extends TBGB2DBTable 
+	class TBGPermissionsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -49,7 +49,7 @@
 			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'));
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('scope', array(self::SCOPE));
@@ -63,7 +63,7 @@
 			$res = $this->doSelect($crit, 'none');
 			return $res;
 		}
-		
+
 		public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope)
 		{
 			$crit = $this->getCriteria();
@@ -74,7 +74,7 @@
 			$crit->addWhere(self::PERMISSION_TYPE, $permission_type);
 			$crit->addWhere(self::TARGET_ID, $target_id);
 			$crit->addWhere(self::SCOPE, $scope);
-			
+
 			$res = $this->doDelete($crit);
 		}
 
@@ -103,7 +103,7 @@
 			$crit->addInsert(self::PERMISSION_TYPE, $permission_type);
 			$crit->addInsert(self::TARGET_ID, $target_id);
 			$crit->addInsert(self::SCOPE, $scope);
-			
+
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}
@@ -119,7 +119,7 @@
 		public function loadFixtures(TBGScope $scope, $admin_group_id, $guest_group_id)
 		{
 			$scope_id = $scope->getID();
-			
+
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'page_account_access', 0, $scope_id);
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
@@ -231,7 +231,7 @@
 			}
 			return $permissions;
 		}
-		
+
 		public function deleteByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
 		{
 			$crit = $this->getCriteria();
@@ -240,5 +240,5 @@
 			$crit->addWhere(self::MODULE, $module);
 			$this->doDelete($crit);
 		}
-		
+
 	}

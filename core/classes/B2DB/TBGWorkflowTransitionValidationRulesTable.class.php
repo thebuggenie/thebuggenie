@@ -46,13 +46,13 @@
 //			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function getByTransitionID($transition_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::TRANSITION_ID, $transition_id);
-			
+
 			$actions = array('pre' => array(), 'post' => array());
 			if ($res = $this->doSelect($crit, false))
 			{
@@ -61,7 +61,7 @@
 					$actions[$row->get(self::PRE_OR_POST)][$row->get(self::RULE)] = TBGContext::factory()->TBGWorkflowTransitionValidationRule($row->get(self::ID), $row);
 				}
 			}
-			
+
 			return $actions;
 		}
 
