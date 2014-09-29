@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6ee8189ed7c5c83fdef4bbcc9f5dd5e3",
+    "hash": "f3d14a77236f6327a634e0aa77c71111",
     "packages": [
         {
             "name": "easybook/geshi",
@@ -53,6 +53,33 @@
                 "syntax"
             ],
             "time": "2014-05-11 07:59:00"
+        },
+        {
+            "name": "lightopenid/lightopenid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://git.gitorious.org/lightopenid/lightopenid.git",
+                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19"
+            },
+            "require": {
+                "php": ">=5.2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://code.google.com/p/lightopenid/",
+            "keywords": [
+                "OpenId"
+            ],
+            "time": "2013-10-27 16:25:49"
         },
         {
             "name": "michelf/php-markdown",
@@ -111,12 +138,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mrclay/minify.git",
-                "reference": "fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9"
+                "reference": "bceffd5afb0a578f7b4c366cd97a6ec1f3252d10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mrclay/minify/zipball/fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9",
-                "reference": "fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9",
+                "url": "https://api.github.com/repos/mrclay/minify/zipball/bceffd5afb0a578f7b4c366cd97a6ec1f3252d10",
+                "reference": "bceffd5afb0a578f7b4c366cd97a6ec1f3252d10",
                 "shasum": ""
             },
             "require": {
@@ -135,15 +162,95 @@
             ],
             "authors": [
                 {
-                    "name": "Steve Clay",
+                    "name": "Stephen Clay",
                     "email": "steve@mrclay.org",
-                    "homepage": "http://www.mrclay.org/",
                     "role": "Developer"
                 }
             ],
             "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
             "homepage": "http://code.google.com/p/minify/",
-            "time": "2014-04-03 23:53:48"
+            "time": "2014-09-21 11:31:30"
+        },
+        {
+            "name": "mustangostang/spyc",
+            "version": "0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mustangostang/spyc.git",
+                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/dc4785b4d7227fd9905e086d499fb8abfadf9977",
+                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Spyc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT License"
+            ],
+            "authors": [
+                {
+                    "name": "mustangostang",
+                    "email": "vlad.andersen@gmail.com"
+                }
+            ],
+            "description": "A simple YAML loader/dumper class for PHP",
+            "homepage": "https://github.com/mustangostang/spyc/",
+            "keywords": [
+                "spyc",
+                "yaml",
+                "yml"
+            ],
+            "time": "2013-02-21 10:52:01"
+        },
+        {
+            "name": "realityking/pchart",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/realityking/pChart.git",
+                "reference": "46fd01cad5a4d761b599df1ab09361fad55c83b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/realityking/pChart/zipball/46fd01cad5a4d761b599df1ab09361fad55c83b6",
+                "reference": "46fd01cad5a4d761b599df1ab09361fad55c83b6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-1.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Rouven Weßling",
+                    "email": "me@rouvenwessling.de",
+                    "homepage": "http://www.rouvenwessling.de"
+                }
+            ],
+            "description": "A fork of the popular pChart library.",
+            "time": "2013-03-18 08:23:38"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -180,7 +287,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -193,6 +302,69 @@
                 "mailer"
             ],
             "time": "2012-10-25 08:30:40"
+        },
+        {
+            "name": "thebuggenie/b2db",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thebuggenie/b2db.git",
+                "reference": "37dd768df4ed85fd981383930150d39dc7ab0169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/37dd768df4ed85fd981383930150d39dc7ab0169",
+                "reference": "37dd768df4ed85fd981383930150d39dc7ab0169",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "b2db\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MPL 1.1"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Andre Eikeland",
+                    "email": "zegenie@gmail.com"
+                }
+            ],
+            "description": "B2DB is a lightweight PHP 5.3-based ORM",
+            "time": "2014-09-20 19:45:31"
+        },
+        {
+            "name": "webit/eval-math",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dbojdo/eval-math.git",
+                "reference": "cbc2e550e8a93823f8cb4ff79f2858a42d0ccd18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dbojdo/eval-math/zipball/cbc2e550e8a93823f8cb4ff79f2858a42d0ccd18",
+                "reference": "cbc2e550e8a93823f8cb4ff79f2858a42d0ccd18",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Webit\\Util\\EvalMath": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "EvalMath",
+            "keywords": [
+                "EvalMath"
+            ],
+            "time": "2014-07-11 09:55:10"
         }
     ],
     "packages-dev": [
@@ -203,12 +375,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "3329a4cb19075326ef2cc2abe848aa21b84905cf"
+                "reference": "b7b98cf609a94ebc4cd299b736282901223a4b12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/3329a4cb19075326ef2cc2abe848aa21b84905cf",
-                "reference": "3329a4cb19075326ef2cc2abe848aa21b84905cf",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/b7b98cf609a94ebc4cd299b736282901223a4b12",
+                "reference": "b7b98cf609a94ebc4cd299b736282901223a4b12",
                 "shasum": ""
             },
             "require": {
@@ -241,7 +413,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-28 13:20:53"
+            "time": "2014-09-03 09:12:11"
         }
     ],
     "aliases": [
@@ -249,8 +421,12 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "thebuggenie/b2db": 20,
         "mrclay/minify": 20,
         "easybook/geshi": 20,
+        "webit/eval-math": 20,
+        "lightopenid/lightopenid": 20,
+        "realityking/pchart": 20,
         "symfony/finder": 20
     },
     "prefer-stable": false,
