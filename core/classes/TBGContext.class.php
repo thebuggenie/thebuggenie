@@ -805,7 +805,7 @@
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
 				$allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
-				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
+				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)) && !(self::getRouting()->getCurrentRouteModule() == "vcs_integration" && strpos(self::getRouting()->getCurrentRouteAction(), "addCommit") === 0))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
 					self::$_redirect_login = 'login';
