@@ -1,8 +1,8 @@
 <?php
 
-	/**
-	 * Configuration for theme
-	 */
+    /**
+     * Configuration for theme
+     */
 
-	TBGContext::getResponse()->addStylesheet('firehouse.css');
-	
+    TBGContext::getResponse()->addStylesheet('firehouse.css');
+    

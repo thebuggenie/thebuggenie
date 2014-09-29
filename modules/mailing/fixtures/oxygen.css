@@ -1,7 +1,7 @@
 body, p, td, div, span {
-	font-family: 'Open Sans', 'Ubuntu', 'Trebuchet MS', 'Liberation Sans', 'Bitstream Vera Sans', 'Luxi Sans', Verdana, sans-serif;
-	font-size: 13px;
-	color: #333;
+    font-family: 'Open Sans', 'Ubuntu', 'Trebuchet MS', 'Liberation Sans', 'Bitstream Vera Sans', 'Luxi Sans', Verdana, sans-serif;
+    font-size: 13px;
+    color: #333;
 }
 
 h1, h2, h3, h4, h5 { font-weight: bold; padding: 2px 0; margin-bottom: 5px; }
@@ -12,8 +12,8 @@ h4 { font-size: 1.1em; margin-bottom: 0; }
 h5 { font-size: 1em; margin-bottom: 0; }
 
 p {
-	padding: 2px;
-	margin: 0 0 15px 0;
+    padding: 2px;
+    margin: 0 0 15px 0;
 }
 
 a { color: #00a400; text-decoration: none; }

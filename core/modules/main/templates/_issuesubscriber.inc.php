@@ -1,0 +1,6 @@
+<li style="vertical-align: middle; clear: both; height: 20px;">
+    <?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId().'_'.$user->getID(), 'style' => 'display: none; float: left; margin-right: 5px;')); ?>
+    <?php echo image_tag('star_faded_small.png', array('id' => 'issue_favourite_faded_'.$issue->getId().'_'.$user->getID(), 'style' => 'cursor: pointer; display: none; float: left; margin-right: 5px;', 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $user->getID()))."', '".$issue->getID().'_'.$user->getID()."');")); ?>
+    <?php echo image_tag('star_small.png', array('id' => 'issue_favourite_normal_'.$issue->getId().'_'.$user->getID(), 'style' => 'cursor: pointer; float: left; margin-right: 5px;', 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $user->getID()))."', '".$issue->getID().'_'.$user->getID()."');")); ?>
+    <?php include_component('main/userdropdown', compact('user')); ?>
+</li>

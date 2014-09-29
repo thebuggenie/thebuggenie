@@ -85,7 +85,7 @@ div.dropdown_separator { border-left: #222;  }
 .rounded_box.iceblue { background-color: #e6f0ff; border-color: #B1B8E9; }
 .rounded_box.lightgrey { background-color: #3e3e3e; border-color: #222; }
 .rounded_box.verylightgrey { background-color: #434343; border-color: #222; }
-.rounded_box.white { background-color: #252525;	border-color: #222;}
+.rounded_box.white { background-color: #252525;    border-color: #222;}
 .rounded_box.white th {background-color: #5d5d5d; border-bottom: #DDD;  }
 /* end rounded box styling */
 /* hoverable styles */

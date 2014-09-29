@@ -1,0 +1,1 @@
+<li id="tab_mailing_other"<?php if ($selected_tab == 'mailing_other'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Incoming email accounts'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_mailing_other', 'project_config_menu');")); ?></li>

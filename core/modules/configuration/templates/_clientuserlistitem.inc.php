@@ -1,0 +1,4 @@
+<li id="client_<?php echo $client->getID(); ?>_<?php echo $user_id; ?>_item">
+    <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to remove the user from this client?'); ?>', '<?php echo __('Removing the user from this client will remove all automatically inherited permissions from the user. You can easily add the user back to the client in the future.'); ?>', {yes: {click: function() {TBG.Config.Client.removeMember('<?php echo make_url('configure_users_remove_client_member', array('user_id' => $user_id, 'client_id' => $client->getID())); ?>', <?php echo $client->getID(); ?>, <?php echo $user_id; ?>); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});return false;"><?php echo __('Remove from client'); ?></button>
+    <?php include_component('main/userdropdown', array('user' => $user)); ?>
+</li>

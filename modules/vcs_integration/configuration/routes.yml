@@ -1,0 +1,26 @@
+vcs_commitspage:
+  route: /:project_key/commits
+  action: projectCommits
+    
+normalcheckin:
+  route: /vcs_integration/report/:project_id/
+  action: addCommit
+
+githubcheckin:
+  route: /vcs_integration/report/:project_id/github/
+  action: addCommitGithub
+
+bitbucketcheckin:
+  route: /vcs_integration/report/:project_id/bitbucket/
+  action: addCommitBitbucket
+
+gitoriouscheckin:
+  route: /vcs_integration/report/:project_id/gitorious/
+  action: addCommitGitorious
+
+configure_vcs_settings:
+  route: /configure/project/:project_id/vcs
+  action: configureProjectSettings
+  parameters:
+    config_module: core
+    section: 15

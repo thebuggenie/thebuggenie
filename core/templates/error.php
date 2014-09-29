@@ -7,16 +7,16 @@
 
 body, td, th { padding: 0px; margin: 0px; background-color: #FFF; font-family: 'Open Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.3; color: #222;}
 h1 { margin: 0; font-size: 19px; padding: 10px;
-	background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F1F1F1',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* W3C */
-	border-bottom: 1px solid #CCC;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F1F1F1',GradientType=0 ); /* IE6-9 */
+    background: linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* W3C */
+    border-bottom: 1px solid #CCC;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 h2 { margin: 0 0 15px 0; font-size: 16px; }
 h3 { margin: 15px 0 0 0; font-size: 14px; }
@@ -37,98 +37,98 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 <![endif]-->
 </head>
 <body>
-	<div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
-		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occurred in <?php echo TBGSettings::getTBGname(); ?></h1>
-		<div class="error_content">
-			<?php if (isset($exception) && $exception instanceof Exception): ?>
-				<?php if ($exception instanceof TBGComposerException): ?>
-					<h2>External libraries not initialized</h2>
-					<p>
-						The Bug Genie uses the <a href="http://getcomposer.org">composer</a> dependency management tool to control external libraries.<br>
-						<br>
-						Before you can use or install The Bug Genie, you must initialize the vendor libraries by running the following command from the directory containing The Bug Genie:<br>
-						<div class="command_box">php composer.phar install</div><br>
-						When the command completes. refresh this page and continue.<br>
-						<br>
-						You can read more about composer on <a href="http://getcomposer.org">http://getcomposer.org</a>
-					</p>
-				<?php else: ?>
-					<h2><?php echo nl2br($exception->getMessage()); ?></h2>
-					<?php if ($exception instanceof TBGActionNotFoundException): ?>
-						<h3>Could not find the specified action</h3>
-					<?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
-						<h3>Could not find the template file for the specified action</h3>
-					<?php elseif ($exception instanceof TBGConfigurationException): ?>
-						<h3>There is an issue with the configuration. Please see the message above.</h3>
-					<?php elseif ($exception instanceof \b2db\Exception): ?>
-						<h3>An exception was thrown in the B2DB framework</h3>
-					<?php else: ?>
-						<h3>An unhandled exception occurred:</h3>
-					<?php endif; ?>
-					<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
-						<span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
-						<i><?php echo $exception->getMessage(); ?></i>
-					<?php endif; ?>
-				<?php endif; ?>
-			<?php else: ?>
-				<h2><?php echo nl2br($error); ?></h2>
-				<?php if ($code == 8): ?>
-					<h3>The following notice has stopped further execution:</h3>
-				<?php else: ?>
-					<h3>The following error occured:</h3>
-				<?php endif; ?>
-				<i><?php echo $error; ?></i> in <span style="color: #55F;"><?php echo $file; ?></span>, line <?php echo $line; ?>
-			<?php endif; ?>
-			<br>
-			<?php if (isset($exception) && $exception instanceof \b2db\Exception): ?>
-				<h3>SQL:</h3>
-				<?php echo $exception->getSQL(); ?>
-			<?php endif; ?>
-			<?php if (class_exists("TBGContext") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
-				<h3>Stack trace:</h3>
-				<ul>
-					<?php $trace = (isset($exception)) ? $exception->getTrace() : debug_backtrace(); ?>
-					<?php foreach ($trace as $trace_element): ?>
-						<?php if (array_key_exists('class', $trace_element) && $trace_element['class'] == 'TBGContext' && array_key_exists('function', $trace_element) && $trace_element['function'] == 'errorHandler') continue; ?>
-						<li>
-						<?php if (array_key_exists('class', $trace_element)): ?>
-							<strong><?php echo $trace_element['class'].$trace_element['type'].$trace_element['function']; ?>()</strong>
-						<?php elseif (array_key_exists('function', $trace_element)): ?>
-							<strong><?php echo $trace_element['function']; ?>()</strong>
-						<?php else: ?>
-							<strong>unknown function</strong>
-						<?php endif; ?>
-						<br>
-						<?php if (array_key_exists('file', $trace_element)): ?>
-							<span style="color: #55F;"><?php echo $trace_element['file']; ?></span>, line <?php echo $trace_element['line']; ?>
-						<?php else: ?>
-							<span style="color: #C95;">unknown file</span>
-						<?php endif; ?>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-			<?php if (class_exists("TBGContext") && class_exists("TBGLogging") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
-				<h3>Log messages:</h3>
-				<?php foreach (TBGLogging::getEntries() as $entry): ?>
-					<?php $color = TBGLogging::getCategoryColor($entry['category']); ?>
-					<?php $lname = TBGLogging::getLevelName($entry['level']); ?>
-					<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo $lname; ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
-				<?php endforeach; ?>
-			<?php endif; ?>
-			<?php if (class_exists("\b2db\Core") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
-				<h3>SQL queries:</h3>
-					<ol>
-					<?php foreach (\b2db\Core::getSQLHits() as $details): ?>
-						<li>
-							<span class="faded_out dark small"><b>[<?php echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; ?>]</b></span>
-							from <b><?php echo $details['filename']; ?>, line <?php echo $details['line']; ?></b>:<br>
-							<span style="font-size: 12px;"><?php echo $details['sql']; ?></span>
-						</li>
-					<?php endforeach; ?>
-					</ol>
-			<?php endif; ?>
-		</div>
-	</div>
+    <div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
+        <img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occurred in <?php echo TBGSettings::getTBGname(); ?></h1>
+        <div class="error_content">
+            <?php if (isset($exception) && $exception instanceof Exception): ?>
+                <?php if ($exception instanceof TBGComposerException): ?>
+                    <h2>External libraries not initialized</h2>
+                    <p>
+                        The Bug Genie uses the <a href="http://getcomposer.org">composer</a> dependency management tool to control external libraries.<br>
+                        <br>
+                        Before you can use or install The Bug Genie, you must initialize the vendor libraries by running the following command from the directory containing The Bug Genie:<br>
+                        <div class="command_box">php composer.phar install</div><br>
+                        When the command completes. refresh this page and continue.<br>
+                        <br>
+                        You can read more about composer on <a href="http://getcomposer.org">http://getcomposer.org</a>
+                    </p>
+                <?php else: ?>
+                    <h2><?php echo nl2br($exception->getMessage()); ?></h2>
+                    <?php if ($exception instanceof TBGActionNotFoundException): ?>
+                        <h3>Could not find the specified action</h3>
+                    <?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
+                        <h3>Could not find the template file for the specified action</h3>
+                    <?php elseif ($exception instanceof TBGConfigurationException): ?>
+                        <h3>There is an issue with the configuration. Please see the message above.</h3>
+                    <?php elseif ($exception instanceof \b2db\Exception): ?>
+                        <h3>An exception was thrown in the B2DB framework</h3>
+                    <?php else: ?>
+                        <h3>An unhandled exception occurred:</h3>
+                    <?php endif; ?>
+                    <?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
+                        <span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
+                        <i><?php echo $exception->getMessage(); ?></i>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php else: ?>
+                <h2><?php echo nl2br($error); ?></h2>
+                <?php if ($code == 8): ?>
+                    <h3>The following notice has stopped further execution:</h3>
+                <?php else: ?>
+                    <h3>The following error occured:</h3>
+                <?php endif; ?>
+                <i><?php echo $error; ?></i> in <span style="color: #55F;"><?php echo $file; ?></span>, line <?php echo $line; ?>
+            <?php endif; ?>
+            <br>
+            <?php if (isset($exception) && $exception instanceof \b2db\Exception): ?>
+                <h3>SQL:</h3>
+                <?php echo $exception->getSQL(); ?>
+            <?php endif; ?>
+            <?php if (class_exists("TBGContext") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
+                <h3>Stack trace:</h3>
+                <ul>
+                    <?php $trace = (isset($exception)) ? $exception->getTrace() : debug_backtrace(); ?>
+                    <?php foreach ($trace as $trace_element): ?>
+                        <?php if (array_key_exists('class', $trace_element) && $trace_element['class'] == 'TBGContext' && array_key_exists('function', $trace_element) && $trace_element['function'] == 'errorHandler') continue; ?>
+                        <li>
+                        <?php if (array_key_exists('class', $trace_element)): ?>
+                            <strong><?php echo $trace_element['class'].$trace_element['type'].$trace_element['function']; ?>()</strong>
+                        <?php elseif (array_key_exists('function', $trace_element)): ?>
+                            <strong><?php echo $trace_element['function']; ?>()</strong>
+                        <?php else: ?>
+                            <strong>unknown function</strong>
+                        <?php endif; ?>
+                        <br>
+                        <?php if (array_key_exists('file', $trace_element)): ?>
+                            <span style="color: #55F;"><?php echo $trace_element['file']; ?></span>, line <?php echo $trace_element['line']; ?>
+                        <?php else: ?>
+                            <span style="color: #C95;">unknown file</span>
+                        <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            <?php if (class_exists("TBGContext") && class_exists("TBGLogging") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
+                <h3>Log messages:</h3>
+                <?php foreach (TBGLogging::getEntries() as $entry): ?>
+                    <?php $color = TBGLogging::getCategoryColor($entry['category']); ?>
+                    <?php $lname = TBGLogging::getLevelName($entry['level']); ?>
+                    <div class="log_<?php echo $entry['category']; ?>"><strong><?php echo $lname; ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if (class_exists("\b2db\Core") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
+                <h3>SQL queries:</h3>
+                    <ol>
+                    <?php foreach (\b2db\Core::getSQLHits() as $details): ?>
+                        <li>
+                            <span class="faded_out dark small"><b>[<?php echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; ?>]</b></span>
+                            from <b><?php echo $details['filename']; ?>, line <?php echo $details['line']; ?></b>:<br>
+                            <span style="font-size: 12px;"><?php echo $details['sql']; ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                    </ol>
+            <?php endif; ?>
+        </div>
+    </div>
 </body>
 </html>

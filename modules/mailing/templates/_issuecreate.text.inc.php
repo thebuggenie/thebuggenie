@@ -6,8 +6,8 @@
 <?php echo tbg_parse_text($issue->getDescription()); ?>
 
 <?php if ($issue->getReproductionSteps()): ?>
-	* <?php echo __('Reproduction steps') . ':'; ?> *
-	<?php echo tbg_parse_text($issue->getReproductionSteps()); ?>
+    * <?php echo __('Reproduction steps') . ':'; ?> *
+    <?php echo tbg_parse_text($issue->getReproductionSteps()); ?>
 <?php endif; ?>
 
 <?php echo __('Show issue:') . ' ' . $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>

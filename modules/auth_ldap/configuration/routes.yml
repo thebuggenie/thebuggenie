@@ -1,0 +1,11 @@
+ldap_test:
+  route: /test/ldap
+  action: testConnection
+
+ldap_prune:
+  route: /configure/module/auth_ldap/prune
+  action: pruneUsers
+
+ldap_import:
+  route: /configure/module/auth_ldap/import
+  action: importUsers
