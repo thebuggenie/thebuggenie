@@ -22,7 +22,7 @@
      *
      * @Table(name="issuefields")
      */
-    class TBGIssueFieldsTable extends TBGB2DBTable 
+    class TBGIssueFieldsTable extends TBGB2DBTable
     {
 
         const B2DB_TABLE_VERSION = 2;
@@ -47,7 +47,7 @@
             parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
             parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
         }
-        
+
         protected function _setupIndexes()
         {
             $this->_addIndex('scope_issuetypescheme_issuetype', array(self::SCOPE, self::ISSUETYPE_SCHEME_ID, self::ISSUETYPE_ID));
@@ -81,7 +81,7 @@
             $crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
             $res = $this->doDelete($crit);
         }
-        
+
         public function copyBySchemeIDs($from_scheme_id, $to_scheme_id)
         {
             $crit = $this->getCriteria();
@@ -137,7 +137,7 @@
             $res = $this->doSelect($crit, false);
             return $res;
         }
-        
+
         public function deleteByIssuetypeSchemeID($scheme_id)
         {
             $crit = $this->getCriteria();
@@ -154,11 +154,11 @@
             $res = $this->doDelete($crit);
         }
 
-        public function loadFixtures(TBGScope $scope, TBGIssuetypeScheme $scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
+        public function loadFixtures(TBGScope $scope, TBGIssuetypeScheme $scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id, $issue_type_epic_id)
         {
             $scope = $scope->getID();
             $scheme = $scheme->getID();
-            
+
             $crit = $this->getCriteria();
             $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
             $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
@@ -538,6 +538,15 @@
             $crit->addInsert(self::FIELD_KEY, 'priority');
             $crit->addInsert(self::SCOPE, $scope);
             $this->doInsert($crit);
+
+            $crit = $this->getCriteria();
+            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
+            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_epic_id);
+            $crit->addInsert(self::FIELD_KEY, 'shortname');
+            $crit->addInsert(self::REPORTABLE, true);
+            $crit->addInsert(self::SCOPE, $scope);
+            $this->doInsert($crit);
+
         }
-        
+
     }
