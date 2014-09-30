@@ -107,19 +107,23 @@
             return $this->doUpdate($crit);
         }
 
-        public function installModule($identifier, $classname, $version, $scope)
+        public function installModule($identifier, $scope)
         {
+            $classname = "\\thebuggenie\\modules\\".$identifier."\\".ucfirst($identifier);
+            if (!class_exists("\\thebuggenie\\modules\\".$identifier."\\".ucfirst($identifier)))
+            {
+                throw new Exception('Can not load new instance of type \\thebuggenie\\modules\\'.$identifier."\\".ucfirst($identifier) . ', is not loaded');
+            }
+
             $crit = $this->getCriteria();
-            $crit->addWhere(self::CLASSNAME, $classname);
             $crit->addWhere(self::MODULE_NAME, $identifier);
             $crit->addWhere(self::SCOPE, $scope);
             if (!$res = $this->doSelectOne($crit))
             {
                 $crit = $this->getCriteria();
-                $crit->addInsert(self::CLASSNAME, $classname);
                 $crit->addInsert(self::ENABLED, true);
                 $crit->addInsert(self::MODULE_NAME, $identifier);
-                $crit->addInsert(self::VERSION, $version);
+                $crit->addInsert(self::VERSION, $classname::VERSION);
                 $crit->addInsert(self::SCOPE, $scope);
                 $module_id = $this->doInsert($crit)->getInsertID();
             }
@@ -127,7 +131,9 @@
             {
                 $module_id = $res->get(self::ID);
             }
-            return $module_id;
+
+            $module = new $classname($module_id);
+            return $module;
         }
 
         public function getModulesForScope($scope_id)

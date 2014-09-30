@@ -27,11 +27,12 @@
     class Auth_ldap extends \TBGModule
     {
 
+        const VERSION = '2.0';
+
         protected $_longname = 'LDAP Authentication';
         protected $_description = 'Allows authentication against a LDAP or Active Directory server';
         protected $_module_config_title = 'LDAP Authentication';
         protected $_module_config_description = 'Configure server connection settings';
-        protected $_module_version = '1.0';
         protected $_has_config_settings = true;
 
         protected function _initialize()

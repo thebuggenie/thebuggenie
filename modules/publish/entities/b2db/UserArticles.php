@@ -38,8 +38,8 @@
         {
             parent::_setup(self::B2DBNAME, self::ID);
             parent::_addForeignKeyColumn(self::ARTICLE, Articles::getTable(), Articles::ID);
-            parent::_addForeignKeyColumn(self::UID, \TBGUsersTable::getTable(), \TBGUsersTable::ID);
-            parent::_addForeignKeyColumn(self::SCOPE, \TBGScopesTable::getTable(), \TBGScopesTable::ID);
+            parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
+            parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
         }
 
         public function _setupIndexes()

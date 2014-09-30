@@ -73,12 +73,12 @@
                 $this->pcre_ok = false;
                 $this->all_well = false;
             }
-            if (file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php'))
+            if (file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml'))
             {
                 $this->b2db_param_file_ok = false;
                 $this->all_well = false;
             }
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH))
+            if (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
             {
                 $this->b2db_param_folder_ok = false;
                 $this->all_well = false;
@@ -133,7 +133,7 @@
                 $this->all_well = false;
             }
 
-            $reflection = new ReflectionProperty(get_class($this), '_sampleproperty');
+            $reflection = new \ReflectionProperty(get_class($this), '_sampleproperty');
             $docblock = $reflection->getDocComment();
             if ($docblock)
             {
@@ -243,7 +243,14 @@
                         }
                     }
 
-                    \b2db\Core::doConnect();
+                    try
+                    {
+                        \b2db\Core::doConnect();
+                    }
+                    catch (\b2db\Exception $e)
+                    {
+                        throw new \Exception('There was an error connecting to the database: '.$e->getMessage());
+                    }
 
                     if (\b2db\Core::getDBname() == '')
                         throw new \Exception('You must provide a database to use');
@@ -291,7 +298,6 @@
             catch (\Exception $e)
             {
                 $this->error = $e->getMessage();
-                throw $e;
             }
         }
 
@@ -361,11 +367,12 @@
             $this->sample_data = false;
             try
             {
+                \TBGModule::installModule('publish');
                 if ($request->hasParameter('modules'))
                 {
                     foreach ($request->getParameter('modules', array()) as $module => $install)
                     {
-                        if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
+                        if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module))
                         {
                             \TBGModule::installModule($module);
                         }

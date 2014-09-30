@@ -35,6 +35,8 @@
     class Publish extends \TBGModule
     {
 
+        const VERSION = '2.0';
+
         const PERMISSION_READ_ARTICLE = 'readarticle';
         const PERMISSION_EDIT_ARTICLE = 'editarticle';
         const PERMISSION_DELETE_ARTICLE = 'deletearticle';
@@ -44,7 +46,6 @@
         protected $_module_config_title = 'Wiki';
         protected $_module_config_description = 'Set up the Wiki module from this section';
         protected $_has_config_settings = true;
-        protected $_module_version = '2.0';
 
         protected function _initialize()
         {

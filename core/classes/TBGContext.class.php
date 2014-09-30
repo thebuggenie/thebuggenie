@@ -570,7 +570,7 @@
         {
             if (self::$_stripped_tbgpath === null)
             {
-                self::$_stripped_tbgpath = (TBGContext::isCLI()) ? '' : mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
+                self::$_stripped_tbgpath = (self::isCLI()) ? '' : mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
             }
             return self::$_stripped_tbgpath;
         }
@@ -621,8 +621,7 @@
             {
                 self::$_installmode = true;
                 self::$_upgrademode = true;
-//                \b2db\Core::setCachingEnabled(false);
-                TBGContext::getCache()->disable();
+                self::getCache()->disable();
             }
             else
             {
@@ -632,6 +631,14 @@
                 {
                     throw new TBGConfigurationException("It seems you are trying to use a newer version of The Bug Genie than the one you installed. Please upgrade before continuing.\n\nIf you are trying to upgrade, make sure that the 'upgrade' file is present and readable. Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.");
                 }
+            }
+            if (self::$_installmode)
+            {
+                TBGLogging::log('Installation mode enabled');
+            }
+            if (self::$_upgrademode)
+            {
+                TBGLogging::log('Upgrade mode enabled');
             }
         }
 
@@ -674,15 +681,22 @@
                 if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
                     throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
 
-                TBGContext::getCache()->checkEnabled();
-                if (TBGContext::getCache()->isEnabled())
+                if (!self::isReadySetup())
                 {
-                    TBGContext::getCache()->setPrefix(str_replace('.', '_', TBGSettings::getVersion()));
-                    TBGLogging::log((TBGContext::getCache()->getCacheType() == TBGCache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
+                    self::getCache()->disable();
                 }
                 else
                 {
-                    TBGLogging::log('No caching available');
+                    self::getCache()->checkEnabled();
+                    if (self::getCache()->isEnabled())
+                    {
+                        self::getCache()->setPrefix(str_replace('.', '_', TBGSettings::getVersion()));
+                        TBGLogging::log((self::getCache()->getCacheType() == TBGCache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
+                    }
+                    else
+                    {
+                        TBGLogging::log('No caching available');
+                    }
                 }
 
                 self::loadConfiguration();
@@ -699,24 +713,23 @@
                     self::initializeSession();
 
                 TBGLogging::log('Loading B2DB');
+
                 if (self::isCLI())
                     \b2db\Core::setHTMLException(false);
 
                 if (array_key_exists('b2db', self::$_configuration))
                     \b2db\Core::initialize(self::$_configuration['b2db'], self::getCache());
+                else
+                    \b2db\Core::initialize(array(), self::getCache());
 
-                if (!\b2db\Core::isInitialized())
+                if (self::isReadySetup() && !\b2db\Core::isInitialized())
                 {
                     throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file " . THEBUGGENIE_PATH . "installed and try again.");
                 }
 
-                if (!self::isReadySetup())
-                {
-                    self::getCache()->disable();
-                }
                 TBGLogging::log('...done (Initializing B2DB)');
 
-                if (\b2db\Core::isInitialized())
+                if (\b2db\Core::isInitialized() && self::isReadySetup())
                 {
                     TBGLogging::log('Database connection details found, connecting');
                     \b2db\Core::doConnect();
@@ -768,7 +781,7 @@
         protected static function setupI18n()
         {
             TBGLogging::log('Initializing i18n');
-            if (!TBGContext::isCLI())
+            if (!self::isCLI())
             {
                 $language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
 
@@ -778,12 +791,12 @@
                 }
 
                 TBGLogging::log('Loading i18n strings');
-                if (!self::$_i18n = TBGContext::getCache()->get(TBGCache::KEY_I18N . $language, false))
+                if (!self::$_i18n = self::getCache()->get(TBGCache::KEY_I18N . $language, false))
                 {
                     TBGLogging::log("Loading strings from file ({$language})");
                     self::$_i18n = new TBGI18n($language);
                     if (!self::isInstallmode())
-                        TBGContext::getCache()->add(TBGCache::KEY_I18N . $language, self::$_i18n, false);
+                        self::getCache()->add(TBGCache::KEY_I18N . $language, self::$_i18n, false);
                 }
                 else
                 {
@@ -830,7 +843,7 @@
             catch (TBGElevatedLoginException $e)
             {
                 TBGLogging::log("Could not reauthenticate elevated permissions: " . $e->getMessage(), 'main', TBGLogging::LEVEL_INFO);
-                TBGContext::setMessage('elevated_login_message_err', $e->getMessage());
+                self::setMessage('elevated_login_message_err', $e->getMessage());
                 self::$_redirect_login = 'elevated_login';
             }
             catch (Exception $e)
@@ -839,7 +852,7 @@
                 $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
                 if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
                 {
-                    TBGContext::setMessage('login_message_err', $e->getMessage());
+                    self::setMessage('login_message_err', $e->getMessage());
                     self::$_redirect_login = 'login';
                 }
                 else
@@ -861,19 +874,19 @@
         {
             foreach (array(TBGCache::KEY_ROUTES_CACHE) as $key)
             {
-                TBGContext::getCache()->delete($key, true, true);
-                TBGContext::getCache()->fileDelete($key, true, true);
+                self::getCache()->delete($key, true, true);
+                self::getCache()->fileDelete($key, true, true);
             }
         }
 
         public static function clearMenuLinkCache()
         {
-            if (!TBGContext::getCache()->isEnabled())
+            if (!self::getCache()->isEnabled())
                 return;
             foreach (array(TBGCache::KEY_MAIN_MENU_LINKS) as $key)
             {
-                TBGContext::getCache()->delete($key);
-                TBGContext::getCache()->fileDelete($key);
+                self::getCache()->delete($key);
+                self::getCache()->fileDelete($key);
             }
         }
 
@@ -919,11 +932,11 @@
         protected static function loadCachedRoutes()
         {
             TBGLogging::log('Loading routes from cache', 'routing');
-            $routes = TBGContext::getCache()->get(TBGCache::KEY_ROUTES_CACHE);
+            $routes = self::getCache()->get(TBGCache::KEY_ROUTES_CACHE);
             if (!$routes)
             {
                 TBGLogging::log('Loading routes from disk cache', 'routing');
-                $routes = TBGContext::getCache()->fileGet(TBGCache::KEY_ROUTES_CACHE);
+                $routes = self::getCache()->fileGet(TBGCache::KEY_ROUTES_CACHE);
             }
 
             if (!$routes)
@@ -941,14 +954,17 @@
         protected static function loadConfiguration()
         {
             TBGLogging::log('Loading configuration from cache', 'core');
-            $configuration = TBGContext::getCache()->get(TBGCache::KEY_CONFIGURATION, false);
-            if (!$configuration)
+            if (self::isReadySetup())
             {
-                TBGLogging::log('Loading configuration from disk cache', 'core');
-                $configuration = TBGContext::getCache()->fileGet(TBGCache::KEY_CONFIGURATION, false);
+                $configuration = self::getCache()->get(TBGCache::KEY_CONFIGURATION, false);
+                if (!$configuration)
+                {
+                    TBGLogging::log('Loading configuration from disk cache', 'core');
+                    $configuration = self::getCache()->fileGet(TBGCache::KEY_CONFIGURATION, false);
+                }
             }
 
-            if (!$configuration)
+            if (!self::isReadySetup() || !$configuration)
             {
                 TBGLogging::log('Loading configuration from files', 'core');
                 $config_filename = \THEBUGGENIE_CONFIGURATION_PATH . "settings.yml";
@@ -960,8 +976,11 @@
                 $b2db_config = \Spyc::YAMLLoad($b2db_filename, true);
                 $configuration = array_merge($config, $b2db_config);
 
-                TBGContext::getCache()->fileAdd(TBGCache::KEY_CONFIGURATION, $configuration, false);
-                TBGContext::getCache()->add(TBGCache::KEY_CONFIGURATION, $configuration, false);
+                if (self::isReadySetup())
+                {
+                    self::getCache()->fileAdd(TBGCache::KEY_CONFIGURATION, $configuration, false);
+                    self::getCache()->add(TBGCache::KEY_CONFIGURATION, $configuration, false);
+                }
             }
             self::$_configuration = $configuration;
 
@@ -1118,7 +1137,7 @@
                     {
                         self::$_user->updateLastSeen();
                     }
-                    if (!TBGContext::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debug', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(TBGContext::getScope()))
+                    if (!self::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debug', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(self::getScope()))
                     {
                         self::getResponse()->headerRedirect(self::getRouting()->generate('add_scope'));
                     }
@@ -1175,7 +1194,7 @@
         {
             TBGLogging::log('Loading internal modules');
 
-            $modules = TBGContext::getCache()->get(TBGCache::KEY_INTERNAL_MODULES, false);
+            $modules = self::getCache()->get(TBGCache::KEY_INTERNAL_MODULES, false);
             if (!$modules)
             {
                 foreach (scandir(THEBUGGENIE_INTERNAL_MODULES_PATH) as $modulename)
@@ -1399,14 +1418,14 @@
             TBGLogging::log('caches permissions');
             self::$_permissions = array();
 
-            if (!self::isInstallmode() && $permissions = TBGContext::getCache()->get(TBGCache::KEY_PERMISSIONS_CACHE))
+            if (!self::isInstallmode() && $permissions = self::getCache()->get(TBGCache::KEY_PERMISSIONS_CACHE))
             {
                 self::$_permissions = $permissions;
                 TBGLogging::log('Using cached permissions');
             }
             else
             {
-                if (self::isInstallmode() || !$permissions = TBGContext::getCache()->fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
+                if (self::isInstallmode() || !$permissions = self::getCache()->fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
                 {
                     TBGLogging::log('starting to cache access permissions');
                     if ($res = \b2db\Core::getTable('TBGPermissionsTable')->getAll())
@@ -1430,21 +1449,21 @@
                     }
                     TBGLogging::log('done (starting to cache access permissions)');
                     if (!self::isInstallmode())
-                        TBGContext::getCache()->fileAdd(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
+                        self::getCache()->fileAdd(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
                 }
                 else
                 {
                     self::$_permissions = $permissions;
                 }
                 if (!self::isInstallmode())
-                    TBGContext::getCache()->add(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
+                    self::getCache()->add(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
             }
             TBGLogging::log('...cached');
         }
 
         public static function deleteModulePermissions($module_name, $scope)
         {
-            if ($scope == TBGContext::getScope()->getID())
+            if ($scope == self::getScope()->getID())
             {
                 if (array_key_exists($module_name, self::$_permissions))
                 {
@@ -1456,8 +1475,8 @@
 
         public static function clearPermissionsCache()
         {
-            TBGContext::getCache()->delete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
-            TBGContext::getCache()->fileDelete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
+            self::getCache()->delete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
+            self::getCache()->fileDelete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
         }
 
         /**
@@ -1888,7 +1907,7 @@
                         $retarr[$dkey] = $dd;
                     }
                 }
-                foreach (TBGContext::getModules() as $module_key => $module)
+                foreach (self::getModules() as $module_key => $module)
                 {
                     $retarr['module_' . $module_key] = array();
                     foreach ($module->getAvailablePermissions() as $mpkey => $mp)
@@ -1923,7 +1942,7 @@
         {
             if (TBGSettings::isUsingExternalAuthenticationBackend())
             {
-                $mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+                $mod = self::getModule(TBGSettings::getAuthenticationBackend());
                 $mod->logout();
             }
 
@@ -2032,7 +2051,7 @@
                         // We have a cyclic dependency! Oh no!
                         // If this happens, throw an exception
 
-                        throw new Exception(TBGContext::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
+                        throw new Exception(self::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
                         continue;
                     }
                     else
@@ -2380,7 +2399,7 @@
 
             // Set up the response object, responsible for controlling any output
             self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
-            self::getResponse()->setTemplate(mb_strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
+            self::getResponse()->setTemplate(mb_strtolower($method) . '.' . self::getRequest()->getRequestedFormat() . '.php');
             self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
             self::setCurrentProject(null);
 
@@ -2444,7 +2463,7 @@
                         {
                             $time = explode(' ', microtime());
                             $action_posttime = $time[1] + $time[0];
-                            TBGContext::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);
+                            self::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);
                         }
                     }
                     if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
@@ -2469,7 +2488,7 @@
                         elseif (!self::isReadySetup() || ($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
                         {
                             // Check to see if any modules provide an alternate template
-                            $event = TBGEvent::createNew('core', "TBGContext::performAction::renderTemplate")->triggerUntilProcessed(array('class' => $actionClassName, 'action' => $actionToRunName));
+                            $event = TBGEvent::createNew('core', "self::performAction::renderTemplate")->triggerUntilProcessed(array('class' => $actionClassName, 'action' => $actionToRunName));
                             if ($event->isProcessed())
                             {
                                 $templateName = $event->getReturnValue();
@@ -2481,7 +2500,7 @@
                             {
                                 $newPath = explode('/', self::getResponse()->getTemplate());
                                 $templateName = (self::isInternalModule($newPath[0])) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
-                                $templateName .= $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
+                                $templateName .= $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . self::getRequest()->getRequestedFormat() . '.php';
                             }
                             else
                             {
@@ -2508,7 +2527,7 @@
                 {
                     $time = explode(' ', microtime());
                     $posttime = $time[1] + $time[0];
-                    TBGContext::visitPartial($visited_templatename, $posttime - $pretime);
+                    self::visitPartial($visited_templatename, $posttime - $pretime);
                 }
 
                 if (!isset($tbg_response))
@@ -2608,11 +2627,11 @@
          */
         public static function getMainLinks()
         {
-            if (!$links = TBGContext::getCache()->get(TBGCache::KEY_MAIN_MENU_LINKS))
+            if (!$links = self::getCache()->get(TBGCache::KEY_MAIN_MENU_LINKS))
             {
                 $links = TBGLinksTable::getTable()->getMainLinks();
                 if (!self::isInstallmode())
-                    TBGContext::getCache()->add(TBGCache::KEY_MAIN_MENU_LINKS, $links);
+                    self::getCache()->add(TBGCache::KEY_MAIN_MENU_LINKS, $links);
             }
             return $links;
         }
@@ -2679,14 +2698,14 @@
                 {
                     TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
                     if (self::getRouting()->getCurrentRouteName() != 'login')
-                        TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+                        self::setMessage('login_message_err', self::geti18n()->__('Please log in'));
                     self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
                 }
                 if (self::$_redirect_login == 'elevated_login')
                 {
                     TBGLogging::log('Elevated permissions required', 'main', TBGLogging::LEVEL_NOTICE);
                     if (self::getRouting()->getCurrentRouteName() != 'elevated_login')
-                        TBGContext::setMessage('elevated_login_message_err', TBGContext::geti18n()->__('Please re-enter your password to continue'));
+                        self::setMessage('elevated_login_message_err', self::geti18n()->__('Please re-enter your password to continue'));
                     $actionObject = new \thebuggenie\core\modules\main\Actions();
                     $moduleName = 'main';
                     $moduleMethod = 'elevatedLogin';

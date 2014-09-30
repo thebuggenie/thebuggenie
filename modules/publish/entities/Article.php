@@ -9,6 +9,7 @@
         TBGProject,
         TBGUser,
         TBGFile,
+        TBGEvent,
         thebuggenie\modules\publish\entities\b2db\UserArticles,
         thebuggenie\modules\publish\entities\b2db\Articles,
         thebuggenie\modules\publish\entities\b2db\ArticleCategories,

@@ -24,7 +24,7 @@
                     <label for="db_username">Username</label><br>
                     The username used to connect to the database
                 </dt>
-                <dd><input type="text" name="db_username" id="db_username"<?php if (isset($username)): ?> value="<?php echo $username; ?>"<?php endif; ?>></dd>
+                <dd><input type="text" name="db_username" placeholder="Enter the database username here" id="db_username"<?php if (isset($username)): ?> value="<?php echo $username; ?>"<?php endif; ?>></dd>
                 <dt>
                     <label for="db_password">Password</label><br>
                     The password used to connect to the database
@@ -76,7 +76,7 @@
                     <label for="db_hostname">Port number</label><br>
                     The port number for the database The Bug Genie should connect to
                 </dt>
-                <dd><input type="text" name="db_port" id="db_port"<?php if (isset($port)): ?> value="<?php echo $port; ?>"<?php endif; ?>></dd>
+                <dd><input type="text" name="db_port" placeholder="Enter the database port, or leave blank for default" id="db_port"<?php if (isset($port)): ?> value="<?php echo $port; ?>"<?php endif; ?>></dd>
                 <dt>
                     <label for="db_name">Database name</label><br>
                     The database used to store the bug genie tables <i>(must already exist!)</i>

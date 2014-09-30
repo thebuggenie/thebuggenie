@@ -40,6 +40,8 @@
     class Vcs_integration extends \TBGModule
     {
 
+        const VERSION = '2.0';
+
         const MODE_DISABLED = 0;
         const MODE_ISSUECOMMITS = 1;
         const WORKFLOW_DISABLED = 0;
@@ -53,7 +55,6 @@
         protected $_module_config_title = 'VCS Integration';
         protected $_module_config_description = 'Configure repository settings for source code integration';
         protected $_has_config_settings = false;
-        protected $_module_version = '2.0';
 
         protected function _initialize()
         {

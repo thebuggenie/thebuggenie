@@ -76,33 +76,13 @@
          */
         public static function installModule($module_name, $scope = null)
         {
-            $module_basepath = THEBUGGENIE_MODULES_PATH . $module_name;
-            $module_classpath = $module_basepath . DS . "classes";
-
-            if ($scope === null || $scope->getID() == TBGContext::getScope()->getID())
-                TBGContext::addAutoloaderClassPath($module_classpath);
-
             $scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
-            $module_details = file_get_contents($module_basepath . DS . 'class');
-
-            if (mb_strpos($module_details, '|') === false)
-                throw new Exception("Need to have module details in the form of ModuleName|version in the {$module_basepath}/class file");
-
-            $details = explode('|', $module_details);
-            list($classname, $version) = $details;
-
-              if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
+            if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
 
             TBGLogging::log('installing module ' . $module_name);
-            $module_id = TBGModulesTable::getTable()->installModule($module_name, $classname, $version, $scope_id);
-
-            if (!class_exists($classname))
-            {
-                throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
-            }
-
-            $module = new $classname($module_id);
+            $module = TBGModulesTable::getTable()->installModule($module_name, $scope_id);
             $module->install($scope_id);
+            TBGLogging::log('done (installing module ' . $module_name . ')');
 
             return $module;
         }
@@ -191,17 +171,16 @@
                 TBGContext::clearRoutingCache();
                 TBGContext::clearPermissionsCache();
                 $this->_install($scope);
-                $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'classes' . DS . 'B2DB';
+                $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'entities' . DS . 'b2db';
 
                 if (TBGContext::getScope()->isDefault() && is_dir($b2db_classpath))
                 {
-                    TBGContext::addAutoloaderClassPath($b2db_classpath);
                     $b2db_classpath_handle = opendir($b2db_classpath);
                     while ($table_class_file = readdir($b2db_classpath_handle))
                     {
                         if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
                         {
-                            \b2db\Core::getTable($tablename)->create();
+                            \b2db\Core::getTable("\\thebuggenie\\modules\\".$this->_name."\\entities\\b2db\\".$tablename)->create();
                         }
                     }
                 }
@@ -252,8 +231,8 @@
             TBGContext::clearRoutingCache();
             TBGContext::clearPermissionsCache();
             $this->_upgrade();
-                        $this->_version = $this->_module_version;
-                        $this->save();
+            $this->_version = static::VERSION;
+            $this->save();
         }
 
         final public function uninstall($scope = null)
@@ -398,7 +377,7 @@
          */
         public function isOutdated()
         {
-            if ($this->_version != $this->_module_version)
+            if ($this->_version != static::VERSION)
             {
                 return true;
             }

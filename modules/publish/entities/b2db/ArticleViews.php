@@ -2,9 +2,8 @@
 
     namespace thebuggenie\modules\publish\entities\b2db;
 
-    use b2db\Core,
-        b2db\Criteria,
-        b2db\Criterion;
+    use TBGUsersTable,
+        TBGScopesTable;
 
     /**
      * @Table(name="articleviews")
@@ -23,7 +22,7 @@
         {
             parent::_setup(self::B2DBNAME, self::ID);
             parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-            parent::_addForeignKeyColumn(self::ARTICLE_ID, TBGArticlesTable::getTable(), TBGArticlesTable::ID);
+            parent::_addForeignKeyColumn(self::ARTICLE_ID, Articles::getTable(), Articles::ID);
             parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
         }
     }

@@ -33,7 +33,7 @@
             <b>PCRE libraries version is too old</b><br>
             The Bug Genie 3 requires PCRE libraries 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
             </div>
-        <?php endif; ?>        
+        <?php endif; ?>
         <?php if ($docblock_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
         <?php else: ?>
@@ -125,8 +125,8 @@
             </div>
             <b>If you're installing this on a Linux server,</b> running those commands should fix it:<br>
             <div class="command_box">
-            touch <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>
-            chmod a+w <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+            touch <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml<br>
+            chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
         <?php endif; ?>
         <?php if ($b2db_param_file_ok): ?>
@@ -138,7 +138,7 @@
             </div>
             <b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
             <div class="command_box">
-            chmod a+w <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+            chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
         <?php endif; ?>
         <?php if ($gd_ok): ?>

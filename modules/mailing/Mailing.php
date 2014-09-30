@@ -28,6 +28,7 @@
     class Mailing extends \TBGModule
     {
 
+        const VERSION = '2.0';
         const MAIL_TYPE_PHP = 1;
         const MAIL_TYPE_CUSTOM = 2;
 
@@ -74,7 +75,6 @@
         protected $_account_settings_logo = 'notification_settings.png';
         protected $_has_account_settings = false;
         protected $_has_config_settings = true;
-        protected $_module_version = '2.0';
         protected $mailer = null;
 
         /**

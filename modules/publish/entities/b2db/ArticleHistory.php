@@ -4,7 +4,10 @@
 
     use b2db\Core,
         b2db\Criteria,
-        b2db\Criterion;
+        b2db\Criterion,
+        TBGContext,
+        TBGUsersTable,
+        TBGScopesTable;
 
     /**
      * @Table(name="articlehistory")
@@ -116,7 +119,8 @@
                 while ($row = $res->getNextRow())
                 {
                     $a_id = $row[self::AUTHOR];
-                    if ($a_id > 0) $uids[$a_id] = $a_id;
+                    if ($a_id > 0)
+                        $uids[$a_id] = $a_id;
                 }
             }
 
@@ -162,7 +166,5 @@
             $crit->addWhere(self::REVISION, $revision, Criteria::DB_GREATER_THAN);
             $res = $this->doDelete($crit);
         }
-
-
 
     }
