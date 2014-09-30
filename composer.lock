@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f3d14a77236f6327a634e0aa77c71111",
+    "hash": "eb3887dc98ba41c40d2a170af8f03a0b",
     "packages": [
         {
             "name": "easybook/geshi",
@@ -138,17 +138,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mrclay/minify.git",
-                "reference": "bceffd5afb0a578f7b4c366cd97a6ec1f3252d10"
+                "reference": "bd9a450694cda1b54c43a1784adabe36ad522d89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mrclay/minify/zipball/bceffd5afb0a578f7b4c366cd97a6ec1f3252d10",
-                "reference": "bceffd5afb0a578f7b4c366cd97a6ec1f3252d10",
+                "url": "https://api.github.com/repos/mrclay/minify/zipball/bd9a450694cda1b54c43a1784adabe36ad522d89",
+                "reference": "bd9a450694cda1b54c43a1784adabe36ad522d89",
                 "shasum": ""
             },
             "require": {
                 "ext-pcre": "*",
                 "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "tubalmartin/cssmin": "~2.4.8"
+            },
+            "suggest": {
+                "tubalmartin/cssmin": "Support minify with CSSMin (YUI PHP port)"
             },
             "type": "library",
             "autoload": {
@@ -169,7 +175,7 @@
             ],
             "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
             "homepage": "http://code.google.com/p/minify/",
-            "time": "2014-09-21 11:31:30"
+            "time": "2014-09-25 11:40:53"
         },
         {
             "name": "mustangostang/spyc",
@@ -309,12 +315,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thebuggenie/b2db.git",
-                "reference": "37dd768df4ed85fd981383930150d39dc7ab0169"
+                "reference": "2b212709e0d9c7791b2020e61307cbbfab434600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/37dd768df4ed85fd981383930150d39dc7ab0169",
-                "reference": "37dd768df4ed85fd981383930150d39dc7ab0169",
+                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/2b212709e0d9c7791b2020e61307cbbfab434600",
+                "reference": "2b212709e0d9c7791b2020e61307cbbfab434600",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +343,7 @@
                 }
             ],
             "description": "B2DB is a lightweight PHP 5.3-based ORM",
-            "time": "2014-09-20 19:45:31"
+            "time": "2014-09-30 13:26:01"
         },
         {
             "name": "webit/eval-math",
@@ -375,12 +381,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "b7b98cf609a94ebc4cd299b736282901223a4b12"
+                "reference": "59b8819e197378ce130e4a27f7b6e4429126bb97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/b7b98cf609a94ebc4cd299b736282901223a4b12",
-                "reference": "b7b98cf609a94ebc4cd299b736282901223a4b12",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/59b8819e197378ce130e4a27f7b6e4429126bb97",
+                "reference": "59b8819e197378ce130e4a27f7b6e4429126bb97",
                 "shasum": ""
             },
             "require": {
@@ -413,13 +419,13 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-03 09:12:11"
+            "time": "2014-09-27 08:36:04"
         }
     ],
     "aliases": [
 
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "thebuggenie/b2db": 20,
         "mrclay/minify": 20,
@@ -429,7 +435,7 @@
         "realityking/pchart": 20,
         "symfony/finder": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "platform": [
 
     ],

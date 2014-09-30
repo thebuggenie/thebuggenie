@@ -30,5 +30,6 @@
             },
             "classmap" : [ "core/classes/", "core/classes/B2DB/" ]
         },
-	"minimum-stability" : "stable"
+	"minimum-stability" : "dev",
+        "prefer-stable" : true
 }
