@@ -5,17 +5,20 @@
     $selected_columns = $milestone->getProject()->getPlanningColumns($tbg_user);
     $all_columns = $milestone->getProject()->getIssueFields(false, array('status', 'milestone', 'resolution', 'assignee', 'user_pain'));
 
-    switch ($board->getType())
+    if (isset($board))
     {
-        case AgileBoard::TYPE_GENERIC:
-            $noissueslabel = __('No issues are assigned to this milestone');
-            $noissuesfilteredlabel = __('No issues assigned to this milestone matches selected filters');
-            break;
-        case AgileBoard::TYPE_SCRUM:
-        case AgileBoard::TYPE_KANBAN:
-            $noissueslabel = __('There are no issues in this sprint');
-            $noissuesfilteredlabel = __('No issues in this sprint matches selected filters');
-            break;
+        switch ($board->getType())
+        {
+            case AgileBoard::TYPE_GENERIC:
+                $noissueslabel = __('No issues are assigned to this milestone');
+                $noissuesfilteredlabel = __('No issues assigned to this milestone matches selected filters');
+                break;
+            case AgileBoard::TYPE_SCRUM:
+            case AgileBoard::TYPE_KANBAN:
+                $noissueslabel = __('There are no issues in this sprint');
+                $noissuesfilteredlabel = __('No issues in this sprint matches selected filters');
+                break;
+        }
     }
 
 ?>
@@ -23,7 +26,11 @@
     <div class="planning_indicator" id="milestone_<?php echo $milestone->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_30.gif'); ?></div>
     <?php include_template('project/milestoneboxheader', compact('milestone', 'include_counts', 'include_buttons', 'board')); ?>
     <ul id="milestone_<?php echo $milestone->getID(); ?>_issues" class="milestone_issues jsortable intersortable <?php if ($milestone->countIssues() == 0) echo 'empty'; ?>"></ul>
-    <div class="milestone_no_issues" style="<?php if ($milestone->countIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_<?php echo $milestone->getID(); ?>_unassigned"><?php echo $noissueslabel; ?></div>
-    <div class="milestone_no_issues" style="display: none;" id="milestone_<?php echo $milestone->getID(); ?>_unassigned_filtered"><?php echo $noissuesfilteredlabel; ?></div>
-    <div class="milestone_error_issues" style="display: none;" id="milestone_0_initialize_error"><?php echo __('The issue list could not be loaded'); ?></div>
+    <?php if (isset($board)): ?>
+        <div class="milestone_no_issues" style="<?php if ($milestone->countIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_<?php echo $milestone->getID(); ?>_unassigned"><?php echo $noissueslabel; ?></div>
+        <div class="milestone_no_issues" style="display: none;" id="milestone_<?php echo $milestone->getID(); ?>_unassigned_filtered"><?php echo $noissuesfilteredlabel; ?></div>
+        <div class="milestone_error_issues" style="display: none;" id="milestone_0_initialize_error"><?php echo __('The issue list could not be loaded'); ?></div>
+    <?php else: ?>
+        <div class="milestone_no_issues" style="<?php if ($milestone->countIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_<?php echo $milestone->getID(); ?>_unassigned"><?php echo __('No issues are assigned to this milestone'); ?></div>
+    <?php endif; ?>
 </div>

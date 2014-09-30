@@ -1648,6 +1648,51 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 
 #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
+#project_planning_action_strip .fancydropdown { 
+    width: 360px; 
+    height: 32px;
+    text-align: center; 
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid rgba(150, 150, 150, 0.3);
+    border-radius: 2px;
+    background: -o-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%);
+    background: -ms-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%);
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%);
+    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%);
+    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%);
+    vertical-align: middle;
+    position: relative;
+}
+#project_planning_action_strip .fancydropdown img { vertical-align: middle; margin: 0; float: none; }
+#project_planning_action_strip .fancydropdown #selected_milestone_status_details { position: absolute; width: 100%; left: 0; top: 0; height: 30px; }
+.milestone_virtual_status .statusblocks { 
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.milestone_virtual_status .statusblock { 
+    display: block;
+    float: left;
+    clear: none;
+    height: 27px;
+    opacity: 0.2; 
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    margin-top: 0;
+    margin-left: 0;
+}
+.milestone_virtual_status .statusblock:hover { opacity: 0.35; }
+.milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 0; top: 8px; font-size: 0.9em; line-height: 1em; padding: 0; }
+.milestone_virtual_status .milestone_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
+.milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
+#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li.header { border: none; margin-bottom: 0; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
@@ -2647,15 +2692,20 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_counts_container tr:first-child td { font-size: 2.3em; line-height: 1.1em; }
 .milestone_counts_container tr:nth-child(2) td { font-size: 1em; line-height: 1.1em; text-transform: uppercase; color: #AAA; }
 .milestone_box .milestone_name { font-weight: normal; font-size: 1.3em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; }
+.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 400px; padding: 1px; background-color: #FFF; position: relative; border: 1px solid transparent; }
+.milestone_box .milestone_name.milestone_virtual_status:hover { border-color: rgba(100, 100, 100, 0.1); }
 .milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
 .milestone_box .header .settings_container { position: relative; float: right; margin: 0 5px; line-height: 1em; }
 .milestone_box .header .settings_container img { padding: 3px 5px; cursor: pointer; }
-.milestone_box dl.info, .release dl.info, .epic dl.info { display: block; white-space: normal; }
+dl.info { display: block; white-space: normal; }
 .milestone_box .backlog dl.info { display: inline-block; margin-left: 25px; }
-.milestone_box dl.info dt, .milestone_box dl.info dd, .release dl.info dt, .release dl.info dd, .epic dl.info dt, .epic dl.info dd { display: inline-block; width: auto; text-align: left; float: none; padding: 2px; vertical-align: middle; font-weight: normal; }
-.milestone_box dl.info dt, .release dl.info dt, .epic dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-space: nowrap; }
+.fancydropdown + ul li dl.info { display: inline-block; margin-left: 0; width: 265px; }
+dl.info dt, dl.info dd { display: inline-block; width: auto; text-align: left; float: none; padding: 2px; vertical-align: middle; font-weight: normal; }
+dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-space: nowrap; }
 .release dl.info dt, .epic dl.info dt { width: 100px; }
+.fancydropdown + ul li dl.info dt { width: 85px; }
 .release dl.info dd, .epic dl.info dd { width: 120px; }
+.fancydropdown + ul li dl.info dd { width: 160px; }
 .milestone_box dl.info dt.milestone_issues_count { margin-right: 0; line-height: 1em; }
 .milestone_box dl.info dt.milestone_issues_count.collapsable, .milestone_box dl.info dt.milestone_issues_count.collapsable + dd { cursor: pointer; }
 .milestone_box dl.info dt.milestone_issues_count img { vertical-align: middle; }
@@ -3055,6 +3105,7 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 .sectioned .fancydropdown + ul li h1, .sectioned .fancydropdown + ul li h1:first-child {
     font-size: 1.15em;
+    text-align: left;
 }
 .fancydropdown {
     display: inline-block;
@@ -3117,6 +3168,7 @@ table.issue_affects td img { vertical-align: bottom; }
     width: 360px;
 }
 .fancydropdown + ul li {
+    text-align: left;
     display: block;
     clear: both;
     padding: 5px 10px;

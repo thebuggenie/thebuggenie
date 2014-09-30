@@ -299,7 +299,23 @@
         public function runAgileboardWhiteboard(\TBGRequest $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
-            $this->board = ($request['board_id']) ? AgileBoards::getTable()->selectById($request['board_id']) : new AgileBoard();
+            $this->board = AgileBoards::getTable()->selectById($request['board_id']);
+
+            $this->forward403unless($this->board instanceof AgileBoard);
+
+            if ($request->isAjaxCall())
+            {
+                switch ($request['mode'])
+                {
+                    case 'getmilestonestatus':
+                        $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                        return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
+                        break;
+                }
+            }
+            $milestones = $this->board->getMilestones();
+
+            $this->selected_milestone = (!empty($milestones)) ? array_shift($milestones) : null;
         }
 
         /**

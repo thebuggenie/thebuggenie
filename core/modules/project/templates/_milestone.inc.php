@@ -62,11 +62,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="milestone_visibility_roadmap_<?php echo $milestone->getID(); ?>"><?php echo __('Issue availability'); ?></label></td>
+                    <td><label for="milestone_visibility_issues_<?php echo $milestone->getID(); ?>"><?php echo __('Issue availability'); ?></label></td>
                     <td>
-                        <select name="visibility_roadmap" id="milestone_visibility_roadmap_<?php echo $milestone->getID(); ?>">
-                            <option value="0"<?php if (!$milestone->isVisibleRoadmap()): ?> selected<?php endif; ?>><?php echo __('Not available'); ?></option>
-                            <option value="1"<?php if ($milestone->isVisibleRoadmap()): ?> selected<?php endif; ?>><?php echo __('Available'); ?></option>
+                        <select name="visibility_issues" id="milestone_visibility_issues_<?php echo $milestone->getID(); ?>">
+                            <option value="0"<?php if (!$milestone->isVisibleIssues()): ?> selected<?php endif; ?>><?php echo __('Not available'); ?></option>
+                            <option value="1"<?php if ($milestone->isVisibleIssues()): ?> selected<?php endif; ?>><?php echo __('Available'); ?></option>
                         </select>
                     </td>
                 </tr>

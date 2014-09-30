@@ -68,7 +68,9 @@ var TBG = {
     Project: {
         Statistics: {},
         Milestone: {},
-        Planning: {},
+        Planning: {
+            Whiteboard: {}
+        },
         Timeline: {},
         Scrum: {
             Story: {},
@@ -2283,9 +2285,29 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
     }
 };
 
-TBG.Project.Planning.initializeWhiteboard = function (options) {
-    TBG.Project.Planning._initializeFilterSearch();
+TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
+    var mi = $('selected_milestone_input');
+    var milestone_id = (event) ? $(item).dataset.inputValue : mi.dataset.selectedValue;
+    TBG.Main.Helpers.ajax(mi.dataset.statusUrl, {
+        additional_params: '&milestone_id=' + parseInt(milestone_id),
+        url_method: 'get',
+        loading: {
+            hide: 'selected_milestone_status_details',
+            indicator: 'selected_milestone_status_indicator'
+        },
+        success: {
+            update: 'selected_milestone_status_details',
+            show: 'selected_milestone_status_details'
+        }
+    });
+}
 
+TBG.Project.Planning.Whiteboard.initialize = function (options) {
+    TBG.Project.Planning._initializeFilterSearch();
+    TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+    
+    $('planning_indicator').hide();
+    $('planning_filter_title_input').enable();
 };
 
 TBG.Project.Planning._initializeFilterSearch = function() {
@@ -2682,14 +2704,15 @@ TBG.Project.Planning.saveAgileBoard = function (item) {
 
 TBG.Main.setFancyDropdownValue = function (item) {
     var dropdown = $(item).up('ul');
-    $(dropdown.dataset.input).setValue($(item).dataset.inputValue);
+    if ($(dropdown.dataset.input)) $(dropdown.dataset.input).setValue($(item).dataset.inputValue);
+    dropdown.dataset.selectedValue = $(item).dataset.inputValue;
     dropdown.childElements().each(function (elm) {
         elm.removeClassName('selected');
     });
     $(item).addClassName('selected');
     var dropdownfancylabel = $(item).up('ul').previous();
     dropdownfancylabel.removeClassName('selected');
-    dropdownfancylabel.update($(item).dataset.displayName);
+    if (!dropdownfancylabel.hasClassName('self-updateable')) dropdownfancylabel.update($(item).dataset.displayName);
 };
 
 TBG.Project.Milestone.markFinished = function (form) {

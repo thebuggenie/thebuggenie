@@ -1,7 +1,11 @@
 <?php use thebuggenie\core\entities\AgileBoard; ?>
 <div class="header <?php if (!$milestone->getID()) echo 'backlog'; ?>" id="milestone_<?php echo $milestone->getID(); ?>_header">
     <div class="milestone_basic_container">
-        <span class="milestone_name"><?php echo $milestone->getName(); ?></span>
+        <?php if (isset($board)): ?>
+            <span class="milestone_name"><?php echo $milestone->getName(); ?></span>
+        <?php else: ?>
+            <span class="milestone_name milestone_virtual_status"><?php include_component('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone)); ?></span>
+        <?php endif; ?>
         <dl class="info">
             <?php if ($milestone->getID()): ?>
                 <dt><?php echo __('Start date'); ?></dt>
@@ -10,7 +14,7 @@
                 <dd><?php echo ($milestone->getScheduledDate()) ? tbg_formatTime($milestone->getScheduledDate(), 22, true, true) : '-'; ?></dd>
             <?php endif; ?>
         </dl>
-        <?php if ($milestone->getID()): ?>
+        <?php if ($milestone->getID() && isset($board)): ?>
             <div class="milestone_percentage">
                 <div class="filler" id="milestone_<?php echo $milestone->getID(); ?>_percentage_filler" style="<?php if ($include_counts) echo 'width: '. $milestone->getPercentComplete() . '%'; ?>"></div>
             </div>

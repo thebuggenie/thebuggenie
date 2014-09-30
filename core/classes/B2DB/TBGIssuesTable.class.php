@@ -173,6 +173,38 @@
             return $retarr;
         }
 
+        public function getMilestoneDistributionDetails($milestone_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::DELETED, false);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $total = $this->doCount($crit);
+
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::STATUS);
+            $crit->addSelectionColumn(self::ID, 'counts', Criteria::DB_COUNT);
+            $crit->addWhere(self::DELETED, false);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $crit->addGroupBy(self::STATUS);
+
+            $res = $this->doSelect($crit);
+            $statuses = array('total' => $total, 'details' => array());
+
+            if ($res)
+            {
+                $multiplier = 100 / $total;
+                while ($row = $res->getNextRow())
+                {
+                    $counts = $row['counts'];
+                    $pct = $counts * $multiplier;
+                    $status = $row[self::STATUS];
+                    $statuses['details'][$status] = array('id' => $status, 'count' => $counts, 'percent' => round($pct, 2));
+                }
+            }
+
+            return $statuses;
+        }
+
         public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
         {
             $crit = $this->getCriteria();

@@ -2331,7 +2331,7 @@ project_planning_board:
     csrf_enabled: false
 
 project_planning_board_whiteboard:
-    route: /:project_key/boards/:board_id/whiteboard
+    route: /:project_key/boards/:board_id/whiteboard/*
     module: project
     action: agileboardWhiteboard
     parameters: [ ]
