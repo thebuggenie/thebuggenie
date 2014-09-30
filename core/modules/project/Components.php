@@ -29,7 +29,8 @@
         public function componentMilestoneWhiteboardStatusDetails()
         {
             $this->statuses = \TBGStatus::getAll();
-            $this->status_details = \TBGIssuesTable::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
+            if ($this->milestone instanceof \TBGMilestone)
+                $this->status_details = \TBGIssuesTable::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
         }
 
         public function componentRecentActivities()

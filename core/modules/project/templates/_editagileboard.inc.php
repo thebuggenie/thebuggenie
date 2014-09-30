@@ -122,8 +122,8 @@
                                                 <label for="backlog_search_predefined_<?php echo $value; ?>"><?php echo $description; ?></label>
                                             </li>
                                         <?php endforeach; ?>
+                                        <li class="separator"></li>
                                         <?php if (count($savedsearches['public']) > 0): ?>
-                                            <li class="separator"></li>
                                             <?php foreach ($savedsearches['public'] as $savedsearch): ?>
                                                 <?php $is_selected = ($board->usesSavedSearchBacklog() && $board->getBacklogSearch()->getID() == $savedsearch->getID()); ?>
                                                 <li data-value="saved_<?php echo $savedsearch->getID(); ?>" class="filtervalue<?php if ($is_selected) echo ' selected'; ?>" data-exclusive data-selection-group="1">
@@ -135,8 +135,8 @@
                                         <?php else: ?>
                                             <li class="disabled"><?php echo __('There are no public saved searches for this project'); ?></li>
                                         <?php endif; ?>
+                                        <li class="separator"></li>
                                         <?php if (count($savedsearches['user']) > 0): ?>
-                                            <li class="separator"></li>
                                             <?php foreach ($savedsearches['user'] as $savedsearch): ?>
                                                 <?php $is_selected = ($board->usesSavedSearchBacklog() && $board->getBacklogSearch()->getID() == $savedsearch->getID()); ?>
                                                 <li data-value="saved_<?php echo $savedsearch->getID(); ?>" class="filtervalue<?php if ($is_selected) echo ' selected'; ?>" data-exclusive data-selection-group="1">

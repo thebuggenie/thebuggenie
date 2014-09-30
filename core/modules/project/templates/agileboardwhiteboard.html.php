@@ -12,11 +12,11 @@
         <div class="project_right planning_container" id="planning_container">
             <div class="project_save_container" id="project_planning_action_strip">
                 <input type="search" class="planning_filter_title" id="planning_filter_title_input" disabled placeholder="<?php echo __('Filter issues by title'); ?>">
-                <a href="javascript:void(0)" class="fancydropdown changeable self-updateable milestone_virtual_status" id="selected_milestone_<?php echo $selected_milestone->getID(); ?>">
+                <a href="javascript:void(0)" class="fancydropdown changeable self-updateable milestone_virtual_status" id="selected_milestone_container">
                     <span id="selected_milestone_status_details" style="display: none;"></span>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'selected_milestone_status_indicator')); ?>
                 </a>
-                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo $selected_milestone->getID(); ?>" data-status-url="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
+                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof TBGMilestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
                     <?php foreach ($board->getMilestones() as $milestone): ?>
                         <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>">
                             <h1><?php echo $milestone->getName(); ?></h1>
