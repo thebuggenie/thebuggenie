@@ -1674,6 +1674,10 @@
          */
         public function getSalt()
         {
+            if (!$this->_salt)
+            {
+                $this->regenerateSalt();
+            }
             return $this->_salt;
         }
 
