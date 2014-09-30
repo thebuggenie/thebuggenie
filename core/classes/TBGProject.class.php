@@ -3240,6 +3240,14 @@
             {
                 if ($dashboard->getIsDefault()) return $dashboard;
             }
+
+            $dashboard = new \thebuggenie\core\entities\Dashboard();
+            $dashboard->setProject($this);
+            $dashboard->setIsDefault(true);
+            $dashboard->save();
+            $this->_dashboards[] = $dashboard;
+
+            return $dashboard;
         }
 
     }
