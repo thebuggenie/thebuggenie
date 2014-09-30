@@ -35,8 +35,8 @@
 
 	// Set up all available search paths for cli commands
 	$command_paths = array();
-	$command_paths['main'] = THEBUGGENIE_PATH . 'modules' . DS . 'main' . DS . 'classes' . DS . 'cli' . DS;
-	$command_paths['remote'] = THEBUGGENIE_PATH . 'modules' . DS . 'remote' . DS . 'classes' . DS . 'cli' . DS;
+	$command_paths['main'] = THEBUGGENIE_PATH . 'core' . DS . 'modules' . DS . 'main' . DS . 'cli' . DS;
+	$command_paths['remote'] = THEBUGGENIE_PATH . 'core' . DS . 'modules' . DS . 'remote' . DS . 'cli' . DS;
 	foreach (TBGContext::getModules() as $module_name => $module)
 	{
 		$module_cli_path = THEBUGGENIE_PATH . 'modules' . DS . $module_name . DS . 'classes' . DS . 'cli' . DS;
@@ -50,12 +50,13 @@
 	$commands = array('main' => array());
 	foreach ($command_paths as $module_name => $command_path)
 	{
-		TBGContext::addAutoloaderClasspath($command_path);
+
 		$_path_handle = opendir($command_path);
 		while ($command_class_file = readdir($_path_handle))
 		{
 			if (($classname = substr($command_class_file, 0, strpos($command_class_file, '.'))) != '')
 			{
+                require_once($command_path.$classname.'.class.php');
 				$module = (TBGContext::isModuleLoaded($module_name)) ? TBGContext::getModule($module_name) : null;
 				$command = new $classname($module);
 				if ($command instanceof TBGCliCommand)
