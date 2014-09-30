@@ -70,7 +70,7 @@
          * @var array
          * @Column(type="serializable", length=500)
          */
-        protected $_status_ids = null;
+        protected $_status_ids = array();
 
         public function getName()
         {
@@ -144,7 +144,7 @@
 
         public function getStatusIds()
         {
-            return (is_array($this->_status_ids)) ? $this->_status_ids : array();
+            return $this->_status_ids;
         }
 
         public function hasStatusId($status_id)
@@ -154,7 +154,7 @@
 
         public function hasStatusIds()
         {
-            return !empty($this->getStatusIds());
+            return (count($this->getStatusIds()) > 0);
         }
 
         public function setStatusIds($status_ids)
