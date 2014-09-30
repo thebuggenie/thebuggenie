@@ -1344,6 +1344,11 @@
                 $return_options = array('finished' => 'ok');
                 $board = AgileBoards::getTable()->selectById($request['board_id']);
                 $milestone = \TBGMilestone::getB2DBTable()->selectById($request['milestone_id']);
+                $reached_date = mktime(23, 59, 59, \TBGContext::getRequest()->getParameter('milestone_finish_reached_month'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_day'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_year'));
+                $milestone->setReachedDate($reached_date);
+                $milestone->setReached();
+                $milestone->setClosed(true);
+                $milestone->save();
                 if ($request->hasParameter('unresolved_issues_action'))
                 {
                     switch ($request['unresolved_issues_action'])
@@ -1358,11 +1363,6 @@
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                     }
-                    $reached_date = mktime(23, 59, 59, \TBGContext::getRequest()->getParameter('milestone_finish_reached_month'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_day'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_year'));
-                    $milestone->setReachedDate($reached_date);
-                    $milestone->setReached();
-                    $milestone->setClosed(true);
-                    $milestone->save();
                     if (isset($new_milestone) && $new_milestone instanceof \TBGMilestone)
                     {
                         \TBGIssuesTable::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), $new_milestone->getID());
