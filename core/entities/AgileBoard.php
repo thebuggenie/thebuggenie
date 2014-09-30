@@ -134,7 +134,7 @@
          * @var array
          * @Column(type="serializable", length=500)
          */
-        protected $_swimlane_field_values = null;
+        protected $_swimlane_field_values = array();
 
         /**
          * Cached search object
@@ -398,7 +398,7 @@
 
         public function getSwimlaneFieldValues()
         {
-            return (is_array($this->_swimlane_field_values)) ? $this->_swimlane_field_values : array();
+            return $this->_swimlane_field_values;
         }
 
         public function setUseSwimlanes($use_swimlanes = true)
@@ -438,7 +438,7 @@
 
         public function clearSwimlaneFieldValues()
         {
-            $this->_swimlane_field_values = null;
+            $this->_swimlane_field_values = array();
         }
 
         public function hasSwimlaneFieldValue($value)
@@ -448,7 +448,7 @@
 
         public function hasSwimlaneFieldValues()
         {
-            return empty($this->getSwimlaneFieldValues());
+            return (count($this->getSwimlaneFieldValues()) > 0);
         }
 
         /**
