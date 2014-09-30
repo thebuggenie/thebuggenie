@@ -6,7 +6,8 @@
         thebuggenie\core\entities\b2db\AgileBoards,
         thebuggenie\core\entities\Dashboard,
         thebuggenie\core\entities\DashboardView,
-        thebuggenie\modules\publish\entities\Article;
+        thebuggenie\modules\publish\entities\Article,
+        thebuggenie\modules\publish\entities\b2db\Articles;
 
     /**
      * actions for the main module
@@ -342,7 +343,7 @@
                                     $target = \TBGContext::factory()->TBGIssue($request['target_id']);
                                     break;
                                 case 'article':
-                                    $target = \TBGArticlesTable::getTable()->selectById($request['target_id']);
+                                    $target = Articles::getTable()->selectById($request['target_id']);
                                     break;
                                 case 'project':
                                     $target = \TBGProjectsTable::getTable()->selectById($request['target_id']);
@@ -2809,7 +2810,7 @@
                     $target_id = $target->getID();
                     break;
                 case 'article':
-                    $target = \TBGArticlesTable::getTable()->selectById($request['target_id']);
+                    $target = Articles::getTable()->selectById($request['target_id']);
                     $base_id = 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files';
                     $container_id = 'article_' . $target->getID() . '_files';
                     $target_identifier = 'article_name';
@@ -3242,7 +3243,7 @@
                 }
                 elseif ($comment_applies_type == \TBGComment::TYPE_ARTICLE)
                 {
-                    $article = \TBGArticlesTable::getTable()->selectById((int) $request['comment_applies_id']);
+                    $article = Articles::getTable()->selectById((int) $request['comment_applies_id']);
                     \TBGEvent::createNew('core', '\TBGComment::createNew', $comment, compact('article'))->trigger();
                 }
 

@@ -1,5 +1,7 @@
 <?php
 
+    use thebuggenie\modules\publish\entities\b2db\Articles;
+
     /**
      * Notification item class
      *
@@ -114,7 +116,7 @@
                             $this->_target = TBGContext::factory()->TBGIssue((int) $this->_target_id);
                             break;
                         case self::TYPE_ARTICLE_UPDATED:
-                            $this->_target = TBGArticlesTable::getTable()->selectById((int) $this->_target_id);
+                            $this->_target = Articles::getTable()->selectById((int) $this->_target_id);
                             break;
                     }
                 }

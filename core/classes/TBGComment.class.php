@@ -1,6 +1,7 @@
 <?php
 
-    use \Michelf\MarkdownExtra;
+    use \Michelf\MarkdownExtra,
+        thebuggenie\modules\publish\entities\b2db\Articles;
 
     /**
      * Class used for comments
@@ -633,7 +634,7 @@
                         $this->_target = TBGContext::factory()->TBGIssue($this->_target_id);
                         break;
                     case self::TYPE_ARTICLE:
-                        $this->_target = TBGArticlesTable::getTable()->selectById($this->_target_id);
+                        $this->_target = Articles::getTable()->selectById($this->_target_id);
                         break;
                     default:
                         $event = TBGEvent::createNew('core', 'TBGComment::getTarget', $this);

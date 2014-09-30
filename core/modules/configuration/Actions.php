@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\configuration;
 
+    use thebuggenie\modules\publish\entities\b2db\Articles;
+
     class Actions extends \TBGAction
     {
 
@@ -232,7 +234,7 @@
                     $severities = \TBGSeverity::getAll();
                     $statuses = \TBGStatus::getAll();
                     $reproducabilities = \TBGReproducability::getAll();
-                    $lorem_ipsum = \TBGArticlesTable::getTable()->getArticleByName('LoremIpsum');
+                    $lorem_ipsum = Articles::getTable()->getArticleByName('LoremIpsum');
                     $lorem_words = explode(' ', $lorem_ipsum->getContent());
 
                     foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)

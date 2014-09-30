@@ -1,6 +1,6 @@
 <?php
 
-    use thebuggenie\modules\publish\entities\Article as TBGWikiArticle;
+    use thebuggenie\modules\publish\entities\Article;
 
     /**
      * Text parser class
@@ -464,7 +464,7 @@
                     $options = explode('|', $title);
                     $filename = $href;
                     $issuemode = (bool) (isset($this->options['issue']) && $this->options['issue'] instanceof TBGIssue);
-                    $articlemode = (bool) (isset($this->options['article']) && $this->options['article'] instanceof TBGWikiArticle);
+                    $articlemode = (bool) (isset($this->options['article']) && $this->options['article'] instanceof Article);
 
                     $file = null;
                     $file_link = $filename;
@@ -785,8 +785,8 @@
                     $details = explode('|', $matches[1]);
                     $template_name = array_shift($details);
                     if (substr($template_name, 0, 1) == ':') $template_name = substr($template_name, 1);
-                    $template_name = (TBGWikiArticle::doesArticleExist($template_name)) ? $template_name : 'Template:'.$template_name;
-                    $template_article = TBGArticlesTable::getTable()->getArticleByName($template_name);
+                    $template_name = (Article::doesArticleExist($template_name)) ? $template_name : 'Template:'.$template_name;
+                    $template_article = Articles::getTable()->getArticleByName($template_name);
                     $parameters = array();
                     if (count($details))
                     {
@@ -799,7 +799,7 @@
                                 $parameters[] = $parameter;
                         }
                     }
-                    if ($template_article instanceof TBGWikiArticle)
+                    if ($template_article instanceof Article)
                     {
                         return tbg_parse_text($template_article->getContent(), false, null, array('included' => true, 'parameters' => $parameters));
                     }

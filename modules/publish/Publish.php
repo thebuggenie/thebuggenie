@@ -546,7 +546,7 @@
                 UserArticles::getTable()->addStarredArticle($user->getID(), $article_id);
                 if ($user->_isset('publish', 'starredarticles'))
                 {
-                    $article = TBGArticlesTable::getTable()->selectById($article_id);
+                    $article = Articles::getTable()->selectById($article_id);
                     $articles = $user->_retrieve('publish', 'starredarticles');
                     $articles[$article->getID()] = $article;
                     $user->_store('publish', 'starredarticles', $articles);
