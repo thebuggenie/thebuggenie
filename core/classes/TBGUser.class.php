@@ -2783,6 +2783,7 @@
             $dashboard = new \thebuggenie\core\entities\Dashboard();
             $dashboard->setUser($this);
             $dashboard->setIsDefault(true);
+            $dashboard->save();
             $this->_dashboards[] = $dashboard;
 
             return $dashboard;
