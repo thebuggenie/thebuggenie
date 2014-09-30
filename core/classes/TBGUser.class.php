@@ -2779,6 +2779,13 @@
             {
                 if ($dashboard->getIsDefault()) return $dashboard;
             }
+
+            $dashboard = new \thebuggenie\core\entities\Dashboard();
+            $dashboard->setUser($this);
+            $dashboard->setIsDefault(true);
+            $this->_dashboards[] = $dashboard;
+
+            return $dashboard;
         }
 
         /**
