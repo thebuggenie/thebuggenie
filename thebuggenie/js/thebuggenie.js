@@ -1412,8 +1412,8 @@ TBG.Main.Dashboard.View.init = function (url, view_id) {
     url = url.replace('{view_id}', view_id);
     TBG.Main.Helpers.ajax(url, {
         url_method: 'get',
-        loading: {indicator: 'dashboard_' + view_id + '_indicator'},
-        success: {update: 'dashboard_' + view_id},
+        loading: {indicator: 'dashboard_view_' + view_id + '_indicator'},
+        success: {update: 'dashboard_view_' + view_id},
         complete: {
             callback: function () {
                 TBG.Core._resizeWatcher();

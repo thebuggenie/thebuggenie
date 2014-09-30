@@ -10,13 +10,13 @@
             <?php echo image_tag('icon_arrows_move.png', array('class' => 'mover dashboardhandle')); ?>
             <?php echo $view->getTitle(); ?>
         </div>
-        <div id="dashboard_<?php echo $view->getID(); ?>" class="<?php if ($view->getTargetType() == DashboardView::TYPE_PROJECT): ?>dashboard_view_content<?php endif; ?>">
+        <div id="dashboard_view_<?php echo $view->getID(); ?>" class="<?php if ($view->getTargetType() == DashboardView::TYPE_PROJECT): ?>dashboard_view_content<?php endif; ?>">
             <?php if ($view->shouldBePreloaded()): ?>
                 <?php include_component($view->getTemplate(), array('view' => $view)); ?>
             <?php endif; ?>
         </div>
         <?php if (!$view->shouldBePreloaded()): ?>
-            <div style="text-align: center; padding: 20px 0;" id="dashboard_<?php echo $view->getID(); ?>_indicator">
+            <div style="text-align: center; padding: 20px 0;" id="dashboard_view_<?php echo $view->getID(); ?>_indicator">
                 <?php echo image_tag('spinning_26.gif'); ?>
             </div>
         <?php endif; ?>
