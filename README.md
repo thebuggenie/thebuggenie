@@ -66,3 +66,12 @@ REPORTING ISSUES
 Thank you for downloading The Bug Genie
 If you find any issues, please report them in the issue tracker on our website:
 http://issues.thebuggenie.com
+
+
+RUNNING PHPUNIT TESTS
+----------------
+
+By executing `composer.phar install --dev` during the installation process, phpunit 4.2 will get installed. The phpunit test can be run by the following command:
+```
+vendor/bin/phpunit -c tests
+```
