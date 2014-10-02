@@ -26,7 +26,7 @@
     <?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL', array('%link_to_MPL' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>.<br>
     <br>
     <span class="faded_out">
-        <?php echo __('The Bug Genie uses icons from the %link_to_iconset', array('%link_to_iconset' => '<a href="http://www.oxygen-icons.org">Oxygen icon set</a>')); ?>.<br>
+        <?php echo __('The Bug Genie uses icons from the %link_to_iconset', array('%link_to_iconset' => '<a href="https://sourceforge.net/projects/openiconlibrary">Oxygen icon set</a>')); ?>.<br>
         <?php echo __('These icons may be freely distributed under the %link_to_license', array('%link_to_license' => '<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>')); ?>.
     </span>
 </div>
