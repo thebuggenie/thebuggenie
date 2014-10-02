@@ -6,3 +6,23 @@ lang_map = en:en_US
 file_filter = i18n/<lang>/strings.inc.php
 source_lang = en_US
 type = PHP_ALT_ARRAY
+
+[tbg.3-3-auth_ldap-inc-php]
+file_filter = modules/auth_ldap/i18n/<lang>/auth_ldap.inc.php
+source_lang = en_US
+type = PHP_ALT_ARRAY
+
+[tbg.3-3-mailing-inc-php]
+file_filter = modules/mailing/i18n/<lang>/mailing.inc.php
+source_lang = en_US
+type = PHP_ALT_ARRAY
+
+[tbg.3-3-publish-inc-php]
+file_filter = modules/publish/i18n/<lang>/publish.inc.php
+source_lang = en_US
+type = PHP_ALT_ARRAY
+
+[tbg.3-3-vcs_integration-inc-php]
+file_filter = modules/vcs_integration/i18n/<lang>/vcs_integration.inc.php
+source_lang = en_US
+type = PHP_ALT_ARRAY
