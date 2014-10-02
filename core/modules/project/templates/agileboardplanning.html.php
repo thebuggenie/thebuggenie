@@ -37,10 +37,10 @@
                 <?php echo javascript_link_tag($newmilestonelabel, array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."');")); ?>
                 <?php echo image_tag('spinning_16.gif', array('id' => 'retrieve_indicator', 'class' => 'indicator', 'style' => 'display: none;')); ?>
                 <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
-                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link', 'id' => 'planning_board_settings_gear')); ?>
+                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
                     <ul class="more_actions_dropdown popup_box">
-                                            <li><?php echo javascript_link_tag(__('Toggle closed issues'), array('onclick' => "TBG.Project.Planning.toggleClosedIssues(this);")); ?></li>
-                                            <li><?php echo javascript_link_tag($togglemilestoneslabel, array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
+                        <li><?php echo javascript_link_tag(__('Toggle closed issues'), array('onclick' => "TBG.Project.Planning.toggleClosedIssues(this);")); ?></li>
+                        <li><?php echo javascript_link_tag($togglemilestoneslabel, array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
                     </ul>
                 <?php endif; ?>
             </div>

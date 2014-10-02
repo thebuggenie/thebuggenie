@@ -5,6 +5,7 @@
     use thebuggenie\core\entities\AgileBoard,
         thebuggenie\core\entities\DashboardView,
         thebuggenie\core\entities\Dashboard,
+        thebuggenie\core\entities\BoardColumn,
         thebuggenie\core\entities\b2db\AgileBoards;
 
     /**
@@ -296,6 +297,24 @@
          *
          * @param \TBGRequest $request
          */
+        public function runAgileboardWhiteboardColumn(\TBGRequest $request)
+        {
+            $board = AgileBoards::getTable()->selectById($request['board_id']);
+            $column = BoardColumn::getB2DBTable()->selectById($request['column_id']);
+            if (!$column instanceof BoardColumn)
+            {
+                $column = new BoardColumn();
+                $column->setBoard($board);
+            }
+
+            return $this->renderJSON(array('content' => $this->getComponentHTML('project/editboardcolumn', array('column' => $column))));
+        }
+
+        /**
+         * The project board whiteboard page
+         *
+         * @param \TBGRequest $request
+         */
         public function runAgileboardWhiteboard(\TBGRequest $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
@@ -305,12 +324,64 @@
 
             if ($request->isAjaxCall())
             {
-                switch ($request['mode'])
+                try
                 {
-                    case 'getmilestonestatus':
-                        $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
-                        return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
-                        break;
+                    if ($request->isPost())
+                    {
+                        $columns = $request['columns'];
+                        $saved_columns = array();
+                        $cc = 1;
+                        if (is_array($columns))
+                        {
+                            foreach ($columns as $details)
+                            {
+                                if ($details['column_id'])
+                                {
+                                    $column = BoardColumn::getB2DBTable()->selectById($details['column_id']);
+                                }
+                                else
+                                {
+                                    $column = new BoardColumn();
+                                    $column->setBoard($this->board);
+                                }
+                                if (!$column instanceof BoardColumn)
+                                {
+                                    throw new \Exception($this->getI18n()->__('There was an error trying to save column %column', array('%column' => $details['column_id'])));
+                                }
+                                $column->setName($details['name']);
+                                $column->setSortOrder($details['sort_order']);
+                                $column->setMinWorkitems($details['min_workitems']);
+                                $column->setMaxWorkitems($details['max_workitems']);
+                                $column->setStatusIds(explode(',', $details['status_ids']));
+                                $column->save();
+                                $saved_columns[$column->getID()] = $column->getID();
+                                $cc++;
+                            }
+                        }
+                        foreach ($this->board->getColumns() as $column)
+                        {
+                            if (!array_key_exists($column->getID(), $saved_columns))
+                            {
+                                $column->delete();
+                            }
+                        }
+                        return $this->renderJSON(array('forward' => $this->getRouting()->generate('project_planning_board_whiteboard', array('project_key' => $this->board->getProject()->getKey(), 'board_id' => $this->board->getID()))));
+                    }
+                    else
+                    {
+                        switch ($request['mode'])
+                        {
+                            case 'getmilestonestatus':
+                                $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                                return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
+                                break;
+                        }
+                    }
+                }
+                catch (\Exception $e)
+                {
+                    $this->getResponse()->setHttpStatus(400);
+                    return $this->renderJSON(array('error' => $e->getMessage()));
                 }
             }
             $milestones = $this->board->getMilestones();

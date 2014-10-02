@@ -1646,7 +1646,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 #issue_details fieldset dt, #issue_details fieldset dd { float: none; display: inline-block; vertical-align: middle; padding: 3px 0; line-height: 1em; }
 #issue_details fieldset #issue_percent_complete { width: 180px; }
 
-#issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown { 
     width: 360px; 
@@ -2651,7 +2651,8 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 
 #planning_board_settings_gear { margin-left: 5px; margin-right: 0; cursor: pointer; padding: 4px; }
-.project_header .planning_board_settings_gear, .project_header .planning_board_settings_gear:hover { margin-top: 8px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; }
+.project_header .planning_board_settings_gear, .project_header .planning_board_settings_gear:hover { margin-top: 8px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; }
+.project_header .planning_board_settings_gear.button-pressed + ul { margin-top: 34px; font-size: 1.1em; }
 
 #no_milestones {
     color: #888;
@@ -3288,6 +3289,138 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 #milestone_details_overview td.milestone_issue_actions div { position: relative; }
 #milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
+
+.whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode input[type=search] { display: none; }
+.whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form { display: none; }
+.whiteboard.edit-mode .edit-mode-buttons, .whiteboard.edit-mode #planning_whiteboard_columns_form { display: block; }
+.whiteboard .whiteboard-columns {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.whiteboard .whiteboard-columns td {
+    width: auto;
+    padding: 0;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.whiteboard .whiteboard-columns td.ui-sortable-placeholder {
+    width: 35px;
+    border: 2px dotted #CCC;
+    background-color: rgba(225, 225, 225, 0.3);
+    height: 100%;
+    display: table-cell;
+    visibility: visible;
+}
+.whiteboard.edit-mode .edit-column .draggable {
+    position: absolute;
+    right: 35px;
+    top: 10px;
+}
+.whiteboard.edit-mode .edit-column .remover {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.whiteboard.edit-mode .edit-column .remover:hover {
+    text-decoration: none;
+    border: none;
+}
+.whiteboard.edit-mode .edit-column > label {
+    display: block;
+    font-weight: normal;
+    padding-left: 0;
+}
+.whiteboard.edit-mode .edit-column input.column-name {
+    padding: 5px;
+    font-size: 1.1em;
+    width: 100%;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.whiteboard.edit-mode .edit-column > label.workload-label {
+    display: inline-block;
+    width: 40%;
+    margin: 10px 5% 5px 0;
+}
+.whiteboard.edit-mode .edit-column input.column-workload {
+    width: 10%;
+    font-size: 1.1em;
+    padding: 5px;
+    margin-right: 33%;
+}
+.whiteboard.edit-mode .edit-column p {
+    margin: 15px 0 10px;
+}
+.whiteboard.edit-mode .edit-column .fancyfilter {
+    display: block;
+    max-width: none;
+    margin: 8px 0 0 0;
+}
+.whiteboard.edit-mode .edit-column .fancyfilter .interactive_menu {
+    width: 100%;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.whiteboard.edit-mode .edit-column { 
+    display: block; 
+    float: none;
+    width: auto;
+    background: -o-linear-gradient(top, rgba(245, 245, 245, 1) 0%, rgba(255, 255, 255, 1) 25%);
+    background: -ms-linear-gradient(top, rgba(245, 245, 245, 1) 0%, rgba(255, 255, 255, 1) 25%);
+    background: -moz-linear-gradient(top, rgba(245, 245, 245, 1) 0%, rgba(255, 255, 255, 1) 25%);
+    background: -webkit-linear-gradient(top, rgba(245, 245, 245, 1) 0%, rgba(255, 255, 255, 1) 25%);
+    background: linear-gradient(to bottom, rgba(245, 245, 245, 1) 0%, rgba(255, 255, 255, 1) 25%);
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative;
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    border-bottom: none;
+    padding: 15px;
+    margin: 0 5px;
+    height: 400px;
+}
+.whiteboard.edit-mode .edit-column:after {
+    content: '';
+    display: block;
+    width: auto;
+    height: 50px;
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    position: absolute;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    left: -1px;
+    right: -1px;
+    bottom: 0;
+    margin: 0;
+}
 /* end scrum page styling */
 
 /* menu links */
@@ -3788,6 +3921,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     font-weight: normal;
     display: inline-block;
     padding: 0;
+    float: none;
 }
 .interactive_dropdown > label {
     color: #888;
@@ -3798,6 +3932,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin: 0;
     text-transform: none;
     color: #555;
+}
+.interactive_dropdown li.disabled label, .interactive_dropdown li.disabled:hover label {
+    color: #CCC;
+    cursor: default;
 }
 .interactive_dropdown > span {
     color: #333;

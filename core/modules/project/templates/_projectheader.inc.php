@@ -13,7 +13,15 @@
         <div class="project_header_right button-group inset">
             <?php echo link_tag(make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())), __('Planning'), array('class' => 'button'.(($tbg_response->getPage() == 'project_planning_board') ? ' button-pressed' : ''))); ?>
             <?php echo link_tag(make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())), __('Whiteboard'), array('class' => 'button'.(($tbg_response->getPage() == 'project_planning_board_whiteboard') ? ' button-pressed' : ''))); ?>
-            <a href="javascript:void(0);" class="planning_board_settings_gear" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $board->getProject()->getID(), 'board_id' => $board->getID())); ?>');" title="<?php echo __('Edit this board'); ?>"><?php echo image_tag('icon-mono-settings.png'); ?></a>
+            <?php if ($tbg_response->getPage() == 'project_planning_board'): ?>
+                <a href="javascript:void(0);" class="planning_board_settings_gear" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $board->getProject()->getID(), 'board_id' => $board->getID())); ?>');" title="<?php echo __('Edit this board'); ?>"><?php echo image_tag('icon-mono-settings.png'); ?></a>
+            <?php else: ?>
+                <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear')); ?>
+                <ul class="more_actions_dropdown popup_box">
+                    <li><?php echo javascript_link_tag(__('Manage columns'), array('onclick' => "TBG.Project.Planning.Whiteboard.toggleEditMode();")); ?></li>
+                    <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $board->getProject()->getID(), 'board_id' => $board->getID())); ?>');" title="<?php echo __('Edit this board'); ?>"><?php echo __('Edit this board'); ?></a></li>
+                </ul>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
     <div class="project_header_left">
@@ -21,7 +29,6 @@
         <div id="project_name">
             <span id="project_name_span">
                 <?php echo $selected_project->getName(); ?>
-                <?php /* <span id="project_key_span">(<?php echo $selected_project->getKey(); ?>)</span> */ ?>
             </span>
             <span id="project_sub_page"><?php echo $subpage; ?></span>
         </div>

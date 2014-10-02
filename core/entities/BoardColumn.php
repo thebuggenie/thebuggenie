@@ -162,4 +162,13 @@
             $this->_status_ids = $status_ids;
         }
 
+        public function isStatusIdTaken($status_id)
+        {
+            foreach ($this->getBoard()->getColumns() as $column)
+            {
+                if ($column->getID() != $this->getID() && $column->hasStatusId($status_id)) return true;
+            }
+
+            return false;
+        }
     }

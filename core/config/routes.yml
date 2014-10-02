@@ -2330,6 +2330,13 @@ project_planning_board:
     parameters: [ ]
     csrf_enabled: false
 
+project_planning_board_whiteboard_column:
+    route: /:project_key/boards/:board_id/whiteboard/column/*
+    module: project
+    action: agileboardWhiteboardColumn
+    parameters: [ ]
+    csrf_enabled: false
+
 project_planning_board_whiteboard:
     route: /:project_key/boards/:board_id/whiteboard/*
     module: project

@@ -1464,9 +1464,6 @@ TBG.Main.Dashboard.addView = function (element) {
         success: {
             callback: function (json) {
                 var column_container = dashboard_container.down('.dashboard_column.column_' + column);
-                console.log(column);
-                console.log(dashboard_container);
-                console.log(column_container);
                 column_container.insert({bottom: json.view_content});
                 TBG.Main.Dashboard.views.push(json.view_id);
                 TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, json.view_id);
@@ -1475,10 +1472,6 @@ TBG.Main.Dashboard.addView = function (element) {
             }
         }
     });
-//	console.log(dashboard_element.dataset.viewType);
-//	console.log(dashboard_element.dataset.viewSubtype);
-//	console.log(dashboard_container.dataset.dashboardId);
-//	console.log(dashboard_container.dataset.column);
 };
 
 TBG.Main.Dashboard.removeView = function (event, element) {
@@ -2285,6 +2278,39 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
     }
 };
 
+TBG.Project.Planning.Whiteboard.addColumn = function(button) {
+    TBG.Main.Helpers.ajax(button.dataset.url, {
+        loading: { 
+            indicator: 'planning_indicator'
+        },
+        url_method: 'get',
+        success: {
+            update: { element: 'planning_whiteboard_columns_form_row', insertion: true },
+            callback: function() {
+                TBG.Main.Helpers.initializeFancyFilters();
+                TBG.Main.Helpers.recalculateFancyFilters();
+                TBG.Project.Planning.Whiteboard.setSortOrder();
+            }
+        }
+    });
+};
+
+TBG.Project.Planning.Whiteboard.toggleEditMode = function() {
+    $('project_planning').toggleClassName('edit-mode');
+    TBG.Main.Profile.clearPopupsAndButtons();
+};
+
+TBG.Project.Planning.Whiteboard.saveColumns = function(form) {
+    $('planning_indicator').show();
+    TBG.Main.Helpers.ajax(form.action, {
+        url_method: 'post',
+        form: form,
+        failure: {
+            hide: 'planning_indicator'
+        }
+    });
+};
+
 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
     var mi = $('selected_milestone_input');
     var milestone_id = (event) ? $(item).dataset.inputValue : mi.dataset.selectedValue;
@@ -2302,10 +2328,24 @@ TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) 
     });
 }
 
+TBG.Project.Planning.Whiteboard.setSortOrder = function() {
+    $('planning_whiteboard_columns_form_row').childElements().each(function(column, index) {
+        column.down('input.sortorder').setValue(index + 1);
+    });
+};
+
 TBG.Project.Planning.Whiteboard.initialize = function (options) {
+    $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
     TBG.Project.Planning._initializeFilterSearch();
     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
-    
+    TBG.Main.Helpers.initializeFancyFilters();
+
+    jQuery('#planning_whiteboard_columns_form_row').sortable({
+        handle: '.draggable',
+        tolerance: 'intersect',
+        update: TBG.Project.Planning.Whiteboard.setSortOrder
+    });
+
     $('planning_indicator').hide();
     $('planning_filter_title_input').enable();
 };
@@ -6441,7 +6481,9 @@ TBG.Main.Helpers.toggleFancyFilterValue = function (event, element) {
     event.stopPropagation();
     event.stopImmediatePropagation();
     event.preventDefault();
-    TBG.Main.Helpers.toggleFancyFilterValueElement(this);
+    if (!$(this).hasClassName('disabled')) {
+        TBG.Main.Helpers.toggleFancyFilterValueElement(this);
+    }
 };
 
 TBG.Main.Helpers.setFancyFilterSelectionGroupSelections = function (element) {
@@ -6465,6 +6507,28 @@ TBG.Main.Helpers.setFancyFilterSelectionGroupSelections = function (element) {
             }
         });
     }
+    if (element.up('.fancyfilter').dataset.exclusivityGroup !== undefined) {
+        var egroup = element.up('.fancyfilter').dataset.exclusivityGroup;
+        $$('.interactive_menu_values').each(function (value_list) {
+            if (value_list.up('.fancyfilter').dataset.exclusivityGroup !== undefined && value_list.up('.fancyfilter').dataset.exclusivityGroup === egroup) {
+                value_list.childElements('.filtervalue').each(function (filtervalue) {
+                    if ($(filtervalue).dataset.value === element.dataset.value) {
+                        if ($(filtervalue) !== element) {
+                            if (element.hasClassName('selected')) {
+                                $(filtervalue).addClassName('disabled');
+                            } else {
+                                $(filtervalue).removeClassName('disabled');
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+};
+
+TBG.Main.Helpers.recalculateFancyFilters = function() {
+    $$('.filter').each(TBG.Main.Helpers.calculateFancyFilterDetails);
 };
 
 TBG.Main.Helpers.toggleFancyFilterValueElement = function (element, checked) {
@@ -6505,8 +6569,11 @@ TBG.Main.Helpers.calculateFancyFilterDetails = function (filter) {
 };
 
 TBG.Main.Helpers.updateFancyFilterVisibleValue = function (filter, value) {
-    if (value.length > 23) {
-        value = value.substr(0, 20) + '...';
+    var fl = filter.getLayout();
+    var width = fl.get('width') + fl.get('padding-left') + fl.get('padding-right');
+    var maxlength = Math.round(width / 8.5);
+    if (value.length > maxlength) {
+        value = value.substr(0, maxlength - 3) + '...';
     }
     filter.down('.value').update(value);
 };

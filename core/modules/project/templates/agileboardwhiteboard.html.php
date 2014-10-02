@@ -12,6 +12,11 @@
         <div class="project_right planning_container" id="planning_container">
             <div class="project_save_container" id="project_planning_action_strip">
                 <input type="search" class="planning_filter_title" id="planning_filter_title_input" disabled placeholder="<?php echo __('Filter issues by title'); ?>">
+                <div class="edit-mode-buttons">
+                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
+                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('project_planning_board_whiteboard_column', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
+                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
+                </div>
                 <a href="javascript:void(0)" class="fancydropdown changeable self-updateable milestone_virtual_status" id="selected_milestone_container">
                     <span id="selected_milestone_status_details" style="display: none;"></span>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'selected_milestone_status_indicator')); ?>
@@ -30,6 +35,17 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
+            </div>
+            <div id="planning_whiteboard">
+                <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                    <table class="whiteboard-columns">
+                        <tr id="planning_whiteboard_columns_form_row">
+                            <?php foreach ($board->getColumns() as $column): ?>
+                                <?php include_component('project/editboardcolumn', array('column' => $column)); ?>
+                            <?php endforeach; ?>
+                        </tr>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
@@ -58,8 +74,8 @@
                     </div>
                     <?php echo image_tag('spinning_20.gif', array('id' => 'milestone_0_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
                 </div>
-                <ul id="milestone_0_issues" class="milestone_issues jsortable intersortable <?php if ($board->getBacklogSearchObject()->getTotalNumberOfIssues() == 0) echo 'empty'; ?>"></ul>
-                <div class="milestone_no_issues" style="<?php if ($board->getBacklogSearchObject()->getTotalNumberOfIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_0_unassigned"><?php echo __('No issues are assigned to this milestone'); ?></div>
+                <ul id="milestone_0_issues" class="milestone_issues jsortable intersortable <?php //if ($board->getBacklogSearchObject()->getTotalNumberOfIssues() == 0) echo 'empty'; ?>"></ul>
+                <div class="milestone_no_issues" style="<?php /*if ($board->getBacklogSearchObject()->getTotalNumberOfIssues() > 0): ?> display: none;<?php endif; */ ?>" id="milestone_0_unassigned"><?php echo __('No issues are assigned to this milestone'); ?></div>
                 <div class="milestone_no_issues" style="display: none;" id="milestone_0_unassigned_filtered"><?php echo __('No issues assigned to this milestone matches selected filters'); ?></div>
                 <div class="milestone_error_issues" style="display: none;" id="milestone_0_initialize_error"><?php echo __('The issue list could not be loaded'); ?></div>
             </div>
@@ -71,5 +87,4 @@
     document.observe('dom:loaded', function() {
         TBG.Project.Planning.Whiteboard.initialize({dragdrop: <?php echo ($tbg_user->canAssignScrumUserStories($selected_project)) ? 'true' : 'false'; ?>});
     });
-    $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
 </script>
