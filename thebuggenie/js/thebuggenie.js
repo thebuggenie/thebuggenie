@@ -6594,6 +6594,9 @@ jQuery(document).ready(function () {
                 e.preventDefault();
             }
         });
+        $("body").on("click", "#topmenu-container .menu_dropdown", function (e) {
+            $('#topmenu-container').toggleClass('active');
+        });
         $("body").on("click", ".fancydropdown", function (e) {
             $(this).toggleClass('selected');
         });

@@ -20,7 +20,7 @@
                 <?php if ($tbg_user->hasProjectPageAccess('project_planning', TBGContext::getCurrentProject())): ?>
                     <li<?php if (in_array($tbg_response->getPage(), array('project_planning'))): ?> class="selected"<?php endif; ?>>
                         <div class="menuitem_container">
-                            <?php echo link_tag('javascript:void(0);', image_tag('icon_agile.png') . __('Agile')); ?>
+                            <?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_agile.png') . __('Agile')); ?>
                             <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
                         </div>
                         <div class="tab_menu_dropdown">
