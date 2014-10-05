@@ -3445,6 +3445,17 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     color: #777;
     margin: 0;
     border-bottom: 3px solid rgba(200, 200, 200, 0.3);
+    transition: border-color 0.3s ease; 
+    -o-transition: border-color 0.3s ease; 
+    -ms-transition: border-color 0.3s ease; 
+    -moz-transition: border-color 0.3s ease; 
+    -webkit-transition: border-color 0.3s ease; 
+}
+#whiteboard.type-kanban thead td.over-workitems h1 {
+    border-bottom-color: rgba(200, 50, 50, 0.6);
+}
+#whiteboard.type-kanban thead td.under-workitems h1 {
+    border-bottom-color: rgba(255, 255, 50, 0.6);
 }
 #whiteboard thead h1 .column_count {
     display: inline-block;

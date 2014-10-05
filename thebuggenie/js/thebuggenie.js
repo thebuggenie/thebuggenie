@@ -2320,6 +2320,18 @@ TBG.Project.Planning.Whiteboard.calculateColumnCounts = function() {
             });
         });
         column.down('.column_count').update(counts);
+        if ($('whiteboard').hasClassName('kanban')) {
+            var min_wi = parseInt(column.dataset.minWorkitems);
+            var max_wi = parseInt(column.dataset.maxWorkitems);
+            if (min_wi !== 0 && counts < min_wi) {
+                column.removeClassName('over-workitems');
+                column.addClassName('under-workitems');
+            }
+            if (max_wi !== 0 && counts > max_wi) {
+                column.removeClassName('under-workitems');
+                column.addClassName('over-workitems');
+            }
+        }
     });
 }
 
