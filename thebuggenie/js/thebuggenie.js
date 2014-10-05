@@ -2344,7 +2344,12 @@ TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
         additional_params: '&milestone_id=' + milestone_id,
         url_method: 'get',
         loading: {
-            indicator: 'whiteboard_indicator'
+            indicator: 'whiteboard_indicator',
+            callback: function() {
+                $('whiteboard').select('thead .column_count').each(function (cc) {
+                    cc.update('-');
+                });
+            }
         },
         success: {
             callback: function(json) {
