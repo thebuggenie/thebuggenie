@@ -3548,13 +3548,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .issue_info {
     display: block;
     text-align: right;
-    padding: 0 5px 5px 20px;
+    padding: 5px 0 5px 20px;
     position: inherit;
 }
 .whiteboard-issue .avatar {
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 3px;
 }
 /* end scrum page styling */
 
