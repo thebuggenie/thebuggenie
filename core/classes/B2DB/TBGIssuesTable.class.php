@@ -198,7 +198,7 @@
                     $counts = $row['counts'];
                     $pct = $counts * $multiplier;
                     $status = $row[self::STATUS];
-                    $statuses['details'][$status] = array('id' => $status, 'count' => $counts, 'percent' => round($pct, 2));
+                    $statuses['details'][$status] = array('id' => $status, 'count' => $counts, 'percent' => round($pct, 0));
                 }
             }
 
