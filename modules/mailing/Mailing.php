@@ -747,7 +747,7 @@ EOT;
         {
             if ($event->getSubject() == 'mailing_editincomingemailaccount')
             {
-                $account = new TBGIncomingEmailAccount(TBGContext::getRequest()->getParameter('account_id'));
+                $account = new IncomingEmailAccount(TBGContext::getRequest()->getParameter('account_id'));
                 $event->addToReturnList($account, 'account');
                 $event->setReturnValue('mailing/editincomingemailaccount');
                 $event->setProcessed();
@@ -877,7 +877,7 @@ EOT;
             switch ($this->_version)
             {
                 case '1.0':
-                    IncomingEmailAccount::getB2DBTable()->upgrade(\thebuggenie\modules\mailing\upgrade_32\TBGIncomingEmailAccountTable::getTable());
+                    IncomingEmailAccount::getB2DBTable()->upgrade(\thebuggenie\modules\mailing\upgrade_32\IncomingEmailAccountTable::getTable());
                     TBGSettingsTable::getTable()->deleteAllUserModuleSettings('mailing');
                     break;
             }
@@ -1003,12 +1003,12 @@ EOT;
 
         public function getIncomingEmailAccounts()
         {
-            return TBGIncomingEmailAccount::getAll();
+            return IncomingEmailAccount::getAll();
         }
 
         public function getIncomingEmailAccountsForProject(TBGProject $project)
         {
-            return TBGIncomingEmailAccount::getAllByProjectID($project->getID());
+            return IncomingEmailAccount::getAllByProjectID($project->getID());
         }
 
         public function processIncomingEmails($limit = 25)
