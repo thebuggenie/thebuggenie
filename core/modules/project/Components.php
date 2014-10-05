@@ -16,9 +16,9 @@
             $this->issuetypes = $this->project->getIssuetypeScheme()->getReportableIssuetypes();
         }
 
-        public function componentScrumcard()
+        public function componentBoardSwimlane()
         {
-
+            $this->issues = $this->swimlane->getIssues();
         }
 
         public function componentMilestoneIssue()

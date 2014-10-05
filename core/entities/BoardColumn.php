@@ -171,4 +171,10 @@
 
             return false;
         }
+
+        public function hasIssue(\TBGIssue $issue)
+        {
+            return in_array($issue->getStatus()->getID(), $this->getStatusIds());
+        }
+
     }

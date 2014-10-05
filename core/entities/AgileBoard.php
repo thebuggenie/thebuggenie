@@ -112,6 +112,8 @@
          */
         protected $_use_swimlanes = false;
 
+        protected $_swimlanes = array();
+
         /**
          * Swimlane type
          *
@@ -459,6 +461,89 @@
         public function getColumns()
         {
             return $this->_b2dbLazyload('_board_columns');
+        }
+
+        protected function _populateMilestoneSwimlanes(\TBGMilestone $milestone)
+        {
+            if (!array_key_exists($milestone->getID(), $this->_swimlanes))
+            {
+                $this->_swimlanes[$milestone->getID()] = array();
+                $swimlanes = array();
+                if ($this->usesSwimlanes())
+                {
+                    switch ($this->getSwimlaneType())
+                    {
+                        case self::SWIMLANES_EXPEDITE:
+                        case self::SWIMLANES_GROUPING:
+                            switch ($this->getSwimlaneIdentifier())
+                            {
+                                case 'priority':
+                                    $items = \TBGPriority::getAll();
+                                    break;
+                                case 'severity':
+                                    $items = \TBGSeverity::getAll();
+                                    break;
+                                case 'category':
+                                    $items = \TBGCategory::getAll();
+                                    break;
+                            }
+                            if ($this->getSwimlaneType() == self::SWIMLANES_EXPEDITE)
+                            {
+                                $expedite_items = array();
+                                foreach ($this->getSwimlaneFieldValues() as $value)
+                                {
+                                    if (array_key_exists($value, $items))
+                                    {
+                                        $expedite_items[$items[$value]->getID()] = $items[$value];
+                                        unset($items[$value]);
+                                    }
+                                }
+
+                                $swimlanes[] = array('identifiables' => $expedite_items);
+                                $swimlanes[] = array('identifiables' => $items);
+                                $swimlanes[] = array('identifiables' => 0);
+                            }
+                            else
+                            {
+                                foreach ($items as $item)
+                                {
+                                    $swimlanes[] = array('identifiables' => $item);
+                                }
+                                $swimlanes[] = array('identifiables' => 0);
+                            }
+                            break;
+                        case self::SWIMLANES_ISSUES:
+                            foreach ($milestone->getIssues() as $issue)
+                            {
+                                if (in_array($issue->getIssueType()->getID(), $this->getSwimlaneFieldValues()))
+                                {
+                                    $swimlanes[] = array('identifiables' => $issue);
+                                }
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    $swimlanes[] = array('identifiables' => 0);
+                }
+
+                foreach ($swimlanes as $details)
+                {
+                    $swimlane = new BoardSwimlane();
+                    $swimlane->setBoard($this);
+                    $swimlane->setIdentifiables($details['identifiables']);
+                    $swimlane->setMilestone($milestone);
+                    $this->_swimlanes[$milestone->getID()][] = $swimlane;
+                }
+            }
+        }
+
+        public function getMilestoneSwimlanes($milestone)
+        {
+            $this->_populateMilestoneSwimlanes($milestone);
+
+            return $this->_swimlanes[$milestone->getID()];
         }
 
     }

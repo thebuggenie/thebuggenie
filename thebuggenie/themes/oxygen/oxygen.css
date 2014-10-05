@@ -2948,7 +2948,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
     background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
 }
-.milestone_box .milestone_issues li .issue_info .issue_release {
+.milestone_issue .issue_release, .whiteboard-issue .issue_release {
     display: inline-block;
     padding: 3px 6px;
     background: #F5F5F5;
@@ -2960,13 +2960,13 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     line-height: 1em;
 }
 #project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours { display: none; }
-.milestone_box .milestone_issues li .issue_info .issue_estimates {
+.milestone_issue .issue_estimates, .whiteboard-issue .issue_estimates {
     margin: 0;
     vertical-align: middle;
     display: inline-block;
     line-height: 1em;
 }
-.milestone_box .milestone_issues li .issue_info .issue_estimate {
+.milestone_issue .issue_estimate, .whiteboard-issue .issue_estimate {
     display: inline-block;
     padding: 3px 7px;
     border-radius: 2px;
@@ -2978,15 +2978,15 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     margin: 0 1px;
     line-height: 1.15em;
 }
-.milestone_box .milestone_issues li .issue_info .issue_estimate.points {
+.milestone_issue .issue_estimate.points, .whiteboard-issue .issue_estimate.points {
     background: rgba(200, 200, 200, 0.8);
     border-color: rgba(200, 200, 200, 0.8);
     color: rgba(50, 50, 50, 0.6);
 }
-.milestone_box .milestone_issues li .issue_info img.avatar {
+.milestone_issue img.avatar, .whiteboard-issue img.avatar {
     margin: 0 2px 0 0;
 }
-.milestone_box .milestone_issues li .issue_info img.avatar, .milestone_box .milestone_issues li .issue_info .status_badge, .milestone_box .milestone_issues li .issue_info .epic_badge {
+.milestone_issue img.avatar, .milestone_issue .status_badge, .milestone_issue .epic_badge {
     opacity: 0.8;
     transition: opacity 0.3s ease;
     -o-transition: opacity 0.3s ease;
@@ -2994,13 +2994,13 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
 }
-.milestone_box .milestone_issues li .issue_container:hover .issue_info img.avatar, .milestone_box .milestone_issues li .issue_container:hover .issue_info .status_badge, .milestone_box .milestone_issues li .issue_container:hover .issue_info .epic_badge {
+.milestone_box .milestone_issues li .issue_container:hover img.avatar, .milestone_box .milestone_issues li .issue_container:hover .status_badge, .milestone_box .milestone_issues li .issue_container:hover .epic_badge {
     opacity: 1;
 }
-.milestone_box .milestone_issues li .issue_container .issue_info img.blocking {
+.milestone_issue img.blocking, .whiteboard-issue img.blocking {
     display: none;
 }
-.milestone_box .milestone_issues li .issue_info .status_badge, .milestone_box .milestone_issues li .issue_info .epic_badge, .milestone_box .milestone_issues li .issue_container.blocking .issue_info img.blocking {
+.milestone_issue .status_badge, .milestone_issue .epic_badge, .whiteboard-issue .epic_badge, .milestone_issue .blocking img.blocking, .whiteboard-issue.blocking img.blocking {
     display: inline-block;
     vertical-align: middle;
     margin: 1px 1px 0 0;
@@ -3192,7 +3192,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     padding: 5px 10px;
     font-size: 1.1em;
     border: 1px solid transparent;
-    margin: 0;
+    margin: 0 0 10px 0;
     min-height: 100px;
     -webkit-transition: border 0.3s ease;
     -moz-transition: border 0.3s ease;
@@ -3211,9 +3211,6 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 }
 .fancydropdown + ul li.novalue {
     min-height: 0;
-}
-.fancydropdown + ul li:first-child {
-    margin-bottom: 10px;
 }
 .fancydropdown + ul li.selected {
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.2) inset;
@@ -3308,8 +3305,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 
 .whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode input[type=search] { display: none; }
-.whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form { display: none; }
+.whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form, .whiteboard.edit-mode #whiteboard { display: none; }
 .whiteboard.edit-mode .edit-mode-buttons, .whiteboard.edit-mode #planning_whiteboard_columns_form { display: block; }
+#planning_whiteboard { position: relative; }
 .whiteboard .whiteboard-columns {
     width: 100%;
     height: 100%;
@@ -3437,6 +3435,111 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     right: -1px;
     bottom: 0;
     margin: 0;
+}
+#whiteboard thead td {
+    padding: 0 10px;
+}
+#whiteboard thead h1 {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #777;
+    margin: 0;
+    border-bottom: 3px solid rgba(200, 200, 200, 0.3);
+}
+#whiteboard thead h1 .column_count {
+    display: inline-block;
+    font-weight: normal;
+    background-color: #FFF;
+    color: #888;
+    text-transform: none;
+    font-size: 1em;
+    margin-left: 5px;
+}
+#whiteboard tbody {
+    border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+    box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
+}
+#whiteboard.swimlanes tbody tr:first-child td {
+    padding: 0;
+    border: none;
+}
+#whiteboard tbody.collapsed tr:first-child {
+    display: table-row;
+}
+#whiteboard tbody.collapsed tr, #whiteboard tbody.collapsed .collapser, #whiteboard tbody .expander {
+    display: none;
+}
+#whiteboard tbody.collapsed .expander {
+    display: initial;
+}
+#whiteboard .expander, #whiteboard .collapser {
+    cursor: pointer;
+    opacity: 0.8;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+#whiteboard .expander:hover, #whiteboard .collapser:hover {
+    transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    opacity: 1;
+}
+#whiteboard.swimlanes tbody tr:first-child td .header {
+    font-size: 1.1em;
+    margin: 5px 0 0 0;
+    padding: 10px;
+    font-weight: normal;
+    border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
+}
+#whiteboard tbody td.column {
+    border-left: 1px solid rgba(100, 100, 100, 0.2);
+    border-right: 1px solid rgba(100, 100, 100, 0.2);
+    background-color: rgba(245, 245, 245, 0.4);
+}
+#whiteboard.no-swimlanes thead h1 {
+    margin-bottom: 10px;
+}
+#whiteboard.no-swimlanes tbody td.column {
+    border-top: 1px solid rgba(100, 100, 100, 0.2);
+}
+#whiteboard tbody td:first-child {
+    border-left: none;
+}
+#whiteboard tbody td:last-child {
+    border-right: none;
+}
+.whiteboard-issue {
+    position: relative;
+    display: block;
+    padding: 0;
+    margin: 10px;
+    background-color: #FFF;
+    border: 1px solid rgba(100, 100, 100, 0.2);
+    border-radius: 2px;
+}
+.whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
+    color: #555;
+    display: block;
+    border: 0;
+    padding: 5px 0 5px 0;
+    margin: 0 35px 0 20px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: normal;
+}
+.whiteboard-issue .issue_info {
+    display: block;
+    text-align: right;
+    padding: 0 5px 5px 20px;
+    position: inherit;
+}
+.whiteboard-issue .avatar {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 /* end scrum page styling */
 

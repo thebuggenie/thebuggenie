@@ -2311,6 +2311,39 @@ TBG.Project.Planning.Whiteboard.saveColumns = function(form) {
     });
 };
 
+TBG.Project.Planning.Whiteboard.calculateColumnCounts = function() {
+    $$('#whiteboard-headers td').each(function (column, index) {
+        var counts = 0;
+        $$('#whiteboard tbody tr').each(function (row) {
+            row.childElements().each(function (subcolumn, subindex) {
+                if (subindex == index) counts += subcolumn.select('.whiteboard-issue').size();
+            });
+        });
+        column.down('.column_count').update(counts);
+    });
+}
+
+TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
+    var wb = $('whiteboard');
+    var mi = $('selected_milestone_input');
+    var milestone_id = parseInt(mi.dataset.selectedValue);
+    
+    TBG.Main.Helpers.ajax(wb.dataset.whiteboardUrl, {
+        additional_params: '&milestone_id=' + milestone_id,
+        url_method: 'get',
+        loading: {
+            indicator: 'whiteboard_indicator'
+        },
+        success: {
+            callback: function(json) {
+                wb.select('tbody').each(Element.remove);
+                $('whiteboard-headers').insert({after: json.component});
+                setTimeout(TBG.Project.Planning.Whiteboard.calculateColumnCounts, 250);
+            }
+        }
+    });
+};
+
 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
     var mi = $('selected_milestone_input');
     var milestone_id = (event) ? $(item).dataset.inputValue : mi.dataset.selectedValue;
@@ -2338,6 +2371,7 @@ TBG.Project.Planning.Whiteboard.initialize = function (options) {
     $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
     TBG.Project.Planning._initializeFilterSearch();
     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+    TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
     TBG.Main.Helpers.initializeFancyFilters();
 
     jQuery('#planning_whiteboard_columns_form_row').sortable({
@@ -2724,6 +2758,9 @@ TBG.Project.Planning.saveAgileBoard = function (item) {
                         container.insert({before: json.component});
                     }
                     TBG.Main.Helpers.Backdrop.reset();
+                } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id) && $('project_planning').hasClassName('whiteboard')) {
+                    TBG.Main.Helpers.Backdrop.reset();
+                    TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                 } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id)) {
                     var backlog = $('milestone_0');
                     TBG.Main.Helpers.Backdrop.reset();

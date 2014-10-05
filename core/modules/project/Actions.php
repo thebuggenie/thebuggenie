@@ -375,6 +375,10 @@
                                 $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
                                 return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
                                 break;
+                            case 'whiteboardissues':
+                                $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                                return $this->renderJSON(array('component' => $this->getTemplateHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
+                                break;
                         }
                     }
                 }
@@ -384,9 +388,16 @@
                     return $this->renderJSON(array('error' => $e->getMessage()));
                 }
             }
-            $milestones = $this->board->getMilestones();
 
-            $this->selected_milestone = (!empty($milestones)) ? array_shift($milestones) : null;
+            $this->selected_milestone = null;
+            foreach ($this->board->getMilestones() as $milestone)
+            {
+                if (!$milestone->isReached())
+                {
+                    $this->selected_milestone = $milestone;
+                    break;
+                }
+            }
         }
 
         /**

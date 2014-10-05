@@ -23,7 +23,7 @@
                 </a>
                 <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof TBGMilestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
                     <?php foreach ($board->getMilestones() as $milestone): ?>
-                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>">
+                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="setTimeout(TBG.Project.Planning.Whiteboard.retrieveWhiteboard, 100);">
                             <h1><?php echo $milestone->getName(); ?></h1>
                             <?php echo image_tag('icon_milestone_issues.png'); ?>
                             <dl class="info">
@@ -37,15 +37,25 @@
                 </ul>
             </div>
             <div id="planning_whiteboard">
+                <div class="planning_indicator" id="whiteboard_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
                 <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
                     <table class="whiteboard-columns">
                         <tr id="planning_whiteboard_columns_form_row">
                             <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_component('project/editboardcolumn', array('column' => $column)); ?>
+                                <?php include_component('project/editboardcolumn', compact('column')); ?>
                             <?php endforeach; ?>
                         </tr>
                     </table>
                 </form>
+                <table class="whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('project_planning_whiteboard_issues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                    <thead id="whiteboard-headers">
+                        <tr>
+                            <?php foreach ($board->getColumns() as $column): ?>
+                                <?php include_template('project/boardcolumnheader', compact('column')); ?>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
