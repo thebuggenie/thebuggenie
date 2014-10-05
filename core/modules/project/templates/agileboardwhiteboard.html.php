@@ -6,14 +6,16 @@
     include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName(), 'board' => $board));
 
 ?>
-<div id="project_planning" class="project_info_container whiteboard left_toggled <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('project_planning_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-retrieve-issue-url="<?php echo make_url('project_planning_get_issue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-board-id="<?php echo $board->getID(); ?>">
+<div id="project_planning" class="project_info_container whiteboard <?php if (!count($board->getColumns())) echo ' edit-mode'; ?> left_toggled <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('project_planning_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-retrieve-issue-url="<?php echo make_url('project_planning_get_issue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-board-id="<?php echo $board->getID(); ?>">
     <div class="planning_indicator" id="planning_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
     <div class="project_right_container">
         <div class="project_right planning_container" id="planning_container">
             <div class="project_save_container" id="project_planning_action_strip">
                 <input type="search" class="planning_filter_title" id="planning_filter_title_input" disabled placeholder="<?php echo __('Filter issues by title'); ?>">
                 <div class="edit-mode-buttons">
-                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
+                    <?php if (count($board->getColumns())): ?>
+                        <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
+                    <?php endif; ?>
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('project_planning_board_whiteboard_column', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
                 </div>
