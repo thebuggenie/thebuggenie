@@ -12,6 +12,9 @@
         <?php foreach ($issue->getBuilds() as $details): ?>
             <div class="issue_release"><?php echo $details['build']->getVersion(); ?></div>
         <?php endforeach; ?>
+        <?php foreach ($issue->getComponents() as $details): ?>
+            <div class="issue_component"><?php echo $details['component']->getName(); ?></div>
+        <?php endforeach; ?>
         <div class="issue_estimates">
             <div class="issue_estimate points" title="<?php echo __('Estimated points'); ?>" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedPoints(); ?></div>
             <div class="issue_estimate hours" title="<?php echo __('Estimated hours'); ?>" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedHours(); ?></div>

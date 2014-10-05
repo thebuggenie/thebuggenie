@@ -2948,7 +2948,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
     background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
 }
-.milestone_issue .issue_release, .whiteboard-issue .issue_release {
+.milestone_issue .issue_release, .whiteboard-issue .issue_release, .whiteboard-issue .issue_component {
     display: inline-block;
     padding: 3px 6px;
     background: #F5F5F5;
@@ -2958,6 +2958,10 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     vertical-align: middle;
     margin: 0 1px;
     line-height: 1em;
+    text-shadow: none;
+}
+.whiteboard-issue .issue_component {
+    background: rgba(225, 225, 100, 0.5);
 }
 #project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours { display: none; }
 .milestone_issue .issue_estimates, .whiteboard-issue .issue_estimates {
