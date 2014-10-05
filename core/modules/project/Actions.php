@@ -350,8 +350,8 @@
                                 }
                                 $column->setName($details['name']);
                                 $column->setSortOrder($details['sort_order']);
-                                $column->setMinWorkitems($details['min_workitems']);
-                                $column->setMaxWorkitems($details['max_workitems']);
+                                if (array_key_exists('min_workitems', $details)) $column->setMinWorkitems($details['min_workitems']);
+                                if (array_key_exists('max_workitems', $details)) $column->setMaxWorkitems($details['max_workitems']);
                                 $column->setStatusIds(explode(',', $details['status_ids']));
                                 $column->save();
                                 $saved_columns[$column->getID()] = $column->getID();
