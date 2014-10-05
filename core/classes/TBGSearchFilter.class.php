@@ -333,7 +333,7 @@
         {
             if (!$this->hasValue()) return array();
 
-            $values = explode(',', $this->_value);
+            $values = (!is_array($this->_value)) ? explode(',', $this->_value) : $this->_value;
             return $values;
         }
 
