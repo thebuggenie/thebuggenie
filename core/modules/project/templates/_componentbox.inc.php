@@ -4,7 +4,7 @@
         <a href="javascript:void(0);" class="button button-silver dropper"><?php echo __('Actions'); ?></a>
         <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">
             <li><a href="javascript:void(0);" class="image" onclick="$('edit_component_<?php print $component->getID(); ?>').show();$('c_name_<?php echo $component->getID(); ?>').focus();"><?php echo __('Edit') ?></a></li>
-            <li><a href="javascript:void(0);" onclick="$('component_<?php echo $component->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this component'); ?>" style="margin-right: 5px;"><?php echo __('Configue permissions'); ?></a></li>
+            <li><a href="javascript:void(0);" onclick="$('component_<?php echo $component->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this component'); ?>" style="margin-right: 5px;"><?php echo __('Configure permissions'); ?></a></li>
             <li><?php echo javascript_link_tag(__('Remove component'), array('class' => 'image', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this component?')."', {yes: {click: function() {TBG.Project.Component.remove('".make_url('configure_delete_component', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID()))."', ".$component->getID().");}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>
         </ul>
     </div>
