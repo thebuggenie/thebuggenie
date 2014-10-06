@@ -4,9 +4,9 @@
 
 ?>
 <tbody class="<?php if (!count($issues)) echo 'collapsed'; ?>">
-    <?php if ($swimlane->getBoard()->usesSwimlanes()): ?>
+    <?php if ($swimlane->getBoard()->usesSwimlanes() && $swimlane->hasIdentifiables()): ?>
         <tr>
-            <td colspan="<?php echo count($swimlane->getBoard()->getColumns()); ?>">
+            <td colspan="<?php echo count($swimlane->getBoard()->getColumns()); ?>" class="swimlane-header">
                 <div class="header">
                     <?php echo image_tag('icon-mono-expand.png', array('class' => 'expander', 'onclick' => "$(this).up('tbody').toggleClassName('collapsed');")); ?>
                     <?php echo image_tag('icon-mono-collapse.png', array('class' => 'collapser', 'onclick' => "$(this).up('tbody').toggleClassName('collapsed');")); ?>
@@ -29,6 +29,7 @@
                 <?php foreach ($issues as $issue): ?>
                     <?php if ($column->hasIssue($issue)) include_template('project/whiteboardissue', compact('issue', 'column', 'swimlane')); ?>
                 <?php endforeach; ?>
+                <br style="clear: both;">
             </td>
         <?php endforeach; ?>
     </tr>

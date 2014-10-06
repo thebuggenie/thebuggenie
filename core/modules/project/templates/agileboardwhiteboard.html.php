@@ -53,7 +53,7 @@
                     <thead id="whiteboard-headers">
                         <tr>
                             <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_template('project/boardcolumnheader', compact('column')); ?>
+                                <?php include_component('project/boardcolumnheader', compact('column')); ?>
                             <?php endforeach; ?>
                         </tr>
                     </thead>

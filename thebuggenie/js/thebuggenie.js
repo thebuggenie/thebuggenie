@@ -2314,22 +2314,54 @@ TBG.Project.Planning.Whiteboard.saveColumns = function(form) {
 TBG.Project.Planning.Whiteboard.calculateColumnCounts = function() {
     $$('#whiteboard-headers td').each(function (column, index) {
         var counts = 0;
+        var status_counts = [];
+        column.select('.status_badge').each(function (status) {
+            status_counts[parseInt(status.dataset.statusId)] = 0;
+        });
         $$('#whiteboard tbody tr').each(function (row) {
             row.childElements().each(function (subcolumn, subindex) {
-                if (subindex == index) counts += subcolumn.select('.whiteboard-issue').size();
+                if (subindex == index) {
+                    var issues = subcolumn.select('.whiteboard-issue');
+                    issues.each(function (issue) {
+                        status_counts[parseInt(issue.dataset.statusId)]++;
+                    });
+                    counts += issues.size();
+                }
             });
         });
-        column.down('.column_count').update(counts);
-        if ($('whiteboard').hasClassName('kanban')) {
+        if (column.down('.column_count.primary')) column.down('.column_count.primary').update(counts);
+        if (column.down('.column_count .count')) column.down('.column_count .count').update(counts);
+        column.select('.status_badge').each(function (status) {
+            status.update(status_counts[parseInt(status.dataset.statusId)]);
+        });
+        if ($('project_planning').hasClassName('type-kanban')) {
             var min_wi = parseInt(column.dataset.minWorkitems);
             var max_wi = parseInt(column.dataset.maxWorkitems);
             if (min_wi !== 0 && counts < min_wi) {
+                column.down('.under_count').update(counts);
                 column.removeClassName('over-workitems');
                 column.addClassName('under-workitems');
+                $$('#whiteboard tbody tr').each(function (row) {
+                    row.childElements().each(function (subcolumn, subindex) {
+                        if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
+                            subcolumn.removeClassName('over-workitems');
+                            subcolumn.addClassName('under-workitems');
+                        }
+                    });
+                });
             }
             if (max_wi !== 0 && counts > max_wi) {
+                column.down('.over_count').update(counts);
                 column.removeClassName('under-workitems');
                 column.addClassName('over-workitems');
+                $$('#whiteboard tbody tr').each(function (row) {
+                    row.childElements().each(function (subcolumn, subindex) {
+                        if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
+                            subcolumn.removeClassName('under-workitems');
+                            subcolumn.addClassName('over-workitems');
+                        }
+                    });
+                });
             }
         }
     });
@@ -2346,7 +2378,7 @@ TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
         loading: {
             indicator: 'whiteboard_indicator',
             callback: function() {
-                $('whiteboard').select('thead .column_count').each(function (cc) {
+                $('whiteboard').select('thead .column_count.primary').each(function (cc) {
                     cc.update('-');
                 });
             }

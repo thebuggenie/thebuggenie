@@ -95,6 +95,16 @@
             return $this->_name;
         }
 
+        public function hasIdentifiables()
+        {
+            foreach ($this->_identifiables as $identifiable)
+            {
+                if ($identifiable instanceof \TBGIdentifiable) return true;
+            }
+
+            return false;
+        }
+
         protected function _setupSearchObject()
         {
             if ($this->_search_object === null)

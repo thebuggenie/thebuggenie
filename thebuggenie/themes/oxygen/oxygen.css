@@ -1709,7 +1709,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 .milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 0; top: 8px; font-size: 0.9em; line-height: 1em; padding: 0; }
 .milestone_virtual_status .milestone_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
-#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; }
+#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li.header { border: none; margin-bottom: 0; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
@@ -1924,7 +1924,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 .issue_closed .status_badge { opacity: 0.7; }
-.status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; }
+.status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; vertical-align: middle; }
 *.button-pressed + .more_actions_dropdown { display: block; }
 .userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown { right: auto; font-size: 1em; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display: none; background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); }
@@ -2948,7 +2948,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
     background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 1) 50px);
 }
-.milestone_issue .issue_release, .milestone_issue .issue_component, .whiteboard-issue .issue_release, .whiteboard-issue .issue_component {
+.milestone_issue .issue_release, .milestone_issue .issue_component, .whiteboard-issue .issue_release, .whiteboard-issue .issue_component, .whiteboard-issue .epic_badge {
     display: inline-block;
     padding: 3px 6px;
     background: #F5F5F5;
@@ -2970,7 +2970,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     display: inline-block;
     line-height: 1em;
 }
-.milestone_issue .issue_estimate, .whiteboard-issue .issue_estimate {
+.milestone_issue .issue_estimate {
     display: inline-block;
     padding: 3px 7px;
     border-radius: 2px;
@@ -2981,14 +2981,27 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     vertical-align: middle;
     margin: 0 1px;
     line-height: 1.15em;
+    text-shadow: none;
 }
-.milestone_issue .issue_estimate.points, .whiteboard-issue .issue_estimate.points {
+.whiteboard-issue .issue_estimates {
+    display: block;
+    padding: 0;
+    background: #FFF;
+    color: #AAA;
+    font-size: 1.2em;
+    font-weight: normal;
+    border: none;
+    vertical-align: middle;
+    text-shadow: none;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    text-align: right;
+}
+.milestone_issue .issue_estimate.points {
     background: rgba(200, 200, 200, 0.8);
     border-color: rgba(200, 200, 200, 0.8);
     color: rgba(50, 50, 50, 0.6);
-}
-.milestone_issue img.avatar, .whiteboard-issue img.avatar {
-    margin: 0 2px 0 0;
 }
 .milestone_issue img.avatar, .milestone_issue .status_badge, .milestone_issue .epic_badge {
     opacity: 0.8;
@@ -3455,11 +3468,17 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-transition: border-color 0.3s ease; 
     -webkit-transition: border-color 0.3s ease; 
 }
-#whiteboard.type-kanban thead td.over-workitems h1 {
-    border-bottom-color: rgba(200, 50, 50, 0.6);
+.type-kanban #whiteboard thead td.over-workitems h1 {
+    border-bottom-color: rgba(225, 100, 100, 0.8);
 }
-#whiteboard.type-kanban thead td.under-workitems h1 {
+.type-kanban #whiteboard tbody td.over-workitems {
+    background-color: rgba(225, 100, 100, 0.8);
+}
+.type-kanban #whiteboard thead td.under-workitems h1 {
     border-bottom-color: rgba(255, 255, 50, 0.6);
+}
+.type-kanban #whiteboard tbody td.under-workitems {
+    background: rgba(255, 255, 50, 0.6);
 }
 #whiteboard thead h1 .column_count {
     display: inline-block;
@@ -3470,11 +3489,26 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     font-size: 1em;
     margin-left: 5px;
 }
+#whiteboard thead h1 .column_count.under, #whiteboard thead h1 .column_count.over, #whiteboard thead td.under-workitems h1 .column_count.primary, #whiteboard thead td.over-workitems h1 .column_count.primary, #whiteboard thead td.under-workitems h1 .column_count.workitems, #whiteboard thead td.over-workitems h1 .column_count.workitems {
+    display: none;
+}
+#whiteboard thead td.under-workitems h1 .column_count.under, #whiteboard thead td.over-workitems h1 .column_count.over {
+    display: inline-block;
+}
+#whiteboard thead h1 .status_badge {
+    float: right;
+    line-height: 1em;
+    margin-left: 2px;
+    font-weight: normal;
+    font-size: 0.9em;
+    opacity: 0.7;
+    color: rgba(0, 0, 0, 0.7);
+}
 #whiteboard tbody {
     border-bottom: 1px solid rgba(100, 100, 100, 0.2);
     box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
 }
-#whiteboard.swimlanes tbody tr:first-child td {
+#whiteboard.swimlanes tbody td.swimlane-header {
     padding: 0;
     border: none;
 }
@@ -3502,7 +3536,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
 }
-#whiteboard.swimlanes tbody tr:first-child td .header {
+#whiteboard.swimlanes tbody tr:first-child td > .header {
     font-size: 1.1em;
     margin: 5px 0 0 0;
     padding: 10px;
@@ -3513,6 +3547,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     border-left: 1px solid rgba(100, 100, 100, 0.2);
     border-right: 1px solid rgba(100, 100, 100, 0.2);
     background-color: rgba(245, 245, 245, 0.4);
+    min-height: 50px;
 }
 #whiteboard.no-swimlanes thead h1 {
     margin-bottom: 10px;
@@ -3548,13 +3583,12 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .issue_info {
     display: block;
     text-align: right;
-    padding: 5px 0 5px 20px;
+    padding: 5px;
+    margin-left: 13px;
     position: inherit;
 }
-.whiteboard-issue .avatar {
-    position: absolute;
-    top: 5px;
-    right: 3px;
+.whiteboard-issue .issue_info + .issue_info {
+    padding-top: 0;
 }
 /* end scrum page styling */
 

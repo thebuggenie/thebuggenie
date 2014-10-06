@@ -1915,6 +1915,12 @@
             return $this->_builds;
         }
 
+        public function isAffectingBuilds()
+        {
+            $builds = $this->getBuilds();
+            return (bool) count($builds);
+        }
+
         public function isBuildAffected(TBGBuild $build)
         {
             $builds = $this->getBuilds();
@@ -1950,6 +1956,12 @@
         {
             $this->_populateAffected();
             return $this->_components;
+        }
+
+        public function isAffectingComponents()
+        {
+            $components = $this->getComponents();
+            return (bool) count($components);
         }
 
         public function isComponentAffected(TBGComponent $component)
@@ -5000,7 +5012,7 @@
                                             }
                                         }
                                         $this->getMilestone()->updateStatus();
-                                                                                $this->getMilestone()->save();
+                                        $this->getMilestone()->save();
                                     }
                                 }
                                 else

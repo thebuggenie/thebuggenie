@@ -21,6 +21,11 @@
             $this->issues = $this->swimlane->getIssues();
         }
 
+        public function componentBoardColumnheader()
+        {
+            $this->statuses = \TBGStatus::getAll();
+        }
+
         public function componentMilestoneIssue()
         {
 
