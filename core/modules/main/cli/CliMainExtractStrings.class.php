@@ -29,54 +29,52 @@ use Symfony\Component\Finder\Finder;
         {
             $this->_command_name = 'extract_strings';
             $this->_description = "Extract main language (en_US) translatable strings from sources";
+            $this->addRequiredArgument('format', "Output file format can be either xliff (XLIFF 1.2) or php (PHP Alternative Array)");
             $this->addOptionalArgument('-v', "Verbose mode");
         }
 
         protected function do_execute()
         {
-            $this->generate(THEBUGGENIE_PATH);
+            if($this->getProvidedArgument('format') !== 'xliff' && $this->getProvidedArgument('format') !== 'php'){
+                $this->cliEcho("\nERROR:", "red", "underline");
+                $this->cliEcho(" format parameter can be either xliff or php !\n");
+                $this->cliEcho("Example:", "cyan", "underline");
+                $this->cliEcho(" ./tbg_cli extract_strings --format=xliff\n\n");
+                return;
+            }
+
+            $this->extractAndGenerate(THEBUGGENIE_PATH);
 
             $modules = $this->getModules();
 
             foreach($modules as $module){
-                $this->generate(THEBUGGENIE_PATH . 'modules' . DS . $module, $module);
+                $this->extractAndGenerate(THEBUGGENIE_PATH . 'modules' . DS . $module, $module);
             }
 
-            //Displaying final extraction report to user
-            $this->cliEcho("\n\n*********************************\n");
-            $this->cliEcho("*   END OF EXTRACTION PROCESS   *\n");
-            $this->cliEcho("*********************************\n\n");
+            $this->displayFinalReport();
+        }
 
-            $this->cliEcho("Extraction of ");
-            $this->cliEcho("en_US", "yellow");
-            $this->cliEcho(" source strings for core + ");
-            $this->cliEcho(count($this->getModules()), "yellow");
-            $this->cliEcho(" modules ");
-            $this->cliEcho("✔ COMPLETED\n", 'green', 'bold');
+        /**
+         * @return array Array containing all modules keys
+         */
+        protected function getModules(){
+            $finder = new Finder();
+            $finder->directories()
+                ->in(THEBUGGENIE_PATH.'/modules')
+                ->depth('== 0');
 
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($this->nbstrings, 'green', 'bold');
-            $this->cliEcho(" strings found\n");
-
-            $this->cliEcho(" ↳  through ");
-            $this->cliEcho($this->nbfiles, 'green', 'bold');
-            $this->cliEcho(" files\n\n");
-
-            $this->cliEcho(count($this->getModules())+1, "yellow");
-            $this->cliEcho(" files were generated :\n");
-            foreach($this->generatedFiles as $filepath){
-                $this->cliEcho(" ↳  ");
-                $this->cliEcho($filepath."\n", 'cyan');
+            foreach ($finder as $file) {
+                $modules[] = $file->getRelativePathname();
             }
 
-            $this->cliEcho("\n");
+            return $modules;
         }
 
         /**
          * @param $path Path to search for the source strings
          * @param null $module The module key or null for core
          */
-        protected function generate($path, $module = null){
+        protected function extractAndGenerate($path, $module = null){
 
             $module_name = (!isset($module)) ? 'core' : $module;
 
@@ -196,9 +194,75 @@ use Symfony\Component\Finder\Finder;
             $this->cliEcho("\n");
 
             $this->cliEcho("Generating resulting ");
-            $this->cliEcho($module.".inc.php", "yellow");
+
+            switch($this->getProvidedArgument('format')){
+                case "xliff":
+                    $this->cliEcho($module.".xlf", "yellow");
+                    $relative_path = $this->writeFileOnDisk($this->generateXliff($totalFiles, $totalStrings, $stringsByFile), $module, 'xlf');
+                    break;
+                case "php":
+                    $this->cliEcho($module.".inc.php", "yellow");
+                    $relative_path = $this->writeFileOnDisk($this->generatePhpAltArray($totalFiles, $totalStrings, $stringsByFile), $module, 'inc.php');
+                    break;
+            }
+
             $this->cliEcho(" file ...\n");
 
+            $this->cliEcho(" ↳  ");
+            $this->cliEcho($relative_path, 'magenta', 'bold');
+            $this->cliEcho(" ✔ GENERATED\n\n", 'green', 'bold');
+        }
+
+        /**
+         * @param $totalFiles int Number of files (sections) for the file to generate
+         * @param $totalStrings int Number of strings (in all sections) for the file to generate
+         * @param $stringsByFile array Associative array containing strings ordered by files
+         * @return string
+         */
+        protected function generateXliff($totalFiles, $totalStrings, $stringsByFile){
+            $generatedFile = '<?xml version="1.0"?>'.PHP_EOL.PHP_EOL;
+
+            $generatedFile .= "<!-- Please, do not edit this file ! -->".PHP_EOL;
+            $generatedFile .= "<!-- If you would like to help translating TBG, -->".PHP_EOL;
+            $generatedFile .= "<!-- please visit https://www.transifex.com/projects/p/tbg -->".PHP_EOL.PHP_EOL;
+
+            $generatedFile .= "<!-- Number of Sections: $totalFiles -->".PHP_EOL;
+            $generatedFile .= "<!-- Number of Strings: $totalStrings -->".PHP_EOL;
+            $generatedFile .= "<!-- Keys extracted from sources on: ".date('Y M d.')." -->".PHP_EOL;
+            $generatedFile .= "<!-- Translations extracted from Transifex on: -->".PHP_EOL.PHP_EOL;
+
+            $generatedFile .= '<xliff version="1.2">'.PHP_EOL;
+
+            foreach ($stringsByFile as $file => $strings) {
+
+                $generatedFile .= PHP_EOL;
+                $generatedFile .= '    <file source-language="en_US" datatype="php" original="'.$file.'">'.PHP_EOL;
+                $generatedFile .= "        <body>".PHP_EOL;
+
+                foreach ($strings as $string) {
+                    $string = trim($string);
+
+                    $generatedFile .= '            <trans-unit id="'.md5($string).'">'.PHP_EOL;
+                    $generatedFile .= '                <source>'.htmlspecialchars($string,ENT_NOQUOTES).'</source>'.PHP_EOL;
+                    $generatedFile .= '            </trans-unit>'.PHP_EOL;
+                }
+
+                $generatedFile .= '        </body>'.PHP_EOL;
+                $generatedFile .= "    </file>".PHP_EOL;
+            }
+
+            $generatedFile .= "</xliff>";
+
+            return $generatedFile;
+        }
+
+        /**
+         * @param $totalFiles int Number of files (sections) for the file to generate
+         * @param $totalStrings int Number of strings (in all sections) for the file to generate
+         * @param $stringsByFile array Associative array containing strings ordered by files
+         * @return string
+         */
+        protected function generatePhpAltArray($totalFiles, $totalStrings, $stringsByFile){
             $generatedFile = "<?php".PHP_EOL.PHP_EOL;
 
             $generatedFile .= "// Please, do not edit this file !".PHP_EOL;
@@ -226,8 +290,18 @@ use Symfony\Component\Finder\Finder;
                 }
             }
 
+            return $generatedFile;
+        }
+
+        /**
+         * @param $generatedFile string Text content of generated file to write
+         * @param $ext string Module key
+         * @param $ext string Extension of file
+         * @return array Write language file on disk
+         */
+        protected function writeFileOnDisk($generatedFile, $module, $ext){
             if(!isset($module)){
-                $relative_path = 'i18n' . DS . 'en_US' . DS . 'strings.inc.php';
+                $relative_path = 'i18n' . DS . 'en_US' . DS . 'strings.' . $ext;
                 file_put_contents(THEBUGGENIE_PATH . $relative_path, $generatedFile);
                 $this->generatedFiles[] = $relative_path;
             }else{
@@ -235,30 +309,44 @@ use Symfony\Component\Finder\Finder;
                 if(!file_exists($relative_path))
                     mkdir(THEBUGGENIE_PATH . $relative_path, 0755, true);
 
-                $relative_path .= DS . $module . '.inc.php';
+                $relative_path .= DS . $module . '.' . $ext;
                 file_put_contents(THEBUGGENIE_PATH . $relative_path, $generatedFile);
                 $this->generatedFiles[] = $relative_path;
             }
 
-
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($relative_path, 'magenta', 'bold');
-            $this->cliEcho(" ✔ GENERATED\n\n", 'green', 'bold');
+            return $relative_path;
         }
 
         /**
-         * @return array Array containing all modules keys
+         * Print out final statistical report about extraction and generation process
          */
-        protected function getModules(){
-            $finder = new Finder();
-            $finder->directories()
-                ->in(THEBUGGENIE_PATH.'/modules')
-                ->depth('== 0');
+        protected function displayFinalReport(){
+            $this->cliEcho("\n\n*********************************\n");
+            $this->cliEcho("*   END OF EXTRACTION PROCESS   *\n");
+            $this->cliEcho("*********************************\n\n");
 
-            foreach ($finder as $file) {
-                $modules[] = $file->getRelativePathname();
+            $this->cliEcho("Extraction of ");
+            $this->cliEcho("en_US", "yellow");
+            $this->cliEcho(" source strings for core + ");
+            $this->cliEcho(count($this->getModules()), "yellow");
+            $this->cliEcho(" modules ");
+            $this->cliEcho("✔ COMPLETED\n", 'green', 'bold');
+
+            $this->cliEcho(" ↳  ");
+            $this->cliEcho($this->nbstrings, 'green', 'bold');
+            $this->cliEcho(" strings found\n");
+
+            $this->cliEcho(" ↳  through ");
+            $this->cliEcho($this->nbfiles, 'green', 'bold');
+            $this->cliEcho(" files\n\n");
+
+            $this->cliEcho(count($this->getModules())+1, "yellow");
+            $this->cliEcho(" files were generated :\n");
+            foreach($this->generatedFiles as $filepath){
+                $this->cliEcho(" ↳  ");
+                $this->cliEcho($filepath."\n", 'cyan');
             }
 
-            return $modules;
+            $this->cliEcho("\n");
         }
     }
