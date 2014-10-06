@@ -2387,7 +2387,10 @@ TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
             callback: function(json) {
                 wb.select('tbody').each(Element.remove);
                 $('whiteboard-headers').insert({after: json.component});
-                setTimeout(TBG.Project.Planning.Whiteboard.calculateColumnCounts, 250);
+                setTimeout(function () {
+                    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                    TBG.Project.Planning.Whiteboard.initializeDragDrop();
+                }, 250);
             }
         }
     });
@@ -2413,6 +2416,30 @@ TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) 
 TBG.Project.Planning.Whiteboard.setSortOrder = function() {
     $('planning_whiteboard_columns_form_row').childElements().each(function(column, index) {
         column.down('input.sortorder').setValue(index + 1);
+    });
+};
+
+TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
+    jQuery(ui.draggable).prependTo(event.target);
+    jQuery(ui.draggable).css({top: 'auto', left: 'auto'});
+    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+}
+
+TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
+    $('whiteboard').select('tbody td.column').each(function (column) {
+        var swimlane_identifier = column.up('tbody').dataset.swimlaneIdentifier;
+        jQuery(column).droppable({
+            drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
+            scope: swimlane_identifier,
+            accept: '.whiteboard-issue',
+            tolerance: 'intersect',
+            hoverClass: 'drop-hover'
+        });
+        jQuery(column).find('.whiteboard-issue').draggable({
+            scope: swimlane_identifier,
+            axis: 'x',
+            revert: 'invalid'
+        });
     });
 };
 

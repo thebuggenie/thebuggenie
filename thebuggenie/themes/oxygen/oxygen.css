@@ -3548,6 +3548,18 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     border-right: 1px solid rgba(100, 100, 100, 0.2);
     background-color: rgba(245, 245, 245, 0.4);
     min-height: 50px;
+    transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    position: relative;
+}
+#whiteboard tbody td.column.drop-hover {
+    background-color: rgba(225, 225, 150, 0.3);
+}
+#whiteboard tbody td.column.drop-hover .whiteboard-issue {
+    opacity: 0.5;
 }
 #whiteboard.no-swimlanes thead h1 {
     margin-bottom: 10px;
@@ -3569,6 +3581,15 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     background-color: #FFF;
     border: 1px solid rgba(100, 100, 100, 0.2);
     border-radius: 2px;
+    transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    opacity: 1;
+}
+.whiteboard-issue.ui-draggable {
+    cursor: move;
 }
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;

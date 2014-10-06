@@ -47,6 +47,8 @@
 
         protected $_name;
 
+        protected $_identifier;
+
         public function getIdentifiables()
         {
             return $this->_identifiables;
@@ -93,6 +95,21 @@
             }
 
             return $this->_name;
+        }
+
+        public function getIdentifier()
+        {
+            if ($this->_identifier === null)
+            {
+                $identifiers = array();
+                foreach ($this->_identifiables as $identifiable)
+                {
+                    $identifiers[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getId() : $identifiable;
+                }
+                $this->_identifier = 'swimlane_' . join('_', $identifiers);
+            }
+
+            return $this->_identifier;
         }
 
         public function hasIdentifiables()

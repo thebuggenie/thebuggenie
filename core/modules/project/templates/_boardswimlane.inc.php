@@ -3,7 +3,7 @@
     use thebuggenie\core\entities\AgileBoard;
 
 ?>
-<tbody class="<?php if (!count($issues)) echo 'collapsed'; ?>">
+<tbody class="<?php if (!count($issues)) echo 'collapsed'; ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>">
     <?php if ($swimlane->getBoard()->usesSwimlanes() && $swimlane->hasIdentifiables()): ?>
         <tr>
             <td colspan="<?php echo count($swimlane->getBoard()->getColumns()); ?>" class="swimlane-header">
@@ -25,7 +25,7 @@
     <?php endif; ?>
     <tr>
         <?php foreach ($swimlane->getBoard()->getColumns() as $column): ?>
-            <td class="column" data-column-id="<?php echo $column->getID(); ?>">
+            <td class="column" data-column-id="<?php echo $column->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>">
                 <?php foreach ($issues as $issue): ?>
                     <?php if ($column->hasIssue($issue)) include_template('project/whiteboardissue', compact('issue', 'column', 'swimlane')); ?>
                 <?php endforeach; ?>
