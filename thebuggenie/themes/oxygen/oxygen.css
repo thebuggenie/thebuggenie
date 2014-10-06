@@ -3321,6 +3321,17 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 #milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 
+.whiteboard .project_save_container .button-group { 
+    float: none; 
+    display: inline-block;
+    text-align: right;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.whiteboard .project_save_container .button-group .button { 
+    padding: 3px 6px;
+}
+
 .whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode input[type=search] { display: none; }
 .whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form, .whiteboard.edit-mode #whiteboard { display: none; }
 .whiteboard.edit-mode .edit-mode-buttons, .whiteboard.edit-mode #planning_whiteboard_columns_form { display: block; }
@@ -3559,7 +3570,10 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     background-color: rgba(225, 225, 150, 0.3);
 }
 #whiteboard tbody td.column.drop-hover .whiteboard-issue {
-    opacity: 0.5;
+    opacity: 0;
+}
+#whiteboard tbody td.column.drop-hover .whiteboard-issue.ui-draggable-dragging {
+    opacity: 1;
 }
 #whiteboard.no-swimlanes thead h1 {
     margin-bottom: 10px;
@@ -3591,6 +3605,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue.ui-draggable {
     cursor: move;
 }
+.whiteboard-issue.ui-draggable-dragging {
+    box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
+}
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;
     display: block;
@@ -3600,6 +3617,27 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     text-decoration: none;
     font-size: 1em;
     font-weight: normal;
+}
+.whiteboard-issue .extra {
+    display: none;
+    margin: 0 5px 0 20px;
+}
+#whiteboard.viewmode-detailed .whiteboard-issue .extra {
+    display: block;
+}
+.whiteboard-issue ol {
+    list-style: decimal;
+    font-size: 0.9em;
+    color: #888;
+}
+.whiteboard-issue .description {
+    display: block;
+    white-space: nowrap;
+    color: #888;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 0.95em;
 }
 .whiteboard-issue .issue_info {
     display: block;

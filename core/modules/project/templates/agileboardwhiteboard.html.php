@@ -19,6 +19,10 @@
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('project_planning_board_whiteboard_column', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
                 </div>
+                <div class="button-group whiteboard-view-mode">
+                    <a class="button button-silver button-pressed" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.setViewMode(this, 'simple');"><?php echo image_tag('whiteboard-simple.png'); ?></a>
+                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.setViewMode(this, 'detailed');"><?php echo image_tag('whiteboard-detailed.png'); ?></a>
+                </div>
                 <a href="javascript:void(0)" class="fancydropdown changeable self-updateable milestone_virtual_status" id="selected_milestone_container">
                     <span id="selected_milestone_status_details" style="display: none;"></span>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'selected_milestone_status_indicator')); ?>

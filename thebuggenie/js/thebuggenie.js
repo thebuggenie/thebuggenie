@@ -2419,11 +2419,23 @@ TBG.Project.Planning.Whiteboard.setSortOrder = function() {
     });
 };
 
+TBG.Project.Planning.Whiteboard.setViewMode = function(button, mode) {
+    $(button).up('.button-group').childElements().each(function (elm) {
+        elm.removeClassName('button-pressed');
+    });
+    $(button).addClassName('button-pressed');
+    var wb = $('whiteboard');
+    ['simple', 'detailed'].each(function (viewmode) {
+        wb.removeClassName('viewmode-'+viewmode);
+    });
+    wb.addClassName('viewmode-'+mode);
+};
+
 TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
     jQuery(ui.draggable).prependTo(event.target);
     jQuery(ui.draggable).css({top: 'auto', left: 'auto'});
     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
-}
+};
 
 TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
     $('whiteboard').select('tbody td.column').each(function (column) {
