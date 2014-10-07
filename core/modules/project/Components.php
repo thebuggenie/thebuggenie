@@ -28,7 +28,18 @@
 
         public function componentMilestoneIssue()
         {
+        }
 
+        public function componentAgileWhiteboardTransitionSelector()
+        {
+            foreach ($this->board->getColumns() as $column)
+            {
+                if ($column->hasIssue($this->issue))
+                {
+                    $this->current_column = $column;
+                    break;
+                }
+            }
         }
 
         public function componentMilestoneWhiteboardStatusDetails()

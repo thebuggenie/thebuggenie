@@ -326,60 +326,98 @@
             {
                 try
                 {
-                    if ($request->isPost())
+                    switch ($request['mode'])
                     {
-                        $columns = $request['columns'];
-                        $saved_columns = array();
-                        $cc = 1;
-                        if (is_array($columns))
-                        {
-                            foreach ($columns as $details)
+                        case 'getmilestonestatus':
+                            $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
+                            break;
+                        case 'whiteboardissues':
+                            if ($request->isPost())
                             {
-                                if ($details['column_id'])
+                                $issue = \TBGIssuesTable::getTable()->selectById((int) $request['issue_id']);
+                                $column = BoardColumn::getB2DBTable()->selectById((int) $request['column_id']);
+
+                                if ($request->hasParameter('transition_id'))
                                 {
-                                    $column = BoardColumn::getB2DBTable()->selectById($details['column_id']);
+                                    $transitions = array(\TBGWorkflowTransitionsTable::getTable()->selectById((int) $request['transition_id']));
                                 }
                                 else
                                 {
-                                    $column = new BoardColumn();
-                                    $column->setBoard($this->board);
+                                    $status_ids = array();
+                                    $transitions = array();
+
+                                    foreach ($issue->getAvailableWorkflowTransitions() as $transition)
+                                    {
+                                        $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
+                                        $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+                                    }
+
+                                    $available_statuses = array_intersect($status_ids, $column->getStatusIds());
+
+                                    if (empty($available_statuses))
+                                    {
+                                        $this->getResponse()->setHttpStatus(400);
+                                        return $this->renderJSON(array('error' => $this->getI18n()->__('There are no valid transitions to any states in this column')));
+                                    }
+
+                                    if (count($available_statuses) > 1)
+                                    {
+                                        return $this->renderJSON(array('component' => $this->getComponentHTML('project/agilewhiteboardtransitionselector', array('issue' => $issue, 'transitions' => $transitions, 'statuses' => $available_statuses, 'new_column' => $column, 'board' => $column->getBoard(), 'swimlane_identifier' => $request['swimlane_identifier']))));
+                                    }
                                 }
-                                if (!$column instanceof BoardColumn)
-                                {
-                                    throw new \Exception($this->getI18n()->__('There was an error trying to save column %column', array('%column' => $details['column_id'])));
-                                }
-                                $column->setName($details['name']);
-                                $column->setSortOrder($details['sort_order']);
-                                if (array_key_exists('min_workitems', $details)) $column->setMinWorkitems($details['min_workitems']);
-                                if (array_key_exists('max_workitems', $details)) $column->setMaxWorkitems($details['max_workitems']);
-                                $column->setStatusIds(explode(',', $details['status_ids']));
-                                $column->save();
-                                $saved_columns[$column->getID()] = $column->getID();
-                                $cc++;
+
+                                current($transitions)->transitionIssueToOutgoingStepWithoutRequest($issue);
+                                return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getTemplateHTML('project/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane_identifier' => $request['swimlane_identifier']))));
                             }
-                        }
-                        foreach ($this->board->getColumns() as $column)
-                        {
-                            if (!array_key_exists($column->getID(), $saved_columns))
+                            else
                             {
-                                $column->delete();
-                            }
-                        }
-                        return $this->renderJSON(array('forward' => $this->getRouting()->generate('project_planning_board_whiteboard', array('project_key' => $this->board->getProject()->getKey(), 'board_id' => $this->board->getID()))));
-                    }
-                    else
-                    {
-                        switch ($request['mode'])
-                        {
-                            case 'getmilestonestatus':
-                                $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
-                                return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
-                                break;
-                            case 'whiteboardissues':
                                 $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
                                 return $this->renderJSON(array('component' => $this->getTemplateHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
-                                break;
-                        }
+                            }
+                            break;
+                        default:
+                            if ($request->isPost())
+                            {
+                                $columns = $request['columns'];
+                                $saved_columns = array();
+                                $cc = 1;
+                                if (is_array($columns))
+                                {
+                                    foreach ($columns as $details)
+                                    {
+                                        if ($details['column_id'])
+                                        {
+                                            $column = BoardColumn::getB2DBTable()->selectById($details['column_id']);
+                                        }
+                                        else
+                                        {
+                                            $column = new BoardColumn();
+                                            $column->setBoard($this->board);
+                                        }
+                                        if (!$column instanceof BoardColumn)
+                                        {
+                                            throw new \Exception($this->getI18n()->__('There was an error trying to save column %column', array('%column' => $details['column_id'])));
+                                        }
+                                        $column->setName($details['name']);
+                                        $column->setSortOrder($details['sort_order']);
+                                        if (array_key_exists('min_workitems', $details)) $column->setMinWorkitems($details['min_workitems']);
+                                        if (array_key_exists('max_workitems', $details)) $column->setMaxWorkitems($details['max_workitems']);
+                                        $column->setStatusIds(explode(',', $details['status_ids']));
+                                        $column->save();
+                                        $saved_columns[$column->getID()] = $column->getID();
+                                        $cc++;
+                                    }
+                                }
+                                foreach ($this->board->getColumns() as $column)
+                                {
+                                    if (!array_key_exists($column->getID(), $saved_columns))
+                                    {
+                                        $column->delete();
+                                    }
+                                }
+                                return $this->renderJSON(array('forward' => $this->getRouting()->generate('project_planning_board_whiteboard', array('project_key' => $this->board->getProject()->getKey(), 'board_id' => $this->board->getID()))));
+                            }
                     }
                 }
                 catch (\Exception $e)

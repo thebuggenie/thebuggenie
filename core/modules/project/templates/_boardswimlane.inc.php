@@ -25,7 +25,7 @@
     <?php endif; ?>
     <tr>
         <?php foreach ($swimlane->getBoard()->getColumns() as $column): ?>
-            <td class="column" data-column-id="<?php echo $column->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>">
+            <td class="column" id="swimlane_<?php echo $swimlane->getIdentifier(); ?>_column_<?php echo $column->getID(); ?>" data-column-id="<?php echo $column->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>">
                 <?php foreach ($issues as $issue): ?>
                     <?php if ($column->hasIssue($issue)) include_template('project/whiteboardissue', compact('issue', 'column', 'swimlane')); ?>
                 <?php endforeach; ?>

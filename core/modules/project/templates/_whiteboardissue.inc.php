@@ -1,4 +1,4 @@
-<div class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>">
+<div <?php if (!isset($fake) || !$fake): ?> id="whiteboard_issue_<?php echo $issue->getID(); ?>"<?php endif; ?> class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>">
     <?php include_component('project/planningcolorpicker', array('issue' => $issue)); ?>
     <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
     <div class="extra">
@@ -18,12 +18,14 @@
         <?php foreach ($issue->getComponents() as $details): ?>
             <div class="issue_component"><?php echo $details['component']->getName(); ?></div>
         <?php endforeach; ?>
-        <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
-            <?php foreach ($issue->getParentIssues() as $parent): ?>
-                <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
-                    <div class="epic_badge" style="background-color: <?php echo $parent->getScrumColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+        <?php if (isset($swimlane)): ?>
+            <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
+                <?php foreach ($issue->getParentIssues() as $parent): ?>
+                    <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
+                        <div class="epic_badge" style="background-color: <?php echo $parent->getScrumColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
     <div class="issue_info">

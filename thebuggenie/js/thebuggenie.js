@@ -2411,7 +2411,7 @@ TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) 
             show: 'selected_milestone_status_details'
         }
     });
-}
+};
 
 TBG.Project.Planning.Whiteboard.setSortOrder = function() {
     $('planning_whiteboard_columns_form_row').childElements().each(function(column, index) {
@@ -2432,9 +2432,52 @@ TBG.Project.Planning.Whiteboard.setViewMode = function(button, mode) {
 };
 
 TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
-    jQuery(ui.draggable).prependTo(event.target);
-    jQuery(ui.draggable).css({top: 'auto', left: 'auto'});
-    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+    var issue = jQuery(ui.draggable);
+    var column = jQuery(event.target);
+
+    TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column)
+};
+
+TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
+
+    if (issue.parents('td').data('column-id') == column.data('column-id')) 
+        return;
+
+    var wb = jQuery('#whiteboard');
+    var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
+    if (transition_id) parameters += '&transition_id=' + transition_id;
+    
+    TBG.Main.Helpers.ajax(wb.data('whiteboard-url'), {
+        additional_params: parameters,
+        url_method: 'post',
+        success: {
+            callback: function(json) {
+                if (json.component) {
+                    $('fullpage_backdrop').appear({duration: 0.2});
+                    $('fullpage_backdrop_content').update(json.component);
+                    $('fullpage_backdrop_content').appear({duration: 0.2});
+                    $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                } else {
+                    $('fullpage_backdrop_content').update('');
+                    $('fullpage_backdrop').fade({duration: 0.2});
+                    if (issue) issue.remove();
+                    jQuery(json.issue).prependTo(column);
+                    setTimeout(function() {
+                        jQuery('.whiteboard-issue').not('ui-draggable').draggable({
+                            scope: column.parents('tbody').data('swimlane-identifier'),
+                            axis: 'x',
+                            revert: true
+                        });
+                        TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                    }, 350);
+                }                
+            }
+        },
+        failure: {
+            show: issue
+        }
+    });
+    
 };
 
 TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
@@ -2450,7 +2493,7 @@ TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
         jQuery(column).find('.whiteboard-issue').draggable({
             scope: swimlane_identifier,
             axis: 'x',
-            revert: 'invalid'
+            revert: true
         });
     });
 };

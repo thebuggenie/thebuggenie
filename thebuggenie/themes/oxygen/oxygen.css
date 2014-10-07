@@ -3336,7 +3336,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form, .whiteboard.edit-mode #whiteboard { display: none; }
 .whiteboard.edit-mode .edit-mode-buttons, .whiteboard.edit-mode #planning_whiteboard_columns_form { display: block; }
 #planning_whiteboard { position: relative; }
-.whiteboard .whiteboard-columns {
+.whiteboard-columns {
     width: 100%;
     height: 100%;
     table-layout: fixed;
@@ -3349,7 +3349,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.whiteboard .whiteboard-columns td {
+.whiteboard-columns td {
     width: auto;
     padding: 0;
     box-sizing: border-box;
@@ -3358,7 +3358,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.whiteboard .whiteboard-columns td.ui-sortable-placeholder {
+.whiteboard-columns td.ui-sortable-placeholder {
     width: 35px;
     border: 2px dotted #CCC;
     background-color: rgba(225, 225, 225, 0.3);
@@ -3464,10 +3464,10 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     bottom: 0;
     margin: 0;
 }
-#whiteboard thead td {
+.whiteboard-columns thead td {
     padding: 0 10px;
 }
-#whiteboard thead h1 {
+.whiteboard-columns thead h1 {
     font-size: 1.1em;
     font-weight: bold;
     color: #777;
@@ -3479,19 +3479,19 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-transition: border-color 0.3s ease; 
     -webkit-transition: border-color 0.3s ease; 
 }
-.type-kanban #whiteboard thead td.over-workitems h1 {
+.type-kanban .whiteboard-columns thead td.over-workitems h1 {
     border-bottom-color: rgba(225, 100, 100, 0.8);
 }
-.type-kanban #whiteboard tbody td.over-workitems {
+.type-kanban .whiteboard-columns tbody td.over-workitems {
     background-color: rgba(225, 100, 100, 0.8);
 }
-.type-kanban #whiteboard thead td.under-workitems h1 {
+.type-kanban .whiteboard-columns thead td.under-workitems h1 {
     border-bottom-color: rgba(255, 255, 50, 0.6);
 }
-.type-kanban #whiteboard tbody td.under-workitems {
+.type-kanban .whiteboard-columns tbody td.under-workitems {
     background: rgba(255, 255, 50, 0.6);
 }
-#whiteboard thead h1 .column_count {
+.whiteboard-columns thead h1 .column_count {
     display: inline-block;
     font-weight: normal;
     background-color: #FFF;
@@ -3500,13 +3500,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     font-size: 1em;
     margin-left: 5px;
 }
-#whiteboard thead h1 .column_count.under, #whiteboard thead h1 .column_count.over, #whiteboard thead td.under-workitems h1 .column_count.primary, #whiteboard thead td.over-workitems h1 .column_count.primary, #whiteboard thead td.under-workitems h1 .column_count.workitems, #whiteboard thead td.over-workitems h1 .column_count.workitems {
+.whiteboard-columns thead h1 .column_count.under, .whiteboard-columns thead h1 .column_count.over, .whiteboard-columns thead td.under-workitems h1 .column_count.primary, .whiteboard-columns thead td.over-workitems h1 .column_count.primary, .whiteboard-columns thead td.under-workitems h1 .column_count.workitems, .whiteboard-columns thead td.over-workitems h1 .column_count.workitems {
     display: none;
 }
-#whiteboard thead td.under-workitems h1 .column_count.under, #whiteboard thead td.over-workitems h1 .column_count.over {
+.whiteboard-columns thead td.under-workitems h1 .column_count.under, .whiteboard-columns thead td.over-workitems h1 .column_count.over {
     display: inline-block;
 }
-#whiteboard thead h1 .status_badge {
+.whiteboard-columns thead h1 .status_badge {
     float: right;
     line-height: 1em;
     margin-left: 2px;
@@ -3515,31 +3515,34 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     opacity: 0.7;
     color: rgba(0, 0, 0, 0.7);
 }
-#whiteboard tbody {
+.whiteboard-columns.transition-selector thead h1 .status_badge, .whiteboard-columns.transition-selector thead h1 .column_count {
+    display: none;
+}
+.whiteboard-columns tbody {
     border-bottom: 1px solid rgba(100, 100, 100, 0.2);
     box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
 }
-#whiteboard.swimlanes tbody td.swimlane-header {
+.whiteboard-columns.swimlanes tbody td.swimlane-header {
     padding: 0;
     border: none;
 }
-#whiteboard tbody.collapsed tr:first-child {
+.whiteboard-columns tbody.collapsed tr:first-child {
     display: table-row;
 }
-#whiteboard tbody.collapsed tr, #whiteboard tbody.collapsed .collapser, #whiteboard tbody .expander {
+.whiteboard-columns tbody.collapsed tr, .whiteboard-columns tbody.collapsed .collapser, .whiteboard-columns tbody .expander {
     display: none;
 }
-#whiteboard tbody.collapsed .expander {
+.whiteboard-columns tbody.collapsed .expander {
     display: initial;
 }
-#whiteboard .expander, #whiteboard .collapser {
+.whiteboard-columns .expander, .whiteboard-columns .collapser {
     cursor: pointer;
     opacity: 0.8;
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
 }
-#whiteboard .expander:hover, #whiteboard .collapser:hover {
+.whiteboard-columns .expander:hover, .whiteboard-columns .collapser:hover {
     transition: opacity 0.3s ease;
     -o-transition: opacity 0.3s ease;
     -ms-transition: opacity 0.3s ease;
@@ -3547,14 +3550,14 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
 }
-#whiteboard.swimlanes tbody tr:first-child td > .header {
+.whiteboard-columns.swimlanes tbody tr:first-child td > .header {
     font-size: 1.1em;
     margin: 5px 0 0 0;
     padding: 10px;
     font-weight: normal;
     border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
 }
-#whiteboard tbody td.column {
+.whiteboard-columns tbody td.column {
     border-left: 1px solid rgba(100, 100, 100, 0.2);
     border-right: 1px solid rgba(100, 100, 100, 0.2);
     background-color: rgba(245, 245, 245, 0.4);
@@ -3566,25 +3569,57 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: background-color 0.3s ease;
     position: relative;
 }
-#whiteboard tbody td.column.drop-hover {
+.whiteboard-columns tbody td.column.drop-hover {
     background-color: rgba(225, 225, 150, 0.3);
 }
-#whiteboard tbody td.column.drop-hover .whiteboard-issue {
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue {
     opacity: 0;
 }
-#whiteboard tbody td.column.drop-hover .whiteboard-issue.ui-draggable-dragging {
+.whiteboard-columns td.column.current_column .whiteboard-issue {
+    opacity: 0.3;
+}
+.transition-selector-indicator {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -17px;
+}
+.transition-selector h2 {
+    font-weight: normal;
+    margin: 25px 5px 5px 5px;
+    padding: 5px 0;
+    color: #888;
+    border-bottom: 1px dotted #CCC;
+    font-size: 1.1em;
+    text-transform: uppercase;
+}
+.transition-selector .transition {
+    display: block;
+    padding: 10px;
+    background: #FFF;
+    border: 1px solid rgba(100, 100, 100, 0.2);
+    box-shadow: 0 0 5px rgba(100, 100, 100, 0.2);
+    margin: 10px 5px;
+}
+.transition-selector .transition .button {
+    float: right;
+}
+.whiteboard-columns.transition-selector {
+    margin-bottom: 20px;
+}
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.ui-draggable-dragging {
     opacity: 1;
 }
-#whiteboard.no-swimlanes thead h1 {
+.whiteboard-columns.no-swimlanes thead h1 {
     margin-bottom: 10px;
 }
-#whiteboard.no-swimlanes tbody td.column {
+.whiteboard-columns.no-swimlanes tbody td.column {
     border-top: 1px solid rgba(100, 100, 100, 0.2);
 }
-#whiteboard tbody td:first-child {
+.whiteboard-columns tbody td:first-child {
     border-left: none;
 }
-#whiteboard tbody td:last-child {
+.whiteboard-columns tbody td:last-child {
     border-right: none;
 }
 .whiteboard-issue {
@@ -3645,6 +3680,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     padding: 5px;
     margin-left: 13px;
     position: inherit;
+}
+.whiteboard-columns.transition-selector .whiteboard-issue .issue_info {
+    display: none;
 }
 .whiteboard-issue .issue_info + .issue_info {
     padding-top: 0;
