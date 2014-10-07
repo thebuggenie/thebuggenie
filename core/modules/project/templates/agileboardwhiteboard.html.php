@@ -20,6 +20,9 @@
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
                 </div>
                 <div class="button-group whiteboard-view-mode">
+                    <a class="button button-silver" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('main_container').toggleClassName('fullscreen');"><?php echo image_tag('view-fullscreen.png'); ?></a>
+                </div>
+                <div class="button-group whiteboard-view-mode">
                     <a class="button button-silver button-pressed" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.setViewMode(this, 'simple');"><?php echo image_tag('whiteboard-simple.png'); ?></a>
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.setViewMode(this, 'detailed');"><?php echo image_tag('whiteboard-detailed.png'); ?></a>
                 </div>

@@ -374,6 +374,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 /* end slidedowns */
 
 #main_container { position: relative; width: 100%; min-height: 100%; min-width: 1020px; padding: 0; margin: 0; }
+#main_container.fullscreen header, #main_container.fullscreen .project_header { display: none; }
 
 /* main page layout dimensions and details */
 #content_container { padding-bottom: 50px; height: auto; }
@@ -3331,6 +3332,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard .project_save_container .button-group .button { 
     padding: 3px 6px;
 }
+.whiteboard .project_save_container .button-group .button img { 
+    margin: 0;
+}
 
 .whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode input[type=search] { display: none; }
 .whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form, .whiteboard.edit-mode #whiteboard { display: none; }
@@ -4719,15 +4723,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 }
 
 .button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {
-    background: #eaeaea;
-    background: -moz-linear-gradient(top, #C5C5C5 0%, #EAEAEA 100%); /* FF3.6+ */
-    background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#C5C5C5), color-stop(100%,#EAEAEA)); /* Chrome,Safari4+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#C5C5C5), color-stop(100%,#EAEAEA)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #C5C5C5 0%,#EAEAEA 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #C5C5C5 0%,#EAEAEA 100%); /* Opera11.10+ */
-    background: -ms-linear-gradient(top, #C5C5C5 0%,#EAEAEA 100%); /* IE10+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C5C5C5', endColorstr='#EAEAEA',GradientType=0 ); /* IE6-9 */
-    background: linear-gradient(top, #C5C5C5 0%,#EAEAEA 100%); /* W3C */
+    box-shadow: 0 0 4px rgba(100, 100, 100, 0.3) inset;
 }
 .button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; box-shadow: none; }
 input[type=button][disabled], input[type=button].disabled, input[type=submit][disabled], input[type=submit].disabled, button[disabled], button.disabled, .button.disabled, .button.button-silver.disabled { color: #AAA !important; text-shadow: 1px 1px 0px #FFF !important; }
