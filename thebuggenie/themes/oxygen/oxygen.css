@@ -3695,11 +3695,11 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 
 /* menu links */
 .menu_links .header { font-size: 1em; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
-.menu_links .content li { font-size: 1.0em; padding: 1px; height: 20px; }
+.menu_links .content li { font-size: 1.0em; padding: 1px; min-height: 20px; }
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
 .menu_links .content a.selected:hover { font-weight: bold; color: #00a400; }
-.menu_links .content .delete-icon { display: none; }
+.menu_links .content .delete-icon { display: none; z-index: 10; }
 .menu_links li { cursor: default; }
 .menu_links.menu_editing .content .delete-icon { display: inline; }
 .menu_links.menu_editing li:hover { cursor: move; background-color: rgba(230, 230, 230, 0.4); }
