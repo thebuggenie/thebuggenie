@@ -7,9 +7,6 @@
 
     ?>
     <?php TBGEvent::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
-    <?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-        <?php // include_component('main/uploader', array('issue' => $issue, 'mode' => 'issue')); ?>
-    <?php endif; ?>
     <?php if ($issue->canAttachLinks()): ?>
         <?php include_template('main/attachlink', array('issue' => $issue)); ?>
     <?php endif; ?>
