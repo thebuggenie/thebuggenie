@@ -714,9 +714,6 @@
 
                 TBGLogging::log('Loading B2DB');
 
-                if (self::isCLI())
-                    \b2db\Core::setHTMLException(false);
-
                 if (array_key_exists('b2db', self::$_configuration))
                     \b2db\Core::initialize(self::$_configuration['b2db'], self::getCache());
                 else
