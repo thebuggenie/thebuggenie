@@ -23,7 +23,12 @@
 
 ?>
 <div id="project_planning" class="project_info_container <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('project_planning_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-retrieve-issue-url="<?php echo make_url('project_planning_get_issue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-board-id="<?php echo $board->getID(); ?>">
-    <div class="planning_indicator" id="planning_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
+    <div class="planning_indicator" id="planning_indicator">
+        <?php echo image_tag('spinning_30.gif'); ?>
+        <div class="milestone_percentage" id="planning_loading_progress_indicator">
+            <div class="filler" id="planning_percentage_filler" style="width: 5%;"></div>
+        </div>
+    </div>
     <div class="project_right_container">
         <div class="project_right planning_container" id="planning_container">
             <div class="project_save_container" id="project_planning_action_strip">
@@ -45,12 +50,12 @@
                 <?php endif; ?>
             </div>
             <?php if ($board->getProject()->isBuildsEnabled()): ?>
-                            <ul id="builds_list" data-releases-url="<?php echo make_url('project_planning_get_releases', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
-                            </ul>
+                <ul id="builds_list" data-releases-url="<?php echo make_url('project_planning_get_releases', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
+                </ul>
             <?php endif; ?>
             <?php if ($board->getEpicIssuetypeID()): ?>
-                            <ul id="epics_list" data-epics-url="<?php echo make_url('project_planning_get_epics', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
-                            </ul>
+                <ul id="epics_list" data-epics-url="<?php echo make_url('project_planning_get_epics', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
+                </ul>
             <?php endif; ?>
             <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
                 <table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="sprint_add_indicator">

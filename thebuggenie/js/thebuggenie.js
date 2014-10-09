@@ -2260,10 +2260,17 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
             success: {
                 update: 'milestone_' + milestone_id + '_issues',
                 callback: function (json) {
-                    milestone.addClassName('initialized')
-                    if (initialize_callback !== undefined) {
-                        if ($$('.milestone_box.initialized').size() == $$('.milestone_box').size()) {
-                            (initialize_callback)();
+                    milestone.addClassName('initialized');
+
+                    var completed_milestones = $$('.milestone_box.initialized');
+                    var multiplier = 100 / TBG.Project.Planning.options.milestone_count;
+                    var pct = Math.floor(completed_milestones.size() * multiplier);
+                    $('planning_percentage_filler').setStyle({width: pct + '%'});
+                    
+                    if (completed_milestones.size() == TBG.Project.Planning.options.milestone_count) {
+                        $('planning_loading_progress_indicator').hide();
+                        if (TBG.Project.Planning.options.dragdrop){
+                            TBG.Project.Planning.initializeDragDropSorting();
                         }
                     }
                 }
@@ -2532,13 +2539,21 @@ TBG.Project.Planning._initializeFilterSearch = function() {
     });
 };
 
+TBG.Project.Planning.toggleMilestoneIssues = function(milestone_id) {
+    var mi = $('milestone_'+milestone_id+'_issues');
+    if (!mi.up('.milestone_box').hasClassName('initialized')) {
+        
+    }
+    mi.toggleClassName('collapsed');
+};
+
 TBG.Project.Planning.initialize = function (options) {
-    $$('.milestone_box').each(function (milestone) {
-        if (options.dragdrop == true) {
-            TBG.Project.Planning.getMilestoneIssues(milestone, TBG.Project.Planning.initializeDragDropSorting);
-        } else {
-            TBG.Project.Planning.getMilestoneIssues(milestone);
-        }
+    TBG.Project.Planning.options = options;
+    var milestone_boxes = $$('.milestone_box');
+    
+    TBG.Project.Planning.options.milestone_count = milestone_boxes.size();
+    milestone_boxes.each(function (milestone) {
+        TBG.Project.Planning.getMilestoneIssues(milestone);
     });
     
     TBG.Project.Planning._initializeFilterSearch();
