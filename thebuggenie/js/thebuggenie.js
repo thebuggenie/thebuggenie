@@ -2113,8 +2113,6 @@ TBG.Project.Planning.initializeDragDropSorting = function () {
         TBG.Project.Planning.initializeMilestoneDragDropSorting(this)
     });
     TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
-    if (!TBG.Core.Pollers.planningpoller)
-        TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.planningPoller, 6);
 
     $('planning_indicator').hide();
     $('planning_filter_title_input').enable();
@@ -2253,8 +2251,8 @@ TBG.Project.Planning.destroyMilestoneDropSorting = function (milestone) {
 };
 
 TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callback) {
-    var milestone_id = milestone.dataset.milestoneId;
     if (!milestone.hasClassName('initialized')) {
+        var milestone_id = milestone.dataset.milestoneId;
         TBG.Main.Helpers.ajax(milestone.dataset.issuesUrl, {
             url_method: 'get',
             success: {
@@ -2262,13 +2260,16 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
                 callback: function (json) {
                     milestone.addClassName('initialized');
 
-                    var completed_milestones = $$('.milestone_box.initialized');
+                    var completed_milestones = $$('.milestone_box.available.initialized');
                     var multiplier = 100 / TBG.Project.Planning.options.milestone_count;
                     var pct = Math.floor(completed_milestones.size() * multiplier);
                     $('planning_percentage_filler').setStyle({width: pct + '%'});
                     
                     if (completed_milestones.size() == TBG.Project.Planning.options.milestone_count) {
                         $('planning_loading_progress_indicator').hide();
+                        if (!TBG.Core.Pollers.planningpoller)
+                            TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.planningPoller, 6);
+
                         if (TBG.Project.Planning.options.dragdrop){
                             TBG.Project.Planning.initializeDragDropSorting();
                         }
@@ -2549,7 +2550,7 @@ TBG.Project.Planning.toggleMilestoneIssues = function(milestone_id) {
 
 TBG.Project.Planning.initialize = function (options) {
     TBG.Project.Planning.options = options;
-    var milestone_boxes = $$('.milestone_box');
+    var milestone_boxes = $$('.milestone_box.available');
     
     TBG.Project.Planning.options.milestone_count = milestone_boxes.size();
     milestone_boxes.each(function (milestone) {
