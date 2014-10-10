@@ -2259,6 +2259,9 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
                 update: 'milestone_' + milestone_id + '_issues',
                 callback: function (json) {
                     milestone.addClassName('initialized');
+                    if (milestone.hasClassName('backlog_milestone')) {
+                        $('project_planning').removeClassName('left_toggled');
+                    }
 
                     var completed_milestones = $$('.milestone_box.available.initialized');
                     var multiplier = 100 / TBG.Project.Planning.options.milestone_count;
