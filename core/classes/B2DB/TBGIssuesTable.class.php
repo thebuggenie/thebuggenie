@@ -199,12 +199,9 @@
                     $counts = $row['counts'];
                     $pct = round($counts * $multiplier, 2);
                     $total_percent += $pct;
+                    if ($total_percent > 100) $pct -= $total_percent - 100;
                     $status = $row[self::STATUS];
                     $statuses['details'][$status] = array('id' => $status, 'count' => $counts, 'percent' => $pct);
-                }
-                if ($total_percent > 100)
-                {
-                    $statuses['details'][$status]['percent'] -= $total_percent - 100;
                 }
             }
 
