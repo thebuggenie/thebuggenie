@@ -3039,7 +3039,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .epic_badge {
     padding: 3px 4px;
 }
-.milestone_box .milestone_issues li a.dynamic_menu_link, .milestone_box .milestone_issues li a.dynamic_menu_link:hover {
+a.dynamic_menu_link, a.dynamic_menu_link:hover {
     position: relative;
     float: none;
     display: inline-block;
@@ -3054,25 +3054,31 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
 }
-.milestone_box .milestone_issues li .issue_container:hover a.dynamic_menu_link, .milestone_box .milestone_issues li .issue_container:hover a.dynamic_menu_link:hover {
+.milestone_issue .issue_container:hover a.dynamic_menu_link, .milestone_issue .issue_container:hover a.dynamic_menu_link:hover, .whiteboard-issue:hover a.dynamic_menu_link, .whiteboard-issue:hover a.dynamic_menu_link:hover {
     opacity: 1;
 }
 .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container:hover a.dynamic_menu_link, .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container:hover a.dynamic_menu_link:hover {
     opacity: 0;
 }
-.milestone_box .milestone_issues li a.dynamic_menu_link.button-pressed, .milestone_box .milestone_issues li a.dynamic_menu_link.button-pressed:hover {
+a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.4) inset;
 }
-.milestone_box .milestone_issues li .issue_container .issue_more_actions_link_container {
+.issue_more_actions_link_container {
     position: absolute;
     right: -25px;
     top: 4px;
 }
-.milestone_box .milestone_issues li .more_actions_dropdown {
+.whiteboard-issue .issue_more_actions_link_container {
+    right: 4px;
+}
+.milestone_issue .more_actions_dropdown {
     margin-top: 2px;
     right: 0;
 }
-.milestone_box .milestone_issues li .more_actions_dropdown .spinning, .milestone_box .milestone_issues li .more_actions_dropdown .spinning:hover {
+.whiteboard-issue .more_actions_dropdown {
+    margin-top: 2px;
+}
+.milestone_issue .more_actions_dropdown .spinning, .milestone_issue .more_actions_dropdown .spinning:hover {
     text-align: center;
     padding: 10px;
     line-height: 1em;
@@ -3080,7 +3086,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     vertical-align: middle;
     background: #FFF;
 }
-.milestone_box .milestone_issues li .more_actions_dropdown .spinning img {
+.milestone_issue .more_actions_dropdown .spinning img {
     margin: 0;
     opacity: 0.8;
     vertical-align: middle;

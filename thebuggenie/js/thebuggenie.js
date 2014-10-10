@@ -2455,7 +2455,7 @@ TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transi
         return;
 
     var wb = jQuery('#whiteboard');
-    var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
+    var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
     if (transition_id) parameters += '&transition_id=' + transition_id;
     
     TBG.Main.Helpers.ajax(wb.data('whiteboard-url'), {

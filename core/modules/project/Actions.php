@@ -337,6 +337,16 @@
                             {
                                 $issue = \TBGIssuesTable::getTable()->selectById((int) $request['issue_id']);
                                 $column = BoardColumn::getB2DBTable()->selectById((int) $request['column_id']);
+                                $milestone = \TBGMilestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+
+                                $swimlane = null;
+                                if ($request['swimlane_identifier'])
+                                {
+                                    foreach ($column->getBoard()->getMilestoneSwimlanes($milestone) as $swimlane)
+                                    {
+                                        if ($swimlane->getIdentifier() == $request['swimlane_identifier']) break;
+                                    }
+                                }
 
                                 if ($request->hasParameter('transition_id'))
                                 {
@@ -368,7 +378,7 @@
                                 }
 
                                 current($transitions)->transitionIssueToOutgoingStepWithoutRequest($issue);
-                                return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getTemplateHTML('project/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane_identifier' => $request['swimlane_identifier']))));
+                                return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getTemplateHTML('project/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));
                             }
                             else
                             {
