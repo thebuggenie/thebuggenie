@@ -23,7 +23,13 @@
     <div class="milestone_counts_container">
         <table>
             <tr>
-                <td id="milestone_<?php echo $milestone->getID(); ?>_issues_count"><?php echo ($include_counts) ? $milestone->countIssues() : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_issues_count">
+                    <?php if ($include_counts): ?>
+                        <?php echo $milestone->countOpenIssues(); ?><?php if ($milestone->countClosedIssues() > 0) echo ' ('.$milestone->countClosedIssues().')'; ?>
+                    <?php else: ?>
+                        -
+                    <?php endif; ?>
+                </td>
                 <td id="milestone_<?php echo $milestone->getID(); ?>_points_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getPointsEstimated() : '-'; ?></td>
                 <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursEstimated() : '-'; ?></td>
             </tr>

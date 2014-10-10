@@ -67,7 +67,7 @@
             <?php endif; ?>
             <div id="milestone_list">
                 <?php foreach ($board->getMilestones() as $milestone): ?>
-                    <?php include_component('milestonebox', array('milestone' => $milestone, 'board' => $board)); ?>
+                    <?php include_component('milestonebox', array('milestone' => $milestone, 'board' => $board, 'include_counts' => !$milestone->isVisibleRoadmap())); ?>
                 <?php endforeach; ?>
             </div>
             <div id="no_milestones" style="<?php if (isset($milestone)) echo 'display: none;'; ?>">
