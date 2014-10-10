@@ -521,50 +521,6 @@
         }
 
         /**
-         * Add a task to a scrum user story
-         *
-         * @param \TBGRequest $request
-         */
-        public function runScrumAddTask(\TBGRequest $request)
-        {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived());
-            $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-            $issue = \TBGContext::factory()->TBGIssue((int) $request['story_id']);
-            try
-            {
-                if ($issue instanceof \TBGIssue)
-                {
-                    $this->forward403unless($issue->canAddRelatedIssues());
-                    $task = new \TBGIssue();
-                    $task->setTitle($request['task_name']);
-                    $task->setIssuetype(\TBGIssuetype::getTask()->getID());
-                    $task->setProject($issue->getProjectID());
-                    $task->setMilestone(($issue->getMilestone() instanceof \TBGMilestone) ? $issue->getMilestone()->getID() : null);
-                    $task->save();
-                    $comment = $issue->addChildIssue($task);
-                    $mode = $request->getParameter('mode', 'scrum');
-                    if ($mode == 'scrum')
-                    {
-                        return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task)), 'count' => count($issue->getChildIssues())));
-                    }
-                    elseif ($mode == 'sprint')
-                    {
-                        return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumsprintdetailstask', array('task' => $task, 'can_estimate' => $issue->canEditEstimatedTime())), 'count' => count($issue->getChildIssues())));
-                    }
-                    else
-                    {
-                        return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('issue' => $task)), 'comment' => (($comment instanceof \TBGComment) ? $this->getTemplateHTML('main/comment', array('comment' => $comment, 'theIssue' => $issue)) : false), 'message' => \TBGContext::getI18n()->__('The task was added')));
-                    }
-                }
-                return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__('Invalid user story')));
-            }
-            catch (\Exception $e)
-            {
-                return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__("An error occured while trying to create a new task: %exception_message", array('%exception_message' => $e->getMessage()))));
-            }
-        }
-
-        /**
          * Show the scrum burndown chart for a specified sprint
          *
          * @param \TBGRequest $request
@@ -644,27 +600,6 @@
                         $issue->save();
                         return $this->renderJSON(array('failed' => false));
                         break;
-                    case 'estimates':
-                        $this->forward403unless($issue->canEditEstimatedTime());
-                        if ($request->hasParameter('estimated_points'))
-                        {
-                            $issue->setEstimatedPoints((int) $request['estimated_points']);
-                        }
-                        if ($request->hasParameter('estimated_hours'))
-                        {
-                            $issue->setEstimatedHours((int) $request['estimated_hours']);
-                        }
-                        $issue->save();
-                        $sprint_id = ($issue->getMilestone() instanceof \TBGMilestone) ? $issue->getMilestone()->getID() : 0;
-                        $new_sprint_points = ($sprint_id !== 0) ? $issue->getMilestone()->getPointsEstimated() : 0;
-                        $new_sprint_hours = ($sprint_id !== 0) ? $issue->getMilestone()->getHoursEstimated() : 0;
-                        $spent_sprint_points = ($sprint_id !== 0) ? $issue->getMilestone()->getPointsSpent() : 0;
-                        $spent_sprint_hours = ($sprint_id !== 0) ? $issue->getMilestone()->getHoursSpent() : 0;
-                        $remaining_points = $new_sprint_points - $spent_sprint_points;
-                        $remaining_hours = $new_sprint_hours - $spent_sprint_hours;
-
-                        return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'hours' => $issue->getEstimatedHours(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points, 'new_estimated_hours' => $new_sprint_hours, 'new_remaining_points' => $remaining_points, 'new_remaining_hours' => $remaining_points));
-                        break;
                 }
             }
             return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__('Invalid user story')));
@@ -742,18 +677,10 @@
                             $child_issue->setMilestone($new_milestone);
                             $child_issue->save();
                         }
-                        $old_milestone_id = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->getID() : 0;
-                        $old_issues = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->countIssues() : 0;
                         $new_issues = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->countIssues() : 0;
-                        $old_e_points = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->getPointsEstimated() : 0;
                         $new_e_points = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getPointsEstimated() : 0;
-                        $old_s_points = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->getPointsSpent() : 0;
-                        $new_s_points = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getPointsSpent() : 0;
-                        $old_e_hours = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->getHoursEstimated() : 0;
                         $new_e_hours = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getHoursEstimated() : 0;
-                        $old_s_hours = ($old_milestone instanceof \TBGMilestone) ? $old_milestone->getHoursSpent() : 0;
-                        $new_s_hours = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getHoursSpent() : 0;
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'old_milestone_id' => $old_milestone_id, 'old_issues' => $old_issues, 'old_estimated_points' => $old_e_points, 'old_spent_points' => $old_s_points, 'old_estimated_hours' => $old_e_hours, 'old_spent_hours' => $old_s_hours, 'new_milestone_id' => $new_milestone_id, 'new_issues' => $new_issues, 'new_estimated_points' => $new_e_points, 'new_spent_points' => $new_s_points, 'new_estimated_hours' => $new_e_hours, 'new_spent_hours' => $new_s_hours));
+                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours));
                     }
                 }
                 catch (\Exception $e)
