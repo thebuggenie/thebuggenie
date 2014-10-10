@@ -1560,6 +1560,13 @@
             return $this->_builds;
         }
 
+        public function getNonEditionBuilds()
+        {
+            return array_filter($this->getBuilds(), function ($build) {
+                return $build->isEditionBuild() == false;
+            });
+        }
+
         public function getActiveBuilds()
         {
             $builds = $this->getBuilds();
