@@ -46,6 +46,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
             $crit->addWhere(self::ONDEMAND, false);
+            $crit->addOrderBy('teams.name', Criteria::SORT_ASC);
 
             return $this->select($crit);
         }
