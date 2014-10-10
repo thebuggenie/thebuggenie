@@ -67,9 +67,9 @@
         </div>
         <div class="button-group" style="float: right;">
             <?php if ($milestone->getID()): ?>
-                <?php echo javascript_link_tag(__('Toggle issues'), array('onclick' => "$('milestone_".$milestone->getID()."_issues').toggleClassName('collapsed');", 'class' => 'button button-silver')); ?>
+                <button class="button button-silver toggle-issues" onclick="TBG.Project.Planning.toggleMilestoneIssues(<?php echo $milestone->getID(); ?>);"><?php echo image_tag('spinning_16.gif').__('Show issues'); ?></button>
             <?php endif; ?>
-            <?php echo javascript_link_tag(__('Add issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => $board->getID()))."');", 'class' => 'button button-silver')); ?>
+            <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => $board->getID())); ?>');"><?php echo __('Add issue'); ?></button>
         </div>
     <?php endif; ?>
     <?php echo image_tag('spinning_20.gif', array('id' => 'milestone_'.$milestone->getID().'_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
