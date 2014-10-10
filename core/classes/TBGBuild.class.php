@@ -218,7 +218,7 @@
          */
         public function isEditionBuild()
         {
-            return !is_null($this->_edition);
+            return (bool) $this->_edition;
         }
 
         /**

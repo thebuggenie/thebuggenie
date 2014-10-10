@@ -22,14 +22,14 @@
                 </div>
             <?php endif; ?>
             <h3><?php echo __('Project releases'); ?></h3>
-            <ul class="simple_list" id="builds_0">
-                <?php if (count($selected_project->getBuilds())): ?>
-                    <?php foreach ($selected_project->getBuilds() as $build): ?>
+            <ul class="simple_list" id="active_builds_0">
+                <?php if (count($selected_project->getNonEditionBuilds())): ?>
+                    <?php foreach ($selected_project->getNonEditionBuilds() as $build): ?>
                         <?php include_component('buildbox', array('build' => $build)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </ul>
-            <div class="faded_out" id="no_builds_0"<?php if (count($selected_project->getBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this project'); ?></div>
+            <div class="faded_out" id="no_active_builds_0"<?php if (count($selected_project->getNonEditionBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this project'); ?></div>
             <?php if ($selected_project->isEditionsEnabled()): ?>
                 <?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
                     <h3><?php echo __('%edition_name releases', array('%edition_name' => $edition->getName())); ?></h3>
@@ -40,7 +40,7 @@
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </ul>
-                    <div class="faded_out" id="no_builds_<?php echo $edition_id; ?>"<?php if (count($edition->getBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this edition'); ?></div>
+                    <div class="faded_out" id="no_active_builds_<?php echo $edition_id; ?>"<?php if (count($edition->getBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this edition'); ?></div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
