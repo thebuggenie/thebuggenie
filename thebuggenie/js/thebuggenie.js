@@ -2650,7 +2650,9 @@ TBG.Project.Planning.retrieveIssue = function (issue_id, url, existing_element) 
                 } else {
                     if (!existing_element) {
                         if (json.issue_details.milestone && json.issue_details.milestone.id) {
-                            TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                            if ($('milestone_'+json.issue_details.milestone.id).hasClassName('initialized')) {
+                                TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                            }
                         } else {
                             TBG.Project.Planning.insertIntoMilestone(0, json.component);
                         }
