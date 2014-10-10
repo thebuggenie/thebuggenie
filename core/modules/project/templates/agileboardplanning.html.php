@@ -37,7 +37,7 @@
                     <a class="button button-silver" id="releases_toggler_button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('builds_list').toggleClassName('expanded');"><?php echo __('Releases'); ?></a>
                 <?php endif; ?>
                 <?php if ($board->getEpicIssuetypeID()): ?>
-                    <a class="button button-silver" id="epics_toggler_button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('epics_list').toggleClassName('expanded');"><?php echo __('Epics'); ?></a>
+                    <button class="button button-silver" id="epics_toggler_button" onclick="$(this).toggleClassName('button-pressed');$('epics_list').toggleClassName('expanded');" disabled><?php echo __('Epics'); ?></button>
                 <?php endif; ?>
                 <?php echo javascript_link_tag($newmilestonelabel, array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."');")); ?>
                 <?php echo image_tag('spinning_16.gif', array('id' => 'retrieve_indicator', 'class' => 'indicator', 'style' => 'display: none;')); ?>

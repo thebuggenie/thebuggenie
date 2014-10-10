@@ -2564,6 +2564,7 @@ TBG.Project.Planning.initialize = function (options) {
             success: {
                 update: 'epics_list',
                 callback: function (json) {
+                    $('epics_toggler_button').enable();
                     TBG.Project.Planning.initializeEpicDroptargets();
                     jQuery('body').on('click', '.epic', function (e) {
                         TBG.Project.Planning.toggleEpicFilter(this);
