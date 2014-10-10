@@ -539,6 +539,12 @@
             }
         }
 
+        /**
+         * Retrieve all available swimlanes for the selected milestone
+         *
+         * @param \TBGMilestone $milestone
+         * @return array|BoardSwimlane
+         */
         public function getMilestoneSwimlanes($milestone)
         {
             $this->_populateMilestoneSwimlanes($milestone);
