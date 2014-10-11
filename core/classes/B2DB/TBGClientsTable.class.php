@@ -52,11 +52,13 @@
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+            $crit->addOrderBy('clients.name', Criteria::SORT_ASC);
+
             if (isset($limit))
             {
                 $crit->setLimit($limit);
-                $crit->addOrderBy('clients.id', Criteria::SORT_DESC);
             }
+
             return $this->select($crit);
         }
 
