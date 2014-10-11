@@ -1618,6 +1618,58 @@
             return $issue;
         }
 
+        protected function _getMilestoneFromRequest($request)
+        {
+            if ($request->hasParameter('milestone_id'))
+            {
+                try
+                {
+                    $milestone = \TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
+                    return $milestone;
+                }
+                catch (\Exception $e) { }
+            }
+        }
+
+        protected function _getBuildFromRequest($request)
+        {
+            if ($request->hasParameter('build_id'))
+            {
+                try
+                {
+                    $build = \TBGContext::factory()->TBGBuild((int) $request['build_id']);
+                    return $build;
+                }
+                catch (\Exception $e) { }
+            }
+        }
+
+        protected function _getParentIssueFromRequest($request)
+        {
+            if ($request->hasParameter('parent_issue_id'))
+            {
+                try
+                {
+                    $parent_issue = \TBGContext::factory()->TBGIssue((int) $request['parent_issue_id']);
+                    return $parent_issue;
+                }
+                catch (\Exception $e) { }
+            }
+        }
+
+        protected function _getBoardFromRequest($request)
+        {
+            if ($request->hasParameter('board_id'))
+            {
+                try
+                {
+                    $board = AgileBoards::getTable()->selectById((int) $request['board_id']);
+                    return $board;
+                }
+                catch (\Exception $e) { }
+            }
+        }
+
         /**
          * "Report issue" page
          *
@@ -1663,39 +1715,9 @@
                             $options['issue'] = $issue;
                             $options['errors'] = $errors;
                             $options['permission_errors'] = $permission_errors;
-                            if ($request->hasParameter('milestone_id'))
-                            {
-                                try
-                                {
-                                    $options['selected_milestone'] = \TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
-                                }
-                                catch (\Exception $e)
-                                {
-
-                                }
-                            }
-                            if ($request->hasParameter('parent_issue_id'))
-                            {
-                                try
-                                {
-                                    $options['parent_issue'] = \TBGContext::factory()->TBGIssue((int) $request['parent_issue_id']);
-                                }
-                                catch (\Exception $e)
-                                {
-
-                                }
-                            }
-                            if ($request->hasParameter('build_id'))
-                            {
-                                try
-                                {
-                                    $options['selected_build'] = \TBGContext::factory()->TBGBuild((int) $request['build_id']);
-                                }
-                                catch (\Exception $e)
-                                {
-
-                                }
-                            }
+                            $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
+                            $options['selected_build'] = $this->_getBuildFromRequest($request);
+                            $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
                             return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
                         }
                         if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
@@ -3450,50 +3472,10 @@
                         $options['selected_project'] = $this->selected_project;
                         $options['selected_issuetype'] = $this->selected_issuetype;
                         $options['locked_issuetype'] = $this->locked_issuetype;
-                        if ($request->hasParameter('board_id'))
-                        {
-                            try
-                            {
-                                $options['board'] = AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
-                            }
-                            catch (\Exception $e)
-                            {
-
-                            }
-                        }
-                        if ($request->hasParameter('milestone_id'))
-                        {
-                            try
-                            {
-                                $options['selected_milestone'] = \TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
-                            }
-                            catch (\Exception $e)
-                            {
-
-                            }
-                        }
-                        if ($request->hasParameter('parent_issue_id'))
-                        {
-                            try
-                            {
-                                $options['parent_issue'] = \TBGContext::factory()->TBGIssue((int) $request['parent_issue_id']);
-                            }
-                            catch (\Exception $e)
-                            {
-
-                            }
-                        }
-                        if ($request->hasParameter('build_id'))
-                        {
-                            try
-                            {
-                                $options['selected_build'] = \TBGContext::factory()->TBGBuild((int) $request['build_id']);
-                            }
-                            catch (\Exception $e)
-                            {
-
-                            }
-                        }
+                        $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
+                        $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
+                        $options['board'] = $this->_getBoardFromRequest($request);
+                        $options['selected_build'] = $this->_getBuildFromRequest($request);
                         $options['issuetypes'] = $this->issuetypes;
                         $options['errors'] = array();
                         break;

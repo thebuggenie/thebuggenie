@@ -449,6 +449,41 @@
         }
 
         /**
+         * Sorting milestones
+         *
+         * @param \TBGRequest $request
+         */
+        public function runSortMilestones(\TBGRequest $request)
+        {
+            $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
+            $milestones = $request->getParameter('milestone_ids', array());
+
+            try
+            {
+                if (is_array($milestones))
+                {
+                    foreach ($milestones as $order => $milestone_id)
+                    {
+                        $milestone = \TBGMilestonesTable::getTable()->selectByID($milestone_id);
+
+                        if ($milestone->getProject()->getID() != $this->selected_project->getID())
+                            continue;
+
+                        $milestone->setOrder($order);
+                        $milestone->save();
+                    }
+                }
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to save the milestone order')));
+            }
+
+            return $this->renderJSON(array('sorted' => 'ok'));
+        }
+
+        /**
          * The project planning page
          *
          * @param \TBGRequest $request

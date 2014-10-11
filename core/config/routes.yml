@@ -2316,6 +2316,13 @@ transition_issues:
     parameters: [ ]
     csrf_enabled: false
 
+project_planning_sort_milestones:
+    route: /:project_key/milestones/sort
+    module: project
+    action: sortMilestones
+    parameters: [ ]
+    csrf_enabled: true
+
 project_planning:
     route: /:project_key/boards
     module: project

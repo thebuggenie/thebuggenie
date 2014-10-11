@@ -2087,7 +2087,7 @@ TBG.Project.Planning.initializeMilestoneDragDropSorting = function (milestone) {
     milestone_issues.sortable({
         handle: '.draggable',
         connectWith: '.jsortable.intersortable',
-        update: TBG.Project.Planning.sortMilestones,
+        update: TBG.Project.Planning.sortMilestoneIssues,
         receive: TBG.Project.Planning.moveIssue,
         sort: TBG.Project.Planning.calculateNewBacklogMilestoneDetails,
         tolerance: 'pointer'
@@ -2560,6 +2560,20 @@ TBG.Project.Planning.toggleMilestoneIssues = function(milestone_id) {
     }
 };
 
+TBG.Project.Planning.toggleMilestoneSorting = function() {
+    $('project_planning').addClassName('milestone-sort left_toggled');
+
+    jQuery('.milestone_issues.ui-sortable').sortable('disable');
+
+    jQuery('#milestone_list').sortable({
+        update: TBG.Project.Planning.sortMilestones,
+        axis: 'y',
+        items: '> .milestone_box',
+        helper: 'original',
+        tolerance: 'intersect'
+    });
+};
+
 TBG.Project.Planning.initialize = function (options) {
     TBG.Project.Planning.options = options;
     
@@ -2636,7 +2650,7 @@ TBG.Project.Planning.insertIntoMilestone = function (milestone_id, content, reca
         milestone_list.insert({bottom: content});
     } else {
         milestone_list.insert({top: content});
-        setTimeout(TBG.Project.Planning.sortMilestones({target: 'milestone_' + milestone_id + '_issues'}), 250);
+        setTimeout(TBG.Project.Planning.sortMilestoneIssues({target: 'milestone_' + milestone_id + '_issues'}), 250);
     }
     if (recalculate == 'all') {
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
@@ -2820,7 +2834,23 @@ TBG.Project.Planning.calculateNewBacklogMilestoneDetails = function (event, ui) 
     }
 };
 
-TBG.Project.Planning.doSortMilestones = function (list) {
+TBG.Project.Planning.sortMilestones = function (event, ui) {
+    var list = $(event.target);
+    var url = list.dataset.sortUrl;
+    var items = '';
+    list.childElements().each(function (milestone) {
+        if (milestone.dataset.milestoneId !== undefined) {
+            items += '&milestone_ids[]=' + milestone.dataset.milestoneId;
+        }
+    });
+    TBG.Main.Helpers.ajax(url, {
+        url_method: 'post',
+        additional_params: items,
+        loading: {indicator: 'planning_indicator'}
+    });
+};
+
+TBG.Project.Planning.doSortMilestoneIssues = function (list) {
     var url = list.up('.milestone_box').dataset.issuesUrl;
     var items = '';
     list.childElements().each(function (issue) {
@@ -2835,7 +2865,7 @@ TBG.Project.Planning.doSortMilestones = function (list) {
     });
 };
 
-TBG.Project.Planning.sortMilestones = function (event, ui) {
+TBG.Project.Planning.sortMilestoneIssues = function (event, ui) {
     var list = $(event.target);
     var issue = $(ui.item[0]);
     if (issue.dataset.sortCancel) {
@@ -2845,7 +2875,7 @@ TBG.Project.Planning.sortMilestones = function (event, ui) {
         if (ui !== undefined && ui.item.hasClass('new_milestone_marker')) {
             TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
         } else {
-            TBG.Project.Planning.doSortMilestones(list);
+            TBG.Project.Planning.doSortMilestoneIssues(list);
         }
     }
 };
@@ -2867,7 +2897,7 @@ TBG.Project.Planning.moveIssue = function (event, ui) {
                     callback: function (json) {
                         if (list.up('.milestone_box').hasClassName('initialized')) {
                             issue.down('.issue_container').dataset.lastUpdated = get_current_timestamp();
-                            TBG.Project.Planning.doSortMilestones(list);
+                            TBG.Project.Planning.doSortMilestoneIssues(list);
                             TBG.Core.Pollers.Callbacks.planningPoller();
                             TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(list);
                             TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(original_list);

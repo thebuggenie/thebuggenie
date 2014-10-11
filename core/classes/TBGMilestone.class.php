@@ -163,6 +163,14 @@
          */
         protected $_burndowndata;
 
+        /**
+         * Sort order of this item
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_sort_order = null;
+
         protected function _construct(\b2db\Row $row, $foreign_key = null)
         {
             $this->_reached = ($this->_reacheddate > 0);
@@ -889,6 +897,16 @@
         public function setClosed($closed)
         {
             $this->_closed = $closed;
+        }
+
+        public function setOrder($order)
+        {
+            $this->_sort_order = $order;
+        }
+
+        public function getOrder()
+        {
+            return (int) $this->_sort_order;
         }
 
     }

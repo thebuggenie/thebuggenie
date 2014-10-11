@@ -44,6 +44,8 @@
                 <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
                     <ul class="more_actions_dropdown popup_box">
+                        <li><?php echo javascript_link_tag(__('Sort milestones'), array('onclick' => "TBG.Project.Planning.toggleMilestoneSorting();")); ?></li>
+                        <li class="separator"></li>
                         <li><?php echo javascript_link_tag(__('Toggle closed issues'), array('onclick' => "TBG.Project.Planning.toggleClosedIssues(this);")); ?></li>
                         <li><?php echo javascript_link_tag($togglemilestoneslabel, array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
                     </ul>
@@ -65,11 +67,11 @@
                     </tr>
                 </table>
             <?php endif; ?>
-            <div id="milestone_list">
+            <ul id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('project_planning_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
                 <?php foreach ($board->getMilestones() as $milestone): ?>
                     <?php include_component('milestonebox', array('milestone' => $milestone, 'board' => $board, 'include_counts' => !$milestone->isVisibleRoadmap())); ?>
                 <?php endforeach; ?>
-            </div>
+            </ul>
             <div id="no_milestones" style="<?php if (isset($milestone)) echo 'display: none;'; ?>">
                 <?php echo $addmilestoneslabel; ?>
             </div>

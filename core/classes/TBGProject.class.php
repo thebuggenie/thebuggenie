@@ -130,7 +130,7 @@
          * List of milestones for this project
          *
          * @var array
-         * @Relates(class="TBGMilestone", collection=true, foreign_column="project")
+         * @Relates(class="TBGMilestone", collection=true, foreign_column="project", orderby="sort_order")
          */
         protected $_milestones = null;
 
