@@ -14,7 +14,8 @@
 
     defined('THEBUGGENIE_VENDOR_PATH') || define('THEBUGGENIE_VENDOR_PATH', THEBUGGENIE_PATH . 'vendor' . DS);
     if (!file_exists(THEBUGGENIE_VENDOR_PATH . 'autoload.php')) {
-        die('You must initialize vendor libraries by running `composer.phar install` via cli');
+        include THEBUGGENIE_CORE_PATH . 'templates' . DS . 'composer.error.php';
+        die();
     }
     require THEBUGGENIE_VENDOR_PATH . 'autoload.php';
 

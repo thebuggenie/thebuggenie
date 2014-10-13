@@ -24,4 +24,4 @@
     require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
 
     // Trigger the framework's start function
-    TBGContext::go();
+    if (TBGContext::isInitialized()) TBGContext::go();

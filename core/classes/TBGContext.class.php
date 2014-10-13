@@ -599,6 +599,11 @@
             self::$_loadstart = $when;
         }
 
+        public static function isInitialized()
+        {
+            return (self::$_loadstart !== null);
+        }
+
         /**
          * Get the time from when we started loading
          *

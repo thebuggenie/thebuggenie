@@ -41,34 +41,23 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
         <img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occurred in <?php echo TBGSettings::getTBGname(); ?></h1>
         <div class="error_content">
             <?php if (isset($exception) && $exception instanceof Exception): ?>
-                <?php if ($exception instanceof TBGComposerException): ?>
-                    <h2>External libraries not initialized</h2>
-                    <p>
-                        The Bug Genie uses the <a href="http://getcomposer.org">composer</a> dependency management tool to control external libraries.<br>
-                        <br>
-                        Before you can use or install The Bug Genie, you must initialize the vendor libraries by running the following command from the directory containing The Bug Genie:<br>
-                        <div class="command_box">php composer.phar install</div><br>
-                        When the command completes. refresh this page and continue.<br>
-                        <br>
-                        You can read more about composer on <a href="http://getcomposer.org">http://getcomposer.org</a>
-                    </p>
+                <h2><?php echo nl2br($exception->getMessage()); ?></h2>
+                <?php if ($exception instanceof TBGActionNotFoundException): ?>
+                    <h3>Could not find the specified action</h3>
+                <?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
+                    <h3>Could not find the template file for the specified action</h3>
+                <?php elseif ($exception instanceof TBGConfigurationException): ?>
+                    <h3>There is an issue with the configuration. Please see the message above.</h3>
+                <?php elseif ($exception instanceof TBGCacheException): ?>
+                    <h3>Please make sure the folder "<?php echo THEBUGGENIE_CACHE_PATH; ?>" exists and is writable, then try again.</h3>
+                <?php elseif ($exception instanceof \b2db\Exception): ?>
+                    <h3>An exception was thrown in the B2DB framework</h3>
                 <?php else: ?>
-                    <h2><?php echo nl2br($exception->getMessage()); ?></h2>
-                    <?php if ($exception instanceof TBGActionNotFoundException): ?>
-                        <h3>Could not find the specified action</h3>
-                    <?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
-                        <h3>Could not find the template file for the specified action</h3>
-                    <?php elseif ($exception instanceof TBGConfigurationException): ?>
-                        <h3>There is an issue with the configuration. Please see the message above.</h3>
-                    <?php elseif ($exception instanceof \b2db\Exception): ?>
-                        <h3>An exception was thrown in the B2DB framework</h3>
-                    <?php else: ?>
-                        <h3>An unhandled exception occurred:</h3>
-                    <?php endif; ?>
-                    <?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
-                        <span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
-                        <i><?php echo $exception->getMessage(); ?></i>
-                    <?php endif; ?>
+                    <h3>An unhandled exception occurred:</h3>
+                <?php endif; ?>
+                <?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
+                    <span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
+                    <i><?php echo $exception->getMessage(); ?></i>
                 <?php endif; ?>
             <?php else: ?>
                 <h2><?php echo nl2br($error); ?></h2>
