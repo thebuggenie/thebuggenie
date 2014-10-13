@@ -19,6 +19,9 @@
     class TBGCache
     {
 
+        const ERROR_NO_FOLDER = 1;
+        const ERROR_NOT_WRITABLE = 2;
+
         const KEY_SCOPES = '_scopes';
         const KEY_INTERNAL_MODULES = '_internal_modules';
         const KEY_CONFIGURATION = '_configuration';
@@ -53,8 +56,11 @@
 
         public function __construct()
         {
+            if (!file_exists(THEBUGGENIE_CACHE_PATH))
+                throw new TBGCacheException('The cache directory is not writable', self::ERROR_NO_FOLDER);
+
             if (!is_writable(THEBUGGENIE_CACHE_PATH))
-                throw new TBGCacheException('The cache directory is not writable');
+                throw new TBGCacheException('The cache directory is not writable', self::ERROR_NOT_WRITABLE);
         }
 
         protected function getScopedKeyIfAppliccable($key, $prepend_scope)
