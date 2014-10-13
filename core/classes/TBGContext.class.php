@@ -683,9 +683,6 @@
 
                 self::checkInstallMode();
 
-                if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
-                    throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
-
                 if (!self::isReadySetup())
                 {
                     self::getCache()->disable();

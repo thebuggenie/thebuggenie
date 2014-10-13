@@ -51,6 +51,12 @@
          */
         protected $loaded = array();
 
+        public function __construct()
+        {
+            if (!is_writable(THEBUGGENIE_CACHE_PATH))
+                throw new TBGCacheException('The cache directory is not writable');
+        }
+
         protected function getScopedKeyIfAppliccable($key, $prepend_scope)
         {
             $scope_id = (TBGContext::getScope() instanceof TBGScope) ? TBGContext::getScope()->getID() : '';
@@ -209,7 +215,7 @@
         protected function _getFilenameForKey($key)
         {
             $key = $this->getKeyHash($key);
-            return THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+            return THEBUGGENIE_CACHE_PATH . $key . '.cache';
         }
 
         public function checkEnabled()
