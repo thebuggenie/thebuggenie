@@ -2321,7 +2321,7 @@ project_planning_sort_milestones:
     module: project
     action: sortMilestones
     parameters: [ ]
-    csrf_enabled: true
+    csrf_enabled: false
 
 project_planning:
     route: /:project_key/boards
