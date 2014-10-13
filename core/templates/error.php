@@ -47,7 +47,27 @@
                     <?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
                         <h3>Could not find the template file for the specified action</h3>
                     <?php elseif ($exception instanceof TBGConfigurationException): ?>
-                        <h3>There is an issue with the configuration. Please see the message above.</h3>
+                        <?php if ($exception->getCode() == TBGConfigurationException::NO_VERSION_INFO): ?>
+                            The version information file <span class="command_box"><?php echo THEBUGGENIE_PATH; ?>installed</span> is present, but file is empty.<br>
+                            This file is generated during installation, so this error should not occur.<br>
+                            <br>
+                            Please reinstall The Bug Genie or file a bug report if you think this is an error.
+                        <?php elseif ($exception->getCode() == TBGConfigurationException::UPGRADE_FILE_MISSING): ?>
+                            To enable the upgrade mode, make sure the file <span class="command_box"><?php echo THEBUGGENIE_PATH; ?>upgrade</span> is present<br>
+                            Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
+                        <?php elseif ($exception->getCode() == TBGConfigurationException::UPGRADE_REQUIRED): ?>
+                            You need to upgrade to this version of The Bug Genie before you can continue.<br>
+                            Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
+                        <?php elseif ($exception->getCode() == TBGConfigurationException::NO_B2DB_CONFIGURATION): ?>
+                            The database configuration file <span class="command_box"><?php echo THEBUGGENIE_CONFIGURATION_PATH; ?>b2db.yml</span> could not be read.<br>
+                            This file is generated during installation, so this error should not occur.<br>
+                            <br>
+                            Please reinstall The Bug Genie or file a bug report if you think this is an error.
+                        <?php else: ?>
+                            There is an issue with the configuration. Please see the message above.
+                        <?php endif; ?>
+                        <br>
+                        <br>
                     <?php elseif ($exception instanceof TBGCacheException): ?>
                         <p>
                             <?php if ($exception->getCode() == TBGCacheException::NO_FOLDER): ?>

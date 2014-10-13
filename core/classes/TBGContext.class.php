@@ -631,11 +631,12 @@
             else
             {
                 $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+                if (count($version_info) < 2)
+                    throw new TBGConfigurationException("Version information not present", TBGConfigurationException::NO_VERSION_INFO);
+
                 $current_version = $version_info[0];
                 if ($current_version != TBGSettings::getVersion(false, false))
-                {
-                    throw new TBGConfigurationException("It seems you are trying to use a newer version of The Bug Genie than the one you installed. Please upgrade before continuing.\n\nIf you are trying to upgrade, make sure that the 'upgrade' file is present and readable. Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.");
-                }
+                    throw new TBGConfigurationException("You are trying to use a newer version of The Bug Genie than the one you installed", TBGConfigurationException::UPGRADE_REQUIRED);
             }
             if (self::$_installmode)
             {
@@ -723,7 +724,7 @@
 
                 if (self::isReadySetup() && !\b2db\Core::isInitialized())
                 {
-                    throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file " . THEBUGGENIE_PATH . "installed and try again.");
+                    throw new TBGConfigurationException("The Bug Genie seems installed, but B2DB isn't configured.", TBGConfigurationException::NO_B2DB_CONFIGURATION);
                 }
 
                 TBGLogging::log('...done (Initializing B2DB)');

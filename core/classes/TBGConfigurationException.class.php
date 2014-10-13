@@ -18,6 +18,11 @@
      */
     class TBGConfigurationException extends Exception
     {
-        
+
+        const NO_VERSION_INFO = 1;
+        const UPGRADE_REQUIRED = 2;
+        const UPGRADE_FILE_MISSING = 3;
+        const NO_B2DB_CONFIGURATION = 4;
+
     }
 
