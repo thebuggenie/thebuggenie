@@ -78,10 +78,10 @@
                 $this->b2db_param_file_ok = false;
                 $this->all_well = false;
             }
-            if (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
+            elseif (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
             {
                 $this->b2db_param_folder_ok = false;
-                $this->all_well = false;
+                $this->all_well = $this->b2db_param_file_ok;
             }
             if (!is_writable(THEBUGGENIE_PATH))
             {
@@ -95,16 +95,6 @@
                 $this->all_well = false;
             }
 
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') && is_writable(THEBUGGENIE_CORE_PATH))
-                mkdir(THEBUGGENIE_CORE_PATH . 'cache');
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') && is_writable(THEBUGGENIE_CORE_PATH . 'cache'))
-                mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
-
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') || !file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS))
-            {
-                $this->cache_folder_perm_ok = false;
-                $this->all_well = false;
-            }
             if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS))
             {
                 $this->thebuggenie_folder_perm_ok = false;
@@ -299,6 +289,28 @@
             {
                 $this->error = $e->getMessage();
             }
+            $server_type = strtolower(trim($_SERVER['SERVER_SOFTWARE']));
+            switch (true)
+            {
+                case (stripos($server_type, 'apache') !== false):
+                    $this->server_type = 'apache';
+                    break;
+                case (stripos($server_type, 'nginx') !== false):
+                    $this->server_type = 'nginx';
+                    break;
+                case (stripos($server_type, 'iis') !== false):
+                    $this->server_type = 'iis';
+                    break;
+                default:
+                    $this->server_type = 'unknown';
+            }
+            $dirname = dirname($_SERVER['PHP_SELF']);
+            if (mb_stristr(PHP_OS, 'WIN'))
+            {
+                $dirname = str_replace("\\", "/", $dirname); /* Windows adds a \ to the URL which we don't want */
+            }
+
+            $this->dirname = ($dirname != '/') ? $dirname . '/' : $dirname;
         }
 
         /**
@@ -324,8 +336,11 @@
                 \TBGContext::setScope($scope);
                 $scope->save();
 
-                \TBGLogging::log('Setting up default users and groups');
                 \TBGSettings::saveSetting('language', 'en_US', 'core', 1);
+
+                \TBGModule::installModule('publish');
+                \TBGModule::installModule('mailing');
+                \TBGModule::installModule('vcs_integration');
 
                 $this->htaccess_error = false;
                 $this->htaccess_ok = (bool) $request['apache_autosetup'];
@@ -377,28 +392,25 @@
          */
         public function runInstallStep5(\TBGRequest $request)
         {
-            $this->sample_data = false;
             try
             {
-                \TBGModule::installModule('publish');
-                if ($request->hasParameter('modules'))
-                {
-                    foreach ($request->getParameter('modules', array()) as $module => $install)
-                    {
-                        if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module))
-                        {
-                            \TBGModule::installModule($module);
-                        }
-                    }
-                }
-                elseif ($request->hasParameter('sample_data'))
-                {
-                    $this->sample_data = true;
-                }
+                $password = trim($request['password']);
+                if ($password !== trim($request['password_repeat']))
+                    throw new \Exception("Passwords don't match");
+
+                $this->password = $password;
+                $user = \TBGUsersTable::getTable()->getByUsername('administrator');
+                $username = trim(strtolower($request['username']));
+                if ($username) $user->setUsername($username);
+                $user->setRealname($request['name']);
+                $user->setPassword($request['password']);
+                $user->setEmail($request['email']);
+                $user->save();
+
+                $this->user = $user;
             }
             catch (\Exception $e)
             {
-                throw $e;
                 $this->error = $e->getMessage();
             }
         }
