@@ -18,6 +18,9 @@
      */
     class TBGCacheException extends Exception
     {
-        
+
+        const NO_FOLDER = 1;
+        const NOT_WRITABLE = 2;
+
     }
 

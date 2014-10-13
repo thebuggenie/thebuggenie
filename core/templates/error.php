@@ -50,10 +50,10 @@
                         <h3>There is an issue with the configuration. Please see the message above.</h3>
                     <?php elseif ($exception instanceof TBGCacheException): ?>
                         <p>
-                            <?php if ($exception->getCode() == TBGCache::ERROR_NO_FOLDER): ?>
+                            <?php if ($exception->getCode() == TBGCacheException::NO_FOLDER): ?>
                                 The cache folder <span class="command_box"><?php echo THEBUGGENIE_CACHE_PATH; ?></span> does not exist.<br>
                                 Make sure the folder exists and is writable by your web server, then try again.<br>
-                            <?php elseif ($exception->getCode() == TBGCache::ERROR_NOT_WRITABLE): ?>
+                            <?php elseif ($exception->getCode() == TBGCacheException::NOT_WRITABLE): ?>
                                 Trying to write to the cache folder <span class="command_box"><?php echo THEBUGGENIE_CACHE_PATH; ?></span> failed.<br>
                                 Make sure the folder is writable by your web server, then try again.<br>
                             <?php else: ?>
