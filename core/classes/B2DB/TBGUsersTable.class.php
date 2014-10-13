@@ -21,6 +21,8 @@
      * @package thebuggenie
      * @subpackage tables
      *
+     * @method TBGUsersTable getTable()
+     *
      * @Table(name="users")
      * @Entity(class="TBGUser")
      */
@@ -81,6 +83,10 @@
             return $users;
         }
 
+        /**
+         * @param $username
+         * @return TBGUser
+         */
         public function getByUsername($username)
         {
             $crit = $this->getCriteria();
