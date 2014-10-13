@@ -775,8 +775,7 @@
             }
             catch (Exception $e)
             {
-                if (!self::isCLI() && !self::isInstallmode())
-                    throw $e;
+                throw $e;
             }
         }
 
@@ -1197,7 +1196,7 @@
             TBGLogging::log('Loading internal modules');
 
             $modules = self::getCache()->get(TBGCache::KEY_INTERNAL_MODULES, false);
-            if (!$modules)
+            if (self::isReadySetup() || !$modules)
             {
                 foreach (scandir(THEBUGGENIE_INTERNAL_MODULES_PATH) as $modulename)
                 {
@@ -2656,7 +2655,7 @@
                     {
                         $route = array('module' => 'installation', 'action' => 'installIntro');
                     }
-                    if (!in_array($route['module'], self::$_internal_modules))
+                    if (!self::isInternalModule($route['module']))
                     {
                         if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
                         {
