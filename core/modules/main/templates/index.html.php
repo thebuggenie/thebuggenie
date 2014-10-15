@@ -24,8 +24,8 @@
                     <div class="header">
                         <?php echo __('Projects'); ?>
                         <div class="dropper_container">
-                            <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
-                            <ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box leftie">
+                            <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo image_tag('icon-mono-settings.png'); ?></a>
+                            <ul class="more_actions_dropdown popup_box">
                                 <?php if ($show_project_config_link): ?>
                                     <li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
                                 <?php endif; ?>

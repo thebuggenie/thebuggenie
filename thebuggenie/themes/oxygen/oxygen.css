@@ -694,8 +694,8 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editor .textarea_hint { display: none; }
 .commenttitle { font-weight: bold; display: inline-block; }
 .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
-.dropper_container .dropper { cursor: pointer; margin-left: 5px; }
-.dropper_container .more_actions_dropdown { left: -6px; margin-top: 5px; right: auto; font-size: 0.9em; }
+.dropper_container .dropper, .dropper_container .dropper:hover { cursor: pointer; margin-left: 5px; opacity: 1; }
+.project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
 .commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
 #issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
@@ -988,6 +988,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_strip nav { float: right; margin: 10px; position: relative; text-align: right; }
 .project_strip nav a { font-weight: normal; }
 .project_strip nav a.button { font-weight: bold; }
+.project_strip nav .more_actions_dropdown { text-align: left; font-size: 1.1em; }
+.project_strip nav .more_actions_dropdown li { padding: 2px 0; }
 /* end project frontpage menu */
 
 /* unformatted lists */
@@ -1322,8 +1324,8 @@ table.cleantable th { text-align: center; }
 #users_more_actions_container { float: right; }
 #users_more_actions_container button { float: left; }
 #tab_users_pane > strong { font-weight: bold; display: block; }
-.more_actions_dropdown li.finduser_container { padding: 5px; height: auto; }
-.more_actions_dropdown li.finduser_container:hover { background-color: #FFF; }
+.project_list nav .more_actions_dropdown li.finduser_container { padding: 5px; height: auto; }
+.project_list nav .more_actions_dropdown li.finduser_container:hover { background-color: #FFF; }
 #users_more_actions_container .more_actions_dropdown li.separator { height: 1px; }
 .finduser_container #findusers { width: 300px; }
 .finduser_container input[type=submit], .finduser_container input[type=submit]:hover { font-size: 1em; }
@@ -1437,7 +1439,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 /* project list, client/team dashboard and overview */
 ul.project_list { margin-bottom: 30px; text-align: left; }
 .project_list .button-group.project-config-buttons .project-quick-edit, .project_list .button-group.project-config-buttons .project-quick-edit:hover, .project_list .button-group.project-config-buttons .project-settings, .project_list .button-group.project-config-buttons .project-settings:hover { font-size: 0.85em !important; padding: 0 3px !important; float: none; }
-ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
+ul.project_list > li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .client_dashboard, .project_overview { clear: both; }
 .client_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
 .client_dashboard { padding: 10px; }
@@ -1929,7 +1931,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 *.button-pressed + .more_actions_dropdown { display: block; }
 .userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown { right: auto; font-size: 1em; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display: none; background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); }
-.more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; }
+.more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; text-transform: none; }
 .more_actions_dropdown li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .more_actions_dropdown li:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: normal; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; white-space: nowrap; }
@@ -4756,7 +4758,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     border-color: rgba(0, 0, 0, 0.35);
 }
 
-.button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {
+.button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, input[type=submit].button-pressed:hover, button.button-pressed, button.button-pressed:hover, .button.button-pressed, .button.button-pressed:hover {
     box-shadow: 0 0 4px rgba(100, 100, 100, 0.3) inset;
 }
 .button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; box-shadow: none; }
