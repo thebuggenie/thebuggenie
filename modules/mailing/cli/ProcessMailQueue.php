@@ -13,7 +13,6 @@
      * @package thebuggenie
      * @subpackage core
      */
-    use thebuggenie\modules\mailing\entities\b2db\MailQueueTable;
 
     /**
      * CLI command class, main -> help
