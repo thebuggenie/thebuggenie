@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\modules\publish\cli;
+
     /**
      * CLI command class, publish -> import
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage publish
      */
-    class CliPublishImport extends TBGCliCommand
+    class Import extends \TBGCliCommand
     {
 
         protected function _setup()

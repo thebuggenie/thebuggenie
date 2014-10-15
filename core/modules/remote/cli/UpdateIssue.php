@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\remote\cli;
+
     /**
      * CLI command class, remote -> update_issue
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliRemoteUpdateIssue extends TBGCliRemoteCommand
+    class UpdateIssue extends \TBGCliRemoteCommand
     {
 
         protected function _setup()

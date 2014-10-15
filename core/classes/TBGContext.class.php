@@ -1333,13 +1333,13 @@
          */
         public static function getModule($module_name)
         {
-            if (!self::isModuleLoaded($module_name))
+            if (!self::isModuleLoaded($module_name) && !isset(self::$_internal_modules[$module_name]))
             {
-                throw new Exception('This module is not loaded');
+                throw new Exception("The module '{$module_name}' is not loaded");
             }
             else
             {
-                return self::$_modules[$module_name];
+                return (isset(self::$_internal_modules[$module_name])) ? self::$_internal_modules[$module_name] : self::$_modules[$module_name];
             }
         }
 

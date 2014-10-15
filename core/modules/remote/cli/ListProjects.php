@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\remote\cli;
+
     /**
      * CLI command class, remote -> list_projects
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliRemoteListProjects extends TBGCliRemoteCommand
+    class ListProjects extends \TBGCliRemoteCommand
     {
 
         protected function _setup()

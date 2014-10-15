@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\remote\cli;
+
     /**
      * CLI command class, remote -> list_transitions
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliRemoteListWorkflowTransitions extends TBGCliRemoteCommand
+    class ListWorkflowTransitions extends \TBGCliRemoteCommand
     {
 
         protected function _setup()

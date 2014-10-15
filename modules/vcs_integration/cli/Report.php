@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\modules\vcs_integration\cli;
+
     /**
      * CLI command class, vcs_integration -> report
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class CliVCS_IntegrationReport extends TBGCliCommand
+    class Report extends \TBGCliCommand
     {
 
         protected function _setup()

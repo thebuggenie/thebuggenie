@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\main\cli;
+
     /**
      * CLI command class, main -> help
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainHelp extends TBGCliCommand
+    class Help extends \TBGCliCommand
     {
 
         protected function _setup()
@@ -43,7 +45,7 @@
                     $this->cliEcho("\n");
                     $class = $commands[$module_name][$command];
                     $this->cliEcho("Usage: ", 'white', 'bold');
-                    $this->cliEcho(TBGCliCommand::getCommandLineName() . " ");
+                    $this->cliEcho(\TBGCliCommand::getCommandLineName() . " ");
                     if ($module_name != 'main')
                     {
                         $this->cliEcho($module_name.':', 'green', 'bold');
@@ -104,7 +106,7 @@
                 {
                     $this->cliEcho("\n");
                     $this->cliEcho("Unknown command\n", 'red', 'bold');
-                    $this->cliEcho("Type " . TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+                    $this->cliEcho("Type " . \TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
                     $this->cliEcho('help', 'green', 'bold');
                     $this->cliEcho(" for more information about the cli tool.\n\n");
                 }
@@ -113,7 +115,7 @@
             {
                 $this->cliEcho("Below is a list of available commands:\n");
                 $this->cliEcho("Type ");
-                $this->cliEcho(TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+                $this->cliEcho(\TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
                 $this->cliEcho('help', 'green', 'bold');
                 $this->cliEcho(' command', 'magenta');
                 $this->cliEcho(" for more information about a specific command.\n\n");

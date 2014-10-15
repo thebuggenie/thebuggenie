@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\main\cli;
+
     /**
      * CLI command class, main -> fix_times_spent
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainFixTimesSpent extends TBGCliCommand
+    class FixTimesSpent extends \TBGCliCommand
     {
 
         protected function _setup()

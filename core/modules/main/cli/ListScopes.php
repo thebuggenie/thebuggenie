@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\main\cli;
+
     /**
      * CLI command class, main -> list_scopes
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainListScopes extends TBGCliCommand
+    class ListScopes extends \TBGCliCommand
     {
 
         protected function _setup()

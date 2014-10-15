@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\remote\cli;
+
     /**
      * CLI command class, main -> set_remote
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliRemoteAuthenticate extends TBGCliRemoteCommand
+    class Authenticate extends \TBGCliRemoteCommand
     {
 
         protected function _setup()

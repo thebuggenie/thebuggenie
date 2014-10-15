@@ -1,6 +1,8 @@
 <?php
 
-use Symfony\Component\Finder\Finder;
+    namespace thebuggenie\core\modules\main\cli;
+
+    use Symfony\Component\Finder\Finder;
 
     /**
      * CLI command class, main -> extract_strings
@@ -18,7 +20,7 @@ use Symfony\Component\Finder\Finder;
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainExtractStrings extends TBGCliCommand
+    class ExtractStrings extends \TBGCliCommand
     {
 
         private $nbstrings = 0;

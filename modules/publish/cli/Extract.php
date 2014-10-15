@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\modules\publish\cli;
+
     /**
      * CLI command class, publish -> export
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage publish
      */
-    class CliPublishExtract extends TBGCliCommand
+    class Extract extends \TBGCliCommand
     {
 
         protected function _setup()
@@ -29,7 +31,7 @@
         public function do_execute()
         {
             $this->cliEcho("Extracting articles ... \n", 'white', 'bold');
-            $articles = TBGArticlesTable::getTable()->getAllArticles();
+            $articles = Articles::getTable()->getAllArticles();
 
             $this->cliEcho("Articles found: ");
             $this->cliEcho(count($articles)."\n", 'green', 'bold');

@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\remote\cli;
+
     /**
      * CLI command class, remote -> list_fieldvalues
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliRemoteListFieldvalues extends TBGCliRemoteCommand
+    class ListFieldvalues extends \TBGCliRemoteCommand
     {
 
         protected function _setup()

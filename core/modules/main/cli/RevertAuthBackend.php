@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\main\cli;
+
     /**
      * CLI command class, main -> revert_auth_backend
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainRevertAuthBackend extends TBGCliCommand
+    class RevertAuthBackend extends \TBGCliCommand
     {
 
         protected function _setup()

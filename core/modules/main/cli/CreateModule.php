@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\core\modules\main\cli;
+
     /**
      * CLI command class, main -> create_module
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CliMainCreateModule extends TBGCliCommand
+    class CreateModule extends \TBGCliCommand
     {
 
         protected function _setup()

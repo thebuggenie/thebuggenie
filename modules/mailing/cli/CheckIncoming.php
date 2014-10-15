@@ -1,5 +1,7 @@
 <?php
 
+    namespace thebuggenie\modules\mailing\cli;
+
     /**
      * CLI command class, main -> help
      *
@@ -16,7 +18,7 @@
      * @package thebuggenie
      * @subpackage mailing
      */
-    class CliMailingCheckIncoming extends TBGCliCommand
+    class CheckIncoming extends \TBGCliCommand
     {
 
         protected function _setup()
