@@ -315,12 +315,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thebuggenie/b2db.git",
-                "reference": "60ae9a37b87505afe7aec06cd67c44c493fd8f4c"
+                "reference": "6295d689aeb71ffed6ea8b51bad8a78554f1e52d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/60ae9a37b87505afe7aec06cd67c44c493fd8f4c",
-                "reference": "60ae9a37b87505afe7aec06cd67c44c493fd8f4c",
+                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/6295d689aeb71ffed6ea8b51bad8a78554f1e52d",
+                "reference": "6295d689aeb71ffed6ea8b51bad8a78554f1e52d",
                 "shasum": ""
             },
             "require": {
@@ -343,7 +343,7 @@
                 }
             ],
             "description": "B2DB is a lightweight PHP 5.3-based ORM",
-            "time": "2014-10-14 18:34:07"
+            "time": "2014-10-15 06:06:50"
         },
         {
             "name": "webit/eval-math",
