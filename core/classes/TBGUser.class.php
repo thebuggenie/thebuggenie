@@ -2751,7 +2751,7 @@
 
             if ($key === null)
             {
-                $key = $this->_generateRssKey();
+                $key = $this->regenerateRssKey();
             }
 
             return $key;
