@@ -131,11 +131,25 @@
                 $this->_search_object->setFilter('milestone', \TBGSearchFilter::createFilter('milestone', array('o' => '=', 'v' => $this->getMilestone()->getID())));
                 $this->_search_object->setFilter('state', \TBGSearchFilter::createFilter('state', array('o' => '=', 'v' => array(\TBGIssue::STATE_CLOSED, \TBGIssue::STATE_OPEN))));
                 $this->_search_object->setFilter('issuetype', \TBGSearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getBoard()->getEpicIssuetypeID())));
-                if ($this->getBoard()->usesSwimlanes())
+                if ($this->getBoard()->usesSwimlanes() && $this->getBoard()->getSwimlaneType() == AgileBoard::SWIMLANES_ISSUES)
                 {
                     $values = array();
-                    foreach ($this->_identifiables as $identifiable) $values[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getID() : $identifiable;
-                    $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), \TBGSearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
+                    foreach ($this->getBoard()->getMilestoneSwimlanes($this->getMilestone()) as $swimlane)
+                    {
+                        if ($swimlane->getIdentifier() == $this->getIdentifier()) continue;
+                        $values[] = $swimlane->getIdentifierIssue()->getID();
+                        foreach ($swimlane->getIssues() as $issue) $values[] = $issue->getID();
+                    }
+                    $this->_search_object->setFilter('id', \TBGSearchFilter::createFilter('id', array('o' => '!=', 'v' => $values)));
+                }
+                else
+                {
+                    if ($this->getBoard()->usesSwimlanes())
+                    {
+                        $values = array();
+                        foreach ($this->_identifiables as $identifiable) $values[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getID() : $identifiable;
+                        $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), \TBGSearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
+                    }
                 }
                 $this->_search_object->setSortFields(array('issues.milestone_order' => \b2db\Criteria::SORT_ASC));
             }
@@ -150,7 +164,15 @@
             }
             else
             {
-                return $this->getIdentifierIssue()->getChildIssues();
+                if ($this->getIdentifierIssue() instanceof \TBGIssue)
+                {
+                    return $this->getIdentifierIssue()->getChildIssues();
+                }
+                else
+                {
+                    $this->_setupSearchObject();
+                    return $this->_search_object->getIssues();
+                }
             }
         }
 
@@ -159,7 +181,7 @@
          */
         public function getIdentifierIssue()
         {
-            return current($this->_identifiables);
+            return reset($this->_identifiables);
         }
 
     }

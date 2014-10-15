@@ -520,6 +520,7 @@
                                     $swimlanes[] = array('identifiables' => $issue);
                                 }
                             }
+                            $swimlanes[] = array('identifiables' => 0);
                             break;
                     }
                 }
