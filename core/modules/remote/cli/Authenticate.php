@@ -45,7 +45,7 @@
             {
                 file_put_contents($path . '.remote_server', $this->getProvidedArgument('server_url'));
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $path = getenv('HOME') . DS;
                 file_put_contents($path . '.remote_server', $this->getProvidedArgument('server_url'));

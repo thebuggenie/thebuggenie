@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\mailing\cli;
 
+    use thebuggenie\modules\mailing\entities\b2db\MailQueueTable;
+
     /**
      * CLI command class, main -> help
      *
@@ -11,6 +13,7 @@
      * @package thebuggenie
      * @subpackage core
      */
+    use thebuggenie\modules\mailing\entities\b2db\MailQueueTable;
 
     /**
      * CLI command class, main -> help
@@ -33,7 +36,7 @@
         public function do_execute()
         {
 
-            $mailing = TBGContext::getModule('mailing');
+            $mailing = \TBGContext::getModule('mailing');
             if (!$mailing->isOutgoingNotificationsEnabled())
             {
                 $this->cliEcho("Outgoing email notifications are disabled.\n", 'red', 'bold');
@@ -49,7 +52,7 @@
 
             $this->cliEcho("Processing mail queue ... \n", 'white', 'bold');
             $limit = $this->getProvidedArgument('limit', null);
-            $messages = TBGMailQueueTable::getTable()->getQueuedMessages($limit);
+            $messages = MailQueueTable::getTable()->getQueuedMessages($limit);
 
             $this->cliEcho("Email(s) to process: ");
             $this->cliEcho(count($messages)."\n", 'white', 'bold');
@@ -58,7 +61,6 @@
             {
                 if (count($messages) > 0)
                 {
-//                    $mailer = $mailing->getMailer();
                     $processed_messages = array();
                     $failed_messages = 0;
                     try
@@ -70,11 +72,11 @@
                             if (!$retval) $failed_messages++;
                         }
                     }
-                    catch (Exception $e) { throw $e; }
+                    catch (\Exception $e) { throw $e; }
 
                     if (count($processed_messages))
                     {
-                        TBGMailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
+                        MailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
                         $this->cliEcho("Emails successfully processed: ");
                         $this->cliEcho(count($messages)."\n", 'green', 'bold');
                         if ($failed_messages > 0)

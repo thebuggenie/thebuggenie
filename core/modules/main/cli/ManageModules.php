@@ -32,7 +32,7 @@
         protected function _listInstalled()
         {
             $this->cliEcho("\nInstalled modules:\n", 'green', 'bold');
-            foreach (TBGContext::getModules() as $module_key => $module)
+            foreach (\TBGContext::getModules() as $module_key => $module)
             {
                 $this->cliEcho("{$module_key}: ", 'white', 'bold');
                 $this->cliEcho($module->getDescription());
@@ -45,9 +45,9 @@
         {
             $this->cliEcho("\nAvailable modules:\n", 'green', 'bold');
             $this->cliEcho("To install a module, use the name in bold as the parameter for the install module task\n\n");
-            if (count(TBGContext::getUninstalledModules()) > 0)
+            if (count(\TBGContext::getUninstalledModules()) > 0)
             {
-                foreach (TBGContext::getUninstalledModules() as $module_key => $description)
+                foreach (\TBGContext::getUninstalledModules() as $module_key => $description)
                 {
                     $this->cliEcho("{$module_key}: ", 'white', 'bold');
                     $this->cliEcho($description);
@@ -68,21 +68,21 @@
             {
                 if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
                 {
-                    throw new Exception("Please provide a valid module name");
+                    throw new \Exception("Please provide a valid module name");
                 }
-                elseif (TBGContext::isModuleLoaded($module_name))
+                elseif (\TBGContext::isModuleLoaded($module_name))
                 {
-                    throw new Exception("This module is already installed");
+                    throw new \Exception("This module is already installed");
                 }
                 else
                 {
                     $this->cliEcho("Installing {$module_name} ...");
-                    TBGModule::installModule($module_name);
+                    \TBGModule::installModule($module_name);
                     $this->cliEcho(' ok!', 'green', 'bold');
                     $this->cliEcho("\n");
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $this->cliEcho($e->getMessage()."\n", 'red');
             }
@@ -95,21 +95,21 @@
             {
                 if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
                 {
-                    throw new Exception("Please provide a valid module name");
+                    throw new \Exception("Please provide a valid module name");
                 }
-                elseif (!TBGContext::isModuleLoaded($module_name))
+                elseif (!\TBGContext::isModuleLoaded($module_name))
                 {
-                    throw new Exception("This module is not installed");
+                    throw new \Exception("This module is not installed");
                 }
                 else
                 {
                     $this->cliEcho("Removing {$module_name} ...");
-                    TBGContext::getModule($module_name)->uninstall();
+                    \TBGContext::getModule($module_name)->uninstall();
                     $this->cliEcho(' ok!', 'green', 'bold');
                     $this->cliEcho("\n");
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $this->cliEcho($e->getMessage()."\n", 'red');
             }
@@ -117,7 +117,7 @@
 
         public function do_execute()
         {
-            if (TBGContext::isInstallmode())
+            if (\TBGContext::isInstallmode())
             {
                 $this->cliEcho("Manage modules\n", 'white', 'bold');
                 $this->cliEcho("The Bug Genie is not installed\n", 'red');

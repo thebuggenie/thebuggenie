@@ -72,7 +72,7 @@
                 {
                     $this->cliEcho("Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n");
                     $this->cliEcho("Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
-                    if (!$this->askToAccept()) throw new Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
+                    if (!$this->askToAccept()) throw new \Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
                 }
                 else
                 {
@@ -110,7 +110,7 @@
                         }
                     }
 
-                    throw new Exception("\n\nYou need to correct the above errors before the installation can continue.");
+                    throw new \Exception("\n\nYou need to correct the above errors before the installation can continue.");
                 }
                 else
                 {
@@ -150,7 +150,7 @@
                         {
                             $this->cliEcho('Enter the corresponding number for the database (1-' . count($db_types) . '): ');
                             $db_selection = $this->getInput();
-                            if (!isset($db_types[((int) $db_selection - 1)])) throw new Exception($db_selection . ' is not a valid database type selection');
+                            if (!isset($db_types[((int) $db_selection - 1)])) throw new \Exception($db_selection . ' is not a valid database type selection');
                             $db_type = $db_types[((int) $db_selection - 1)];
                             $this->cliEcho("Selected database type: ");
                             $this->cliEcho($db_type . "\n\n");
@@ -195,18 +195,18 @@
                             \b2db\Core::initialize();
                             $engine_path = \b2db\Core::getEngineClassPath();
                             if ($engine_path !== null)
-                                TBGContext::addAutoloaderClassPath($engine_path);
+                                \TBGContext::addAutoloaderClassPath($engine_path);
                             else
-                                throw new Exception("Cannot initialize the B2DB engine");
+                                throw new \Exception("Cannot initialize the B2DB engine");
 
                             \b2db\Core::doConnect();
                             \b2db\Core::createDatabase($db_name);
                             \b2db\Core::setDBname($db_name);
                             \b2db\Core::doConnect();
                         }
-                        catch (Exception $e)
+                        catch (\Exception $e)
                         {
-                            throw new Exception("Could not connect to the database:\n" . $e->getMessage());
+                            throw new \Exception("Could not connect to the database:\n" . $e->getMessage());
                         }
                         \b2db\Core::setDBname($db_name);
                         $this->cliEcho("\nSuccessfully connected to the database.\n", 'green');
@@ -376,7 +376,7 @@
                     $this->cliEcho("\n");
                     $this->cliEcho("Creating tables ...\n", 'white', 'bold');
                     $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-                    TBGContext::addAutoloaderClassPath($tables_path);
+                    \TBGContext::addAutoloaderClassPath($tables_path);
                     $tables_path_handle = opendir($tables_path);
                     $tables_created = array();
                     while ($table_class_file = readdir($tables_path_handle))
@@ -391,14 +391,14 @@
                     $this->cliEcho("\n");
                     $this->cliEcho("All tables successfully created...\n\n", 'green', 'bold');
                     $this->cliEcho("Setting up initial scope... \n", 'white', 'bold');
-                    TBGContext::reinitializeI18n('en_US');
-                    $scope = new TBGScope();
+                    \TBGContext::reinitializeI18n('en_US');
+                    $scope = new \TBGScope();
                     $scope->setName('The default scope');
                     $scope->addHostname('*');
                     $scope->setEnabled();
-                    TBGContext::setScope($scope);
+                    \TBGContext::setScope($scope);
                     $scope->save();
-                    TBGSettings::saveSetting('language', 'en_US');
+                    \TBGSettings::saveSetting('language', 'en_US');
                     $this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
 
                     $this->cliEcho("Setting up modules... \n", 'white', 'bold');
@@ -409,7 +409,7 @@
                             if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
                             {
                                 $this->cliEcho("Installing {$module}... \n");
-                                TBGModule::installModule($module);
+                                \TBGModule::installModule($module);
                                 $this->cliEcho("Module {$module} installed successfully...\n", 'green');
                             }
                         }
@@ -419,7 +419,7 @@
                         $this->cliEcho("\n");
 
                         $this->cliEcho("Finishing installation... \n", 'white', 'bold');
-                        $installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+                        $installed_string = \TBGSettings::getMajorVer() . '.' . \TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
                         if ((file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH . 'installed')) ||
                             (!file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH)))
                         {
@@ -448,14 +448,14 @@
                         $this->cliEcho("\n\nFor support, please visit ") . $this->cliEcho('http://www.thebuggenie.com/', 'blue', 'underline');
                         $this->cliEcho("\n");
                     }
-                    catch (Exception $e)
+                    catch (\Exception $e)
                     {
-                        throw new Exception("Could not install the $module module:\n" . $e->getMessage());
+                        throw new \Exception("Could not install the $module module:\n" . $e->getMessage());
                     }
 
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $this->cliEcho("\n\nThe installation was interrupted\n", 'red');
                 $this->cliEcho($e->getMessage() . "\n");

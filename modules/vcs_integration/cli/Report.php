@@ -42,11 +42,11 @@
             try
             {
                 $project_id = $this->getProvidedArgument('projectid');
-                $project_row = TBGProjectsTable::getTable()->getById($project_id, false);
-                TBGContext::setScope(new TBGScope($project_row[TBGProjectsTable::SCOPE]));
-                $project = new TBGProject($project_id, $project_row);
+                $project_row = \TBGProjectsTable::getTable()->getById($project_id, false);
+                \TBGContext::setScope(new \TBGScope($project_row[\TBGProjectsTable::SCOPE]));
+                $project = new \TBGProject($project_id, $project_row);
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 throw $e;
                 $this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
@@ -61,7 +61,7 @@
             $date = $this->getProvidedArgument('date', null);
             $branch = $this->getProvidedArgument('branch', null);
             
-            if (TBGSettings::get('access_method_'.$project->getKey()) == TBGVCSIntegration::ACCESS_HTTP)
+            if (\TBGSettings::get('access_method_'.$project->getKey()) == \TBGVCSIntegration::ACCESS_HTTP)
             {
                 $this->cliEcho("This project uses the HTTP access method, and so access via the CLI has been disabled\n", 'red', 'bold');
                 exit;
@@ -76,7 +76,7 @@
                 $old_rev = $new_rev - 1;
             }
 
-            $output = TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
+            $output = \TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
             $this->cliEcho($output);
         }
     }
