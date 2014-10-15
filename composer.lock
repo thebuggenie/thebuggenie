@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5d33f7acb71d67b9dec02dc25f3b38b6",
+    "hash": "c3171d3f01af88a1f6456d50e49defbe",
     "packages": [
         {
             "name": "easybook/geshi",
@@ -1179,9 +1179,17 @@
         "symfony/finder": 20
     },
     "prefer-stable": true,
-    "platform": [
-
-    ],
+    "platform": {
+        "ext-gd": "*",
+        "ext-curl": "*",
+        "ext-pdo": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pcre": "*",
+        "ext-reflection": "*",
+        "lib-pcre": "8.*"
+    },
     "platform-dev": [
 
     ]
