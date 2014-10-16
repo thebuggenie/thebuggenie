@@ -7,7 +7,7 @@
 
         public function componentGeneral()
         {
-            $files = scandir(THEBUGGENIE_CORE_PATH . 'lib' . DS . 'easybook' . DS . 'geshi' . DS);
+			$files = scandir(THEBUGGENIE_PATH . 'vendor' . DS . 'easybook' . DS . 'geshi' . DS);
             $geshi_languages = array();
             foreach ($files as $file)
             {
