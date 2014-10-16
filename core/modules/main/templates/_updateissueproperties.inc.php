@@ -203,7 +203,7 @@
                                                                 'callback'             => "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
                                                                 'teamup_callback'     => "TBG.Issues.updateWorkflowAssigneeTeamup('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
                                                                 'clear_link_text'    => __('Clear current assignee'),
-                                                                'base_id'            => 'popup_assigned_to',
+                                                                'base_id'            => 'popup_assigned_to_'.$transition->getID(),
                                                                 'include_teams'        => true,
                                                                 'allow_clear'        => false,
                                                                 'style'                => array('top' => '65px', 'right' => '5px'),
