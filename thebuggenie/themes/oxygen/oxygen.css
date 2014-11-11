@@ -1666,6 +1666,8 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 #issue_details fieldset dt, #issue_details fieldset dd { float: none; display: inline-block; vertical-align: middle; padding: 3px 0; line-height: 1em; }
 #issue_details fieldset #issue_percent_complete { width: 180px; }
 
+#project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
+#project_planning.milestone-sort #milestone-sort-actions { display: block; }
 .project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown { 
