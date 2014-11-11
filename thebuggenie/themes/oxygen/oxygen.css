@@ -3703,7 +3703,12 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue ol {
     list-style: decimal;
     font-size: 0.9em;
+}
+.whiteboard-issue ol, .whiteboard-issue ol a {
     color: #888;
+}
+.whiteboard-issue ol.closed a {
+    text-decoration: line-through;
 }
 .whiteboard-issue .description {
     display: block;

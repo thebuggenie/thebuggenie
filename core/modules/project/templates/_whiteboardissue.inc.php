@@ -1,4 +1,4 @@
-<div <?php if (!isset($fake) || !$fake): ?> id="whiteboard_issue_<?php echo $issue->getID(); ?>"<?php endif; ?> class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>">
+<div <?php if (!isset($fake) || !$fake): ?> id="whiteboard_issue_<?php echo $issue->getID(); ?>"<?php endif; ?> class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>">
     <?php include_component('project/planningcolorpicker', array('issue' => $issue)); ?>
     <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
     <?php if (isset($swimlane)): ?>
@@ -13,7 +13,7 @@
     <?php if ($issue->hasChildIssues()): ?>
         <ol class="child-issues">
             <?php foreach ($issue->getChildIssues() as $child_issue): ?>
-                <li title="<?php echo __e($child_issue->getFormattedTitle()); ?>"><?php echo __e($child_issue->getTitle()); ?></li>
+                <li title="<?php echo __e($child_issue->getFormattedTitle()); ?>" class="<?php if ($child_issue->isClosed()) echo 'closed'; ?>"><?php echo link_tag(make_url('viewissue', array('issue_no' => $child_issue->getFormattedIssueNo(), 'project_key' => $child_issue->getProject()->getKey())), $child_issue->getFormattedTitle(true, false), array('title' => $child_issue->getFormattedTitle(), 'target' => '_new')); ?></li>
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
