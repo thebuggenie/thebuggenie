@@ -3611,6 +3611,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: background-color 0.3s ease;
     position: relative;
 }
+.whiteboard-columns.swimlanes tbody[data-swimlane-identifier=swimlane_0] td.column {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.4) 10px, rgba(255,255,255,0.4) 20px);
+}
 .whiteboard-columns tbody td.column.drop-hover {
     background-color: rgba(225, 225, 150, 0.3);
 }

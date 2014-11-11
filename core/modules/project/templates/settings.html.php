@@ -5,7 +5,7 @@
     include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Settings')));
 
 ?>
-<div id="project_planning" class="project_info_container">
+<div id="project_settings" class="project_info_container">
     <div class="project_right_container">
         <div class="project_right" id="project_settings_container">
             <div style="width: 100%; box-sizing: border-box; -moz-box-sizing: border-box;">

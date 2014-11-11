@@ -51,6 +51,9 @@
                     </ul>
                 <?php endif; ?>
             </div>
+            <div class="project_save_container" id="milestone-sort-actions">
+                <button class="button button-silver" id="milestone_sort_toggler_button" onclick="TBG.Project.Planning.toggleMilestoneSorting();"><?php echo __('Done sorting'); ?></button>
+            </div>
             <?php if ($board->getProject()->isBuildsEnabled()): ?>
                 <ul id="builds_list" data-releases-url="<?php echo make_url('project_planning_get_releases', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
                 </ul>
