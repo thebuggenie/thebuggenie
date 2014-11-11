@@ -2,20 +2,18 @@
 
     use thebuggenie\core\entities\AgileBoard;
 
-    if (!isset($savebuttonlabel))
+    switch ($board->getType())
     {
-        switch ($board->getType())
-        {
-            case AgileBoard::TYPE_GENERIC:
-                $savebuttonlabel = __('Save milestone');
-                $milestoneplaceholder = __e('Enter a milestone name');
-                break;
-            case AgileBoard::TYPE_SCRUM:
-            case AgileBoard::TYPE_KANBAN:
-                $savebuttonlabel = __('Save sprint');
-                $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
-                break;
-        }
+        case AgileBoard::TYPE_SCRUM:
+        case AgileBoard::TYPE_KANBAN:
+            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
+            $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
+            break;
+        case AgileBoard::TYPE_GENERIC:
+        default:
+            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
+            $milestoneplaceholder = __e('Enter a milestone name');
+            break;
     }
 
 ?>
@@ -23,12 +21,13 @@
     <div class="backdrop_detail_header"><?php
             switch ($board->getType())
             {
-                case AgileBoard::TYPE_GENERIC:
-                    echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
-                    break;
                 case AgileBoard::TYPE_SCRUM:
                 case AgileBoard::TYPE_KANBAN:
                     echo ($milestone->getId()) ? __('Edit sprint details') : __('Add new sprint');
+                    break;
+                case AgileBoard::TYPE_GENERIC:
+                default:
+                    echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
                     break;
             }
         ?></div>
@@ -39,12 +38,13 @@
             <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php
                             switch ($board->getType())
                             {
-                                case AgileBoard::TYPE_GENERIC:
-                                    echo __('Milestone name');
-                                    break;
                                 case AgileBoard::TYPE_SCRUM:
                                 case AgileBoard::TYPE_KANBAN:
                                     echo __('Sprint name');
+                                    break;
+                                case AgileBoard::TYPE_GENERIC:
+                                default:
+                                    echo __('Milestone name');
                                     break;
                             }
                         ?></label>
@@ -117,12 +117,13 @@
                 <?php
                                     switch ($board->getType())
                                     {
-                                        case AgileBoard::TYPE_GENERIC:
-                                            echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
-                                            break;
                                         case AgileBoard::TYPE_SCRUM:
                                         case AgileBoard::TYPE_KANBAN:
                                             echo __('The %number selected issue(s) will be automatically added to the new sprint', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                                            break;
+                                        case AgileBoard::TYPE_GENERIC:
+                                        default:
+                                            echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
                                             break;
                                     }
                                 ?>
