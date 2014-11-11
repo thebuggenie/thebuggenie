@@ -119,7 +119,7 @@
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 0;
-        protected static $_ver_rev = '-dev';
+        protected static $_ver_rev = 'b1';
         protected static $_ver_name = "De nobis fabula narratur";
         protected static $_defaultscope = null;
         protected static $_settings = null;
