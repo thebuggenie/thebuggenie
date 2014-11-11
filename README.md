@@ -1,4 +1,4 @@
-THE BUG GENIE VERSION 3
+THE BUG GENIE VERSION 4
 =======================
 
 The Bug Genie is an enterprise-grade issue-tracking, development and project

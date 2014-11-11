@@ -4,10 +4,10 @@ UPGRADE
 NOTE: For the latest installation notes, troubleshooting and tips,
 visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
-IMPORTANT INFORMATION ABOUT UPGRADING TO THE BUG GENIE 3.3
+IMPORTANT INFORMATION ABOUT UPGRADING TO THE BUG GENIE 4.0
 ----------------------------------------------------------
 
-The Bug Genie 3.3 uses a dependancy resolution tool called composer, which must
+The Bug Genie 4.0 uses a dependancy resolution tool called composer, which must
 be downloaded and run before The Bug Genie can be installed, upgraded or used.
 
 Download and install composer.json from http://getcomposer.org before you continue.
