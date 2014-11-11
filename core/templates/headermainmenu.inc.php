@@ -18,7 +18,7 @@
                     </div>
                 </li>
                 <?php if ($tbg_user->hasProjectPageAccess('project_planning', TBGContext::getCurrentProject())): ?>
-                    <li<?php if (in_array($tbg_response->getPage(), array('project_planning'))): ?> class="selected"<?php endif; ?>>
+                    <li<?php if (in_array($tbg_response->getPage(), array('project_planning', 'project_planning_board', 'project_planning_board_whiteboard'))): ?> class="selected"<?php endif; ?>>
                         <div class="menuitem_container">
                             <?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_agile.png') . __('Agile')); ?>
                             <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
@@ -28,7 +28,7 @@
                             <div class="header"><?php echo __('Project boards'); ?></div>
                             <?php if (count($boards)): ?>
                                 <?php foreach ($boards as $board): ?>
-                                    <a href="<?php echo make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo $board->getName(); ?></a>
+                                    <a href="<?php echo make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" class="<?php if ($tbg_request['board_id'] == $board->getID()) echo ' selected'; ?>"><?php echo $board->getName(); ?></a>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <div class="disabled"><?php echo __('No project boards available'); ?></div>
