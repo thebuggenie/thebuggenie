@@ -3731,6 +3731,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 
 /* menu links */
 .menu_links .header { font-size: 1em; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
+.menu_links .dropper { opacity: 0.4; float: right; }
+.menu_links .dropper:hover { opacity: 1; float: right; }
+.menu_links .more_actions_dropdown { margin-top: 25px; font-size: 0.9em; }
 .menu_links .content li { font-size: 1.0em; padding: 1px; min-height: 20px; }
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
