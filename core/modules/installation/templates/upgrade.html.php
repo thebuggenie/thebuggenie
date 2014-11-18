@@ -18,18 +18,20 @@
             </div>
             <form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post" onsubmit="if (!$('confirm_backup').checked) { return false; } else { $('upgrading_popup').show(); }">
                 <div class="donate padded_box rounded_box shadowed installpage" id="install_page_1" style="margin-bottom: 15px;">
-                    <h2>Please support The Bug Genie</h2>
-                    The Bug Genie team provides this open source software <b>free of charge</b>, but continued development is not possible without support from our users.<br>
+                    <h2>Get involved with The Bug Genie</h2>
+                    The Bug Genie is open source software provided <b>free of charge</b> by zegenie studios - however, none of this would be possible without our great community of dedicated users.<br>
                     If you use The Bug Genie on a regular basis, please consider:
                     <ul>
-                        <li>buying a <a href="http://thebuggenie.com/support">support agreement</a> or <a href="http://thebuggenie.com/help">donate</a> to help fund development and hosting services such as our webpages and forums</li>
                         <li>contributing patches, fixes and features <a href="http://github.com/thebuggenie/thebuggenie">via github</a></li>
                         <li>writing and improving the <a href="http://issues.thebuggenie.com/wiki/TheBugGenie:MainPage">documentation</a></li>
+                        <li>help out other users in our <a href="http://forum.thebuggenie.org/">user forums</a></li>
+                        <li>improve or add <a href="https://www.transifex.com/projects/p/tbg/">translations</a></li>
                         <li>author public blog posts or news articles about The Bug Genie</li>
                     </ul>
-                    If you are unable to contribute in any of the ways listed above - but would still like to support us - please send us an email and we'll work something out: <a href="opensource@thebuggenie.com">opensource@thebuggenie.com</a>.
-                    <h5>More information about supporting The Bug Genie development can be found here:</h5>
-                    <a target="_blank" href="http://www.thebuggenie.com/support">http://www.thebuggenie.com/support</a> <i>(opens in a new window)</i>
+                    If you are unable to contribute in any of the ways listed above - but would still like to support us - please send us an email and we'll work something out: <a href="opensource@thebuggenie.com">opensource@thebuggenie.com</a>.<br>
+                    <br>
+                    <h5>How to get involved in The Bug Genie community:</h5>
+                    <a target="_blank" href="http://thebuggenie.org/community">http://thebuggenie.org/community</a> <i>(opens in a new window)</i>
                     <div class="progress_buttons">
                         <button class="button button-silver button-next" onclick="tbg_upgrade_next($(this).up('.installpage'));">Next</button>
                     </div>
