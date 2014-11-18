@@ -877,7 +877,7 @@ EOT;
             switch ($this->_version)
             {
                 case '1.0':
-                    IncomingEmailAccount::getB2DBTable()->upgrade(\thebuggenie\modules\mailing\upgrade_32\IncomingEmailAccountTable::getTable());
+                    IncomingEmailAccount::getB2DBTable()->upgrade(\thebuggenie\modules\mailing\upgrade_32\TBGIncomingEmailAccountTable::getTable());
                     TBGSettingsTable::getTable()->deleteAllUserModuleSettings('mailing');
                     break;
             }
