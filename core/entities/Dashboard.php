@@ -94,6 +94,60 @@
          */
         protected $_layout = 'main/dashboardlayoutstandard';
 
+        protected function _postSave($is_new)
+        {
+            if ($is_new)
+            {
+                switch ($this->getType())
+                {
+                    case self::TYPE_USER:
+                        $dv_issues = new DashboardView();
+                        $dv_issues->setDashboard($this);
+                        $dv_issues->setColumn(1);
+                        $dv_issues->setType(DashboardView::VIEW_PROJECTS);
+                        $dv_issues->setDetail(0);
+                        $dv_issues->save();
+                        
+                        $dv_logged = new DashboardView();
+                        $dv_logged->setDashboard($this);
+                        $dv_logged->setColumn(2);
+                        $dv_logged->setType(DashboardView::VIEW_LOGGED_ACTIONS);
+                        $dv_logged->setDetail(0);
+                        $dv_logged->save();
+                        break;
+                    case self::TYPE_PROJECT:
+                        $dv_project_info = new DashboardView();
+                        $dv_project_info->setDashboard($this);
+                        $dv_project_info->setColumn(1);
+                        $dv_project_info->setType(DashboardView::VIEW_PROJECT_INFO);
+                        $dv_project_info->setDetail(0);
+                        $dv_project_info->save();
+
+                        $dv_project_team = new DashboardView();
+                        $dv_project_team->setDashboard($this);
+                        $dv_project_team->setColumn(1);
+                        $dv_project_team->setType(DashboardView::VIEW_PROJECT_TEAM);
+                        $dv_project_team->setDetail(0);
+                        $dv_project_team->save();
+
+                        $dv_project_statistics = new DashboardView();
+                        $dv_project_statistics->setDashboard($this);
+                        $dv_project_statistics->setColumn(2);
+                        $dv_project_statistics->setType(DashboardView::VIEW_PROJECT_STATISTICS_LAST15);
+                        $dv_project_statistics->setDetail(0);
+                        $dv_project_statistics->save();
+
+                        $dv_project_activities = new DashboardView();
+                        $dv_project_activities->setDashboard($this);
+                        $dv_project_activities->setColumn(2);
+                        $dv_project_activities->setType(DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES);
+                        $dv_project_activities->setDetail(0);
+                        $dv_project_activities->save();
+                        break;
+                }
+            }
+        }
+        
         /**
          * Returns the associated user
          *
