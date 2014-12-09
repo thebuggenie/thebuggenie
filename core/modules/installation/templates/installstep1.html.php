@@ -97,7 +97,9 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-        <?php if (!$b2db_param_file_ok && !$b2db_param_folder_ok): ?>
+        <?php if ($b2db_param_file_ok && $b2db_param_folder_ok): ?>
+            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
+        <?php elseif (!$b2db_param_file_ok): ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
             The folder that contains the SQL settings is not writable
@@ -107,9 +109,6 @@
             touch <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml<br>
             chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
-        <?php endif; ?>
-        <?php if ($b2db_param_file_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>

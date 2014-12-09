@@ -81,7 +81,8 @@
             elseif (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
             {
                 $this->b2db_param_folder_ok = false;
-                $this->all_well = $this->b2db_param_file_ok;
+                $this->b2db_param_file_ok = false;
+                $this->all_well = false;
             }
             if (!is_writable(THEBUGGENIE_PATH))
             {
