@@ -953,7 +953,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 }
 .header_menu .tab_menu_dropdown a:hover, .header_menu li.selected .tab_menu_dropdown a:hover { background-color: rgba(97, 147, 207, 0.8); color: #FFF; }
 .reportissue_button_container { display: inline-block; vertical-align: top; }
-.reportissue_button_container .button, .reportissue_button_container .button:hover { color: rgba(0, 0, 0, 0.8); text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.7) !important; font-weight: bold; margin-top: 4px; box-shadow: 0 0 6px rgba(0, 0, 0, 0.3) !important; font-size: 1.1em !important; padding: 4px 8px !important; border: 0 !important; border-radius: 3.5px !important; }
+.reportissue_button_container .button, .reportissue_button_container .button:hover { color: rgba(0, 0, 0, 0.8); text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5) !important; font-weight: normal; margin-top: 4px; box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important; font-size: 1.1em !important; padding: 4px 8px !important; border: 0 !important; border-radius: 1px !important; }
 .reportissue_button_container .button:hover { box-shadow: 0 0 8px rgba(0, 0, 0, 0.6) !important; }
 /* end header menu */
 
