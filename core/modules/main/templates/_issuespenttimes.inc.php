@@ -1,10 +1,9 @@
 <div class="backdrop_box large" id="viewissue_add_item_div">
-    <div class="backdrop_detail_header"><?php echo __('Issue time tracking - time spent'); ?></div>
+    <div class="backdrop_detail_header">
+        <?php echo javascript_link_tag(__('Add time spent'), array('onclick' => "$('time_spent_{$issue->getID()}_form').toggle();if ($('time_spent_{$issue->getID()}_form').visible()) { $('issue_{$issue->getID()}_timeentry').focus(); }", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
+        <?php echo __('Issue time tracking - time spent'); ?>
+    </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <h4 style="margin-top: 10px;">
-            <?php echo javascript_link_tag(__('Add time spent'), array('onclick' => "$('time_spent_{$issue->getID()}_form').toggle();if ($('time_spent_{$issue->getID()}_form').visible()) { $('issue_{$issue->getID()}_timeentry').focus(); }", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
-            <?php echo __('Time spent on this issue'); ?>
-        </h4>
         <div class="lightyellowbox issue_timespent_form" id="time_spent_<?php echo $issue->getID(); ?>_form" style="<?php if (!isset($initial_view) || $initial_view != 'entry') echo 'display: none;'; ?>">
             <form action="<?php echo make_url('issue_edittimespent', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'entry_id' => 0)); ?>" onsubmit="TBG.Issues.editTimeEntry(this);return false;">
                 <?php include_template('main/issuespenttimeentry', array('issue' => $issue, 'save' => true)); ?>
