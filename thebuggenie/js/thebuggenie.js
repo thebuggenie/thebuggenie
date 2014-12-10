@@ -5840,6 +5840,20 @@ TBG.Search.pickTemplate = function (event, element) {
             if (element == current_elm) {
                 current_elm.addClassName('selected');
                 $('filter_selected_template').setValue(current_elm.dataset.templateName);
+                if (current_elm.dataset.grouping == '1') {
+                    $('search_grouping_container').removeClassName('nogrouping');
+                    $('search_grouping_container').removeClassName('parameter');
+                    $('search_filter_parameter_input').disable();
+                } else {
+                    $('search_grouping_container').addClassName('nogrouping');
+                    if (current_elm.dataset.parameter == '1') {
+                        $('search_grouping_container').addClassName('parameter');
+                        $('search_filter_parameter_description').update(current_elm.dataset.parameterText)
+                        $('search_filter_parameter_input').enable();
+                    } else {
+                        $('search_grouping_container').removeClassName('parameter');
+                    }
+                }
             } else {
                 element.removeClassName('selected');
             }

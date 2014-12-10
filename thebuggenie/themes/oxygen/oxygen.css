@@ -1487,7 +1487,7 @@ a.friend { color: #0000a4; }
 #reportissue_content { width: 1010px; margin: 0 auto; text-align: center; }
 .report_issue_desc { width: auto; margin: 0 auto 0 auto; text-align: left; }
 .report_issue_desc select { }
-#report_more_here { color: #999; font-size: 1.1em; text-align: center; padding-top: 20px; }
+#report_more_here { color: #999; font-size: 1.1em; text-align: center; padding-top: 20px; min-height: 30px; }
 #report_form { margin: 10px auto 0 auto; padding: 0; width: 1000px; text-align: left; }
 #report_form table { width: 990px; margin: 0 auto; }
 #report_form table table { width: auto; }
@@ -4369,13 +4369,17 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin: 5px 10px 10px 5px;
 }
 .interactive_filters_list .column .search_template_list li h1 {
-    font-weight: bold;
-    font-size: 1em;
-    color: #555;
+    font-weight: normal;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    color: #888;
     padding: 0;
-    margin: 0;
+    margin: 3px 0 0 0;
     border: 0;
 }
+#search_grouping_container.nogrouping .nogrouping, #search_grouping_container .groupingdetails, #search_grouping_container.parameter .parameterdetails { display: block; }
+#search_grouping_container.nogrouping .groupingdetails, #search_grouping_container .nogrouping, #search_grouping_container .parameterdetails { display: none; }
+#search_grouping_container .nogrouping { padding: 5px; color: #777; font-size: 0.9em; }
 .interactive_dropdown.selected .interactive_menu {
     display: block;
     left: -1px;

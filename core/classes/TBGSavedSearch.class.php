@@ -159,11 +159,10 @@
         {
             $i18n = TBGContext::getI18n();
             $templates = array();
-            $templates['results_normal'] = array('title' => $i18n->__('Standard'), 'description' => $i18n->__('Standard search results'));
-            $templates['results_todo'] = array('title' => $i18n->__('Todo-list'), 'description' => $i18n->__('Todo-list with progress indicator'));
-            $templates['results_votes'] = array('title' => $i18n->__('Voting results'), 'description' => $i18n->__('Most voted-for issues'));
-            $templates['results_userpain_singlepainthreshold'] = array('title' => $i18n->__('User pain with threshold'), 'description' => $i18n->__('User pain indicator with custom single bug pain threshold'));
-            //$templates['results_userpain_totalpainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom total pain threshold');
+            $templates['results_normal'] = array('title' => $i18n->__('Standard'), 'description' => $i18n->__('Standard search results'), 'grouping' => true, 'parameter' => false);
+            $templates['results_todo'] = array('title' => $i18n->__('Todo-list'), 'description' => $i18n->__('Todo-list with progress indicator'), 'grouping' => false, 'parameter' => false);
+            $templates['results_votes'] = array('title' => $i18n->__('Voting results'), 'description' => $i18n->__('Most voted-for issues'), 'grouping' => false, 'parameter' => false);
+            $templates['results_userpain_singlepainthreshold'] = array('title' => $i18n->__('User pain with threshold'), 'description' => $i18n->__('User pain indicator with custom single bug pain threshold'), 'grouping' => false, 'parameter' => true, 'parameter_text' => $i18n->__('Specify user pain threshold'));
             if (!$display_only)
             {
                 $templates['results_rss'] = $i18n->__('RSS feed');
@@ -283,11 +282,11 @@
 
                 if (in_array($this->_templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold')))
                 {
-                    $this->_searchtitle = TBGContext::getI18n()->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold', array('%threshold' => $this->_template_parameter));
+                    $this->_searchtitle = TBGContext::getI18n()->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold', array('%threshold' => $this->_templateparameter));
                     $this->_issues_per_page = 0;
                     $this->_groupby = 'user_pain';
                     $this->_grouporder = 'desc';
-                    $this->_filters['issuetype'] = TBGSearchFilter::createFilter('issuetype', join(',', TBGIssueTypesTable::getTable()->getBugReportTypeIDs()));
+                    $this->_filters['issuetype'] = TBGSearchFilter::createFilter('issuetype', array('operator' => '=', 'value' => join(',', TBGIssueTypesTable::getTable()->getBugReportTypeIDs())));
                 }
                 elseif ($this->_templatename == 'results_votes')
                 {

@@ -111,7 +111,7 @@
                         <div class="search_template_list">
                             <ul>
                                 <?php foreach ($templates as $template_name => $template_details): ?>
-                                    <li data-template-name="<?php echo $template_name; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
+                                    <li data-template-name="<?php echo $template_name; ?>" data-parameter="<?php echo (int) $template_details['parameter']; ?>" data-parameter-text="<?php echo ($template_details['parameter']) ? __e($template_details['parameter_text']) : ''; ?>" data-grouping="<?php echo (int) $template_details['grouping']; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
                                         <?php echo image_tag('search_template_'.$template_name.'.png'); ?>
                                         <h1><?php echo $template_details['title']; ?></h1>
                                         <?php echo $template_details['description']; ?>
@@ -120,32 +120,41 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="column" id="search_grouping_container">
-                        <h1><?php echo __('Search result grouping'); ?></h1>
-                        <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
-                        <div class="interactive_values_container">
-                            <ul class="interactive_menu_values" id="filter_grouping_options">
-                                <?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
-                                    <li data-sort-order="<?php echo $dir; ?>" data-value="<?php echo $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1" style="<?php if (!$search_object->getGroupby()) echo 'display: none;'; ?>">
+                    <div class="column <?php if (!$templates[$search_object->getTemplateName()]['grouping']) echo 'nogrouping'; ?>" id="search_grouping_container">
+                        <h1><?php echo __('Search result details'); ?></h1>
+                        <div class="nogrouping">
+                            <?php echo __('This search template does not support grouping'); ?>
+                        </div>
+                        <div class="parameterdetails">
+                            <label for="search_filter_parameter_input" id="search_filter_parameter_description"></label>
+                            <input type="text" id="search_filter_parameter_input" style="width: 80px;" class="interactive_menu_filter" placeholder="" value="<?php echo $search_object->getTemplateParameter(); ?>">
+                        </div>
+                        <div class="groupingdetails">
+                            <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
+                            <div class="interactive_values_container">
+                                <ul class="interactive_menu_values" id="filter_grouping_options">
+                                    <?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
+                                        <li data-sort-order="<?php echo $dir; ?>" data-value="<?php echo $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1" style="<?php if (!$search_object->getGroupby()) echo 'display: none;'; ?>">
+                                            <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                            <input type="radio" value="<?php echo $dir; ?>" name="grouporder" data-text="<?php echo $dir_desc; ?>" id="search_grouping_grouporder_<?php echo $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
+                                            <?php echo $dir_desc; ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                    <li class="separator"></li>
+                                    <li data-groupby="" data-value="" class="groupby filtervalue unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
                                         <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                        <input type="radio" value="<?php echo $dir; ?>" name="grouporder" data-text="<?php echo $dir_desc; ?>" id="search_grouping_grouporder_<?php echo $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
-                                        <?php echo $dir_desc; ?>
+                                        <input type="radio" value="" name="groupby" data-text="<?php echo __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
+                                        <?php echo __('No grouping'); ?>
                                     </li>
-                                <?php endforeach; ?>
-                                <li class="separator"></li>
-                                <li data-groupby="" data-value="" class="groupby filtervalue unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                    <input type="radio" value="" name="groupby" data-text="<?php echo __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
-                                    <?php echo __('No grouping'); ?>
-                                </li>
-                                <?php foreach ($groupoptions as $grouping => $group_desc): ?>
-                                    <li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                        <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                        <input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
-                                        <?php echo $group_desc; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
+                                    <?php foreach ($groupoptions as $grouping => $group_desc): ?>
+                                        <li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
+                                            <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                            <input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
+                                            <?php echo __('Group by %detail', array('%detail' => strtolower($group_desc))); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <h1><?php echo __('Select how many issues to show per page'); ?></h1>
