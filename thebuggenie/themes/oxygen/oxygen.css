@@ -4026,7 +4026,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_description.none {color: #AAA;}
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
-#search_sidebar .num_results_badge { vertical-align: middle; float: right; }
+#search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 0; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
 #search_sidebar .header { background: transparent; font-weight: normal; margin: 0; padding: 6px 0; border-bottom: 1px dotted #AAA; font-size: 1em; }
 #search_sidebar .container_div ul { margin: 5px 0; padding: 0; }
