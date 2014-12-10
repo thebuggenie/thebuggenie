@@ -1627,7 +1627,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .button-group .button.lefthugging { border-left: none; }
 .button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
-#workflow_actions .more_actions_dropdown { margin-top: 2px; border-radius: 2px; }
+#workflow_actions .more_actions_dropdown { margin-top: 2px; border-radius: 2px; font-size: 1.1em; }
 .workflow_actions li.workflow { position: relative; }
 .workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 30px; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
