@@ -520,6 +520,7 @@
             \thebuggenie\core\entities\ApplicationPassword::getB2DBTable()->create();
             \thebuggenie\core\entities\NotificationSetting::getB2DBTable()->create();
             \thebuggenie\core\entities\AgileBoard::getB2DBTable()->create();
+            \thebuggenie\core\entities\BoardColumn::getB2DBTable()->create();
 
             $transaction = \b2db\Core::startTransaction();
 
