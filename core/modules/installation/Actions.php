@@ -630,11 +630,6 @@
                 {
                     $existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
                     file_put_contents(THEBUGGENIE_PATH . 'installed', \TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
-                    $prev_error_reportiong_level = error_reporting(0);
-                    unlink(THEBUGGENIE_PATH . 'upgrade');
-                    error_reporting($prev_error_reportiong_level);
-                    if (file_exists(THEBUGGENIE_PATH . 'upgrade'))
-                        $this->upgrade_file_failed = true;
                     $this->current_version = \TBGSettings::getVersion(false, false);
                     $this->upgrade_available = false;
                 }

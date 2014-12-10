@@ -167,10 +167,7 @@
         <?php include_template('main/percentbar', array('percent' => 100, 'height' => 5)); ?>
         <h2>Upgrade successfully completed!</h2>
         <p style="font-size: 1.2em;">
-            <?php if (isset($upgrade_file_failed)): ?>
-                The file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> could not be removed.<br>
-            <?php endif; ?>
-            You should verify that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
+            Remember to remove the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> before you click the "Finish" button below.
         </p>
         <div style="margin-top: 15px;">
             <a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
