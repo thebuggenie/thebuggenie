@@ -3374,7 +3374,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     margin: 0;
 }
 
-.whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode input[type=search] { display: none; }
+.whiteboard.edit-mode .fancydropdown, .whiteboard.edit-mode .whiteboard-view-mode, .whiteboard.edit-mode input[type=search] { display: none; }
 .whiteboard .edit-mode-buttons, .whiteboard #planning_whiteboard_columns_form, .whiteboard.edit-mode #whiteboard { display: none; }
 .whiteboard.edit-mode .edit-mode-buttons, .whiteboard.edit-mode #planning_whiteboard_columns_form { display: block; }
 #planning_whiteboard { position: relative; }
