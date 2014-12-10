@@ -223,7 +223,7 @@
                 <?php if (isset($board) && $issuetype->getID() == $board->getEpicIssuetypeID()) continue; ?>
                 <a class="button button-silver" data-key="<?php echo $issuetype->getKey(); ?>" data-id="<?php echo $issuetype->getID(); ?>" href="javascript:void(0);">
                     <?php echo image_tag($issuetype->getIcon() . '.png'); ?>
-                    <?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?>
+                    <span><?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?></span>
                 </a>
             <?php endforeach; ?>
         </div>

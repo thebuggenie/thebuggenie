@@ -1478,8 +1478,10 @@ a.friend { color: #0000a4; }
 /* reporting an issue styles */
 .report_button { float: right; }
 .issuetype_list { text-align: center; padding: 0; margin: 10px auto 0 auto; clear: both; }
-.issuetype_list .button, .issuetype_list .button:hover { margin: 10px; font-size: 13px; font-weight: bold; padding: 15px !important; text-align: center; min-width: 130px; }
-.issuetype_list .button img { display: block; float: none; clear: both; margin: 10px auto 15px auto; }
+.issuetype_list .button, .issuetype_list .button:hover { margin: 10px; font-size: 1.5em; font-weight: normal; padding: 15px !important; text-align: center; min-width: 320px; }
+.issuetype_list .button img { float: left; clear: none; margin: 0 10px 0 0; }
+.issuetype_list .button span, .issuetype_list .button:hover span { display: block; padding: 5px 0; text-align: left; }
+.issuetype_list .button span:first-line, .issuetype_list .button:hover span:first-line { font-size: 0.8em; }
 .report_issue_header { margin: 10px auto 0 auto; font-size: 1.5em; font-weight: bold; padding: 2px 0 10px 0; width: 990px; }
 #report_issue_more_options_indicator { text-align: left; margin-top: 10px; }
 #reportissue_content { width: 1010px; margin: 0 auto; text-align: center; }
