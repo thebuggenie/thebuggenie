@@ -41,6 +41,15 @@
         const STARTING = 'milestones.startingdate';
         const SCHEDULED = 'milestones.scheduleddate';
 
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            $crit = $this->getCriteria();
+            $crit->addUpdate('milestones.visible_issues', true);
+            $crit->addUpdate('milestones.visible_roadmap', true);
+            
+            $this->doUpdate($crit);
+        }
+        
         public function getAllByProjectID($project_id)
         {
             $crit = $this->getCriteria();
