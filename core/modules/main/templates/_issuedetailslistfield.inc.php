@@ -13,7 +13,7 @@
             <?php if (array_key_exists('choices', $info) && count($info['choices']) && $issue->$canEditField()): ?>
                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
-                <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+                <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                 <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
                     <li class="header"><?php echo $info['change_header']; ?></li>
                     <li>
