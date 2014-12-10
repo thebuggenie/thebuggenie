@@ -4138,7 +4138,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_release_center_container.only_active .release_item, #project_release_center_container.only_archived .release_item.active, #project_release_center_container.only_downloads .release_item { display: none; }
 #project_release_center_container.only_active .release_item.active, #project_release_center_container.only_archived .release_item, #project_release_center_container.only_downloads .release_item.download { display: block; }
 .release_item { display: block; clear: both; margin-bottom: 5px; }
-.release_item .button-group { float: right; }
+.release_item .button-group { float: right; margin: 5px 5px 0 0; }
+.release_item .button-group .button { font-size: 1.1em; padding: 5px 10px; }
 .release_item .release_name { font-size: 1.2em; }
 .release_item.active .release_name { font-size: 1.4em; }
 .release_item .release_version { font-size: 0.9em; background-color: rgba(245, 245, 245, 0.7); display: inline-block; margin: -2px 5px 0 5px; padding: 3px 6px; vertical-align: middle; border-radius: 2px; }
