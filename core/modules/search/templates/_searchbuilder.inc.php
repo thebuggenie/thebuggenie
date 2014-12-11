@@ -120,14 +120,15 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="column <?php if (!$templates[$search_object->getTemplateName()]['grouping']) echo 'nogrouping'; ?>" id="search_grouping_container">
-                        <h1><?php echo __('Search result details'); ?></h1>
+                    <div class="column <?php if (!$templates[$search_object->getTemplateName()]['grouping']) echo 'nogrouping'; ?> <?php if ($templates[$search_object->getTemplateName()]['parameter']) echo 'parameter'; ?>" id="search_grouping_container">
+                        <h1><?php echo __('Search result grouping'); ?></h1>
                         <div class="nogrouping">
                             <?php echo __('This search template does not support grouping'); ?>
                         </div>
                         <div class="parameterdetails">
-                            <label for="search_filter_parameter_input" id="search_filter_parameter_description"></label>
-                            <input type="text" id="search_filter_parameter_input" style="width: 80px;" class="interactive_menu_filter" placeholder="" value="<?php echo $search_object->getTemplateParameter(); ?>">
+                            <h1><?php echo __('Special search parameters'); ?></h1>
+                            <label for="search_filter_parameter_input" id="search_filter_parameter_description"><?php echo ($templates[$search_object->getTemplateName()]['parameter']) ? $templates[$search_object->getTemplateName()]['parameter_text'] : ''; ?></label>
+                            <input type="text" id="search_filter_parameter_input" class="interactive_menu_filter filter_searchfield" data-maxlength="0" placeholder="" value="<?php echo $search_object->getTemplateParameter(); ?>" name="template_parameter">
                         </div>
                         <div class="groupingdetails">
                             <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">

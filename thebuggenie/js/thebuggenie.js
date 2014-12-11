@@ -5798,6 +5798,8 @@ TBG.Search.initializeFilters = function () {
         element.on('click', TBG.Search.pickTemplate);
     });
     document.observe('click', function (event, element) {
+        if (['INPUT'].indexOf(event.target.nodeName) != -1)
+            return;
         $$('.filter,.interactive_plus_button').each(function (element) {
             element.removeClassName('selected');
         });
@@ -5816,7 +5818,7 @@ TBG.Search.initializeFilters = function () {
         ift.on('keyup', function (event, element) {
             if (TBG.ift_observers[ift.id])
                 clearTimeout(TBG.ift_observers[ift.id]);
-            if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
+            if ((ift.getValue().length >= 3 || ift.getValue().length == 0 || (ift.dataset.maxlength && ift.getValue().length > parseInt(ift.dataset.maxlength))) && ift.getValue() != ift.dataset.lastValue) {
                 TBG.ift_observers[ift.id] = setTimeout(function () {
                     TBG.Search.liveUpdate(true);
                     ift.dataset.lastValue = ift.getValue();

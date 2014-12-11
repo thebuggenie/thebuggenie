@@ -4379,6 +4379,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 }
 #search_grouping_container.nogrouping .nogrouping, #search_grouping_container .groupingdetails, #search_grouping_container.parameter .parameterdetails { display: block; }
 #search_grouping_container.nogrouping .groupingdetails, #search_grouping_container .nogrouping, #search_grouping_container .parameterdetails { display: none; }
+#search_grouping_container .parameterdetails label { display: inline-block; text-transform: none; margin: 5px; }
+#search_grouping_container .parameterdetails input[type=text] { display: inline-block; width: 35px; }
 #search_grouping_container .nogrouping { padding: 5px; color: #777; font-size: 0.9em; }
 .interactive_dropdown.selected .interactive_menu {
     display: block;
