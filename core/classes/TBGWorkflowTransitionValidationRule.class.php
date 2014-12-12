@@ -272,7 +272,7 @@
                     case self::RULE_REPRODUCABILITY_VALID:
                     case self::RULE_PRIORITY_VALID:
                     case self::RULE_TEAM_MEMBERSHIP_VALID:
-                        $value = ($value instanceof $fieldname) ? $value->getID() : $value;
+                        $value = (is_object($value)) ? $value->getID() : $value;
                         return ($this->getRuleValue()) ? in_array($value, explode(',', $this->getRuleValue())) : (bool) $value;
                         break;
                 }

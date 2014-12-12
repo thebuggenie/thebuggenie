@@ -1022,7 +1022,8 @@
         }
 
         /**
-         *
+         * Returns an array of workflow transitions
+         * 
          * @return array|TBGWorkflowTransition
          */
         public function getAvailableWorkflowTransitions()
@@ -1037,11 +1038,26 @@
         public function getAvailableStatuses()
         {
             $statuses = array();
+            $available_statuses = TBGStatus::getAll();
             foreach ($this->getAvailableWorkflowTransitions() as $transition)
             {
-                if ($status = $transition->getOutgoingStep()->getLinkedStatus())
+                if ($transition->getOutgoingStep()->hasLinkedStatus())
                 {
-                    $statuses[$status->getID()] = $status;
+                    if ($status = $transition->getOutgoingStep()->getLinkedStatus())
+                    {
+                        $statuses[$status->getID()] = $status;
+                    }
+                }
+                elseif ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID))
+                {
+                    $values = explode(',', $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID)->getRuleValue());
+                    foreach ($values as $value)
+                    {
+                        if (array_key_exists($value, $available_statuses))
+                        {
+                            $statuses[$value] = $available_statuses[$value];
+                        }
+                    }
                 }
             }
 
