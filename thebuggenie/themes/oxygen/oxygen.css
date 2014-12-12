@@ -1658,7 +1658,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
-#issue_details fieldset .popup_box { font-size: 1em; min-width: 250px; left: auto; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
+#issue_details fieldset .popup_box { font-size: 1em; left: 0; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
 a.dropper.dropdown_link { position: absolute; right: 2px; top: 50%; margin-top: -11px; line-height: 1em; }
 a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 #issue_details fieldset img.dropdown { float: none; margin: 3px; }
@@ -1938,6 +1938,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .more_actions_dropdown li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .more_actions_dropdown li:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: normal; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; white-space: nowrap; }
+#issue_details .more_actions_dropdown li a, #issue_details .more_actions_dropdown li a:hover { white-space: normal; }
 .more_actions_dropdown li:hover { background-color: #F1F1F1; }
 ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .more_actions_dropdown li.header:hover, .more_actions_dropdown li.nohover:hover { background-color: transparent; }
