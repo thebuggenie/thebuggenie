@@ -108,7 +108,7 @@
                         </div>
                     </td>
                     <td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
-                        <div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
+                        <div title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging">
                             <div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
                             <div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
                         </div>
