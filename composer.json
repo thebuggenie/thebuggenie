@@ -20,6 +20,7 @@
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "ext-gd" : "*",
+        "ext-gmp" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
         "ext-iconv" : "*",
