@@ -841,8 +841,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     box-shadow: none;
 }
 .tab_menu.inset li.selected {
-    /*border-bottom-color: #FFF;*/
-    border-color: transparent;
+    border-bottom: 1px solid #FFF;
 }
 .tab_menu.inset li.selected a {
     padding: 3px 8px 3px 5px;
