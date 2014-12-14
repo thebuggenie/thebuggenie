@@ -151,7 +151,7 @@
                                         <li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
                                             <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
                                             <input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
-                                            <?php echo __('Group by %detail', array('%detail' => strtolower($group_desc))); ?>
+                                            <?php echo $group_desc; ?>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
