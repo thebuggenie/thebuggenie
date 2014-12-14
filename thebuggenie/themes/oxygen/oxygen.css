@@ -3308,6 +3308,8 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     font-size: 1.3em;
     margin: 0 0 5px;
     padding: 0;
+    text-transform: uppercase;
+    color: #999;
 }
 .fancydropdown + ul li p {
     font-weight: normal;
