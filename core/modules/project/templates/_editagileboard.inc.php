@@ -69,7 +69,7 @@
                         <div class="fancyfilter filter interactive_dropdown" data-filterkey="epic_issuetype_id" data-value="<?php echo $board->getEpicIssuetypeID(); ?>" data-no-selection-value="<?php echo __('None selected'); ?>">
                             <input type="hidden" name="epic_issuetype_id" value="<?php echo $board->getEpicIssuetypeID(); ?>" id="filter_epic_issuetype_id_value_input">
                             <label><?php echo __('Epic issuetype'); ?></label>
-                            <span class="value"><?php echo $board->getEpicIssuetype()->getName(); ?></span>
+                            <span class="value"><?php echo ($board->getEpicIssuetypeID()) ? $board->getEpicIssuetype()->getName() : __('None selected'); ?></span>
                             <div class="interactive_menu">
                                 <h1><?php echo __('Select epic issuetype'); ?></h1>
                                 <div class="interactive_values_container">
