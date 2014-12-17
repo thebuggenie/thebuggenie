@@ -191,7 +191,7 @@
             </ul>
             <div style="text-align: right; margin-right: 5px;">
                 <?php echo image_tag('spinning_32.gif', array('style' => 'margin: -3px 0 -3px 5px; display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')); ?>
-                <a href="javascript:void(0);" onclick="$('workflow_transition_fullpage').fade({duration: 0.2});"><?php echo __('Cancel'); ?></a>
+                <a href="javascript:void(0);" onclick="($('workflow_transition_fullpage')) ? $('workflow_transition_fullpage').fade({duration: 0.2}) : TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Cancel'); ?></a>
                 <?php echo __('%cancel or %submit', array('%cancel' => '', '%submit' => '')); ?>
                 <input type="submit" class="workflow_transition_submit_button" value="<?php echo $transition->getName(); ?>" id="transition_working_<?php echo $transition->getID(); ?>_submit">
             </div>
