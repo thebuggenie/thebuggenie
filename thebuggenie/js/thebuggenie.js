@@ -2570,11 +2570,34 @@ TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller = function () {
     }
 };
 
+TBG.Project.Planning.Whiteboard.checkNav = function() {
+    if (window.location.hash) {
+        if (parseInt($('selected_milestone_input').dataset.selectedValue) != parseInt(window.location.hash)) {
+            var hasharray = window.location.hash.substr(1).split('/');
+            var milestone_id = parseInt(hasharray[0]);
+            $('selected_milestone_input').childElements().each(function(milestone_li) {
+                if (parseInt(milestone_li.dataset.inputValue) == milestone_id) {
+                    TBG.Main.setFancyDropdownValue(milestone_li);
+                    setTimeout(function () {
+                        TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+                        TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
+                    }, 150);
+                }
+            });
+        }
+    }
+}
+
 TBG.Project.Planning.Whiteboard.initialize = function (options) {
     $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
+    Event.observe(window, 'hashchange', TBG.Project.Planning.Whiteboard.checkNav);
     TBG.Project.Planning._initializeFilterSearch();
-    TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
-    TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
+    if (window.location.hash) {
+        TBG.Project.Planning.Whiteboard.checkNav();
+    } else {
+        TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+        TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
+    }
     TBG.Main.Helpers.initializeFancyFilters();
 
     jQuery('#planning_whiteboard_columns_form_row').sortable({

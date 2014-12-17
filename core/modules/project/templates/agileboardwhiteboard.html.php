@@ -32,7 +32,7 @@
                 </a>
                 <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof TBGMilestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
                     <?php foreach ($board->getMilestones() as $milestone): ?>
-                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="setTimeout(TBG.Project.Planning.Whiteboard.retrieveWhiteboard, 100);">
+                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="window.location='#<?php echo $milestone->getID(); ?>';">
                             <h1><?php echo $milestone->getName(); ?></h1>
                             <?php echo image_tag('icon_milestone_issues.png'); ?>
                             <dl class="info">

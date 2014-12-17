@@ -2,7 +2,7 @@
 <div class="header <?php if (!$milestone->getID()) echo 'backlog'; ?>" id="milestone_<?php echo $milestone->getID(); ?>_header">
     <div class="milestone_basic_container">
         <?php if (isset($board)): ?>
-            <span class="milestone_name"><?php echo $milestone->getName(); ?></span>
+        <a href="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>#<?php echo $milestone->getID(); ?>"><span class="milestone_name"><?php echo $milestone->getName(); ?></span></a>
         <?php else: ?>
             <span class="milestone_name milestone_virtual_status"><?php include_component('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone)); ?></span>
         <?php endif; ?>
