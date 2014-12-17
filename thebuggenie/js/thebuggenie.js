@@ -2514,6 +2514,60 @@ TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
             revert: true
         });
     });
+
+    if (!TBG.Core.Pollers.planningpoller)
+        TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller, 6);
+};
+
+TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller = function () {
+    if (!TBG.Core.Pollers.Locks.planningpoller && $('whiteboard').hasClassName('initialized')) {
+        TBG.Core.Pollers.Locks.planningpoller = true;
+        var pc = $('project_planning');
+        var wb = $('whiteboard');
+        var data_url = pc.dataset.pollUrl;
+        var retrieve_url = pc.dataset.retrieveIssueUrl;
+        var last_refreshed = pc.dataset.lastRefreshed;
+        TBG.Main.Helpers.ajax(data_url, {
+            url_method: 'get',
+            params: 'last_refreshed=' + last_refreshed + '&milestone_id=' + wb.dataset.milestoneId,
+            success: {
+                callback: function (json) {
+                    if (parseInt(json.milestone_id) == parseInt(wb.dataset.milestoneId)) {
+                        for (var i in json.ids) {
+                            if (json.ids.hasOwnProperty(i)) {
+                                var issue_details = json.ids[i];
+                                var issue_element = $('issue_' + issue_details.issue_id);
+                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
+                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                }
+                            }
+                        }
+                        for (var i in json.backlog_ids) {
+                            if (json.backlog_ids.hasOwnProperty(i)) {
+                                var issue_details = json.backlog_ids[i];
+                                var issue_element = $('issue_' + issue_details.issue_id);
+                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
+                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                }
+                            }
+                        }
+                        for (var i in json.epic_ids) {
+                            if (json.epic_ids.hasOwnProperty(i)) {
+                                var issue_details = json.epic_ids[i];
+                                var issue_element = $('epic_' + issue_details.issue_id);
+                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
+                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                }
+                            }
+                        }
+                    }
+
+                    pc.dataset.lastRefreshed = get_current_timestamp();
+                    TBG.Core.Pollers.Locks.planningpoller = false;
+                }
+            }
+        });
+    }
 };
 
 TBG.Project.Planning.Whiteboard.initialize = function (options) {

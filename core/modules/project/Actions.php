@@ -260,15 +260,23 @@
             $search_object = $board->getBacklogSearchObject();
             $search_object->setFilter('last_updated', \TBGSearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
 
-            $ids = \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
-            $epic_ids = ($board->getEpicIssuetypeID()) ? \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
+            if ($request['mode'] == 'whiteboard')
+            {
+                $milestone_id = $request['milestone_id'];
+                $ids = \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndMilestoneID($last_refreshed - 2, $this->selected_project->getID(), $milestone_id);
+            }
+            else
+            {
+                $ids = \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
+                $epic_ids = ($board->getEpicIssuetypeID()) ? \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
+            }
             $backlog_ids = array();
             foreach ($search_object->getIssues() as $backlog_issue)
             {
                 $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
             }
 
-            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids'));
+            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id'));
         }
 
         /**

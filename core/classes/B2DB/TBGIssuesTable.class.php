@@ -563,6 +563,33 @@
             }
         }
 
+        protected function _getLastUpdatedArrayFromResultset(\b2db\Resultset $res)
+        {
+            $ids = array();
+            if ($res)
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $ids[] = array('issue_id' => $row->get('id'), 'last_updated' => $row->get('last_updated'));
+                }
+            }
+
+            return $ids;
+        }
+
+        public function getUpdatedIssueIDsByTimestampAndProjectIDAndMilestoneID($last_updated, $project_id, $milestone_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::ID, 'id');
+            $crit->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
+            $crit->addWhere(self::PROJECT_ID, $project_id);
+            $crit->addWhere(self::MILESTONE, $milestone_id, Criteria::DB_NOT_EQUALS);
+            $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
+
+            $res = $this->doSelect($crit);
+            return $this->_getLastUpdatedArrayFromResultset($res);
+        }
+
         public function getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_updated, $project_id, $issuetype_id = null)
         {
             $crit = $this->getCriteria();
@@ -579,16 +606,8 @@
             }
             $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
 
-            $ids = array();
             $res = $this->doSelect($crit);
-            if ($res)
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $ids[] = array('issue_id' => $row->get('id'), 'last_updated' => $row->get('last_updated'));
-                }
-            }
-            return $ids;
+            return $this->_getLastUpdatedArrayFromResultset($res);
         }
 
         public function markIssuesDeletedByProjectID($project_id)
