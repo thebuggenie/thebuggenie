@@ -47,10 +47,10 @@
             $this->cliEcho("To install a module, use the name in bold as the parameter for the install module task\n\n");
             if (count(\TBGContext::getUninstalledModules()) > 0)
             {
-                foreach (\TBGContext::getUninstalledModules() as $module_key => $description)
+                foreach (\TBGContext::getUninstalledModules() as $module_key => $module)
                 {
                     $this->cliEcho("{$module_key}: ", 'white', 'bold');
-                    $this->cliEcho($description);
+                    $this->cliEcho($module->getLongName());
                     $this->cliEcho("\n");
                 }
             }

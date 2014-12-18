@@ -965,7 +965,7 @@
 
             try
             {
-                if ($request['mode'] == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request['module_key'] . DS . 'module'))
+                if ($request['mode'] == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request['module_key'] . DS . ucfirst($request['module_key']) . '.php'))
                 {
                     if (\TBGModule::installModule($request['module_key']))
                     {

@@ -53,8 +53,8 @@
                             </div>
                             <form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
                                 <select name="module_key" style="margin-top: 5px; width: 100%;">
-                                <?php foreach ($uninstalled_modules as $module_key => $description): ?>
-                                    <option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
+                                <?php foreach ($uninstalled_modules as $module_key => $module): ?>
+                                    <option value="<?php echo $module_key; ?>"><?php echo $module->getLongName() . ' (' . $module->getDescription() . ')'; ?></option>
                                 <?php endforeach; ?>
                                 </select><br>
                                 <input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
