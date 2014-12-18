@@ -213,7 +213,7 @@
                 if ($data['count'] > 1)
                 {
                     TBGLogging::log('too many users for ' . $username . ', class ' . $user_class . ', attribute ' . $username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
-                    throw new \Exception(TBGContext::geti18n()->__('This user was found multiple times in the directory, please contact your admimistrator'));
+                    throw new \Exception(TBGContext::geti18n()->__('This user was found multiple times in the directory, please contact your administrator'));
                 }
 
                 /*
