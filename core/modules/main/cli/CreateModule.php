@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\main\cli;
 
+    use TBGContext;
+
     /**
      * CLI command class, main -> create_module
      *
