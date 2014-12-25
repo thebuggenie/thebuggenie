@@ -587,7 +587,7 @@
             $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
 
             $res = $this->doSelect($crit);
-            return $this->_getLastUpdatedArrayFromResultset($res);
+            return ($res) ? $this->_getLastUpdatedArrayFromResultset($res) : array();
         }
 
         public function getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_updated, $project_id, $issuetype_id = null)
