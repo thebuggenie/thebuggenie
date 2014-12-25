@@ -278,6 +278,15 @@ TBG.Core._scrollWatcher = function () {
             $('bulk_action_form_top').removeClassName('fixed');
         }
     }
+    if ($('whiteboard')) {
+        var y = document.viewport.getScrollOffsets().top;
+        var co = $('whiteboard').cumulativeOffset();
+        if (y >= co.top) {
+            $('whiteboard').addClassName('fixedheader');
+        } else {
+            $('whiteboard').removeClassName('fixedheader');
+        }
+    }
     if ($('issues_paginator')) {
         var ip = $('issues_paginator');
         var ipl = ip.getLayout();

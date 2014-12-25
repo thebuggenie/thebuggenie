@@ -57,6 +57,13 @@
                     </table>
                 </form>
                 <table class="whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('project_planning_whiteboard_issues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                    <thead id="whiteboard-headers-placeholder">
+                        <tr>
+                            <?php foreach ($board->getColumns() as $column): ?>
+                                <td>&nbsp;</td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
                     <thead id="whiteboard-headers">
                         <tr>
                             <?php foreach ($board->getColumns() as $column): ?>

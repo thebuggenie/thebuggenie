@@ -3532,6 +3532,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-columns thead td {
     padding: 0 10px;
+    background-color: #FFF;
 }
 .whiteboard-columns thead h1 {
     font-size: 1.1em;
@@ -3725,6 +3726,30 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .extra {
     display: none;
     margin: 0 5px 0 20px;
+}
+#whiteboard {
+    position: relative;
+}
+#whiteboard-headers, #whiteboard-headers-placeholder {
+    height: 35px;
+}
+#whiteboard-headers-placeholder {
+    display: none;
+}
+#whiteboard.fixedheader #whiteboard-headers {
+    position: fixed;
+    top: 0;
+    left: auto;
+    width: calc(100% - 61px);
+    margin-left: 61px;
+    right: 0;
+    display: table;
+    table-layout: fixed;
+    background-color: #FFF;
+    z-index: 1;
+}
+#whiteboard.fixedheader #whiteboard-headers-placeholder {
+    display: table-header-group;
 }
 #whiteboard.viewmode-detailed .whiteboard-issue .extra {
     display: block;
