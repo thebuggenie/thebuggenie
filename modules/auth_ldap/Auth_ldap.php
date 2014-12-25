@@ -190,7 +190,7 @@
                  * and dn.
                  */
                 $fields = array($fullname_attr, $buddyname_attr, $email_attr, 'cn', $dn_attr);
-                $filter = '(&(objectClass=' . TBGLDAPAuthentication::getModule()->escape($user_class) . ')(' . $username_attr . '=' . $this->escape($username) . '))';
+                $filter = '(&(objectClass=' . $this->escape($user_class) . ')(' . $username_attr . '=' . $this->escape($username) . '))';
 
                 $results = ldap_search($connection, $base_dn, $filter, $fields);
 
@@ -248,7 +248,7 @@
                          * We want to find 1 group, if we don't get 1, silently ignore this group.
                          */
                         $fields2 = array($groups_members_attr);
-                        $filter2 = '(&(objectClass=' . TBGLDAPAuthentication::getModule()->escape($group_class) . ')(cn=' . $this->escape($group) . '))';
+                        $filter2 = '(&(objectClass=' . $this->escape($group_class) . ')(cn=' . $this->escape($group) . '))';
 
                         $results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
 
