@@ -29,18 +29,13 @@
 
         protected $_datetime_formats = array();
 
-        public static function setup($language)
-        {
-            return $_i18n;
-        }
-
         public static function getTimezones()
         {
             $list = DateTimeZone::listAbbreviations();
             $idents = DateTimeZone::listIdentifiers();
 
             $data = $offset = $added = array();
-            foreach ($list as $abbr => $info)
+            foreach ($list as $info)
             {
                 foreach ($info as $zone)
                 {
@@ -62,7 +57,7 @@
 
             array_multisort($offset, SORT_ASC, $data);
             $options = array();
-            foreach ($data as $key => $row)
+            foreach ($data as $row)
             {
                 $options[$row['timezone_id']] = self::formatOffset($row['offset']) . ' ('.$row['timezone_id'].')';
             }
@@ -103,7 +98,7 @@
         public function getStringsFilename($language = null)
         {
             $language = ($language === null) ? $this->_language : $language;
-            return THEBUGGENIE_PATH . 'i18n' . DS . $language . DS . 'strings.inc.php';
+            return THEBUGGENIE_PATH . 'i18n' . DS . $language . DS . 'strings.xlf';
         }
 
         public function initialize()
@@ -116,10 +111,22 @@
             }
             if ($this->_strings === null)
             {
-                $this->loadStrings();
-                foreach (TBGContext::getModules() as $module_name => $module)
+                if (TBGContext::getCache()->fileHas(TBGCache::KEY_I18N . 'strings_' . $this->_language, false))
                 {
-                    $this->loadStrings($module_name);
+                    $strings = TBGContext::getCache()->fileGet(TBGCache::KEY_I18N . 'strings_' . $this->_language, false);
+                    $this->_strings = (is_array($strings) && !empty($strings)) ? $strings : null;
+                }
+                if ($this->_strings === null)
+                {
+                    $this->loadStrings();
+                    foreach (array_keys(TBGContext::getModules()) as $module_name)
+                    {
+                        $this->loadStrings($module_name);
+                    }
+                    if (is_array($this->_strings) && !empty($this->_strings)) 
+                    {
+                        TBGContext::getCache()->fileAdd(TBGCache::KEY_I18N . 'strings_' . $this->_language, $this->_strings, false);
+                    }
                 }
             }
         }
@@ -131,34 +138,6 @@
                 $this->_language = $language;
                 $this->initialize();
             }
-        }
-
-        public function getMissingStrings()
-        {
-            return $this->_missing_strings;
-        }
-
-        public function addMissingStringsToStringsFile()
-        {
-            return;
-            $strings = array();
-            foreach ($this->getMissingStrings() as $string => $truth)
-            {
-                if (mb_strpos($string, '"') !== false && mb_strpos($string, "'") !== false)
-                {
-                    $string = str_replace('"', '\"', $string);
-                    $strings[] = '$strings["'.$string.'"] = "'.$string."\";";
-                }
-                elseif (mb_strpos($string, "'") !== false)
-                {
-                    $strings[] = '$strings["'.$string.'"] = "'.$string."\";";
-                }
-                else
-                {
-                    $strings[] = '$strings[\''.$string.'\'] = \''.$string."';";
-                }
-            }
-            file_put_contents("\n\t".$this->getStringsFilename(), join("\n\t", $strings), FILE_APPEND);
         }
 
         public function setCharset($charset)
@@ -191,13 +170,12 @@
         {
             if ($this->_strings === null) $this->_strings = array();
             $filename = '';
-            $strings = array();
             if ($module !== null)
             {
-                if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php"))
-                    $filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
+                if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.xlf"))
+                    $filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.xlf";
                 else
-                    $filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
+                    $filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "strings.xlf";
             }
             else
             {
@@ -207,14 +185,24 @@
             if (file_exists($filename))
             {
                 TBGLogging::log("Loading strings from file '{$filename}", 'i18n');
-                require $filename;
+                $xliff_dom = new DOMDocument();
+                $xliff_dom->loadXML(file_get_contents($filename));
+                $trans_units = $xliff_dom->getElementsByTagName('trans-unit');
+                foreach ($trans_units as $trans_unit)
+                {
+                    $source_tag = $trans_unit->getElementsByTagName('source');
+                    $target_tag = $trans_unit->getElementsByTagName('target');
+                    if (is_object($source_tag) && is_object($source_tag->item(0)) && is_object($target_tag) && is_object($target_tag->item(0)))
+                    {
+                        $this->addString($source_tag->item(0)->nodeValue, $target_tag->item(0)->nodeValue);
+                    }
+                }
             }
             else
             {
                 $message = 'Could not find language file ' . $filename;
                 TBGLogging::log($message, 'i18n', TBGLogging::LEVEL_NOTICE);
             }
-            $this->addStrings($strings);
         }
 
         public function addString($key, $translation)
@@ -274,21 +262,23 @@
 
         public function __($text, $replacements = array(), $html_decode = false)
         {
-            $event = TBGEvent::createNew('core', 'TBGI18n::__()', $this, compact('text', 'replacements', 'html_decode'))->trigger();
-            if ($event->isProcessed())
-            {
-                return $event->getReturnValue();
-            }
-
             if (isset($this->_strings[$text]))
             {
                 $retstring = $this->_strings[$text];
             }
             else
             {
-                $retstring = $text;
-                TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
-                $this->_missing_strings[$text] = true;
+                $event = TBGEvent::createNew('core', 'TBGI18n::__()', $this, compact('text', 'replacements', 'html_decode'))->trigger();
+                if ($event->isProcessed())
+                {
+                    return $event->getReturnValue();
+                }
+                else
+                {
+                    $retstring = $text;
+                    TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
+                    $this->_missing_strings[$text] = true;
+                }
             }
             if (!empty($replacements))
             {
