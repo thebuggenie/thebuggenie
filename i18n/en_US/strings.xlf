@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 282 -->
-<!-- Number of Strings: 3171 -->
-<!-- Keys extracted from sources on: 2014 Nov 11. -->
+<!-- Number of Strings: 3173 -->
+<!-- Keys extracted from sources on: 2014 Dec 26. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -850,8 +850,8 @@
             <trans-unit id="ae35fe7d70b95ed558f9bb2b20e5eb6f">
                 <source>User pain indicator with custom single bug pain threshold</source>
             </trans-unit>
-            <trans-unit id="cc9c869ed1392e25c16c5e0e5b6e2015">
-                <source>User pain indicator with custom total pain threshold</source>
+            <trans-unit id="6b878789670614e4590d6d2d56029081">
+                <source>Specify user pain threshold</source>
             </trans-unit>
             <trans-unit id="9680162225162baf2a085dfdc2814deb">
                 <source>RSS feed</source>
@@ -6069,9 +6069,6 @@
             <trans-unit id="57ff37ed03316e23a7daba5476c1c265">
                 <source>Issue time tracking - time spent</source>
             </trans-unit>
-            <trans-unit id="76cf5b3ac92c5ce1fd4ebad1b1fbab14">
-                <source>Time spent on this issue</source>
-            </trans-unit>
             <trans-unit id="92f83d641b90e6d903cdad0320d1da03">
                 <source>The list below shows all time logged against this issue so far.</source>
             </trans-unit>
@@ -9627,6 +9624,9 @@
 
     <file source-language="en_US" datatype="php" original="core/modules/project/templates/_release.inc.php">
         <body>
+            <trans-unit id="5d57104e6099868c756e88d007b92f41">
+                <source>Show all issues for this release</source>
+            </trans-unit>
             <trans-unit id="d82bfda5f9149fedf51839f4f371122e">
                 <source>This release is no longer available for download</source>
             </trans-unit>
@@ -10604,6 +10604,12 @@
             </trans-unit>
             <trans-unit id="a3a3b7815bb9514bacc24ace39006208">
                 <source>Search result grouping</source>
+            </trans-unit>
+            <trans-unit id="22db0bbea3aa33cf114d48f85233d962">
+                <source>This search template does not support grouping</source>
+            </trans-unit>
+            <trans-unit id="72ec3aaca03de9a3cbb0b0ef02208796">
+                <source>Special search parameters</source>
             </trans-unit>
             <trans-unit id="cf3fb1ff52ea1eed3347ac5401ee7f0c">
                 <source>Ascending</source>

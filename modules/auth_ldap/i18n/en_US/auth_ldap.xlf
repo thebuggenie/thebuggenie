@@ -6,7 +6,7 @@
 
 <!-- Number of Sections: 3 -->
 <!-- Number of Strings: 63 -->
-<!-- Keys extracted from sources on: 2014 Nov 11. -->
+<!-- Keys extracted from sources on: 2014 Dec 26. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -60,8 +60,8 @@
             <trans-unit id="5824791e3431518112d466b295500320">
                 <source>User does not exist in the directory</source>
             </trans-unit>
-            <trans-unit id="1f262815c9a8749cc4ac424ae1d80328">
-                <source>This user was found multiple times in the directory, please contact your admimistrator</source>
+            <trans-unit id="e612e804607a524cc7605a4fb22f570e">
+                <source>This user was found multiple times in the directory, please contact your administrator</source>
             </trans-unit>
             <trans-unit id="a4d1777659ac28e5510a35353f7b087d">
                 <source>Search failed</source>
