@@ -240,7 +240,7 @@
             foreach ($stringsByFile as $file => $strings) {
 
                 $generatedFile .= PHP_EOL;
-                $generatedFile .= '    <file source-language="en_US" datatype="php" original="'.$file.'">'.PHP_EOL;
+                $generatedFile .= '    <file source-language="en" datatype="php" original="'.$file.'">'.PHP_EOL;
                 $generatedFile .= "        <body>".PHP_EOL;
 
                 foreach ($strings as $string) {

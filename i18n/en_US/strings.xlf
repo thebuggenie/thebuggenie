@@ -11,7 +11,7 @@
 
 <xliff version="1.2">
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGAction.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGAction.class.php">
         <body>
             <trans-unit id="3af0e63ff45f01cd770ac63c854503fb">
                 <source>You are not allowed to access this page</source>
@@ -19,7 +19,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGContext.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGContext.class.php">
         <body>
             <trans-unit id="246e7625ce94a209c8ee3cd7f141a504">
                 <source>Can see issues reported by other users</source>
@@ -405,7 +405,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGCustomDatatype.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGCustomDatatype.class.php">
         <body>
             <trans-unit id="ecd0790de1c1d5836b4acd4784bcdf12">
                 <source>Dropdown list with custom text choices</source>
@@ -458,7 +458,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGIssue.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGIssue.class.php">
         <body>
             <trans-unit id="bf347fd455b80c38b40676dc16076e9a">
                 <source>Crash: Bug causes crash or data loss / asserts in the debug release</source>
@@ -637,7 +637,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGIssuetype.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGIssuetype.class.php">
         <body>
             <trans-unit id="a666445d5820aa4f557b0c70ea13bf35">
                 <source>Bug report</source>
@@ -669,7 +669,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGMilestone.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGMilestone.class.php">
         <body>
             <trans-unit id="3a172d2139db612c3b2ae6e5b9fe6a51">
                 <source>%milestone_name (started %start_date - ended %end_date)</source>
@@ -701,7 +701,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGProject.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGProject.class.php">
         <body>
             <trans-unit id="6adf97f83acf6453d4a6a4b1070f3754">
                 <source>None</source>
@@ -733,7 +733,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGRequest.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGRequest.class.php">
         <body>
             <trans-unit id="962360c8330c4fa389bbb1fbe57948da">
                 <source>You cannot upload files bigger than %max_size MB</source>
@@ -771,7 +771,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGResponse.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGResponse.class.php">
         <body>
             <trans-unit id="f322286231c92ec27ec303c8a859eec1">
                 <source>Frontpage</source>
@@ -824,7 +824,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGSavedSearch.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGSavedSearch.class.php">
         <body>
             <trans-unit id="eb6d8ae6f20283755b339c0dc273988b">
                 <source>Standard</source>
@@ -907,7 +907,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGSettings.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGSettings.class.php">
         <body>
             <trans-unit id="48b26d57c14af0500090800c2cdd0d58">
                 <source>Scopes</source>
@@ -987,7 +987,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGTextParser.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGTextParser.class.php">
         <body>
             <trans-unit id="b28354b543375bfa94dabaeda722927f">
                 <source>top</source>
@@ -1001,7 +1001,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGUser.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGUser.class.php">
         <body>
             <trans-unit id="e2162885d59741bd35e43e69ce82037c">
                 <source>This username already exists</source>
@@ -1012,7 +1012,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGWorkflowTransitionAction.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGWorkflowTransitionAction.class.php">
         <body>
             <trans-unit id="c7ed7c4c3e01cf840a50fa171f183867">
                 <source>Assign the issue to a user</source>
@@ -1077,7 +1077,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/classes/TBGWorkflowTransitionValidationRule.class.php">
+    <file source-language="en" datatype="php" original="core/classes/TBGWorkflowTransitionValidationRule.class.php">
         <body>
             <trans-unit id="bda627a4908d2bd8db65a99e9eb89ff1">
                 <source>Max number of assigned issues</source>
@@ -1106,7 +1106,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/entities/BoardSwimlane.php">
+    <file source-language="en" datatype="php" original="core/entities/BoardSwimlane.php">
         <body>
             <trans-unit id="e5a93185a2d2caeb8f4df8f1d1861b2c">
                 <source>Unknown / not set</source>
@@ -1114,7 +1114,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/entities/DashboardView.php">
+    <file source-language="en" datatype="php" original="core/entities/DashboardView.php">
         <body>
             <trans-unit id="ab191177a627ce131bef40c2610c6f08">
                 <source>What you've done recently</source>
@@ -1248,7 +1248,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/Actions.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/Actions.php">
         <body>
             <trans-unit id="f7d42b947410d20f95293170dde8a88c">
                 <source>Configure %thebuggenie_name</source>
@@ -1775,7 +1775,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_appearance.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_appearance.inc.php">
         <body>
             <trans-unit id="42d166a7588345251c4a1beb5511a840">
                 <source>Selected theme</source>
@@ -1804,7 +1804,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_clientbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_clientbox.inc.php">
         <body>
             <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa">
                 <source>Actions</source>
@@ -1872,7 +1872,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_clientuserlist.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_clientuserlist.inc.php">
         <body>
             <trans-unit id="6cd65f77d61f8ea5a7eeb8c1bafa0c84">
                 <source>There are no users in this client</source>
@@ -1880,7 +1880,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_clientuserlistitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_clientuserlistitem.inc.php">
         <body>
             <trans-unit id="466f29ced41adc5e70b816224a7bde8c">
                 <source>Do you really want to remove the user from this client?</source>
@@ -1894,7 +1894,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_finduser_row.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_finduser_row.inc.php">
         <body>
             <trans-unit id="edd3753737123ebe228c99e4a8903e95">
                 <source>New password: %random_password</source>
@@ -1965,7 +1965,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_finduser_row_editable.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_finduser_row_editable.inc.php">
         <body>
             <trans-unit id="ed29920fade587761581f737fff44155">
                 <source>Edit user</source>
@@ -2039,7 +2039,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_general.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_general.inc.php">
         <body>
             <trans-unit id="648c5275459ddb5b2f684b92ec9ab7e2">
                 <source>The Bug Genie custom name</source>
@@ -2131,7 +2131,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_groupbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_groupbox.inc.php">
         <body>
             <trans-unit id="b8084191dd4e0455977a4b19218f1971">
                 <source>List users in this group</source>
@@ -2181,7 +2181,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_groupuserlist.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_groupuserlist.inc.php">
         <body>
             <trans-unit id="564bc252af01664d62b28390d7b04ff8">
                 <source>There are no users in this group</source>
@@ -2189,7 +2189,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_import_ids.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_import_ids.inc.php">
         <body>
             <trans-unit id="4bc65b3385694c57faca76cdb9a0f3a9">
                 <source>Data for project import</source>
@@ -2236,7 +2236,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_importcsv.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_importcsv.inc.php">
         <body>
             <trans-unit id="888de32edd7d7f0ef1c420f1c8614916">
                 <source>Import content from CSV</source>
@@ -2265,7 +2265,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuefield.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuefield.inc.php">
         <body>
             <trans-unit id="0340a11af8f9de076fbc7081ab933ac0">
                 <source>Edit this item</source>
@@ -2294,7 +2294,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuefieldpermissions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuefieldpermissions.inc.php">
         <body>
             <trans-unit id="5854a490733c947dcffd0c3ad89089b3">
                 <source>Permission details for "%itemname"</source>
@@ -2305,7 +2305,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuefields.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuefields.inc.php">
         <body>
             <trans-unit id="313a6a3d25aa041ee3dc3cbd65d4f22b">
                 <source>Formula</source>
@@ -2337,7 +2337,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuefields_customtype.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuefields_customtype.inc.php">
         <body>
             <trans-unit id="2d8e88b1d141b2e9e5c4a4dfabdffb0b">
                 <source>Edit this issue field</source>
@@ -2387,7 +2387,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuetype.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuetype.inc.php">
         <body>
             <trans-unit id="d9836f07b3cce2bd5b4fd5be4f5e488b">
                 <source>Enable issue type for this scheme</source>
@@ -2461,7 +2461,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuetypescheme.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuetypescheme.inc.php">
         <body>
             <trans-unit id="8ea34f7c31ad8c76cf8f24deecd0ad9b">
                 <source>In use by %number_of_associated_projects project(s)</source>
@@ -2511,7 +2511,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuetypeschemeoption.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuetypeschemeoption.inc.php">
         <body>
             <trans-unit id="7186d4f0f71f9b706a05940b8abcacd0">
                 <source>Issue description</source>
@@ -2537,7 +2537,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_issuetypeschemeoptions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_issuetypeschemeoptions.inc.php">
         <body>
             <trans-unit id="940a34313604f85e46ed593ac906ecdf">
                 <source>Available issue fields</source>
@@ -2560,7 +2560,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_modulebox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_modulebox.inc.php">
         <body>
             <trans-unit id="b9f5c797ebbf55adccdd8539a65a0241">
                 <source>Disabled</source>
@@ -2610,7 +2610,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_offline.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_offline.inc.php">
         <body>
             <trans-unit id="fa9cad4db511fd46f4fab74e820f5223">
                 <source>Enable maintenance mode</source>
@@ -2630,7 +2630,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_permissionsblock.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionsblock.inc.php">
         <body>
             <trans-unit id="0d4d22b476dbfa1e865bd02baa80c2cf">
                 <source>More fine-tuned permissions are available. Click to see them.</source>
@@ -2641,7 +2641,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_permissionsconfigurator.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionsconfigurator.inc.php">
         <body>
             <trans-unit id="88b5fc0c6fa1b6f30a98983b7cb50d19">
                 <source>General permissions</source>
@@ -2676,7 +2676,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_permissionsinfo.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionsinfo.inc.php">
         <body>
             <trans-unit id="2132e6b1ca2aa9405551b53d8a8774e8">
                 <source>Configuration access is always "Restrictive", regardless of the system settings.</source>
@@ -2711,7 +2711,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_permissionsinfoitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionsinfoitem.inc.php">
         <body>
             <trans-unit id="170ebd7e9553bfaeda6a9ba81fbf2c01">
                 <source>Click to grant access</source>
@@ -2728,7 +2728,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_permissionswarning.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionswarning.inc.php">
         <body>
             <trans-unit id="0eaadb4fcb48a0a0ed7bc9868be9fbaa">
                 <source>Warning</source>
@@ -2739,7 +2739,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_projectbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_projectbox.inc.php">
         <body>
             <trans-unit id="75b8b0f4c0aee5b8df95a0541307c9f4">
                 <source>ARCHIVED</source>
@@ -2792,7 +2792,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_reglang.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_reglang.inc.php">
         <body>
             <trans-unit id="b5e4a71c2db71f5e2a42c43b02f39657">
                 <source>Interface language</source>
@@ -2824,7 +2824,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_role.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_role.inc.php">
         <body>
             <trans-unit id="3ec365dd533ddb7ef3d1c111186ce872">
                 <source>Details</source>
@@ -2847,7 +2847,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_rolepermissionsedit.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_rolepermissionsedit.inc.php">
         <body>
             <trans-unit id="9f9c2b8b9d4dc3e0ff00b503e5d30ade">
                 <source>Enter the role name below, and select permissions inherited by users or teams assigned with this role</source>
@@ -2864,7 +2864,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_rolepermissionslist.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_rolepermissionslist.inc.php">
         <body>
             <trans-unit id="0665eded692967e61a95c801d5d238bf">
                 <source>This role does not have any associated permissions</source>
@@ -2872,7 +2872,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_scopebox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_scopebox.inc.php">
         <body>
             <trans-unit id="7b9d637862132fd2169ba94c07845bdf">
                 <source>Edit scope settings</source>
@@ -2901,7 +2901,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_siteicons.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_siteicons.inc.php">
         <body>
             <trans-unit id="782b2be4385074f9d6c285bba2ba9712">
                 <source>Update header icon and favicon</source>
@@ -2933,7 +2933,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_teambox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_teambox.inc.php">
         <body>
             <trans-unit id="f4028da16be4c0d6e9094e464a1b7f52">
                 <source>Add member(s) to this team</source>
@@ -2986,7 +2986,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_teamuserlist.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_teamuserlist.inc.php">
         <body>
             <trans-unit id="140de45fe438ab6620969f6123999cb5">
                 <source>There are no users in this team</source>
@@ -2994,7 +2994,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_teamuserlistitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_teamuserlistitem.inc.php">
         <body>
             <trans-unit id="ce797f64c19a355d7f86831dafe97eb9">
                 <source>Do you really want to remove the user from this team?</source>
@@ -3008,7 +3008,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_user.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_user.inc.php">
         <body>
             <trans-unit id="bfbc9fffe2ef1c78301f4e0e0950e26c">
                 <source>Require re-authentication</source>
@@ -3139,7 +3139,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_userscopes.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_userscopes.inc.php">
         <body>
             <trans-unit id="5cb3044bb2f4788548d750d558a0a283">
                 <source>Scopes available to this user</source>
@@ -3153,7 +3153,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflow.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflow.inc.php">
         <body>
             <trans-unit id="4d3d769b812b6faa6b76e1a8abaece2d">
                 <source>Active</source>
@@ -3191,7 +3191,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowaddtransition.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowaddtransition.inc.php">
         <body>
             <trans-unit id="921ac31e124ce5f96b13aa6382204ebf">
                 <source>Add outgoing transition from step "%step_name"</source>
@@ -3229,7 +3229,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowmenu.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowmenu.inc.php">
         <body>
             <trans-unit id="83b0bf49d0124682a1eaed558dbf7024">
                 <source>Configure workflows</source>
@@ -3255,7 +3255,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowscheme.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowscheme.inc.php">
         <body>
             <trans-unit id="ef5afc97ad7acee3c3863e773695883f">
                 <source>Issue types with associated workflows: %number_of_associated_issuetypes</source>
@@ -3290,7 +3290,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowstep.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowstep.inc.php">
         <body>
             <trans-unit id="2899d284dbb2002326d885edd747eac5">
                 <source>Delete all outgoing transition from step "%step_name"</source>
@@ -3331,7 +3331,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowtransition.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowtransition.inc.php">
         <body>
             <trans-unit id="26ef15c7ecb5f07a022587987a4feb49">
                 <source>Do you really want to delete this transition?</source>
@@ -3342,7 +3342,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowtransitionaction.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowtransitionaction.inc.php">
         <body>
             <trans-unit id="26617cc7cc314ecf16ff8d21462658cf">
                 <source>Set milestone to milestone provided by user</source>
@@ -3413,7 +3413,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/_workflowtransitionvalidationrule.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/_workflowtransitionvalidationrule.inc.php">
         <body>
             <trans-unit id="59991b9f0bd4942074cb742892684d50">
                 <source>Current user can have no more than %number issues already assigned</source>
@@ -3463,7 +3463,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureauthentication.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureauthentication.html.php">
         <body>
             <trans-unit id="2568d64749ee6f1a43cd3133d9d2d08a">
                 <source>Configure authentication</source>
@@ -3501,7 +3501,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureissuefields.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureissuefields.html.php">
         <body>
             <trans-unit id="6f4cffa64d981b107d11bac231f732c8">
                 <source>Configure data types</source>
@@ -3530,7 +3530,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureissuetypes.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureissuetypes.html.php">
         <body>
             <trans-unit id="145f5df141a827bcd1f7d86e45a42f88">
                 <source>Configure issue types</source>
@@ -3565,7 +3565,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configuremodule.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configuremodule.html.php">
         <body>
             <trans-unit id="5ce076f81f7d1d002c54c9fc6809486c">
                 <source>Configure module "%module_name"</source>
@@ -3576,7 +3576,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configuremodules.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configuremodules.html.php">
         <body>
             <trans-unit id="ca7ea6605fd4bbfd1e4bead025c76101">
                 <source>This is where you manage all modules available in this installation of The Bug Genie. You can find even more modules online.</source>
@@ -3638,7 +3638,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configurepermissions.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configurepermissions.html.php">
         <body>
             <trans-unit id="e8585024c03b9df136adebd8011aff62">
                 <source>Configure advanced permissions</source>
@@ -3685,7 +3685,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureprojects.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureprojects.html.php">
         <body>
             <trans-unit id="f727cac0ddae92d9de3567e9a3b11511">
                 <source>Manage projects</source>
@@ -3729,7 +3729,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureroles.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureroles.html.php">
         <body>
             <trans-unit id="db0e3a551d18415ed6bdb7ac0b2b5160">
                 <source>Configure roles</source>
@@ -3755,7 +3755,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureuploads.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureuploads.html.php">
         <body>
             <trans-unit id="790ec1ad9c1f8725873d43b63bf2381f">
                 <source>Configure uploads &amp;amp; attachments</source>
@@ -3829,7 +3829,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureusers.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureusers.html.php">
         <body>
             <trans-unit id="909eeaeff15533797b1e496279e72717">
                 <source>Configure users, teams and clients</source>
@@ -3951,7 +3951,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureworkflows.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureworkflows.html.php">
         <body>
             <trans-unit id="b73ece4e2a399a5f9b2a31a8dd422fed">
                 <source>Add an empty workflow</source>
@@ -3965,7 +3965,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureworkflowscheme.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureworkflowscheme.html.php">
         <body>
             <trans-unit id="3a2145233dfac17297dad339271e596f">
                 <source>Configure workflow scheme "%workflow_scheme_name"</source>
@@ -3997,7 +3997,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureworkflowstep.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureworkflowstep.html.php">
         <body>
             <trans-unit id="5ec72fc4b905207a40ab0af05375657f">
                 <source>Configure workflow step "%step_name"</source>
@@ -4074,7 +4074,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureworkflowsteps.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureworkflowsteps.html.php">
         <body>
             <trans-unit id="4cbf898ff0eab8d17afb83c4616dd41e">
                 <source>Configure workflow "%workflow_name"</source>
@@ -4106,7 +4106,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/configureworkflowtransition.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureworkflowtransition.html.php">
         <body>
             <trans-unit id="92d1d735a21787bf5cf9be65a3682bb3">
                 <source>Edit details</source>
@@ -4189,7 +4189,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/findusers.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/findusers.html.php">
         <body>
             <trans-unit id="870de57d02105071da0f229f5393e622">
                 <source>Please enter something to search for</source>
@@ -4212,7 +4212,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/import.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/import.html.php">
         <body>
             <trans-unit id="cc8d68c551c4a9a6d5313e07de4deafd">
                 <source>CSV</source>
@@ -4274,7 +4274,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/index.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/index.html.php">
         <body>
             <trans-unit id="d2cbd2f4b0e12724590336319188b507">
                 <source>Configuration center</source>
@@ -4303,7 +4303,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/saveauthentication.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/saveauthentication.html.php">
         <body>
             <trans-unit id="96d4dadd096605d5813d2c6bdf82e82c">
                 <source>Settings saved</source>
@@ -4317,7 +4317,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/scope.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/scope.html.php">
         <body>
             <trans-unit id="06dacdf15d134e93b949702e91a0651c">
                 <source>Configure scopes</source>
@@ -4400,7 +4400,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/scopes.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/scopes.html.php">
         <body>
             <trans-unit id="0e0d43f6b4bc0c5740b4111901edb5f1">
                 <source>The Bug Genie scopes are self-contained environments within the same The Bug Genie installation, set up to be initialized when The Bug Genie is accessed via different hostnames.</source>
@@ -4438,7 +4438,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/configuration/templates/settings.html.php">
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/settings.html.php">
         <body>
             <trans-unit id="fb197ee87a0f850dc3b7bb98fe408518">
                 <source>Configure settings</source>
@@ -4464,7 +4464,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/Actions.php">
+    <file source-language="en" datatype="php" original="core/modules/main/Actions.php">
         <body>
             <trans-unit id="5f7379e6e92235e70969f5fdd3ae8997">
                 <source>There are no more issues in that direction.</source>
@@ -4826,7 +4826,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/Components.php">
+    <file source-language="en" datatype="php" original="core/modules/main/Components.php">
         <body>
             <trans-unit id="3adbdb3ac060038aa0e6e6c138ef9873">
                 <source>Category</source>
@@ -4930,7 +4930,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_adddashboardview.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_adddashboardview.inc.php">
         <body>
             <trans-unit id="d6e03c491b24d794da4d3f18e4c07757">
                 <source>Add dashboard view</source>
@@ -4953,7 +4953,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_adddashboardview_view.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_adddashboardview_view.inc.php">
         <body>
             <trans-unit id="f2ccf85c840b8f567dd94d3150ea9dd4">
                 <source>Add view</source>
@@ -4961,7 +4961,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_affecteditem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_affecteditem.inc.php">
         <body>
             <trans-unit id="951f0210dfa940bf2392e6b196d1b223">
                 <source>Remove %itemname?</source>
@@ -4975,7 +4975,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_archivedprojects.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_archivedprojects.inc.php">
         <body>
             <trans-unit id="a3f2cfebb8833a95277443c0e9a8711d">
                 <source>Displaying archived projects for %item</source>
@@ -4992,7 +4992,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_attachedfile.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_attachedfile.inc.php">
         <body>
             <trans-unit id="b76aa13c99d39bdeaaf56888acab458c">
                 <source>Embedding this file in descriptions or comments</source>
@@ -5018,7 +5018,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_attachedlink.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_attachedlink.inc.php">
         <body>
             <trans-unit id="b80dbb7282010939e724c9453fab705a">
                 <source>Do you really want to remove this link?</source>
@@ -5029,7 +5029,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_attachlink.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_attachlink.inc.php">
         <body>
             <trans-unit id="9bf934dfb167bab2a0f69876bd5dc96e">
                 <source>Attach a link to this issue</source>
@@ -5049,7 +5049,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_captcha.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_captcha.inc.php">
         <body>
             <trans-unit id="020809e7dc05b4d6f2528219c748610c">
                 <source>Enter the number you see above</source>
@@ -5057,7 +5057,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_clientusers.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_clientusers.inc.php">
         <body>
             <trans-unit id="6c372c71196acb79dea51194983576a7">
                 <source>Users for %clientname</source>
@@ -5071,7 +5071,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_comment.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_comment.inc.php">
         <body>
             <trans-unit id="fd9ce4cc0913e7c89e519a01ab41e2b2">
                 <source>Access to this comment is restricted</source>
@@ -5136,7 +5136,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_commentitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_commentitem.inc.php">
         <body>
             <trans-unit id="d54d8891586858cd8b94e150acfc0b9f">
                 <source>%username (%buddy_name) said</source>
@@ -5147,7 +5147,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_comments.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_comments.inc.php">
         <body>
             <trans-unit id="5f94404bf7a236db3599df0135a590ac">
                 <source>Post comment</source>
@@ -5170,7 +5170,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_confirmusername.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_confirmusername.inc.php">
         <body>
             <trans-unit id="d9c38a1d43bd5c3251aed1d622c5b49f">
                 <source>Confirm username</source>
@@ -5187,7 +5187,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardconfig.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardconfig.inc.php">
         <body>
             <trans-unit id="c9904b8ada9acdf4f346c5a1ee285230">
                 <source>Configure dashboard</source>
@@ -5210,7 +5210,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardlayoutstandard.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardlayoutstandard.inc.php">
         <body>
             <trans-unit id="42eac71f8f979deea2c66744a48d9ef7">
                 <source>Click here to add a new view to this column</source>
@@ -5218,7 +5218,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardview.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardview.inc.php">
         <body>
             <trans-unit id="b7badfce68830acc60fef68b315b9be9">
                 <source>Download feed</source>
@@ -5226,7 +5226,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardviewloggedactions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardviewloggedactions.inc.php">
         <body>
             <trans-unit id="63052a5126d3c7f4b4cad0f5dbc314e2">
                 <source>You haven't done anything recently</source>
@@ -5234,7 +5234,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardviewrecentcomments.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardviewrecentcomments.inc.php">
         <body>
             <trans-unit id="d7fc5471604b9b768e120f2e4af091b6">
                 <source>No issues recently commented</source>
@@ -5242,7 +5242,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardviewusermilestones.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardviewusermilestones.inc.php">
         <body>
             <trans-unit id="59de75f7963cbdd244863be16b748d3a">
                 <source>There are no upcoming milestones for any of your associated projects</source>
@@ -5253,7 +5253,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dashboardviewuserprojects.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardviewuserprojects.inc.php">
         <body>
             <trans-unit id="21d28aa03f67eb242b1c95a6a0594ff5">
                 <source>Planning</source>
@@ -5261,7 +5261,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_duplicateissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_duplicateissues.inc.php">
         <body>
             <trans-unit id="5de89bc87eff10ed35200ee0b090bdde">
                 <source>This issue does not have any duplicates</source>
@@ -5269,7 +5269,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_dynamicuploader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_dynamicuploader.inc.php">
         <body>
             <trans-unit id="151ce802f27fa0d3dd362a7299b092a7">
                 <source>Drop files on this area or %click_here to add files</source>
@@ -5295,7 +5295,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_findduplicateissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_findduplicateissues.inc.php">
         <body>
             <trans-unit id="cf4ee9ec8c73c91b7b95d296ef57d43b">
                 <source>The following issues matched your search</source>
@@ -5312,7 +5312,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_findrelatedissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_findrelatedissues.inc.php">
         <body>
             <trans-unit id="aa0b58ddafa810265fa27e825ce383c4">
                 <source>Either use the checkboxes and press the "%relate_these_issues"-button below or click any issues in the list, and select an action.</source>
@@ -5323,7 +5323,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_hideableInfoBox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_hideableInfoBox.inc.php">
         <body>
             <trans-unit id="45c30c2167d8b25b58e06424f40ace27">
                 <source>Don't show this again</source>
@@ -5334,7 +5334,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_identifiableselector.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_identifiableselector.inc.php">
         <body>
             <trans-unit id="8e3cab47ea6c14a93222dc7c9c049304">
                 <source>Find a user or team</source>
@@ -5375,7 +5375,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_identifiableselectorresults.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_identifiableselectorresults.inc.php">
         <body>
             <trans-unit id="517d7f636a8fd072d5224fa5b739b52e">
                 <source>Clients found</source>
@@ -5401,7 +5401,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_intro_index_no_projects.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_intro_index_no_projects.inc.php">
         <body>
             <trans-unit id="5f066a3dd753584c37de87153bf7d93a">
                 <source>Welcome to The Bug Genie. This seems like the first time you're using this instance, and it doesn't look like you have had the chance to add any projects yet.</source>
@@ -5421,7 +5421,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_intro_index_single_tracker.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_intro_index_single_tracker.inc.php">
         <body>
             <trans-unit id="60d8de9a6426a8d0daac246483e67786">
                 <source>It looks likes you're only using The Bug Genie to track issues for one project.</source>
@@ -5438,7 +5438,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issueaclformentry.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issueaclformentry.inc.php">
         <body>
             <trans-unit id="6aa34cfea8930a33bd36e393127e53cb">
                 <source>Remove access for this user</source>
@@ -5449,7 +5449,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issueadditem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issueadditem.inc.php">
         <body>
             <trans-unit id="effaa1b4fa719a3b7b24fb17449e5d6a">
                 <source>Add affected item</source>
@@ -5469,7 +5469,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuedetailslisteditable.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuedetailslisteditable.inc.php">
         <body>
             <trans-unit id="d659cf684c4de7189d56a11d3bf6bbe0">
                 <source>Issue basics</source>
@@ -5681,7 +5681,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuedetailslistfield.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuedetailslistfield.inc.php">
         <body>
             <trans-unit id="1b202ed7614bd8f02076d937e71a7215">
                 <source>No choices available</source>
@@ -5689,7 +5689,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issueestimator.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issueestimator.inc.php">
         <body>
             <trans-unit id="fde80c97495d4c393d531a50af128815">
                 <source>Estimate this issue</source>
@@ -5736,7 +5736,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuelogitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuelogitem.inc.php">
         <body>
             <trans-unit id="a4fd751626e9d9b89388e34c827cfd08">
                 <source>The issue was created</source>
@@ -5849,7 +5849,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuemaincustomfields.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuemaincustomfields.inc.php">
         <body>
             <trans-unit id="c398b45f3a452d074ee94ee722ac9742">
                 <source>Click here to edit this field</source>
@@ -5860,7 +5860,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuemoreactions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuemoreactions.inc.php">
         <body>
             <trans-unit id="16baa74196a8fba7cb56b6a141935577">
                 <source>Workflow transition actions</source>
@@ -5940,7 +5940,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuemoved.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuemoved.inc.php">
         <body>
             <trans-unit id="f7f1dc71b0d4930ad93142271939618f">
                 <source>The selected issue has been moved to the project %project_name. Issues that are moved get new issue numbers - the issue can now be found here: %issue_link</source>
@@ -5951,7 +5951,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issueparent_crumbs.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issueparent_crumbs.inc.php">
         <body>
             <trans-unit id="bffc5b5add307fc0a66d0de6cf37eb0b">
                 <source>%issuetype %issue_no</source>
@@ -5959,7 +5959,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuepermissions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuepermissions.inc.php">
         <body>
             <trans-unit id="4988c05ffe9d76df3610b2cb6941fbea">
                 <source>Issue access policy</source>
@@ -5985,7 +5985,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuespenttime.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuespenttime.inc.php">
         <body>
             <trans-unit id="89430e7e6c2c81b7212f4b01ddb87e66">
                 <source>Issue time tracking - edit time spent entry</source>
@@ -6026,7 +6026,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuespenttimeentry.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuespenttimeentry.inc.php">
         <body>
             <trans-unit id="4c8855fd1f94a50818ff367432587b95">
                 <source>'1 hour', '1 day, 3 hours' or similar</source>
@@ -6064,7 +6064,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuespenttimes.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuespenttimes.inc.php">
         <body>
             <trans-unit id="57ff37ed03316e23a7daba5476c1c265">
                 <source>Issue time tracking - time spent</source>
@@ -6093,7 +6093,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_issuesubscribers.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuesubscribers.inc.php">
         <body>
             <trans-unit id="064d045e5d7acaf9b3ee5513e1f83cc3">
                 <source>Subscribe someone to this issue</source>
@@ -6104,7 +6104,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_login.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_login.inc.php">
         <body>
             <trans-unit id="46c974576287726bf89270425e7f7276">
                 <source>Log in with your username and password</source>
@@ -6133,7 +6133,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_loginregister.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_loginregister.inc.php">
         <body>
             <trans-unit id="fedeb8b0301ba8a2fe37c35363af8990">
                 <source>This username is invalid or in use</source>
@@ -6159,7 +6159,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_logitem.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_logitem.inc.php">
         <body>
             <trans-unit id="14457207f0eebbf2a22de156b0281365">
                 <source>%user said</source>
@@ -6236,7 +6236,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_menulink.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_menulink.inc.php">
         <body>
             <trans-unit id="184eb855a38f789b734815a80e309d24">
                 <source>Please confirm</source>
@@ -6250,7 +6250,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_menulinks.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_menulinks.inc.php">
         <body>
             <trans-unit id="6e184b92255aa9ba42ca795e42080254">
                 <source>Toggle menu edit mode</source>
@@ -6288,7 +6288,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_milestonedashboardbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_milestonedashboardbox.inc.php">
         <body>
             <trans-unit id="2fdbb266bd6f165270663786667f676d">
                 <source>No scheduled date specified</source>
@@ -6320,7 +6320,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_moveissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_moveissue.inc.php">
         <body>
             <trans-unit id="fdb2a9a5f8be351b45a91ffd0b58a892">
                 <source>Move issue to a different project</source>
@@ -6340,7 +6340,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_myfriends.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_myfriends.inc.php">
         <body>
             <trans-unit id="3d594614f445f6b00014e9b77730b833">
                 <source>Friends</source>
@@ -6351,7 +6351,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_notifications.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_notifications.inc.php">
         <body>
             <trans-unit id="f478d19b8f322ebaf7f826c353200af8">
                 <source>You have no notifications</source>
@@ -6383,7 +6383,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_openid.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_openid.inc.php">
         <body>
             <trans-unit id="a93190d591c4376d0c87109c2d9675ac">
                 <source>Add external login</source>
@@ -6391,7 +6391,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_openidbuttons.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_openidbuttons.inc.php">
         <body>
             <trans-unit id="b6d4223e60986fa4c9af77ee5f7149c5">
                 <source>Sign in</source>
@@ -6444,7 +6444,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_profile_dashboard.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_profile_dashboard.inc.php">
         <body>
             <trans-unit id="b7f22fc987366829c48696c6c2660c90">
                 <source>This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.</source>
@@ -6458,7 +6458,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_profilebuttons.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_profilebuttons.inc.php">
         <body>
             <trans-unit id="0b565ec652606a4265a3e15e6be37540">
                 <source>Pick a username</source>
@@ -6487,7 +6487,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_relatedissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_relatedissue.inc.php">
         <body>
             <trans-unit id="e40c2a3698ccb0a60568482c9d3a012d">
                 <source>Remove relation to issue %itemname?</source>
@@ -6501,7 +6501,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_relatedissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_relatedissues.inc.php">
         <body>
             <trans-unit id="09e9e017a981567c70494cc86ebdfeb4">
                 <source>This issue does not have any child issues</source>
@@ -6509,7 +6509,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_relateissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_relateissue.inc.php">
         <body>
             <trans-unit id="14f5e9e183cb7dddcab5280520f8c803">
                 <source>Find related issues</source>
@@ -6529,7 +6529,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_reportissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_reportissue.inc.php">
         <body>
             <trans-unit id="841c115ea385dc59d6b721f6ac9d5882">
                 <source>One or more errors occured when trying to file your issue</source>
@@ -6825,7 +6825,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_reportissuecontainer.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_reportissuecontainer.inc.php">
         <body>
             <trans-unit id="1ed0e75eff9abebaaab606a416c58707">
                 <source>Report an issue</source>
@@ -6836,7 +6836,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_standarduploader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_standarduploader.inc.php">
         <body>
             <trans-unit id="792744786ed30c5623dd1cf0c16f4ffe">
                 <source>Select a file</source>
@@ -6877,7 +6877,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_teamdropdown.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_teamdropdown.inc.php">
         <body>
             <trans-unit id="e725ce0edc6abaf2d1772e53d3400d1b">
                 <source>No such team</source>
@@ -6897,7 +6897,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_textarea.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_textarea.inc.php">
         <body>
             <trans-unit id="f70ea4ea42814a45bfb084d72faab146">
                 <source>Mediawiki</source>
@@ -6977,7 +6977,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_tutorial_viewissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_tutorial_viewissue.inc.php">
         <body>
             <trans-unit id="91ccccc57fbf33cd110cd084dab96074">
                 <source>Get started with the issue overview</source>
@@ -7093,7 +7093,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_updateissueproperties.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_updateissueproperties.inc.php">
         <body>
             <trans-unit id="eb501091a47cade8130ec7daebc7b78b">
                 <source>Mark as duplicate</source>
@@ -7143,7 +7143,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_uploader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_uploader.inc.php">
         <body>
             <trans-unit id="1a8a981b3e49420ac604f1b9bdb5051e">
                 <source>Attach one or more file(s) to this issue</source>
@@ -7154,7 +7154,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_usercard.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_usercard.inc.php">
         <body>
             <trans-unit id="4d3831ea7b1bda2d26a8bf5160bf8ac3">
                 <source>This user has not been confirmed yet</source>
@@ -7198,7 +7198,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_userdropdown.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_userdropdown.inc.php">
         <body>
             <trans-unit id="d199aa404d53c2fb2ffb95ba288048ff">
                 <source>This is one of your friends</source>
@@ -7215,7 +7215,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/_userscope.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_userscope.inc.php">
         <body>
             <trans-unit id="2f2e4bf143eb7def1cc700972ec5b4ea">
                 <source>Remove access to / from this scope?</source>
@@ -7244,7 +7244,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/about.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/about.html.php">
         <body>
             <trans-unit id="d2f0edf4bf409f5fafd1435e91ee7eec">
                 <source>Version %thebuggenie_version</source>
@@ -7273,7 +7273,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/addscope.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/addscope.html.php">
         <body>
             <trans-unit id="3a301419d55d8ed5e871437a91ed4cc7">
                 <source>You are currently not registered in this scope</source>
@@ -7299,7 +7299,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/clientdashboard.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/clientdashboard.html.php">
         <body>
             <trans-unit id="2c18afd97ee85db12243da58ac068886">
                 <source>Client dashboard for %client_name</source>
@@ -7346,7 +7346,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/dashboard.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/dashboard.html.php">
         <body>
             <trans-unit id="7debd5e0eabc1346d814e7a01e65382c">
                 <source>Open issues assigned to you</source>
@@ -7360,7 +7360,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/elevatedlogin.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/elevatedlogin.html.php">
         <body>
             <trans-unit id="442ef31b728eaf0e3a3074e5fdc57d09">
                 <source>Authentication required</source>
@@ -7380,7 +7380,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/forbidden.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/forbidden.html.php">
         <body>
             <trans-unit id="31ab772c7b6bad974a80cbe6f2e6bc9e">
                 <source>403 - Forbidden</source>
@@ -7388,7 +7388,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/forbidden.json.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/forbidden.json.php">
         <body>
             <trans-unit id="26964d48c1b21cd68c7d50a2dea7597b">
                 <source>You do not have access to this action</source>
@@ -7396,7 +7396,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/index.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/index.html.php">
         <body>
             <trans-unit id="131129f807db0e229703e67dff2c4cbd">
                 <source>Only using The Bug Genie to track issues for one project?</source>
@@ -7416,7 +7416,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/myaccount.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/myaccount.html.php">
         <body>
             <trans-unit id="6c9ad251028ae08704d7e6fc867fdc23">
                 <source>Changing your password</source>
@@ -7688,7 +7688,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/notfound.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/notfound.html.php">
         <body>
             <trans-unit id="de9219e425cc35b85e0fa0222f625269">
                 <source>404 - Not Found</source>
@@ -7699,7 +7699,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/reportissue.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/reportissue.html.php">
         <body>
             <trans-unit id="df4f9badc4508e845a7990e7524390b9">
                 <source>Reporting disabled</source>
@@ -7713,7 +7713,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/reportissue.json.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/reportissue.json.php">
         <body>
             <trans-unit id="0ff0ca5b23cddfb2c0636329348cbb6b">
                 <source>This page cannot be loaded</source>
@@ -7724,7 +7724,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/reset.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/reset.html.php">
         <body>
             <trans-unit id="32fe59513f5bbdd353b4527cc6af55ce">
                 <source>Reset your password</source>
@@ -7738,7 +7738,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/teamdashboard.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/teamdashboard.html.php">
         <body>
             <trans-unit id="c6359009c590f1873611e283cd7ed322">
                 <source>Team dashboard for %team_name</source>
@@ -7764,7 +7764,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/upload.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/upload.html.php">
         <body>
             <trans-unit id="923b18e363351c027509d3a4211bda0a">
                 <source>The file "%filename" was uploaded successfully</source>
@@ -7772,7 +7772,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/main/templates/viewissue.html.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/viewissue.html.php">
         <body>
             <trans-unit id="d58fea6d874bac8d3aa81120a10a698c">
                 <source>Please wait while updating issue type</source>
@@ -7927,7 +7927,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/Actions.php">
+    <file source-language="en" datatype="php" original="core/modules/project/Actions.php">
         <body>
             <trans-unit id="4a66bb70af3f6ad629030f2a0e975974">
                 <source>This project does not exist</source>
@@ -8184,7 +8184,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/Components.php">
+    <file source-language="en" datatype="php" original="core/modules/project/Components.php">
         <body>
             <trans-unit id="53fbb4285f5a5c035c9e3e102e477dee">
                 <source>Project open issues (recommended)</source>
@@ -8219,7 +8219,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_agileboardbacklog.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_agileboardbacklog.inc.php">
         <body>
             <trans-unit id="75dd5f1160a3f02b6fae89c54361a1b3">
                 <source>Points</source>
@@ -8233,7 +8233,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_agileboardbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_agileboardbox.inc.php">
         <body>
             <trans-unit id="43b53d4637c0f3a52c51d2bd61895f5f">
                 <source>Edit this board</source>
@@ -8253,7 +8253,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_agilewhiteboardtransitionselector.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_agilewhiteboardtransitionselector.inc.php">
         <body>
             <trans-unit id="43e09d3f973823629c4c1692ffa6edc9">
                 <source>Transition issue</source>
@@ -8264,7 +8264,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_boardcolumnheader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_boardcolumnheader.inc.php">
         <body>
             <trans-unit id="279fdac449fbaa1eb1028dc8f003631c">
                 <source>%count (min %min_workitems - max %max_workitems)</source>
@@ -8284,7 +8284,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_build.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_build.inc.php">
         <body>
             <trans-unit id="7c87f184864708a619a0ccc691cc30b7">
                 <source>Edit release details</source>
@@ -8364,7 +8364,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_buildbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_buildbox.inc.php">
         <body>
             <trans-unit id="62f58193dbeb6fec3c4637a0154084b1">
                 <source>Delete this release?</source>
@@ -8390,7 +8390,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_clientinfo.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_clientinfo.inc.php">
         <body>
             <trans-unit id="4bc7766d599f3ab0ce24ad6cb0df9539">
                 <source>View users</source>
@@ -8398,7 +8398,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_componentbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_componentbox.inc.php">
         <body>
             <trans-unit id="e0c2b4b6256d9f59b9739815a7551afd">
                 <source>Set permissions for this component</source>
@@ -8439,7 +8439,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectclient.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectclient.inc.php">
         <body>
             <trans-unit id="79c1ee04f7f42404089d9c774b96fa5a">
                 <source>No client assigned</source>
@@ -8447,7 +8447,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectdownloads.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectdownloads.inc.php">
         <body>
             <trans-unit id="ce801ee7b54fe4528dab803486ad0556">
                 <source>There are no downloadable releases at the moment</source>
@@ -8455,7 +8455,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectinfo.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectinfo.inc.php">
         <body>
             <trans-unit id="2360e6dfe5ccdee3333d4a2eb3816c5f">
                 <source>This project has no description</source>
@@ -8478,7 +8478,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectrecentactivities.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectrecentactivities.inc.php">
         <body>
             <trans-unit id="efd6cfc1ed259c3f1188bb7bd18e39cf">
                 <source>Show complete timeline</source>
@@ -8498,7 +8498,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectrecentissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectrecentissues.inc.php">
         <body>
             <trans-unit id="4dc3d0bc0e8108e779bbd2cef2c151c3">
                 <source>No issues of this type has been posted yet</source>
@@ -8506,7 +8506,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectstatistics.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectstatistics.inc.php">
         <body>
             <trans-unit id="c371248209b3f3213829109f86e3efc5">
                 <source>Open / closed (%)</source>
@@ -8529,7 +8529,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectstatisticslast15.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectstatisticslast15.inc.php">
         <body>
             <trans-unit id="2d1bc014e4b1728c9ccbd42f14a6b135">
                 <source>Issues opened</source>
@@ -8537,7 +8537,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectsubprojects.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectsubprojects.inc.php">
         <body>
             <trans-unit id="a4d3fe654de3e8a9b56b60a724b08ddd">
                 <source>This project has no subprojects</source>
@@ -8548,7 +8548,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectteam.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectteam.inc.php">
         <body>
             <trans-unit id="86dde1a1b1c662c9c2b9a546320f7cec">
                 <source>No users or teams assigned</source>
@@ -8556,7 +8556,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_dashboardviewprojectupcoming.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectupcoming.inc.php">
         <body>
             <trans-unit id="75726743d6f1fe9b9f165735656677d5">
                 <source>This project has no upcoming milestones.</source>
@@ -8564,7 +8564,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_editagileboard.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_editagileboard.inc.php">
         <body>
             <trans-unit id="e9bfb485e714c812407664d52a4f5052">
                 <source>Edit agile board</source>
@@ -8704,7 +8704,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_editboardcolumn.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_editboardcolumn.inc.php">
         <body>
             <trans-unit id="710b83fcac12967268bc99b5bab9a093">
                 <source>Column name</source>
@@ -8727,7 +8727,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_editionbox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_editionbox.inc.php">
         <body>
             <trans-unit id="af618d8d9c38c120a268fce4722e8f55">
                 <source>Edit edition</source>
@@ -8747,7 +8747,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_epicstrip.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_epicstrip.inc.php">
         <body>
             <trans-unit id="b78a3223503896721cca1303f776159b">
                 <source>Title</source>
@@ -8767,7 +8767,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestone.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestone.inc.php">
         <body>
             <trans-unit id="e81989bb4880b2fad170dc8b76620220">
                 <source>Save sprint</source>
@@ -8820,7 +8820,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestonebox.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonebox.inc.php">
         <body>
             <trans-unit id="b4438b15f6cdf9bc2115bc6f93221c7d">
                 <source>No issues are assigned to this milestone</source>
@@ -8840,7 +8840,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestoneboxheader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneboxheader.inc.php">
         <body>
             <trans-unit id="4d34f1097f6c8b9cee28bca8b78bbee9">
                 <source>Start date</source>
@@ -8872,7 +8872,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestonedetails.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonedetails.inc.php">
         <body>
             <trans-unit id="a536dd3d7fede1ecaea268e614782379">
                 <source>Starting %start_date</source>
@@ -8919,7 +8919,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestonedetailsissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonedetailsissue.inc.php">
         <body>
             <trans-unit id="191dc48c334c559d594dcece7cb3c80f">
                 <source>Show more actions</source>
@@ -8927,7 +8927,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestoneepic.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneepic.inc.php">
         <body>
             <trans-unit id="f9134937ba5da4d91eead723aee72481">
                 <source>Current status</source>
@@ -8941,7 +8941,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestonefinish.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonefinish.inc.php">
         <body>
             <trans-unit id="07be48e2d921063f1ebbe8e01b8b6505">
                 <source>Mark milestone finished</source>
@@ -8991,7 +8991,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestoneissue.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneissue.inc.php">
         <body>
             <trans-unit id="cb253883bfc6845f7227be93e8e27096">
                 <source>Priority not set</source>
@@ -9002,7 +9002,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestoneissues.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneissues.inc.php">
         <body>
             <trans-unit id="691c2a0aa6951d434205745497f8e8f0">
                 <source>%pts points</source>
@@ -9013,7 +9013,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_milestonewhiteboardstatusdetails.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonewhiteboardstatusdetails.inc.php">
         <body>
             <trans-unit id="8baebbbb2bf56c7cac55d30348f7c9ad">
                 <source>%status_name - %percentage (%count of %total)</source>
@@ -9033,7 +9033,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_overview.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_overview.inc.php">
         <body>
             <trans-unit id="be6c7881e5545c7773dc508cc3789d56">
                 <source>"%project_name" project timeline</source>
@@ -9062,7 +9062,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_planningcolorpicker.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_planningcolorpicker.inc.php">
         <body>
             <trans-unit id="bf1a1db8dc8673071129027191db1485">
                 <source>Click to select a planning color for this issue</source>
@@ -9082,7 +9082,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectconfig_container.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectconfig_container.inc.php">
         <body>
             <trans-unit id="5bd456a76d69c9c1760a867e054d3927">
                 <source>Quick edit project</source>
@@ -9129,7 +9129,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectdevelopers.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectdevelopers.inc.php">
         <body>
             <trans-unit id="e9f25207215052fda5f14f072eda5227">
                 <source>Add people</source>
@@ -9185,7 +9185,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectedition.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectedition.inc.php">
         <body>
             <trans-unit id="8dd8d5d0e219e834848e467d65a67749">
                 <source>Edit edition details</source>
@@ -9250,7 +9250,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectheader.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectheader.inc.php">
         <body>
             <trans-unit id="801ab24683a4a8c433c6eb40c48bcd9d">
                 <source>Download</source>
@@ -9270,7 +9270,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projecthierarchy.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projecthierarchy.inc.php">
         <body>
             <trans-unit id="f96fc339d7287e4b00d7e1b9634b3120">
                 <source>Add an edition</source>
@@ -9314,7 +9314,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projecticons.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projecticons.inc.php">
         <body>
             <trans-unit id="7ec049ac7a14cbb8f1830641e6188c83">
                 <source>Update project icons</source>
@@ -9334,7 +9334,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectinfo.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectinfo.inc.php">
         <body>
             <trans-unit id="8d9e87a43e3b6c8d815d6b2df674ffbd">
                 <source>Save project settings</source>
@@ -9384,7 +9384,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectinfolinks.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectinfolinks.inc.php">
         <body>
             <trans-unit id="63a78ed4647f7c63c2929e35ec1c95e3">
                 <source>Customize</source>
@@ -9425,7 +9425,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectother.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectother.inc.php">
         <body>
             <trans-unit id="444424d7dccd163cb490d4fadbd21a4e">
                 <source>Save display settings</source>
@@ -9463,7 +9463,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectpermissions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectpermissions.inc.php">
         <body>
             <trans-unit id="b2f76998c61421aac9afdf323783526d">
                 <source>Create project role</source>
@@ -9489,7 +9489,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectplanningsettings.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectplanningsettings.inc.php">
         <body>
             <trans-unit id="038ff4b272e7f699be14ec27dfcbdd8d">
                 <source>Configure visible columns</source>
@@ -9509,7 +9509,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projects_assignees.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projects_assignees.inc.php">
         <body>
             <trans-unit id="57d7df127dc03f5eb8f487c29b433df7">
                 <source>Assigned users</source>
@@ -9538,7 +9538,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectsettings.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectsettings.inc.php">
         <body>
             <trans-unit id="2b616a66c1f9bea6831ac5a051d5455e">
                 <source>Change workflow scheme</source>
@@ -9585,7 +9585,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectworkflow.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectworkflow.inc.php">
         <body>
             <trans-unit id="e2c5eec73463fc657f23685b792c0d22">
                 <source>Change workflow</source>
@@ -9599,7 +9599,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_projectworkflow_table.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectworkflow_table.inc.php">
         <body>
             <trans-unit id="f9f050ac7d9125905ed00c893d029bb7">
                 <source>Issues in the workflow step on the left will have their workflow step changed to the one on the right. This will change the issue's status to the one assigned to the new step.</source>
@@ -9622,7 +9622,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_release.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_release.inc.php">
         <body>
             <trans-unit id="5d57104e6099868c756e88d007b92f41">
                 <source>Show all issues for this release</source>
@@ -9633,7 +9633,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_releasestrip.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_releasestrip.inc.php">
         <body>
             <trans-unit id="34b6cd75171affba6957e308dcbd92be">
                 <source>Version</source>
@@ -9641,7 +9641,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_scrumcard.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_scrumcard.inc.php">
         <body>
             <trans-unit id="1060ff15923d59d960c671d7077f4b0a">
                 <source>Pick a color for this user story</source>
@@ -9670,7 +9670,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_scrumstorytask.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_scrumstorytask.inc.php">
         <body>
             <trans-unit id="a92ac6b470f47084552bd3d68dd88bd1">
                 <source>%hours hr(s)</source>
@@ -9678,7 +9678,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/_timeline.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_timeline.inc.php">
         <body>
             <trans-unit id="0ab2c41d2593003f9b4018356a2aa1b7">
                 <source>New version released</source>
@@ -9695,7 +9695,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/agileboardplanning.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/agileboardplanning.html.php">
         <body>
             <trans-unit id="b741c0133b1c4bcaa70b46f63f090691">
                 <source>"%project_name" project planning</source>
@@ -9748,7 +9748,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/agileboardwhiteboard.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/agileboardwhiteboard.html.php">
         <body>
             <trans-unit id="655f838f26b376a27833fdb71586c234">
                 <source>"%project_name" agile whiteboard</source>
@@ -9762,7 +9762,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/dashboard.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/dashboard.html.php">
         <body>
             <trans-unit id="9b94cd918938bdf55e4b9d9b7c21ecff">
                 <source>"%project_name" project dashboard</source>
@@ -9776,7 +9776,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/files.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/files.html.php">
         <body>
             <trans-unit id="0966900c09e3fa33cbce845f970f295a">
                 <source>Project files</source>
@@ -9787,7 +9787,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/findassignee.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/findassignee.html.php">
         <body>
             <trans-unit id="22013425bdf6842b70d1d5343be26fa1">
                 <source>Please specify something to search for</source>
@@ -9813,7 +9813,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/issues.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/issues.html.php">
         <body>
             <trans-unit id="43b07024a7f798b7c91d40112efa1531">
                 <source>"%project_name" issues</source>
@@ -9821,7 +9821,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/planning.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/planning.html.php">
         <body>
             <trans-unit id="720cb0855773f3411311be9dd894126a">
                 <source>Manage agile boards</source>
@@ -9835,7 +9835,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/releasecenter.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/releasecenter.html.php">
         <body>
             <trans-unit id="6fddf02cefd40280c60466d2ecbde8fb">
                 <source>"%project_name" release center</source>
@@ -9882,7 +9882,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/releases.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/releases.html.php">
         <body>
             <trans-unit id="8ed62b181d1a863b355fd07f0b77c232">
                 <source>"%project_name" releases</source>
@@ -9920,7 +9920,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/roadmap.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/roadmap.html.php">
         <body>
             <trans-unit id="79400937b03fd22f560639496b6256cd">
                 <source>"%project_name" roadmap</source>
@@ -9943,7 +9943,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/scrumshowburndownimage.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/scrumshowburndownimage.html.php">
         <body>
             <trans-unit id="3a1180afede48dafd773c217ac0b3d80">
                 <source>Sprint burndown graph - %sprint_name (starts %starting_date, ends %scheduled_date)</source>
@@ -9951,7 +9951,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/settings.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/settings.html.php">
         <body>
             <trans-unit id="c706def0038a8f793a35f2c44b23f78e">
                 <source>Project settings</source>
@@ -9968,7 +9968,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/statistics.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/statistics.html.php">
         <body>
             <trans-unit id="6af6dadd1667f1010fe982c99c8eb6a1">
                 <source>"%project_name" project team</source>
@@ -9985,7 +9985,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/statisticslast15.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/statisticslast15.html.php">
         <body>
             <trans-unit id="9448da3df424a37fd2324e360c3c4425">
                 <source>Number of issues</source>
@@ -9999,7 +9999,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/timeline.html.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/timeline.html.php">
         <body>
             <trans-unit id="5627c6311b9f287e6c03446fc3f33faf">
                 <source>Timeline actions</source>
@@ -10016,7 +10016,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/project/templates/timeline.rss.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/timeline.rss.php">
         <body>
             <trans-unit id="48de2f20eae77a1ff4a73c7f33752a28">
                 <source>%project_name project timeline</source>
@@ -10024,7 +10024,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/Actions.php">
+    <file source-language="en" datatype="php" original="core/modules/search/Actions.php">
         <body>
             <trans-unit id="68c8b13a56d26f059a5ae7c402be1109">
                 <source>You don't have access to this saved search</source>
@@ -10062,7 +10062,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/Components.php">
+    <file source-language="en" datatype="php" original="core/modules/search/Components.php">
         <body>
             <trans-unit id="c74c1f42f141c011ca6bd8b1114fc3d0">
                 <source>Build</source>
@@ -10121,7 +10121,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_bulkactions.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_bulkactions.inc.php">
         <body>
             <trans-unit id="b70cca33bd5e8c23c6346f9d669a352f">
                 <source>With selected issue(s): %action</source>
@@ -10162,7 +10162,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_bulkworkflow.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_bulkworkflow.inc.php">
         <body>
             <trans-unit id="075a520f633365189dcc557bf9776bf3">
                 <source>Perform workflow step</source>
@@ -10182,7 +10182,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_extralinks.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_extralinks.inc.php">
         <body>
             <trans-unit id="385f3020748fddfef470276eb047b34b">
                 <source>Download search results</source>
@@ -10196,7 +10196,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_filter.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_filter.inc.php">
         <body>
             <trans-unit id="7531907d0d21681d481c0e4ad3b837c0">
                 <source>%field is %value</source>
@@ -10237,7 +10237,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_filterfindusers.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_filterfindusers.inc.php">
         <body>
             <trans-unit id="e4da0f918e8d703993deffa03bfa2fa6">
                 <source>Yourself</source>
@@ -10245,7 +10245,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_infobox_saved_search_saved.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_infobox_saved_search_saved.inc.php">
         <body>
             <trans-unit id="fce31ab4055ad12fb885f843fde65074">
                 <source>You can edit the details for this saved search later by opening it up in the left sidebar.</source>
@@ -10256,7 +10256,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter.inc.php">
         <body>
             <trans-unit id="b1c94ca2fbc3e78fc30069c8d0f01680">
                 <source>All</source>
@@ -10300,7 +10300,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_affected.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_affected.inc.php">
         <body>
             <trans-unit id="36ae8a2e513eb1e95b015433d64f0bdb">
                 <source>Affects release(s)</source>
@@ -10332,7 +10332,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_category.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_category.inc.php">
         <body>
             <trans-unit id="4b81c727db2bd30439cdaf5471919758">
                 <source>Filter on category</source>
@@ -10340,7 +10340,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_choice.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_choice.inc.php">
         <body>
             <trans-unit id="5ca03986e33400f81fad5089f921f4b8">
                 <source>Filter on priority</source>
@@ -10357,7 +10357,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_client.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_client.inc.php">
         <body>
             <trans-unit id="2d601535f980517390a924c5e115be91">
                 <source>Anyone</source>
@@ -10374,7 +10374,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_date.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_date.inc.php">
         <body>
             <trans-unit id="16cd452dda9d4398bf6240603eee40a9">
                 <source>Posted</source>
@@ -10400,7 +10400,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_status.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_status.inc.php">
         <body>
             <trans-unit id="d118e36ade2cd1755dafa06698c50b46">
                 <source>Filter on status</source>
@@ -10414,7 +10414,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_team.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_team.inc.php">
         <body>
             <trans-unit id="2925dbb0703b61c4e674096aed4403b8">
                 <source>Assigned team</source>
@@ -10431,7 +10431,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_text.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_text.inc.php">
         <body>
             <trans-unit id="daf2aa90595bc3cbe4ffdfab1e0aa032">
                 <source>Anything</source>
@@ -10439,7 +10439,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_interactivefilter_user.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_interactivefilter_user.inc.php">
         <body>
             <trans-unit id="d4903c30cd1efde76c02488c8697503b">
                 <source>Assigned user</source>
@@ -10453,7 +10453,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_pagination.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_pagination.inc.php">
         <body>
             <trans-unit id="2e01b86887d023c873d0ebb2811e3bd8">
                 <source>First page</source>
@@ -10470,7 +10470,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_results_normal.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_results_normal.inc.php">
         <body>
             <trans-unit id="642facf67e0ad311eee88b3ab8381590">
                 <source>Issue</source>
@@ -10487,7 +10487,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_results_normal_csv.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_results_normal_csv.inc.php">
         <body>
             <trans-unit id="bc628ed119cb2e1f682b462f158ae7cd">
                 <source>Issue number</source>
@@ -10507,7 +10507,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_results_summary.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_results_summary.inc.php">
         <body>
             <trans-unit id="eb0af257bd99832ae63e276ebd9648c3">
                 <source>In the group above (on this page)</source>
@@ -10524,7 +10524,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_results_todo.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_results_todo.inc.php">
         <body>
             <trans-unit id="71948aa4f6e12cdaa5e2e63a5eb8f142">
                 <source>More info</source>
@@ -10535,7 +10535,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_results_view.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_results_view.inc.php">
         <body>
             <trans-unit id="6de98ebf408dfebf998508b5a011350d">
                 <source>Last updated: %updated_at</source>
@@ -10546,7 +10546,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_searchbuilder.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_searchbuilder.inc.php">
         <body>
             <trans-unit id="3e2a3b59da0d6f76789d5fe0aa6e8381">
                 <source>Enter a search term here</source>
@@ -10671,7 +10671,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/_sidebar.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/_sidebar.inc.php">
         <body>
             <trans-unit id="e481b297a12918288c68f32d9653c584">
                 <source>Open issues for this project</source>
@@ -10739,7 +10739,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/findissues.html.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/findissues.html.php">
         <body>
             <trans-unit id="31886e4a095f1983b331e5991f1f8846">
                 <source>Find issues for %project_name</source>
@@ -10762,7 +10762,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/opensearch.xml.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/opensearch.xml.php">
         <body>
             <trans-unit id="3429ffb97f9f5fe76e83e139358c6be8">
                 <source>%project_name search</source>
@@ -10773,7 +10773,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/modules/search/templates/quicksearch.html.php">
+    <file source-language="en" datatype="php" original="core/modules/search/templates/quicksearch.html.php">
         <body>
             <trans-unit id="2a9f3583a43eb5c68fb601574c798bc1">
                 <source>Press "Enter" twice to find issues matching your query</source>
@@ -10820,7 +10820,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/backdrops.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/backdrops.inc.php">
         <body>
             <trans-unit id="ce4f0749e7e52dca6fbfb15275cb6430">
                 <source>Click this message to dismiss it</source>
@@ -10837,7 +10837,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/footer.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/footer.inc.php">
         <body>
             <trans-unit id="d2ca0f582237fd40b4911f62f8bb8b03">
                 <source>%thebuggenie, &lt;b&gt;friendly&lt;/b&gt; issue tracking since 2002</source>
@@ -10848,7 +10848,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/headermainmenu.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/headermainmenu.inc.php">
         <body>
             <trans-unit id="657fd3eec6624217c3ad5de3744a69d2">
                 <source>Agile</source>
@@ -10880,7 +10880,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/headerusermenu.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/headerusermenu.inc.php">
         <body>
             <trans-unit id="1945e5ccc0bd89812560b30f7c48639d">
                 <source>Your notifications</source>
@@ -10921,7 +10921,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/offline.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/offline.inc.php">
         <body>
             <trans-unit id="549b250f3ea1f070c049f9be3f422dfd">
                 <source>This site has been temporarily disabled for maintenance. Please try again later.</source>
@@ -10929,7 +10929,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="core/templates/submenu.inc.php">
+    <file source-language="en" datatype="php" original="core/templates/submenu.inc.php">
         <body>
             <trans-unit id="e3cfcd8feda52c804ffcc02c85292337">
                 <source>Click to expand</source>

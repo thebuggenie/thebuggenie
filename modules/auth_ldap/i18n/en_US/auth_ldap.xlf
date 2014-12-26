@@ -11,7 +11,7 @@
 
 <xliff version="1.2">
 
-    <file source-language="en_US" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="Actions.php">
         <body>
             <trans-unit id="a9a70cd6177209344c8eab46cf98610f">
                 <source>Failed to connect to server</source>
@@ -52,7 +52,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="Auth_ldap.php">
+    <file source-language="en" datatype="php" original="Auth_ldap.php">
         <body>
             <trans-unit id="25449aa6a64ea74062a2a49801822d09">
                 <source>Failed to bind:</source>
@@ -81,7 +81,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_settings.inc.php">
+    <file source-language="en" datatype="php" original="templates/_settings.inc.php">
         <body>
             <trans-unit id="37a03f17e0b79877922a2a83ec11b146">
                 <source>Use this page to set up the connection details for your LDAP or Active Directory server. It is highly recommended that you read the online help before use, as misconfiguration may prevent you from accessing configuration pages to rectify issues.</source>
