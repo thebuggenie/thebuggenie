@@ -70,7 +70,8 @@
                     </div>
                     <label for="select_unresolved_issues_action"><?php echo __('Unresolved issues action'); ?></label>
                     <select name="unresolved_issues_action" id="select_unresolved_issues_action" onchange="switch($(this).getValue()) { case 'keep': $('reassign_select').hide(); $('mark_milestone_finished_submit').show(); $('mark_milestone_finished_next').hide(); break; case 'reassign': $('reassign_select').show(); $('mark_milestone_finished_submit').show(); $('mark_milestone_finished_next').hide(); break; case 'addnew': $('reassign_select').hide(); $('mark_milestone_finished_submit').hide(); $('mark_milestone_finished_next').show(); }">
-                        <option value="keep" selected><?php echo __("Don't do anything"); ?></option>
+                        <option value="keep"><?php echo __("Don't do anything"); ?></option>
+                        <option value="backlog" selected><?php echo __("Move to the backlog"); ?></option>
                         <option value="reassign"><?php
                             switch ($board->getType())
                             {

@@ -1453,6 +1453,9 @@
                 {
                     switch ($request['unresolved_issues_action'])
                     {
+                        case 'backlog':
+                            \TBGIssuesTable::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), null, 0);
+                            break;
                         case 'reassign':
                             $new_milestone = \TBGMilestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
                             $return_options['new_milestone_id'] = $new_milestone->getID();
