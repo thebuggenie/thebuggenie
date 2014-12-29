@@ -3230,4 +3230,13 @@
             return $dashboard;
         }
 
+        public function preloadValues()
+        {
+            $milestones = TBGMilestonesTable::getTable()->getByProjectID($this->getID());
+            unset($milestones);
+            $issuetypes = TBGIssueType::getAll();
+            unset($issuetypes);
+            TBGListTypesTable::getTable()->populateItemCache();
+        }
+
     }

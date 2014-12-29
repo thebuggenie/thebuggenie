@@ -42,7 +42,6 @@
 
             // Set up the name for the factory array
             $factory_array_name = "_{$classname}s";
-            $item = null;
 
             // Set up the manufactured array if it doesn't exist
             if (!isset($this->$factory_array_name))
@@ -59,34 +58,8 @@
 
                 try
                 {
-                    // Check if the class is cacheable as well
-                    $cacheable = false; // in_array($classname, array('TBGProject', 'TBGStatus', 'TBGPriority', 'TBGCategory', 'TBGUserstate'));
-                    $item = null;
-
-                    // If the class is cacheable, check if it exists in the cache
-                    if ($cacheable)
-                    {
-                        if ($item = TBGContext::getCache()->get(TBGCache::KEY_TBG_FACTORY."{$factory_array_name}_{$id}"))
-                        {
-                            TBGLogging::log("Using cached $classname with id $id");
-                        }
-                    }
-
-                    // If we didn't get an item from the cache, manufacture it
-                    if (!$cacheable || !is_object($item))
-                    {
-                        $item = new $classname($id, $row);
-                        TBGLogging::log("Manufacturing $classname with id $id");
-
-                        // Add the item to the cache if it's cacheable
-                        if ($cacheable)
-                        {
-                            TBGContext::getCache()->add(TBGCache::KEY_TBG_FACTORY."{$factory_array_name}_{$id}", $item);
-                        }
-                    }
-
                     // Add the manufactured item to the manufactured array
-                    $this->{$factory_array_name}[$id] = $item;
+                    $this->{$factory_array_name}[$id] = new $classname($id, $row);
                 }
                 catch (Exception $e)
                 {

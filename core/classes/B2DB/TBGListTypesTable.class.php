@@ -46,6 +46,11 @@
             self::$_item_cache = null;
         }
         
+        public function populateItemCache()
+        {
+            $this->_populateItemCache();
+        }
+
         protected function _populateItemCache()
         {
             if (self::$_item_cache === null)

@@ -291,4 +291,17 @@
             return $uids;
         }
 
+        public function preloadUsers($user_ids)
+        {
+            if (!empty($user_ids))
+            {
+                $crit = $this->getCriteria();
+                $crit->addWhere(self::ID, $user_ids, Criteria::DB_IN);
+                $users = $this->select($crit);
+                unset($users);
+            }
+
+            return;
+        }
+
     }

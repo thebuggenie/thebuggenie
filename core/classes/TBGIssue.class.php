@@ -697,22 +697,38 @@
             list ($rows, $count, $ids) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields);
             if ($rows)
             {
+                if (TBGContext::isProjectContext())
+                {
+                    TBGContext::getCurrentProject()->preloadValues();
+                }
                 TBGIssueCustomFieldsTable::getTable()->preloadValuesByIssueIDs($ids);
                 TBGIssueAffectsBuildTable::getTable()->preloadValuesByIssueIDs($ids);
                 TBGIssueAffectsEditionTable::getTable()->preloadValuesByIssueIDs($ids);
                 TBGIssueAffectsComponentTable::getTable()->preloadValuesByIssueIDs($ids);
                 TBGCommentsTable::getTable()->preloadIssueCommentCounts($ids);
                 TBGIssueFilesTable::getTable()->preloadIssueFileCounts($ids);
+                $user_ids = array();
                 foreach ($rows as $key => $row)
                 {
                     try
                     {
                         $issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-                        if (!$issue->hasAccess() || $issue->getProject()->isDeleted()) continue;
+                        $user_ids[$row['issues.posted_by']] = true;
                         $issues[] = $issue;
                         unset($rows[$key]);
                     }
                     catch (Exception $e) {}
+                }
+                if (count($user_ids))
+                {
+                    TBGUsersTable::getTable()->preloadUsers(array_keys($user_ids));
+                }
+                foreach ($issues as $key => $issue)
+                {
+                    if (!$issue->hasAccess() || $issue->getProject()->isDeleted())
+                    {
+                        unset($issues[$key]);
+                    }
                 }
                 TBGIssueCustomFieldsTable::getTable()->clearPreloadedValues();
                 TBGIssueAffectsBuildTable::getTable()->clearPreloadedValues();
@@ -1117,7 +1133,7 @@
                         {
                             $status_id = $row->get(TBGIssueAffectsEditionTable::STATUS);
                             $this->_editions[$row->get(TBGIssueAffectsEditionTable::ID)] = array(
-                                                        'edition' => TBGEditionsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsEditionTable::EDITION)),
+                                                        'edition' => TBGEditionsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsEditionTable::EDITION), null, null),
                                                         'status' => ($status_id) ? TBGStatus::getB2DBTable()->selectById((int) $status_id) : null,
                                                         'confirmed' => (bool) $row->get(TBGIssueAffectsEditionTable::CONFIRMED),
                                                         'a_id' => $row->get(TBGIssueAffectsEditionTable::ID));
@@ -1134,7 +1150,7 @@
                         {
                             $status_id = $row->get(TBGIssueAffectsBuildTable::STATUS);
                             $this->_builds[$row->get(TBGIssueAffectsBuildTable::ID)] = array(
-                                                        'build' => TBGBuildsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsBuildTable::BUILD)),
+                                                        'build' => TBGBuildsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsBuildTable::BUILD), null, null),
                                                         'status' => ($status_id) ? TBGStatus::getB2DBTable()->selectById((int) $status_id) : null,
                                                         'confirmed' => (bool) $row->get(TBGIssueAffectsBuildTable::CONFIRMED),
                                                         'a_id' => $row->get(TBGIssueAffectsBuildTable::ID));
@@ -1151,7 +1167,7 @@
                         {
                             $status_id = $row->get(TBGIssueAffectsComponentTable::STATUS);
                             $this->_components[$row->get(TBGIssueAffectsComponentTable::ID)] = array(
-                                                            'component' => TBGComponentsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsComponentTable::COMPONENT)),
+                                                            'component' => TBGComponentsTable::getTable()->selectById((int) $row->get(TBGIssueAffectsComponentTable::COMPONENT), null, null),
                                                             'status' => ($status_id) ? TBGStatus::getB2DBTable()->selectById((int) $status_id) : null,
                                                             'confirmed' => (bool) $row->get(TBGIssueAffectsComponentTable::CONFIRMED),
                                                             'a_id' => $row->get(TBGIssueAffectsComponentTable::ID));
@@ -2589,18 +2605,7 @@
          */
         public function getReproducability()
         {
-            if (is_numeric($this->_reproducability))
-            {
-                try
-                {
-                    $this->_reproducability = TBGContext::factory()->TBGReproducability($this->_reproducability);
-                }
-                catch (Exception $e)
-                {
-                    $this->_reproducability = null;
-                }
-            }
-            return $this->_reproducability;
+            return $this->_b2dbLazyload('_reproducability');
         }
 
         /**
@@ -2620,18 +2625,7 @@
          */
         public function getPriority()
         {
-            if (is_numeric($this->_priority))
-            {
-                try
-                {
-                    $this->_priority = TBGContext::factory()->TBGPriority($this->_priority);
-                }
-                catch (Exception $e)
-                {
-                    $this->_priority = null;
-                }
-            }
-            return $this->_priority;
+            return $this->_b2dbLazyload('_priority');
         }
 
         /**
@@ -2822,18 +2816,6 @@
          */
         public function getMilestone()
         {
-            /*if (is_numeric($this->_milestone))
-            {
-                try
-                {
-                    $this->_milestone = TBGContext::factory()->TBGMilestone($this->_milestone);
-                }
-                catch (Exception $e)
-                {
-                    $this->_milestone = null;
-                }
-            }
-            return $this->_milestone;*/
             return $this->_b2dbLazyload('_milestone');
         }
 
@@ -2992,18 +2974,7 @@
          */
         public function getPostedBy()
         {
-            if (is_numeric($this->_posted_by))
-            {
-                try
-                {
-                    $this->_posted_by = TBGContext::factory()->TBGUser($this->_posted_by);
-                }
-                catch (Exception $e)
-                {
-                    $this->_posted_by = null;
-                }
-            }
-
+            $this->_posted_by = $this->_b2dbLazyload('_posted_by');
             return $this->_posted_by;
         }
 

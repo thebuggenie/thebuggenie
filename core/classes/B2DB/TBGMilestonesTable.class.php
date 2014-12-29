@@ -50,35 +50,12 @@
             $this->doUpdate($crit);
         }
         
-        public function getAllByProjectID($project_id)
+        public function getByProjectID($project_id)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::PROJECT, $project_id);
-            $crit->addOrderBy(self::STARTING, Criteria::SORT_ASC);
-            $crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
             $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
-            return $res;
-        }
-
-        public function getMilestonesByProjectID($project_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
-            $crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_REGULAR);
-            $crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
-            return $res;
-        }
-
-        public function getSprintsByProjectID($project_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
-            $crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_SCRUMSPRINT);
-            $crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
-            return $res;
+            return $this->select($crit);
         }
 
         public function doesIDExist($userid)

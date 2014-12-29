@@ -268,17 +268,9 @@
             }
             else
             {
-                $event = TBGEvent::createNew('core', 'TBGI18n::__()', $this, compact('text', 'replacements', 'html_decode'))->trigger();
-                if ($event->isProcessed())
-                {
-                    return $event->getReturnValue();
-                }
-                else
-                {
-                    $retstring = $text;
-                    TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
-                    $this->_missing_strings[$text] = true;
-                }
+                $retstring = $text;
+                TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
+                $this->_missing_strings[$text] = true;
             }
             if (!empty($replacements))
             {
