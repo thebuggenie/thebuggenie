@@ -935,13 +935,17 @@
             $this->doUpdateById($crit, $issue_id);
         }
 
-        public function reAssignIssuesByMilestoneIds($current_milestone_id, $new_milestone_id)
+        public function reAssignIssuesByMilestoneIds($current_milestone_id, $new_milestone_id, $milestone_order = null)
         {
-                    $crit = $this->getCriteria();
-                    $crit->addUpdate(self::LAST_UPDATED, time());
-                    $crit->addUpdate(self::MILESTONE, $new_milestone_id);
-                    $crit->addWhere(self::MILESTONE, $current_milestone_id);
-                    $this->doUpdate($crit);
+            $crit = $this->getCriteria();
+            $crit->addUpdate(self::LAST_UPDATED, time());
+            $crit->addUpdate(self::MILESTONE, $new_milestone_id);
+            
+            if ($milestone_order !== null) $crit->addUpdate(self::MILESTONE_ORDER, $milestone_order);
+
+            $crit->addWhere(self::MILESTONE, $current_milestone_id);
+            $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+            $this->doUpdate($crit);
         }
 
         public function assignMilestoneIDbyIssueIDs($milestone_id, $issue_ids)
