@@ -3707,6 +3707,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
 }
+.whiteboard-issue.issue-closed {
+    opacity: 0.7;
+}
 .whiteboard-issue.ui-draggable {
     cursor: move;
 }
@@ -3739,9 +3742,9 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 #whiteboard.fixedheader #whiteboard-headers {
     position: fixed;
     top: 0;
-    left: auto;
-    width: calc(100% - 61px);
-    margin-left: 61px;
+    left: 0;
+    width: 100%;
+    margin-left: 0;
     right: 0;
     display: table;
     table-layout: fixed;
@@ -3852,6 +3855,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 }
 #project_planning.project_info_container.left_toggled .project_right_container .project_right { 
     margin-left: 61px;
+}
+#project_planning.project_info_container.whiteboard .project_right_container .project_right { 
+    margin-left: 0;
 }
 #project_planning.project_info_container .project_right_container .project_right { 
     margin-left: 451px;
