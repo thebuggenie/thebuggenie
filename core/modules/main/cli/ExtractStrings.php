@@ -170,49 +170,51 @@
                 $this->cliEcho(" ✔ DONE\n\n", 'green', 'bold');
             }
 
-            //Displaying extraction report to user
-            $this->cliEcho("Extraction of ");
-            $this->cliEcho("en_US", "yellow");
-            $this->cliEcho(" source strings for module ");
-            $this->cliEcho($module_name." ", "yellow");
-            $this->cliEcho("✔ COMPLETED\n", 'green', 'bold');
+            if($totalStrings > 0){
+                //Displaying extraction report to user
+                $this->cliEcho("Extraction of ");
+                $this->cliEcho("en_US", "yellow");
+                $this->cliEcho(" source strings for module ");
+                $this->cliEcho($module_name." ", "yellow");
+                $this->cliEcho("✔ COMPLETED\n", 'green', 'bold');
 
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($totalStrings, 'green', 'bold');
-            $this->cliEcho(" strings found\n");
+                $this->cliEcho(" ↳  ");
+                $this->cliEcho($totalStrings, 'green', 'bold');
+                $this->cliEcho(" strings found\n");
 
-            $this->cliEcho(" ↳  through ");
-            $this->cliEcho($totalFiles, 'green', 'bold');
-            $this->cliEcho(" files\n");
+                $this->cliEcho(" ↳  through ");
+                $this->cliEcho($totalFiles, 'green', 'bold');
+                $this->cliEcho(" files\n");
 
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($filesIgnored, 'cyan', 'bold');
-            $this->cliEcho(" files has been ignored (all found strings were already in previous files)\n");
+                $this->cliEcho(" ↳  ");
+                $this->cliEcho($filesIgnored, 'cyan', 'bold');
+                $this->cliEcho(" files has been ignored (all found strings were already in previous files)\n");
 
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($filesWithoutStrings, 'cyan', 'bold');
-            $this->cliEcho(" files did not contain any string\n");
+                $this->cliEcho(" ↳  ");
+                $this->cliEcho($filesWithoutStrings, 'cyan', 'bold');
+                $this->cliEcho(" files did not contain any string\n");
 
-            $this->cliEcho("\n");
+                $this->cliEcho("\n");
 
-            $this->cliEcho("Generating resulting ");
+                $this->cliEcho("Generating resulting ");
 
-            switch($this->getProvidedArgument('format')){
-                case "xliff":
-                    $this->cliEcho($module.".xlf", "yellow");
-                    $relative_path = $this->writeFileOnDisk($this->generateXliff($totalFiles, $totalStrings, $stringsByFile), $module, 'xlf');
-                    break;
-                case "php":
-                    $this->cliEcho($module.".inc.php", "yellow");
-                    $relative_path = $this->writeFileOnDisk($this->generatePhpAltArray($totalFiles, $totalStrings, $stringsByFile), $module, 'inc.php');
-                    break;
+                switch($this->getProvidedArgument('format')){
+                    case "xliff":
+                        $this->cliEcho($module.".xlf", "yellow");
+                        $relative_path = $this->writeFileOnDisk($this->generateXliff($totalFiles, $totalStrings, $stringsByFile), $module, 'xlf');
+                        break;
+                    case "php":
+                        $this->cliEcho($module.".inc.php", "yellow");
+                        $relative_path = $this->writeFileOnDisk($this->generatePhpAltArray($totalFiles, $totalStrings, $stringsByFile), $module, 'inc.php');
+                        break;
+                }
+
+                $this->cliEcho(" file ...\n");
+
+                $this->cliEcho(" ↳  ");
+                $this->cliEcho($relative_path, 'magenta', 'bold');
+                $this->cliEcho(" ✔ GENERATED\n\n", 'green', 'bold');
             }
-
-            $this->cliEcho(" file ...\n");
-
-            $this->cliEcho(" ↳  ");
-            $this->cliEcho($relative_path, 'magenta', 'bold');
-            $this->cliEcho(" ✔ GENERATED\n\n", 'green', 'bold');
         }
 
         /**
@@ -238,7 +240,7 @@
             foreach ($stringsByFile as $file => $strings) {
 
                 $generatedFile .= PHP_EOL;
-                $generatedFile .= '    <file source-language="en_US" datatype="php" original="'.$file.'">'.PHP_EOL;
+                $generatedFile .= '    <file source-language="en" datatype="php" original="'.$file.'">'.PHP_EOL;
                 $generatedFile .= "        <body>".PHP_EOL;
 
                 foreach ($strings as $string) {

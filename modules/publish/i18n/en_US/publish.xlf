@@ -6,12 +6,12 @@
 
 <!-- Number of Sections: 34 -->
 <!-- Number of Strings: 220 -->
-<!-- Keys extracted from sources on: 2014 Nov 11. -->
+<!-- Keys extracted from sources on: 2014 Dec 26. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en_US" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="Actions.php">
         <body>
             <trans-unit id="271a2ede29e65409778d6043f2e107dc">
                 <source>You don't have access to read this article</source>
@@ -58,7 +58,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="entities/Article.php">
+    <file source-language="en" datatype="php" original="entities/Article.php">
         <body>
             <trans-unit id="b1a1ee03f768be82a41f9b27c6823108">
                 <source>Another article with this name already exists</source>
@@ -66,7 +66,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="Publish.php">
+    <file source-language="en" datatype="php" original="Publish.php">
         <body>
             <trans-unit id="cdc7932f474adddaed2dce5ff885347f">
                 <source>%number_of_articles articles imported successfully</source>
@@ -116,7 +116,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_articledisplay.inc.php">
+    <file source-language="en" datatype="php" original="templates/_articledisplay.inc.php">
         <body>
             <trans-unit id="22015bb0186700ead2502795d0c6a7be">
                 <source>Redirected from %article_name</source>
@@ -148,7 +148,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_articleslist.inc.php">
+    <file source-language="en" datatype="php" original="templates/_articleslist.inc.php">
         <body>
             <trans-unit id="510c0b4a3bd4b819ec3929f8646f1914">
                 <source>This list is empty.</source>
@@ -156,7 +156,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_attachments.inc.php">
+    <file source-language="en" datatype="php" original="templates/_attachments.inc.php">
         <body>
             <trans-unit id="9cdee890406a3474e86b95fcee2ca6c9">
                 <source>There are no file attached to this article</source>
@@ -164,7 +164,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_header.inc.php">
+    <file source-language="en" datatype="php" original="templates/_header.inc.php">
         <body>
             <trans-unit id="6fa6fb782e544a23474bc50f54fa8efd">
                 <source>Please log in to subscribe to updates for this article</source>
@@ -229,7 +229,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_latestArticles.inc.php">
+    <file source-language="en" datatype="php" original="templates/_latestArticles.inc.php">
         <body>
             <trans-unit id="90e5f22a5da204e15b9d06f75bf79b18">
                 <source>Recently edited pages here</source>
@@ -246,7 +246,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_leftmenu.inc.php">
+    <file source-language="en" datatype="php" original="templates/_leftmenu.inc.php">
         <body>
             <trans-unit id="af0ffc120b21ea659714ced2d6eaa58a">
                 <source>Wiki menu</source>
@@ -260,7 +260,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_menustriplinks.inc.php">
+    <file source-language="en" datatype="php" original="templates/_menustriplinks.inc.php">
         <body>
             <trans-unit id="5d41d4308923e87c09b0513be0cb2c54">
                 <source>Project wiki frontpage</source>
@@ -280,7 +280,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_placeholder.inc.php">
+    <file source-language="en" datatype="php" original="templates/_placeholder.inc.php">
         <body>
             <trans-unit id="00da18b63de73a42b72644222f7976a2">
                 <source>This article has not been created yet.</source>
@@ -294,7 +294,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_quicksearch_dropdown_firstitems.inc.php">
+    <file source-language="en" datatype="php" original="templates/_quicksearch_dropdown_firstitems.inc.php">
         <body>
             <trans-unit id="ccdacd8f3dd579258559ca23af4e0aa5">
                 <source>Select this to search the wiki for this term</source>
@@ -302,7 +302,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_quicksearch_dropdown_founditems.inc.php">
+    <file source-language="en" datatype="php" original="templates/_quicksearch_dropdown_founditems.inc.php">
         <body>
             <trans-unit id="ac5ca9c91f7e0c9d1fb611b0d7f3450e">
                 <source>%num article(s) found</source>
@@ -319,7 +319,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_settings.inc.php">
+    <file source-language="en" datatype="php" original="templates/_settings.inc.php">
         <body>
             <trans-unit id="c09d84284f21e8ea33cc236d743e7ac3">
                 <source>General wiki settings</source>
@@ -423,7 +423,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialallcategories.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialallcategories.inc.php">
         <body>
             <trans-unit id="9ab931ca4c25a2a54f3aabdd2d802c6d">
                 <source>Note: This page lists all categories for "%project_name". For a list of global categories, see %all_categories</source>
@@ -434,7 +434,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialallpages.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialallpages.inc.php">
         <body>
             <trans-unit id="0722f9b14b93cbc34e85f69cd009246a">
                 <source>Note: This page lists all articles for "%project_name". For a list of global articles, see %all_pages</source>
@@ -448,7 +448,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialalltemplates.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialalltemplates.inc.php">
         <body>
             <trans-unit id="ab47634e92161ef3ebeb2b2c8ebd87f8">
                 <source>Note: This page lists all templates for "%project_name". For a list of global templates, see %all_templates</source>
@@ -459,7 +459,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialdeadendpages.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialdeadendpages.inc.php">
         <body>
             <trans-unit id="7eb90ad98c7ad3ba773475f440f7548d">
                 <source>Note: This page lists all dead end articles for "%project_name". For a list of global articles with no links, see %dead_end_pages</source>
@@ -470,7 +470,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialorphanedpages.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialorphanedpages.inc.php">
         <body>
             <trans-unit id="4f8f960494c939fb4c65deb2e087957a">
                 <source>Note: This page lists all articles that are not linked to for "%project_name". For a list of global articles that are not linked to, see %orphaned_pages</source>
@@ -481,7 +481,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialspecialpages.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialspecialpages.inc.php">
         <body>
             <trans-unit id="f4d04bf531159488566d57d44f88d0a1">
                 <source>Wiki special pages</source>
@@ -546,7 +546,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialuncategorizedcategories.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialuncategorizedcategories.inc.php">
         <body>
             <trans-unit id="04bfbdf788d5dfda6bfc0e15c9e01408">
                 <source>Note: This page lists all categories without any parent categories in "%project_name". For a list of global categories with no parent categories, see %uncategorized_categories</source>
@@ -557,7 +557,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialuncategorizedpages.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialuncategorizedpages.inc.php">
         <body>
             <trans-unit id="6a1fcfa4a67809e6564b95b61ca9fff7">
                 <source>Note: This page lists all articles without categories in "%project_name". For a list of global articles with no categories, see %uncategorized_pages</source>
@@ -568,7 +568,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_specialwhatlinkshere.inc.php">
+    <file source-language="en" datatype="php" original="templates/_specialwhatlinkshere.inc.php">
         <body>
             <trans-unit id="5ee4bf4c500e761c0adb4aa78cb4ec4d">
                 <source>Below is a listing of all pages that links to this pages.</source>
@@ -576,7 +576,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_toc.inc.php">
+    <file source-language="en" datatype="php" original="templates/_toc.inc.php">
         <body>
             <trans-unit id="598b8ae10dfce818e73d3218daddbdae">
                 <source>Table of contents</source>
@@ -590,7 +590,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_tools.inc.php">
+    <file source-language="en" datatype="php" original="templates/_tools.inc.php">
         <body>
             <trans-unit id="ef88578bfb69247960caefc1c1e4385d">
                 <source>Wiki tools</source>
@@ -604,7 +604,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_whatlinkshere.inc.php">
+    <file source-language="en" datatype="php" original="templates/_whatlinkshere.inc.php">
         <body>
             <trans-unit id="73f7cb783e00061625a0f85a4796b1ed">
                 <source>Links to this article</source>
@@ -615,7 +615,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_wikibreadcrumbs.inc.php">
+    <file source-language="en" datatype="php" original="templates/_wikibreadcrumbs.inc.php">
         <body>
             <trans-unit id="af1b98adf7f686b84cd0b443e022b7a0">
                 <source>Categories</source>
@@ -623,7 +623,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/articleattachments.html.php">
+    <file source-language="en" datatype="php" original="templates/articleattachments.html.php">
         <body>
             <trans-unit id="1598dec9d4f7b6122464dfaca05212cb">
                 <source>%article_name attachments</source>
@@ -634,7 +634,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/articlehistory.html.php">
+    <file source-language="en" datatype="php" original="templates/articlehistory.html.php">
         <body>
             <trans-unit id="36c93410868f1b100fafe89bf5f3001e">
                 <source>%article_name history</source>
@@ -684,7 +684,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/articlepermissions.html.php">
+    <file source-language="en" datatype="php" original="templates/articlepermissions.html.php">
         <body>
             <trans-unit id="485ee82b44058d8609b780c7b46667bc">
                 <source>%article_name permissions</source>
@@ -728,7 +728,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/editarticle.html.php">
+    <file source-language="en" datatype="php" original="templates/editarticle.html.php">
         <body>
             <trans-unit id="a68b3e6f2d89d8776e61ba18de77c139">
                 <source>Editing %article_name</source>
@@ -793,7 +793,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/findarticles.html.php">
+    <file source-language="en" datatype="php" original="templates/findarticles.html.php">
         <body>
             <trans-unit id="01007190fb7149178f422839836a1a6f">
                 <source>Find articles</source>
@@ -813,7 +813,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/showarticle.html.php">
+    <file source-language="en" datatype="php" original="templates/showarticle.html.php">
         <body>
             <trans-unit id="4c88e78877f31634f47f3223ede1c043">
                 <source>You are now viewing a previous revision of this article - revision %revision_number %date, by %author</source>
@@ -833,7 +833,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/specialarticle.html.php">
+    <file source-language="en" datatype="php" original="templates/specialarticle.html.php">
         <body>
             <trans-unit id="ca0027dcec8866e2725b6df2d1b2d23b">
                 <source>This special page does not exist</source>

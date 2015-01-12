@@ -6,12 +6,12 @@
 
 <!-- Number of Sections: 19 -->
 <!-- Number of Strings: 159 -->
-<!-- Keys extracted from sources on: 2014 Nov 11. -->
+<!-- Keys extracted from sources on: 2014 Dec 26. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en_US" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="Actions.php">
         <body>
             <trans-unit id="126835b4ddbba17c4346ccb256c23b7c">
                 <source>Please use the link in the email you received</source>
@@ -58,7 +58,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="entities/IncomingEmailAccount.php">
+    <file source-language="en" datatype="php" original="entities/IncomingEmailAccount.php">
         <body>
             <trans-unit id="bd50ac86ce2307aba652b52a4d1fb9ec">
                 <source>No error message provided</source>
@@ -69,7 +69,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="Mailing.php">
+    <file source-language="en" datatype="php" original="Mailing.php">
         <body>
             <trans-unit id="dce56e908b07f304a66d334ee186c638">
                 <source>Please provide a valid setting for SMTP server address</source>
@@ -125,7 +125,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_accountsettings.inc.php">
+    <file source-language="en" datatype="php" original="templates/_accountsettings.inc.php">
         <body>
             <trans-unit id="a67ce68ccac082ad54a552bdbcb6ecd7">
                 <source>Email notifications</source>
@@ -136,7 +136,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_articlecomment.html.inc.php">
+    <file source-language="en" datatype="php" original="templates/_articlecomment.html.inc.php">
         <body>
             <trans-unit id="1f35689860a4a00f8165e6c8d1f37529">
                 <source>Comment by %name</source>
@@ -156,7 +156,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_articlecomment.text.inc.php">
+    <file source-language="en" datatype="php" original="templates/_articlecomment.text.inc.php">
         <body>
             <trans-unit id="d6ea5d6a26343d8146afe19e85deebfb">
                 <source>A comment has been posted:</source>
@@ -164,7 +164,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_articleupdate.html.inc.php">
+    <file source-language="en" datatype="php" original="templates/_articleupdate.html.inc.php">
         <body>
             <trans-unit id="4ccbe5c184d08c448c05e1c3cfc06880">
                 <source>%article updated</source>
@@ -181,7 +181,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_configcreateuseremail.inc.php">
+    <file source-language="en" datatype="php" original="templates/_configcreateuseremail.inc.php">
         <body>
             <trans-unit id="25f94f379ee36d97332363eb31675e4b">
                 <source>Send user information by email</source>
@@ -189,7 +189,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_editincomingemailaccount.inc.php">
+    <file source-language="en" datatype="php" original="templates/_editincomingemailaccount.inc.php">
         <body>
             <trans-unit id="5cc8454c5ad03f694537fb7b31581616">
                 <source>Edit incoming email account</source>
@@ -287,7 +287,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_forgotPasswordLink.inc.php">
+    <file source-language="en" datatype="php" original="templates/_forgotPasswordLink.inc.php">
         <body>
             <trans-unit id="98f130908bdb82901f3bc905870908fb">
                 <source>Forgot password</source>
@@ -295,7 +295,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_forgotPasswordPane.inc.php">
+    <file source-language="en" datatype="php" original="templates/_forgotPasswordPane.inc.php">
         <body>
             <trans-unit id="67e09762889a535e211f8cb2ff569150">
                 <source>Username or email address</source>
@@ -309,7 +309,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_incomingemailaccount.inc.php">
+    <file source-language="en" datatype="php" original="templates/_incomingemailaccount.inc.php">
         <body>
             <trans-unit id="2c872e677f8b5831f20a66c65e7f8966">
                 <source>Check now</source>
@@ -338,7 +338,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_issuecomment.html.inc.php">
+    <file source-language="en" datatype="php" original="templates/_issuecomment.html.inc.php">
         <body>
             <trans-unit id="9d453342715dfa2201d2966e7323673c">
                 <source>Created by %name</source>
@@ -355,7 +355,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_issuecreate.html.inc.php">
+    <file source-language="en" datatype="php" original="templates/_issuecreate.html.inc.php">
         <body>
             <trans-unit id="d0042a700e9bdf79689d63ee6846dc0e">
                 <source>Description:</source>
@@ -366,7 +366,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_issuecreate.text.inc.php">
+    <file source-language="en" datatype="php" original="templates/_issuecreate.text.inc.php">
         <body>
             <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39">
                 <source>Description</source>
@@ -374,7 +374,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_issueupdate.html.inc.php">
+    <file source-language="en" datatype="php" original="templates/_issueupdate.html.inc.php">
         <body>
             <trans-unit id="a26084c76447d7f97bace6af4c1a35ac">
                 <source>Updated by %name</source>
@@ -457,7 +457,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_projectconfig_panels.inc.php">
+    <file source-language="en" datatype="php" original="templates/_projectconfig_panels.inc.php">
         <body>
             <trans-unit id="7439ffff717739fcc8c3ec5ae58dda65">
                 <source>Save outgoing email settings</source>
@@ -483,7 +483,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_projectconfig_tab_settings.inc.php">
+    <file source-language="en" datatype="php" original="templates/_projectconfig_tab_settings.inc.php">
         <body>
             <trans-unit id="f5985d535e5f7bf71562763774d848a9">
                 <source>Outgoing email settings</source>
@@ -491,7 +491,7 @@
         </body>
     </file>
 
-    <file source-language="en_US" datatype="php" original="templates/_settings.inc.php">
+    <file source-language="en" datatype="php" original="templates/_settings.inc.php">
         <body>
             <trans-unit id="823fe7bf60c20e234bec395e0f75b37f">
                 <source>These are the settings for outgoing emails, such as notification emails and registration emails.</source>
