@@ -9,7 +9,7 @@
      *
      * @author Jean Traullé <jtraulle@gmail.com>
      * @version 2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
