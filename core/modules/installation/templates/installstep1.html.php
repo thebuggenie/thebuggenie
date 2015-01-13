@@ -5,7 +5,7 @@
     Before we can start the installation, we need to check a few things.<br>
     Please look through the list of prerequisites below, and take the necessary steps to correct any errors that may have been highlighted.</p>
     <div id="installation_main_box">
-        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 1.1 accepted ...</div>
+        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 2.0 accepted ...</div>
         <?php if ($php_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
         <?php else: ?>
