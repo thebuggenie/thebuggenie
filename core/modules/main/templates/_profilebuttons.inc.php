@@ -9,7 +9,6 @@
                 <br><?php echo __('Click "%check_availability" to see if your desired username is available.', array('%check_availability' => __('Check availability'))); ?></div>
                 <label for="username_pick" class="smaller"><?php echo __('Type desired username'); ?></label><br>
                 <input type="text" name="desired_username" id="username_pick" style="width: 390px;"><br>
-                <?php echo csrf_tag(); ?>
                 <div id="username_unavailable" style="display: none;"><?php echo __('This username is not available'); ?></div>
                 <div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
                     <div style="float: right; padding: 3px;"><?php echo __('%check_availability or %cancel', array('%check_availability' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'pick_username_div\').toggle();$(\'pick_username_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>

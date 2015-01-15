@@ -67,7 +67,6 @@
                                 <?php echo __('This username is not available'); ?>
                             </li>
                         </ul>
-                        <?php echo csrf_tag(); ?>
                         <div class="login_button_container">
                             <?php echo image_tag('spinning_20.gif', array('id' => 'pick_username_indicator', 'style' => 'display: none;')); ?>
                             <input type="submit" class="button button-silver" value="<?php echo __('Check availability'); ?>">
