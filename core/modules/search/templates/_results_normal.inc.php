@@ -1,5 +1,5 @@
 <?php
-if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top'));
+if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 $current_spent_time = $current_estimated_time;
@@ -7,7 +7,7 @@ foreach ($search_object->getIssues() as $issue):
     list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\Actions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
     if (($showtablestart || $showheader) && $cc > 1):
                 echo '</tbody></table>';
-                include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
+                include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
                 $current_count = 0;
                 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
                 $current_spent_time = $current_estimated_time;
@@ -116,7 +116,7 @@ foreach ($search_object->getIssues() as $issue):
                         <?php echo ($issue->getSeverity() instanceof TBGSeverity) ? $issue->getSeverity()->getName() : '-'; ?>
                     </td>
                     <td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
+                        <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
                     </td>
                     <td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof TBGReproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
                         <?php echo ($issue->getReproducability() instanceof TBGReproducability) ? $issue->getReproducability()->getName() : '-'; ?>
@@ -147,18 +147,18 @@ foreach ($search_object->getIssues() as $issue):
                     <td class="sc_actions">
                         <div style="position: relative;">
                             <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
-                            <?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
+                            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
                         </div>
                     </td>
                 </tr>
     <?php if ($cc == $search_object->getNumberOfIssues()): ?>
             </tbody>
         </table>
-        <?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
+        <?php include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
     <?php endif; ?>
     <?php $cc++; ?>
 <?php endforeach; ?>
-<?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'bottom')); ?>
+<?php if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'bottom')); ?>
 <style type="text/css">
 .sc_actions .image { background-image:url(<?php echo image_url('action_dropdown_small.png'); ?>); }
 </style>

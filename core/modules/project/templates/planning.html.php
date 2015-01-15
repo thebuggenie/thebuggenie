@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" project planning', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Manage agile boards')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Manage agile boards')));
 
 ?>
 <div id="project_boards" class="project_info_container">

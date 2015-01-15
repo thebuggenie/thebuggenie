@@ -251,7 +251,7 @@
             $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
 
             return $this->renderJSON(array(
-                        'content' => $this->getTemplateHTML('search/issues_paginated', array('search_object' => $this->search_object, 'cc' => 1, 'prevgroup_id' => null)),
+                        'content' => $this->getComponentHTML('search/issues_paginated', array('search_object' => $this->search_object, 'cc' => 1, 'prevgroup_id' => null)),
                         'num_issues' => $this->search_object->getTotalNumberOfIssues()
             ));
         }
@@ -290,7 +290,7 @@
                     unset($users[$id]);
             }
 
-            return $this->renderJSON(array('results' => $this->getTemplateHTML('search/filterfindusers', compact('users', 'filterkey'))));
+            return $this->renderJSON(array('results' => $this->getComponentHTML('search/filterfindusers', compact('users', 'filterkey'))));
         }
 
         public function runFilterFindTeams(\TBGRequest $request)
@@ -312,7 +312,7 @@
                 }
             }
 
-            return $this->renderJSON(array('results' => $this->getTemplateHTML('search/filterfindteams', compact('teams', 'filterkey'))));
+            return $this->renderJSON(array('results' => $this->getComponentHTML('search/filterfindteams', compact('teams', 'filterkey'))));
         }
 
         public function runFilterFindClients(\TBGRequest $request)
@@ -334,7 +334,7 @@
                 }
             }
 
-            return $this->renderJSON(array('results' => $this->getTemplateHTML('search/filterfindclients', compact('clients', 'filterkey'))));
+            return $this->renderJSON(array('results' => $this->getComponentHTML('search/filterfindclients', compact('clients', 'filterkey'))));
         }
 
         public function runFilterGetDynamicChoices(\TBGRequest $request)
@@ -397,7 +397,7 @@
 
             foreach (array('build', 'edition', 'component', 'milestone') as $k)
             {
-                $results[$k] = $this->getTemplateHTML('search/interactivefilterdynamicchoicelist', array('filter' => $filters[$k], 'items' => $items[$k]));
+                $results[$k] = $this->getComponentHTML('search/interactivefilterdynamicchoicelist', array('filter' => $filters[$k], 'items' => $items[$k]));
             }
 
             return $this->renderJSON(compact('results'));

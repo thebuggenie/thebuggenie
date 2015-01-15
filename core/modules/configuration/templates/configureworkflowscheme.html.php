@@ -14,7 +14,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'scheme', 'scheme' => $workflow_scheme)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'scheme', 'scheme' => $workflow_scheme)); ?>
             <div class="content" style="width: 730px;" id="workflow_steps_container">
                 <?php if ($workflow_scheme instanceof TBGWorkflowScheme): ?>
                     <div class="greybox workflow_steps_intro">

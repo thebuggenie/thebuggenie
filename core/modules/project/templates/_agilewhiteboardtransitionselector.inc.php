@@ -12,10 +12,10 @@
             </thead>
             <tbody>
                 <td class="column current_column">
-                    <?php include_template('project/whiteboardissue', array('issue' => $issue, 'column' => $current_column, 'fake' => true)); ?>
+                    <?php include_component('project/whiteboardissue', array('issue' => $issue, 'column' => $current_column, 'fake' => true)); ?>
                     <?php echo image_tag('transition_selector_indicator.png', array('class' => 'transition-selector-indicator')); ?>
                 </td>
-                <td class="column"><?php include_template('project/whiteboardissue', array('issue' => $issue, 'column' => $new_column, 'fake' => true)); ?></td>
+                <td class="column"><?php include_component('project/whiteboardissue', array('issue' => $issue, 'column' => $new_column, 'fake' => true)); ?></td>
             </tbody>
         </table>
         <h2><?php echo __('Please select which transition to apply'); ?></h2>

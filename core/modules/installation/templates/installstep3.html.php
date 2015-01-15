@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <script type="text/javascript">
 
     function updateURLPreview()
@@ -92,4 +92,4 @@
         </form>
     <?php endif; ?>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

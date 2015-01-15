@@ -15,7 +15,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
             <div class="content" style="width: 730px;" id="workflow_step_container">
                 <?php if ($step instanceof TBGWorkflowStep): ?>
                     <div class="workflow_step_intro">
@@ -41,7 +41,7 @@
                                 $output = array();
                                 foreach ($step->getIncomingTransitions() as $transition)
                                 {
-                                    $output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
+                                    $output[] = get_component_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
                                 }
                                 echo join($glue, $output);
 
@@ -58,7 +58,7 @@
                                 $output = array();
                                 foreach ($step->getOutgoingTransitions() as $transition)
                                 {
-                                    $output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
+                                    $output[] = get_component_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
                                 }
                                 echo join($glue, $output);
 
@@ -66,7 +66,7 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    <?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
+                    <?php include_component('configuration/workflowaddtransition', array('step' => $step)); ?>
                     <div id="workflow_details_step">
                         <dl id="step_details_info">
                             <dt><?php echo __('Name'); ?></dt>

@@ -222,8 +222,8 @@
         {
             if (!array_key_exists('module', $parameters))
                 $parameters['module'] = $this;
-            $message_plain = TBGAction::returnTemplateHTML("mailing/{$template}.text", $parameters);
-            $html = TBGAction::returnTemplateHTML("mailing/{$template}.html", $parameters);
+            $message_plain = TBGAction::returnComponentHTML("mailing/{$template}.text", $parameters);
+            $html = TBGAction::returnComponentHTML("mailing/{$template}.html", $parameters);
             $styles = file_get_contents(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'fixtures' . DS . TBGSettings::getThemeName() . '.css');
             $message_html = <<<EOT
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -664,7 +664,7 @@ EOT;
         {
             if ($this->isOutgoingNotificationsEnabled())
             {
-                TBGActionComponent::includeTemplate('mailing/userDropdownAnon', $event->getParameters());
+                TBGActionComponent::includeComponent('mailing/userDropdownAnon', $event->getParameters());
             }
         }
 
@@ -683,17 +683,17 @@ EOT;
 
         public function listen_projectconfig_tab_settings(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('mailing/projectconfig_tab_settings', array('selected_tab' => $event->getParameter('selected_tab')));
+            TBGActionComponent::includeComponent('mailing/projectconfig_tab_settings', array('selected_tab' => $event->getParameter('selected_tab')));
         }
 
         public function listen_projectconfig_tab_other(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('mailing/projectconfig_tab_other', array('selected_tab' => $event->getParameter('selected_tab')));
+            TBGActionComponent::includeComponent('mailing/projectconfig_tab_other', array('selected_tab' => $event->getParameter('selected_tab')));
         }
 
         public function listen_projectconfig_panel(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('mailing/projectconfig_panels', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
+            TBGActionComponent::includeComponent('mailing/projectconfig_panels', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
         }
 
         public function listen_accountNotificationSettings(TBGEvent $event)

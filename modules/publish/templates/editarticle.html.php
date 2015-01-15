@@ -1,7 +1,7 @@
 <?php
 
     use thebuggenie\modules\publish\entities\Article as TBGWikiArticle;
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
     TBGContext::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('Editing %article_name', array('%article_name' => $article_name)));
 
@@ -20,7 +20,7 @@
             <?php endif; ?>
             <a name="edit_article"></a>
             <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url($article_route, $article_route_params); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');var isvisible = $('change_reason_container').visible() || $('article_preview').value == 1;$('change_reason_container').show();$('change_reason').focus();return isvisible;">
-                <?php include_template('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
+                <?php include_component('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
                 <?php if (isset($preview) && $preview): ?>
                     <div class="rounded_box yellow borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
                         <?php echo __('This is a preview of the article'); ?><br>
@@ -70,7 +70,7 @@
                 </div>
                 <br style="clear: both;">
                 <div class="editor_container">
-                    <?php include_template('main/textarea', array('area_name' => 'article_content', 'target_type' => 'article', 'target_id' => $article->getID(), 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
+                    <?php include_component('main/textarea', array('area_name' => 'article_content', 'target_type' => 'article', 'target_id' => $article->getID(), 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
                 </div>
                 <div id="change_reason_container" class="fullpage_backdrop" style="display: none;">
                     <div class="backdrop_box large">

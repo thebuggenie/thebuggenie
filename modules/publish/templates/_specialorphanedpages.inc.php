@@ -8,5 +8,5 @@
     <p>
         <?php echo __('Below is a listing of pages that are not linked to by other pages.'); ?>
     </p>
-    <?php include_template('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
+    <?php include_component('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
 </div>

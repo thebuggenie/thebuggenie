@@ -40,11 +40,11 @@
             <tbody id="uploaded_files">
                 <?php if ($mode == 'issue'): ?>
                     <?php foreach ($existing_files as $file_id => $file): ?>
-                        <?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+                        <?php include_component('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
                     <?php endforeach; ?>
                 <?php elseif ($mode == 'article'): ?>
                     <?php foreach ($existing_files as $file_id => $file): ?>
-                        <?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'article', 'article' => $article, 'file' => $file, 'file_id' => $file_id)); ?>
+                        <?php include_component('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'article', 'article' => $article, 'file' => $file, 'file_id' => $file_id)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>

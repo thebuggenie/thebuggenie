@@ -37,7 +37,7 @@
         <ul class="simple_list" id="<?php echo $type; ?>_list">
             <?php if (count($items) > 0): ?>
                 <?php foreach ($items as $item): ?>
-                    <?php include_template('issuefield', array('item' => $item, 'type' => $type, 'access_level' => $access_level)); ?>
+                    <?php include_component('issuefield', array('item' => $item, 'type' => $type, 'access_level' => $access_level)); ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         </ul>

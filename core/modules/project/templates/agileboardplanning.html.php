@@ -4,7 +4,7 @@
 
     $tbg_response->addBreadcrumb(__('Planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" project planning', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName(), 'board' => $board));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName(), 'board' => $board));
 
     switch ($board->getType())
     {
@@ -115,7 +115,7 @@
     <br style="clear: both;">
 </div>
 <?php if ($tbg_user->isPlanningTutorialEnabled()): ?>
-    <?php include_template('main/tutorial_planning', compact('board')); ?>
+    <?php include_component('main/tutorial_planning', compact('board')); ?>
 <?php endif; ?>
 <script type="text/javascript">
     document.observe('dom:loaded', function() {

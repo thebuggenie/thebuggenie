@@ -35,7 +35,7 @@
     <div class="faded_out" id="no_editions" style="padding: 5px;<?php if (count($project->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
     <ul id="edition_table">
         <?php foreach ($project->getEditions() as $edition): ?>
-            <?php include_template('project/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
+            <?php include_component('project/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
         <?php endforeach; ?>
     </ul>
 </div>
@@ -45,7 +45,7 @@
     <div class="faded_out" id="no_components" style="padding: 5px;<?php if (count($project->getComponents()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no components'); ?></div>
     <ul id="component_table">
         <?php foreach ($project->getComponents() as $component): ?>
-            <?php include_template('project/componentbox', array('component' => $component, 'access_level' => $access_level)); ?>
+            <?php include_component('project/componentbox', array('component' => $component, 'access_level' => $access_level)); ?>
         <?php endforeach; ?>
     </ul>
 </div>

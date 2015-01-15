@@ -36,7 +36,7 @@
                     <div id="tab_installed_pane" style="padding-top: 0;">
                         <?php foreach ($modules as $module_key => $module): ?>
                             <?php if (!$module->isOutdated()): ?>
-                                <?php include_template('modulebox', array('module' => $module)); ?>
+                                <?php include_component('modulebox', array('module' => $module)); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>

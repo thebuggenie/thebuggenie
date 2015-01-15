@@ -17,11 +17,11 @@
             </thead>
             <tbody id="<?php echo $issuetype->getID(); ?>_list">
                 <?php foreach ($builtinfields as $item): ?>
-                    <?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+                    <?php include_component('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
                 <?php endforeach; ?>
                 <?php if (count($customtypes) > 0): ?>
                     <?php foreach ($customtypes as $key => $item): ?>
-                        <?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+                        <?php include_component('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>

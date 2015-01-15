@@ -1,5 +1,5 @@
 <?php if ($p_issues = $issue->getParentIssues()): ?>
-    <?php include_template('issueparent_crumbs', array('issue' => array_shift($p_issues), 'parent' => true)); ?>
+    <?php include_component('issueparent_crumbs', array('issue' => array_shift($p_issues), 'parent' => true)); ?>
 <?php endif; ?>
 <span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
 <?php $it_string = __('%issuetype %issue_no', array('%issuetype' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')), '%issue_no' => $issue->getFormattedIssueNo(true))); ?>

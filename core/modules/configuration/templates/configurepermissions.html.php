@@ -12,7 +12,7 @@
                     <?php echo link_tag(make_url('configure_roles'), '&lt;&lt;'.__('Back to roles'), array('class' => 'button button-green')); ?>
                     <?php echo __('Configure permissions'); ?>
                 </h3>
-                <?php include_template('configuration/permissionswarning'); ?>
+                <?php include_component('configuration/permissionswarning'); ?>
                 <div class="config_permissions greybox" style="margin: 0 0 10px 10px; min-height: 85px; width: 330px; float: right;">
                     <div class="header_div smaller" style="clear: both; margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
                     <div style="clear: both;">

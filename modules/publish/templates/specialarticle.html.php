@@ -1,6 +1,6 @@
 <?php
 
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
     TBGContext::loadLibrary('publish/publish');
     $tbg_response->setTitle($article_name);
 

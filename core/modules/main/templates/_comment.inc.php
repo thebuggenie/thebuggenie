@@ -50,7 +50,7 @@
                     <?php if (!$item instanceof TBGLogItem) continue; ?>
                     <?php /* Pass item's own time in order to prevent issuelogitem template from including timestamp for the item. The timestamp span is additionally hidden by the CSS.*/ ?>
                     <?php $previous_time = $item->getTime(); ?>
-                    <?php include_template('main/issuelogitem', compact('item', 'previous_time')); ?>
+                    <?php include_component('main/issuelogitem', compact('item', 'previous_time')); ?>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
@@ -69,7 +69,7 @@
             <br />
             <label for="comment_edit_<?php echo $comment->getId(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
             <br />
-            <?php include_template('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
+            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
             <div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
                 <?php echo image_tag('spinning_16.gif'); ?>
             </div>
@@ -88,7 +88,7 @@
                 <option value="0"<?php if (!$comment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for me, developers and administrators only'); ?></option>
             </select>
             <br />
-            <?php include_template('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('%user' => ($comment->getPostedBy() instanceof TBGIdentifiable) ? $comment->getPostedBy()->getName() : __('Unknown user')))."'''\n>".str_replace("\n", "\n> ", wordwrap(html_entity_decode(strip_tags(tbg_decodeUTF8($comment->getContent(), true)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
+            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('%user' => ($comment->getPostedBy() instanceof TBGIdentifiable) ? $comment->getPostedBy()->getName() : __('Unknown user')))."'''\n>".str_replace("\n", "\n> ", wordwrap(html_entity_decode(strip_tags(tbg_decodeUTF8($comment->getContent(), true)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
             <div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
                 <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
             </div>

@@ -1,6 +1,6 @@
 <?php
 
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
     TBGContext::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('%article_name history', array('%article_name' => $article_name)));
 
@@ -13,7 +13,7 @@
         <td class="main_area article">
             <a name="top"></a>
             <div class="article" style="width: auto; padding: 5px; position: relative;">
-                <?php include_template('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
+                <?php include_component('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
                 <?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
                     <?php if ($history_action == 'list'): ?>
                         <form action="<?php echo make_url('publish_article_diff', array('article_name' => $article->getName())); ?>" method="post">
@@ -99,7 +99,7 @@
                         </table>
                     <?php endif; ?>
                 <?php else: ?>
-                    <?php include_template('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
+                    <?php include_component('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
                 <?php endif; ?>
             </div>
         </td>

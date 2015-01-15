@@ -118,7 +118,7 @@
             <?php endif; ?>
         </span>
     </div>
-    <?php //include_template('main/profilebuttons'); ?>
+    <?php //include_component('main/profilebuttons'); ?>
     <div style="margin: 30px 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
         <div style="clear: both;" class="tab_menu inset">
             <ul id="account_tabs">
@@ -409,14 +409,14 @@
                     <h3><?php echo __('Pending memberships'); ?></h3>
                     <ul class="simple_list" id="pending_scope_memberships">
                         <?php foreach ($tbg_user->getUnconfirmedScopes() as $scope): ?>
-                            <?php include_template('main/userscope', array('scope' => $scope)); ?>
+                            <?php include_component('main/userscope', array('scope' => $scope)); ?>
                         <?php endforeach; ?>
                     </ul>
                     <span id="no_pending_scope_memberships" class="faded_out" style="<?php if (count($tbg_user->getUnconfirmedScopes())): ?>display: none;<?php endif; ?>"><?php echo __('You have no pending scope memberships'); ?></span>
                     <h3 style="margin-top: 20px;"><?php echo __('Confirmed memberships'); ?></h3>
                     <ul class="simple_list" id="confirmed_scope_memberships">
                         <?php foreach ($tbg_user->getConfirmedScopes() as $scope_id => $scope): ?>
-                            <?php include_template('main/userscope', array('scope' => $scope)); ?>
+                            <?php include_component('main/userscope', array('scope' => $scope)); ?>
                         <?php endforeach; ?>
                     </ul>
                 </div>

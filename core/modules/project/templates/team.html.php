@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Team overview'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" project team', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
 
 ?>
 <div id="project_team" class="project_info_container">

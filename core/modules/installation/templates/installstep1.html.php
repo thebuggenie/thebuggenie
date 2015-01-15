@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <h2 style="margin-top: 0px;">Pre-installation checks</h2>
     <p style="margin-bottom: 10px;">
@@ -147,4 +147,4 @@
         <?php endif; ?>
     </div>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

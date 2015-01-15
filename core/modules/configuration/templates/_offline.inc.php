@@ -18,7 +18,7 @@
         <td><label for="offline_msg"><?php echo __('Maintenance mode message'); ?></label></td>
         <td>
         <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-            <?php include_template('main/textarea', array('area_name' => 'offline_msg', 'area_id' => 'offline_msg', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::getMaintenanceMessage(), 'hide_hint' => true)); ?></td>
+            <?php include_component('main/textarea', array('area_name' => 'offline_msg', 'area_id' => 'offline_msg', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::getMaintenanceMessage(), 'hide_hint' => true)); ?></td>
         <?php elseif (TBGSettings::hasMaintenanceMessage()): ?>
             <?php echo TBGSettings::getMaintenanceMessage(); ?>
         <?php else: ?>

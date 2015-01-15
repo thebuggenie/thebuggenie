@@ -120,38 +120,23 @@
                 $time = explode(' ', microtime());
                 $pretime = $time[1] + $time[0];
             }
-            list ($template_name, $actionClass, $actionToRunName) = self::_doesComponentExist($template);
+            if (self::doesComponentExist($template, false))
+            {
+                list ($template_name, $actionClass, $actionToRunName) = self::_doesComponentExist($template);
 
-            foreach ($params as $key => $val)
-            {
-                $actionClass->$key = $val;
+                foreach ($params as $key => $val)
+                {
+                    $actionClass->$key = $val;
+                }
+                $actionClass->$actionToRunName();
+                $parameters = $actionClass->getParameterHolder();
             }
-            $actionClass->$actionToRunName();
-            self::presentTemplate($template_name, $actionClass->getParameterHolder());
-            if ($debug)
+            else
             {
-                $time = explode(' ', microtime());
-                $posttime = $time[1] + $time[0];
-                TBGContext::visitPartial($template, $posttime - $pretime);
+                $template_name = self::getFinalTemplateName($template);
+                $parameters = $params;
             }
-        }
-
-        /**
-         * Include a template from a module
-         *
-         * @param string $template
-         * @param array $params
-         */
-        public static function includeTemplate($template, $params = array())
-        {
-            $debug = TBGContext::isDebugMode();
-            if ($debug)
-            {
-                $time = explode(' ', microtime());
-                $pretime = $time[1] + $time[0];
-            }
-            $template_name = self::getFinalTemplateName($template);
-            self::presentTemplate($template_name, $params);
+            self::presentTemplate($template_name, $parameters);
             if ($debug)
             {
                 $time = explode(' ', microtime());

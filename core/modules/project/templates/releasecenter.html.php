@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Release center'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" release center', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
 
 ?>
 <div id="project_release_center" class="project_info_container">

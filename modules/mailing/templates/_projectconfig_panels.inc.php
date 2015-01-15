@@ -65,7 +65,7 @@
         </h4>
         <div id="mailing_incoming_accounts">
             <?php foreach (TBGContext::getModule('mailing')->getIncomingEmailAccountsForProject(TBGContext::getCurrentProject()) as $account): ?>
-                <?php include_template('mailing/incomingemailaccount', array('account' => $account)); ?>
+                <?php include_component('mailing/incomingemailaccount', array('account' => $account)); ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>

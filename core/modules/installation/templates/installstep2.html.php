@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <?php if (isset($error)): ?>
         <div class="error">
@@ -83,4 +83,4 @@
     </form>
     <p id="connection_status"></p>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

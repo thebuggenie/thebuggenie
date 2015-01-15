@@ -13,7 +13,7 @@
         <h4><?php echo __('Globally available roles'); ?></h4>
         <ul id="global_roles_list" class="simple_list" style="width: 788px;">
             <?php foreach ($roles as $role): ?>
-                <?php include_template('configuration/role', array('role' => $role)); ?>
+                <?php include_component('configuration/role', array('role' => $role)); ?>
             <?php endforeach; ?>
             <li class="faded_out" id="global_roles_no_roles"<?php if (count($roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no globally available roles'); ?></li>
         </ul>
@@ -28,7 +28,7 @@
         </div>
         <ul id="project_roles_list" class="simple_list" style="width: 788px;">
             <?php foreach ($project_roles as $role): ?>
-                <?php include_template('configuration/role', array('role' => $role)); ?>
+                <?php include_component('configuration/role', array('role' => $role)); ?>
             <?php endforeach; ?>
             <li class="faded_out no_roles" id="project_roles_no_roles"<?php if (count($project_roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no project-specific roles available'); ?></li>
         </ul>
@@ -47,8 +47,8 @@
         <p><?php echo __('These permissions directly control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration page. You may want to use roles and assignments instead of applying these permissions directly.', array('%permissions_configuration' => '<b>'.link_tag(make_url('configure_permissions'), __('permissions configuration')).'</b>')); ?></p>
     </div>
     <ul id="project_permission_details_<?php echo $project->getID(); ?>" style="margin-top: 10px;">
-        <?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-        <?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-        <?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
     </ul>
 </div>

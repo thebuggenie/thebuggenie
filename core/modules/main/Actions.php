@@ -255,7 +255,7 @@
                 $issue->save();
                 if ($multi)
                 {
-                    return $this->renderJSON(array('content' => $this->getTemplateHTML('issuemoved', compact('issue', 'project'))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('issuemoved', compact('issue', 'project'))));
                 }
                 \TBGContext::setMessage('issue_message', \TBGContext::getI18n()->__('The issue was moved'));
             }
@@ -1814,7 +1814,7 @@
             }
 
 
-            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
+            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
         }
 
         public function runIssueDeleteTimeSpent(\TBGRequest $request)
@@ -3070,7 +3070,7 @@
                 if ($request['link_url'] != '')
                 {
                     $link_id = $issue->attachLink($request['link_url'], $request['description']);
-                    return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('Link attached!'), 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'content' => $this->getTemplateHTML('main/attachedlink', array('issue' => $issue, 'link_id' => $link_id, 'link' => array('description' => $request['description'], 'url' => $request['link_url'])))));
+                    return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('Link attached!'), 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'content' => $this->getComponentHTML('main/attachedlink', array('issue' => $issue, 'link_id' => $link_id, 'link' => array('description' => $request['description'], 'url' => $request['link_url'])))));
                 }
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('You have to provide a link URL, otherwise we have nowhere to link to!')));
@@ -3098,7 +3098,7 @@
         public function runAttachLink(\TBGRequest $request)
         {
             $link_id = \TBGLinksTable::getTable()->addLink($request['target_type'], $request['target_id'], $request['link_url'], $request->getRawParameter('description'));
-            return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('Link added!'), 'content' => $this->getTemplateHTML('main/menulink', array('link_id' => $link_id, 'link' => array('target_type' => $request['target_type'], 'target_id' => $request['target_id'], 'description' => $request->getRawParameter('description'), 'url' => $request['link_url'])))));
+            return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('Link added!'), 'content' => $this->getComponentHTML('main/menulink', array('link_id' => $link_id, 'link' => array('target_type' => $request['target_type'], 'target_id' => $request['target_id'], 'description' => $request->getRawParameter('description'), 'url' => $request['link_url'])))));
         }
 
         public function runRemoveLink(\TBGRequest $request)
@@ -3272,10 +3272,10 @@
                 switch ($comment_applies_type)
                 {
                     case \TBGComment::TYPE_ISSUE:
-                        $comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => \TBGContext::factory()->TBGIssue($request['comment_applies_id'])));
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => \TBGContext::factory()->TBGIssue($request['comment_applies_id'])));
                         break;
                     case \TBGComment::TYPE_ARTICLE:
-                        $comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment));
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
                         break;
                     default:
                         $comment_html = 'OH NO!';
@@ -3839,7 +3839,7 @@
                             $issue->addParentIssue($related_issue);
                         }
                         $cc++;
-                        $content .= $this->getTemplateHTML('main/relatedissue', array('issue' => $related_issue, 'related_issue' => $issue));
+                        $content .= $this->getComponentHTML('main/relatedissue', array('issue' => $related_issue, 'related_issue' => $issue));
                     }
                     catch (\Exception $e)
                     {
@@ -4241,7 +4241,7 @@
                             $itemtype = 'edition';
                             $item = $result;
                             $itemtypename = \TBGContext::getI18n()->__('Edition');
-                            $content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
+                            $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
                         $message = \TBGContext::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition->getName()));
@@ -4274,7 +4274,7 @@
                             $itemtype = 'component';
                             $item = $result;
                             $itemtypename = \TBGContext::getI18n()->__('Component');
-                            $content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
+                            $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
                         $message = \TBGContext::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component->getName()));
@@ -4307,7 +4307,7 @@
                             $itemtype = 'build';
                             $item = $result;
                             $itemtypename = \TBGContext::getI18n()->__('Release');
-                            $content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
+                            $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
                         $message = \TBGContext::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build->getName()));
@@ -4658,7 +4658,7 @@
                     $target = \TBGContext::factory()->TBGTeam((int) $request['identifiable_value']);
                     break;
             }
-            return $this->renderJSON(array('content' => $this->getTemplateHTML('main/issueaclformentry', array('target' => $target))));
+            return $this->renderJSON(array('content' => $this->getComponentHTML('main/issueaclformentry', array('target' => $target))));
         }
 
         public function runRemoveScope(\TBGRequest $request)
@@ -4709,7 +4709,7 @@
 
                 $times = (!isset($board) || $board->getType() != AgileBoard::TYPE_KANBAN);
 
-                return $this->renderJSON(array('menu' => $this->getTemplateHTML('main/issuemoreactions', compact('issue', 'times', 'board'))));
+                return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board'))));
             }
             catch (\Exception $e)
             {

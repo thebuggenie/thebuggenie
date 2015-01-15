@@ -4,9 +4,9 @@
     <input type="text" id="role_<?php echo $role->getID(); ?>_name" name="name" value="<?php echo htmlentities($role->getName(), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" style="width: 300px;"><br>
     <div style="margin-top: 10px; font-weight: bold;"><?php echo __('Role permissions'); ?></div>
     <ul class="simple_list" style="display: block; width: auto;">
-    <?php include_template('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'module' => 'core', 'target_id' => null)); ?>
-    <?php include_template('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'module' => 'core', 'target_id' => null)); ?>
-    <?php include_template('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'module' => 'core', 'target_id' => null)); ?>
+    <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'module' => 'core', 'target_id' => null)); ?>
+    <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'module' => 'core', 'target_id' => null)); ?>
+    <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'module' => 'core', 'target_id' => null)); ?>
     <?php TBGEvent::createNew('core', 'rolepermissionsedit', $role)->trigger(); ?>
     </ul>
     <input type="submit" value="<?php echo __('Save role'); ?>" style="float: right;">

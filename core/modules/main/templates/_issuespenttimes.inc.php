@@ -6,7 +6,7 @@
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="lightyellowbox issue_timespent_form" id="time_spent_<?php echo $issue->getID(); ?>_form" style="<?php if (!isset($initial_view) || $initial_view != 'entry') echo 'display: none;'; ?>">
             <form action="<?php echo make_url('issue_edittimespent', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'entry_id' => 0)); ?>" onsubmit="TBG.Issues.editTimeEntry(this);return false;">
-                <?php include_template('main/issuespenttimeentry', array('issue' => $issue, 'save' => true)); ?>
+                <?php include_component('main/issuespenttimeentry', array('issue' => $issue, 'save' => true)); ?>
             </form>
         </div>
         <p>

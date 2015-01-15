@@ -111,7 +111,7 @@
         {
             if (TBGContext::isProjectContext())
             {
-                TBGActionComponent::includeTemplate('vcs_integration/menustriplinks', array('project' => TBGContext::getCurrentProject(), 'module' => $this, 'submenu' => $event->getParameter('submenu')));
+                TBGActionComponent::includeComponent('vcs_integration/menustriplinks', array('project' => TBGContext::getCurrentProject(), 'module' => $this, 'submenu' => $event->getParameter('submenu')));
             }
         }
 
@@ -127,17 +127,17 @@
 
         public function listen_projectheader(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('vcs_integration/projectheaderbutton');
+            TBGActionComponent::includeComponent('vcs_integration/projectheaderbutton');
         }
 
         public function listen_projectconfig_tab(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('vcs_integration/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
+            TBGActionComponent::includeComponent('vcs_integration/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
         }
 
         public function listen_projectconfig_panel(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('vcs_integration/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
+            TBGActionComponent::includeComponent('vcs_integration/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
         }
 
         public function listen_notificationview(TBGEvent $event)
@@ -145,7 +145,7 @@
             if ($event->getSubject()->getModuleName() != 'vcs_integration')
                 return;
 
-            TBGActionComponent::includeTemplate('vcs_integration/notification_view', array('notification' => $event->getSubject()));
+            TBGActionComponent::includeComponent('vcs_integration/notification_view', array('notification' => $event->getSubject()));
             $event->setProcessed();
         }
 
@@ -175,7 +175,7 @@
                 return;
 
             $links = IssueLink::getCommitsByIssue($event->getSubject());
-            TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
+            TBGActionComponent::includeComponent('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
         }
 
         public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null)

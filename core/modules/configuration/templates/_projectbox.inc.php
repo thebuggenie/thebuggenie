@@ -46,7 +46,7 @@
         <div class="fullpage_backdrop_content backdrop_box large">
             <div class="backdrop_detail_header"><?php echo __('Edit project permissions'); ?></div>
             <div class="backdrop_detail_content">
-                <?php include_template('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
+                <?php include_component('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
             </div>
             <div class="backdrop_detail_footer"><a href="javascript:void(0);" onclick="$('project_<?php echo $project->getID(); ?>_permissions').hide();"><?php echo __('Close popup'); ?></a></div>
         </div>
@@ -55,7 +55,7 @@
 <?php if ($project->hasChildren()): ?>
     <div class="child_project_container" id="project_<?php echo $project->getID(); ?>_children">
         <?php foreach ($project->getChildren() as $child_project): ?>
-            <?php include_template('projectbox', array('project' => $child_project, 'access_level' => $access_level)); ?>
+            <?php include_component('projectbox', array('project' => $child_project, 'access_level' => $access_level)); ?>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>

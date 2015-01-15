@@ -22,7 +22,7 @@
     <?php if ($is_parent || $is_selected): ?>
         <ul>
             <?php foreach ($children as $child_article): ?>
-                <?php include_template('publish/manualsidebarlink', array('parents' => $parents, 'first' => $first, 'article' => $article, 'main_article' => $child_article, 'level' => $level + 1)); ?>
+                <?php include_component('publish/manualsidebarlink', array('parents' => $parents, 'first' => $first, 'article' => $article, 'main_article' => $child_article, 'level' => $level + 1)); ?>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>

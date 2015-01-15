@@ -40,7 +40,7 @@
     <div class="content">
         <ul class="simple_list" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_links">
             <?php foreach ($links as $link): ?>
-                <?php include_template('main/menulink', array('link_id' => $link['id'], 'link' => $link)); ?>
+                <?php include_component('main/menulink', array('link_id' => $link['id'], 'link' => $link)); ?>
             <?php endforeach; ?>
         </ul>
         <div style="padding-left: 5px;<?php if (count($links) > 0): ?> display: none;<?php endif; ?>" class="no_items" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_no_links"><?php echo __('There are no links in this menu'); ?></div>

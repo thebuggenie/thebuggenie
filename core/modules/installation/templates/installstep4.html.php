@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <?php if (isset($error)): ?>
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -80,4 +80,4 @@
         </form>
     <?php endif; ?>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

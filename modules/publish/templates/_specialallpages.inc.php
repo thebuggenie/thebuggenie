@@ -10,5 +10,5 @@
     <p>
         <?php echo __('Below is a listing of all pages.'); ?>
     </p>
-    <?php include_template('publish/articleslist', compact('articles')); ?>
+    <?php include_component('publish/articleslist', compact('articles')); ?>
 </div>

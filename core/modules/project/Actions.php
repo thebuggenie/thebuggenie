@@ -170,7 +170,7 @@
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
 
-            return $this->renderTemplate('project/releasestrip', compact('board'));
+            return $this->renderComponent('project/releasestrip', compact('board'));
         }
 
         /**
@@ -183,7 +183,7 @@
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
 
-            return $this->renderTemplate('project/epicstrip', compact('board'));
+            return $this->renderComponent('project/epicstrip', compact('board'));
         }
 
         /**
@@ -386,12 +386,12 @@
                                 }
 
                                 current($transitions)->transitionIssueToOutgoingStepWithoutRequest($issue);
-                                return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getTemplateHTML('project/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));
+                                return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getComponentHTML('project/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));
                             }
                             else
                             {
                                 $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
-                                return $this->renderJSON(array('component' => $this->getTemplateHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
+                                return $this->renderJSON(array('component' => $this->getComponentHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
                             }
                             break;
                         default:
@@ -756,7 +756,7 @@
                 $sprint->setStartingDate(mktime(0, 0, 1, $request['starting_month'], $request['starting_day'], $request['starting_year']));
                 $sprint->setScheduledDate(mktime(23, 59, 59, $request['scheduled_month'], $request['scheduled_day'], $request['scheduled_year']));
                 $sprint->save();
-                return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
+                return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
             }
             return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__('Please specify a sprint name')));
         }
@@ -1345,7 +1345,7 @@
                 if ($request->hasParameter('milestone_id'))
                 {
                     $milestone = \TBGMilestonesTable::getTable()->selectById($request['milestone_id']);
-                    return $this->renderJSON(array('content' => $this->getTemplateHTML('project/milestoneissues', array('milestone' => $milestone))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestoneissues', array('milestone' => $milestone))));
                 }
                 else
                 {
@@ -1381,11 +1381,11 @@
                 }
                 elseif (isset($milestone) && $milestone instanceof \TBGMilestone)
                 {
-                    return $this->renderJSON(array('content' => $this->getTemplateHTML('project/planning_milestoneissues', array('milestone' => $milestone, 'board' => $board))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('project/planning_milestoneissues', array('milestone' => $milestone, 'board' => $board))));
                 }
                 else
                 {
-                    return $this->renderJSON(array('content' => $this->getTemplateHTML('project/agileboardbacklog', array('board' => $board))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('project/agileboardbacklog', array('board' => $board))));
                 }
             }
             catch (\Exception $e)
@@ -1430,7 +1430,7 @@
         public function runGetMilestone(\TBGRequest $request)
         {
             $milestone = new \TBGMilestone($request['milestone_id']);
-            return $this->renderJSON(array('content' => \TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
+            return $this->renderJSON(array('content' => \TBGAction::returnComponentHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
         }
 
         public function runMarkMilestoneFinished(\TBGRequest $request)
@@ -1786,7 +1786,7 @@
                 $assignee_role = new \TBGRole($request['role_id']);
                 $this->selected_project->addAssignee($assignee, $assignee_role);
 
-                return $this->renderTemplate('projects_assignees', array('project' => $this->selected_project));
+                return $this->renderComponent('projects_assignees', array('project' => $this->selected_project));
             }
             else
             {
@@ -2114,7 +2114,7 @@
                                 throw new \Exception($i18n->__('This edition already exists for this project'));
                             }
                             $edition = $this->selected_project->addEdition($e_name);
-                            return $this->renderJSON(array('html' => $this->getTemplateHTML('editionbox', array('edition' => $edition, 'access_level' => \TBGSettings::ACCESS_FULL))));
+                            return $this->renderJSON(array('html' => $this->getComponentHTML('editionbox', array('edition' => $edition, 'access_level' => \TBGSettings::ACCESS_FULL))));
                         }
                         else
                         {
@@ -2291,7 +2291,7 @@
                             throw new \Exception($i18n->__('This component already exists for this project'));
                         }
                         $component = $this->selected_project->addComponent($c_name);
-                        return $this->renderJSON(array(/* 'title' => $i18n->__('The component has been added'), */'html' => $this->getTemplateHTML('componentbox', array('component' => $component, 'access_level' => \TBGSettings::ACCESS_FULL))));
+                        return $this->renderJSON(array(/* 'title' => $i18n->__('The component has been added'), */'html' => $this->getComponentHTML('componentbox', array('component' => $component, 'access_level' => \TBGSettings::ACCESS_FULL))));
                     }
                     else
                     {
@@ -2630,7 +2630,7 @@
                 try
                 {
                     $workflow_scheme = \TBGContext::factory()->TBGWorkflowScheme($request['new_workflow']);
-                    return $this->renderJSON(array('content' => $this->getTemplateHtml('projectworkflow_table', array('project' => $this->selected_project, 'new_workflow' => $workflow_scheme))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('projectworkflow_table', array('project' => $this->selected_project, 'new_workflow' => $workflow_scheme))));
                 }
                 catch (\Exception $e)
                 {
@@ -2650,7 +2650,7 @@
                     $role->setName($request['role_name']);
                     $role->setProject($this->selected_project);
                     $role->save();
-                    return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/role', array('role' => $role))));
+                    return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/role', array('role' => $role))));
                 }
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('message' => $this->getI18n()->__('You must provide a role name')));

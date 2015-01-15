@@ -219,20 +219,6 @@
         }
 
         /**
-         * Render a template
-         *
-         * @param string $template the template name
-         * @param array $params template parameters
-         *
-         * @return boolean
-         */
-        public function renderTemplate($template, $params = array())
-        {
-            echo TBGActionComponent::includeTemplate($template, $params);
-            return true;
-        }
-
-        /**
          * Render a component
          *
          * @param string $template the component name
@@ -276,38 +262,6 @@
         public function getComponentHTML($template, $params = array())
         {
             return self::returnComponentHTML($template, $params);
-        }
-
-        /**
-         * Returns the HTML output from a template, but doesn't render it
-         *
-         * @param string $template the template name
-         * @param array $params template parameters
-         *
-         * @return boolean
-         */
-        public static function returnTemplateHTML($template, $params = array())
-        {
-            $current_content = ob_get_clean();
-            (TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
-            echo TBGActionComponent::includeTemplate($template, $params);
-            $template_content = ob_get_clean();
-            (TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
-            echo $current_content;
-            return $template_content;
-        }
-
-        /**
-         * Returns the HTML output from a template, but doesn't render it
-         *
-         * @param string $template the template name
-         * @param array $params template parameters
-         *
-         * @return boolean
-         */
-        public function getTemplateHTML($template, $params = array())
-        {
-            return self::returnTemplateHTML($template, $params);
         }
 
     }

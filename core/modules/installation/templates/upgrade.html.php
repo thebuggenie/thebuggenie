@@ -1,4 +1,4 @@
-<?php include_template('installation/header', array('mode' => 'upgrade')); ?>
+<?php include_component('installation/header', array('mode' => 'upgrade')); ?>
 <div class="installation_box">
     <?php if ($upgrade_available): ?>
         <?php if (version_compare($current_version, '3.2', '<')): ?>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="padded_box installpage backup" id="install_page_2">
-                    <?php include_template('main/percentbar', array('percent' => 5, 'height' => 5)); ?>
+                    <?php include_component('main/percentbar', array('percent' => 5, 'height' => 5)); ?>
                     <h2 style="margin-bottom: 15px; padding-bottom: 0;">
                         <span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo TBGSettings::getVersion(false, true); ?><br>
                     </h2>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="padded_box installpage" id="install_page_3">
-                    <?php include_template('main/percentbar', array('percent' => 25, 'height' => 5)); ?>
+                    <?php include_component('main/percentbar', array('percent' => 25, 'height' => 5)); ?>
                     <h2>Improved workflow handling</h2>
                     In addition to a slew of other improvements, this version introduces improved workflow configuration by letting you configure the initial workflow transition for new issues.<br>
                     To handle this, the upgrade wizard must create an workflow transitions for all existing scopes.<br>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="padded_box installpage" id="install_page_4">
-                    <?php include_template('main/percentbar', array('percent' => 50, 'height' => 5)); ?>
+                    <?php include_component('main/percentbar', array('percent' => 50, 'height' => 5)); ?>
                     <h2>Improved security</h2>
                     This version adds support for application passwords and contains improved security functionality.<br>
                     As a result, all users will require password resets after the upgrade is completed.<br>
@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="padded_box installpage" id="install_page_5">
-                    <?php include_template('main/percentbar', array('percent' => 90, 'height' => 5)); ?>
+                    <?php include_component('main/percentbar', array('percent' => 90, 'height' => 5)); ?>
                     <h2>Almost done</h2>
                     As mentioned on the previous page, version 3.3 will make <strong>all current user passwords stop working</strong> - you did read that, right?<br>
                     Because of this, we need to set a password for the admin account <span class="command_box"><?php echo strtolower($adminusername); ?></span>.<br>
@@ -164,7 +164,7 @@
             </p>
         <?php endif; ?>
     <?php elseif ($upgrade_complete): ?>
-        <?php include_template('main/percentbar', array('percent' => 100, 'height' => 5)); ?>
+        <?php include_component('main/percentbar', array('percent' => 100, 'height' => 5)); ?>
         <h2>Upgrade successfully completed!</h2>
         <p style="font-size: 1.2em;">
             Remember to remove the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> before you click the "Finish" button below.
@@ -197,4 +197,4 @@
     });
 
 </script>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

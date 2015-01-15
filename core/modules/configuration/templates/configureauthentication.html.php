@@ -41,7 +41,7 @@
                     <tr>
                         <td style="vertical-align: top"><label for="register_message"><?php echo __('Registration message'); ?></label></td>
                         <td>
-                            <?php include_template('main/textarea', array('area_name' => 'register_message', 'area_id' => 'register_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('register_message'), 'hide_hint' => true)); ?>
+                            <?php include_component('main/textarea', array('area_name' => 'register_message', 'area_id' => 'register_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('register_message'), 'hide_hint' => true)); ?>
                         </td>
                     </tr>
                     <tr>
@@ -50,19 +50,19 @@
                     <tr>
                         <td style="vertical-align: top"><label for="forgot_message"><?php echo __('Forgot password message'); ?></label></td>
                         <td>
-                            <?php include_template('main/textarea', array('area_name' => 'forgot_message', 'area_id' => 'forgot_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('forgot_message'), 'hide_hint' => true)); ?>
+                            <?php include_component('main/textarea', array('area_name' => 'forgot_message', 'area_id' => 'forgot_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('forgot_message'), 'hide_hint' => true)); ?>
                         </td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top"><label for="changepw_message"><?php echo __('Change password message'); ?></label></td>
                         <td>
-                            <?php include_template('main/textarea', array('area_name' => 'changepw_message', 'area_id' => 'changepw_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('changepw_message'), 'hide_hint' => true)); ?>
+                            <?php include_component('main/textarea', array('area_name' => 'changepw_message', 'area_id' => 'changepw_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('changepw_message'), 'hide_hint' => true)); ?>
                         </td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top"><label for="changedetails_message"><?php echo __('Change account details message'); ?></label></td>
                         <td>
-                            <?php include_template('main/textarea', array('area_name' => 'changedetails_message', 'area_id' => 'changedetails_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('changedetails_message'), 'hide_hint' => true)); ?>
+                            <?php include_component('main/textarea', array('area_name' => 'changedetails_message', 'area_id' => 'changedetails_message', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::get('changedetails_message'), 'hide_hint' => true)); ?>
                         </td>
                     </tr>
                 </table>

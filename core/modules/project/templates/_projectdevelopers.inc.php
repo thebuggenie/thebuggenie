@@ -122,5 +122,5 @@
 </table>
 <h4><?php echo __('Project team'); ?></h4>
 <div id="assignees_list">
-    <?php include_template('project/projects_assignees', array('project' => $project)); ?>
+    <?php include_component('project/projects_assignees', array('project' => $project)); ?>
 </div>

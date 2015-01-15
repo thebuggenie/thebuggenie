@@ -17,7 +17,7 @@
         </p>
         <ul id="subscribers_list" class="simple_list" style="margin-top: 15px;">
             <?php foreach ($users as $user): ?>
-                <?php include_template('main/issuesubscriber', compact('user', 'issue')); ?>
+                <?php include_component('main/issuesubscriber', compact('user', 'issue')); ?>
             <?php endforeach; ?>
         </ul>
     </div>

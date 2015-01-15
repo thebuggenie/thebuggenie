@@ -505,7 +505,7 @@
                             $new_scheme->setIssuetypeReportable($issuetype, $this->scheme->isIssuetypeReportable($issuetype));
                         }
                         \TBGIssueFieldsTable::getTable()->copyBySchemeIDs($this->scheme->getID(), $new_scheme->getID());
-                        return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/issuetypescheme', array('scheme' => $new_scheme))));
+                        return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/issuetypescheme', array('scheme' => $new_scheme))));
                     }
                     else
                     {
@@ -682,7 +682,7 @@
                             $customtype = \TBGCustomDatatype::getByKey($request['type']);
                             $item = $customtype->createNewOption($request['name'], $request['value'], $request['itemdata']);
                         }
-                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request['type']))));
+                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The option was added'), 'content' => $this->getComponentHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request['type']))));
                     }
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name')));
@@ -840,7 +840,7 @@
                         $project->setWorkflowSchemeID($request['workflow_scheme_id']);
                         $project->setIssuetypeSchemeID($request['issuetype_scheme_id']);
                         $project->save();
-                        return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => \TBGProject::getProjectsCount(), 'more_available' => \TBGContext::getScope()->hasProjectsAvailable()));
+                        return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getComponentHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => \TBGProject::getProjectsCount(), 'more_available' => \TBGContext::getScope()->hasProjectsAvailable()));
                     }
                     catch (InvalidArgumentException $e)
                     {
@@ -865,7 +865,7 @@
          */
         public function runGetUserEditForm(\TBGRequest $request)
         {
-            return $this->renderJSON(array("content" => $this->getTemplateHtml('finduser_row_editable', array('user' => \TBGContext::factory()->TBGUser($request['user_id'])))));
+            return $this->renderJSON(array("content" => $this->getComponentHTML('finduser_row_editable', array('user' => \TBGContext::factory()->TBGUser($request['user_id'])))));
         }
 
         /**
@@ -914,7 +914,7 @@
                     $theProject->setArchived($archived);
                     $theProject->save();
 
-                    $projectbox = $this->getTemplateHtml('projectbox', array('project' => $theProject, 'access_level' => $this->access_level));
+                    $projectbox = $this->getComponentHTML('projectbox', array('project' => $theProject, 'access_level' => $this->access_level));
                     return $this->renderJSON(array('message' => $i18n->__('Project successfully updated'), 'parent_id' => $theProject->getParentID(), 'box' => $projectbox));
                 }
                 catch (\Exception $e)
@@ -1307,7 +1307,7 @@
                     {
                         $message = \TBGContext::getI18n()->__('The group was added');
                     }
-                    return $this->renderJSON(array('message' => $message, 'content' => $this->getTemplateHTML('configuration/groupbox', array('group' => $group))));
+                    return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/groupbox', array('group' => $group))));
                 }
                 else
                 {
@@ -1327,7 +1327,7 @@
             {
                 $group = \TBGContext::factory()->TBGGroup((int) $request['group_id']);
                 $users = $group->getMembers();
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/groupuserlist', array('users' => $users))));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/groupuserlist', array('users' => $users))));
             }
             catch (\Exception $e)
             {
@@ -1468,7 +1468,7 @@
                     {
                         $message = \TBGContext::getI18n()->__('The team was added');
                     }
-                    return $this->renderJSON(array('message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => \TBGTeam::countAll(), 'more_available' => \TBGContext::getScope()->hasTeamsAvailable()));
+                    return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/teambox', array('team' => $team)), 'total_count' => \TBGTeam::countAll(), 'more_available' => \TBGContext::getScope()->hasTeamsAvailable()));
                 }
                 else
                 {
@@ -1488,7 +1488,7 @@
             {
                 $team = \TBGContext::factory()->TBGTeam((int) $request['team_id']);
                 $users = $team->getMembers();
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/teamuserlist', compact('users', 'team'))));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/teamuserlist', compact('users', 'team'))));
             }
             catch (\Exception $e)
             {
@@ -1523,7 +1523,7 @@
                 $user = \TBGContext::factory()->TBGUser($user_id);
 
                 $team->addMember($user);
-                return $this->renderJSON(array('teamlistitem' => $this->getTemplateHTML('configuration/teamuserlistitem', compact('team', 'user_id', 'user')), 'update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
+                return $this->renderJSON(array('teamlistitem' => $this->getComponentHTML('configuration/teamuserlistitem', compact('team', 'user_id', 'user')), 'update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
             }
             catch (\Exception $e)
             {
@@ -1787,7 +1787,7 @@
                     {
                         $template_options['random_password'] = $random_password;
                     }
-                    $return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', $template_options);
+                    $return_options['content'] = $this->getComponentHTML('configuration/finduser_row', $template_options);
                     $return_options['title'] = $this->getI18n()->__('User updated!');
                     if ($password_changed)
                     {
@@ -1918,7 +1918,7 @@
                                 $new_scheme->associateIssuetypeWithWorkflow($issuetype, $this->workflow_scheme->getWorkflowForIssuetype($issuetype));
                             }
                         }
-                        return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflowscheme', array('scheme' => $new_scheme))));
+                        return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/workflowscheme', array('scheme' => $new_scheme))));
                     }
                     else
                     {
@@ -1984,7 +1984,7 @@
                     if ($new_name = $request['new_name'])
                     {
                         $new_workflow = $this->workflow->copy($new_name);
-                        return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => \TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => \TBGContext::getScope()->hasCustomWorkflowsAvailable()));
+                        return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => \TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => \TBGContext::getScope()->hasCustomWorkflowsAvailable()));
                     }
                     else
                     {
@@ -2187,7 +2187,7 @@
                             $rule->setWorkflow($this->workflow);
                             $rule->save();
 
-                            return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflowtransitionvalidationrule', array('rule' => $rule))));
+                            return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/workflowtransitionvalidationrule', array('rule' => $rule))));
                         }
                         elseif ($mode == 'update_validation_rule')
                         {
@@ -2306,7 +2306,7 @@
                     $client->save();
 
                     $message = $this->getI18n()->__('The client was added');
-                    return $this->renderJSON(array('message' => $message, 'content' => $this->getTemplateHTML('configuration/clientbox', array('client' => $client))));
+                    return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/clientbox', array('client' => $client))));
                 }
                 else
                 {
@@ -2362,7 +2362,7 @@
             {
                 $client = \TBGContext::factory()->TBGClient((int) $request['client_id']);
                 $users = $client->getMembers();
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/clientuserlist', compact('users', 'client'))));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/clientuserlist', compact('users', 'client'))));
             }
             catch (\Exception $e)
             {
@@ -2397,7 +2397,7 @@
                 $user = \TBGContext::factory()->TBGUser($user_id);
 
                 $client->addMember($user);
-                return $this->renderJSON(array('clientlistitem' => $this->getTemplateHTML('configuration/clientuserlistitem', compact('client', 'user_id', 'user')), 'update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
+                return $this->renderJSON(array('clientlistitem' => $this->getComponentHTML('configuration/clientuserlistitem', compact('client', 'user_id', 'user')), 'update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
             }
             catch (\Exception $e)
             {
@@ -2434,7 +2434,7 @@
                 $client->setTelephone($request['client_telephone']);
                 $client->setFax($request['client_fax']);
                 $client->save();
-                return $this->renderJSON(array('success' => true, 'content' => $this->getTemplateHTML('configuration/clientbox', array('client' => $client)), 'message' => $this->getI18n()->__('The client was saved')));
+                return $this->renderJSON(array('success' => true, 'content' => $this->getComponentHTML('configuration/clientbox', array('client' => $client)), 'message' => $this->getI18n()->__('The client was saved')));
             }
             catch (\Exception $e)
             {
@@ -2445,13 +2445,13 @@
 
         public function runImportCSV(\TBGRequest $request)
         {
-            $content = $this->getTemplateHTML('configuration/importcsv', array('type' => $request['type']));
+            $content = $this->getComponentHTML('configuration/importcsv', array('type' => $request['type']));
             return $this->renderJSON(array('content' => $content));
         }
 
         public function runGetIDsForImportCSV(\TBGRequest $request)
         {
-            $content = $this->getTemplateHTML('configuration/import_ids');
+            $content = $this->getComponentHTML('configuration/import_ids');
             return $this->renderJSON(array('content' => $content));
         }
 
@@ -3421,7 +3421,7 @@
             switch ($request['mode'])
             {
                 case 'list_permissions':
-                    return $this->renderTemplate('configuration/rolepermissionslist', array('role' => $role));
+                    return $this->renderComponent('configuration/rolepermissionslist', array('role' => $role));
                     break;
                 case 'edit':
                     if (!$access_level == \TBGSettings::ACCESS_FULL)
@@ -3458,7 +3458,7 @@
                         }
                         return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
                     }
-                    return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));
+                    return $this->renderComponent('configuration/rolepermissionsedit', array('role' => $role));
                 case 'delete':
                     if (!$access_level == \TBGSettings::ACCESS_FULL || !$request->isPost())
                     {
@@ -3482,7 +3482,7 @@
                 $role = new \TBGRole();
                 $role->setName($request['role_name']);
                 $role->save();
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/role', array('role' => $role))));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/role', array('role' => $role))));
             }
             $this->roles = \TBGRole::getAll();
         }

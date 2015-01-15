@@ -62,7 +62,7 @@
         </fieldset>
         <a href="javascript:void(0);" id="create-account-button" onclick="$('register').addClassName('active');$('registration-button-container').removeClassName('active');$('regular_login_container').removeClassName('active');$('openid_container').removeClassName('active');"><?php echo __('Create an account'); ?></a>
     </div>
-    <?php include_template('main/loginregister', compact('registrationintro')); ?>
+    <?php include_component('main/loginregister', compact('registrationintro')); ?>
 <?php endif; ?>
 <?php if (isset($error)): ?>
     <script type="text/javascript">

@@ -54,7 +54,7 @@
                 <div id="project_table">
                     <?php if (count($active_projects) > 0): ?>
                         <?php foreach ($active_projects as $project): ?>
-                            <?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
+                            <?php include_component('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
@@ -64,7 +64,7 @@
                 <h4 style="margin-top: 30px;"><?php echo __('Archived projects'); ?></h4>
                 <div id="project_table_archived">
                     <?php foreach ($archived_projects as $project): ?>
-                        <?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
+                        <?php include_component('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
                     <?php endforeach; ?>
                 </div>
                 <div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($archived_projects) > 0): ?> display: none;<?php endif;?>">

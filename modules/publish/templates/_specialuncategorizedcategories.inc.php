@@ -8,5 +8,5 @@
     <p>
         <?php echo __('Below is a listing of categories that have no parent categories.'); ?>
     </p>
-    <?php include_template('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
+    <?php include_component('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
 </div>

@@ -14,7 +14,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflow', 'workflow' => $workflow)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'workflow', 'workflow' => $workflow)); ?>
             <div class="content" style="width: 730px;" id="workflow_steps_container">
                 <?php if ($workflow instanceof TBGWorkflow): ?>
                     <div class="greybox workflow_steps_intro">
@@ -80,10 +80,10 @@
                             </tr>
                         </thead>
                         <tbody class="padded_table hover_highlight" id="workflow_steps_list_tbody">
-                            <?php include_template('configuration/workflowstep', array('step' => $workflow->getInitialTransition()->getOutgoingStep(), 'workflow' => $workflow)); ?>
+                            <?php include_component('configuration/workflowstep', array('step' => $workflow->getInitialTransition()->getOutgoingStep(), 'workflow' => $workflow)); ?>
                             <?php foreach ($workflow->getSteps() as $step): ?>
                                 <?php if ($step->getID() == $workflow->getInitialTransition()->getOutgoingStep()->getID()) continue; ?>
-                                <?php include_template('configuration/workflowstep', array('step' => $step, 'workflow' => $workflow)); ?>
+                                <?php include_component('configuration/workflowstep', array('step' => $step, 'workflow' => $workflow)); ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

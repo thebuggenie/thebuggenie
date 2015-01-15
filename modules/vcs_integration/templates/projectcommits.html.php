@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Commits'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" commits', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Project commits')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Project commits')));
 
 ?>
 <div id="project_release_center" class="project_info_container">
@@ -21,7 +21,7 @@
                     ?>
                     <div class="project_commits_box">
                         <div id="commits">
-                            <?php include_template('vcs_integration/projectcommits', array('selected_project' => $selected_project, 'commits' => $commits)); ?>
+                            <?php include_component('vcs_integration/projectcommits', array('selected_project' => $selected_project, 'commits' => $commits)); ?>
                         </div>
 
                         <div class="commits_next">

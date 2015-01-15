@@ -5,7 +5,7 @@
 <?php if (count($permissions_list) > 0): ?>
     <?php foreach ($permissions_list as $permission_key => $permission): ?>
         <?php if (is_numeric($permission_key)): ?>
-            <?php include_template('configuration/permissionsblock', array('base_id' => $base_id.'_'.$permission_key, 'permissions_list' => $permission, 'mode' => $mode, 'target_id' => $target_id, 'module' => $module, 'user_id' => $user_id, 'team_id' => $team_id, 'access_level' => $access_level)); ?>
+            <?php include_component('configuration/permissionsblock', array('base_id' => $base_id.'_'.$permission_key, 'permissions_list' => $permission, 'mode' => $mode, 'target_id' => $target_id, 'module' => $module, 'user_id' => $user_id, 'team_id' => $team_id, 'access_level' => $access_level)); ?>
         <?php else: ?>
             <?php $current_target_id = (array_key_exists('target_id', $permission)) ? $permission['target_id'] : $target_id; ?>
             <li>

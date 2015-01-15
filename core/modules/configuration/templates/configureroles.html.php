@@ -29,7 +29,7 @@
                 </h5>
                 <ul id="global_roles_list" class="simple_list" style="width: 730px;">
                     <?php foreach ($roles as $role): ?>
-                        <?php include_template('configuration/role', array('role' => $role)); ?>
+                        <?php include_component('configuration/role', array('role' => $role)); ?>
                     <?php endforeach; ?>
                     <li class="faded_out no_roles" id="global_roles_no_roles"<?php if (count($roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no globally available roles'); ?></li>
                 </ul>

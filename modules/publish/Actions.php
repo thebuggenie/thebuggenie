@@ -311,7 +311,7 @@
                 $parent_articles[$article->getName()] = $article->getManualName();
             }
 
-            return $this->renderJSON(array('list' => $this->getTemplateHTML('publish/getavailableparents', compact('parent_articles'))));
+            return $this->renderJSON(array('list' => $this->getComponentHTML('publish/getavailableparents', compact('parent_articles'))));
         }
 
         /**
@@ -424,7 +424,7 @@
                 }
             }
 
-            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('publish/articlesubscriber', array('user' => $user, 'article' => $article)))));
+            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('publish/articlesubscriber', array('user' => $user, 'article' => $article)))));
         }
 
     }

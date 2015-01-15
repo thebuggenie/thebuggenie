@@ -16,12 +16,12 @@
     <td class="milestone_issue_actions">
         <div>
             <a class="dropper button button-icon button-silver" id="more_actions_<?php echo $issue->getID(); ?>_button"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
-            <?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
+            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
         </div>
     </td>
 </tr>
 <?php if (count($issue->getChildIssues())): ?>
     <?php foreach ($issue->getChildIssues() as $child_issue): ?>
-        <?php include_template('project/milestonedetailsissue', array('issue' => $child_issue, 'milestone' => $milestone, 'child' => true)); ?>
+        <?php include_component('project/milestonedetailsissue', array('issue' => $child_issue, 'milestone' => $milestone, 'child' => true)); ?>
     <?php endforeach; ?>
 <?php endif; ?>

@@ -178,7 +178,7 @@
                             <br style="clear: both;">
                         </li>
                         <li id="transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>" class="lightyellowbox issue_timespent_form" style="display: none;">
-                            <?php include_template('main/issuespenttimeentry', compact('issue')); ?>
+                            <?php include_component('main/issuespenttimeentry', compact('issue')); ?>
                         </li>
                     <?php else: ?>
                         <input type="hidden" name="did" id="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" value="nothing">
@@ -186,7 +186,7 @@
                 <?php endif; ?>
                 <li style="margin-top: 10px;">
                     <label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
-                    <?php include_template('main/textarea', array('area_name' => 'comment_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => '')); ?>
+                    <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => '')); ?>
                 </li>
             </ul>
             <div style="text-align: right; margin-right: 5px;">

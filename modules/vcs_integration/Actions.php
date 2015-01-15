@@ -42,7 +42,7 @@
 
             if ($offset)
             {
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
             }
         }
 

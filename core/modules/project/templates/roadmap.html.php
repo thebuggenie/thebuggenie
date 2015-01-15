@@ -7,7 +7,7 @@
     $tbg_response->addJavascript(make_url('home').'js/jquery.flot.resize.min.js', false);
     $tbg_response->addJavascript(make_url('home').'js/jquery.flot.dashes.js', false);
     $tbg_response->addJavascript(make_url('home').'js/jquery.flot.time.min.js', false);
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Roadmap')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Roadmap')));
 
 ?>
 <div id="project_roadmap_page" class="<?php if ($mode == 'upcoming') echo 'upcoming'; ?> project_info_container">

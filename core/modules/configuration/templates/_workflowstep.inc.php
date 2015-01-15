@@ -15,7 +15,7 @@
                     </form>
                 </div>
             </div>
-            <?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
+            <?php include_component('configuration/workflowaddtransition', array('step' => $step)); ?>
             <div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_delete" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
                 <div class="header"><?php echo __('Completely delete step "%step_name"', array('%step_name' => $step->getName())); ?></div>
                 <div class="content">

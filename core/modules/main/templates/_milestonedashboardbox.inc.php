@@ -22,7 +22,7 @@
                 <?php echo __('%num_closed issue(s) closed of %num_assigned assigned', array('%num_closed' => '<b>'.$milestone->countClosedIssues().'</b>', '%num_assigned' => '<b>'.$milestone->countIssues().'</b>')); ?>
             <?php endif; ?>
         </div>
-        <?php include_template('main/percentbar', array('percent' => $milestone->getPercentComplete(), 'height' => 14)); ?>
+        <?php include_component('main/percentbar', array('percent' => $milestone->getPercentComplete(), 'height' => 14)); ?>
     </div>
     <?php if ($milestone->isReached()): ?>
         <div class="status">

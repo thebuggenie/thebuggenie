@@ -3,5 +3,5 @@
     <p>
         <?php echo __('Below is a listing of all pages that links to this pages.'); ?>
     </p>
-    <?php include_template('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
+    <?php include_component('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
 </div>

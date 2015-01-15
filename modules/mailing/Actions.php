@@ -130,7 +130,7 @@
 
                     if (!$account_id)
                     {
-                        return $this->renderTemplate('mailing/incomingemailaccount', array('project' => $project, 'account' => $account));
+                        return $this->renderComponent('mailing/incomingemailaccount', array('project' => $project, 'account' => $account));
                     }
                     else
                     {

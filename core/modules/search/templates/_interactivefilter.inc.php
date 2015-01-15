@@ -62,23 +62,23 @@
             case 'posted_by':
             case 'owner_user':
             case 'assignee_user':
-                include_template('search/interactivefilter_user', compact('filter'));
+                include_component('search/interactivefilter_user', compact('filter'));
                 break;
             case 'owner_team':
             case 'assignee_team':
-                include_template('search/interactivefilter_team', compact('filter'));
+                include_component('search/interactivefilter_team', compact('filter'));
                 break;
             case 'status':
-                include_template('search/interactivefilter_status', compact('filter'));
+                include_component('search/interactivefilter_status', compact('filter'));
                 break;
             case 'category':
-                include_template('search/interactivefilter_category', compact('filter'));
+                include_component('search/interactivefilter_category', compact('filter'));
                 break;
             case 'build':
             case 'component':
             case 'edition':
             case 'milestone':
-                include_template('search/interactivefilter_affected', compact('filter'));
+                include_component('search/interactivefilter_affected', compact('filter'));
                 break;
             case 'subprojects':
                 ?>
@@ -149,11 +149,11 @@
             case 'resolution':
             case 'reproducability':
             case 'severity':
-                include_template('search/interactivefilter_choice', compact('filter'));
+                include_component('search/interactivefilter_choice', compact('filter'));
                 break;
             case 'posted':
             case 'last_updated':
-                include_template('search/interactivefilter_date', compact('filter'));
+                include_component('search/interactivefilter_date', compact('filter'));
                 break;
             default:
                 if (!in_array($filter->getFilterKey(), TBGSearchFilter::getValidSearchFilters()))
@@ -161,7 +161,7 @@
                     switch ($filter->getFilterType())
                     {
                         case TBGCustomDatatype::DATE_PICKER:
-                            include_template('search/interactivefilter_date', compact('filter'));
+                            include_component('search/interactivefilter_date', compact('filter'));
                             break;
                         case TBGCustomDatatype::RADIO_CHOICE:
                         case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
@@ -170,21 +170,21 @@
                         case TBGCustomDatatype::EDITIONS_CHOICE:
                         case TBGCustomDatatype::RELEASES_CHOICE:
                         case TBGCustomDatatype::MILESTONE_CHOICE:
-                            include_template('search/interactivefilter_affected', compact('filter'));
+                            include_component('search/interactivefilter_affected', compact('filter'));
                             break;
                         case TBGCustomDatatype::USER_CHOICE:
-                            include_template('search/interactivefilter_user', compact('filter'));
+                            include_component('search/interactivefilter_user', compact('filter'));
                             break;
                         case TBGCustomDatatype::TEAM_CHOICE:
-                            include_template('search/interactivefilter_team', compact('filter'));
+                            include_component('search/interactivefilter_team', compact('filter'));
                             break;
                         case TBGCustomDatatype::CLIENT_CHOICE:
-                            include_template('search/interactivefilter_client', compact('filter'));
+                            include_component('search/interactivefilter_client', compact('filter'));
                             break;
                         case TBGCustomDatatype::INPUT_TEXT:
                         case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
                         case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-                            include_template('search/interactivefilter_text', compact('filter'));
+                            include_component('search/interactivefilter_text', compact('filter'));
                             break;
                     }
                 }

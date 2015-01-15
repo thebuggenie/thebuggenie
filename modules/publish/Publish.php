@@ -327,7 +327,7 @@
 
         public function listen_projectLinks(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('publish/projectlinks', array('project' => $event->getSubject()));
+            TBGActionComponent::includeComponent('publish/projectlinks', array('project' => $event->getSubject()));
         }
 
         protected function _getPermissionslist()
@@ -351,7 +351,7 @@
 
         public function listen_rolePermissionsEdit(TBGEvent $event)
         {
-            TBGActionComponent::includeTemplate('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
+            TBGActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
         }
 
         public function listen_BreadcrumbMainLinks(TBGEvent $event)
@@ -387,7 +387,7 @@
             $project_url = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()) . ':MainPage')) : null;
             $wiki_url = (TBGContext::isProjectContext() && TBGContext::getCurrentProject()->hasWikiURL()) ? TBGContext::getCurrentProject()->getWikiURL() : null;
             $url = TBGContext::getRouting()->generate('publish');
-            TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'wiki_url' => $wiki_url, 'selected_tab' => $event->getParameter('selected_tab')));
+            TBGActionComponent::includeComponent('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'wiki_url' => $wiki_url, 'selected_tab' => $event->getParameter('selected_tab')));
         }
 
         public function listen_createNewProject(TBGEvent $event)
@@ -463,14 +463,14 @@
         public function listen_quicksearchDropdownFirstItems(TBGEvent $event)
         {
             $searchterm = $event->getSubject();
-            TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_firstitems', array('searchterm' => $searchterm));
+            TBGActionComponent::includeComponent('publish/quicksearch_dropdown_firstitems', array('searchterm' => $searchterm));
         }
 
         public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
         {
             $searchterm = $event->getSubject();
             list ($resultcount, $articles) = Article::findArticlesByContentAndProject($searchterm, TBGContext::getCurrentProject());
-            TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
+            TBGActionComponent::includeComponent('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
         }
 
         /**

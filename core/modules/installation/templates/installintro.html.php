@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <h2>We value your feedback</h2>
     The key to success for any open source project is listening to feedback from users - both positive feedback <b>and</b> constructive criticism.<br>
@@ -21,4 +21,4 @@
     </form>
 </div>
 
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

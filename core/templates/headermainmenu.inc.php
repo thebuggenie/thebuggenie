@@ -14,7 +14,7 @@
                         <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
                     </div>
                     <div id="project_information_menu" class="tab_menu_dropdown">
-                        <?php include_template('project/projectinfolinks', array('submenu' => true)); ?>
+                        <?php include_component('project/projectinfolinks', array('submenu' => true)); ?>
                     </div>
                 </li>
                 <?php if ($tbg_user->hasProjectPageAccess('project_planning', TBGContext::getCurrentProject())): ?>

@@ -1177,7 +1177,7 @@
         {
             if (TBGContext::isCLI()) return '';
 
-            return TBGAction::returnTemplateHTML('publish/toc', array('toc' => $this->toc));
+            return TBGAction::returnComponentHTML('publish/toc', array('toc' => $this->toc));
         }
 
         protected function _parse_save_nowiki($matches)

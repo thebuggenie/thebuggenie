@@ -22,7 +22,7 @@
     <div class="story_title"><?php echo $issue->getTitle(); ?></div>
     <input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
     <?php if ($issue->canEditEstimatedTime()): ?>
-        <?php include_template('project/quickestimate', array('issue' => $issue)); ?>
+        <?php include_component('project/quickestimate', array('issue' => $issue)); ?>
     <?php endif; ?>
     <div class="actions">
         <label><?php echo __('Actions'); ?>:</label>
@@ -33,7 +33,7 @@
         <?php endif; ?>
         <a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_tasks').toggle();"><?php echo image_tag('view_list_details.png', array('title' => __('Show tasks for this user story'))); ?></a>&nbsp;<span class="task_count">(<span id="scrum_story_<?php echo $issue->getID(); ?>_tasks_count"><?php echo count($issue->getChildIssues()); ?></span>)</span>
         <?php if ($issue->canAddRelatedIssues()): ?>
-            <?php include_template('project/quickaddtask', array('issue' => $issue, 'mode' => 'scrum')); ?>
+            <?php include_component('project/quickaddtask', array('issue' => $issue, 'mode' => 'scrum')); ?>
         <?php endif; ?>
     </div>
     <div style="clear: both; display: none;" id="scrum_story_<?php echo $issue->getID(); ?>_tasks" class="story_task_list">
@@ -41,7 +41,7 @@
         <?php foreach ($issue->getChildIssues() as $task_id => $task): ?>
             <?php if ($task->getIssueType()->isTask()): ?>
                 <?php $hastasks = true; ?>
-                <?php include_template('project/scrumstorytask', array('task' => $task)); ?>
+                <?php include_component('project/scrumstorytask', array('task' => $task)); ?>
             <?php endif; ?>
         <?php endforeach; ?>
         <div class="faded_out" id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><?php echo __("This story doesn't have any tasks"); ?></div>

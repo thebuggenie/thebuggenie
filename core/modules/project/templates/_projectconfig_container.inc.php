@@ -69,7 +69,7 @@
                 <td><label for="project_description_input"><?php echo __('Project description'); ?></label></td>
                 <td>
                     <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-                        <?php include_template('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
+                        <?php include_component('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
                     <?php elseif ($project->hasDescription()): ?>
                         <?php echo $project->getDescription(); ?>
                     <?php else: ?>

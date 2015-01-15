@@ -28,7 +28,7 @@
                 <ul class="simple_list" id="issue_<?php echo $issue->getID(); ?>_access_list" style="padding: 5px;">
                     <li id="issue_<?php echo $issue->getID(); ?>_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
                     <?php foreach ($al_items as $item): ?>
-                        <?php include_template('main/issueaclformentry', array('target' => $item['target'])); ?>
+                        <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
                     <?php endforeach; ?>
                 </ul>
                 <div style="text-align: right;">

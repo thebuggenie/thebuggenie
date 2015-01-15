@@ -7,7 +7,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
             <div class="content" style="width: 730px;">
                 <?php if (isset($error)): ?>
                     <div class="redbox" style="margin-top: 5px;">
@@ -26,7 +26,7 @@
                 </div>
                 <ul class="scheme_list workflow_list simple_list" id="workflows_list">
                     <?php foreach ($workflows as $workflow): ?>
-                        <?php include_template('configuration/workflow', array('workflow' => $workflow)); ?>
+                        <?php include_component('configuration/workflow', array('workflow' => $workflow)); ?>
                     <?php endforeach; ?>
                 </ul>
             </div>

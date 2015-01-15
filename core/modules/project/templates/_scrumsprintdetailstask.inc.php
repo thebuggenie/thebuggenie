@@ -6,7 +6,7 @@
     <?php if ($can_estimate): ?>
         <td style="padding: 3px;">
             <div style="position: relative; text-align: center;" class="scrum_sprint_details_actions">
-                <?php include_template('project/quickestimate', array('issue' => $task, 'show_hours' => true)); ?>
+                <?php include_component('project/quickestimate', array('issue' => $task, 'show_hours' => true)); ?>
                 <a href="javascript:void(0);" class="img" onclick="$('scrum_story_<?php echo $task->getID(); ?>_estimation').toggle();" alt="<?php echo __('Change estimate'); ?>" title="<?php echo __('Change estimate'); ?>"><?php echo image_tag('scrum_estimate.png'); ?></a>
             </div>
         </td>

@@ -58,9 +58,9 @@
             </dl>
         </li>
         <?php $field = $fields_list['category']; unset($fields_list['category']); ?>
-        <?php include_template('main/issuedetailslistfield', array('field' => 'category', 'info' => $field, 'issue' => $issue)); ?>
+        <?php include_component('main/issuedetailslistfield', array('field' => 'category', 'info' => $field, 'issue' => $issue)); ?>
         <?php $field = $fields_list['milestone']; unset($fields_list['milestone']); ?>
-        <?php include_template('main/issuedetailslistfield', array('field' => 'milestone', 'info' => $field, 'issue' => $issue)); ?>
+        <?php include_component('main/issuedetailslistfield', array('field' => 'milestone', 'info' => $field, 'issue' => $issue)); ?>
         <li id="status_field" class="issue_detail_field primary <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="status_header">
@@ -123,14 +123,14 @@
                         </ul>
                     <?php endif; ?>
                     <div id="issue_percent_complete">
-                        <?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 16)); ?>
+                        <?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 16)); ?>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_spinning')); ?>
                     </div>
                 </dd>
             </dl>
         </li>
         <?php $field = $fields_list['priority']; unset($fields_list['priority']); ?>
-        <?php include_template('main/issuedetailslistfield', array('field' => 'priority', 'info' => $field, 'issue' => $issue)); ?>
+        <?php include_component('main/issuedetailslistfield', array('field' => 'priority', 'info' => $field, 'issue' => $issue)); ?>
     </ul>
 </fieldset>
 <fieldset id="issue_details_fieldslist_pain_container" style="<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>">
@@ -385,7 +385,7 @@
                         <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo TBGIssue::getFormattedTime($issue->getSpentTime()); ?></a>
                     </span>
                     <span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
-                    <div id="estimated_percentbar"><?php if ($issue->hasEstimatedTime() && $issue->hasSpentTime()) include_template('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)); ?></div>
+                    <div id="estimated_percentbar"><?php if ($issue->hasEstimatedTime() && $issue->hasSpentTime()) include_component('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)); ?></div>
                 </dd>
             </dl>
             <div class="tooltip from-above" style="width: 300px; font-size: 0.9em; margin-top: 10px; margin-left: 17px;"><?php echo __('Click here to see time logged against this issue'); ?></div>
@@ -396,7 +396,7 @@
     <legend onclick="$('issue_details_fieldslist').toggle();"><?php echo __('Issue details'); ?></legend>
     <ul class="issue_details simple_list" id="issue_details_fieldslist">
         <?php foreach ($fields_list as $field => $info): ?>
-            <?php include_template('main/issuedetailslistfield', compact('field', 'info', 'issue')); ?>
+            <?php include_component('main/issuedetailslistfield', compact('field', 'info', 'issue')); ?>
         <?php endforeach; ?>
         <?php foreach ($customfields_list as $field => $info): ?>
             <?php if ($info['type'] == TBGCustomDatatype::INPUT_TEXTAREA_MAIN): continue; endif; ?>
@@ -543,7 +543,7 @@
                                                 ?>
                                                 <li class="nohover">
                                                     <form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
-                                                        <?php include_template('main/textarea', array('area_name' => $field.'_value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => $info['name'])); ?>
+                                                        <?php include_component('main/textarea', array('area_name' => $field.'_value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => $info['name'])); ?>
                                                         <br><?php echo __('%save or %cancel', array('%save' => '<input type="submit" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
                                                     </form>
                                                 </li>
@@ -643,7 +643,7 @@
         <div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
         <ul class="attached_items" id="viewissue_uploaded_links">
             <?php foreach ($issue->getLinks() as $link_id => $link): ?>
-                <?php include_template('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
+                <?php include_component('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">

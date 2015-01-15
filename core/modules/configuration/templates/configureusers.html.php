@@ -145,7 +145,7 @@
                         </table>
                         <div id="groupconfig_list">
                             <?php foreach ($groups as $group): ?>
-                                <?php include_template('configuration/groupbox', array('group' => $group)); ?>
+                                <?php include_component('configuration/groupbox', array('group' => $group)); ?>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                         </div>
                         <div id="teamconfig_list">
                             <?php foreach ($teams as $team): ?>
-                                <?php include_template('configuration/teambox', array('team' => $team)); ?>
+                                <?php include_component('configuration/teambox', array('team' => $team)); ?>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                         </div>
                         <div id="clientconfig_list">
                             <?php foreach ($clients as $client): ?>
-                                <?php include_template('configuration/clientbox', array('client' => $client)); ?>
+                                <?php include_component('configuration/clientbox', array('client' => $client)); ?>
                             <?php endforeach; ?>
                         </div>
                     </div>

@@ -63,7 +63,7 @@
         <div class="permission_list" style="padding: 0 10px 5px 10px; text-align: left;">
             <div class="header_div" style="margin-top: 0;"><?php echo __('Available permissions'); ?></div>
             <ul id="module_permission_details_<?php echo $module->getName(); ?>">
-                <?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg_user->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PERMISSIONS) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ)))); ?>
+                <?php include_component('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg_user->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PERMISSIONS) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ)))); ?>
             </ul>
         </div>
     </div>

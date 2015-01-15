@@ -10,7 +10,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'transition', 'workflow' => $workflow, 'transition' => $transition)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'transition', 'workflow' => $workflow, 'transition' => $transition)); ?>
             <div class="content" style="width: 730px;" id="workflow_step_container">
                 <?php if ($transition instanceof TBGWorkflowTransition): ?>
                     <h3>
@@ -136,7 +136,7 @@
                                 <table cellpadding="0" cellspacing="0" style="width: 100%;">
                                     <tbody class="hover_highlight" id="workflowtransitionprevalidationrules_list">
                                     <?php foreach ($transition->getPreValidationRules() as $rule): ?>
-                                        <?php include_template('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
+                                        <?php include_component('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
                                     <?php endforeach; ?>
                                     </tbody>
                                 </table>
@@ -165,7 +165,7 @@
                                 <table cellpadding="0" cellspacing="0" style="width: 100%;">
                                     <tbody class="hover_highlight" id="workflowtransitionpostvalidationrules_list">
                                     <?php foreach ($transition->getPostValidationRules() as $rule): ?>
-                                        <?php include_template('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
+                                        <?php include_component('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
                                     <?php endforeach; ?>
                                     </tbody>
                                 </table>

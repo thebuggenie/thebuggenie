@@ -54,7 +54,7 @@
                 </div>
                 <div id="scopes_list" style="margin-top: 5px;">
                     <?php foreach ($scopes as $scope): ?>
-                        <?php include_template('configuration/scopebox', array('scope' => $scope)); ?>
+                        <?php include_component('configuration/scopebox', array('scope' => $scope)); ?>
                     <?php endforeach; ?>
                 </div>
             </div>
