@@ -118,7 +118,6 @@
             <?php endif; ?>
         </span>
     </div>
-    <?php //include_component('main/profilebuttons'); ?>
     <div style="margin: 30px 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
         <div style="clear: both;" class="tab_menu inset">
             <ul id="account_tabs">

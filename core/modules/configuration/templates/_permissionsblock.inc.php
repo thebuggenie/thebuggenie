@@ -1,7 +1,5 @@
 <?php $user_id = isset($user_id) ? $user_id : null; ?>
 <?php $team_id = isset($team_id) ? $team_id : null; ?>
-<?php // var_dump($user_id); ?>
-<?php // var_dump($team_id); ?>
 <?php if (count($permissions_list) > 0): ?>
     <?php foreach ($permissions_list as $permission_key => $permission): ?>
         <?php if (is_numeric($permission_key)): ?>
