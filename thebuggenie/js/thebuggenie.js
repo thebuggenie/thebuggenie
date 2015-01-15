@@ -2492,6 +2492,8 @@ TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transi
                     setTimeout(function() {
                         jQuery('.whiteboard-issue').not('ui-draggable').draggable({
                             scope: column.parents('tbody').data('swimlane-identifier'),
+                            start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
+                            stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
                             axis: 'x',
                             revert: true
                         });
@@ -2507,6 +2509,34 @@ TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transi
     
 };
 
+TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event, ui) {
+    var issue = $(event.target);
+    issue.up('tr').childElements().each(function (column) {
+        jQuery(column).droppable("enable");
+        column.removeClassName('drop-valid');
+    });
+};
+
+TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, ui) {
+    var issue = $(event.target);
+    var issue_statuses = issue.dataset.validStatusIds.split(',');
+    issue.up('tr').childElements().each(function (column) {
+        var column_statuses = column.dataset.statusIds.split(',');
+        var has_status = false;
+        issue_statuses.each(function (status) {
+            if (column_statuses.indexOf(status) != -1) {
+                has_status = true;
+            }
+        });
+        
+        if (!has_status) {
+            jQuery(column).droppable("disable");
+        } else {
+            column.addClassName('drop-valid');
+        }
+    });
+};
+
 TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
     $('whiteboard').select('tbody td.column').each(function (column) {
         var swimlane_identifier = column.up('tbody').dataset.swimlaneIdentifier;
@@ -2519,6 +2549,8 @@ TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
         });
         jQuery(column).find('.whiteboard-issue').draggable({
             scope: swimlane_identifier,
+            start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
+            stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
             axis: 'x',
             revert: true
         });
