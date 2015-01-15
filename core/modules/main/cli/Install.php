@@ -65,13 +65,13 @@
             {
                 $this->cliEcho("License information\n", 'green', 'bold');
                 $this->cliEcho("This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n");
-                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n");
-                $this->cliEcho("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
+                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 2.0 only. You can read the full license here:\n");
+                $this->cliEcho("http://opensource.org/licenses/MPL-2.0\n\n", 'blue', 'underline');
 
                 if ($this->getProvidedArgument('accept_license') != 'yes')
                 {
                     $this->cliEcho("Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n");
-                    $this->cliEcho("Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
+                    $this->cliEcho("Do you agree to be bound by the terms in the MPL 2.0 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
                     if (!$this->askToAccept()) throw new \Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
                 }
                 else
