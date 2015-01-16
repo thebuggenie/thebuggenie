@@ -2560,6 +2560,37 @@ TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
         TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller, 6);
 };
 
+TBG.Project.Planning.Whiteboard.retrieveIssue = function (issue_id, url, existing_element) {
+    TBG.Main.Helpers.ajax(url, {
+        params: 'issue_id=' + issue_id,
+        url_method: 'get',
+        loading: {indicator: (!existing_element) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
+        success: {
+            callback: function (json) {
+                if (!existing_element) {
+                    if (json.issue_details.milestone && json.issue_details.milestone.id) {
+                        if ($('milestone_'+json.issue_details.milestone.id).hasClassName('initialized')) {
+                            TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                        }
+                    } else {
+                        TBG.Project.Planning.insertIntoMilestone(0, json.component);
+                    }
+                } else {
+                    var json_milestone_id = (json.issue_details.milestone && json.issue_details.milestone.id != undefined) ? parseInt(json.issue_details.milestone.id) : 0;
+                    if (parseInt(existing_element.up('.milestone_box').dataset.milestoneId) == json_milestone_id) {
+                        existing_element.up('.milestone_issue').replace(json.component);
+                        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails($('milestone_' + json_milestone_id + '_issues'));
+                        TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
+                    } else {
+                        existing_element.up('.milestone_issue').remove();
+                        TBG.Project.Planning.insertIntoMilestone(json_milestone_id, json.component, 'all');
+                    }
+                }
+            }
+        }
+    });
+};
+
 TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller = function () {
     if (!TBG.Core.Pollers.Locks.planningpoller && $('whiteboard').hasClassName('initialized')) {
         TBG.Core.Pollers.Locks.planningpoller = true;
@@ -2578,24 +2609,6 @@ TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller = function () {
                             if (json.ids.hasOwnProperty(i)) {
                                 var issue_details = json.ids[i];
                                 var issue_element = $('issue_' + issue_details.issue_id);
-                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
-                                }
-                            }
-                        }
-                        for (var i in json.backlog_ids) {
-                            if (json.backlog_ids.hasOwnProperty(i)) {
-                                var issue_details = json.backlog_ids[i];
-                                var issue_element = $('issue_' + issue_details.issue_id);
-                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
-                                }
-                            }
-                        }
-                        for (var i in json.epic_ids) {
-                            if (json.epic_ids.hasOwnProperty(i)) {
-                                var issue_details = json.epic_ids[i];
-                                var issue_element = $('epic_' + issue_details.issue_id);
                                 if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
                                     TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
                                 }
