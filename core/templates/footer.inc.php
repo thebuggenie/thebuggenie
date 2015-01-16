@@ -1,7 +1,7 @@
 <footer>
     <?php echo image_tag('footer_logo.png'); ?>
     <?php echo __('%thebuggenie, <b>friendly</b> issue tracking since 2002', array('%thebuggenie' => link_tag(make_url('about'), 'The Bug Genie'))); ?><br>
-        <a href="http://opensource.org/licenses/MPL-2.0"><?php echo __('Read the license (MPL 2.0 only)'); ?></a>
+        <a href="http://opensource.org/licenses/MPL-2.0"><?php echo __('Read the license (MPL 2.0)'); ?></a>
     <?php if ($tbg_user->canAccessConfigurationPage()): ?>
         | <b><?php echo link_tag(make_url('configure'), __('Configure %thebuggenie_name', array('%thebuggenie_name' => TBGSettings::getTBGname()))); ?></b>
     <?php endif; ?>

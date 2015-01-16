@@ -65,7 +65,7 @@
             {
                 $this->cliEcho("License information\n", 'green', 'bold');
                 $this->cliEcho("This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n");
-                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 2.0 only. You can read the full license here:\n");
+                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 2.0. You can read the full license here:\n");
                 $this->cliEcho("http://opensource.org/licenses/MPL-2.0\n\n", 'blue', 'underline');
 
                 if ($this->getProvidedArgument('accept_license') != 'yes')
