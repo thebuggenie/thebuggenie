@@ -607,7 +607,7 @@
             $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
 
             $res = $this->doSelect($crit);
-            return $this->_getLastUpdatedArrayFromResultset($res);
+            return ($res) ? $this->_getLastUpdatedArrayFromResultset($res) : array();
         }
 
         public function markIssuesDeletedByProjectID($project_id)
