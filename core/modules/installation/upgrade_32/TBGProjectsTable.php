@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Projects table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="projects_32")
      */
-    class TBGProjectsTable extends \TBGB2DBTable
+    class TBGProjectsTable extends ScopedTable
     {
 
         const B2DBNAME = 'projects';

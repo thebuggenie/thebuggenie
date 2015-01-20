@@ -18,9 +18,9 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      *
-     * @Table(name="\thebuggenie\modules\vcs_integration\entities\b2db\Files")
+     * @Table(name="\thebuggenie\modules\vcs_integration\entities\tables\Files")
      */
-    class File extends \TBGIdentifiableScopedClass
+    class File extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
@@ -39,7 +39,7 @@
 
         /**
          * Associated commit
-         * @var TBGVCSIntegrationCommit
+         * @var \thebuggenie\core\entities\VCSIntegrationCommit
          * @Column(type="integer", name="commit_id")
          * @Relates(class="\thebuggenie\modules\vcs_integration\entities\Commit")
          */

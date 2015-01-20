@@ -1,5 +1,9 @@
 <?php
 
+    use thebuggenie\core\framework\Action,
+        thebuggenie\core\framework\ActionComponent,
+        thebuggenie\core\framework\Settings;
+
     /**
      * UI functions
      *
@@ -28,26 +32,26 @@
         }
         else
         {
-            if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image))
+            if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image))
             {
-                $params['src'] = TBGContext::getTBGPath() . "iconsets/" . TBGSettings::getIconsetName() . "/modules/{$module}/" . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . "iconsets/" . Settings::getIconsetName() . "/modules/{$module}/" . $image;
             }
             elseif ($module != 'core')
             {
-                $params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image;
             }
             else
             {
-                $params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/' . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . '/' . $image;
             }
         }
         if (!$relative)
         {
             if ($notheme)
             {
-                $params['src'] = TBGContext::getTBGPath() . $params['src'];
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . $params['src'];
             }
-            $params['src'] = TBGContext::getUrlHost() . $params['src'];
+            $params['src'] = \thebuggenie\core\framework\Context::getUrlHost() . $params['src'];
         }
         if (!isset($params['alt']))
         {
@@ -72,22 +76,22 @@
         }
         else
         {
-            if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image))
+            if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image))
             {
-                $params['src'] = TBGContext::getTBGPath() . "iconsets/" . TBGSettings::getIconsetName() . "/modules/{$module}/" . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . "iconsets/" . Settings::getIconsetName() . "/modules/{$module}/" . $image;
             }
             elseif ($module != 'core')
             {
-                $params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image;
             }
             else
             {
-                $params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/' . $image;
+                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . '/' . $image;
             }
         }
         if (!$relative)
         {
-            $params['src'] = TBGContext::getUrlHost() . $params['src'];
+            $params['src'] = \thebuggenie\core\framework\Context::getUrlHost() . $params['src'];
         }
         return $params['src'];
     }
@@ -153,7 +157,7 @@
      */
     function csrf_tag()
     {
-        return '<input type="hidden" name="csrf_token" value="' . TBGContext::generateCSRFtoken() . '">';
+        return '<input type="hidden" name="csrf_token" value="' . \thebuggenie\core\framework\Context::generateCSRFtoken() . '">';
     }
 
     /**
@@ -182,7 +186,7 @@
      */
     function image_submit_tag($image, $params = array(), $notheme = false)
     {
-        $params['src'] = (!$notheme) ? TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/' . $image : $image;
+        $params['src'] = (!$notheme) ? \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . '/' . $image : $image;
         return '<input type="image" ' . parseHTMLoptions($params) . ' />';
     }
 
@@ -194,7 +198,7 @@
      */
     function include_component($component, $params = array())
     {
-        return TBGActionComponent::includeComponent($component, $params);
+        return ActionComponent::includeComponent($component, $params);
     }
 
     /**
@@ -205,7 +209,7 @@
      */
     function get_component_html($component, $params = array())
     {
-        return TBGAction::returnComponentHTML($component, $params);
+        return Action::returnComponentHTML($component, $params);
     }
 
     /**
@@ -219,7 +223,7 @@
      */
     function make_url($name, $params = array(), $relative = true)
     {
-        return TBGContext::getRouting()->generate($name, $params, $relative);
+        return \thebuggenie\core\framework\Context::getRouting()->generate($name, $params, $relative);
     }
     
     /**
@@ -234,7 +238,7 @@
         $option_strings = array();
         if (!is_array($options))
         {
-            throw new Exception('Invalid HTML options. Must be an array with key => value pairs corresponding to html attributes');
+            throw new \Exception('Invalid HTML options. Must be an array with key => value pairs corresponding to html attributes');
         }
         foreach ($options as $key => $val)
         {

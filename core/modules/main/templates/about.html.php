@@ -1,7 +1,7 @@
 <?php
 
-    $tbg_response->setTitle(__('About %sitename', array('%sitename' => TBGSettings::getTBGname())));
-    $tbg_response->addBreadcrumb(__('About %sitename', array('%sitename' => TBGSettings::getTBGname())), make_url('about'), tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->setTitle(__('About %sitename', array('%sitename' => \thebuggenie\core\framework\Settings::getSiteHeaderName())));
+    $tbg_response->addBreadcrumb(__('About %sitename', array('%sitename' => \thebuggenie\core\framework\Settings::getSiteHeaderName())), make_url('about'), tbg_get_breadcrumblinks('main_links'));
 
 ?>
 <div class="rounded_box borderless mediumgrey" style="margin: 10px auto 0 auto; width: 500px; padding: 5px 5px 15px 5px; font-size: 13px; text-align: center;">
@@ -9,7 +9,7 @@
         <h1 style="font-size: 25px; margin-bottom: 0px; padding-bottom: 3px;">
             The Bug Genie
             <span style="font-size: 14px; font-weight: normal; color: #888;">
-                <?php echo __('Version %thebuggenie_version', array('%thebuggenie_version' => TBGSettings::getVersion(true))); ?>
+                <?php echo __('Version %thebuggenie_version', array('%thebuggenie_version' => \thebuggenie\core\framework\Settings::getVersion(true))); ?>
             </span>
         </h1>
         <h3 style="margin-top: 0; padding-top: 0;">Beautiful issue tracking and project management</h3>

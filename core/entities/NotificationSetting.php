@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\common\Identifiable;
+
     /**
      * Notification setting class
      *
@@ -18,9 +20,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\NotificationSettings")
+     * @Table(name="\thebuggenie\core\entities\tables\NotificationSettings")
      */
-    class NotificationSetting extends \TBGIdentifiableClass
+    class NotificationSetting extends Identifiable
     {
 
         /**
@@ -50,9 +52,9 @@
         /**
          * Who the notification is for
          *
-         * @var \TBGUser
+         * @var \thebuggenie\core\entities\User
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGUser")
+         * @Relates(class="\thebuggenie\core\entities\User")
          */
         protected $_user_id;
 

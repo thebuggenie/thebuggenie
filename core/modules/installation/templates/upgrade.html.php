@@ -4,7 +4,7 @@
         <?php if (version_compare($current_version, '3.2', '<')): ?>
             <div class="rounded_box shadowed padded_box yellow" style="font-size: 1.1em; margin-bottom: 10px;">
                 <u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.2.x</u>.<br>
-                This is a valid upgrade, but if you really are upgrading from <?php echo $current_version; ?>, you need to upgrade to the latest 3.2.x release first, and then upgrade to <?php echo TBGSettings::getVersion(false, true); ?>.
+                This is a valid upgrade, but if you really are upgrading from <?php echo $current_version; ?>, you need to upgrade to the latest 3.2.x release first, and then upgrade to <?php echo \thebuggenie\core\framework\Settings::getVersion(false, true); ?>.
             </div>
         <?php elseif (isset($permissions_ok) && $permissions_ok): ?>
             <div class="fullpage_backdrop" id="upgrading_popup" style="display: none;">
@@ -39,7 +39,7 @@
                 <div class="padded_box installpage backup" id="install_page_2">
                     <?php include_component('main/percentbar', array('percent' => 5, 'height' => 5)); ?>
                     <h2 style="margin-bottom: 15px; padding-bottom: 0;">
-                        <span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo TBGSettings::getVersion(false, true); ?><br>
+                        <span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo \thebuggenie\core\framework\Settings::getVersion(false, true); ?><br>
                     </h2>
                     Although this upgrade process has been thoroughly tested before the release, errors may still occur. You are strongly encouraged to take a backup of your installation before you continue!<br>
                     <br>
@@ -49,12 +49,12 @@
                             The Bug Genie database<br>
                             Currently connected to <?php echo b2db\Core::getDBtype(); ?> database <span class="command_box"><?php echo b2db\Core::getDBname(); ?></span> running on <span class="command_box"><?php echo b2db\Core::getHost(); ?></span>
                         </li>
-                        <li style="background-image: url('iconsets/oxygen/backup_uploads.png');" class="<?php if (TBGSettings::getUploadStorage() != 'files') echo 'faded'; ?>">
+                        <li style="background-image: url('iconsets/oxygen/backup_uploads.png');" class="<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files') echo 'faded'; ?>">
                             Uploaded files<br>
-                            <?php if (TBGSettings::getUploadStorage() != 'files'): ?>
+                            <?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files'): ?>
                                 <span class="smaller">When using database file upload storage, this is included in the database backup</span>
                             <?php else: ?>
-                                Remember to keep a copy of all files in <span class="command_box"><?php echo TBGSettings::getUploadsLocalpath(); ?></span>
+                                Remember to keep a copy of all files in <span class="command_box"><?php echo \thebuggenie\core\framework\Settings::getUploadsLocalpath(); ?></span>
                             <?php endif; ?>
                         </li>
                         <li style="background-image: url('iconsets/oxygen/backup_specialfiles.png');">

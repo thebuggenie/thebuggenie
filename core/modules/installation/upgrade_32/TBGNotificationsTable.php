@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Notifications table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="notifications_32")
      */
-    class TBGNotificationsTable extends \TBGB2DBTable
+    class TBGNotificationsTable extends ScopedTable
     {
 
         const B2DBNAME = 'notifications';

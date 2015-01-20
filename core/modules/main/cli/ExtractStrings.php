@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ExtractStrings extends \TBGCliCommand
+    class ExtractStrings extends \thebuggenie\core\framework\cli\Command
     {
 
         private $nbstrings = 0;

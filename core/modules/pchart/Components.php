@@ -5,7 +5,7 @@
     defined('PIE_VALUES') || define("PIE_VALUES", 4);
     defined('PIE_PERCENTAGE_AND_VALUES') || define("PIE_PERCENTAGE_AND_VALUES", 5);
 
-    class Components extends \TBGActionComponent
+    class Components extends \thebuggenie\core\framework\ActionComponent
     {
 
         public function componentLineGraph()

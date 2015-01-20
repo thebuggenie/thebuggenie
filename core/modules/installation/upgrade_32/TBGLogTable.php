@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Log table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="log_32")
      */
-    class TBGLogTable extends \TBGB2DBTable
+    class TBGLogTable extends ScopedTable
     {
 
         const B2DBNAME = 'log';

@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Install extends \TBGCliCommand
+    class Install extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -195,7 +195,7 @@
                             \b2db\Core::initialize();
                             $engine_path = \b2db\Core::getEngineClassPath();
                             if ($engine_path !== null)
-                                \TBGContext::addAutoloaderClassPath($engine_path);
+                                \thebuggenie\core\framework\Context::addAutoloaderClassPath($engine_path);
                             else
                                 throw new \Exception("Cannot initialize the B2DB engine");
 
@@ -376,7 +376,7 @@
                     $this->cliEcho("\n");
                     $this->cliEcho("Creating tables ...\n", 'white', 'bold');
                     $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-                    \TBGContext::addAutoloaderClassPath($tables_path);
+                    \thebuggenie\core\framework\Context::addAutoloaderClassPath($tables_path);
                     $tables_path_handle = opendir($tables_path);
                     $tables_created = array();
                     while ($table_class_file = readdir($tables_path_handle))
@@ -391,14 +391,14 @@
                     $this->cliEcho("\n");
                     $this->cliEcho("All tables successfully created...\n\n", 'green', 'bold');
                     $this->cliEcho("Setting up initial scope... \n", 'white', 'bold');
-                    \TBGContext::reinitializeI18n('en_US');
-                    $scope = new \TBGScope();
+                    \thebuggenie\core\framework\Context::reinitializeI18n('en_US');
+                    $scope = new \thebuggenie\core\entities\Scope();
                     $scope->setName('The default scope');
                     $scope->addHostname('*');
                     $scope->setEnabled();
-                    \TBGContext::setScope($scope);
+                    \thebuggenie\core\framework\Context::setScope($scope);
                     $scope->save();
-                    \TBGSettings::saveSetting('language', 'en_US');
+                    \thebuggenie\core\framework\Settings::saveSetting('language', 'en_US');
                     $this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
 
                     $this->cliEcho("Setting up modules... \n", 'white', 'bold');
@@ -409,7 +409,7 @@
                             if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
                             {
                                 $this->cliEcho("Installing {$module}... \n");
-                                \TBGModule::installModule($module);
+                                \thebuggenie\core\entities\Module::installModule($module);
                                 $this->cliEcho("Module {$module} installed successfully...\n", 'green');
                             }
                         }
@@ -419,7 +419,7 @@
                         $this->cliEcho("\n");
 
                         $this->cliEcho("Finishing installation... \n", 'white', 'bold');
-                        $installed_string = \TBGSettings::getMajorVer() . '.' . \TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+                        $installed_string = \thebuggenie\core\framework\Settings::getMajorVer() . '.' . \thebuggenie\core\framework\Settings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
                         if ((file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH . 'installed')) ||
                             (!file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH)))
                         {

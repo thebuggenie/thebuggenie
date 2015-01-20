@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\common\IdentifiableScoped;
+
     /**
      * Agile board column class
      *
@@ -18,9 +20,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\BoardColumns")
+     * @Table(name="\thebuggenie\core\entities\tables\BoardColumns")
      */
-    class BoardColumn extends \TBGIdentifiableScopedClass
+    class BoardColumn extends IdentifiableScoped
     {
 
         /**
@@ -172,7 +174,7 @@
             return false;
         }
 
-        public function hasIssue(\TBGIssue $issue)
+        public function hasIssue(\thebuggenie\core\entities\Issue $issue)
         {
             return in_array($issue->getStatus()->getID(), $this->getStatusIds());
         }

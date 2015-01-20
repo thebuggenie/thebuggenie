@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Issue spent times table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="issue_spenttimes_32")
      */
-    class TBGIssueSpentTimesTable extends \TBGB2DBTable
+    class TBGIssueSpentTimesTable extends ScopedTable
     {
 
         const B2DBNAME = 'issue_spenttimes';

@@ -9,13 +9,13 @@
                 <?php
                     switch ($type->getType())
                     {
-                        case TBGCustomDatatype::INPUT_TEXT:
-                        case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
-                        case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-                        case TBGCustomDatatype::EDITIONS_CHOICE:
-                        case TBGCustomDatatype::COMPONENTS_CHOICE:
-                        case TBGCustomDatatype::RELEASES_CHOICE:
-                        case TBGCustomDatatype::STATUS_CHOICE:
+                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
+                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                        case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
+                        case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
+                        case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
+                        case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
                             break;
                         default:
                             ?><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo __('Show and edit available choices'); ?></a><?php
@@ -53,7 +53,7 @@
         </span>
         <span id="custom_type_<?php echo $type_key; ?>_no_instructions_div" class="faded_out dark"<?php if ($type->hasInstructions()): ?> style="display: none;"<?php endif; ?>><?php echo __("This custom type doesn't have any instructions"); ?></span>
     </div>
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>" onsubmit="TBG.Config.Issuefields.Custom.update('<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');return false;" id="edit_custom_type_<?php echo $type_key; ?>_form" style="display: none;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>" onsubmit="TBG.Config.Issuefields.Custom.update('<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');return false;" id="edit_custom_type_<?php echo $type_key; ?>_form" style="display: none;">
         <div class="rounded_box white" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
             <label for="custom_type_<?php echo $type_key; ?>_name"><?php echo __('Name'); ?></label>
             <input type="text" name="name" id="custom_type_<?php echo $type_key; ?>_name" value="<?php echo $type->getName(); ?>" style="width: 250px;">

@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class License extends \TBGCliCommand
+    class License extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()

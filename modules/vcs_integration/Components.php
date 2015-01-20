@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\vcs_integration;
 
+    use thebuggenie\core\framework;
+
     /**
      * Module action components, vcs_integration
      *
@@ -18,12 +20,12 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class Components extends \TBGActionComponent
+    class Components extends framework\ActionComponent
     {
 
         public function componentCommitbackdrop()
         {
-            $this->commit = TBGVCSIntegrationCommitsTable::getTable()->selectById($this->commit_id);
+            $this->commit = entities\tables\Commits::getTable()->selectById($this->commit_id);
             $this->projectId = $this->commit->getProject()->getId();
         }
 

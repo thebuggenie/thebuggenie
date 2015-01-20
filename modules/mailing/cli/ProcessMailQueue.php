@@ -2,7 +2,7 @@
 
     namespace thebuggenie\modules\mailing\cli;
 
-    use thebuggenie\modules\mailing\entities\b2db\MailQueueTable;
+    use thebuggenie\modules\mailing\entities\tables\MailQueueTable;
 
     /**
      * CLI command class, main -> help
@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ProcessMailQueue extends \TBGCliCommand
+    class ProcessMailQueue extends \thebuggenie\core\framework\cli\Command
     {
         
         protected function _setup()
@@ -35,7 +35,7 @@
         public function do_execute()
         {
 
-            $mailing = \TBGContext::getModule('mailing');
+            $mailing = \thebuggenie\core\framework\Context::getModule('mailing');
             if (!$mailing->isOutgoingNotificationsEnabled())
             {
                 $this->cliEcho("Outgoing email notifications are disabled.\n", 'red', 'bold');
@@ -51,7 +51,7 @@
 
             $this->cliEcho("Processing mail queue ... \n", 'white', 'bold');
             $limit = $this->getProvidedArgument('limit', null);
-            $messages = MailQueueTable::getTable()->getQueuedMessages($limit);
+            $messages = tables\MailQueueTable::getTable()->getQueuedMessages($limit);
 
             $this->cliEcho("Email(s) to process: ");
             $this->cliEcho(count($messages)."\n", 'white', 'bold');
@@ -75,7 +75,7 @@
 
                     if (count($processed_messages))
                     {
-                        MailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
+                        tables\MailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
                         $this->cliEcho("Emails successfully processed: ");
                         $this->cliEcho(count($messages)."\n", 'green', 'bold');
                         if ($failed_messages > 0)

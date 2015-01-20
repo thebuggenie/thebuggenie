@@ -50,7 +50,7 @@
                 }
                 elseif ($part->type == 2)
                 {
-                    $msg = new TBGIncomingEmailMessage($this->connection, $this->messageNumber);
+                    $msg = new \thebuggenie\modules\mailing\entities\IncomingEmailMessage($this->connection, $this->messageNumber);
                     $msg->recurse($part->parts, $partNumber . '.', 0, false);
                     $this->attachments[] = array(
                         'type' => $part->type,

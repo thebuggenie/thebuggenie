@@ -7,12 +7,12 @@
     <div class="planning_indicator" id="issue_<?php echo $issue->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
     <div id="issue_<?php echo $issue->getID(); ?>" class="issue_container <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?> <?php echo ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) ? 'child_issue' : 'draggable'; ?>" data-estimated-points="<?php echo $issue->getEstimatedPoints(); ?>" data-estimated-hours="<?php echo $issue->getEstimatedHours(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>">
         <?php include_component('project/planningcolorpicker', array('issue' => $issue)); ?>
-        <div class="priority priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof TBGPriority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
+        <div class="priority priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
         <div class="issue_link"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png').$issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new')); ?></div>
         <div class="issue_info">
             <?php echo image_tag('icon_block.png', array('class' => 'blocking', 'title' => __('This issue is marked as a blocker'))); ?>
             <?php if ($issue->isAssigned()): ?>
-                <?php if ($issue->getAssignee() instanceof TBGUser): ?>
+                <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
                     <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $issue->getAssignee()->getID())); ?>');"><?php echo image_tag($issue->getAssignee()->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar'), true); ?></a>
                 <?php else: ?>
                     <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee(), 'size' => 'large', 'displayname' => '')); ?>
@@ -35,8 +35,8 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Unknown'); ?>">&nbsp;&nbsp;&nbsp;</div>
+            <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getName() : __('Unknown'); ?>">&nbsp;&nbsp;&nbsp;</div>
             <?php endif; ?>
         </div>
         <div class="issue_more_actions_link_container">

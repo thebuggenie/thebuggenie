@@ -14,7 +14,7 @@
          * @param $a_id
          * @param $row
          *
-         * @return TBGWikiArticle
+         * @return \thebuggenie\modules\publish\entities\Article
          */
         static function article($a_id, $row = null)
         {
@@ -23,10 +23,10 @@
             {
                 try
                 {
-                    self::$_articles[$a_id] = new TBGWikiArticle($a_id, $row);
+                    self::$_articles[$a_id] = new \thebuggenie\modules\publish\entities\Article($a_id, $row);
                     self::$_article_names[self::$_articles[$a_id]->getName()] = $a_id;
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     throw $e;
                 }
@@ -40,7 +40,7 @@
          * @param $a_id
          * @param $row
          *
-         * @return TBGWikiArticle
+         * @return \thebuggenie\modules\publish\entities\Article
          */
         static function articleName($article_name, $row = null)
         {
@@ -48,8 +48,8 @@
             {
                 try
                 {
-                    $article = TBGWikiArticle::getByName($article_name);
-                    if ($article instanceof TBGWikiArticle)
+                    $article = \thebuggenie\modules\publish\entities\Article::getByName($article_name);
+                    if ($article instanceof \thebuggenie\modules\publish\entities\Article)
                     {
                         self::$_articles[$article->getID()] = $article;
                         self::$_article_names[$article_name] = $article->getID();
@@ -59,7 +59,7 @@
                         throw new \Exception('No such article');
                     }
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     throw $e;
                 }

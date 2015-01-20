@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Milestones table
      *
@@ -21,7 +23,7 @@
      * @Table(name="milestones")
      * @Entity(class="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone")
      */
-    class TBGMilestonesTable extends \TBGB2DBTable
+    class TBGMilestonesTable extends ScopedTable
     {
 
     }

@@ -13,7 +13,7 @@
     <div class="project_role">
         <div class="label"><?php echo __('Owned by: %name', array('%name' => '')); ?></div>
         <div class="value">
-        <?php if ($view->getProject()->getOwner() instanceof TBGTeam): ?>
+        <?php if ($view->getProject()->getOwner() instanceof \thebuggenie\core\entities\Team): ?>
             <?php include_component('main/teamdropdown', array('team' => $view->getProject()->getOwner())); ?>
         <?php else: ?>
             <?php include_component('main/userdropdown', array('user' => $view->getProject()->getOwner())); ?>
@@ -25,7 +25,7 @@
     <div class="project_role">
         <div class="label"><?php echo __('Lead by: %name', array('%name' => '')); ?></div>
         <div class="value">
-        <?php if ($view->getProject()->getLeader() instanceof TBGTeam): ?>
+        <?php if ($view->getProject()->getLeader() instanceof \thebuggenie\core\entities\Team): ?>
             <?php include_component('main/teamdropdown', array('team' => $view->getProject()->getLeader())); ?>
         <?php else: ?>
             <?php include_component('main/userdropdown', array('user' => $view->getProject()->getLeader())); ?>
@@ -37,7 +37,7 @@
     <div class="project_role">
         <div class="label"><?php echo __('QA responsible: %name', array('%name' => '')); ?></div>
         <div class="value">
-        <?php if ($view->getProject()->getQaResponsible() instanceof TBGTeam): ?>
+        <?php if ($view->getProject()->getQaResponsible() instanceof \thebuggenie\core\entities\Team): ?>
             <?php include_component('main/teamdropdown', array('team' => $view->getProject()->getQaResponsible())); ?>
         <?php else: ?>
             <?php include_component('main/userdropdown', array('user' => $view->getProject()->getQaResponsible())); ?>

@@ -1,7 +1,7 @@
 <div class="backdrop_box login_page login_popup" id="reset_popup">
     <div class="backdrop_detail_content login_content">
         <div class="logindiv regular active" id="reset_password_container">
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $user->getUsername(), 'reset_hash' => $user->getActivationKey())); ?>" method="post" onsubmit="['reset_button', 'reset_indicator'].each(Element.toggle);">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $user->getUsername(), 'reset_hash' => $user->getActivationKey())); ?>" method="post" onsubmit="['reset_button', 'reset_indicator'].each(Element.toggle);">
                 <input type="hidden" id="tbg3_referer" name="reset_referer" value="<?php echo make_url('home'); ?>" />
                 <h2 class="login_header"><?php echo __('Reset your password'); ?></h2>
                 <ul class="login_formlist">

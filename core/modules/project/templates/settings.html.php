@@ -21,12 +21,12 @@
                 <li id="tab_information"<?php if ($selected_tab == 'info'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Project details'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_information', 'project_config_menu');")); ?></li>
                 <li id="tab_other"<?php if ($selected_tab == 'other'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Display settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_other', 'project_config_menu');")); ?></li>
                 <li id="tab_settings"<?php if ($selected_tab == 'settings'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")); ?></li>
-                <?php TBGEvent::createNew('core', 'config_project_tabs_settings')->trigger(array('selected_tab' => $selected_tab)); ?>
+                <?php \thebuggenie\core\framework\Event::createNew('core', 'config_project_tabs_settings')->trigger(array('selected_tab' => $selected_tab)); ?>
                 <li><h3><?php echo __('Other project details'); ?></h3></li>
                 <li id="tab_hierarchy"<?php if ($selected_tab == 'hierarchy'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Editions and components'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy', 'project_config_menu');")); ?></li>
                 <li id="tab_developers"<?php if ($selected_tab == 'developers'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Team'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_developers', 'project_config_menu');")); ?></li>
                 <li id="tab_permissions"<?php if ($selected_tab == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Roles and permissions'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_permissions', 'project_config_menu');")); ?></li>
-                <?php TBGEvent::createNew('core', 'config_project_tabs_other')->trigger(array('selected_tab' => $selected_tab)); ?>
+                <?php \thebuggenie\core\framework\Event::createNew('core', 'config_project_tabs_other')->trigger(array('selected_tab' => $selected_tab)); ?>
             </ul>
             <?php if ($settings_saved): ?>
                 <script type="text/javascript">

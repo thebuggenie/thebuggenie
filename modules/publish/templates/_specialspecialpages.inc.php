@@ -1,8 +1,8 @@
 <div class="article">
     <div class="header"><?php echo __('Wiki special pages'); ?></div>
-    <?php if (TBGContext::isProjectContext()): ?>
+    <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
         <div class="greybox" style="margin: 15px;">
-            <?php echo __('Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages', array('%project_name' => TBGContext::getCurrentProject()->getName(), '%special_pages' => link_tag(make_url('publish_article', array('article_name' => "Special:SpecialPages")), __('Special pages')))); ?>
+            <?php echo __('Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName(), '%special_pages' => link_tag(make_url('publish_article', array('article_name' => "Special:SpecialPages")), __('Special pages')))); ?>
         </div>
     <?php endif; ?>
     <p>
@@ -10,7 +10,7 @@
     </p>
     <h3><?php echo __('Automatic pages'); ?></h3>
     <ul class="category_list">
-    <?php if (!TBGContext::isProjectContext()): ?>
+    <?php if (!\thebuggenie\core\framework\Context::isProjectContext()): ?>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "FrontpageArticle")), __('Frontpage article'), array('title' => "FrontpageArticle")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "FrontpageLeftMenu")), __('Frontpage left menu footer'), array('title' => "FrontpageLeftMenu")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "LoginIntro")), __('Login introduction header'), array('title' => "LoginIntro")); ?></li>
@@ -18,7 +18,7 @@
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "RegistrationIntro")), __('Registration introduction header'), array('title' => "RegistrationIntro")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "ForgottenPasswordIntro")), __('Forgotten password introduction header'), array('title' => "ForgottenPasswordIntro")); ?></li>
     <?php else: ?>
-        <li><?php echo link_tag(make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getKey().":MainPage")), __('Project wiki frontpage'), array('title' => TBGContext::getCurrentProject()->getKey().":MainPage")); ?></li>
+        <li><?php echo link_tag(make_url('publish_article', array('article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey().":MainPage")), __('Project wiki frontpage'), array('title' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey().":MainPage")); ?></li>
     <?php endif; ?>
     </ul>
     <br style="clear: both;">

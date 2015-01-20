@@ -1,7 +1,7 @@
 <?php
-                    if (TBGSettings::hasMaintenanceMessage())
+                    if (\thebuggenie\core\framework\Settings::hasMaintenanceMessage())
                     {
-                        echo '<div class="offline_msg">'.tbg_parse_text(TBGSettings::getMaintenanceMessage()).'</div>';
+                        echo '<div class="offline_msg">'.tbg_parse_text(\thebuggenie\core\framework\Settings::getMaintenanceMessage()).'</div>';
                     }
                     else
                     {

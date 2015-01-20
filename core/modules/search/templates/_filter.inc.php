@@ -1,22 +1,22 @@
 <?php $show_button = false; ?>
 <li id="filter_<?php echo $key; ?>">
-    <?php if (in_array($filter, TBGSearchFilter::getValidSearchFilters())): ?>
-        <?php if ($filter == 'project_id' && !TBGContext::isProjectContext()): ?>
-            <label<?php if (!TBGContext::isProjectContext()): ?> for="filter_project_id_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Project'); ?></label>
-            <?php if (!TBGContext::isProjectContext()): ?>
+    <?php if (in_array($filter, \thebuggenie\core\entities\SearchFilter::getValidSearchFilters())): ?>
+        <?php if ($filter == 'project_id' && !\thebuggenie\core\framework\Context::isProjectContext()): ?>
+            <label<?php if (!\thebuggenie\core\framework\Context::isProjectContext()): ?> for="filter_project_id_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Project'); ?></label>
+            <?php if (!\thebuggenie\core\framework\Context::isProjectContext()): ?>
                 <select name="filters[project_id][<?php echo $key; ?>][operator]">
                     <option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
                     <option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
                 </select>
                 <select name="filters[project_id][<?php echo $key; ?>][value]" id="filter_project_id_<?php echo $key; ?>">
-                    <?php foreach (TBGProject::getAll() as $project): ?>
+                    <?php foreach (\thebuggenie\core\entities\Project::getAll() as $project): ?>
                         <option value="<?php echo $project->getID(); ?>"<?php if ($selected_value == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
                     <?php endforeach; ?>
                 </select>
                 <?php $show_button = true; ?>
             <?php endif; ?>
-        <?php elseif ($filter == 'subprojects' && TBGContext::isProjectContext()): ?>
-            <label<?php if (!TBGContext::isProjectContext()): ?> for="filter_subprojects_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Include subprojects'); ?></label>
+        <?php elseif ($filter == 'subprojects' && \thebuggenie\core\framework\Context::isProjectContext()): ?>
+            <label<?php if (!\thebuggenie\core\framework\Context::isProjectContext()): ?> for="filter_subprojects_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Include subprojects'); ?></label>
             <input type="hidden" name="filters[subprojects][<?php echo $key; ?>][operator]" value="=">
             <select name="filters[subprojects][<?php echo $key; ?>][value]" id="filter_subprojects_<?php echo $key; ?>">
                 <?php foreach ($filters['subprojects']['options'] as $value => $description): ?>
@@ -99,7 +99,7 @@
             <select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
                 <option value="0"> - </option>
                 <?php foreach ($filters[$filter]['options'] as $item): ?>
-                    <?php if (method_exists($item, 'getProject') && ((TBGContext::isProjectContext() && $item->getProject()->getID() != TBGContext::getCurrentProject()->getID()) || !TBGContext::isProjectContext())): ?>
+                    <?php if (method_exists($item, 'getProject') && ((\thebuggenie\core\framework\Context::isProjectContext() && $item->getProject()->getID() != \thebuggenie\core\framework\Context::getCurrentProject()->getID()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
                         <option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getProject()->getName() . '&nbsp;&ndash;&nbsp;' . $item->getName(); ?></option>
                     <?php else: ?>
                         <option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getName(); ?></option>
@@ -114,13 +114,13 @@
                 <option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
             </select>
             <select name="filters[state][<?php echo $key; ?>][value]" id="filter_state_<?php echo $key; ?>">
-                <option value="<?php echo TBGIssue::STATE_OPEN; ?>"<?php if ($selected_value == TBGIssue::STATE_OPEN): ?> selected<?php endif; ?>><?php echo __('Open'); ?></option>
-                <option value="<?php echo TBGIssue::STATE_CLOSED; ?>"<?php if ($selected_value == TBGIssue::STATE_CLOSED): ?> selected<?php endif; ?>><?php echo __('Closed'); ?></option>
+                <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_OPEN; ?>"<?php if ($selected_value == \thebuggenie\core\entities\Issue::STATE_OPEN): ?> selected<?php endif; ?>><?php echo __('Open'); ?></option>
+                <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_CLOSED; ?>"<?php if ($selected_value == \thebuggenie\core\entities\Issue::STATE_CLOSED): ?> selected<?php endif; ?>><?php echo __('Closed'); ?></option>
             </select>
             <?php $show_button = true; ?>
         <?php endif; ?>
     <?php else: ?>
-        <?php $customdatatype = TBGCustomDatatype::getByKey($filter); ?>
+        <?php $customdatatype = \thebuggenie\core\entities\CustomDatatype::getByKey($filter); ?>
         <label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo __($customdatatype->getDescription()); ?></label>
         <select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
             <option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is provided and is %value', array('%field' => '', '%value' => '')); ?></option>

@@ -6,19 +6,19 @@
 	{
 
 		/**
-		 * @covers TBGContext::isInstallmode
-		 * @covers TBGContext::checkInstallMode
+		 * @covers \thebuggenie\core\framework\Context::isInstallmode
+		 * @covers \thebuggenie\core\framework\Context::checkInstallMode
 		 */
 		public function testInstallMode()
 		{
-			TBGContext::checkInstallMode();
+			\thebuggenie\core\framework\Context::checkInstallMode();
 			if (file_exists(THEBUGGENIE_PATH . 'installed'))
 			{
-				$this->assertFalse(TBGContext::isInstallmode());
+				$this->assertFalse(\thebuggenie\core\framework\Context::isInstallmode());
 			}
 			else
 			{
-				$this->assertTrue(TBGContext::isInstallmode());
+				$this->assertTrue(\thebuggenie\core\framework\Context::isInstallmode());
 			}
 		}
 

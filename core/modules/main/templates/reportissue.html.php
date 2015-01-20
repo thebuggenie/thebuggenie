@@ -1,10 +1,10 @@
 <?php 
 
-    $tbg_response->addBreadcrumb(__('Report an issue'), make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
+    $tbg_response->addBreadcrumb(__('Report an issue'), make_url('project_reportissue', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
     $tbg_response->setTitle(__('Report an issue'));
     
 ?>
-<?php if (TBGContext::getCurrentProject()->isLocked() == true): ?>
+<?php if (\thebuggenie\core\framework\Context::getCurrentProject()->isLocked() == true): ?>
     <div class="redbox" id="notfound_error">
         <div class="viewissue_info_header"><?php echo __("Reporting disabled"); ?></div>
         <div class="viewissue_info_content">

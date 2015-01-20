@@ -20,7 +20,7 @@
     <li>
         <label for="issue_<?php echo $issue->getID(); ?>_timespent_activitytype"><?php echo __('Activity'); ?></label>
         <select id="issue_<?php echo $issue->getID(); ?>_timespent_activitytype" name="timespent_activitytype">
-            <?php foreach (TBGActivityType::getAll() as $activitytype): ?>
+            <?php foreach (\thebuggenie\core\entities\ActivityType::getAll() as $activitytype): ?>
                 <option value="<?php echo $activitytype->getID(); ?>"><?php echo $activitytype->getName(); ?></option>
             <?php endforeach; ?>
         </select>

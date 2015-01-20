@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ListProjects extends \TBGCliRemoteCommand
+    class ListProjects extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()

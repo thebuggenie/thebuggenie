@@ -15,10 +15,10 @@
     <tr>
         <td class="side_bar">
             <?php include_component('main/menulinks', array('links' => $links, 'target_type' => 'main_menu', 'target_id' => 0, 'title' => __('Quick links'))); ?>
-            <?php TBGEvent::createNew('core', 'index_left')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'index_left')->trigger(); ?>
         </td>
         <td class="main_area frontpage">
-            <?php TBGEvent::createNew('core', 'index_right_top')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'index_right_top')->trigger(); ?>
             <?php if ($show_project_list): ?>
                 <div class="project_overview">
                     <div class="header">
@@ -51,7 +51,7 @@
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-            <?php TBGEvent::createNew('core', 'index_right_bottom')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'index_right_bottom')->trigger(); ?>
         </td>
     </tr>
 </table>

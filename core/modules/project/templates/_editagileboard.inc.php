@@ -8,7 +8,7 @@
         <?php echo ($board->getId()) ? __('Edit agile board') : __('Add agile board'); ?>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_agileboard_form" onsubmit="TBG.Project.Planning.saveAgileBoard(this);return false;" data-board-id="<?php echo (int) $board->getId(); ?>">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_agileboard_form" onsubmit="TBG.Project.Planning.saveAgileBoard(this);return false;" data-board-id="<?php echo (int) $board->getId(); ?>">
             <input type="hidden" name="is_private" value="<?php echo (int) $board->isPrivate(); ?>">
             <input type="hidden" name="type" value="<?php echo $board->getType(); ?>" id="agileboard_type_input">
             <input type="hidden" name="swimlane" value="<?php echo $board->getSwimlaneType(); ?>" id="swimlane_input">
@@ -109,7 +109,7 @@
                         <div class="fancyfilter filter interactive_dropdown" data-filterkey="backlog_search" data-value="<?php echo $board->getTaskIssuetypeID(); ?>" data-no-selection-value="<?php echo __('None selected'); ?>">
                             <input type="hidden" name="backlog_search" value="<?php echo $board->getBacklogSearchIdentifier(); ?>" id="filter_backlog_search_value_input">
                             <label><?php echo __('Backlog search'); ?></label>
-                            <span class="value"><?php echo ($board->getBacklogSearch() instanceof TBGSavedSearch) ? $board->getBacklogSearch()->getName() : $autosearches[TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES]; ?></span>
+                            <span class="value"><?php echo ($board->getBacklogSearch() instanceof \thebuggenie\core\entities\SavedSearch) ? $board->getBacklogSearch()->getName() : $autosearches[\thebuggenie\core\framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES]; ?></span>
                             <div class="interactive_menu">
                                 <h1><?php echo __('Select search to use for backlog'); ?></h1>
                                 <div class="interactive_values_container">

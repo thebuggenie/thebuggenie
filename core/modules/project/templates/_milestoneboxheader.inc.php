@@ -45,7 +45,7 @@
             <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link')); ?>
             <ul class="popup_box milestone_moreactions more_actions_dropdown" id="milestone_<?php echo $milestone->getID(); ?>_moreactions" style="display: none;">
                 <li><?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Show overview')); ?></li>
-                <?php if ($tbg_user->canEditProjectDetails(TBGContext::getCurrentProject())): ?>
+                <?php if ($tbg_user->canEditProjectDetails(\thebuggenie\core\framework\Context::getCurrentProject())): ?>
                     <li class="separator"></li>
                     <li><?php echo javascript_link_tag(__('Mark as finished'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone_finish', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => $board->getID()))."');")); ?></li>
                     <li class="separator"></li>

@@ -13,25 +13,25 @@
             <div class="user_realname">
                 <?php echo $user->getRealname(); ?> <span class="user_username"><?php echo $user->getUsername(); ?></span>
                 <div class="user_status"><?php echo tbg_get_userstate_image($user) . __($user->getState()->getName()); ?></div>
-                <?php if ($user->isEmailPublic() || $tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+                <?php if ($user->isEmailPublic() || $tbg_user->canAccessConfigurationPage(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)): ?>
                     <div class="user_email"><?php echo link_tag('mailto:'.$user->getEmail(), $user->getEmail()); ?></div>
                 <?php endif; ?>
             </div>
             <div class="user_details">
-            <?php if (TBGUser::isThisGuest() == false): ?>
+            <?php if (\thebuggenie\core\entities\User::isThisGuest() == false): ?>
                 <div id="friends_message_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="padding: 2px 0 2px 0; font-size: 0.9em;"></div>
-                <?php if ($user->getID() != TBGContext::getUser()->getID() && !(TBGContext::getUser()->isFriend($user)) && !$user->isGuest()): ?>
+                <?php if ($user->getID() != \thebuggenie\core\framework\Context::getUser()->getID() && !(\thebuggenie\core\framework\Context::getUser()->isFriend($user)) && !$user->isGuest()): ?>
                     <div id="friends_link_<?php echo $user->getUsername() . '_' . $rnd_no; ?>">
-                        <span style="padding: 2px; <?php if (TBGContext::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
+                        <span style="padding: 2px; <?php if (\thebuggenie\core\framework\Context::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
                             <?php echo javascript_link_tag(__('Become friends'), array('onclick' => "TBG.Main.Profile.addFriend('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
                         </span>
                         <?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_{$rnd_no}_indicator", 'style' => 'display: none;')); ?>
-                        <span style="padding: 2px; <?php if (!TBGContext::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="remove_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
+                        <span style="padding: 2px; <?php if (!\thebuggenie\core\framework\Context::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="remove_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
                             <?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "TBG.Main.Profile.removeFriend('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
                         </span>
                     </div>
                 <?php endif; ?>
-                <?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+                <?php if ($tbg_user->canAccessConfigurationPage(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)): ?>
                     <div style="padding: 2px;">
                         <form action="<?php echo make_url('configure_users'); ?>">
                             <input type="hidden" name="finduser" value="<?php echo $user->getUsername(); ?>">
@@ -89,8 +89,8 @@
                     </ul>
                 <?php endif; ?>
             </div>
-            <?php TBGEvent::createNew('core', 'usercardactions_top', $user)->trigger(); ?>
-            <?php TBGEvent::createNew('core', 'usercardactions_bottom', $user)->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'usercardactions_top', $user)->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'usercardactions_bottom', $user)->trigger(); ?>
         <?php endif; ?>
     </div>
     <div class="backdrop_detail_footer">

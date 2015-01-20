@@ -18,17 +18,17 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestonesTable")
+     * @Table(name="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestones")
      */
-    class TBGMilestone extends \TBGIdentifiableScopedClass
+    class TBGMilestone extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
          * This milestone's project
          *
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGProject")
+         * @Relates(class="\thebuggenie\core\entities\Project")
          */
         protected $_project;
 

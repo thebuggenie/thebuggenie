@@ -54,8 +54,8 @@
                         <?php endif; ?>
                     </td>
                     <td style="padding: 3px;">
-                        <?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                        <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
                         <?php else: ?>
                             -
                         <?php endif; ?>

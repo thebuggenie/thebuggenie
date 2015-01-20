@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ListIssues extends \TBGCliRemoteCommand
+    class ListIssues extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()
@@ -64,7 +64,7 @@
             $this->cliEcho("\n");
             if (!empty($response) && $response->count > 0)
             {
-                TBGContext::loadLibrary('common');
+                \thebuggenie\core\framework\Context::loadLibrary('common');
                 $this->cliEcho("The following {$response->count} issues were found:\n", 'white', 'bold');
 
                 foreach ($response->issues as $issue)
@@ -72,7 +72,7 @@
                     //$this->cliEcho("ID: {$issue->id} ", 'yellow');
                     if (mb_strtolower($options['state']) == 'all')
                     {
-                        $this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
+                        $this->cliEcho(($issue->state == \thebuggenie\core\entities\Issue::STATE_OPEN) ? "[open] " : "[closed] ");
                     }
                     $this->cliEcho($issue->issue_no, 'green', 'bold');
                     $this->cliEcho(" - ");

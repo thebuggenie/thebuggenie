@@ -1,7 +1,7 @@
 <?php
 
     include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
-    TBGContext::loadLibrary('publish/publish');
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('%article_name permissions', array('%article_name' => $article_name)));
 
 ?>
@@ -15,7 +15,7 @@
             <div class="article" style="width: auto; padding: 5px; position: relative;">
                 <?php include_component('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'permissions')); ?>
                 <?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
-                    <?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
+                    <?php if (\thebuggenie\core\framework\Context::getModule('publish')->canUserEditArticle($article_name)): ?>
                         <ul class="simple_list">
                         <?php foreach ($namespaces as $namespace): ?>
                             <li class="rounded_box <?php if (!(is_numeric($namespace) && $namespace == 0) && $namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
@@ -45,13 +45,13 @@
                                     <button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
                                 </div>
                                 <div id="publish_<?php echo $namespace; ?>_readarticle_permissions" style="padding: 10px; width: 700px; display: none;">
-                                    <?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_READ_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+                                    <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_READ_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
                                 <div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
-                                    <?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_EDIT_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+                                    <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_EDIT_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
                                 <div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
-                                    <?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_DELETE_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+                                    <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_DELETE_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

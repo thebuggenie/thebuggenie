@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Settings table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="settings_32")
      */
-    class TBGSettingsTable extends \TBGB2DBTable
+    class TBGSettingsTable extends ScopedTable
     {
 
         const B2DBNAME = 'settings';

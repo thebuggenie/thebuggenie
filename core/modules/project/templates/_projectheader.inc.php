@@ -1,7 +1,7 @@
 <div class="project_header">
     <?php if ($tbg_response->getPage() == 'project_summary'): ?>
         <div class="project_header_right button-group">
-            <?php TBGEvent::createNew('core', 'project_header_buttons')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'project_header_buttons')->trigger(); ?>
             <?php if ($selected_project->hasDownloads() && $tbg_response->getPage() != 'project_releases'): ?>
                 <?php echo link_tag(make_url('project_releases', array('project_key' => $selected_project->getKey())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
             <?php endif; ?>

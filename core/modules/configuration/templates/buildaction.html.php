@@ -1,4 +1,4 @@
-<?php TBGContext::loadLibrary('ui'); ?>
+<?php \thebuggenie\core\framework\Context::loadLibrary('ui'); ?>
 <?php if ($show_mode == 'all'): ?>
     <?php foreach ($build->getParent()->getBuilds() as $build): ?>
         <span id="build_list_<?php echo $build->getID(); ?>">

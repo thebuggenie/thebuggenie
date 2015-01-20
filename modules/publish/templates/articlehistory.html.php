@@ -1,7 +1,7 @@
 <?php
 
     include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
-    TBGContext::loadLibrary('publish/publish');
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('%article_name history', array('%article_name' => $article_name)));
 
 ?>
@@ -26,7 +26,7 @@
                                         <th><?php echo __('Comment'); ?></th>
                                         <?php if ($revision_count > 1): ?>
                                             <th style="width: 60px;" colspan="2"><?php echo __('Compare'); ?></th>
-                                            <?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
+                                            <?php if (\thebuggenie\core\framework\Context::getModule('publish')->canUserEditArticle($article_name)): ?>
                                                 <th style="width: 150px;"><?php echo __('Actions'); ?></th>
                                             <?php endif; ?>
                                         <?php endif; ?>
@@ -37,7 +37,7 @@
                                         <tr>
                                             <td style="text-align: center;"><b><?php echo ($revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $revision)), $revision) : $revision; ?></b></td>
                                             <td style="text-align: center;"><?php echo tbg_formatTime($history_item['updated'], 20); ?></td>
-                                            <td><i><?php echo ($history_item['author'] instanceof TBGUser) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $history_item['author']->getID())) . '\');">' . $history_item['author']->getName() . '</a>' : __('Initial import'); ?></i></td>
+                                            <td><i><?php echo ($history_item['author'] instanceof \thebuggenie\core\entities\User) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $history_item['author']->getID())) . '\');">' . $history_item['author']->getName() . '</a>' : __('Initial import'); ?></i></td>
                                             <td><?php echo $history_item['change_reason']; ?></td>
                                             <?php if ($revision_count > 1): ?>
                                                 <td style="width: 30px; text-align: center;">

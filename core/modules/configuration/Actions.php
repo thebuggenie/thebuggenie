@@ -2,9 +2,13 @@
 
     namespace thebuggenie\core\modules\configuration;
 
-    use thebuggenie\modules\publish\entities\b2db\Articles;
+    use thebuggenie\core\framework,
+        thebuggenie\core\entities\Group,
+        thebuggenie\core\entities\Project,
+        thebuggenie\core\entities\User,
+        thebuggenie\modules\publish\entities\tables\Articles;
 
-    class Actions extends \TBGAction
+    class Actions extends framework\Action
     {
 
         const CSV_TYPE_ISSUES = 'issues';
@@ -66,16 +70,16 @@
 
         public function getAuthenticationMethodForAction($action)
         {
-            return (\TBGSettings::isElevatedLoginRequired()) ? \TBGAction::AUTHENTICATION_METHOD_ELEVATED : \TBGAction::AUTHENTICATION_METHOD_CORE;
+            return (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
         }
 
         /**
          * Pre-execute function
          *
-         * @param \TBGRequest     $request
+         * @param \thebuggenie\core\framework\Request     $request
          * @param string        $action
          */
-        public function preExecute(\TBGRequest $request, $action)
+        public function preExecute(framework\Request $request, $action)
         {
             if (!$request->hasParameter('section'))
                 return;
@@ -83,7 +87,7 @@
             // forward 403 if you're not allowed here
             if ($request->isAjaxCall() == false) // for avoiding empty error when an user disables himself its own permissions
             {
-                $this->forward403unless(\TBGContext::getUser()->canAccessConfigurationPage());
+                $this->forward403unless(framework\Context::getUser()->canAccessConfigurationPage());
             }
 
             $this->access_level = $this->getAccessLevel($request['section'], 'core');
@@ -91,68 +95,68 @@
             if (!$request->isAjaxCall())
             {
                 $this->getResponse()->setPage('config');
-                \TBGContext::loadLibrary('ui');
-                $this->getResponse()->addBreadcrumb(\TBGContext::getI18n()->__('Configure %thebuggenie_name', array('%thebuggenie_name' => \TBGSettings::getTBGname())), \TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+                framework\Context::loadLibrary('ui');
+                $this->getResponse()->addBreadcrumb(framework\Context::getI18n()->__('Configure %thebuggenie_name', array('%thebuggenie_name' => framework\Settings::getSiteHeaderName())), framework\Context::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
             }
         }
 
         /**
          * Configuration main page
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runIndex(\TBGRequest $request)
+        public function runIndex(framework\Request $request)
         {
-            $this->config_sections = \TBGSettings::getConfigSections(\TBGContext::getI18n());
-            $this->outdated_modules = \TBGContext::getOutdatedModules();
+            $this->config_sections = framework\Settings::getConfigSections(framework\Context::getI18n());
+            $this->outdated_modules = framework\Context::getOutdatedModules();
         }
 
         /**
          * check for updates
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runCheckUpdates(\TBGRequest $request)
+        public function runCheckUpdates(framework\Request $request)
         {
             $data = json_decode(file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
             if (!is_object($data))
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('Failed to check for updates'), 'message' => \TBGContext::getI18n()->__('The response from The Bug Genie website was invalid')));
+                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Failed to check for updates'), 'message' => framework\Context::getI18n()->__('The response from The Bug Genie website was invalid')));
             }
 
             $outofdate = false;
 
             // major
-            if ($data->maj > \TBGSettings::getMajorVer())
+            if ($data->maj > framework\Settings::getMajorVer())
             {
                 $outofdate = true;
             }
-            elseif ($data->min > \TBGSettings::getMinorVer() && ($data->maj == \TBGSettings::getMajorVer()))
+            elseif ($data->min > framework\Settings::getMinorVer() && ($data->maj == framework\Settings::getMajorVer()))
             {
                 $outofdate = true;
             }
-            elseif ($data->rev > \TBGSettings::getRevision() && ($data->maj == \TBGSettings::getMajorVer()) && ($data->min == \TBGSettings::getMinorVer()))
+            elseif ($data->rev > framework\Settings::getRevision() && ($data->maj == framework\Settings::getMajorVer()) && ($data->min == framework\Settings::getMinorVer()))
             {
                 $outofdate = true;
             }
 
             if (!$outofdate)
             {
-                return $this->renderJSON(array('uptodate' => true, 'title' => \TBGContext::getI18n()->__('The Bug Genie is up to date'), 'message' => \TBGContext::getI18n()->__('The latest version is %ver', array('%ver' => $data->nicever))));
+                return $this->renderJSON(array('uptodate' => true, 'title' => framework\Context::getI18n()->__('The Bug Genie is up to date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver', array('%ver' => $data->nicever))));
             }
             else
             {
-                return $this->renderJSON(array('uptodate' => false, 'title' => \TBGContext::getI18n()->__('The Bug Genie is out of date'), 'message' => \TBGContext::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', array('%ver' => $data->nicever))));
+                return $this->renderJSON(array('uptodate' => false, 'title' => framework\Context::getI18n()->__('The Bug Genie is out of date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', array('%ver' => $data->nicever))));
             }
         }
 
         /**
          * Configuration import page
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runImport(\TBGRequest $request)
+        public function runImport(framework\Request $request)
         {
             if ($request->isPost())
             {
@@ -161,7 +165,7 @@
                     ini_set('memory_limit', '64M');
                     $users = array();
 
-                    $user1 = new \TBGUser();
+                    $user1 = new User();
                     $user1->setUsername('john');
                     $user1->setPassword('john');
                     $user1->setBuddyname('John');
@@ -171,7 +175,7 @@
                     $user1->save();
                     $users[] = $user1;
 
-                    $user2 = new \TBGUser();
+                    $user2 = new User();
                     $user2->setUsername('jane');
                     $user2->setPassword('jane');
                     $user2->setBuddyname('Jane');
@@ -181,7 +185,7 @@
                     $user2->save();
                     $users[] = $user2;
 
-                    $user3 = new \TBGUser();
+                    $user3 = new User();
                     $user3->setUsername('jackdaniels');
                     $user3->setPassword('jackdaniels');
                     $user3->setBuddyname('Jack');
@@ -191,7 +195,7 @@
                     $user3->save();
                     $users[] = $user3;
 
-                    $project1 = new \TBGProject();
+                    $project1 = new Project();
                     $project1->setName('Sample project 1');
                     $project1->setOwner($users[rand(0, 2)]);
                     $project1->setLeader($users[rand(0, 2)]);
@@ -200,7 +204,7 @@
                     $project1->setHomepage('http://www.google.com');
                     $project1->save();
 
-                    $project2 = new \TBGProject();
+                    $project2 = new Project();
                     $project2->setName('Sample project 2');
                     $project2->setOwner($users[rand(0, 2)]);
                     $project2->setLeader($users[rand(0, 2)]);
@@ -213,10 +217,10 @@
                     {
                         for ($cc = 1; $cc <= 5; $cc++)
                         {
-                            $milestone = new \TBGMilestone();
+                            $milestone = new \thebuggenie\core\entities\Milestone();
                             $milestone->setName("Milestone {$cc}");
                             $milestone->setProject($project);
-                            $milestone->setType(\TBGMilestone::TYPE_REGULAR);
+                            $milestone->setType(\thebuggenie\core\entities\Milestone::TYPE_REGULAR);
                             if ((bool) rand(0, 1))
                             {
                                 $milestone->setScheduledDate(NOW + (100000 * (20 * $cc)));
@@ -229,20 +233,20 @@
                     $p2_milestones = $project2->getMilestones();
 
                     $issues = array();
-                    $priorities = \TBGPriority::getAll();
-                    $categories = \TBGCategory::getAll();
-                    $severities = \TBGSeverity::getAll();
-                    $statuses = \TBGStatus::getAll();
-                    $reproducabilities = \TBGReproducability::getAll();
+                    $priorities = \thebuggenie\core\entities\Priority::getAll();
+                    $categories = \thebuggenie\core\entities\Category::getAll();
+                    $severities = \thebuggenie\core\entities\Severity::getAll();
+                    $statuses = \thebuggenie\core\entities\Status::getAll();
+                    $reproducabilities = \thebuggenie\core\entities\Reproducability::getAll();
                     $lorem_ipsum = Articles::getTable()->getArticleByName('LoremIpsum');
                     $lorem_words = explode(' ', $lorem_ipsum->getContent());
 
                     foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)
                     {
-                        $issuetype = \TBGIssuetype::getIssuetypeByKeyish($issuetype);
+                        $issuetype = \thebuggenie\core\entities\Issuetype::getIssuetypeByKeyish($issuetype);
                         for ($cc = 1; $cc <= 10; $cc++)
                         {
-                            $issue1 = new \TBGIssue();
+                            $issue1 = new \thebuggenie\core\entities\Issue();
                             $issue1->setProject($project1);
                             $issue1->setPostedBy($users[rand(0, 2)]);
                             $issue1->setPosted(NOW - (86400 * rand(1, 30)));
@@ -298,7 +302,7 @@
                             $issue1->save();
                             $issues[] = $issue1;
 
-                            $issue2 = new \TBGIssue();
+                            $issue2 = new \thebuggenie\core\entities\Issue();
                             $issue2->setProject($project2);
                             $issue2->setPostedBy($users[rand(0, 2)]);
                             $issue2->setPosted(NOW - (86400 * rand(1, 30)));
@@ -357,7 +361,7 @@
                     }
 
                     $rand_issues_to_close = rand(8, 40);
-                    $resolutions = \TBGResolution::getAll();
+                    $resolutions = \thebuggenie\core\entities\Resolution::getAll();
 
                     for ($cc = 1; $cc <= $rand_issues_to_close; $cc++)
                     {
@@ -369,7 +373,7 @@
                     }
 
                     $this->imported_data = true;
-                    $roles = \TBGRole::getAll();
+                    $roles = \thebuggenie\core\entities\Role::getAll();
 
                     foreach (array($project1, $project2) as $project)
                     {
@@ -381,121 +385,121 @@
                 }
             }
 
-            $project1 = \TBGProject::getByKey('sampleproject1');
-            $project2 = \TBGProject::getByKey('sampleproject2');
-            $this->canimport = (!$project1 instanceof \TBGProject && !$project2 instanceof \TBGProject);
+            $project1 = Project::getByKey('sampleproject1');
+            $project2 = Project::getByKey('sampleproject2');
+            $this->canimport = (!$project1 instanceof Project && !$project2 instanceof Project);
         }
 
         /**
          * Configure general and server settings
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runSettings(\TBGRequest $request)
+        public function runSettings(framework\Request $request)
         {
-            if (\TBGContext::getRequest()->isPost())
+            if (framework\Context::getRequest()->isPost())
             {
-                $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
-                $settings = array(\TBGSettings::SETTING_THEME_NAME, \TBGSettings::SETTING_ALLOW_USER_THEMES, \TBGSettings::SETTING_ONLINESTATE, \TBGSettings::SETTING_ENABLE_GRAVATARS,
-                    \TBGSettings::SETTING_OFFLINESTATE, \TBGSettings::SETTING_AWAYSTATE, \TBGSettings::SETTING_AWAYSTATE, \TBGSettings::SETTING_IS_SINGLE_PROJECT_TRACKER,
-                    \TBGSettings::SETTING_REQUIRE_LOGIN, \TBGSettings::SETTING_ALLOW_REGISTRATION, \TBGSettings::SETTING_ALLOW_OPENID, \TBGSettings::SETTING_USER_GROUP,
-                    \TBGSettings::SETTING_RETURN_FROM_LOGIN, \TBGSettings::SETTING_RETURN_FROM_LOGOUT, \TBGSettings::SETTING_IS_PERMISSIVE_MODE, \TBGSettings::SETTING_ALLOW_PERSONA,
-                    \TBGSettings::SETTING_REGISTRATION_DOMAIN_WHITELIST, \TBGSettings::SETTING_SHOW_PROJECTS_OVERVIEW, \TBGSettings::SETTING_KEEP_COMMENT_TRAIL_CLEAN,
-                    \TBGSettings::SETTING_TBG_NAME, \TBGSettings::SETTING_TBG_NAME_HTML, \TBGSettings::SETTING_DEFAULT_CHARSET, \TBGSettings::SETTING_DEFAULT_LANGUAGE,
-                    \TBGSettings::SETTING_SERVER_TIMEZONE, \TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, \TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
-                    \TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, \TBGSettings::SETTING_PREVIEW_COMMENT_IMAGES, \TBGSettings::SETTING_HEADER_LINK,
-                    \TBGSettings::SETTING_MAINTENANCE_MESSAGE, \TBGSettings::SETTING_MAINTENANCE_MODE, \TBGSettings::SETTING_ICONSET, \TBGSettings::SETTING_ELEVATED_LOGIN_DISABLED);
+                $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
+                $settings = array(framework\Settings::SETTING_THEME_NAME, framework\Settings::SETTING_ALLOW_USER_THEMES, framework\Settings::SETTING_ONLINESTATE, framework\Settings::SETTING_ENABLE_GRAVATARS,
+                    framework\Settings::SETTING_OFFLINESTATE, framework\Settings::SETTING_AWAYSTATE, framework\Settings::SETTING_AWAYSTATE, framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER,
+                    framework\Settings::SETTING_REQUIRE_LOGIN, framework\Settings::SETTING_ALLOW_REGISTRATION, framework\Settings::SETTING_ALLOW_OPENID, framework\Settings::SETTING_USER_GROUP,
+                    framework\Settings::SETTING_RETURN_FROM_LOGIN, framework\Settings::SETTING_RETURN_FROM_LOGOUT, framework\Settings::SETTING_IS_PERMISSIVE_MODE, framework\Settings::SETTING_ALLOW_PERSONA,
+                    framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST, framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW, framework\Settings::SETTING_KEEP_COMMENT_TRAIL_CLEAN,
+                    framework\Settings::SETTING_TBG_NAME, framework\Settings::SETTING_TBG_NAME_HTML, framework\Settings::SETTING_DEFAULT_CHARSET, framework\Settings::SETTING_DEFAULT_LANGUAGE,
+                    framework\Settings::SETTING_SERVER_TIMEZONE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
+                    framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES, framework\Settings::SETTING_HEADER_LINK,
+                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ICONSET, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED);
 
                 foreach ($settings as $setting)
                 {
-                    if (\TBGContext::getRequest()->getParameter($setting) !== null)
+                    if (framework\Context::getRequest()->getParameter($setting) !== null)
                     {
-                        $value = \TBGContext::getRequest()->getParameter($setting);
+                        $value = framework\Context::getRequest()->getParameter($setting);
                         switch ($setting)
                         {
-                            case \TBGSettings::SETTING_TBG_NAME:
-                                $value = \TBGContext::getRequest()->getParameter($setting, null, false);
+                            case framework\Settings::SETTING_TBG_NAME:
+                                $value = framework\Context::getRequest()->getParameter($setting, null, false);
                                 break;
-                            case \TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL:
+                            case framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL:
                                 if (!is_numeric($value) || $value < 1)
                                 {
                                     $this->getResponse()->setHttpStatus(400);
-                                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid setting for highlighting interval')));
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid setting for highlighting interval')));
                                 }
                                 break;
-                            case \TBGSettings::SETTING_DEFAULT_CHARSET:
-                                \TBGContext::loadLibrary('common');
+                            case framework\Settings::SETTING_DEFAULT_CHARSET:
+                                framework\Context::loadLibrary('common');
                                 if ($value && !tbg_check_syntax($value, "CHARSET"))
                                 {
                                     $this->getResponse()->setHttpStatus(400);
-                                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid setting for charset')));
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid setting for charset')));
                                 }
                                 break;
                         }
-                        \TBGSettings::saveSetting($setting, $value);
+                        framework\Settings::saveSetting($setting, $value);
                     }
                 }
-                return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('All settings saved')));
+                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('All settings saved')));
             }
         }
 
         /**
          * Configure projects
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runConfigureProjects(\TBGRequest $request)
+        public function runConfigureProjects(framework\Request $request)
         {
-            $this->active_projects = \TBGProject::getAllRootProjects(false);
-            $this->archived_projects = \TBGProject::getAllRootProjects(true);
+            $this->active_projects = Project::getAllRootProjects(false);
+            $this->archived_projects = Project::getAllRootProjects(true);
         }
 
         /**
          * Configure issue fields
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runConfigureIssuefields(\TBGRequest $request)
+        public function runConfigureIssuefields(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
             $builtin_types = array();
-            $builtin_types[\TBGDatatype::STATUS] = array('description' => $i18n->__('Status types'), 'key' => \TBGDatatype::STATUS);
-            $builtin_types[\TBGDatatype::RESOLUTION] = array('description' => $i18n->__('Resolution types'), 'key' => \TBGDatatype::RESOLUTION);
-            $builtin_types[\TBGDatatype::PRIORITY] = array('description' => $i18n->__('Priority levels'), 'key' => \TBGDatatype::PRIORITY);
-            $builtin_types[\TBGDatatype::SEVERITY] = array('description' => $i18n->__('Severity levels'), 'key' => \TBGDatatype::SEVERITY);
-            $builtin_types[\TBGDatatype::CATEGORY] = array('description' => $i18n->__('Categories'), 'key' => \TBGDatatype::CATEGORY);
-            $builtin_types[\TBGDatatype::REPRODUCABILITY] = array('description' => $i18n->__('Reproducability'), 'key' => \TBGDatatype::REPRODUCABILITY);
-            $builtin_types[\TBGDatatype::ACTIVITYTYPE] = array('description' => $i18n->__('Activity types'), 'key' => \TBGDatatype::ACTIVITYTYPE);
+            $builtin_types[\thebuggenie\core\entities\Datatype::STATUS] = array('description' => $i18n->__('Status types'), 'key' => \thebuggenie\core\entities\Datatype::STATUS);
+            $builtin_types[\thebuggenie\core\entities\Datatype::RESOLUTION] = array('description' => $i18n->__('Resolution types'), 'key' => \thebuggenie\core\entities\Datatype::RESOLUTION);
+            $builtin_types[\thebuggenie\core\entities\Datatype::PRIORITY] = array('description' => $i18n->__('Priority levels'), 'key' => \thebuggenie\core\entities\Datatype::PRIORITY);
+            $builtin_types[\thebuggenie\core\entities\Datatype::SEVERITY] = array('description' => $i18n->__('Severity levels'), 'key' => \thebuggenie\core\entities\Datatype::SEVERITY);
+            $builtin_types[\thebuggenie\core\entities\Datatype::CATEGORY] = array('description' => $i18n->__('Categories'), 'key' => \thebuggenie\core\entities\Datatype::CATEGORY);
+            $builtin_types[\thebuggenie\core\entities\Datatype::REPRODUCABILITY] = array('description' => $i18n->__('Reproducability'), 'key' => \thebuggenie\core\entities\Datatype::REPRODUCABILITY);
+            $builtin_types[\thebuggenie\core\entities\Datatype::ACTIVITYTYPE] = array('description' => $i18n->__('Activity types'), 'key' => \thebuggenie\core\entities\Datatype::ACTIVITYTYPE);
 
             $this->builtin_types = $builtin_types;
-            $this->custom_types = \TBGCustomDatatype::getAll();
+            $this->custom_types = \thebuggenie\core\entities\CustomDatatype::getAll();
         }
 
         /**
          * Configure issue fields
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runConfigureIssuetypes(\TBGRequest $request)
+        public function runConfigureIssuetypes(framework\Request $request)
         {
             $this->mode = $request->getParameter('mode', 'issuetypes');
             if ($this->mode == 'issuetypes' || $this->mode == 'scheme')
             {
-                $this->issue_types = \TBGIssuetype::getAll();
-                $this->icons = \TBGIssuetype::getIcons();
+                $this->issue_types = \thebuggenie\core\entities\Issuetype::getAll();
+                $this->icons = \thebuggenie\core\entities\Issuetype::getIcons();
             }
             elseif ($this->mode == 'schemes')
             {
-                $this->issue_type_schemes = \TBGIssuetypeScheme::getAll();
+                $this->issue_type_schemes = \thebuggenie\core\entities\IssuetypeScheme::getAll();
             }
             if ($request->hasParameter('scheme_id'))
             {
-                $this->scheme = \TBGContext::factory()->TBGIssuetypeScheme((int) $request['scheme_id']);
+                $this->scheme = \thebuggenie\core\entities\IssuetypeScheme::getB2DBTable()->selectById((int) $request['scheme_id']);
                 if ($this->mode == 'copy_scheme')
                 {
                     if ($new_name = $request['new_name'])
                     {
-                        $new_scheme = new \TBGIssuetypeScheme();
+                        $new_scheme = new \thebuggenie\core\entities\IssuetypeScheme();
                         $new_scheme->setName($new_name);
                         $new_scheme->save();
                         foreach ($this->scheme->getIssuetypes() as $issuetype)
@@ -504,18 +508,18 @@
                             $new_scheme->setIssuetypeRedirectedAfterReporting($issuetype, $this->scheme->isIssuetypeRedirectedAfterReporting($issuetype));
                             $new_scheme->setIssuetypeReportable($issuetype, $this->scheme->isIssuetypeReportable($issuetype));
                         }
-                        \TBGIssueFieldsTable::getTable()->copyBySchemeIDs($this->scheme->getID(), $new_scheme->getID());
+                        \thebuggenie\core\entities\tables\IssueFields::getTable()->copyBySchemeIDs($this->scheme->getID(), $new_scheme->getID());
                         return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/issuetypescheme', array('scheme' => $new_scheme))));
                     }
                     else
                     {
-                        $this->error = \TBGContext::getI18n()->__('Please enter a valid name');
+                        $this->error = framework\Context::getI18n()->__('Please enter a valid name');
                     }
                 }
                 elseif ($this->mode == 'delete_scheme')
                 {
                     $this->scheme->delete();
-                    return $this->renderJSON(array('success' => true, 'message' => \TBGContext::getI18n()->__('The issuetype scheme was deleted')));
+                    return $this->renderJSON(array('success' => true, 'message' => framework\Context::getI18n()->__('The issuetype scheme was deleted')));
                 }
             }
         }
@@ -523,9 +527,9 @@
         /**
          * Get issue type options for a specific issue type
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runConfigureIssuetypesGetOptionsForScheme(\TBGRequest $request)
+        public function runConfigureIssuetypesGetOptionsForScheme(framework\Request $request)
         {
             return $this->renderComponent('issuetypeschemeoptions', array('id' => $request['id'], 'scheme_id' => $request['scheme_id']));
         }
@@ -533,37 +537,37 @@
         /**
          * Perform an action on an issue type
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runConfigureIssuetypesAction(\TBGRequest $request)
+        public function runConfigureIssuetypesAction(framework\Request $request)
         {
             if ($request->hasParameter('scheme_id'))
             {
-                $this->scheme = \TBGContext::factory()->TBGIssuetypeScheme((int) $request['scheme_id']);
+                $this->scheme = \thebuggenie\core\entities\IssuetypeScheme::getB2DBTable()->selectById((int) $request['scheme_id']);
             }
-            $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
+            $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
             switch ($request['mode'])
             {
                 case 'add':
                     if ($request['name'])
                     {
-                        $issuetype = new \TBGIssuetype();
+                        $issuetype = new \thebuggenie\core\entities\Issuetype();
                         $issuetype->setName($request['name']);
                         $issuetype->setIcon($request['icon']);
                         $issuetype->save();
-                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
+                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name for the issue type')));
                     break;
                 case 'update':
-                    if (($issuetype = \TBGIssuetype::getB2DBTable()->selectById($request['id'])) instanceof \TBGIssuetype)
+                    if (($issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof \thebuggenie\core\entities\Issuetype)
                     {
-                        if ($this->scheme instanceof \TBGIssuetypeScheme)
+                        if ($this->scheme instanceof \thebuggenie\core\entities\IssuetypeScheme)
                         {
                             $this->scheme->setIssuetypeRedirectedAfterReporting($issuetype, $request['redirect_after_reporting']);
                             $this->scheme->setIssuetypeReportable($issuetype, $request['reportable']);
-                            return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The issue type details were updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
+                            return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The issue type details were updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
                         }
                         elseif ($request['name'])
                         {
@@ -571,71 +575,71 @@
                             $issuetype->setName($request['name']);
                             $issuetype->setIcon($request['icon']);
                             $issuetype->save();
-                            return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
+                            return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
                         }
                         else
                         {
                             $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name for the issue type')));
                         }
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid issue type')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
                     break;
                 case 'updatechoices':
-                    if (($issuetype = \TBGIssuetype::getB2DBTable()->selectById($request['id'])) instanceof \TBGIssuetype)
+                    if (($issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof \thebuggenie\core\entities\Issuetype)
                     {
                         $this->scheme->clearAvailableFieldsForIssuetype($issuetype);
                         foreach ($request->getParameter('field', array()) as $key => $details)
                         {
                             $this->scheme->setFieldAvailableForIssuetype($issuetype, $key, $details);
                         }
-                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('Available choices updated')));
+                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Available choices updated')));
                     }
                     else
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid issue type')));
+                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Not implemented yet')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Not implemented yet')));
                     break;
                 case 'delete':
-                    if (($issuetype = \TBGIssuetype::getB2DBTable()->selectById($request['id'])) instanceof \TBGIssuetype)
+                    if (($issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof \thebuggenie\core\entities\Issuetype)
                     {
                         $issuetype->delete();
-                        return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('Issue type deleted')));
+                        return $this->renderJSON(array('message' => framework\Context::getI18n()->__('Issue type deleted')));
                     }
                     else
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid issue type')));
+                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
                     }
                     break;
                 case 'toggletype':
-                    if (($issuetype = \TBGIssuetype::getB2DBTable()->selectById($request['id'])) instanceof \TBGIssuetype)
+                    if (($issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof \thebuggenie\core\entities\Issuetype)
                     {
-                        if ($this->scheme instanceof \TBGIssuetypeScheme)
+                        if ($this->scheme instanceof \thebuggenie\core\entities\IssuetypeScheme)
                         {
                             $this->scheme->setIssuetypeEnabled($issuetype, ($request['state'] == 'enable'));
                             return $this->renderJSON(array('issuetype_id' => $issuetype->getID()));
                         }
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid action for this issue type / scheme')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid action for this issue type / scheme')));
                     break;
                 default:
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid action for this issue type')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid action for this issue type')));
             }
         }
 
         /**
          * Get issue fields list for a specific field type
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runConfigureIssuefieldsGetOptions(\TBGRequest $request)
+        public function runConfigureIssuefieldsGetOptions(framework\Request $request)
         {
             return $this->renderComponent('issuefields', array('type' => $request['type'], 'access_level' => $this->access_level));
         }
@@ -643,13 +647,13 @@
         /**
          * Add or delete an issue field option
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runConfigureIssuefieldsAction(\TBGRequest $request)
+        public function runConfigureIssuefieldsAction(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
-            $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
-            $types = \TBGDatatype::getTypes();
+            $i18n = framework\Context::getI18n();
+            $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
+            $types = \thebuggenie\core\entities\Datatype::getTypes();
 
             switch ($request['mode'])
             {
@@ -657,12 +661,12 @@
                     $itemtype = $request['type'];
                     if (array_key_exists($itemtype, $types))
                     {
-                        \TBGListTypesTable::getTable()->saveOptionOrder($request[$itemtype . '_list'], $itemtype);
+                        \thebuggenie\core\entities\tables\ListTypes::getTable()->saveOptionOrder($request[$itemtype . '_list'], $itemtype);
                     }
                     else
                     {
-                        $customtype = \TBGCustomDatatype::getByKey($request['type']);
-                        \TBGCustomFieldOptionsTable::getTable()->saveOptionOrder($request[$itemtype . '_list'], $customtype->getID());
+                        $customtype = \thebuggenie\core\entities\CustomDatatype::getByKey($request['type']);
+                        \thebuggenie\core\entities\tables\CustomFieldOptions::getTable()->saveOptionOrder($request[$itemtype . '_list'], $customtype->getID());
                     }
                     return $this->renderJSON('ok');
                     break;
@@ -679,27 +683,27 @@
                         }
                         else
                         {
-                            $customtype = \TBGCustomDatatype::getByKey($request['type']);
+                            $customtype = \thebuggenie\core\entities\CustomDatatype::getByKey($request['type']);
                             $item = $customtype->createNewOption($request['name'], $request['value'], $request['itemdata']);
                         }
-                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The option was added'), 'content' => $this->getComponentHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request['type']))));
+                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The option was added'), 'content' => $this->getComponentHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request['type']))));
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name')));
                 case 'edit':
                     if ($request['name'])
                     {
                         if (array_key_exists($request['type'], $types))
                         {
                             $labname = $types[$request['type']];
-                            $item = \TBGContext::factory()->$labname($request['id']);
+                            $item = framework\Context::factory()->$labname($request['id']);
                         }
                         else
                         {
-                            $customtype = \TBGCustomDatatype::getByKey($request['type']);
-                            $item = \TBGContext::factory()->TBGCustomDatatypeOption($request['id']);
+                            $customtype = \thebuggenie\core\entities\CustomDatatype::getByKey($request['type']);
+                            $item = \thebuggenie\core\entities\CustomDatatypeOption::getB2DBTable()->selectById($request['id']);
                         }
-                        if ($item instanceof \TBGDatatypeBase)
+                        if ($item instanceof \thebuggenie\core\entities\DatatypeBase)
                         {
                             $item->setName($request['name']);
                             $item->setItemdata($request['itemdata']);
@@ -708,28 +712,28 @@
                                 $item->setValue($request['value']);
                             }
                             $item->save();
-                            return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The option was updated')));
+                            return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The option was updated')));
                         }
                         else
                         {
                             $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid id')));
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid id')));
                         }
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name')));
                 case 'delete':
                     if ($request->hasParameter('id'))
                     {
                         if (array_key_exists($request['type'], $types))
                         {
-                            $classname = '\TBG' . ucfirst($request['type']);
-                            $item = \TBGContext::factory()->$classname($request['id'])->delete();
+                            $classname = '\\thebuggenie\\core\\entities\\' . ucfirst($request['type']);
+                            $item = framework\Context::factory()->manufacture($classname, $request['id'])->delete();
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                         else
                         {
-                            \b2db\Core::getTable('\TBGCustomFieldOptionsTable')->doDeleteById($request['id']);
+                            \thebuggenie\core\entities\tables\CustomFieldOptions::getTable()->doDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                     }
@@ -742,9 +746,9 @@
         /**
          * Add or delete a custom type
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runConfigureIssuefieldsCustomTypeAction(\TBGRequest $request)
+        public function runConfigureIssuefieldsCustomTypeAction(framework\Request $request)
         {
             switch ($request['mode'])
             {
@@ -753,50 +757,50 @@
                     {
                         try
                         {
-                            $customtype = new \TBGCustomDatatype();
+                            $customtype = new \thebuggenie\core\entities\CustomDatatype();
                             $customtype->setName($request['name']);
                             $customtype->setItemdata($request['name']);
                             $customtype->setDescription($request['name']);
                             $customtype->setType($request['field_type']);
                             $customtype->save();
-                            return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The issue field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
+                            return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The issue field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
                         }
                         catch (\Exception $e)
                         {
                             $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => $e->getMessage() /* \TBGContext::getI18n()->__('You need to provide a unique custom field name (key already exists)') */));
+                            return $this->renderJSON(array('error' => $e->getMessage() /* framework\Context::getI18n()->__('You need to provide a unique custom field name (key already exists)') */));
                         }
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name')));
                     break;
                 case 'update':
                     if ($request['name'] != '')
                     {
-                        $customtype = \TBGCustomDatatype::getByKey($request['type']);
-                        if ($customtype instanceof \TBGCustomDatatype)
+                        $customtype = \thebuggenie\core\entities\CustomDatatype::getByKey($request['type']);
+                        if ($customtype instanceof \thebuggenie\core\entities\CustomDatatype)
                         {
                             $customtype->setDescription($request['description']);
                             $customtype->setInstructions($request['instructions']);
                             $customtype->setName($request['name']);
                             $customtype->save();
-                            return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The custom field was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
+                            return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The custom field was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
                         }
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('You need to provide a custom field key that already exists')));
+                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You need to provide a custom field key that already exists')));
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please provide a valid name')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name')));
                     break;
                 case 'delete':
-                    $customtype = \TBGCustomDatatype::getByKey($request['type']);
-                    if ($customtype instanceof \TBGCustomDatatype)
+                    $customtype = \thebuggenie\core\entities\CustomDatatype::getByKey($request['type']);
+                    if ($customtype instanceof \thebuggenie\core\entities\CustomDatatype)
                     {
                         $customtype->delete();
-                        return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('The custom field was deleted')));
+                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('The custom field was deleted')));
                     }
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('You need to provide a custom field key that already exists')));
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You need to provide a custom field key that already exists')));
                     break;
             }
         }
@@ -804,43 +808,43 @@
         /**
          * Configure modules
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runConfigureModules(\TBGRequest $request)
+        public function runConfigureModules(framework\Request $request)
         {
-            $this->module_message = \TBGContext::getMessageAndClear('module_message');
-            $this->module_error = \TBGContext::getMessageAndClear('module_error');
-            $this->modules = \TBGContext::getModules();
-            $this->uninstalled_modules = \TBGContext::getUninstalledModules();
-            $this->outdated_modules = \TBGContext::getOutdatedModules();
+            $this->module_message = framework\Context::getMessageAndClear('module_message');
+            $this->module_error = framework\Context::getMessageAndClear('module_error');
+            $this->modules = framework\Context::getModules();
+            $this->uninstalled_modules = framework\Context::getUninstalledModules();
+            $this->outdated_modules = framework\Context::getOutdatedModules();
         }
 
         /**
          * Add a project (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runAddProject(\TBGRequest $request)
+        public function runAddProject(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
 
-            if (!\TBGContext::getScope()->hasProjectsAvailable())
+            if (!framework\Context::getScope()->hasProjectsAvailable())
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array("error" => $i18n->__("There are no more projects available in this instance")));
             }
-            if ($this->access_level == \TBGSettings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 if (($p_name = $request['p_name']) && trim($p_name) != '')
                 {
                     try
                     {
-                        $project = new \TBGProject();
+                        $project = new Project();
                         $project->setName($p_name);
                         $project->setWorkflowSchemeID($request['workflow_scheme_id']);
                         $project->setIssuetypeSchemeID($request['issuetype_scheme_id']);
                         $project->save();
-                        return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getComponentHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => \TBGProject::getProjectsCount(), 'more_available' => \TBGContext::getScope()->hasProjectsAvailable()));
+                        return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getComponentHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => Project::getProjectsCount(), 'more_available' => framework\Context::getScope()->hasProjectsAvailable()));
                     }
                     catch (InvalidArgumentException $e)
                     {
@@ -863,28 +867,28 @@
         /**
          * Get edit form for user
          */
-        public function runGetUserEditForm(\TBGRequest $request)
+        public function runGetUserEditForm(framework\Request $request)
         {
-            return $this->renderJSON(array("content" => $this->getComponentHTML('finduser_row_editable', array('user' => \TBGContext::factory()->TBGUser($request['user_id'])))));
+            return $this->renderJSON(array("content" => $this->getComponentHTML('finduser_row_editable', array('user' => framework\Context::factory()->manufacture('User', $request['user_id'])))));
         }
 
         /**
          * Delete a project
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runDeleteProject(\TBGRequest $request)
+        public function runDeleteProject(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
 
-            if ($this->access_level == \TBGSettings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 try
                 {
-                    $theProject = \TBGContext::factory()->TBGProject($request['project_id']);
+                    $theProject = framework\Context::factory()->manufacture('Project', $request['project_id']);
                     $theProject->setDeleted();
                     $theProject->save();
-                    return $this->renderJSON(array('title' => $i18n->__('The project was deleted'), 'total_count' => \TBGProject::getProjectsCount(), 'more_available' => \TBGContext::getScope()->hasProjectsAvailable()));
+                    return $this->renderJSON(array('title' => $i18n->__('The project was deleted'), 'total_count' => Project::getProjectsCount(), 'more_available' => framework\Context::getScope()->hasProjectsAvailable()));
                 }
                 catch (\Exception $e)
                 {
@@ -900,17 +904,17 @@
          * Handle archive functiions
          *
          * @param bool $archived Status
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        protected function _setArchived($archived, \TBGRequest $request)
+        protected function _setArchived($archived, framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
 
-            if ($this->access_level == \TBGSettings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 try
                 {
-                    $theProject = \TBGContext::factory()->TBGProject($request['project_id']);
+                    $theProject = framework\Context::factory()->manufacture('Project', $request['project_id']);
                     $theProject->setArchived($archived);
                     $theProject->save();
 
@@ -930,9 +934,9 @@
         /**
          * Archive
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runArchiveProject(\TBGRequest $request)
+        public function runArchiveProject(framework\Request $request)
         {
             return $this->_setArchived(true, $request);
         }
@@ -940,12 +944,12 @@
         /**
          * Unarchive
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runUnarchiveProject(\TBGRequest $request)
+        public function runUnarchiveProject(framework\Request $request)
         {
             // Don't unarchive if we will have too many projects
-            if (!\TBGContext::getScope()->hasProjectsAvailable())
+            if (!framework\Context::getScope()->hasProjectsAvailable())
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array("error" => $i18n->__("There are no more projects available in this instance")));
@@ -957,23 +961,23 @@
         /**
          * Perform an action on a module
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runModuleAction(\TBGRequest $request)
+        public function runModuleAction(framework\Request $request)
         {
-            $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
+            $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
 
             try
             {
                 if ($request['mode'] == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request['module_key'] . DS . ucfirst($request['module_key']) . '.php'))
                 {
-                    if (\TBGModule::installModule($request['module_key']))
+                    if (\thebuggenie\core\entities\Module::installModule($request['module_key']))
                     {
-                        \TBGContext::setMessage('module_message', \TBGContext::getI18n()->__('The module "%module_name" was installed successfully', array('%module_name' => $request['module_key'])));
+                        framework\Context::setMessage('module_message', framework\Context::getI18n()->__('The module "%module_name" was installed successfully', array('%module_name' => $request['module_key'])));
                     }
                     else
                     {
-                        \TBGContext::setMessage('module_error', \TBGContext::getI18n()->__('There was an error install the module "%module_name"', array('%module_name' => $request['module_key'])));
+                        framework\Context::setMessage('module_error', framework\Context::getI18n()->__('There was an error install the module "%module_name"', array('%module_name' => $request['module_key'])));
                     }
                 }
                 else if ($request['mode'] == 'upload')
@@ -981,44 +985,44 @@
                     $archive = $request->getUploadedFile('archive');
                     if ($archive == null || $archive['error'] != UPLOAD_ERR_OK || !preg_match('/application\/(x-)?zip/i', $archive['type']))
                     {
-                        \TBGContext::setMessage('module_error', \TBGContext::getI18n()->__('Invalid or empty archive uploaded'));
+                        framework\Context::setMessage('module_error', framework\Context::getI18n()->__('Invalid or empty archive uploaded'));
                     }
                     else
                     {
-                        $module_name = \TBGModule::uploadModule($archive);
-                        \TBGContext::setMessage('module_message', \TBGContext::getI18n()->__('The module "%module_name" was uploaded successfully', array('%module_name' => $module_name)));
+                        $module_name = \thebuggenie\core\entities\Module::uploadModule($archive);
+                        framework\Context::setMessage('module_message', framework\Context::getI18n()->__('The module "%module_name" was uploaded successfully', array('%module_name' => $module_name)));
                     }
                 }
                 else
                 {
-                    $module = \TBGContext::getModule($request['module_key']);
+                    $module = framework\Context::getModule($request['module_key']);
                     if (!$module->isCore())
                         switch ($request['mode'])
                         {
                             case 'disable':
-                                if ($module->getType() !== \TBGModule::MODULE_AUTH):
+                                if ($module->getType() !== \thebuggenie\core\entities\Module::MODULE_AUTH):
                                     $module->disable();
                                 endif;
                                 break;
                             case 'enable':
-                                if ($module->getType() !== \TBGModule::MODULE_AUTH):
+                                if ($module->getType() !== \thebuggenie\core\entities\Module::MODULE_AUTH):
                                     $module->enable();
                                 endif;
                                 break;
                             case 'uninstall':
                                 $module->uninstall();
-                                \TBGContext::setMessage('module_message', \TBGContext::getI18n()->__('The module "%module_name" was uninstalled successfully', array('%module_name' => $module->getName())));
+                                framework\Context::setMessage('module_message', framework\Context::getI18n()->__('The module "%module_name" was uninstalled successfully', array('%module_name' => $module->getName())));
                                 break;
                             case 'update':
                                 try
                                 {
                                     $module->upgrade();
-                                    \TBGContext::setMessage('module_message', \TBGContext::getI18n()->__('The module "%module_name" was successfully upgraded and can now be used again', array('%module_name' => $module->getName())));
+                                    framework\Context::setMessage('module_message', framework\Context::getI18n()->__('The module "%module_name" was successfully upgraded and can now be used again', array('%module_name' => $module->getName())));
                                 }
                                 catch (\Exception $e)
                                 {
                                     throw $e;
-                                    \TBGContext::setMessage('module_error', \TBGContext::getI18n()->__('The module "%module_name" was not successfully upgraded', array('%module_name' => $module->getName())));
+                                    framework\Context::setMessage('module_error', framework\Context::getI18n()->__('The module "%module_name" was not successfully upgraded', array('%module_name' => $module->getName())));
                                 }
                                 break;
                         }
@@ -1027,22 +1031,22 @@
             catch (\Exception $e)
             {
                 throw $e;
-                \TBGLogging::log('Trying to run action ' . $request['mode'] . ' on module ' . $request['module_key'] . ' made an exception: ' . $e->getMessage(), \TBGLogging::LEVEL_FATAL);
-                \TBGContext::setMessage('module_error', \TBGContext::getI18n()->__('This module (%module_name) does not exist', array('%module_name' => $request['module_key'])));
+                framework\Logging::log('Trying to run action ' . $request['mode'] . ' on module ' . $request['module_key'] . ' made an exception: ' . $e->getMessage(), framework\Logging::LEVEL_FATAL);
+                framework\Context::setMessage('module_error', framework\Context::getI18n()->__('This module (%module_name) does not exist', array('%module_name' => $request['module_key'])));
             }
-            $this->forward(\TBGContext::getRouting()->generate('configure_modules'));
+            $this->forward(framework\Context::getRouting()->generate('configure_modules'));
         }
 
         /**
          * Get permissions info for a single permission key
          *
-         * @param \TBGRequest $request
+         * @param framework\Request $request
          */
-        public function runGetPermissionsInfo(\TBGRequest $request)
+        public function runGetPermissionsInfo(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
 
-            if ($this->access_level == \TBGSettings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request['base_id'], 'permissions_list' => $request['permissions_list'], 'mode' => $request['mode'], 'target_id' => $request['target_id'], 'user_id' => $request['user_id'], 'team_id' => $request['team_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
             }
@@ -1050,11 +1054,11 @@
             return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify permissions")));
         }
 
-        public function runSetPermission(\TBGRequest $request)
+        public function runSetPermission(framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
 
-            if ($this->access_level == \TBGSettings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 $uid = 0;
                 $gid = 0;
@@ -1075,13 +1079,13 @@
                 switch ($request['mode'])
                 {
                     case 'allowed':
-                        \TBGContext::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, true);
+                        framework\Context::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, true);
                         break;
                     case 'denied':
-                        \TBGContext::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, false);
+                        framework\Context::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, false);
                         break;
                     case 'unset':
-                        \TBGContext::removePermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid);
+                        framework\Context::removePermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid);
                         break;
                 }
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request['key'], 'target_id' => $request['target_id'], 'type' => $request['target_type'], 'mode' => $request['template_mode'], 'item_id' => $request['item_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
@@ -1093,15 +1097,15 @@
         /**
          * Configure a module
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          */
-        public function runConfigureModule(\TBGRequest $request)
+        public function runConfigureModule(framework\Request $request)
         {
-            $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
+            $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
 
             try
             {
-                $module = \TBGContext::getModule($request['config_module']);
+                $module = framework\Context::getModule($request['config_module']);
                 if (!$module->isEnabled())
                 {
                     throw new \Exception('disabled');
@@ -1112,47 +1116,47 @@
                 }
                 else
                 {
-                    if ($request->isPost() && $this->access_level == \TBGSettings::ACCESS_FULL)
+                    if ($request->isPost() && $this->access_level == framework\Settings::ACCESS_FULL)
                     {
                         try
                         {
                             $module->postConfigSettings($request);
-                            if (!\TBGContext::hasMessage('module_message'))
+                            if (!framework\Context::hasMessage('module_message'))
                             {
-                                \TBGContext::setMessage('module_message', \TBGContext::getI18n()->__('Settings saved successfully'));
+                                framework\Context::setMessage('module_message', framework\Context::getI18n()->__('Settings saved successfully'));
                             }
                         }
                         catch (\Exception $e)
                         {
-                            \TBGContext::setMessage('module_error', $e->getMessage());
+                            framework\Context::setMessage('module_error', $e->getMessage());
                         }
-                        $this->forward(\TBGContext::getRouting()->generate('configure_module', array('config_module' => $request['config_module'])));
+                        $this->forward(framework\Context::getRouting()->generate('configure_module', array('config_module' => $request['config_module'])));
                     }
                     $this->module = $module;
                 }
             }
             catch (\Exception $e)
             {
-                \TBGLogging::log('Trying to configure module ' . $request['config_module'] . " which isn't configurable", 'main', \TBGLogging::LEVEL_FATAL);
-                \TBGContext::setMessage('module_error', \TBGContext::getI18n()->__('The module "%module_name" is not configurable', array('%module_name' => $request['config_module'])));
-                $this->forward(\TBGContext::getRouting()->generate('configure_modules'));
+                framework\Logging::log('Trying to configure module ' . $request['config_module'] . " which isn't configurable", 'main', framework\Logging::LEVEL_FATAL);
+                framework\Context::setMessage('module_error', framework\Context::getI18n()->__('The module "%module_name" is not configurable', array('%module_name' => $request['config_module'])));
+                $this->forward(framework\Context::getRouting()->generate('configure_modules'));
             }
-            $this->module_message = \TBGContext::getMessageAndClear('module_message');
-            $this->module_error = \TBGContext::getMessageAndClear('module_error');
-            $this->module_error_details = \TBGContext::getMessageAndClear('module_error_details');
+            $this->module_message = framework\Context::getMessageAndClear('module_message');
+            $this->module_error = framework\Context::getMessageAndClear('module_error');
+            $this->module_error_details = framework\Context::getMessageAndClear('module_error_details');
         }
 
-        public function runConfigurePermissions(\TBGRequest $request)
+        public function runConfigurePermissions(framework\Request $request)
         {
-            $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
+            $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
         }
 
-        public function runConfigureUploads(\TBGRequest $request)
+        public function runConfigureUploads(framework\Request $request)
         {
-            $this->uploads_enabled = \TBGContext::getScope()->isUploadsEnabled();
+            $this->uploads_enabled = framework\Context::getScope()->isUploadsEnabled();
             if ($this->uploads_enabled && $request->isPost())
             {
-                $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
+                $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
                 if ($request['enable_uploads'])
                 {
                     if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
@@ -1164,40 +1168,40 @@
                         if (!is_writable($request['upload_localpath']))
                         {
                             $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => \TBGContext::getI18n()->__("The upload path isn't writable")));
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't wri")));
                         }
                     }
 
                     if (!is_numeric($request['upload_max_file_size']))
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__("The maximum file size must be a number")));
+                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The maximum file size must be a number")));
                     }
 
                     $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
                     foreach ($settings as $setting)
                     {
-                        if (\TBGContext::getRequest()->hasParameter($setting))
+                        if (framework\Context::getRequest()->hasParameter($setting))
                         {
-                            \TBGSettings::saveSetting($setting, \TBGContext::getRequest()->getParameter($setting));
+                            framework\Settings::saveSetting($setting, framework\Context::getRequest()->getParameter($setting));
                         }
                     }
                 }
 
-                \TBGSettings::saveSetting('enable_uploads', \TBGContext::getRequest()->getParameter('enable_uploads'));
+                framework\Settings::saveSetting('enable_uploads', framework\Context::getRequest()->getParameter('enable_uploads'));
 
-                return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('All settings saved')));
+                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('All settings saved')));
             }
         }
 
-        public function runConfigureAuthentication(\TBGRequest $request)
+        public function runConfigureAuthentication(framework\Request $request)
         {
             $modules = array();
-            $allmods = \TBGContext::getModules();
+            $allmods = framework\Context::getModules();
             foreach ($allmods as $mod)
             {
-                if ($mod->getType() == \TBGModule::MODULE_AUTH)
+                if ($mod->getType() == \thebuggenie\core\entities\Module::MODULE_AUTH)
                 {
                     $modules[] = $mod;
                 }
@@ -1205,59 +1209,59 @@
             $this->modules = $modules;
         }
 
-        public function runSaveAuthentication(\TBGRequest $request)
+        public function runSaveAuthentication(framework\Request $request)
         {
-            if (\TBGContext::getRequest()->isPost())
+            if (framework\Context::getRequest()->isPost())
             {
-                $this->forward403unless($this->access_level == \TBGSettings::ACCESS_FULL);
-                $settings = array(\TBGSettings::SETTING_AUTH_BACKEND, 'register_message', 'forgot_message', 'changepw_message', 'changedetails_message');
+                $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
+                $settings = array(framework\Settings::SETTING_AUTH_BACKEND, 'register_message', 'forgot_message', 'changepw_message', 'changedetails_message');
 
                 foreach ($settings as $setting)
                 {
-                    if (\TBGContext::getRequest()->getParameter($setting) !== null)
+                    if (framework\Context::getRequest()->getParameter($setting) !== null)
                     {
-                        $value = \TBGContext::getRequest()->getParameter($setting);
-                        \TBGSettings::saveSetting($setting, $value);
+                        $value = framework\Context::getRequest()->getParameter($setting);
+                        framework\Settings::saveSetting($setting, $value);
                     }
                 }
             }
         }
 
-        public function runConfigureUsers(\TBGRequest $request)
+        public function runConfigureUsers(framework\Request $request)
         {
-            $this->groups = \TBGGroup::getAll();
-            $this->teams = \TBGTeam::getAll();
-            $this->clients = \TBGClient::getall();
+            $this->groups = Group::getAll();
+            $this->teams = \thebuggenie\core\entities\Team::getAll();
+            $this->clients = \thebuggenie\core\entities\Client::getAll();
             $this->finduser = $request['finduser'];
         }
 
-        public function runDeleteGroup(\TBGRequest $request)
+        public function runDeleteGroup(framework\Request $request)
         {
             try
             {
-                if (in_array($request['group_id'], \TBGSettings::getDefaultGroupIDs()))
+                if (in_array($request['group_id'], framework\Settings::getDefaultGroupIDs()))
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__("You cannot delete the default groups"));
+                    throw new \Exception(framework\Context::getI18n()->__("You cannot delete the default groups"));
                 }
 
                 try
                 {
-                    $group = \TBGContext::factory()->TBGGroup($request['group_id']);
+                    $group = \thebuggenie\core\entities\Group::getB2DBTable()->selectById($request['group_id']);
                 }
                 catch (\Exception $e)
                 {
 
                 }
-                if (!$group instanceof \TBGGroup)
+                if (!$group instanceof Group)
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__("You cannot delete this group"));
+                    throw new \Exception(framework\Context::getI18n()->__("You cannot delete this group"));
                 }
                 if ($group->isDefaultUserGroup())
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__("You cannot delete the group for the default user"));
+                    throw new \Exception(framework\Context::getI18n()->__("You cannot delete the group for the default user"));
                 }
                 $group->delete();
-                return $this->renderJSON(array('success' => true, 'message' => \TBGContext::getI18n()->__('The group was deleted')));
+                return $this->renderJSON(array('success' => true, 'message' => framework\Context::getI18n()->__('The group was deleted')));
             }
             catch (\Exception $e)
             {
@@ -1266,7 +1270,7 @@
             }
         }
 
-        public function runAddGroup(\TBGRequest $request)
+        public function runAddGroup(framework\Request $request)
         {
             try
             {
@@ -1277,41 +1281,41 @@
                     {
                         try
                         {
-                            $old_group = \TBGContext::factory()->TBGGroup($request['group_id']);
+                            $old_group = \thebuggenie\core\entities\Group::getB2DBTable()->selectById($request['group_id']);
                         }
                         catch (\Exception $e)
                         {
 
                         }
-                        if (!$old_group instanceof \TBGGroup)
+                        if (!$old_group instanceof Group)
                         {
-                            throw new \Exception(\TBGContext::getI18n()->__("You cannot clone this group"));
+                            throw new \Exception(framework\Context::getI18n()->__("You cannot clone this group"));
                         }
                     }
-                    if (\TBGGroup::doesGroupNameExist(trim($group_name)))
+                    if (Group::doesGroupNameExist(trim($group_name)))
                     {
-                        throw new \Exception(\TBGContext::getI18n()->__("Please enter a group name that doesn't already exist"));
+                        throw new \Exception(framework\Context::getI18n()->__("Please enter a group name that doesn't already exist"));
                     }
-                    $group = new \TBGGroup();
+                    $group = new Group();
                     $group->setName($group_name);
                     $group->save();
                     if ($mode == 'clone')
                     {
                         if ($request['clone_permissions'])
                         {
-                            \TBGPermissionsTable::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
+                            \thebuggenie\core\entities\tables\Permissions::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
                         }
-                        $message = \TBGContext::getI18n()->__('The group was cloned');
+                        $message = framework\Context::getI18n()->__('The group was cloned');
                     }
                     else
                     {
-                        $message = \TBGContext::getI18n()->__('The group was added');
+                        $message = framework\Context::getI18n()->__('The group was added');
                     }
                     return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/groupbox', array('group' => $group))));
                 }
                 else
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__('Please enter a group name'));
+                    throw new \Exception(framework\Context::getI18n()->__('Please enter a group name'));
                 }
             }
             catch (\Exception $e)
@@ -1321,11 +1325,11 @@
             }
         }
 
-        public function runGetGroupMembers(\TBGRequest $request)
+        public function runGetGroupMembers(framework\Request $request)
         {
             try
             {
-                $group = \TBGContext::factory()->TBGGroup((int) $request['group_id']);
+                $group = \thebuggenie\core\entities\Group::getB2DBTable()->selectById((int) $request['group_id']);
                 $users = $group->getMembers();
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/groupuserlist', array('users' => $users))));
             }
@@ -1336,15 +1340,15 @@
             }
         }
 
-        public function runDeleteUser(\TBGRequest $request)
+        public function runDeleteUser(framework\Request $request)
         {
             try
             {
                 try
                 {
                     $return_options = array();
-                    $user = \TBGContext::factory()->TBGUser($request['user_id']);
-                    if ($user->getGroup() instanceof \TBGGroup)
+                    $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                    if ($user->getGroup() instanceof Group)
                     {
                         $return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
                         $group_id = $user->getGroup()->getID();
@@ -1361,32 +1365,32 @@
                             $return_options['update_teams']['membercounts'][$team_id] = $team->getNumberOfMembers();
                         }
                     }
-                    if (in_array($user->getID(), array(1, \TBGSettings::getDefaultUserID())))
+                    if (in_array($user->getID(), array(1, framework\Settings::getDefaultUserID())))
                     {
-                        throw new \Exception(\TBGContext::getI18n()->__("You cannot delete this system user"));
+                        throw new \Exception(framework\Context::getI18n()->__("You cannot delete this system user"));
                     }
                 }
                 catch (\Exception $e)
                 {
 
                 }
-                if (!$user instanceof \TBGUser)
+                if (!$user instanceof User)
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__("You cannot delete this user"));
+                    throw new \Exception(framework\Context::getI18n()->__("You cannot delete this user"));
                 }
-                if (\TBGContext::getScope()->isDefault())
+                if (framework\Context::getScope()->isDefault())
                 {
                     $user->markAsDeleted();
                     $user->save();
-                    $return_options['message'] = \TBGContext::getI18n()->__('The user was deleted');
+                    $return_options['message'] = framework\Context::getI18n()->__('The user was deleted');
                 }
                 else
                 {
-                    $user->removeScope(\TBGContext::getScope()->getID());
-                    $return_options['message'] = \TBGContext::getI18n()->__('The user has been removed from this scope');
+                    $user->removeScope(framework\Context::getScope()->getID());
+                    $return_options['message'] = framework\Context::getI18n()->__('The user has been removed from this scope');
                 }
-                $return_options['total_count'] = \TBGUser::getUsersCount();
-                $return_options['more_available'] = \TBGContext::getScope()->hasUsersAvailable();
+                $return_options['total_count'] = User::getUsersCount();
+                $return_options['more_available'] = framework\Context::getScope()->hasUsersAvailable();
 
                 return $this->renderJSON($return_options);
             }
@@ -1397,24 +1401,24 @@
             }
         }
 
-        public function runDeleteTeam(\TBGRequest $request)
+        public function runDeleteTeam(framework\Request $request)
         {
             try
             {
                 try
                 {
-                    $team = \TBGContext::factory()->TBGTeam($request['team_id']);
+                    $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['team_id']);
                 }
                 catch (\Exception $e)
                 {
 
                 }
-                if (!$team instanceof \TBGTeam)
+                if (!$team instanceof \thebuggenie\core\entities\Team)
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__("You cannot delete this team"));
+                    throw new \Exception(framework\Context::getI18n()->__("You cannot delete this team"));
                 }
                 $team->delete();
-                return $this->renderJSON(array('success' => true, 'message' => \TBGContext::getI18n()->__('The team was deleted'), 'total_count' => \TBGTeam::countAll(), 'more_available' => \TBGContext::getScope()->hasTeamsAvailable()));
+                return $this->renderJSON(array('success' => true, 'message' => framework\Context::getI18n()->__('The team was deleted'), 'total_count' => \thebuggenie\core\entities\Team::countAll(), 'more_available' => framework\Context::getScope()->hasTeamsAvailable()));
             }
             catch (\Exception $e)
             {
@@ -1423,7 +1427,7 @@
             }
         }
 
-        public function runAddTeam(\TBGRequest $request)
+        public function runAddTeam(framework\Request $request)
         {
             try
             {
@@ -1434,45 +1438,45 @@
                     {
                         try
                         {
-                            $old_team = \TBGContext::factory()->TBGTeam($request['team_id']);
+                            $old_team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['team_id']);
                         }
                         catch (\Exception $e)
                         {
 
                         }
-                        if (!$old_team instanceof \TBGTeam)
+                        if (!$old_team instanceof \thebuggenie\core\entities\Team)
                         {
-                            throw new \Exception(\TBGContext::getI18n()->__("You cannot clone this team"));
+                            throw new \Exception(framework\Context::getI18n()->__("You cannot clone this team"));
                         }
                     }
-                    if (\TBGTeam::doesTeamNameExist(trim($team_name)))
+                    if (\thebuggenie\core\entities\Team::doesTeamNameExist(trim($team_name)))
                     {
-                        throw new \Exception(\TBGContext::getI18n()->__("Please enter a team name that doesn't already exist"));
+                        throw new \Exception(framework\Context::getI18n()->__("Please enter a team name that doesn't already exist"));
                     }
-                    $team = new \TBGTeam();
+                    $team = new \thebuggenie\core\entities\Team();
                     $team->setName($team_name);
                     $team->save();
                     if ($mode == 'clone')
                     {
                         if ($request['clone_permissions'])
                         {
-                            \TBGPermissionsTable::getTable()->cloneTeamPermissions($old_team->getID(), $team->getID());
+                            \thebuggenie\core\entities\tables\Permissions::getTable()->cloneTeamPermissions($old_team->getID(), $team->getID());
                         }
                         if ($request['clone_memberships'])
                         {
-                            \TBGTeamMembersTable::getTable()->cloneTeamMemberships($old_team->getID(), $team->getID());
+                            \thebuggenie\core\entities\tables\TeamMembers::getTable()->cloneTeamMemberships($old_team->getID(), $team->getID());
                         }
-                        $message = \TBGContext::getI18n()->__('The team was cloned');
+                        $message = framework\Context::getI18n()->__('The team was cloned');
                     }
                     else
                     {
-                        $message = \TBGContext::getI18n()->__('The team was added');
+                        $message = framework\Context::getI18n()->__('The team was added');
                     }
-                    return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/teambox', array('team' => $team)), 'total_count' => \TBGTeam::countAll(), 'more_available' => \TBGContext::getScope()->hasTeamsAvailable()));
+                    return $this->renderJSON(array('message' => $message, 'content' => $this->getComponentHTML('configuration/teambox', array('team' => $team)), 'total_count' => \thebuggenie\core\entities\Team::countAll(), 'more_available' => framework\Context::getScope()->hasTeamsAvailable()));
                 }
                 else
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__('Please enter a team name'));
+                    throw new \Exception(framework\Context::getI18n()->__('Please enter a team name'));
                 }
             }
             catch (\Exception $e)
@@ -1482,11 +1486,11 @@
             }
         }
 
-        public function runGetTeamMembers(\TBGRequest $request)
+        public function runGetTeamMembers(framework\Request $request)
         {
             try
             {
-                $team = \TBGContext::factory()->TBGTeam((int) $request['team_id']);
+                $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['team_id']);
                 $users = $team->getMembers();
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/teamuserlist', compact('users', 'team'))));
             }
@@ -1497,12 +1501,12 @@
             }
         }
 
-        public function runRemoveTeamMember(\TBGRequest $request)
+        public function runRemoveTeamMember(framework\Request $request)
         {
             try
             {
-                $team = \TBGContext::factory()->TBGTeam((int) $request['team_id']);
-                $user = \TBGContext::factory()->TBGUser((int) $request['user_id']);
+                $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['team_id']);
+                $user = framework\Context::factory()->manufacture('User', (int) $request['user_id']);
 
                 $team->removeMember($user);
                 return $this->renderJSON(array('update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
@@ -1514,13 +1518,13 @@
             }
         }
 
-        public function runAddTeamMember(\TBGRequest $request)
+        public function runAddTeamMember(framework\Request $request)
         {
             try
             {
                 $user_id = (int) $request['user_id'];
-                $team = \TBGContext::factory()->TBGTeam((int) $request['team_id']);
-                $user = \TBGContext::factory()->TBGUser($user_id);
+                $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['team_id']);
+                $user = framework\Context::factory()->manufacture('User', $user_id);
 
                 $team->addMember($user);
                 return $this->renderJSON(array('teamlistitem' => $this->getComponentHTML('configuration/teamuserlistitem', compact('team', 'user_id', 'user')), 'update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
@@ -1532,13 +1536,13 @@
             }
         }
 
-        public function runFindUsers(\TBGRequest $request)
+        public function runFindUsers(framework\Request $request)
         {
             $this->too_short = false;
             $findstring = $request['findstring'];
             if (mb_strlen($findstring) >= 1)
             {
-                $this->users = \TBGUsersTable::getTable()->findInConfig($findstring);
+                $this->users = \thebuggenie\core\entities\tables\Users::getTable()->findInConfig($findstring);
                 $this->total_results = count($this->users);
             }
             else
@@ -1548,39 +1552,39 @@
             switch ($findstring)
             {
                 case 'unactivated':
-                    $this->findstring = \TBGContext::getI18n()->__('Unactivated users');
+                    $this->findstring = framework\Context::getI18n()->__('Unactivated users');
                     break;
                 case 'newusers':
-                    $this->findstring = \TBGContext::getI18n()->__('New users');
+                    $this->findstring = framework\Context::getI18n()->__('New users');
                     break;
                 case 'all':
-                    $this->findstring = \TBGContext::getI18n()->__('All users');
+                    $this->findstring = framework\Context::getI18n()->__('All users');
                     break;
                 default:
                     $this->findstring = $findstring;
             }
         }
 
-        public function runAddUser(\TBGRequest $request)
+        public function runAddUser(framework\Request $request)
         {
             try
             {
-                if (!\TBGContext::getScope()->hasUsersAvailable())
+                if (!framework\Context::getScope()->hasUsersAvailable())
                 {
                     throw new \Exception($this->getI18n()->__('This instance of The Bug Genie cannot add more users'));
                 }
 
                 if ($username = trim($request['username']))
                 {
-                    if (!\TBGUser::isUsernameAvailable($username))
+                    if (!User::isUsernameAvailable($username))
                     {
                         if ($request->getParameter('mode') == 'import')
                         {
-                            $user = \TBGUser::getByUsername($username);
-                            $user->addScope(\TBGContext::getScope());
+                            $user = User::getByUsername($username);
+                            $user->addScope(framework\Context::getScope());
                             return $this->renderJSON(array('imported' => true, 'message' => $this->getI18n()->__('The user was successfully added to this scope (pending user confirmation)')));
                         }
-                        elseif (\TBGContext::getScope()->isDefault())
+                        elseif (framework\Context::getScope()->isDefault())
                         {
                             throw new \Exception($this->getI18n()->__('This username already exists'));
                         }
@@ -1590,12 +1594,12 @@
                             return $this->renderJSON(array('allow_import' => true));
                         }
                     }
-                    $user = new \TBGUser();
+                    $user = new User();
                     $user->setUsername($username);
                     $user->setRealname($request->getParameter('realname', $username));
                     $user->setBuddyname($request->getParameter('buddyname', $username));
                     $user->setEmail($request->getParameter('email'));
-                    $user->setGroup(\TBGContext::factory()->TBGGroup((int) $request->getParameter('group_id', \TBGSettings::get(\TBGSettings::SETTING_USER_GROUP))));
+                    $user->setGroup(\thebuggenie\core\entities\Group::getB2DBTable()->selectById((int) $request->getParameter('group_id', framework\Settings::get(framework\Settings::SETTING_USER_GROUP))));
                     $user->setEnabled();
                     $user->setActivated();
                     if ($request->hasParameter('password') && !(empty($request['password']) && empty($request['password_repeat'])))
@@ -1609,16 +1613,16 @@
                     }
                     else
                     {
-                        $password = \TBGUser::createPassword();
+                        $password = User::createPassword();
                         $user->setPassword($password);
                     }
                     $user->setJoined();
                     $user->save();
                     foreach ((array) $request['teams'] as $team_id)
                     {
-                        $user->addToTeam(\TBGContext::factory()->TBGTeam((int) $team_id));
+                        $user->addToTeam(\thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $team_id));
                     }
-                    \TBGEvent::createNew('core', 'config.createuser.save', $user, array('password' => $password))->trigger();
+                    framework\Event::createNew('core', 'config.createuser.save', $user, array('password' => $password))->trigger();
                 }
                 else
                 {
@@ -1630,8 +1634,8 @@
                 $this->users = array($user);
                 $this->total_results = 1;
                 $this->title = $this->getI18n()->__('User %username created', array('%username' => $username));
-                $this->total_count = \TBGUser::getUsersCount();
-                $this->more_available = \TBGContext::getScope()->hasUsersAvailable();
+                $this->total_count = User::getUsersCount();
+                $this->more_available = framework\Context::getScope()->hasUsersAvailable();
             }
             catch (\Exception $e)
             {
@@ -1640,22 +1644,22 @@
             }
         }
 
-        public function runUpdateUser(\TBGRequest $request)
+        public function runUpdateUser(framework\Request $request)
         {
             try
             {
-                $user = \TBGContext::factory()->TBGUser($request['user_id']);
-                if ($user instanceof \TBGUser)
+                $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                if ($user instanceof User)
                 {
-                    if (!$user->isConfirmedMemberOfScope(\TBGContext::getScope()))
+                    if (!$user->isConfirmedMemberOfScope(framework\Context::getScope()))
                     {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => $this->getI18n()->__('This user is not a confirmed member of this scope')));
                     }
                     if (!empty($request['username']))
                     {
-                        $testuser = \TBGUser::getByUsername($request['username']);
-                        if (!$testuser instanceof \TBGUser || $testuser->getID() == $user->getID())
+                        $testuser = User::getByUsername($request['username']);
+                        if (!$testuser instanceof User || $testuser->getID() == $user->getID())
                         {
                             $user->setUsername($request['username']);
                         }
@@ -1681,7 +1685,7 @@
                     }
                     elseif ($request['password_action'] == 'random')
                     {
-                        $random_password = \TBGUser::createPassword();
+                        $random_password = User::createPassword();
                         $user->setPassword($random_password);
                         $password_changed = true;
                     }
@@ -1692,7 +1696,7 @@
                     $return_options = array();
                     try
                     {
-                        if ($group = \TBGContext::factory()->TBGGroup($request['group']))
+                        if ($group = \thebuggenie\core\entities\Group::getB2DBTable()->selectById($request['group']))
                         {
                             if ($user->getGroupID() != $group->getID())
                             {
@@ -1714,7 +1718,7 @@
                     {
                         foreach ($request->getParameter('teams', array()) as $team_id => $team)
                         {
-                            if ($team = \TBGContext::factory()->TBGTeam($team_id))
+                            if ($team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($team_id))
                             {
                                 $new_teams[] = $team_id;
                                 $user->addToTeam($team);
@@ -1731,7 +1735,7 @@
                         $user->clearClients();
                         foreach ($request->getParameter('clients', array()) as $client_id => $client)
                         {
-                            if ($client = \TBGContext::factory()->TBGClient($client_id))
+                            if ($client = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($client_id))
                             {
                                 $new_clients[] = $client_id;
                                 $user->addToClient($client);
@@ -1754,7 +1758,7 @@
                     {
                         $user->setHomepage($request['homepage']);
                     }
-                    if (\TBGContext::getScope()->isDefault())
+                    if (framework\Context::getScope()->isDefault())
                     {
                         $user->setActivated((bool) $request['activated']);
                         $user->setEnabled((bool) $request['enabled']);
@@ -1767,7 +1771,7 @@
                             if (!$group_id)
                                 continue;
                             $return_options['update_groups']['ids'][] = $group_id;
-                            $return_options['update_groups']['membercounts'][$group_id] = \TBGContext::factory()->TBGGroup($group_id)->getNumberOfMembers();
+                            $return_options['update_groups']['membercounts'][$group_id] = \thebuggenie\core\entities\Group::getB2DBTable()->selectById($group_id)->getNumberOfMembers();
                         }
                     }
                     if ($new_teams != $existing_teams)
@@ -1779,7 +1783,7 @@
                         foreach ($teams_to_update as $team_id)
                         {
                             $return_options['update_teams']['ids'][] = $team_id;
-                            $return_options['update_teams']['membercounts'][$team_id] = \TBGContext::factory()->TBGTeam($team_id)->getNumberOfMembers();
+                            $return_options['update_teams']['membercounts'][$team_id] = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($team_id)->getNumberOfMembers();
                         }
                     }
                     $template_options = array('user' => $user);
@@ -1805,19 +1809,19 @@
             return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated')));
         }
 
-        public function runUpdateUserScopes(\TBGRequest $request)
+        public function runUpdateUserScopes(framework\Request $request)
         {
             try
             {
-                if (!\TBGContext::getScope()->isDefault())
+                if (!framework\Context::getScope()->isDefault())
                     throw new \Exception('This operation is not allowed');
 
-                $user = \TBGContext::factory()->TBGUser($request['user_id']);
-                if ($user instanceof \TBGUser)
+                $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                if ($user instanceof User)
                 {
                     $return_options = array('message' => $this->getI18n()->__("The user's scope access was successfully updated"));
                     $scopes = $request->getParameter('scopes', array());
-                    if (count($scopes) && !(count($scopes) == 1 && array_key_exists(\TBGSettings::getDefaultScopeID(), $scopes)))
+                    if (count($scopes) && !(count($scopes) == 1 && array_key_exists(framework\Settings::getDefaultScopeID(), $scopes)))
                     {
                         foreach ($user->getScopes() as $scope_id => $scope)
                         {
@@ -1830,7 +1834,7 @@
                         {
                             try
                             {
-                                $scope = new \TBGScope((int) $scope_id);
+                                $scope = new \thebuggenie\core\entities\Scope((int) $scope_id);
                                 if ($user->isMemberOfScope($scope))
                                     continue;
 
@@ -1854,32 +1858,32 @@
             return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated')));
         }
 
-        public function runGetPermissionsConfigurator(\TBGRequest $request)
+        public function runGetPermissionsConfigurator(framework\Request $request)
         {
             return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'team_id' => $request->getParameter('team_id', 0), 'base_id' => $request->getParameter('base_id', 0)));
         }
 
-        public function runConfigureWorkflowSchemes(\TBGRequest $request)
+        public function runConfigureWorkflowSchemes(framework\Request $request)
         {
-            $this->schemes = \TBGWorkflowScheme::getAll();
+            $this->schemes = \thebuggenie\core\entities\WorkflowScheme::getAll();
         }
 
-        public function runConfigureWorkflows(\TBGRequest $request)
+        public function runConfigureWorkflows(framework\Request $request)
         {
-            $this->workflows = \TBGWorkflow::getAll();
+            $this->workflows = \thebuggenie\core\entities\Workflow::getAll();
             if ($request->isPost())
             {
                 try
                 {
                     $workflow_name = $request['workflow_name'];
-                    $workflow = new \TBGWorkflow();
+                    $workflow = new \thebuggenie\core\entities\Workflow();
                     $workflow->setName($workflow_name);
                     $workflow->save();
-                    $step = new \TBGWorkflowStep();
+                    $step = new \thebuggenie\core\entities\WorkflowStep();
                     $step->setName($this->getI18n()->__('New'));
                     $step->setWorkflow($workflow);
                     $step->save();
-                    $transition = new \TBGWorkflowTransition();
+                    $transition = new \thebuggenie\core\entities\WorkflowTransition();
                     $transition->setOutgoingStep($step);
                     $transition->setName('Issue created');
                     $transition->setWorkflow($workflow);
@@ -1887,7 +1891,7 @@
                     $transition->save();
                     $workflow->setInitialTransition($transition);
                     $workflow->save();
-                    $this->forward(\TBGContext::getRouting()->generate('configure_workflow'));
+                    $this->forward(framework\Context::getRouting()->generate('configure_workflow'));
                 }
                 catch (\Exception $e)
                 {
@@ -1896,19 +1900,19 @@
             }
         }
 
-        public function runConfigureWorkflowScheme(\TBGRequest $request)
+        public function runConfigureWorkflowScheme(framework\Request $request)
         {
             $this->workflow_scheme = null;
             $this->mode = $request->getParameter('mode', 'list');
             try
             {
-                $this->workflow_scheme = \TBGContext::factory()->TBGWorkflowScheme($request['scheme_id']);
-                $this->issuetypes = \TBGIssuetype::getAll();
-                if (\TBGContext::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'copy_scheme')
+                $this->workflow_scheme = \thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($request['scheme_id']);
+                $this->issuetypes = \thebuggenie\core\entities\Issuetype::getAll();
+                if (framework\Context::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'copy_scheme')
                 {
                     if ($new_name = $request['new_name'])
                     {
-                        $new_scheme = new \TBGWorkflowScheme();
+                        $new_scheme = new \thebuggenie\core\entities\WorkflowScheme();
                         $new_scheme->setName($new_name);
                         $new_scheme->save();
                         foreach ($this->issuetypes as $issuetype)
@@ -1925,19 +1929,19 @@
                         $this->error = $this->getI18n()->__('Please enter a valid name');
                     }
                 }
-                elseif (\TBGContext::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'delete_scheme')
+                elseif (framework\Context::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'delete_scheme')
                 {
                     $this->workflow_scheme->delete();
                     return $this->renderJSON(array('success' => true, 'message' => $this->getI18n()->__('The workflow scheme was deleted')));
                 }
-                elseif (\TBGContext::getScope()->isCustomWorkflowsEnabled() && $request->isPost())
+                elseif (framework\Context::getScope()->isCustomWorkflowsEnabled() && $request->isPost())
                 {
                     foreach ($request->getParameter('workflow_id', array()) as $issuetype_id => $workflow_id)
                     {
-                        $issuetype = \TBGIssuetype::getB2DBTable()->selectById($issuetype_id);
+                        $issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($issuetype_id);
                         if ($workflow_id)
                         {
-                            $workflow = \TBGContext::factory()->TBGWorkflow($workflow_id);
+                            $workflow = \thebuggenie\core\entities\Workflow::getB2DBTable()->selectById($workflow_id);
                             $this->workflow_scheme->associateIssuetypeWithWorkflow($issuetype, $workflow);
                         }
                         else
@@ -1962,19 +1966,19 @@
             }
         }
 
-        public function runConfigureWorkflowSteps(\TBGRequest $request)
+        public function runConfigureWorkflowSteps(framework\Request $request)
         {
             $this->workflow = null;
             $this->mode = $request->getParameter('mode', 'list');
             try
             {
-                $this->workflow = \TBGContext::factory()->TBGWorkflow($request['workflow_id']);
-//                $transition = new \TBGWorkflowTransition();
-//                $step = \TBGWorkflowStepsTable::getTable()->selectById(9);
+                $this->workflow = \thebuggenie\core\entities\Workflow::getB2DBTable()->selectById($request['workflow_id']);
+//                $transition = new \thebuggenie\core\entities\WorkflowTransition();
+//                $step = \thebuggenie\core\entities\tables\WorkflowSteps::getTable()->selectById(9);
 //                $transition->setOutgoingStep($step);
 //                $transition->setName('Initial transition');
 //                $transition->setWorkflow($this->workflow);
-//                $transition->setScope(\TBGContext::getScope());
+//                $transition->setScope(framework\Context::getScope());
 //                $transition->setDescription('This is the initial transition for issues using this workflow');
 //                $transition->save();
 //                $this->workflow->setInitialTransition($transition);
@@ -1984,7 +1988,7 @@
                     if ($new_name = $request['new_name'])
                     {
                         $new_workflow = $this->workflow->copy($new_name);
-                        return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => \TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => \TBGContext::getScope()->hasCustomWorkflowsAvailable()));
+                        return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => \thebuggenie\core\entities\Workflow::getCustomWorkflowsCount(), 'more_available' => framework\Context::getScope()->hasCustomWorkflowsAvailable()));
                     }
                     else
                     {
@@ -1994,7 +1998,7 @@
                 elseif ($this->mode == 'delete_workflow')
                 {
                     $this->workflow->delete();
-                    return $this->renderJSON(array('success' => true, 'message' => $this->getI18n()->__('The workflow was deleted'), 'total_count' => \TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => \TBGContext::getScope()->hasCustomWorkflowsAvailable()));
+                    return $this->renderJSON(array('success' => true, 'message' => $this->getI18n()->__('The workflow was deleted'), 'total_count' => \thebuggenie\core\entities\Workflow::getCustomWorkflowsCount(), 'more_available' => framework\Context::getScope()->hasCustomWorkflowsAvailable()));
                 }
             }
             catch (\Exception $e)
@@ -2011,32 +2015,32 @@
             }
         }
 
-        public function runConfigureWorkflowStep(\TBGRequest $request)
+        public function runConfigureWorkflowStep(framework\Request $request)
         {
             $this->workflow = null;
             $this->step = null;
             try
             {
-                $this->workflow = \TBGContext::factory()->TBGWorkflow($request['workflow_id']);
+                $this->workflow = \thebuggenie\core\entities\Workflow::getB2DBTable()->selectById($request['workflow_id']);
                 if ($request['mode'] == 'edit' && !$request->hasParameter('step_id'))
                 {
-                    $this->step = new \TBGWorkflowStep();
+                    $this->step = new \thebuggenie\core\entities\WorkflowStep();
                     $this->step->setWorkflow($this->workflow);
                 }
                 else
                 {
-                    $this->step = \TBGContext::factory()->TBGWorkflowStep($request['step_id']);
+                    $this->step = \thebuggenie\core\entities\WorkflowStep::getB2DBTable()->selectById($request['step_id']);
                 }
                 if ($request->isPost() && $request['mode'] == 'delete_outgoing_transitions')
                 {
                     $this->step->deleteOutgoingTransitions();
-                    $this->forward(\TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
+                    $this->forward(framework\Context::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
                 }
                 if ($request->isPost() && $request['mode'] == 'delete' && !$this->step->hasIncomingTransitions())
                 {
                     $this->step->deleteOutgoingTransitions();
                     $this->step->delete();
-                    $this->forward(\TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
+                    $this->forward(framework\Context::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
                 }
                 elseif ($request->isPost() && ($request->hasParameter('edit') || $request['mode'] == 'edit'))
                 {
@@ -2044,9 +2048,9 @@
                     $this->step->setDescription($request['description']);
                     $this->step->setLinkedStatusID($request['status_id']);
                     $this->step->setIsEditable((bool) $request['is_editable']);
-                    $this->step->setIsClosed((bool) ($request['state'] == \TBGIssue::STATE_CLOSED));
+                    $this->step->setIsClosed((bool) ($request['state'] == \thebuggenie\core\entities\Issue::STATE_CLOSED));
                     $this->step->save();
-                    $this->forward(\TBGContext::getRouting()->generate('configure_workflow_step', array('workflow_id' => $this->workflow->getID(), 'step_id' => $this->step->getID())));
+                    $this->forward(framework\Context::getRouting()->generate('configure_workflow_step', array('workflow_id' => $this->workflow->getID(), 'step_id' => $this->step->getID())));
                 }
             }
             catch (\Exception $e)
@@ -2055,18 +2059,18 @@
             }
         }
 
-        public function runConfigureWorkflowTransition(\TBGRequest $request)
+        public function runConfigureWorkflowTransition(framework\Request $request)
         {
             $this->workflow = null;
             $this->transition = null;
 
             try
             {
-                $this->workflow = \TBGWorkflowsTable::getTable()->selectById((int) $request['workflow_id']);
+                $this->workflow = \thebuggenie\core\entities\tables\Workflows::getTable()->selectById((int) $request['workflow_id']);
                 if ($request->hasParameter('transition_id'))
                 {
                     $mode = $request['mode'];
-                    $this->transition = \TBGWorkflowTransitionsTable::getTable()->selectById((int) $request['transition_id']);
+                    $this->transition = \thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->selectById((int) $request['transition_id']);
                     if ($request->isPost())
                     {
                         if ($mode == 'edit')
@@ -2086,7 +2090,7 @@
                             }
                             try
                             {
-                                $step = \TBGWorkflowStepsTable::getTable()->selectById((int) $request['outgoing_step_id']);
+                                $step = \thebuggenie\core\entities\tables\WorkflowSteps::getTable()->selectById((int) $request['outgoing_step_id']);
                                 $this->transition->setOutgoingStep($step);
                             }
                             catch (\Exception $e)
@@ -2104,13 +2108,13 @@
                         }
                         elseif ($mode == 'delete_action')
                         {
-                            $this->action = \TBGWorkflowTransitionActionsTable::getTable()->selectById((int) $request['action_id']);
+                            $this->action = \thebuggenie\core\entities\tables\WorkflowTransitionActions::getTable()->selectById((int) $request['action_id']);
                             $this->action->delete();
                             return $this->renderJSON(array('message' => $this->getI18n()->__('The action has been deleted')));
                         }
                         elseif ($mode == 'new_action')
                         {
-                            $action = new \TBGWorkflowTransitionAction();
+                            $action = new \thebuggenie\core\entities\WorkflowTransitionAction();
                             $action->setActionType($request['action_type']);
                             $action->setTransition($this->transition);
                             $action->setWorkflow($this->workflow);
@@ -2120,50 +2124,50 @@
                         }
                         elseif ($mode == 'update_action')
                         {
-                            $this->action = \TBGWorkflowTransitionActionsTable::getTable()->selectById((int) $request['action_id']);
+                            $this->action = \thebuggenie\core\entities\tables\WorkflowTransitionActions::getTable()->selectById((int) $request['action_id']);
                             $this->action->setTargetValue($request['target_value']);
                             $this->action->save();
                             $text = $request['target_value'];
                             switch ($this->action->getActionType())
                             {
-                                case \TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
                                     if ($this->action->hasTargetValue())
                                     {
                                         $target_details = explode('_', $this->action->getTargetValue());
-                                        $text = ($target_details[0] == 'user') ? \TBGUser::getB2DBTable()->selectById((int) $target_details[1])->getNameWithUsername() : \TBGTeam::getB2DBTable()->selectById((int) $target_details[1])->getName();
+                                        $text = ($target_details[0] == 'user') ? User::getB2DBTable()->selectById((int) $target_details[1])->getNameWithUsername() : \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $target_details[1])->getName();
                                     }
                                     else
                                     {
                                         $text = $this->getI18n()->__('User specified during transition');
                                     }
                                     break;
-                                case \TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
-                                    $text = ($this->action->getTargetValue()) ? \TBGListTypesTable::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Resolution specified by user');
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION:
+                                    $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Resolution specified by user');
                                     break;
-                                case \TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
-                                    $text = ($this->action->getTargetValue()) ? \TBGListTypesTable::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Reproducability specified by user');
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
+                                    $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Reproducability specified by user');
                                     break;
-                                case \TBGWorkflowTransitionAction::ACTION_SET_STATUS:
-                                    $text = ($this->action->getTargetValue()) ? \TBGListTypesTable::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Status specified by user');
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS:
+                                    $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Status specified by user');
                                     break;
-                                case \TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
-                                    $text = ($this->action->getTargetValue()) ? \TBGListTypesTable::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Priority specified by user');
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY:
+                                    $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Priority specified by user');
                                     break;
-                                case \TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
-                                    $text = ($this->action->getTargetValue()) ? \TBGMilestonesTable::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Milestone specified by user');
+                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_MILESTONE:
+                                    $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Milestone specified by user');
                                     break;
                             }
                             return $this->renderJSON(array('content' => $text));
                         }
                         elseif ($mode == 'delete_validation_rule')
                         {
-                            $this->rule = \TBGWorkflowTransitionValidationRulesTable::getTable()->selectById((int) $request['rule_id']);
+                            $this->rule = \thebuggenie\core\entities\tables\WorkflowTransitionValidationRules::getTable()->selectById((int) $request['rule_id']);
                             $this->rule->delete();
                             return $this->renderJSON(array('message' => $this->getI18n()->__('The validation rule has been deleted')));
                         }
                         elseif ($mode == 'new_validation_rule')
                         {
-                            $rule = new \TBGWorkflowTransitionValidationRule();
+                            $rule = new \thebuggenie\core\entities\WorkflowTransitionValidationRule();
                             if ($request['postorpre'] == 'post')
                             {
                                 $exists = (bool) ($this->transition->hasPostValidationRule($request['rule']));
@@ -2191,19 +2195,19 @@
                         }
                         elseif ($mode == 'update_validation_rule')
                         {
-                            $this->rule = \TBGWorkflowTransitionValidationRulesTable::getTable()->selectById((int) $request['rule_id']);
+                            $this->rule = \thebuggenie\core\entities\tables\WorkflowTransitionValidationRules::getTable()->selectById((int) $request['rule_id']);
                             $text = null;
                             switch ($this->rule->getRule())
                             {
-                                case \TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
                                     $this->rule->setRuleValue($request['rule_value']);
                                     $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : $this->getI18n()->__('Unlimited');
                                     break;
-                                case \TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
-                                case \TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
-                                case \TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
-                                case \TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
-                                case \TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
+                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
                                     $this->rule->setRuleValue(join(',', $request['rule_value']));
                                     $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
                                     break;
@@ -2215,25 +2219,25 @@
                 }
                 elseif ($request->isPost() && $request->hasParameter('step_id'))
                 {
-                    $step = \TBGWorkflowStepsTable::getTable()->selectById((int) $request['step_id']);
+                    $step = \thebuggenie\core\entities\tables\WorkflowSteps::getTable()->selectById((int) $request['step_id']);
                     /* if ($step->isCore() || $workflow->isCore())
                       {
                       throw new InvalidArgumentException("The default workflow cannot be edited");
                       } */
                     if ($request['add_transition_type'] == 'existing' && $request->hasParameter('existing_transition_id'))
                     {
-                        $transition = \TBGWorkflowTransitionsTable::getTable()->selectById((int) $request['existing_transition_id']);
+                        $transition = \thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->selectById((int) $request['existing_transition_id']);
                         $redirect_transition = false;
                     }
                     else
                     {
                         if ($request['transition_name'] && $request['outgoing_step_id'] && $request->hasParameter('template'))
                         {
-                            if (($outgoing_step = \TBGWorkflowStepsTable::getTable()->selectById((int) $request['outgoing_step_id'])) && $step instanceof \TBGWorkflowStep)
+                            if (($outgoing_step = \thebuggenie\core\entities\tables\WorkflowSteps::getTable()->selectById((int) $request['outgoing_step_id'])) && $step instanceof \thebuggenie\core\entities\WorkflowStep)
                             {
-                                if (array_key_exists($request['template'], \TBGWorkflowTransition::getTemplates()))
+                                if (array_key_exists($request['template'], \thebuggenie\core\entities\WorkflowTransition::getTemplates()))
                                 {
-                                    $transition = new \TBGWorkflowTransition();
+                                    $transition = new \thebuggenie\core\entities\WorkflowTransition();
                                     $transition->setWorkflow($this->workflow);
                                     $transition->setName($request['transition_name']);
                                     $transition->setDescription($request['transition_description']);
@@ -2277,31 +2281,31 @@
             }
             if (isset($redirect_transition) && $redirect_transition)
             {
-                $this->forward(\TBGContext::getRouting()->generate('configure_workflow_transition', array('workflow_id' => $this->workflow->getID(), 'transition_id' => $transition->getID())));
+                $this->forward(framework\Context::getRouting()->generate('configure_workflow_transition', array('workflow_id' => $this->workflow->getID(), 'transition_id' => $transition->getID())));
             }
             elseif (isset($redirect_transition))
             {
-                $this->forward(\TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
+                $this->forward(framework\Context::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
             }
         }
 
         public function getAccessLevel($section, $module)
         {
-            return (\TBGContext::getUser()->canSaveConfiguration($section, $module)) ? \TBGSettings::ACCESS_FULL : \TBGSettings::ACCESS_READ;
+            return (framework\Context::getUser()->canSaveConfiguration($section, $module)) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
         }
 
-        public function runAddClient(\TBGRequest $request)
+        public function runAddClient(framework\Request $request)
         {
             try
             {
                 $mode = $request['mode'];
                 if ($client_name = $request['client_name'])
                 {
-                    if (\TBGClient::doesClientNameExist(trim($request['client_name'])))
+                    if (\thebuggenie\core\entities\Client::doesClientNameExist(trim($request['client_name'])))
                     {
                         throw new \Exception($this->getI18n()->__("Please enter a client name that doesn't already exist"));
                     }
-                    $client = new \TBGClient();
+                    $client = new \thebuggenie\core\entities\Client();
                     $client->setName($request['client_name']);
                     $client->save();
 
@@ -2320,26 +2324,26 @@
             }
         }
 
-        public function runDeleteClient(\TBGRequest $request)
+        public function runDeleteClient(framework\Request $request)
         {
             try
             {
                 try
                 {
-                    $client = \TBGContext::factory()->TBGClient($request['client_id']);
+                    $client = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($request['client_id']);
                 }
                 catch (\Exception $e)
                 {
 
                 }
-                if (!$client instanceof \TBGClient)
+                if (!$client instanceof \thebuggenie\core\entities\Client)
                 {
                     throw new \Exception($this->getI18n()->__("You cannot delete this client"));
                 }
 
-                if (\TBGProject::getAllByClientID($client->getID()) !== null)
+                if (Project::getAllByClientID($client->getID()) !== null)
                 {
-                    foreach (\TBGProject::getAllByClientID($client->getID()) as $project)
+                    foreach (Project::getAllByClientID($client->getID()) as $project)
                     {
                         $project->setClient(null);
                         $project->save();
@@ -2356,11 +2360,11 @@
             }
         }
 
-        public function runGetClientMembers(\TBGRequest $request)
+        public function runGetClientMembers(framework\Request $request)
         {
             try
             {
-                $client = \TBGContext::factory()->TBGClient((int) $request['client_id']);
+                $client = \thebuggenie\core\entities\Client::getB2DBTable()->selectById((int) $request['client_id']);
                 $users = $client->getMembers();
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/clientuserlist', compact('users', 'client'))));
             }
@@ -2371,12 +2375,12 @@
             }
         }
 
-        public function runRemoveClientMember(\TBGRequest $request)
+        public function runRemoveClientMember(framework\Request $request)
         {
             try
             {
-                $client = \TBGClientsTable::getTable()->selectById((int) $request['client_id']);
-                $user = \TBGContext::factory()->TBGUser((int) $request['user_id']);
+                $client = \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $request['client_id']);
+                $user = framework\Context::factory()->manufacture('User', (int) $request['user_id']);
 
                 $client->removeMember($user);
                 return $this->renderJSON(array('update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
@@ -2388,13 +2392,13 @@
             }
         }
 
-        public function runAddClientMember(\TBGRequest $request)
+        public function runAddClientMember(framework\Request $request)
         {
             try
             {
                 $user_id = (int) $request['user_id'];
-                $client = \TBGClientsTable::getTable()->selectById((int) $request['client_id']);
-                $user = \TBGContext::factory()->TBGUser($user_id);
+                $client = \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $request['client_id']);
+                $user = framework\Context::factory()->manufacture('User', $user_id);
 
                 $client->addMember($user);
                 return $this->renderJSON(array('clientlistitem' => $this->getComponentHTML('configuration/clientuserlistitem', compact('client', 'user_id', 'user')), 'update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
@@ -2406,24 +2410,24 @@
             }
         }
 
-        public function runEditClient(\TBGRequest $request)
+        public function runEditClient(framework\Request $request)
         {
             try
             {
                 try
                 {
-                    $client = \TBGContext::factory()->TBGClient($request['client_id']);
+                    $client = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($request['client_id']);
                 }
                 catch (\Exception $e)
                 {
 
                 }
-                if (!$client instanceof \TBGClient)
+                if (!$client instanceof \thebuggenie\core\entities\Client)
                 {
                     throw new \Exception($this->getI18n()->__("You cannot edit this client"));
                 }
 
-                if (\TBGClient::doesClientNameExist(trim($request['client_name'])) && strtolower($request['client_name']) != strtolower($client->getName()))
+                if (\thebuggenie\core\entities\Client::doesClientNameExist(trim($request['client_name'])) && strtolower($request['client_name']) != strtolower($client->getName()))
                 {
                     throw new \Exception($this->getI18n()->__("Please enter a client name that doesn't already exist"));
                 }
@@ -2443,19 +2447,19 @@
             }
         }
 
-        public function runImportCSV(\TBGRequest $request)
+        public function runImportCSV(framework\Request $request)
         {
             $content = $this->getComponentHTML('configuration/importcsv', array('type' => $request['type']));
             return $this->renderJSON(array('content' => $content));
         }
 
-        public function runGetIDsForImportCSV(\TBGRequest $request)
+        public function runGetIDsForImportCSV(framework\Request $request)
         {
             $content = $this->getComponentHTML('configuration/import_ids');
             return $this->renderJSON(array('content' => $content));
         }
 
-        public function runDoImportCSV(\TBGRequest $request)
+        public function runDoImportCSV(framework\Request $request)
         {
             try
             {
@@ -2551,7 +2555,7 @@
                                 $key = str_replace(' ', '', $activerow[self::CSV_PROJECT_NAME]);
                                 $key = mb_strtolower($key);
 
-                                $tmp = \TBGProject::getByKey($key);
+                                $tmp = Project::getByKey($key);
 
                                 if ($tmp !== null)
                                 {
@@ -2603,7 +2607,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_USER:
                                                 try
                                                 {
-                                                    \TBGContext::factory()->TBGUser($activerow[$identifiableitem[0]]);
+                                                    framework\Context::factory()->manufacture('User', $activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2613,7 +2617,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_TEAM:
                                                 try
                                                 {
-                                                    \TBGContext::factory()->TBGTeam($activerow[$identifiableitem[0]]);
+                                                    \thebuggenie\core\entities\Team::getB2DBTable()->selectById($activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2635,7 +2639,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGClient($activerow[self::CSV_PROJECT_CLIENT]);
+                                            \thebuggenie\core\entities\Client::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_CLIENT]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2655,7 +2659,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGWorkflowScheme($activerow[self::CSV_PROJECT_WORKFLOW_ID]);
+                                            \thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_WORKFLOW_ID]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2675,7 +2679,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGIssuetypeScheme($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]);
+                                            \thebuggenie\core\entities\IssuetypeScheme::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2702,7 +2706,7 @@
                                 // Check if project exists
                                 try
                                 {
-                                    $prjtmp = \TBGContext::factory()->TBGProject($activerow[self::CSV_ISSUE_PROJECT]);
+                                    $prjtmp = framework\Context::factory()->manufacture('Project', $activerow[self::CSV_ISSUE_PROJECT]);
                                 }
                                 catch (\Exception $e)
                                 {
@@ -2769,7 +2773,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_USER:
                                                 try
                                                 {
-                                                    \TBGContext::factory()->TBGUser($activerow[$identifiableitem[0]]);
+                                                    framework\Context::factory()->manufacture('User', $activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2779,7 +2783,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_TEAM:
                                                 try
                                                 {
-                                                    \TBGContext::factory()->TBGTeam($activerow[$identifiableitem[0]]);
+                                                    \thebuggenie\core\entities\Team::getB2DBTable()->selectById($activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2807,7 +2811,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGUser($activerow[self::CSV_ISSUE_POSTED_BY]);
+                                            framework\Context::factory()->manufacture('User', $activerow[self::CSV_ISSUE_POSTED_BY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2827,7 +2831,7 @@
                                     {
                                         try
                                         {
-                                            $milestonetmp = \TBGContext::factory()->TBGMilestone($activerow[self::CSV_ISSUE_MILESTONE]);
+                                            $milestonetmp = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_MILESTONE]);
                                             if ($milestonetmp->getProject()->getID() != $activerow[self::CSV_ISSUE_PROJECT])
                                             {
                                                 $errors[] = $this->getI18n()->__('Row %row column %col: milestone does not apply to the specified project', array('%col' => self::CSV_ISSUE_MILESTONE, '%row' => $i + 1));
@@ -2851,7 +2855,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGStatus($activerow[self::CSV_ISSUE_STATUS]);
+                                            \thebuggenie\core\entities\Status::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_STATUS]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2871,7 +2875,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGResolution($activerow[self::CSV_ISSUE_RESOLUTION]);
+                                            \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_RESOLUTION]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2891,7 +2895,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGPriority($activerow[self::CSV_ISSUE_PRIORITY]);
+                                            \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_PRIORITY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2911,7 +2915,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGCategory($activerow[self::CSV_ISSUE_CATEGORY]);
+                                            \thebuggenie\core\entities\Category::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_CATEGORY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2931,7 +2935,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGSeverity($activerow[self::CSV_ISSUE_SEVERITY]);
+                                            \thebuggenie\core\entities\Severity::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_SEVERITY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2951,7 +2955,7 @@
                                     {
                                         try
                                         {
-                                            \TBGContext::factory()->TBGReproducability($activerow[self::CSV_ISSUE_REPRODUCIBILITY]);
+                                            \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_REPRODUCIBILITY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -2971,7 +2975,7 @@
                                     {
                                         try
                                         {
-                                            $typetmp = \TBGIssuetype::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_ISSUE_TYPE]);
+                                            $typetmp = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($activerow[self::CSV_ISSUE_ISSUE_TYPE]);
                                             if (!($prjtmp->getIssuetypeScheme()->isSchemeAssociatedWithIssuetype($typetmp)))
                                                 $errors[] = $this->getI18n()->__('Row %row column %col: this project does not support issues of this type (%type)', array('%type' => $typetmp->getName(), '%col' => self::CSV_ISSUE_ISSUE_TYPE, '%row' => $i + 1));
                                         }
@@ -3020,7 +3024,7 @@
                             {
                                 $activerow = $data[$i];
 
-                                $client = new \TBGClient();
+                                $client = new \thebuggenie\core\entities\Client();
                                 $client->setName($activerow[self::CSV_CLIENT_NAME]);
 
                                 if (isset($activerow[self::CSV_CLIENT_EMAIL]))
@@ -3050,7 +3054,7 @@
                             {
                                 $activerow = $data[$i];
 
-                                $project = new \TBGProject();
+                                $project = new Project();
                                 $project->setName($activerow[self::CSV_PROJECT_NAME]);
 
                                 $project->save();
@@ -3072,11 +3076,11 @@
                                     switch ($activerow[self::CSV_PROJECT_OWNER_TYPE])
                                     {
                                         case self::CSV_IDENTIFIER_TYPE_USER:
-                                            $user = new \TBGUser($activerow[self::CSV_PROJECT_OWNER]);
+                                            $user = new User($activerow[self::CSV_PROJECT_OWNER]);
                                             $project->setOwner($user);
                                             break;
                                         case self::CSV_IDENTIFIER_TYPE_TEAM:
-                                            $team = new \TBGTeam($activerow[self::CSV_PROJECT_OWNER]);
+                                            $team = new \thebuggenie\core\entities\Team($activerow[self::CSV_PROJECT_OWNER]);
                                             $project->setOwner($team);
                                             break;
                                     }
@@ -3087,11 +3091,11 @@
                                     switch ($activerow[self::CSV_PROJECT_LEAD_TYPE])
                                     {
                                         case self::CSV_IDENTIFIER_TYPE_USER:
-                                            $user = new \TBGUser($activerow[self::CSV_PROJECT_LEAD]);
+                                            $user = new User($activerow[self::CSV_PROJECT_LEAD]);
                                             $project->setLeader($user);
                                             break;
                                         case self::CSV_IDENTIFIER_TYPE_TEAM:
-                                            $team = new \TBGTeam($activerow[self::CSV_PROJECT_LEAD]);
+                                            $team = new \thebuggenie\core\entities\Team($activerow[self::CSV_PROJECT_LEAD]);
                                             $project->setLeader($team);
                                             break;
                                     }
@@ -3102,11 +3106,11 @@
                                     switch ($activerow[self::CSV_PROJECT_QA_TYPE])
                                     {
                                         case self::CSV_IDENTIFIER_TYPE_USER:
-                                            $user = new \TBGUser($activerow[self::CSV_PROJECT_QA]);
+                                            $user = new User($activerow[self::CSV_PROJECT_QA]);
                                             $project->setQaResponsible($user);
                                             break;
                                         case self::CSV_IDENTIFIER_TYPE_TEAM:
-                                            $team = new \TBGTeam($activerow[self::CSV_PROJECT_QA]);
+                                            $team = new \thebuggenie\core\entities\Team($activerow[self::CSV_PROJECT_QA]);
                                             $project->setQaResponsible($team);
                                             break;
                                     }
@@ -3146,7 +3150,7 @@
                                 }
 
                                 if (isset($activerow[self::CSV_PROJECT_CLIENT]))
-                                    $project->setClient(\TBGContext::factory()->TBGClient($activerow[self::CSV_PROJECT_CLIENT]));
+                                    $project->setClient(\thebuggenie\core\entities\Client::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_CLIENT]));
 
                                 if (isset($activerow[self::CSV_PROJECT_SHOW_SUMMARY]))
                                 {
@@ -3164,11 +3168,11 @@
                                     $project->setAutoassign($activerow[self::CSV_PROJECT_AUTOASSIGN]);
 
                                 if (isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
-                                    $project->setIssuetypeScheme(\TBGContext::factory()->TBGIssuetypeScheme($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]));
+                                    $project->setIssuetypeScheme(\thebuggenie\core\entities\IssuetypeScheme::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]));
 
                                 if (isset($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
                                     ;
-                                $project->setWorkflowScheme(\TBGContext::factory()->TBGWorkflowScheme($activerow[self::CSV_PROJECT_WORKFLOW_ID]));
+                                $project->setWorkflowScheme(\thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($activerow[self::CSV_PROJECT_WORKFLOW_ID]));
 
                                 $project->save();
                             }
@@ -3185,7 +3189,7 @@
                             {
                                 $activerow = $data[$i];
 
-                                $issue = new \TBGIssue();
+                                $issue = new \thebuggenie\core\entities\Issue();
                                 $issue->setTitle($activerow[self::CSV_ISSUE_TITLE]);
                                 $issue->setProject($activerow[self::CSV_ISSUE_PROJECT]);
                                 $issue->setIssuetype($activerow[self::CSV_ISSUE_ISSUE_TYPE]);
@@ -3205,18 +3209,18 @@
                                     $issue->setStatus($activerow[self::CSV_ISSUE_STATUS]);
 
                                 if (isset($activerow[self::CSV_ISSUE_POSTED_BY]))
-                                    $issue->setPostedBy(\TBGContext::factory()->TBGUser($activerow[self::CSV_ISSUE_POSTED_BY]));
+                                    $issue->setPostedBy(framework\Context::factory()->manufacture('User', $activerow[self::CSV_ISSUE_POSTED_BY]));
 
                                 if (isset($activerow[self::CSV_ISSUE_OWNER]) && isset($activerow[self::CSV_ISSUE_OWNER_TYPE]))
                                 {
                                     switch ($activerow[self::CSV_ISSUE_OWNER_TYPE])
                                     {
                                         case self::CSV_IDENTIFIER_TYPE_USER:
-                                            $user = new \TBGUser($activerow[self::CSV_ISSUE_OWNER]);
+                                            $user = new User($activerow[self::CSV_ISSUE_OWNER]);
                                             $issue->setOwner($user);
                                             break;
                                         case self::CSV_IDENTIFIER_TYPE_TEAM:
-                                            $team = new \TBGTeam($activerow[self::CSV_ISSUE_OWNER]);
+                                            $team = new \thebuggenie\core\entities\Team($activerow[self::CSV_ISSUE_OWNER]);
                                             $issue->setOwner($team);
                                             break;
                                     }
@@ -3227,11 +3231,11 @@
                                     switch ($activerow[self::CSV_ISSUE_ASSIGNED_TYPE])
                                     {
                                         case self::CSV_IDENTIFIER_TYPE_USER:
-                                            $user = new \TBGUser($activerow[self::CSV_ISSUE_ASSIGNED]);
+                                            $user = new User($activerow[self::CSV_ISSUE_ASSIGNED]);
                                             $issue->setAssignee($user);
                                             break;
                                         case self::CSV_IDENTIFIER_TYPE_TEAM:
-                                            $team = new \TBGTeam($activerow[self::CSV_ISSUE_ASSIGNED]);
+                                            $team = new \thebuggenie\core\entities\Team($activerow[self::CSV_ISSUE_ASSIGNED]);
                                             $issue->setAssignee($team);
                                             break;
                                     }
@@ -3299,7 +3303,7 @@
             }
         }
 
-        public function runScopes(\TBGRequest $request)
+        public function runScopes(framework\Request $request)
         {
             if ($request->isPost())
             {
@@ -3307,7 +3311,7 @@
                 $hostname = str_replace(array('http://', 'https://'), array('', ''), $hostname);
 
                 $scopename = $request['name'];
-                if (!$hostname || \TBGScopesTable::getTable()->getByHostname($hostname) instanceof \TBGScope)
+                if (!$hostname || \thebuggenie\core\entities\tables\Scopes::getTable()->getByHostname($hostname) instanceof \thebuggenie\core\entities\Scope)
                 {
                     $this->scope_hostname_error = true;
                 }
@@ -3317,25 +3321,25 @@
                 }
                 else
                 {
-                    $scope = new \TBGScope();
+                    $scope = new \thebuggenie\core\entities\Scope();
                     $scope->addHostname($hostname);
                     $scope->setName($scopename);
                     $scope->setEnabled();
                     $scope->save();
-                    $this->forward(\TBGContext::getRouting()->generate('configure_scopes'));
+                    $this->forward(framework\Context::getRouting()->generate('configure_scopes'));
                 }
             }
-            $this->scope_deleted = \TBGContext::getMessageAndClear('scope_deleted');
-            $this->scopes = \TBGScope::getAll();
+            $this->scope_deleted = framework\Context::getMessageAndClear('scope_deleted');
+            $this->scopes = \thebuggenie\core\entities\Scope::getAll();
         }
 
-        public function runScope(\TBGRequest $request)
+        public function runScope(framework\Request $request)
         {
-            $this->scope = new \TBGScope($request['id']);
-            $modules = \TBGModulesTable::getTable()->getModulesForScope($this->scope->getID());
+            $this->scope = new \thebuggenie\core\entities\Scope($request['id']);
+            $modules = \thebuggenie\core\entities\tables\Modules::getTable()->getModulesForScope($this->scope->getID());
             $this->modules = $modules;
-            $this->scope_save_error = \TBGContext::getMessageAndClear('scope_save_error');
-            $this->scope_saved = \TBGContext::getMessageAndClear('scope_saved');
+            $this->scope_save_error = framework\Context::getMessageAndClear('scope_save_error');
+            $this->scope_saved = framework\Context::getMessageAndClear('scope_saved');
 
             if ($request->isPost())
             {
@@ -3346,7 +3350,7 @@
                         if (!$this->scope->isDefault())
                         {
                             $this->scope->delete();
-                            \TBGContext::setMessage('scope_deleted', true);
+                            framework\Context::setMessage('scope_deleted', true);
                             $this->forward(make_url('configure_scopes'));
                         }
                         else
@@ -3372,37 +3376,37 @@
                         $this->scope->save();
 
                         $enabled_modules = $request['module_enabled'];
-                        $prev_scope = \TBGContext::getScope();
+                        $prev_scope = framework\Context::getScope();
                         foreach ($enabled_modules as $module => $enabled)
                         {
-                            if (!\TBGContext::getModule($module)->isCore() && !$enabled && array_key_exists($module, $modules))
+                            if (!framework\Context::getModule($module)->isCore() && !$enabled && array_key_exists($module, $modules))
                             {
-                                $module = \TBGModulesTable::getTable()->getModuleForScope($module, $this->scope->getID());
+                                $module = \thebuggenie\core\entities\tables\Modules::getTable()->getModuleForScope($module, $this->scope->getID());
                                 $module->uninstall($this->scope->getID());
                             }
-                            elseif (!\TBGContext::getModule($module)->isCore() && $enabled && !array_key_exists($module, $modules))
+                            elseif (!framework\Context::getModule($module)->isCore() && $enabled && !array_key_exists($module, $modules))
                             {
-                                \TBGContext::setScope($this->scope);
-                                \TBGModule::installModule($module);
-                                \TBGContext::setScope($prev_scope);
+                                framework\Context::setScope($this->scope);
+                                \thebuggenie\core\entities\Module::installModule($module);
+                                framework\Context::setScope($prev_scope);
                             }
                         }
-                        \TBGContext::setMessage('scope_saved', true);
+                        framework\Context::setMessage('scope_saved', true);
                         $this->forward(make_url('configure_scope', array('id' => $this->scope->getID())));
                     }
                 }
                 catch (\Exception $e)
                 {
-                    \TBGContext::setMessage('scope_save_error', $e->getMessage());
+                    framework\Context::setMessage('scope_save_error', $e->getMessage());
                 }
             }
         }
 
-        public function runConfigureRole(\TBGRequest $request)
+        public function runConfigureRole(framework\Request $request)
         {
             try
             {
-                $role = new \TBGRole($request['role_id']);
+                $role = new \thebuggenie\core\entities\Role($request['role_id']);
             }
             catch (\Exception $e)
             {
@@ -3415,7 +3419,7 @@
             }
             else
             {
-                $access_level = ($this->getUser()->canManageProject($role->getProject())) ? \TBGSettings::ACCESS_FULL : \TBGSettings::ACCESS_READ;
+                $access_level = ($this->getUser()->canManageProject($role->getProject())) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
             }
 
             switch ($request['mode'])
@@ -3424,7 +3428,7 @@
                     return $this->renderComponent('configuration/rolepermissionslist', array('role' => $role));
                     break;
                 case 'edit':
-                    if (!$access_level == \TBGSettings::ACCESS_FULL)
+                    if (!$access_level == framework\Settings::ACCESS_FULL)
                     {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => $this->getI18n()->__('You do not have access to edit these permissions')));
@@ -3448,7 +3452,7 @@
                         }
                         foreach ($new_permissions as $permission_key => $details)
                         {
-                            $p = new \TBGRolePermission();
+                            $p = new \thebuggenie\core\entities\RolePermission();
                             $p->setModule($details['module']);
                             $p->setPermission($permission_key);
                             if ($details['target_id'])
@@ -3460,7 +3464,7 @@
                     }
                     return $this->renderComponent('configuration/rolepermissionsedit', array('role' => $role));
                 case 'delete':
-                    if (!$access_level == \TBGSettings::ACCESS_FULL || !$request->isPost())
+                    if (!$access_level == framework\Settings::ACCESS_FULL || !$request->isPost())
                     {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => $this->getI18n()->__('This role cannot be removed')));
@@ -3470,7 +3474,7 @@
             }
         }
 
-        public function runConfigureRoles(\TBGRequest $request)
+        public function runConfigureRoles(framework\Request $request)
         {
             if ($request->isPost())
             {
@@ -3479,17 +3483,17 @@
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => $this->getI18n()->__('You have to specify a name for this role')));
                 }
-                $role = new \TBGRole();
+                $role = new \thebuggenie\core\entities\Role();
                 $role->setName($request['role_name']);
                 $role->save();
                 return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/role', array('role' => $role))));
             }
-            $this->roles = \TBGRole::getAll();
+            $this->roles = \thebuggenie\core\entities\Role::getAll();
         }
 
-        public function runSiteIcons(\TBGRequest $request)
+        public function runSiteIcons(framework\Request $request)
         {
-            if ($this->getAccessLevel($request['section'], 'core') == \TBGSettings::ACCESS_FULL)
+            if ($this->getAccessLevel($request['section'], 'core') == framework\Settings::ACCESS_FULL)
             {
                 if ($request->isPost())
                 {
@@ -3497,26 +3501,26 @@
                     {
                         case 'upload_file':
                             $file = $request->handleUpload('small_icon');
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_FAVICON_TYPE, \TBGSettings::APPEARANCE_FAVICON_CUSTOM);
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_FAVICON_ID, $file->getID());
+                            framework\Settings::saveSetting(framework\Settings::SETTING_FAVICON_TYPE, framework\Settings::APPEARANCE_FAVICON_CUSTOM);
+                            framework\Settings::saveSetting(framework\Settings::SETTING_FAVICON_ID, $file->getID());
                             break;
                         case 'clear_file':
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_FAVICON_TYPE, \TBGSettings::APPEARANCE_FAVICON_THEME);
+                            framework\Settings::saveSetting(framework\Settings::SETTING_FAVICON_TYPE, framework\Settings::APPEARANCE_FAVICON_THEME);
                             break;
                     }
                     switch ($request['large_icon_action'])
                     {
                         case 'upload_file':
                             $file = $request->handleUpload('large_icon');
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_HEADER_ICON_TYPE, \TBGSettings::APPEARANCE_HEADER_CUSTOM);
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_HEADER_ICON_ID, $file->getID());
+                            framework\Settings::saveSetting(framework\Settings::SETTING_HEADER_ICON_TYPE, framework\Settings::APPEARANCE_HEADER_CUSTOM);
+                            framework\Settings::saveSetting(framework\Settings::SETTING_HEADER_ICON_ID, $file->getID());
                             break;
                         case 'clear_file':
-                            \TBGSettings::saveSetting(\TBGSettings::SETTING_HEADER_ICON_TYPE, \TBGSettings::APPEARANCE_HEADER_THEME);
+                            framework\Settings::saveSetting(framework\Settings::SETTING_HEADER_ICON_TYPE, framework\Settings::APPEARANCE_HEADER_THEME);
                             break;
                     }
                 }
-                $route = \TBGContext::getRouting()->generate('configure_settings');
+                $route = framework\Context::getRouting()->generate('configure_settings');
                 if ($request->isAjaxCall())
                 {
                     return $this->renderJSON(array('forward' => $route));

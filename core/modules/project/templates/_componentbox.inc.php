@@ -11,7 +11,7 @@
     <div id="edit_component_<?php print $component->getID(); ?>" style="display: none;" class="backdrop_box large">
         <div class="backdrop_detail_header"><?php echo __('Edit component'); ?></div>
         <div class="backdrop_detail_content">
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="TBG.Project.Component.update('<?php echo make_url('configure_update_component', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="TBG.Project.Component.update('<?php echo make_url('configure_update_component', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;">
             <table>
                 <tr><td><label for="cname_<?php print $component->getID(); ?>"><?php echo __('Name'); ?></label></td><td colspan="2"><input type="text" name="c_name" id="c_name_<?php echo $component->getID(); ?>" value="<?php print $component->getName(); ?>" style="width: 260px;"></td></tr>
                 <tr>
@@ -20,9 +20,9 @@
                     </td>
                     <td style="<?php if (!$component->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
                         <div style="width: 270px; display: <?php if ($component->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
-                            <?php if ($component->getLeader() instanceof TBGUser): ?>
+                            <?php if ($component->getLeader() instanceof \thebuggenie\core\entities\User): ?>
                                 <?php echo include_component('main/userdropdown', array('user' => $component->getLeader())); ?>
-                            <?php elseif ($component->getLeader() instanceof TBGTeam): ?>
+                            <?php elseif ($component->getLeader() instanceof \thebuggenie\core\entities\Team): ?>
                                 <?php echo include_component('main/teamdropdown', array('team' => $component->getLeader())); ?>
                             <?php endif; ?>
                         </div>

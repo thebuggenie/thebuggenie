@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ListScopes extends \TBGCliCommand
+    class ListScopes extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -30,7 +30,7 @@
 
         public function do_execute()
         {
-            $scopes = TBGScope::getAll();
+            $scopes = \thebuggenie\core\entities\Scope::getAll();
             $this->cliEcho("The ID for the default scope has an asterisk next to it\n\n");
 
             $this->cliEcho("ID", 'white', 'bold');

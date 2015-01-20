@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * User dashboard views table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="dashboard_views_32")
      */
-    class TBGDashboardViewsTable extends \TBGB2DBTable
+    class TBGDashboardViewsTable extends ScopedTable
     {
 
         const B2DBNAME = 'dashboard_views';

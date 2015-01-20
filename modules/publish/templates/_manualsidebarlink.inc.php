@@ -7,7 +7,7 @@
     $is_first = $first;
     $first = false;
 
-    $project_key = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getKey() . ':' : '';
+    $project_key = (\thebuggenie\core\framework\Context::isProjectContext()) ? \thebuggenie\core\framework\Context::getCurrentProject()->getKey() . ':' : '';
 //    $article_name = (strpos(mb_strtolower($main_article->getTitle()), 'category:') !== false) ? substr($main_article->getTitle(), 9+mb_strlen($project_key)) : substr($main_article->getTitle(), mb_strlen($project_key));
 
 ?>

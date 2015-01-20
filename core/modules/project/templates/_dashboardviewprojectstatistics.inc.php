@@ -16,8 +16,8 @@
         <td class="faded_out"><?php include_component('main/percentbar', array('percent' => 100 - $counts[0]['percentage'], 'height' => 14)); ?></td>
     </tr>
 </table>
-<?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Show more statistics'), array('class' => 'button button-silver dash', 'title' => __('More statistics'))); ?>
+<?php echo link_tag(make_url('project_statistics', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Show more statistics'), array('class' => 'button button-silver dash', 'title' => __('More statistics'))); ?>
 <?php if ($key != 'workflowstep'): ?>
-    <?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'search' => true, 'fs[state]' => array('o' => '=', 'v' => TBGIssue::STATE_OPEN), 'groupby' => $key, 'grouporder' => 'desc'))."?sortfields=issues.{$key}=asc", __('Show details'), array('class' => 'button button-silver dash', 'title' => __('Show more issues'))); ?>
+    <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'search' => true, 'fs[state]' => array('o' => '=', 'v' => \thebuggenie\core\entities\Issue::STATE_OPEN), 'groupby' => $key, 'grouporder' => 'desc'))."?sortfields=issues.{$key}=asc", __('Show details'), array('class' => 'button button-silver dash', 'title' => __('Show more issues'))); ?>
 <?php endif; ?>
 <br style="clear: both;">

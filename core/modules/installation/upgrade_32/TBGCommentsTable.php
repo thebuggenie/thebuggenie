@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Comments table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="comments_32")
      */
-    class TBGCommentsTable extends \TBGB2DBTable
+    class TBGCommentsTable extends ScopedTable
     {
 
         const B2DBNAME = 'comments';

@@ -6,7 +6,7 @@
 <div class="configuration_update_check_container">
     <a class="button button-silver" id="update_button" href="javascript:void(0);" onclick="TBG.Config.updateCheck('<?php echo make_url('configure_update_check'); ?>');"><?php echo __('Check for updates now'); ?></a>
     <?php echo image_tag('spinning_16.gif', array('id' => 'update_spinner', 'style' => 'display: none;')); ?>
-    <?php echo __('You currently have version %thebuggenie_version of The Bug Genie.', array('%thebuggenie_version' => TBGSettings::getVersion())); ?>
+    <?php echo __('You currently have version %thebuggenie_version of The Bug Genie.', array('%thebuggenie_version' => \thebuggenie\core\framework\Settings::getVersion())); ?>
 </div>
 <?php if (count($outdated_modules) > 0): ?>
     <div class="update_div rounded_box yellow" style="margin-top: 20px;">
@@ -41,8 +41,8 @@
     <br style="clear: both;">
     <h1><?php echo __('Modules / addons'); ?></h1>
     <ul class="config_badges">
-    <?php foreach ($config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES] as $section => $info): ?>
-        <?php if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
+    <?php foreach ($config_sections[\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_MODULES] as $section => $info): ?>
+        <?php if ($info['module'] != 'core' && !\thebuggenie\core\framework\Context::getModule($info['module'])->hasConfigSettings()) continue; ?>
         <li class="rounded_box">
         <?php if (is_array($info['route'])): ?>
             <?php $url = make_url($info['route'][0], $info['route'][1]); ?>

@@ -1,4 +1,4 @@
-<?php if ($issue instanceof TBGIssue): ?>
+<?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
         <span style="font-size: 0.8em; font-weight: normal;">Created by <?php echo $issue->getPostedBy()->getBuddyname(); ?> (<?php echo $issue->getPostedBy()->getUsername(); ?>)</span>

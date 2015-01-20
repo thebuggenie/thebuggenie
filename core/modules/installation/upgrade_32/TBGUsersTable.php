@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
     use b2db\Core,
         b2db\Table;
 
@@ -23,7 +24,7 @@
      *
      * @Table(name="users_32")
      */
-    class TBGUsersTable extends \TBGB2DBTable
+    class TBGUsersTable extends ScopedTable
     {
 
         const B2DBNAME = 'users';

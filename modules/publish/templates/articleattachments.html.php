@@ -1,11 +1,11 @@
 <?php
 
     include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
-    TBGContext::loadLibrary('publish/publish');
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('%article_name attachments', array('%article_name' => $article_name)));
 
 ?>
-<?php if (TBGSettings::isUploadsEnabled() && $article instanceof \thebuggenie\modules\publish\entities\Article && $article->canEdit()): ?>
+<?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled() && $article instanceof \thebuggenie\modules\publish\entities\Article && $article->canEdit()): ?>
     <?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
 <?php endif; ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -18,7 +18,7 @@
             <div class="article" style="width: auto; padding: 5px; position: relative;">
                 <?php include_component('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'attachments')); ?>
                 <?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
-                    <?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
+                    <?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled() && $article->canEdit()): ?>
                         <table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
                     <?php else: ?>
                         <table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>

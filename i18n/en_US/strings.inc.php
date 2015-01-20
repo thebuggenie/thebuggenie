@@ -349,7 +349,7 @@
   $strings['Module settings'] = 'Module settings';
   $strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Manage Bug Genie extensions from this section. New modules are installed from here.';
 
-// First occurrence is in: core/classes/TBGTextParser.class.php
+// First occurrence is in: core/classes/\thebuggenie\core\helpers\TextParser.class.php
 // ----------------------------------------------------------------------------
   $strings['top'] = 'top';
   $strings['Open image in new window'] = 'Open image in new window';

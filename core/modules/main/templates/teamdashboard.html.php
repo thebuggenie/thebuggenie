@@ -1,7 +1,7 @@
 <?php 
 
     $tbg_response->addBreadcrumb(__('Teams'), null, tbg_get_breadcrumblinks('main_links'));
-    if ($team instanceof TBGTeam)
+    if ($team instanceof \thebuggenie\core\entities\Team)
     {
         $tbg_response->setTitle(__('Team dashboard for %team_name', array('%team_name' => $team->getName())));
         $tbg_response->setPage('team');

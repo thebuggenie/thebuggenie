@@ -3,7 +3,7 @@
     <?php if ($tbg_user->isOpenIdLocked()): ?>
         <a href="javascript:void(0);" id="pick_username_button" class="button button-blue dropper"><?php echo __('Pick a username'); ?></a>
         <div class="rounded_box white shadowed popup_box"  style="top: 23px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 400px;" id="pick_username_div">
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
                 <b><?php echo __('Picking a username'); ?></b><br>
                 <div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><br>
                 <br><?php echo __('Click "%check_availability" to see if your desired username is available.', array('%check_availability' => __('Check availability'))); ?></div>

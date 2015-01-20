@@ -1,0 +1,429 @@
+<?php
+
+    namespace thebuggenie\core\entities;
+
+    use thebuggenie\core\entities\common\QaLeadable;
+    use thebuggenie\core\framework;
+
+    /**
+     * Edition class
+     *
+     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
+     * @version 3.1
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
+     * @package thebuggenie
+     * @subpackage main
+     */
+
+    /**
+     * Edition class
+     *
+     * @package thebuggenie
+     * @subpackage main
+     *
+     * @Table(name="\thebuggenie\core\entities\tables\Editions")
+     */
+    class Edition extends QaLeadable
+    {
+
+        /**
+         * The name of the object
+         *
+         * @var string
+         * @Column(type="string", length=200)
+         */
+        protected $_name;
+
+        /**
+         * The project
+         *
+         * @var \thebuggenie\core\entities\Project
+         * @Column(type="integer", length=10)
+         * @Relates(class="\thebuggenie\core\entities\Project")
+         */
+        protected $_project;
+
+        /**
+         * Editions components
+         *
+         * @var array|\thebuggenie\core\entities\Component
+         * @Relates(class="\thebuggenie\core\entities\Component", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\EditionComponents")
+         */
+        protected $_components;
+
+        /**
+         * Edition builds
+         *
+         * @var array|\thebuggenie\core\entities\Build
+         * @Relates(class="\thebuggenie\core\entities\Build", collection=true, foreign_column="edition")
+         */
+        protected $_builds;
+
+        /**
+         * @Column(type="string", length=200)
+         */
+        protected $_description;
+
+        /**
+         * @Relates(class="\thebuggenie\core\entities\User", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\EditionAssignedUsers")
+         */
+        protected $_assigned_users;
+
+        /**
+         * @Relates(class="\thebuggenie\core\entities\Team", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\EditionAssignedTeams")
+         */
+        protected $_assigned_teams;
+
+        /**
+         * The editions documentation URL
+         *
+         * @var string
+         * @Column(type="string", length=200)
+         */
+        protected $_doc_url;
+
+        /**
+         * Whether the item is locked or not
+         *
+         * @var boolean
+         * @access protected
+         * @Column(type="boolean")
+         */
+        protected $_locked;
+
+        protected function _postSave($is_new)
+        {
+            if ($is_new)
+            {
+                framework\Context::setPermission("canseeedition", $this->getID(), "core", 0, framework\Context::getUser()->getGroup()->getID(), 0, true);
+                \thebuggenie\core\framework\Event::createNew('core', 'Edition::createNew', $this)->trigger();
+            }
+        }
+
+        /**
+         * Populates components inside the edition
+         *
+         * @return void
+         */
+        protected function _populateComponents()
+        {
+            if ($this->_components === null)
+            {
+                $this->_b2dbLazyload('_components');
+            }
+        }
+
+        /**
+         * Returns an array with all components
+         *
+         * @return array|\thebuggenie\core\entities\Component
+         */
+        public function getComponents()
+        {
+            $this->_populateComponents();
+            return $this->_components;
+        }
+
+        /**
+         * Whether or not this edition has a component enabled
+         *
+         * @param \thebuggenie\core\entities\Component|integer $component The component to check for
+         *
+         * @return boolean
+         */
+        public function hasComponent($c_id)
+        {
+            if ($c_id instanceof \thebuggenie\core\entities\Component)
+            {
+                $c_id = $c_id->getID();
+            }
+            return array_key_exists($c_id, $this->getComponents());
+        }
+
+        /**
+         * Whether this edition has a description set
+         *
+         * @return string
+         */
+        public function hasDescription()
+        {
+            return (bool) $this->getDescription();
+        }
+
+        /**
+         * Adds an existing component to the edition
+         *
+         * @param \thebuggenie\core\entities\Component|integer $component
+         */
+        public function addComponent($c_id)
+        {
+            if ($c_id instanceof \thebuggenie\core\entities\Component)
+            {
+                $c_id = $c_id->getID();
+            }
+            return tables\EditionComponents::getTable()->addEditionComponent($this->getID(), $c_id);
+        }
+
+        /**
+         * Removes an existing component from the edition
+         *
+         * @param \thebuggenie\core\entities\Component|integer $c_id
+         */
+        public function removeComponent($c_id)
+        {
+            if ($c_id instanceof \thebuggenie\core\entities\Component)
+            {
+                $c_id = $c_id->getID();
+            }
+            tables\EditionComponents::getTable()->removeEditionComponent($this->getID(), $c_id);
+        }
+
+        /**
+         * Returns the description
+         *
+         * @return string
+         */
+        public function getDescription()
+        {
+            return $this->_description;
+        }
+
+        /**
+         * Returns the documentation url
+         *
+         * @return string
+         */
+        public function getDocumentationURL()
+        {
+            return $this->_doc_url;
+        }
+
+        /**
+         * Returns the component specified
+         *
+         * @param integer $c_id
+         *
+         * @return \thebuggenie\core\entities\Component
+         */
+        public function getComponent($c_id)
+        {
+            $this->_populateComponents();
+            if (array_key_exists($c_id, $this->_components))
+            {
+                return $this->_components[$c_id];
+            }
+
+            return null;
+        }
+
+        /**
+         * Populates builds inside the edition
+         *
+         * @return void
+         */
+        protected function _populateBuilds()
+        {
+            if ($this->_builds === null)
+            {
+                $this->_b2dbLazyload('_builds');
+            }
+        }
+
+        /**
+         * Returns an array with all builds
+         *
+         * @return array|\thebuggenie\core\entities\Build
+         */
+        public function getBuilds()
+        {
+            $this->_populateBuilds();
+            return $this->_builds;
+        }
+
+        public function getReleasedBuilds()
+        {
+            $builds = $this->getBuilds();
+            foreach ($builds as $id => $build)
+            {
+                if (!$build->isReleased()) unset($builds[$id]);
+            }
+
+            return $builds;
+        }
+
+        public function _sortBuildsByReleaseDate(\thebuggenie\core\entities\Build $build1, \thebuggenie\core\entities\Build $build2)
+        {
+            if ($build1->getReleaseDate() == $build2->getReleaseDate())
+            {
+                return 0;
+            }
+            return ($build1->getReleaseDate() < $build2->getReleaseDate()) ? -1 : 1;
+        }
+
+        /**
+         * Returns the latest build
+         *
+         * @return \thebuggenie\core\entities\Build
+         */
+        public function getLatestBuild()
+        {
+            $this->_populateBuilds();
+            if (count($this->getBuilds()) > 0)
+            {
+                $builds = usort($this->getBuilds(), array($this, '_sortBuildsByReleaseDate'));
+                return array_slice($builds, 0, 1);
+            }
+            return null;
+        }
+
+        /**
+         * Returns the parent project
+         *
+         * @return \thebuggenie\core\entities\Project
+         */
+        public function getProject()
+        {
+            return $this->_b2dbLazyload('_project');
+        }
+
+        public function setProject($project)
+        {
+            $this->_project = $project;
+        }
+
+        /**
+         * Add an assignee to the edition
+         *
+         * @param \thebuggenie\core\entities\common\Identifiable $assignee
+         * @param integer $role
+         *
+         * @return boolean
+         */
+        public function addAssignee(\thebuggenie\core\entities\common\Identifiable $assignee, $role)
+        {
+            if ($assignee instanceof \thebuggenie\core\entities\User)
+                $retval = tables\EditionAssignedUsers::getTable()->addUserToEdition($this->getID(), $assignee, $role);
+            elseif ($assignee instanceof \thebuggenie\core\entities\Team)
+                $retval = tables\EditionAssignedTeams::getTable()->addTeamToEdition($this->getID(), $assignee, $role);
+
+            return $retval;
+        }
+
+        /**
+         * Add an assignee to the edition
+         *
+         * @param \thebuggenie\core\entities\common\Identifiable $assignee
+         * @param integer $role
+         *
+         * @return boolean
+         */
+        public function removeAssignee(\thebuggenie\core\entities\common\Identifiable $assignee)
+        {
+            if ($assignee instanceof \thebuggenie\core\entities\User)
+                $retval = tables\EditionAssignedUsers::getTable()->removeUserFromEdition($this->getID(), $assignee, $role);
+            elseif ($assignee instanceof \thebuggenie\core\entities\Team)
+                $retval = tables\EditionAssignedTeams::getTable()->removeTeamFromEdition($this->getID(), $assignee, $role);
+
+            return $retval;
+        }
+
+        protected function _populateAssignees()
+        {
+            if ($this->_assigned_users === null)
+                $this->_b2dbLazyload('_assigned_users');
+
+            if ($this->_assigned_teams === null)
+                $this->_b2dbLazyload('_assigned_teams');
+        }
+
+        public function getAssignedUsers()
+        {
+            $this->_populateAssignees();
+            return $this->_assigned_users;
+        }
+
+        public function getAssignedTeams()
+        {
+            $this->_populateAssignees();
+            return $this->_assigned_teams;
+        }
+
+        /**
+         * Set the edition description
+         *
+         * @param string $description
+         */
+        public function setDescription($description)
+        {
+            $this->_description = $description;
+        }
+
+        /**
+         * Set the editions documentation url
+         *
+         * @param string $doc_url
+         */
+        public function setDocumentationURL($doc_url)
+        {
+            $this->_doc_url = $doc_url;
+        }
+
+        protected function _preDelete()
+        {
+            tables\EditionComponents::getTable()->deleteByEditionID($this->getID());
+            tables\EditionAssignedUsers::getTable()->deleteByEditionID($this->getID());
+            tables\EditionAssignedTeams::getTable()->deleteByEditionID($this->getID());
+        }
+
+        /**
+         * Whether or not the current user can access the edition
+         *
+         * @return boolean
+         */
+        public function hasAccess()
+        {
+            return ($this->getProject()->canSeeAllEditions() || framework\Context::getUser()->hasPermission('canseeedition', $this->getID()));
+        }
+
+        /**
+         * Returns whether or not this item is locked
+         *
+         * @return boolean
+         * @access public
+         */
+        public function isLocked()
+        {
+            return $this->_locked;
+        }
+
+        /**
+         * Specify whether or not this item is locked
+         *
+         * @param boolean $locked[optional]
+         */
+        public function setLocked($locked = true)
+        {
+            $this->_locked = (bool) $locked;
+        }
+
+        /**
+         * Return the items name
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->_name;
+        }
+
+        /**
+         * Set the edition name
+         *
+         * @param string $name
+         */
+        public function setName($name)
+        {
+            $this->_name = $name;
+        }
+
+    }

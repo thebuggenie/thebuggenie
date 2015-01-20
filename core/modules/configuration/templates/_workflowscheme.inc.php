@@ -11,7 +11,7 @@
             <td class="workflow_actions">
                 <div class="button-group">
                     <?php echo link_tag(make_url('configure_workflow_scheme', array('scheme_id' => $scheme->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show / edit issue type associations'))), array('class' => 'button button-icon button-silver')); ?></a>
-                    <?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
+                    <?php if (\thebuggenie\core\framework\Context::getScope()->isCustomWorkflowsEnabled()): ?>
                         <a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow scheme'))); ?></a>
                     <?php endif; ?>
                     <?php if (!$scheme->isCore()): ?>
@@ -26,12 +26,12 @@
         </tr>
     </table>
 </li>
-<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
+<?php if (\thebuggenie\core\framework\Context::getScope()->isCustomWorkflowsEnabled()): ?>
     <li class="rounded_box white shadowed" id="copy_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
         <div class="header"><?php echo __('Copy worfklow scheme'); ?></div>
         <div class="content">
             <?php echo __('Please enter the name of the new worfklow scheme'); ?><br>
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Workflows.Scheme.copy('<?php echo make_url('configure_workflow_copy_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="copy_workflow_scheme_<?php echo $scheme->getID(); ?>_form">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Workflows.Scheme.copy('<?php echo make_url('configure_workflow_copy_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="copy_workflow_scheme_<?php echo $scheme->getID(); ?>_form">
                 <label for="copy_scheme_<?php echo $scheme->getID(); ?>_new_name"><?php echo __('New name'); ?></label>
                 <input type="text" name="new_name" id="copy_scheme_<?php echo $scheme->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name', array('%old_name' => addslashes($scheme->getName()))); ?>" style="width: 300px;">
                 <div style="text-align: right;">

@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\vcs_integration\cli;
 
+    use thebuggenie\modules\vcs_integration\Vcs_integration;
+
     /**
      * CLI command class, vcs_integration -> report
      *
@@ -18,7 +20,7 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class Report extends \TBGCliCommand
+    class Report extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -42,9 +44,9 @@
             try
             {
                 $project_id = $this->getProvidedArgument('projectid');
-                $project_row = \TBGProjectsTable::getTable()->getById($project_id, false);
-                \TBGContext::setScope(new \TBGScope($project_row[\TBGProjectsTable::SCOPE]));
-                $project = new \TBGProject($project_id, $project_row);
+                $project_row = \thebuggenie\core\entities\tables\Projects::getTable()->getById($project_id, false);
+                \thebuggenie\core\framework\Context::setScope(new \thebuggenie\core\entities\Scope($project_row[\thebuggenie\core\entities\tables\Projects::SCOPE]));
+                $project = new \thebuggenie\core\entities\Project($project_id, $project_row);
             }
             catch (\Exception $e)
             {
@@ -61,7 +63,7 @@
             $date = $this->getProvidedArgument('date', null);
             $branch = $this->getProvidedArgument('branch', null);
             
-            if (\TBGSettings::get('access_method_'.$project->getKey()) == \TBGVCSIntegration::ACCESS_HTTP)
+            if (\thebuggenie\core\framework\Settings::get('access_method_'.$project->getKey()) == Vcs_integration::ACCESS_HTTP)
             {
                 $this->cliEcho("This project uses the HTTP access method, and so access via the CLI has been disabled\n", 'red', 'bold');
                 exit;
@@ -76,7 +78,7 @@
                 $old_rev = $new_rev - 1;
             }
 
-            $output = \TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
+            $output = Vcs_integration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
             $this->cliEcho($output);
         }
     }

@@ -4,7 +4,7 @@
 
 ?>
 <div class="interactive_searchbuilder" id="search_builder">
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-history-url="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-history-url="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search'); ?>" data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
         <div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
@@ -37,7 +37,7 @@
                     <div class="column">
                         <h1><?php echo __('Project detail filters'); ?></h1>
                         <ul>
-                            <?php if (TBGContext::isProjectContext()): ?>
+                            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                                 <li data-filter="subprojects" id="additional_filter_subprojects_link"><?php echo __('Including subproject(s)'); ?></li>
                             <?php else: ?>
                                 <li class="disabled">
@@ -199,21 +199,21 @@
         </div>
     </form>
     <div id="searchbuilder_filter_hiddencontainer" style="display: none;">
-        <?php if (TBGContext::isProjectContext()): ?>
-            <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
+        <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+            <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter('subprojects'))); ?>
         <?php endif; ?>
         <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking') as $key): ?>
-            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
+            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key))); ?>
         <?php endforeach; ?>
         <?php foreach (array('posted', 'last_updated') as $key): ?>
-            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
+            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
         <?php foreach ($nondatecustomfields as $customtype): ?>
-            <?php if ($customtype->getType() == TBGCustomDatatype::DATE_PICKER) continue; ?>
-            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey()))); ?>
+            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) continue; ?>
+            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey()))); ?>
         <?php endforeach; ?>
         <?php foreach ($datecustomfields as $customtype): ?>
-            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
+            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
     </div>
     <?php if (!$tbg_user->isGuest()): ?>
@@ -222,8 +222,8 @@
                 <div class="backdrop_detail_header"><?php echo __('Save this search'); ?></div>
                 <div class="backdrop_detail_content">
                     <form id="save_search_form" action="<?php echo make_url('search_save'); ?>" method="post" onsubmit="TBG.Search.saveSearch();return false;">
-                        <?php if (TBGContext::isProjectContext()): ?>
-                            <input type="hidden" name="project_id" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>">
+                        <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                            <input type="hidden" name="project_id" value="<?php echo \thebuggenie\core\framework\Context::getCurrentProject()->getID(); ?>">
                             <p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead', array('%find_issues' => link_tag(make_url('search'), __('Find issues')))); ?></p>
                         <?php endif; ?>
                         <?php if ($search_object->getID()): ?>

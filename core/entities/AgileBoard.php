@@ -2,6 +2,9 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\framework;
+
     /**
      * Agile board class
      *
@@ -18,9 +21,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\AgileBoards")
+     * @Table(name="\thebuggenie\core\entities\tables\AgileBoards")
      */
-    class AgileBoard extends \TBGIdentifiableScopedClass
+    class AgileBoard extends IdentifiableScoped
     {
 
         const TYPE_GENERIC = 0;
@@ -56,37 +59,37 @@
         protected $_is_private = true;
 
         /**
-         * @var \TBGUser
+         * @var \thebuggenie\core\entities\User
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGUser")
+         * @Relates(class="\thebuggenie\core\entities\User")
          */
         protected $_user_id;
 
         /**
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGProject")
+         * @Relates(class="\thebuggenie\core\entities\Project")
          */
         protected $_project_id;
 
         /**
-         * @var \TBGIssuetype
+         * @var \thebuggenie\core\entities\Issuetype
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGIssuetype")
+         * @Relates(class="\thebuggenie\core\entities\Issuetype")
          */
         protected $_epic_issuetype_id;
 
         /**
-         * @var \TBGIssuetype
+         * @var \thebuggenie\core\entities\Issuetype
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGIssuetype")
+         * @Relates(class="\thebuggenie\core\entities\Issuetype")
          */
         protected $_task_issuetype_id;
 
         /**
-         * @var \TBGSavedSearch
+         * @var \thebuggenie\core\entities\SavedSearch
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGSavedSearch")
+         * @Relates(class="\thebuggenie\core\entities\SavedSearch")
          */
         protected $_backlog_search_id;
 
@@ -140,14 +143,14 @@
 
         /**
          * Cached search object
-         * @var \TBGSavedSearch
+         * @var \thebuggenie\core\entities\SavedSearch
          */
         protected $_search_object;
 
         /**
          * Array of epic issues
          *
-         * @var array|\TBGIssue
+         * @var array|\thebuggenie\core\entities\Issue
          */
         protected $_epic_issues = null;
 
@@ -162,7 +165,7 @@
         /**
          * Returns the associated user
          *
-         * @return \TBGUser
+         * @return \thebuggenie\core\entities\User
          */
         public function getUser()
         {
@@ -177,7 +180,7 @@
         /**
          * Returns the associated project
          *
-         * @return \TBGProject
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
@@ -192,7 +195,7 @@
         /**
          * Returns the associated epic issue type
          *
-         * @return \TBGIssuetype
+         * @return \thebuggenie\core\entities\Issuetype
          */
         public function getEpicIssuetype()
         {
@@ -201,7 +204,7 @@
 
         public function getEpicIssuetypeID()
         {
-            return ($this->getEpicIssuetype() instanceof \TBGIssuetype) ? $this->getEpicIssuetype()->getID() : 0;
+            return ($this->getEpicIssuetype() instanceof \thebuggenie\core\entities\Issuetype) ? $this->getEpicIssuetype()->getID() : 0;
         }
 
         public function setEpicIssuetype($epic_issuetype_id)
@@ -212,7 +215,7 @@
         /**
          * Returns the associated task issue type
          *
-         * @return \TBGIssuetype
+         * @return \thebuggenie\core\entities\Issuetype
          */
         public function getTaskIssuetype()
         {
@@ -226,13 +229,13 @@
 
         public function getTaskIssuetypeID()
         {
-            return ($this->getTaskIssuetype() instanceof \TBGIssuetype) ? $this->getTaskIssuetype()->getID() : 0;
+            return ($this->getTaskIssuetype() instanceof \thebuggenie\core\entities\Issuetype) ? $this->getTaskIssuetype()->getID() : 0;
         }
 
         /**
          * Returns the associated backlog saved search
          *
-         * @return \TBGSavedSearch
+         * @return \thebuggenie\core\entities\SavedSearch
          */
         public function getBacklogSearch()
         {
@@ -271,7 +274,7 @@
         /**
          * Returns the associated search object
          *
-         * @return \TBGSavedSearch
+         * @return \thebuggenie\core\entities\SavedSearch
          */
         public function getBacklogSearchObject()
         {
@@ -281,14 +284,14 @@
                 {
                     $this->_search_object = $this->getBacklogSearch();
                 }
-                elseif (!$this->_search_object instanceof \TBGSavedSearch)
+                elseif (!$this->_search_object instanceof \thebuggenie\core\entities\SavedSearch)
                 {
-                    $this->_search_object = \TBGSavedSearch::getPredefinedSearchObject($this->_autogenerated_search);
+                    $this->_search_object = SavedSearch::getPredefinedSearchObject($this->_autogenerated_search);
                 }
                 $this->_search_object->setIssuesPerPage(0);
                 $this->_search_object->setOffset(0);
-                $this->_search_object->setFilter('issuetype', \TBGSearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getEpicIssuetypeID())));
-                $this->_search_object->setFilter('milestone', \TBGSearchFilter::createFilter('milestone', array('o' => '!=', 'v' => null)));
+                $this->_search_object->setFilter('issuetype', SearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getEpicIssuetypeID())));
+                $this->_search_object->setFilter('milestone', SearchFilter::createFilter('milestone', array('o' => '!=', 'v' => null)));
                 $this->_search_object->setSortFields(array('issues.milestone_order' => 'desc'));
             }
 
@@ -354,11 +357,11 @@
         {
             if ($this->usesSavedSearchBacklog())
             {
-                $url = \TBGContext::getRouting()->generate('project_issues', array('project_key' => $this->getProject()->getKey(), 'saved_search' => $this->getBacklogSearch()->getID(), 'search' => true, 'format' => 'backlog'));
+                $url = \framework\Context::getRouting()->generate('project_issues', array('project_key' => $this->getProject()->getKey(), 'saved_search' => $this->getBacklogSearch()->getID(), 'search' => true, 'format' => 'backlog'));
             }
             else
             {
-                $url = \TBGContext::getRouting()->generate('project_issues', array('project_key' => $this->getProject()->getKey(), 'predefined_search' => $this->getAutogeneratedSearch(), 'search' => true, 'format' => 'backlog'));
+                $url = \framework\Context::getRouting()->generate('project_issues', array('project_key' => $this->getProject()->getKey(), 'predefined_search' => $this->getAutogeneratedSearch(), 'search' => true, 'format' => 'backlog'));
             }
 
             return $url;
@@ -368,7 +371,7 @@
         {
             if ($this->_epic_issues === null)
             {
-                $this->_epic_issues = \TBGIssuesTable::getTable()->getOpenIssuesByProjectIDAndIssuetypeID($this->getProject()->getID(), $this->getEpicIssuetypeID());
+                $this->_epic_issues = tables\Issues::getTable()->getOpenIssuesByProjectIDAndIssuetypeID($this->getProject()->getID(), $this->getEpicIssuetypeID());
             }
             return $this->_epic_issues;
         }
@@ -463,7 +466,7 @@
             return $this->_b2dbLazyload('_board_columns');
         }
 
-        protected function _populateMilestoneSwimlanes(\TBGMilestone $milestone)
+        protected function _populateMilestoneSwimlanes(\thebuggenie\core\entities\Milestone $milestone)
         {
             if (!array_key_exists($milestone->getID(), $this->_swimlanes))
             {
@@ -478,13 +481,13 @@
                             switch ($this->getSwimlaneIdentifier())
                             {
                                 case 'priority':
-                                    $items = \TBGPriority::getAll();
+                                    $items = Priority::getAll();
                                     break;
                                 case 'severity':
-                                    $items = \TBGSeverity::getAll();
+                                    $items = Severity::getAll();
                                     break;
                                 case 'category':
-                                    $items = \TBGCategory::getAll();
+                                    $items = Category::getAll();
                                     break;
                             }
                             if ($this->getSwimlaneType() == self::SWIMLANES_EXPEDITE)
@@ -543,7 +546,7 @@
         /**
          * Retrieve all available swimlanes for the selected milestone
          *
-         * @param \TBGMilestone $milestone
+         * @param \thebuggenie\core\entities\Milestone $milestone
          * @return array|BoardSwimlane
          */
         public function getMilestoneSwimlanes($milestone)

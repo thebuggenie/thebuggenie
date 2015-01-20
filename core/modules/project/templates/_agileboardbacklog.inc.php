@@ -18,6 +18,6 @@
     </div>
 </li>
 <?php foreach ($board->getBacklogSearchObject()->getIssues() as $issue): ?>
-    <?php if ($issue->getMilestone() instanceof TBGMilestone || ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))) continue; ?>
+    <?php if ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone || ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))) continue; ?>
     <?php include_component('project/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
 <?php endforeach; ?>

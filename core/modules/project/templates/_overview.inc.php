@@ -35,7 +35,7 @@
         </li>
     </ul>
 <?php endif; ?>
-<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+<?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 <?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
     <?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green button-report-issue righthugging')); ?>
     <a class="dropper button button-green last lefthugging reportissue_dropdown_button" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>

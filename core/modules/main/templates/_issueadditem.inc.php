@@ -1,7 +1,7 @@
 <div class="backdrop_box medium" id="viewissue_add_item_div">
     <div class="backdrop_detail_header"><?php echo __('Add affected item'); ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form id="viewissue_add_item_form" action="<?php echo make_url('add_affected', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Issues.Affected.add('<?php echo make_url('add_affected', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
+        <form id="viewissue_add_item_form" action="<?php echo make_url('add_affected', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Issues.Affected.add('<?php echo make_url('add_affected', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
         <?php echo __('Please select the type and item you wish to add as affected by this issue.'); ?>
         <br />
         <div class="header_div"><?php echo __('Item type'); ?></div>

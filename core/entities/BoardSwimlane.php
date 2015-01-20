@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\framework;
+
     /**
      * Agile board swimlane class
      *
@@ -24,7 +26,7 @@
         /**
          * The identifiable objects for this swimlane
          *
-         * @var array|\TBGIdentifiable
+         * @var array|\thebuggenie\core\entities\common\Identifiable
          */
         protected $_identifiables;
 
@@ -35,13 +37,13 @@
 
         /**
          * Milestone
-         * @var \TBGMilestone
+         * @var \thebuggenie\core\entities\Milestone
          */
         protected $_milestone;
 
         /**
          * Cached search object
-         * @var \TBGSavedSearch
+         * @var \thebuggenie\core\entities\SavedSearch
          */
         protected $_search_object;
 
@@ -69,13 +71,13 @@
             $this->_board = $board;
         }
 
-        public function setMilestone(\TBGMilestone $milestone)
+        public function setMilestone(\thebuggenie\core\entities\Milestone $milestone)
         {
             $this->_milestone = $milestone;
         }
 
         /**
-         * @return \TBGMilestone
+         * @return \thebuggenie\core\entities\Milestone
          */
         public function getMilestone()
         {
@@ -89,7 +91,7 @@
                 $names = array();
                 foreach ($this->_identifiables as $identifiable)
                 {
-                    $names[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getName() : \TBGContext::getI18n()->__('Unknown / not set');
+                    $names[] = ($identifiable instanceof \thebuggenie\core\entities\common\Identifiable) ? $identifiable->getName() : \framework\Context::getI18n()->__('Unknown / not set');
                 }
                 $this->_name = join(', ', $names);
             }
@@ -104,7 +106,7 @@
                 $identifiers = array();
                 foreach ($this->_identifiables as $identifiable)
                 {
-                    $identifiers[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getId() : $identifiable;
+                    $identifiers[] = ($identifiable instanceof \thebuggenie\core\entities\common\Identifiable) ? $identifiable->getId() : $identifiable;
                 }
                 $this->_identifier = 'swimlane_' . join('_', $identifiers);
             }
@@ -116,7 +118,7 @@
         {
             foreach ($this->_identifiables as $identifiable)
             {
-                if ($identifiable instanceof \TBGIdentifiable) return true;
+                if ($identifiable instanceof \thebuggenie\core\entities\common\Identifiable) return true;
             }
 
             return false;
@@ -126,11 +128,11 @@
         {
             if ($this->_search_object === null)
             {
-                $this->_search_object = new \TBGSavedSearch();
-                $this->_search_object->setFilter('project_id', \TBGSearchFilter::createFilter('project_id', array('o' => '=', 'v' => $this->getBoard()->getProject()->getID())));
-                $this->_search_object->setFilter('milestone', \TBGSearchFilter::createFilter('milestone', array('o' => '=', 'v' => $this->getMilestone()->getID())));
-                $this->_search_object->setFilter('state', \TBGSearchFilter::createFilter('state', array('o' => '=', 'v' => array(\TBGIssue::STATE_CLOSED, \TBGIssue::STATE_OPEN))));
-                $this->_search_object->setFilter('issuetype', \TBGSearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getBoard()->getEpicIssuetypeID())));
+                $this->_search_object = new \thebuggenie\core\entities\SavedSearch();
+                $this->_search_object->setFilter('project_id', SearchFilter::createFilter('project_id', array('o' => '=', 'v' => $this->getBoard()->getProject()->getID())));
+                $this->_search_object->setFilter('milestone', SearchFilter::createFilter('milestone', array('o' => '=', 'v' => $this->getMilestone()->getID())));
+                $this->_search_object->setFilter('state', SearchFilter::createFilter('state', array('o' => '=', 'v' => array(Issue::STATE_CLOSED, Issue::STATE_OPEN))));
+                $this->_search_object->setFilter('issuetype', SearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getBoard()->getEpicIssuetypeID())));
                 if ($this->getBoard()->usesSwimlanes() && $this->getBoard()->getSwimlaneType() == AgileBoard::SWIMLANES_ISSUES)
                 {
                     $values = array();
@@ -140,15 +142,15 @@
                         $values[] = $swimlane->getIdentifierIssue()->getID();
                         foreach ($swimlane->getIssues() as $issue) $values[] = $issue->getID();
                     }
-                    $this->_search_object->setFilter('id', \TBGSearchFilter::createFilter('id', array('o' => '!=', 'v' => $values)));
+                    $this->_search_object->setFilter('id', SearchFilter::createFilter('id', array('o' => '!=', 'v' => $values)));
                 }
                 else
                 {
                     if ($this->getBoard()->usesSwimlanes())
                     {
                         $values = array();
-                        foreach ($this->_identifiables as $identifiable) $values[] = ($identifiable instanceof \TBGIdentifiable) ? $identifiable->getID() : $identifiable;
-                        $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), \TBGSearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
+                        foreach ($this->_identifiables as $identifiable) $values[] = ($identifiable instanceof \thebuggenie\core\entities\common\Identifiable) ? $identifiable->getID() : $identifiable;
+                        $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), SearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
                     }
                 }
                 $this->_search_object->setSortFields(array('issues.milestone_order' => \b2db\Criteria::SORT_ASC));
@@ -164,7 +166,7 @@
             }
             else
             {
-                if ($this->getIdentifierIssue() instanceof \TBGIssue)
+                if ($this->getIdentifierIssue() instanceof \thebuggenie\core\entities\Issue)
                 {
                     return $this->getIdentifierIssue()->getChildIssues();
                 }
@@ -177,7 +179,7 @@
         }
 
         /**
-         * @return \TBGIssue
+         * @return \thebuggenie\core\entities\Issue
          */
         public function getIdentifierIssue()
         {

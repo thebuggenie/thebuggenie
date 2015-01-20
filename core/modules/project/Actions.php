@@ -2,28 +2,29 @@
 
     namespace thebuggenie\core\modules\project;
 
-    use thebuggenie\core\entities\AgileBoard,
+    use thebuggenie\core\framework\Action,
+        thebuggenie\core\entities\AgileBoard,
         thebuggenie\core\entities\DashboardView,
         thebuggenie\core\entities\Dashboard,
         thebuggenie\core\entities\BoardColumn,
-        thebuggenie\core\entities\b2db\AgileBoards;
+        thebuggenie\core\entities\tables\AgileBoards;
 
     /**
      * actions for the project module
      */
-    class Actions extends \TBGAction
+    class Actions extends \thebuggenie\core\framework\Action
     {
         /**
          * The currently selected project
          *
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @access protected
          * @property $selected_project
          */
         /**
          * The currently selected client
          *
-         * @var \TBGClient
+         * @var \thebuggenie\core\entities\Client
          * @access protected
          * @property $selected_client
          */
@@ -31,16 +32,16 @@
         /**
          * Pre-execute function
          *
-         * @param \TBGRequest     $request
+         * @param \thebuggenie\core\framework\Request     $request
          * @param string        $action
          */
-        public function preExecute(\TBGRequest $request, $action)
+        public function preExecute(\thebuggenie\core\framework\Request $request, $action)
         {
             if ($project_id = $request['project_id'])
             {
                 try
                 {
-                    $this->selected_project = \TBGContext::factory()->TBGProject($project_id);
+                    $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($project_id);
                 }
                 catch (\Exception $e)
                 {
@@ -51,35 +52,35 @@
             {
                 try
                 {
-                    $this->selected_project = \TBGProject::getByKey($project_key);
+                    $this->selected_project = \thebuggenie\core\entities\Project::getByKey($project_key);
                 }
                 catch (\Exception $e)
                 {
 
                 }
             }
-            if ($this->selected_project instanceof \TBGProject)
+            if ($this->selected_project instanceof \thebuggenie\core\entities\Project)
             {
-                \TBGContext::setCurrentProject($this->selected_project);
+                \thebuggenie\core\framework\Context::setCurrentProject($this->selected_project);
                 $this->project_key = $this->selected_project->getKey();
             }
             else
             {
-                $this->return404(\TBGContext::getI18n()->__('This project does not exist'));
+                $this->return404(\thebuggenie\core\framework\Context::getI18n()->__('This project does not exist'));
             }
         }
 
         protected function _checkProjectPageAccess($page)
         {
-            return \TBGContext::getUser()->hasProjectPageAccess($page, $this->selected_project);
+            return \thebuggenie\core\framework\Context::getUser()->hasProjectPageAccess($page, $this->selected_project);
         }
 
         /**
          * The project dashboard
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runDashboard(\TBGRequest $request)
+        public function runDashboard(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
 
@@ -111,9 +112,9 @@
         /**
          * The project files page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runFiles(\TBGRequest $request)
+        public function runFiles(\thebuggenie\core\framework\Request $request)
         {
 
         }
@@ -121,14 +122,14 @@
         /**
          * The project roadmap page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runRoadmap(\TBGRequest $request)
+        public function runRoadmap(\thebuggenie\core\framework\Request $request)
         {
             $this->mode = $request->getParameter('mode', 'upcoming');
             if ($this->mode == 'milestone' && $request['milestone_id'])
             {
-                $this->selected_milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                $this->selected_milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
             }
             $this->forward403unless($this->_checkProjectPageAccess('project_roadmap'));
             $this->milestones = $this->selected_project->getMilestonesForRoadmap();
@@ -137,9 +138,9 @@
         /**
          * The project planning page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runTimeline(\TBGRequest $request)
+        public function runTimeline(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_timeline'));
             $offset = $request->getParameter('offset', 0);
@@ -163,9 +164,9 @@
         /**
          * Retrieves a list of all releases on a board
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runGetReleases(\TBGRequest $request)
+        public function runGetReleases(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
@@ -176,9 +177,9 @@
         /**
          * Retrieves a list of all epics on a board
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runGetEpics(\TBGRequest $request)
+        public function runGetEpics(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
@@ -189,9 +190,9 @@
         /**
          * Adds an epic
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAddEpic(\TBGRequest $request)
+        public function runAddEpic(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
@@ -205,7 +206,7 @@
                 if (!$shortname)
                     throw new \Exception($this->getI18n()->__('You have to provide a label'));
 
-                $issue = new \TBGIssue();
+                $issue = new \thebuggenie\core\entities\Issue();
                 $issue->setTitle($title);
                 $issue->setShortname($shortname);
                 $issue->setIssuetype($board->getEpicIssuetypeID());
@@ -225,15 +226,15 @@
         /**
          * Issue retriever for the project planning page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runRetrievePlanningIssue(\TBGRequest $request)
+        public function runRetrievePlanningIssue(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $board = AgileBoards::getTable()->selectById($request['board_id']);
-            $issue = \TBGContext::factory()->TBGIssue($request['issue_id']);
+            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
 
-            $this->forward403unless($issue instanceof \TBGIssue && $issue->hasAccess());
+            $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
             if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))
             {
@@ -250,25 +251,25 @@
         /**
          * Poller for the project planning page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runPollPlanning(\TBGRequest $request)
+        public function runPollPlanning(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $last_refreshed = $request['last_refreshed'];
             $board = AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
-            $search_object->setFilter('last_updated', \TBGSearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+            $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
 
             if ($request['mode'] == 'whiteboard')
             {
                 $milestone_id = $request['milestone_id'];
-                $ids = \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndMilestoneID($last_refreshed - 2, $this->selected_project->getID(), $milestone_id);
+                $ids = \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndMilestoneID($last_refreshed - 2, $this->selected_project->getID(), $milestone_id);
             }
             else
             {
-                $ids = \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
-                $epic_ids = ($board->getEpicIssuetypeID()) ? \TBGIssuesTable::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
+                $ids = \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
+                $epic_ids = ($board->getEpicIssuetypeID()) ? \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
             }
             $backlog_ids = array();
             foreach ($search_object->getIssues() as $backlog_issue)
@@ -282,9 +283,9 @@
         /**
          * The project planning page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runPlanning(\TBGRequest $request)
+        public function runPlanning(\thebuggenie\core\framework\Request $request)
         {
             $boards = AgileBoards::getTable()->getAvailableProjectBoards($this->getUser()->getID(), $this->selected_project->getID());
             $project_boards = array();
@@ -303,9 +304,9 @@
         /**
          * The project board whiteboard page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAgileboardWhiteboardColumn(\TBGRequest $request)
+        public function runAgileboardWhiteboardColumn(\thebuggenie\core\framework\Request $request)
         {
             $board = AgileBoards::getTable()->selectById($request['board_id']);
             $column = BoardColumn::getB2DBTable()->selectById($request['column_id']);
@@ -321,9 +322,9 @@
         /**
          * The project board whiteboard page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAgileboardWhiteboard(\TBGRequest $request)
+        public function runAgileboardWhiteboard(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
             $this->board = AgileBoards::getTable()->selectById($request['board_id']);
@@ -337,15 +338,15 @@
                     switch ($request['mode'])
                     {
                         case 'getmilestonestatus':
-                            $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                            $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
                             return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
                             break;
                         case 'whiteboardissues':
                             if ($request->isPost())
                             {
-                                $issue = \TBGIssuesTable::getTable()->selectById((int) $request['issue_id']);
+                                $issue = \thebuggenie\core\entities\tables\Issues::getTable()->selectById((int) $request['issue_id']);
                                 $column = BoardColumn::getB2DBTable()->selectById((int) $request['column_id']);
-                                $milestone = \TBGMilestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+                                $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
 
                                 $swimlane = null;
                                 if ($request['swimlane_identifier'])
@@ -358,7 +359,7 @@
 
                                 if ($request->hasParameter('transition_id'))
                                 {
-                                    $transitions = array(\TBGWorkflowTransitionsTable::getTable()->selectById((int) $request['transition_id']));
+                                    $transitions = array(\thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->selectById((int) $request['transition_id']));
                                 }
                                 else
                                 {
@@ -390,7 +391,7 @@
                             }
                             else
                             {
-                                $milestone = \TBGMilestonesTable::getTable()->selectById((int) $request['milestone_id']);
+                                $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
                                 return $this->renderJSON(array('component' => $this->getComponentHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
                             }
                             break;
@@ -459,9 +460,9 @@
         /**
          * Sorting milestones
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runSortMilestones(\TBGRequest $request)
+        public function runSortMilestones(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
             $milestones = $request->getParameter('milestone_ids', array());
@@ -472,7 +473,7 @@
                 {
                     foreach ($milestones as $order => $milestone_id)
                     {
-                        $milestone = \TBGMilestonesTable::getTable()->selectByID($milestone_id);
+                        $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectByID($milestone_id);
 
                         if ($milestone->getProject()->getID() != $this->selected_project->getID())
                             continue;
@@ -494,9 +495,9 @@
         /**
          * The project planning page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAgileboardPlanning(\TBGRequest $request)
+        public function runAgileboardPlanning(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
             $this->board = ($request['board_id']) ? AgileBoards::getTable()->selectById($request['board_id']) : new AgileBoard();
@@ -550,15 +551,15 @@
         /**
          * The project scrum page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runMilestoneDetails(\TBGRequest $request)
+        public function runMilestoneDetails(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
             $milestone = null;
             if ($m_id = $request['milestone_id'])
             {
-                $milestone = \TBGMilestonesTable::getTable()->selectById((int) $m_id);
+                $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $m_id);
             }
             return $this->renderComponent('project/milestonedetails', compact('milestone'));
         }
@@ -566,9 +567,9 @@
         /**
          * Show the scrum burndown chart for a specified sprint
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runScrumShowBurndownImage(\TBGRequest $request)
+        public function runScrumShowBurndownImage(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 
@@ -577,7 +578,7 @@
 
             if ($m_id = $request['sprint_id'])
             {
-                $milestone = \TBGContext::factory()->TBGMilestone($m_id);
+                $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($m_id);
             }
             else
             {
@@ -589,8 +590,8 @@
             }
 
             $this->getResponse()->setContentType('image/png');
-            $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
-            if ($milestone instanceof \TBGMilestone)
+            $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
+            if ($milestone instanceof \thebuggenie\core\entities\Milestone)
             {
                 $datasets = array();
 
@@ -607,12 +608,12 @@
                                 $maxEstimation = $burndown_data['estimations']['hours'][$key];
                         }
                     }
-                    $datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => \TBGContext::getI18n()->__('Remaining effort'), 'burndown' => array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
+                    $datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => \thebuggenie\core\framework\Context::getI18n()->__('Remaining effort'), 'burndown' => array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
                     $this->labels = array_keys($burndown_data['estimations']['hours']);
                 }
                 else
                 {
-                    $datasets[] = array('values' => array(0), 'label' => \TBGContext::getI18n()->__('Remaining effort'), 'burndown' => array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
+                    $datasets[] = array('values' => array(0), 'label' => \thebuggenie\core\framework\Context::getI18n()->__('Remaining effort'), 'burndown' => array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
                     $this->labels = array(0);
                 }
                 $this->datasets = $datasets;
@@ -627,14 +628,14 @@
         /**
          * Set color on a user story
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runScrumSetStoryDetail(\TBGRequest $request)
+        public function runScrumSetStoryDetail(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived());
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived());
             $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-            $issue = \TBGContext::factory()->TBGIssue((int) $request['story_id']);
-            if ($issue instanceof \TBGIssue)
+            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['story_id']);
+            if ($issue instanceof \thebuggenie\core\entities\Issue)
             {
                 switch ($request['detail'])
                 {
@@ -645,20 +646,20 @@
                         break;
                 }
             }
-            return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__('Invalid user story')));
+            return $this->renderJSON(array('failed' => true, 'error' => \thebuggenie\core\framework\Context::getI18n()->__('Invalid user story')));
         }
 
         /**
          * Assign a user story to a release id
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAssignRelease(\TBGRequest $request)
+        public function runAssignRelease(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $issue = \TBGContext::factory()->TBGIssue((int) $request['issue_id']);
-                $release = \TBGBuildsTable::getTable()->selectById((int) $request['release_id']);
+                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
+                $release = \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $request['release_id']);
 
                 $issue->addAffectedBuild($release);
 
@@ -667,50 +668,50 @@
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('An error occured when trying to assign the issue to the release')));
+                return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('An error occured when trying to assign the issue to the release')));
             }
         }
 
         /**
          * Assign an issue to an epic
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAssignEpic(\TBGRequest $request)
+        public function runAssignEpic(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $epic = \TBGContext::factory()->TBGIssue((int) $request['epic_id']);
-                $issue = \TBGContext::factory()->TBGIssue((int) $request['issue_id']);
+                $epic = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['epic_id']);
+                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
 
                 $epic->addChildIssue($issue);
 
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \TBGIssue::getFormattedTime($epic->getEstimatedTime())));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime())));
             }
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('An error occured when trying to assign the issue to the release')));
+                return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('An error occured when trying to assign the issue to the release')));
             }
         }
 
         /**
          * Assign a user story to a milestone id
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAssignMilestone(\TBGRequest $request)
+        public function runAssignMilestone(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived());
-            $this->forward403unless($this->_checkProjectPageAccess('project_scrum') && \TBGContext::getUser()->canAssignScrumUserStories($this->selected_project));
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived());
+            $this->forward403unless($this->_checkProjectPageAccess('project_scrum') && \thebuggenie\core\framework\Context::getUser()->canAssignScrumUserStories($this->selected_project));
             try
             {
-                $issue = \TBGContext::factory()->TBGIssue((int) $request['issue_id']);
+                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
                 $new_milestone_id = (int) $request['milestone_id'];
                 try
                 {
-                    $new_milestone = \TBGMilestonesTable::getTable()->selectById($new_milestone_id);
-                    if ($issue instanceof \TBGIssue)
+                    $new_milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($new_milestone_id);
+                    if ($issue instanceof \thebuggenie\core\entities\Issue)
                     {
                         $old_milestone = $issue->getMilestone();
                         $issue->setMilestone($new_milestone);
@@ -720,16 +721,16 @@
                             $child_issue->setMilestone($new_milestone);
                             $child_issue->save();
                         }
-                        $new_issues = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->countIssues() : 0;
-                        $new_e_points = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getPointsEstimated() : 0;
-                        $new_e_hours = ($new_milestone instanceof \TBGMilestone) ? $new_milestone->getHoursEstimated() : 0;
+                        $new_issues = ($new_milestone instanceof \thebuggenie\core\entities\Milestone) ? $new_milestone->countIssues() : 0;
+                        $new_e_points = ($new_milestone instanceof \thebuggenie\core\entities\Milestone) ? $new_milestone->getPointsEstimated() : 0;
+                        $new_e_hours = ($new_milestone instanceof \thebuggenie\core\entities\Milestone) ? $new_milestone->getHoursEstimated() : 0;
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours));
                     }
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('An error occured when trying to assign the issue to the new milestone')));
+                    return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('An error occured when trying to assign the issue to the new milestone')));
                 }
             }
             catch (\Exception $e)
@@ -741,32 +742,32 @@
         /**
          * Add a new sprint type milestone to a project
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runScrumAddSprint(\TBGRequest $request)
+        public function runScrumAddSprint(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived());
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived());
             $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
             if (($sprint_name = $request['sprint_name']) && trim($sprint_name) != '')
             {
-                $sprint = new \TBGMilestone();
+                $sprint = new \thebuggenie\core\entities\Milestone();
                 $sprint->setName($sprint_name);
-                $sprint->setType(\TBGMilestone::TYPE_SCRUMSPRINT);
+                $sprint->setType(\thebuggenie\core\entities\Milestone::TYPE_SCRUMSPRINT);
                 $sprint->setProject($this->selected_project);
                 $sprint->setStartingDate(mktime(0, 0, 1, $request['starting_month'], $request['starting_day'], $request['starting_year']));
                 $sprint->setScheduledDate(mktime(23, 59, 59, $request['scheduled_month'], $request['scheduled_day'], $request['scheduled_year']));
                 $sprint->save();
                 return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
             }
-            return $this->renderJSON(array('failed' => true, 'error' => \TBGContext::getI18n()->__('Please specify a sprint name')));
+            return $this->renderJSON(array('failed' => true, 'error' => \thebuggenie\core\framework\Context::getI18n()->__('Please specify a sprint name')));
         }
 
         /**
          * The project issue list page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runIssues(\TBGRequest $request)
+        public function runIssues(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_issues'));
         }
@@ -774,9 +775,9 @@
         /**
          * The project team page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runTeam(\TBGRequest $request)
+        public function runTeam(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_team'));
             $this->assigned_users = $this->selected_project->getAssignedUsers();
@@ -786,40 +787,40 @@
         /**
          * The project statistics page
          *
-         * @param \TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runStatistics(\TBGRequest $request)
+        public function runStatistics(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
         }
 
-        public function runStatisticsLast15(\TBGRequest $request)
+        public function runStatisticsLast15(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
             if (!function_exists('imagecreatetruecolor'))
             {
-                return $this->return404(\TBGContext::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
+                return $this->return404(\thebuggenie\core\framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
             }
 
             $this->getResponse()->setContentType('image/png');
-            $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
+            $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
             $datasets = array();
             $issues = $this->selected_project->getLast15Counts();
-            $datasets[] = array('values' => $issues['open'], 'label' => \TBGContext::getI18n()->__('Open issues', array(), true));
-            $datasets[] = array('values' => $issues['closed'], 'label' => \TBGContext::getI18n()->__('Issues closed', array(), true));
+            $datasets[] = array('values' => $issues['open'], 'label' => \thebuggenie\core\framework\Context::getI18n()->__('Open issues', array(), true));
+            $datasets[] = array('values' => $issues['closed'], 'label' => \thebuggenie\core\framework\Context::getI18n()->__('Issues closed', array(), true));
             $this->datasets = $datasets;
             $this->labels = array(15, '', '', '', '', 10, '', '', '', '', 5, '', '', '', '', 0);
         }
 
-        public function runStatisticsImagesets(\TBGRequest $request)
+        public function runStatisticsImagesets(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
             $success = false;
             if (in_array($request['set'], array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
             {
                 $success = true;
-                $base_url = \TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key', 'mode' => '%mode', 'image_number' => '%image_number'));
+                $base_url = \thebuggenie\core\framework\Context::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key', 'mode' => '%mode', 'image_number' => '%image_number'));
                 $key = urlencode('%key');
                 $mode = urlencode('%mode');
                 $image_number = urlencode('%image_number');
@@ -841,7 +842,7 @@
             }
             else
             {
-                $error = \TBGContext::getI18n()->__('Invalid image set');
+                $error = \thebuggenie\core\framework\Context::getI18n()->__('Invalid image set');
             }
 
             $this->getResponse()->setHttpStatus(($success) ? 200 : 400);
@@ -850,7 +851,7 @@
 
         protected function _calculateImageDetails($counts)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
             $labels = array();
             $values = array();
             $colors = array();
@@ -875,29 +876,29 @@
                         switch ($this->key)
                         {
                             case 'issues_per_status':
-                                $item = \TBGContext::factory()->TBGStatus($item_id);
+                                $item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item_id);
                                 break;
                             case 'issues_per_priority':
-                                $item = \TBGContext::factory()->TBGPriority($item_id);
+                                $item = \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($item_id);
                                 break;
                             case 'issues_per_category':
-                                $item = \TBGContext::factory()->TBGCategory($item_id);
+                                $item = \thebuggenie\core\entities\Category::getB2DBTable()->selectById($item_id);
                                 break;
                             case 'issues_per_resolution':
-                                $item = \TBGContext::factory()->TBGResolution($item_id);
+                                $item = \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($item_id);
                                 break;
                             case 'issues_per_reproducability':
-                                $item = \TBGContext::factory()->TBGReproducability($item_id);
+                                $item = \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($item_id);
                                 break;
                             case 'issues_per_state':
-                                $item = ($item_id == \TBGIssue::STATE_OPEN) ? $i18n->__('Open', array(), true) : $i18n->__('Closed', array(), true);
+                                $item = ($item_id == \thebuggenie\core\entities\Issue::STATE_OPEN) ? $i18n->__('Open', array(), true) : $i18n->__('Closed', array(), true);
                                 break;
                         }
                         if ($this->key != 'issues_per_state')
                         {
-                            $labels[] = ($item instanceof \TBGDatatype) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
-                            \TBGContext::loadLibrary('common');
-                            if ($item instanceof \TBGStatus)
+                            $labels[] = ($item instanceof \thebuggenie\core\entities\Datatype) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
+                            \thebuggenie\core\framework\Context::loadLibrary('common');
+                            if ($item instanceof \thebuggenie\core\entities\Status)
                                 $colors[] = tbg_hex_to_rgb($item->getColor());
                         }
                         else
@@ -919,7 +920,7 @@
         protected function _generateImageDetailsFromKey($mode = null)
         {
             $this->graphmode = null;
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
             if ($mode == 'main')
             {
                 $this->width = 695;
@@ -934,7 +935,7 @@
             {
                 case 'issues_per_status':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getStatusCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getStatusCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues per status type');
@@ -950,7 +951,7 @@
                     break;
                 case 'issues_per_priority':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getPriorityCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getPriorityCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues per priority level');
@@ -966,7 +967,7 @@
                     break;
                 case 'issues_per_category':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getCategoryCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getCategoryCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues per category');
@@ -982,7 +983,7 @@
                     break;
                 case 'issues_per_resolution':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getResolutionCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getResolutionCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues per resolution');
@@ -998,7 +999,7 @@
                     break;
                 case 'issues_per_reproducability':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getReproducabilityCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getReproducabilityCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues per reproducability level');
@@ -1014,7 +1015,7 @@
                     break;
                 case 'issues_per_state':
                     $this->graphmode = 'piechart';
-                    $counts = \TBGIssuesTable::getTable()->getStateCountByProjectID($this->selected_project->getID());
+                    $counts = \thebuggenie\core\entities\tables\Issues::getTable()->getStateCountByProjectID($this->selected_project->getID());
                     if ($this->image_number == 1)
                     {
                         $this->title = $i18n->__('Total number of issues (open / closed)');
@@ -1030,24 +1031,24 @@
             $this->colors = $colors;
         }
 
-        public function runStatisticsGetImage(\TBGRequest $request)
+        public function runStatisticsGetImage(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
             if (!function_exists('imagecreatetruecolor'))
             {
-                return $this->return404(\TBGContext::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
+                return $this->return404(\thebuggenie\core\framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
             }
 
             $this->getResponse()->setContentType('image/png');
-            $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
+            $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
 
             $this->key = $request['key'];
             $this->image_number = (int) $request['image_number'];
             $this->_generateImageDetailsFromKey($request['mode']);
         }
 
-        public function runListIssues(\TBGRequest $request)
+        public function runListIssues(\thebuggenie\core\framework\Request $request)
         {
             $filters = array('project_id' => array('operator' => '=', 'value' => $this->selected_project->getID()));
             $filter_state = $request->getParameter('state', 'all');
@@ -1058,15 +1059,15 @@
             {
                 $filters['state'] = array('operator' => '=', 'value' => '');
                 if (mb_strtolower($filter_state) == 'open')
-                    $filters['state']['value'] = \TBGIssue::STATE_OPEN;
+                    $filters['state']['value'] = \thebuggenie\core\entities\Issue::STATE_OPEN;
                 elseif (mb_strtolower($filter_state) == 'closed')
-                    $filters['state']['value'] = \TBGIssue::STATE_CLOSED;
+                    $filters['state']['value'] = \thebuggenie\core\entities\Issue::STATE_CLOSED;
             }
 
             if (mb_strtolower($filter_issuetype) != 'all')
             {
-                $issuetype = \TBGIssuetype::getIssuetypeByKeyish($filter_issuetype);
-                if ($issuetype instanceof \TBGIssuetype)
+                $issuetype = \thebuggenie\core\entities\Issuetype::getIssuetypeByKeyish($filter_issuetype);
+                if ($issuetype instanceof \thebuggenie\core\entities\Issuetype)
                 {
                     $filters['issuetype'] = array('operator' => '=', 'value' => $issuetype->getID());
                 }
@@ -1078,7 +1079,7 @@
                 switch (mb_strtolower($filter_assigned_to))
                 {
                     case 'me':
-                        $user_id = \TBGContext::getUser()->getID();
+                        $user_id = \thebuggenie\core\framework\Context::getUser()->getID();
                         break;
                     case 'none':
                         $user_id = 0;
@@ -1086,8 +1087,8 @@
                     default:
                         try
                         {
-                            $user = \TBGUser::findUser(mb_strtolower($filter_assigned_to));
-                            if ($user instanceof \TBGUser)
+                            $user = \thebuggenie\core\entities\User::findUser(mb_strtolower($filter_assigned_to));
+                            if ($user instanceof \thebuggenie\core\entities\User)
                                 $user_id = $user->getID();
                         }
                         catch (\Exception $e)
@@ -1100,14 +1101,14 @@
                 $filters['assignee_user'] = array('operator' => '=', 'value' => $user_id);
             }
 
-            list ($this->issues, $this->count) = \TBGIssue::findIssues($filters, 0);
+            list ($this->issues, $this->count) = \thebuggenie\core\entities\Issue::findIssues($filters, 0);
             $this->return_issues = array();
         }
 
-        public function runListWorkflowTransitions(\TBGRequest $request)
+        public function runListWorkflowTransitions(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
-            $issue = \TBGIssue::getIssueFromLink($request['issue_no']);
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
+            $issue = \thebuggenie\core\entities\Issue::getIssueFromLink($request['issue_no']);
             if ($issue->getProject()->getID() != $this->selected_project->getID())
             {
                 throw new \Exception($i18n->__('This issue is not valid for this project'));
@@ -1115,7 +1116,7 @@
             $transitions = array();
             foreach ($issue->getAvailableWorkflowTransitions() as $transition)
             {
-                if (!$transition instanceof \TBGWorkflowTransition)
+                if (!$transition instanceof \thebuggenie\core\entities\WorkflowTransition)
                     continue;
                 $details = array('name' => $transition->getName(), 'description' => $transition->getDescription(), 'template' => $transition->getTemplate());
                 if ($details['template'])
@@ -1131,19 +1132,19 @@
             $this->transitions = $transitions;
         }
 
-        public function runUpdateIssueDetails(\TBGRequest $request)
+        public function runUpdateIssueDetails(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived());
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived());
             $this->error = false;
             try
             {
-                $i18n = \TBGContext::getI18n();
-                $issue = \TBGIssue::getIssueFromLink($request['issue_no']);
+                $i18n = \thebuggenie\core\framework\Context::getI18n();
+                $issue = \thebuggenie\core\entities\Issue::getIssueFromLink($request['issue_no']);
                 if ($issue->getProject()->getID() != $this->selected_project->getID())
                 {
                     throw new \Exception($i18n->__('This issue is not valid for this project'));
                 }
-                if (!$issue instanceof \TBGIssue)
+                if (!$issue instanceof \thebuggenie\core\entities\Issue)
                     die();
 
                 $workflow_transition = null;
@@ -1164,16 +1165,16 @@
                         //echo "no";
                     }
 
-                    if (!$workflow_transition instanceof \TBGWorkflowTransition)
+                    if (!$workflow_transition instanceof \thebuggenie\core\entities\WorkflowTransition)
                         throw new \Exception("This transition ({$key}) is not valid");
                 }
                 $fields = $request->getRawParameter('fields', array());
                 $return_values = array();
-                if ($workflow_transition instanceof \TBGWorkflowTransition)
+                if ($workflow_transition instanceof \thebuggenie\core\entities\WorkflowTransition)
                 {
                     foreach ($fields as $field_key => $field_value)
                     {
-                        $classname = "\TBG" . ucfirst($field_key);
+                        $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
                         $method = "set" . ucfirst($field_key);
                         $choices = $classname::getAll();
                         $found = false;
@@ -1205,12 +1206,12 @@
                     {
                         try
                         {
-                            if (in_array($field_key, array_merge(array('title', 'state'), \TBGDatatype::getAvailableFields(true))))
+                            if (in_array($field_key, array_merge(array('title', 'state'), \thebuggenie\core\entities\Datatype::getAvailableFields(true))))
                             {
                                 switch ($field_key)
                                 {
                                     case 'state':
-                                        $issue->setState(($field_value == 'open') ? \TBGIssue::STATE_OPEN : \TBGIssue::STATE_CLOSED);
+                                        $issue->setState(($field_value == 'open') ? \thebuggenie\core\entities\Issue::STATE_OPEN : \thebuggenie\core\entities\Issue::STATE_CLOSED);
                                         break;
                                     case 'title':
                                         if ($field_value != '')
@@ -1230,7 +1231,7 @@
                                     case 'priority':
                                     case 'severity':
                                     case 'category':
-                                        $classname = "\TBG" . ucfirst($field_key);
+                                        $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
                                         $method = "set" . ucfirst($field_key);
                                         $choices = $classname::getAll();
                                         $found = false;
@@ -1257,7 +1258,7 @@
                                         switch (mb_strtolower($field_value))
                                         {
                                             case 'me':
-                                                $issue->$set_method(\TBGContext::getUser());
+                                                $issue->$set_method(\thebuggenie\core\framework\Context::getUser());
                                                 break;
                                             case 'none':
                                                 $issue->$unset_method();
@@ -1265,8 +1266,8 @@
                                             default:
                                                 try
                                                 {
-                                                    $user = \TBGUser::findUser(mb_strtolower($field_value));
-                                                    if ($user instanceof \TBGUser)
+                                                    $user = \thebuggenie\core\entities\User::findUser(mb_strtolower($field_value));
+                                                    if ($user instanceof \thebuggenie\core\entities\User)
                                                         $issue->$set_method($user);
                                                 }
                                                 catch (\Exception $e)
@@ -1309,17 +1310,17 @@
                     }
                 }
 
-                if (!$workflow_transition instanceof \TBGWorkflowTransition)
+                if (!$workflow_transition instanceof \thebuggenie\core\entities\WorkflowTransition)
                     $issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
 
                 if (!array_key_exists('transition_ok', $return_values) || $return_values['transition_ok'])
                 {
-                    $comment = new \TBGComment();
+                    $comment = new \thebuggenie\core\entities\Comment();
                     $comment->setTitle('');
                     $comment->setContent($request->getParameter('message', null, false));
-                    $comment->setPostedBy(\TBGContext::getUser()->getID());
+                    $comment->setPostedBy(\thebuggenie\core\framework\Context::getUser()->getID());
                     $comment->setTargetID($issue->getID());
-                    $comment->setTargetType(\TBGComment::TYPE_ISSUE);
+                    $comment->setTargetType(\thebuggenie\core\entities\Comment::TYPE_ISSUE);
                     $comment->setModuleName('core');
                     $comment->setIsPublic(true);
                     $comment->setSystemComment(false);
@@ -1337,14 +1338,14 @@
             }
         }
 
-        public function runGetMilestoneRoadmapIssues(\TBGRequest $request)
+        public function runGetMilestoneRoadmapIssues(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $i18n = \TBGContext::getI18n();
+                $i18n = \thebuggenie\core\framework\Context::getI18n();
                 if ($request->hasParameter('milestone_id'))
                 {
-                    $milestone = \TBGMilestonesTable::getTable()->selectById($request['milestone_id']);
+                    $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
                     return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestoneissues', array('milestone' => $milestone))));
                 }
                 else
@@ -1359,19 +1360,19 @@
             }
         }
 
-        public function runMilestoneIssues(\TBGRequest $request)
+        public function runMilestoneIssues(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $i18n = \TBGContext::getI18n();
+                $i18n = \thebuggenie\core\framework\Context::getI18n();
                 if ($request->getParameter('milestone_id'))
                 {
-                    $milestone = \TBGMilestonesTable::getTable()->selectById($request['milestone_id']);
+                    $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
                 }
                 $board = ($request['board_id']) ? AgileBoards::getTable()->selectById($request['board_id']) : new AgileBoard();
                 if ($request->isPost())
                 {
-                    $issue_table = \TBGIssuesTable::getTable();
+                    $issue_table = \thebuggenie\core\entities\tables\Issues::getTable();
                     $orders = array_keys($request["issue_ids"]);
                     foreach ($request["issue_ids"] as $issue_id)
                     {
@@ -1379,7 +1380,7 @@
                     }
                     return $this->renderJSON(array('sorted' => 'ok'));
                 }
-                elseif (isset($milestone) && $milestone instanceof \TBGMilestone)
+                elseif (isset($milestone) && $milestone instanceof \thebuggenie\core\entities\Milestone)
                 {
                     return $this->renderJSON(array('content' => $this->getComponentHTML('project/planning_milestoneissues', array('milestone' => $milestone, 'board' => $board))));
                 }
@@ -1395,14 +1396,14 @@
             }
         }
 
-        public function runGetMilestoneDetails(\TBGRequest $request)
+        public function runGetMilestoneDetails(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $i18n = \TBGContext::getI18n();
+                $i18n = \thebuggenie\core\framework\Context::getI18n();
                 if ($request->hasParameter('milestone_id'))
                 {
-                    $milestone = \TBGContext::factory()->TBGMilestone($request['milestone_id']);
+                    $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['milestone_id']);
                     $details = array('failed' => false);
                     $details['percent'] = $milestone->getPercentComplete();
                     $details['date_string'] = $milestone->getDateString();
@@ -1427,13 +1428,13 @@
             }
         }
 
-        public function runGetMilestone(\TBGRequest $request)
+        public function runGetMilestone(\thebuggenie\core\framework\Request $request)
         {
-            $milestone = new \TBGMilestone($request['milestone_id']);
-            return $this->renderJSON(array('content' => \TBGAction::returnComponentHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
+            $milestone = new \thebuggenie\core\entities\Milestone($request['milestone_id']);
+            return $this->renderJSON(array('content' => Action::returnComponentHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
         }
 
-        public function runMarkMilestoneFinished(\TBGRequest $request)
+        public function runMarkMilestoneFinished(\thebuggenie\core\framework\Request $request)
         {
             try
             {
@@ -1443,8 +1444,8 @@
                 }
                 $return_options = array('finished' => 'ok');
                 $board = AgileBoards::getTable()->selectById($request['board_id']);
-                $milestone = \TBGMilestone::getB2DBTable()->selectById($request['milestone_id']);
-                $reached_date = mktime(23, 59, 59, \TBGContext::getRequest()->getParameter('milestone_finish_reached_month'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_day'), \TBGContext::getRequest()->getParameter('milestone_finish_reached_year'));
+                $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['milestone_id']);
+                $reached_date = mktime(23, 59, 59, \thebuggenie\core\framework\Context::getRequest()->getParameter('milestone_finish_reached_month'), \thebuggenie\core\framework\Context::getRequest()->getParameter('milestone_finish_reached_day'), \thebuggenie\core\framework\Context::getRequest()->getParameter('milestone_finish_reached_year'));
                 $milestone->setReachedDate($reached_date);
                 $milestone->setReached();
                 $milestone->setClosed(true);
@@ -1454,10 +1455,10 @@
                     switch ($request['unresolved_issues_action'])
                     {
                         case 'backlog':
-                            \TBGIssuesTable::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), null, 0);
+                            \thebuggenie\core\entities\tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), null, 0);
                             break;
                         case 'reassign':
-                            $new_milestone = \TBGMilestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
+                            $new_milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                         case 'addnew':
@@ -1466,9 +1467,9 @@
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                     }
-                    if (isset($new_milestone) && $new_milestone instanceof \TBGMilestone)
+                    if (isset($new_milestone) && $new_milestone instanceof \thebuggenie\core\entities\Milestone)
                     {
-                        \TBGIssuesTable::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), $new_milestone->getID());
+                        \thebuggenie\core\entities\tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), $new_milestone->getID());
                     }
                 }
 
@@ -1481,12 +1482,12 @@
             }
         }
 
-        public function runRemoveMilestone(\TBGRequest $request)
+        public function runRemoveMilestone(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
-                $milestone = new \TBGMilestone($request['milestone_id']);
-                $no_milestone = new \TBGMilestone(0);
+                $milestone = new \thebuggenie\core\entities\Milestone($request['milestone_id']);
+                $no_milestone = new \thebuggenie\core\entities\Milestone(0);
                 $no_milestone->setProject($milestone->getProject());
                 $milestone->delete();
                 return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
@@ -1495,12 +1496,12 @@
             return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify milestones")));
         }
 
-        protected function _saveMilestoneDetails(\TBGRequest $request, $milestone_id = null)
+        protected function _saveMilestoneDetails(\thebuggenie\core\framework\Request $request, $milestone_id = null)
         {
             if (!$request['name'])
                 throw new \Exception($this->getI18n()->__('You must provide a valid milestone name'));
 
-            $milestone = new \TBGMilestone($milestone_id);
+            $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
             $milestone->setName($request['name']);
             $milestone->setProject($this->selected_project);
             $milestone->setStarting((bool) $request['is_starting']);
@@ -1508,10 +1509,10 @@
             $milestone->setDescription($request['description']);
             $milestone->setVisibleRoadmap($request['visibility_roadmap']);
             $milestone->setVisibleIssues($request['visibility_issues']);
-            $milestone->setType($request->getParameter('milestone_type', \TBGMilestone::TYPE_REGULAR));
+            $milestone->setType($request->getParameter('milestone_type', \thebuggenie\core\entities\Milestone::TYPE_REGULAR));
             if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
             {
-                $scheduled_date = mktime(23, 59, 59, \TBGContext::getRequest()->getParameter('sch_month'), \TBGContext::getRequest()->getParameter('sch_day'), \TBGContext::getRequest()->getParameter('sch_year'));
+                $scheduled_date = mktime(23, 59, 59, \thebuggenie\core\framework\Context::getRequest()->getParameter('sch_month'), \thebuggenie\core\framework\Context::getRequest()->getParameter('sch_day'), \thebuggenie\core\framework\Context::getRequest()->getParameter('sch_year'));
                 $milestone->setScheduledDate($scheduled_date);
             }
             else
@@ -1519,7 +1520,7 @@
 
             if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
             {
-                $starting_date = mktime(0, 0, 1, \TBGContext::getRequest()->getParameter('starting_month'), \TBGContext::getRequest()->getParameter('starting_day'), \TBGContext::getRequest()->getParameter('starting_year'));
+                $starting_date = mktime(0, 0, 1, \thebuggenie\core\framework\Context::getRequest()->getParameter('starting_month'), \thebuggenie\core\framework\Context::getRequest()->getParameter('starting_day'), \thebuggenie\core\framework\Context::getRequest()->getParameter('starting_year'));
                 $milestone->setStartingDate($starting_date);
             }
             else
@@ -1530,7 +1531,7 @@
             return $milestone;
         }
 
-        public function runMilestone(\TBGRequest $request)
+        public function runMilestone(\thebuggenie\core\framework\Request $request)
         {
             if ($request->isPost())
             {
@@ -1543,10 +1544,10 @@
 
                         if ($request->hasParameter('issues') && $request['include_selected_issues'])
                         {
-                            \TBGIssuesTable::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
+                            \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
                         }
 
-                        $message = \TBGContext::getI18n()->__('Milestone saved');
+                        $message = \thebuggenie\core\framework\Context::getI18n()->__('Milestone saved');
                         return $this->renderJSON(array('message' => $message, 'component' => $this->getComponentHTML('milestonebox', array('milestone' => $milestone, 'board' => $board)), 'milestone_id' => $milestone->getID()));
                     }
                     catch (\Exception $e)
@@ -1560,20 +1561,20 @@
             }
         }
 
-        public function runMenuLinks(\TBGRequest $request)
+        public function runMenuLinks(\thebuggenie\core\framework\Request $request)
         {
 
         }
 
-        public function runTransitionIssue(\TBGRequest $request)
+        public function runTransitionIssue(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $transition = \TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);
-                $issue = \TBGContext::factory()->TBGIssue((int) $request['issue_id']);
+                $transition = \thebuggenie\core\entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
+                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
                 if (!$issue->isWorkflowTransitionsAvailable())
                 {
-                    throw new \Exception(\TBGContext::getI18n()->__('You are not allowed to perform any workflow transitions on this issue'));
+                    throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__('You are not allowed to perform any workflow transitions on this issue'));
                 }
 
                 if ($transition->validateFromRequest($request))
@@ -1582,10 +1583,10 @@
                 }
                 else
                 {
-                    \TBGContext::setMessage('issue_error', 'transition_error');
-                    \TBGContext::setMessage('issue_workflow_errors', $transition->getValidationErrors());
+                    \thebuggenie\core\framework\Context::setMessage('issue_error', 'transition_error');
+                    \thebuggenie\core\framework\Context::setMessage('issue_workflow_errors', $transition->getValidationErrors());
                 }
-                $this->forward(\TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+                $this->forward(\thebuggenie\core\framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
             }
             catch (\Exception $e)
             {
@@ -1594,13 +1595,13 @@
             }
         }
 
-        public function runTransitionIssues(\TBGRequest $request)
+        public function runTransitionIssues(\thebuggenie\core\framework\Request $request)
         {
             try
             {
                 try
                 {
-                    $transition = \TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);
+                    $transition = \thebuggenie\core\entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
                 }
                 catch (\Exception $e)
                 {
@@ -1612,11 +1613,11 @@
                 $closed = false;
                 foreach ($issue_ids as $issue_id)
                 {
-                    $issue = \TBGContext::factory()->TBGIssue((int) $issue_id);
+                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $issue_id);
                     if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number because of %errors', array('%issue_number' => $issue->getFormattedIssueNo(), '%errors' => join(', ', $transition->getValidationErrors())))));
+                        return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('The transition could not be applied to issue %issue_number because of %errors', array('%issue_number' => $issue->getFormattedIssueNo(), '%errors' => join(', ', $transition->getValidationErrors())))));
                     }
 
                     try
@@ -1626,8 +1627,8 @@
                     catch (\Exception $e)
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        \TBGLogging::log(\TBGLogging::LEVEL_WARNING, 'Transition ' . $transition->getID() . ' failed for issue ' . $issue_id);
-                        \TBGLogging::log(\TBGLogging::LEVEL_WARNING, $e->getMessage());
+                        \thebuggenie\core\framework\Logging::log(\thebuggenie\core\framework\Logging::LEVEL_WARNING, 'Transition ' . $transition->getID() . ' failed for issue ' . $issue_id);
+                        \thebuggenie\core\framework\Logging::log(\thebuggenie\core\framework\Logging::LEVEL_WARNING, $e->getMessage());
                         return $this->renderJSON(array('error' => $this->getI18n()->__('The transition failed because of an error in the workflow. Check your workflow configuration.')));
                     }
                     if ($status === null)
@@ -1635,18 +1636,18 @@
                     $closed = $issue->isClosed();
                 }
 
-                \TBGContext::loadLibrary('common');
+                \thebuggenie\core\framework\Context::loadLibrary('common');
                 $options = array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20), 'closed' => $closed);
                 $options['status'] = array('color' => $status->getColor(), 'name' => $status->getName(), 'id' => $status->getID());
                 if ($request->hasParameter('milestone_id'))
                 {
-                    $milestone = new \TBGMilestone($request['milestone_id']);
+                    $milestone = new \thebuggenie\core\entities\Milestone($request['milestone_id']);
                     $options['milestone_id'] = $milestone->getID();
                     $options['milestone_name'] = $milestone->getName();
                 }
                 foreach (array('resolution', 'priority', 'category', 'severity') as $item)
                 {
-                    $class = "\TBG" . ucfirst($item);
+                    $class = "\\thebuggenie\\core\\entities\\" . ucfirst($item);
                     if ($request->hasParameter($item . '_id'))
                     {
                         if ($item_id = $request[$item . '_id'])
@@ -1675,25 +1676,25 @@
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
-                \TBGLogging::log(\TBGLogging::LEVEL_WARNING, 'Transition ' . $transition->getID() . ' failed for issue ' . $issue_id);
-                \TBGLogging::log(\TBGLogging::LEVEL_WARNING, $e->getMessage());
+                \thebuggenie\core\framework\Logging::log(\thebuggenie\core\framework\Logging::LEVEL_WARNING, 'Transition ' . $transition->getID() . ' failed for issue ' . $issue_id);
+                \thebuggenie\core\framework\Logging::log(\thebuggenie\core\framework\Logging::LEVEL_WARNING, $e->getMessage());
                 return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to apply the transition')));
             }
         }
 
-        public function runSettings(\TBGRequest $request)
+        public function runSettings(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canEditProjectDetails(\TBGContext::getCurrentProject()));
-            $this->settings_saved = \TBGContext::getMessageAndClear('project_settings_saved');
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived() || !$this->getUser()->canEditProjectDetails(\thebuggenie\core\framework\Context::getCurrentProject()));
+            $this->settings_saved = \thebuggenie\core\framework\Context::getMessageAndClear('project_settings_saved');
         }
 
-        public function runReleaseCenter(\TBGRequest $request)
+        public function runReleaseCenter(\thebuggenie\core\framework\Request $request)
         {
-            $this->forward403if(\TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canManageProjectReleases(\TBGContext::getCurrentProject()));
-            $this->build_error = \TBGContext::getMessageAndClear('build_error');
+            $this->forward403if(\thebuggenie\core\framework\Context::getCurrentProject()->isArchived() || !$this->getUser()->canManageProjectReleases(\thebuggenie\core\framework\Context::getCurrentProject()));
+            $this->build_error = \thebuggenie\core\framework\Context::getMessageAndClear('build_error');
         }
 
-        public function runReleases(\TBGRequest $request)
+        public function runReleases(\thebuggenie\core\framework\Request $request)
         {
             $this->_setupBuilds();
         }
@@ -1726,9 +1727,9 @@
         /**
          * Find users and show selection box
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runFindAssignee(\TBGRequest $request)
+        public function runFindAssignee(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($request->isPost());
 
@@ -1736,11 +1737,11 @@
 
             if ($request['find_by'])
             {
-                $this->selected_project = \TBGContext::factory()->TBGProject($request['project_id']);
-                $this->users = \TBGUsersTable::getTable()->getByDetails($request['find_by'], 10);
-                $this->teams = \TBGTeamsTable::getTable()->quickfind($request['find_by']);
-                $this->global_roles = \TBGRole::getAll();
-                $this->project_roles = \TBGRole::getByProjectID($this->selected_project->getID());
+                $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
+                $this->users = \thebuggenie\core\entities\tables\Users::getTable()->getByDetails($request['find_by'], 10);
+                $this->teams = \thebuggenie\core\entities\tables\Teams::getTable()->quickfind($request['find_by']);
+                $this->global_roles = \thebuggenie\core\entities\Role::getAll();
+                $this->project_roles = \thebuggenie\core\entities\Role::getByProjectID($this->selected_project->getID());
             }
             else
             {
@@ -1751,9 +1752,9 @@
         /**
          * Adds a user or team to a project
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runAssignToProject(\TBGRequest $request)
+        public function runAssignToProject(\thebuggenie\core\framework\Request $request)
         {
             $this->forward403unless($request->isPost());
 
@@ -1767,10 +1768,10 @@
                     switch ($assignee_type)
                     {
                         case 'user':
-                            $assignee = \TBGContext::factory()->TBGUser($assignee_id);
+                            $assignee = \thebuggenie\core\entities\User::getB2DBTable()->selectById($assignee_id);
                             break;
                         case 'team':
-                            $assignee = \TBGContext::factory()->TBGTeam($assignee_id);
+                            $assignee = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($assignee_id);
                             break;
                         default:
                             throw new \Exception('Invalid assignee');
@@ -1780,10 +1781,10 @@
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('An error occurred when trying to assign user/team to this project')));
+                    return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('An error occurred when trying to assign user/team to this project')));
                 }
 
-                $assignee_role = new \TBGRole($request['role_id']);
+                $assignee_role = new \thebuggenie\core\entities\Role($request['role_id']);
                 $this->selected_project->addAssignee($assignee, $assignee_role);
 
                 return $this->renderComponent('projects_assignees', array('project' => $this->selected_project));
@@ -1791,16 +1792,16 @@
             else
             {
                 $this->getResponse()->setHttpStatus(403);
-                return $this->renderJSON(array('error' => \TBGContext::getI18n()->__("You don't have access to save project settings")));
+                return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__("You don't have access to save project settings")));
             }
         }
 
         /**
          * Configure project editions and components
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runConfigureProjectEditionsAndComponents(\TBGRequest $request)
+        public function runConfigureProjectEditionsAndComponents(\thebuggenie\core\framework\Request $request)
         {
 
         }
@@ -1808,9 +1809,9 @@
         /**
          * Configure project data types
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runConfigureProjectOther(\TBGRequest $request)
+        public function runConfigureProjectOther(\thebuggenie\core\framework\Request $request)
         {
 
         }
@@ -1818,9 +1819,9 @@
         /**
          * Updates visible issue types
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runConfigureProjectUpdateOther(\TBGRequest $request)
+        public function runConfigureProjectUpdateOther(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canEditProjectDetails($this->selected_project))
             {
@@ -1853,24 +1854,24 @@
                             $this->selected_project->save();
                             break;
                     }
-                    return $this->renderJSON(array('title' => \TBGContext::getI18n()->__('Your changes have been saved'), 'message' => ''));
+                    return $this->renderJSON(array('title' => \thebuggenie\core\framework\Context::getI18n()->__('Your changes have been saved'), 'message' => ''));
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+                    return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
                 }
             }
             $this->getResponse()->setHttpStatus(403);
-            return $this->renderJSON(array('error' => \TBGContext::getI18n()->__("You don't have access to save project settings")));
+            return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__("You don't have access to save project settings")));
         }
 
         /**
          * Configure project builds
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runConfigureProjectDevelopers(\TBGRequest $request)
+        public function runConfigureProjectDevelopers(\thebuggenie\core\framework\Request $request)
         {
 
         }
@@ -1878,22 +1879,22 @@
         /**
          * Configure project leaders
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runSetItemLead(\TBGRequest $request)
+        public function runSetItemLead(\thebuggenie\core\framework\Request $request)
         {
             try
             {
                 switch ($request['item_type'])
                 {
                     case 'project':
-                        $item = \TBGContext::factory()->TBGProject($request['project_id']);
+                        $item = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
                         break;
                     case 'edition':
-                        $item = \TBGContext::factory()->TBGEdition($request['edition_id']);
+                        $item = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['edition_id']);
                         break;
                     case 'component':
-                        $item = \TBGContext::factory()->TBGComponent($request['component_id']);
+                        $item = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($request['component_id']);
                         break;
                 }
             }
@@ -1902,7 +1903,7 @@
 
             }
 
-            $this->forward403unless($item instanceof \TBGIdentifiable);
+            $this->forward403unless($item instanceof \thebuggenie\core\entities\Identifiable);
 
             if ($request->hasParameter('value'))
             {
@@ -1914,13 +1915,13 @@
                         switch ($request['identifiable_type'])
                         {
                             case 'user':
-                                $identified = \TBGContext::factory()->TBGUser($request['value']);
+                                $identified = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['value']);
                                 break;
                             case 'team':
-                                $identified = \TBGContext::factory()->TBGTeam($request['value']);
+                                $identified = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['value']);
                                 break;
                         }
-                        if ($identified instanceof \TBGIdentifiable)
+                        if ($identified instanceof \thebuggenie\core\entities\Identifiable)
                         {
                             if ($request['field'] == 'owned_by')
                                 $item->setOwner($identified);
@@ -1943,24 +1944,24 @@
                     }
                 }
                 if ($request['field'] == 'owned_by')
-                    return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwner()->getID(), 'name' => (($item->getOwner() instanceof \TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
+                    return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwner()->getID(), 'name' => (($item->getOwner() instanceof \thebuggenie\core\entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
                 elseif ($request['field'] == 'lead_by')
-                    return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeader()->getID(), 'name' => (($item->getLeader() instanceof \TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
+                    return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeader()->getID(), 'name' => (($item->getLeader() instanceof \thebuggenie\core\entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
                 elseif ($request['field'] == 'qa_by')
-                    return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsible()->getID(), 'name' => (($item->getQaResponsible() instanceof \TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
+                    return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsible()->getID(), 'name' => (($item->getQaResponsible() instanceof \thebuggenie\core\entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
             }
         }
 
         /**
          * Configure project settings
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runConfigureProjectSettings(\TBGRequest $request)
+        public function runConfigureProjectSettings(\thebuggenie\core\framework\Request $request)
         {
             if ($request->isPost())
             {
-                $this->forward403unless($this->getUser()->canEditProjectDetails($this->selected_project), \TBGContext::getI18n()->__('You do not have access to update these settings'));
+                $this->forward403unless($this->getUser()->canEditProjectDetails($this->selected_project), \thebuggenie\core\framework\Context::getI18n()->__('You do not have access to update these settings'));
 
                 if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
                 {
@@ -1975,7 +1976,7 @@
                     if (trim($request['project_name']) == '')
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__('Please specify a valid project name')));
+                        return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__('Please specify a valid project name')));
                     }
                     else
                     {
@@ -1984,7 +1985,7 @@
                 }
 
 
-                $message = ($old_key != $this->selected_project->getKey()) ? \TBGContext::getI18n()->__('%IMPORTANT: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT' => '<b>' . \TBGContext::getI18n()->__('IMPORTANT') . '</b>')) : '';
+                $message = ($old_key != $this->selected_project->getKey()) ? \thebuggenie\core\framework\Context::getI18n()->__('%IMPORTANT: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT' => '<b>' . \thebuggenie\core\framework\Context::getI18n()->__('IMPORTANT') . '</b>')) : '';
 
                 if ($request->hasParameter('project_key'))
                     $this->selected_project->setKey($request['project_key']);
@@ -1997,7 +1998,7 @@
                     if (!$this->selected_project->setPrefix($request['prefix']))
                     {
                         $this->getResponse()->setHttpStatus(400);
-                        return $this->renderJSON(array('error' => \TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
+                        return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::getI18n()->__("Project prefixes may only contain letters and numbers")));
                     }
                 }
 
@@ -2009,7 +2010,7 @@
                     }
                     else
                     {
-                        $this->selected_project->setClient(\TBGContext::factory()->TBGClient($request['client']));
+                        $this->selected_project->setClient(\thebuggenie\core\entities\Client::getB2DBTable()->selectById($request['client']));
                     }
                 }
 
@@ -2021,7 +2022,7 @@
                     }
                     else
                     {
-                        $this->selected_project->setParent(\TBGContext::factory()->TBGProject($request['subproject_id']));
+                        $this->selected_project->setParent(\thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['subproject_id']));
                     }
                 }
 
@@ -2029,7 +2030,7 @@
                 {
                     try
                     {
-                        $workflow_scheme = \TBGContext::factory()->TBGWorkflowScheme($request['workflow_scheme']);
+                        $workflow_scheme = \thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($request['workflow_scheme']);
                         $this->selected_project->setWorkflowScheme($workflow_scheme);
                     }
                     catch (\Exception $e)
@@ -2042,7 +2043,7 @@
                 {
                     try
                     {
-                        $issuetype_scheme = \TBGContext::factory()->TBGIssuetypeScheme($request['issuetype_scheme']);
+                        $issuetype_scheme = \thebuggenie\core\entities\IssuetypeScheme::getB2DBTable()->selectById($request['issuetype_scheme']);
                         $this->selected_project->setIssuetypeScheme($issuetype_scheme);
                     }
                     catch (\Exception $e)
@@ -2095,17 +2096,17 @@
         /**
          * Add an edition (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runAddEdition(\TBGRequest $request)
+        public function runAddEdition(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             if ($this->getUser()->canEditProjectDetails($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    if (\TBGContext::getUser()->canManageProjectReleases($this->selected_project))
+                    if (\thebuggenie\core\framework\Context::getUser()->canManageProjectReleases($this->selected_project))
                     {
                         if (($e_name = $request['e_name']) && trim($e_name) != '')
                         {
@@ -2114,7 +2115,7 @@
                                 throw new \Exception($i18n->__('This edition already exists for this project'));
                             }
                             $edition = $this->selected_project->addEdition($e_name);
-                            return $this->renderJSON(array('html' => $this->getComponentHTML('editionbox', array('edition' => $edition, 'access_level' => \TBGSettings::ACCESS_FULL))));
+                            return $this->renderJSON(array('html' => $this->getComponentHTML('editionbox', array('edition' => $edition, 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL))));
                         }
                         else
                         {
@@ -2139,11 +2140,11 @@
         /**
          * Perform actions on a build (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runDeleteBuild(\TBGRequest $request)
+        public function runDeleteBuild(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             try
             {
@@ -2151,7 +2152,7 @@
                 {
                     if ($b_id = $request['build_id'])
                     {
-                        $build = \TBGContext::factory()->TBGBuild($b_id);
+                        $build = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($b_id);
                         if ($build->hasAccess())
                         {
                             $build->delete();
@@ -2182,26 +2183,26 @@
         /**
          * Add a build (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runProjectBuild(\TBGRequest $request)
+        public function runProjectBuild(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             if ($this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    if (\TBGContext::getUser()->canManageProjectReleases($this->selected_project))
+                    if (\thebuggenie\core\framework\Context::getUser()->canManageProjectReleases($this->selected_project))
                     {
                         if (($b_name = $request['build_name']) && trim($b_name) != '')
                         {
-                            $build = new \TBGBuild($request['build_id']);
+                            $build = new \thebuggenie\core\entities\Build($request['build_id']);
                             $build->setName($b_name);
                             $build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
                             $build->setReleased((bool) $request['isreleased']);
                             $build->setLocked((bool) $request['locked']);
-                            if ($request['milestone'] && $milestone = \TBGContext::factory()->TBGMilestone($request['milestone']))
+                            if ($request['milestone'] && $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['milestone']))
                             {
                                 $build->setMilestone($milestone);
                             }
@@ -2209,7 +2210,7 @@
                             {
                                 $build->clearMilestone();
                             }
-                            if ($request['edition'] && $edition = \TBGContext::factory()->TBGEdition($request['edition']))
+                            if ($request['edition'] && $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['edition']))
                             {
                                 $build->setEdition($edition);
                             }
@@ -2235,7 +2236,7 @@
                                         $build->getFile()->delete();
                                         $build->clearFile();
                                     }
-                                    $file = \TBGContext::getRequest()->handleUpload('upload_file');
+                                    $file = \thebuggenie\core\framework\Context::getRequest()->handleUpload('upload_file');
                                     $build->setFile($file);
                                     $build->setFileURL('');
                                     break;
@@ -2264,9 +2265,9 @@
                 }
                 catch (\Exception $e)
                 {
-                    \TBGContext::setMessage('build_error', $e->getMessage());
+                    \thebuggenie\core\framework\Context::setMessage('build_error', $e->getMessage());
                 }
-                $this->forward(\TBGContext::getRouting()->generate('project_release_center', array('project_key' => $this->selected_project->getKey())));
+                $this->forward(\thebuggenie\core\framework\Context::getRouting()->generate('project_release_center', array('project_key' => $this->selected_project->getKey())));
             }
             return $this->forward403($i18n->__("You don't have access to add releases"));
         }
@@ -2274,11 +2275,11 @@
         /**
          * Add a component (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runAddComponent(\TBGRequest $request)
+        public function runAddComponent(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             if ($this->getUser()->canManageProjectReleases($this->selected_project))
             {
@@ -2291,7 +2292,7 @@
                             throw new \Exception($i18n->__('This component already exists for this project'));
                         }
                         $component = $this->selected_project->addComponent($c_name);
-                        return $this->renderJSON(array(/* 'title' => $i18n->__('The component has been added'), */'html' => $this->getComponentHTML('componentbox', array('component' => $component, 'access_level' => \TBGSettings::ACCESS_FULL))));
+                        return $this->renderJSON(array(/* 'title' => $i18n->__('The component has been added'), */'html' => $this->getComponentHTML('componentbox', array('component' => $component, 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL))));
                     }
                     else
                     {
@@ -2311,17 +2312,17 @@
         /**
          * Add or remove a component to/from an edition (AJAX call)
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runEditEditionComponent(\TBGRequest $request)
+        public function runEditEditionComponent(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    $edition = \TBGContext::factory()->TBGEdition($request['edition_id']);
+                    $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['edition_id']);
                     if ($request['mode'] == 'add')
                     {
                         $edition->addComponent($request['component_id']);
@@ -2345,17 +2346,17 @@
         /**
          * Edit a component
          *
-         * @param \TBGRequest $request The request object
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runEditComponent(\TBGRequest $request)
+        public function runEditComponent(\thebuggenie\core\framework\Request $request)
         {
-            $i18n = \TBGContext::getI18n();
+            $i18n = \thebuggenie\core\framework\Context::getI18n();
 
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    $component = \TBGContext::factory()->TBGComponent($request['component_id']);
+                    $component = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($request['component_id']);
                     if ($request['mode'] == 'update')
                     {
                         if (($c_name = $request['c_name']) && trim($c_name) != '')
@@ -2382,41 +2383,41 @@
                         $this->selected_project = $component->getProject();
                         $component->delete();
                         $count = $this->selected_project->countComponents();
-                        return $this->renderJSON(array('deleted' => true, 'itemcount' => $count, 'message' => \TBGContext::getI18n()->__('Component deleted')));
+                        return $this->renderJSON(array('deleted' => true, 'itemcount' => $count, 'message' => \thebuggenie\core\framework\Context::getI18n()->__('Component deleted')));
                     }
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array("error" => \TBGContext::getI18n()->__('Could not edit this component') . ", " . $e->getMessage()));
+                    return $this->renderJSON(array("error" => \thebuggenie\core\framework\Context::getI18n()->__('Could not edit this component') . ", " . $e->getMessage()));
                 }
             }
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify components")));
         }
 
-        public function runDeleteEdition(\TBGRequest $request)
+        public function runDeleteEdition(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    $edition = \TBGContext::factory()->TBGEdition($request['edition_id']);
+                    $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['edition_id']);
                     $edition->delete();
                     $count = $this->selected_project->countEditions();
-                    return $this->renderJSON(array('deleted' => true, 'itemcount' => $count, 'message' => \TBGContext::getI18n()->__('Edition deleted')));
+                    return $this->renderJSON(array('deleted' => true, 'itemcount' => $count, 'message' => \thebuggenie\core\framework\Context::getI18n()->__('Edition deleted')));
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array("error" => \TBGContext::getI18n()->__('Could not delete this edition') . ", " . $e->getMessage()));
+                    return $this->renderJSON(array("error" => \thebuggenie\core\framework\Context::getI18n()->__('Could not delete this edition') . ", " . $e->getMessage()));
                 }
             }
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
         }
 
-        public function runConfigureProjectEdition(\TBGRequest $request)
+        public function runConfigureProjectEdition(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
@@ -2424,7 +2425,7 @@
                 {
                     if ($edition_id = $request['edition_id'])
                     {
-                        $edition = \TBGContext::factory()->TBGEdition($edition_id);
+                        $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($edition_id);
                         if ($request->isPost())
                         {
                             if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
@@ -2439,14 +2440,14 @@
                                 {
                                     if (in_array($e_name, $edition->getProject()->getEditions()))
                                     {
-                                        throw new \Exception(\TBGContext::getI18n()->__('This edition already exists for this project'));
+                                        throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__('This edition already exists for this project'));
                                     }
                                     $edition->setName($e_name);
                                 }
                             }
                             else
                             {
-                                throw new \Exception(\TBGContext::getI18n()->__('You need to specify a name for this edition'));
+                                throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__('You need to specify a name for this edition'));
                             }
 
                             $edition->setDescription($request->getParameter('description', null, false));
@@ -2454,7 +2455,7 @@
                             $edition->setReleased((int) $request['released']);
                             $edition->setLocked((bool) $request['locked']);
                             $edition->save();
-                            return $this->renderJSON(array('edition_name' => $edition->getName(), 'message' => \TBGContext::getI18n()->__('Edition details saved')));
+                            return $this->renderJSON(array('edition_name' => $edition->getName(), 'message' => \thebuggenie\core\framework\Context::getI18n()->__('Edition details saved')));
                         }
                         else
                         {
@@ -2473,7 +2474,7 @@
                     }
                     else
                     {
-                        throw new \Exception(\TBGContext::getI18n()->__('Invalid edition id'));
+                        throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__('Invalid edition id'));
                     }
                 }
                 catch (\Exception $e)
@@ -2486,14 +2487,14 @@
             return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
         }
 
-        public function runConfigureProject(\TBGRequest $request)
+        public function runConfigureProject(\thebuggenie\core\framework\Request $request)
         {
             try
             {
                 // Build list of valid targets for the subproject dropdown
                 // The following items are banned from the list: current project, children of the current project
                 // Any further tests and things get silly, so we will trap it when building breadcrumbs
-                $valid_subproject_targets = \TBGProject::getValidSubprojects($this->selected_project);
+                $valid_subproject_targets = \thebuggenie\core\entities\Project::getValidSubprojects($this->selected_project);
                 $content = $this->getComponentHTML('project/projectconfig', array('valid_subproject_targets' => $valid_subproject_targets, 'project' => $this->selected_project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
                 return $this->renderJSON(array('content' => $content));
             }
@@ -2504,33 +2505,33 @@
             }
         }
 
-        public function runGetUpdatedProjectKey(\TBGRequest $request)
+        public function runGetUpdatedProjectKey(\thebuggenie\core\framework\Request $request)
         {
             try
             {
-                $this->selected_project = \TBGContext::factory()->TBGProject($request['project_id']);
+                $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
             }
             catch (\Exception $e)
             {
 
             }
 
-            if (!$this->selected_project instanceof \TBGProject)
-                return $this->return404(\TBGContext::getI18n()->__("This project doesn't exist"));
+            if (!$this->selected_project instanceof \thebuggenie\core\entities\Project)
+                return $this->return404(\thebuggenie\core\framework\Context::getI18n()->__("This project doesn't exist"));
             $this->selected_project->setName($request['project_name']);
 
             return $this->renderJSON(array('content' => $this->selected_project->getKey()));
         }
 
-        public function runUnassignFromProject(\TBGRequest $request)
+        public function runUnassignFromProject(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
                 try
                 {
-                    $assignee = ($request['assignee_type'] == 'user') ? new \TBGUser($request['assignee_id']) : new \TBGTeam($request['assignee_id']);
+                    $assignee = ($request['assignee_type'] == 'user') ? new \thebuggenie\core\entities\User($request['assignee_id']) : new \thebuggenie\core\entities\Team($request['assignee_id']);
                     $this->selected_project->removeAssignee($assignee);
-                    return $this->renderJSON(array('message' => \TBGContext::getI18n()->__('The assignee has been removed')));
+                    return $this->renderJSON(array('message' => \thebuggenie\core\framework\Context::getI18n()->__('The assignee has been removed')));
                 }
                 catch (\Exception $e)
                 {
@@ -2542,7 +2543,7 @@
             return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to perform this action")));
         }
 
-        public function runProjectIcons(\TBGRequest $request)
+        public function runProjectIcons(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
@@ -2578,7 +2579,7 @@
                     }
                     $this->selected_project->save();
                 }
-                $route = \TBGContext::getRouting()->generate('project_settings', array('project_key' => $this->selected_project->getKey()));
+                $route = \thebuggenie\core\framework\Context::getRouting()->generate('project_settings', array('project_key' => $this->selected_project->getKey()));
                 if ($request->isAjaxCall())
                 {
                     return $this->renderJSON(array('forward' => $route));
@@ -2591,7 +2592,7 @@
             return $this->forward403($this->getI18n()->__("You don't have access to perform this action"));
         }
 
-        public function runProjectWorkflow(\TBGRequest $request)
+        public function runProjectWorkflow(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
             {
@@ -2607,46 +2608,46 @@
                         $this->selected_project->convertIssueStepPerIssuetype($type, $data);
                     }
 
-                    $this->selected_project->setWorkflowScheme(\TBGContext::factory()->TBGWorkflowScheme($request['workflow_id']));
+                    $this->selected_project->setWorkflowScheme(\thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($request['workflow_id']));
                     $this->selected_project->save();
 
-                    return $this->renderJSON(array('message' => \TBGContext::geti18n()->__('Workflow scheme changed and issues updated')));
+                    return $this->renderJSON(array('message' => \thebuggenie\core\framework\Context::geti18n()->__('Workflow scheme changed and issues updated')));
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHTTPStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::geti18n()->__('An internal error occured')));
+                    return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::geti18n()->__('An internal error occured')));
                 }
             }
             $this->getResponse()->setHTTPStatus(400);
-            return $this->renderJSON(array('error' => \TBGContext::geti18n()->__("You don't have access to perform this action")));
+            return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::geti18n()->__("You don't have access to perform this action")));
         }
 
-        public function runProjectWorkflowTable(\TBGRequest $request)
+        public function runProjectWorkflowTable(\thebuggenie\core\framework\Request $request)
         {
-            $this->selected_project = \TBGContext::factory()->TBGProject($request['project_id']);
+            $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
             if ($request->isPost())
             {
                 try
                 {
-                    $workflow_scheme = \TBGContext::factory()->TBGWorkflowScheme($request['new_workflow']);
+                    $workflow_scheme = \thebuggenie\core\entities\WorkflowScheme::getB2DBTable()->selectById($request['new_workflow']);
                     return $this->renderJSON(array('content' => $this->getComponentHTML('projectworkflow_table', array('project' => $this->selected_project, 'new_workflow' => $workflow_scheme))));
                 }
                 catch (\Exception $e)
                 {
                     $this->getResponse()->setHTTPStatus(400);
-                    return $this->renderJSON(array('error' => \TBGContext::geti18n()->__('This workflow scheme is not valid')));
+                    return $this->renderJSON(array('error' => \thebuggenie\core\framework\Context::geti18n()->__('This workflow scheme is not valid')));
                 }
             }
         }
 
-        public function runAddRole(\TBGRequest $request)
+        public function runAddRole(\thebuggenie\core\framework\Request $request)
         {
             if ($this->getUser()->canManageProject($this->selected_project))
             {
                 if ($request['role_name'])
                 {
-                    $role = new \TBGRole();
+                    $role = new \thebuggenie\core\entities\Role();
                     $role->setName($request['role_name']);
                     $role->setProject($this->selected_project);
                     $role->save();

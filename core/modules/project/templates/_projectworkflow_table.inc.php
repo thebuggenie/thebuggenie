@@ -1,5 +1,5 @@
             <?php echo __("Issues in the workflow step on the left will have their workflow step changed to the one on the right. This will change the issue's status to the one assigned to the new step."); ?>
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Project.workflow('<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>');return false;" action="<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>" method="post" id="workflow_form2" enctype="multipart/form-data">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" onsubmit="TBG.Project.workflow('<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>');return false;" action="<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>" method="post" id="workflow_form2" enctype="multipart/form-data">
                 <input type="hidden" name="workflow_id" value="<?php echo $new_workflow->getID(); ?>" />
                 <input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>" />
                 <div class="workflow_change_div">

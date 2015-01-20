@@ -1,7 +1,7 @@
 <?php 
 
     $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
-    if ($client instanceof TBGClient)
+    if ($client instanceof \thebuggenie\core\entities\Client)
     {
         $tbg_response->setTitle(__('Client dashboard for %client_name', array('%client_name' => $client->getName())));
         $tbg_response->setPage('client');
@@ -15,7 +15,7 @@
     
 ?>
 
-<?php if ($client instanceof TBGClient): ?>
+<?php if ($client instanceof \thebuggenie\core\entities\Client): ?>
     <div class="client_dashboard">
         <div class="dashboard_client_info">
             <span class="dashboard_client_header"><?php echo $client->getName(); ?></span>

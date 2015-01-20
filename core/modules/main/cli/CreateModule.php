@@ -2,8 +2,6 @@
 
     namespace thebuggenie\core\modules\main\cli;
 
-    use TBGContext;
-
     /**
      * CLI command class, main -> create_module
      *
@@ -20,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class CreateModule extends \TBGCliCommand
+    class CreateModule extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -32,7 +30,7 @@
 
         public function do_execute()
         {
-            if (TBGContext::isInstallmode())
+            if (\thebuggenie\core\framework\Context::isInstallmode())
             {
                 $this->cliEcho("Create module\n", 'white', 'bold');
                 $this->cliEcho("The Bug Genie is not installed\n", 'red');

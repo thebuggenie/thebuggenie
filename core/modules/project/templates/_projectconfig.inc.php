@@ -17,5 +17,5 @@
     <div id="tab_permissions_pane" style="text-align: left;<?php if ($selected_tab != 'permissions'): ?> display: none;<?php endif; ?>">
         <?php include_component('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
     </div>
-    <?php TBGEvent::createNew('core', 'config_project_panes')->trigger(array('selected_tab' => $selected_tab, 'access_level' => $access_level, 'project' => $project)); ?>
+    <?php \thebuggenie\core\framework\Event::createNew('core', 'config_project_panes')->trigger(array('selected_tab' => $selected_tab, 'access_level' => $access_level, 'project' => $project)); ?>
 </div>

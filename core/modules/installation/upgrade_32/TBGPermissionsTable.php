@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Permissions table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="permissions_32")
      */
-    class TBGPermissionsTable extends \TBGB2DBTable
+    class TBGPermissionsTable extends ScopedTable
     {
 
         const B2DBNAME = 'permissions';

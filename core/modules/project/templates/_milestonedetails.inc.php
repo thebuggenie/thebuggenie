@@ -1,4 +1,4 @@
-<?php if ($milestone instanceof TBGMilestone): ?>
+<?php if ($milestone instanceof \thebuggenie\core\entities\Milestone): ?>
     <div class="milestone_details" id="milestone_details_<?php echo $milestone->getID(); ?>">
         <h3>
             <span id="milestone_name" class="milestone_name"><?php echo $milestone->getName(); ?></span>&nbsp;

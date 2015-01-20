@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage mailing
      */
-    class CheckIncoming extends \TBGCliCommand
+    class CheckIncoming extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()

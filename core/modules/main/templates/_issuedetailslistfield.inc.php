@@ -22,7 +22,7 @@
                     <?php if (count($info['choices'])): ?>
                         <li class="separator"></li>
                         <?php foreach ($info['choices'] as $choice): ?>
-                            <?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
+                            <?php if ($choice instanceof \thebuggenie\core\entities\DatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo image_tag('icon_' . $field . '.png').__($choice->getName()); ?></a>
                             </li>

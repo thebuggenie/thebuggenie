@@ -2,10 +2,12 @@
 
     namespace thebuggenie\modules\publish\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * @Table(name="articles_32")
      */
-    class TBGArticlesTable extends \TBGB2DBTable
+    class TBGArticlesTable extends ScopedTable
     {
 
         const B2DBNAME = 'articles';

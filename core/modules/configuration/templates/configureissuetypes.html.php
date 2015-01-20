@@ -31,7 +31,7 @@
                                 <?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes tab to get it to show up for users.', array('%issue_type_schemes' => link_tag(make_url('configure_issuetypes_schemes'), __('Issue type schemes')))); ?>
                             </div>
                             <div class="lightyellowbox" style="margin: 5px 0 0 0;">
-                                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
+                                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
                                     <label for="new_issuetype_name"><?php echo __('Add new issue type'); ?>:</label>
                                     <input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
                                     <label for="new_issuetype_icon"><?php echo __('Type'); ?></label>

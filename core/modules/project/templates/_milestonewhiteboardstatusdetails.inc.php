@@ -1,4 +1,4 @@
-<?php if ($milestone instanceof TBGMilestone): ?>
+<?php if ($milestone instanceof \thebuggenie\core\entities\Milestone): ?>
     <span class="milestonename"><?php echo $milestone->getName(); ?></span>
     <div class="statusblocks">
     <?php foreach ($status_details['details'] as $status): ?>

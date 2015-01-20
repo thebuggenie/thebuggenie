@@ -2,9 +2,7 @@
 
     namespace thebuggenie\modules\auth_ldap;
 
-    use TBGContext,
-        TBGRequest,
-        TBGUser;
+    use thebuggenie\core\framework;
 
     /**
      * LDAP Authentication
@@ -22,9 +20,9 @@
      * @package auth_ldap
      * @subpackage core
      *
-     * @Table(name="TBGModulesTable")
+     * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    class Auth_ldap extends \TBGModule
+    class Auth_ldap extends \thebuggenie\core\entities\Module
     {
 
         const VERSION = '2.0';
@@ -57,10 +55,10 @@
 
         public function getRoute()
         {
-            return TBGContext::getRouting()->generate('ldap_authentication_index');
+            return framework\Context::getRouting()->generate('ldap_authentication_index');
         }
 
-        public function postConfigSettings(TBGRequest $request)
+        public function postConfigSettings(framework\Request $request)
         {
             $settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth', 'integrated_auth_header');
             foreach ($settings as $setting)
@@ -108,7 +106,7 @@
 
             if ($failed)
             {
-                throw new \Exception(TBGContext::geti18n()->__('Failed to connect to server'));
+                throw new \Exception(framework\Context::geti18n()->__('Failed to connect to server'));
             }
 
             return $connection;
@@ -121,8 +119,8 @@
             if (!$bind)
             {
                 ldap_unbind($connection);
-                TBGLogging::log('bind failed: ' . ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-                throw new \Exception(TBGContext::geti18n()->__('Failed to bind: ') . ldap_error($connection));
+                framework\Logging::log('bind failed: ' . ldap_error($connection), 'ldap', framework\Logging::LEVEL_FATAL);
+                throw new \Exception(framework\Context::geti18n()->__('Failed to bind: ') . ldap_error($connection));
             }
         }
 
@@ -148,8 +146,8 @@
             $email_attr = $this->escape($this->getSetting('e_attr'));
             $groups_members_attr = $this->escape($this->getSetting('g_attr'));
 
-            $user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
-            $group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
+            $user_class = framework\Context::getModule('auth_ldap')->getSetting('u_type');
+            $group_class = framework\Context::getModule('auth_ldap')->getSetting('g_type');
 
             $email = null;
 
@@ -164,7 +162,7 @@
              * otherwise don't touch those variables.
              *
              * To log do:
-             * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
+             * framework\Logging::log('error goes here', 'ldap', framework\Logging::LEVEL_FATAL);
              */
             try
             {
@@ -196,8 +194,8 @@
 
                 if (!$results)
                 {
-                    TBGLogging::log('failed to search for user: ' . ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-                    throw new \Exception(TBGContext::geti18n()->__('Search failed: ') . ldap_error($connection));
+                    framework\Logging::log('failed to search for user: ' . ldap_error($connection), 'ldap', framework\Logging::LEVEL_FATAL);
+                    throw new \Exception(framework\Context::geti18n()->__('Search failed: ') . ldap_error($connection));
                 }
 
                 $data = ldap_get_entries($connection, $results);
@@ -205,15 +203,15 @@
                 // User does not exist
                 if ($data['count'] == 0)
                 {
-                    TBGLogging::log('could not find user ' . $username . ', class ' . $user_class . ', attribute ' . $username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
-                    throw new \Exception(TBGContext::geti18n()->__('User does not exist in the directory'));
+                    framework\Logging::log('could not find user ' . $username . ', class ' . $user_class . ', attribute ' . $username_attr, 'ldap', framework\Logging::LEVEL_FATAL);
+                    throw new \Exception(framework\Context::geti18n()->__('User does not exist in the directory'));
                 }
 
                 // If we have more than 1 user, something is seriously messed up...
                 if ($data['count'] > 1)
                 {
-                    TBGLogging::log('too many users for ' . $username . ', class ' . $user_class . ', attribute ' . $username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
-                    throw new \Exception(TBGContext::geti18n()->__('This user was found multiple times in the directory, please contact your administrator'));
+                    framework\Logging::log('too many users for ' . $username . ', class ' . $user_class . ', attribute ' . $username_attr, 'ldap', framework\Logging::LEVEL_FATAL);
+                    throw new \Exception(framework\Context::geti18n()->__('This user was found multiple times in the directory, please contact your administrator'));
                 }
 
                 /*
@@ -254,8 +252,8 @@
 
                         if (!$results2)
                         {
-                            TBGLogging::log('failed to search for user after binding: ' . ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-                            throw new \Exception(TBGContext::geti18n()->__('Search failed ') . ldap_error($connection));
+                            framework\Logging::log('failed to search for user after binding: ' . ldap_error($connection), 'ldap', framework\Logging::LEVEL_FATAL);
+                            throw new \Exception(framework\Context::geti18n()->__('Search failed ') . ldap_error($connection));
                         }
 
                         $data2 = ldap_get_entries($connection, $results2);
@@ -282,7 +280,7 @@
 
                     if ($allowed == false)
                     {
-                        throw new \Exception(TBGContext::getI18n()->__('You are not a member of a group allowed to log in'));
+                        throw new \Exception(framework\Context::getI18n()->__('You are not a member of a group allowed to log in'));
                     }
                 }
 
@@ -340,9 +338,9 @@
                         }
                         $bind = $this->bind($connection, $this->escape($dn), $password);
                     }
-                    catch (Exception $e)
+                    catch (\Exception $e)
                     {
-                        throw new \Exception(TBGContext::geti18n()->__('Your password was not accepted by the server'));
+                        throw new \Exception(framework\Context::geti18n()->__('Your password was not accepted by the server'));
                     }
                 }
                 /*
@@ -354,11 +352,11 @@
                 {
                     if (!isset($_SERVER[$this->getSetting('integrated_auth_header')]) || $_SERVER[$this->getSetting('integrated_auth_header')] != $username)
                     {
-                        throw new \Exception(TBGContext::geti18n()->__('HTTP authentication internal error.'));
+                        throw new \Exception(framework\Context::geti18n()->__('HTTP authentication internal error.'));
                     }
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 ldap_unbind($connection);
                 throw $e;
@@ -370,8 +368,8 @@
                  * Get the user object. If the user exists, update the user's
                  * data from the directory.
                  */
-                $user = TBGUser::getByUsername($username);
-                if ($user instanceof TBGUser)
+                $user = \thebuggenie\core\entities\User::getByUsername($username);
+                if ($user instanceof \thebuggenie\core\entities\User)
                 {
                     $user->setBuddyname($buddyname);
                     $user->setRealname($realname);
@@ -388,7 +386,7 @@
                     if ($mode == 1)
                     {
                         // create user
-                        $user = new TBGUser();
+                        $user = new \thebuggenie\core\entities\User();
                         $user->setUsername($username);
                         $user->setRealname('temporary');
                         $user->setBuddyname($username);
@@ -405,7 +403,7 @@
                     }
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 ldap_unbind($connection);
                 throw $e;
@@ -416,10 +414,10 @@
             /*
              * Set cookies and return user row for general operations.
              */
-            TBGContext::getResponse()->setCookie('tbg3_username', $username);
-            TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($user->getJoinedDate() . $username, $user->getSalt()));
+            framework\Context::getResponse()->setCookie('tbg3_username', $username);
+            framework\Context::getResponse()->setCookie('tbg3_password', \thebuggenie\core\entities\User::hashPassword($user->getJoinedDate() . $username, $user->getSalt()));
 
-            return TBGUsersTable::getTable()->getByUsername($username);
+            return \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($username);
         }
 
         public function verifyLogin($username)
@@ -444,7 +442,7 @@
          * Return:
          * true - succeeded operation but no autologin
          * false - invalid cookies found
-         * Row from TBGUsersTable - succeeded operation, user found
+         * Row from \thebuggenie\core\entities\tables\Users - succeeded operation, user found
          *
          */
 
@@ -458,7 +456,7 @@
                 }
                 else
                 {
-                    throw new \Exception(TBGContext::geti18n()->__('HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.'));
+                    throw new \Exception(framework\Context::geti18n()->__('HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.'));
                 }
             }
             else

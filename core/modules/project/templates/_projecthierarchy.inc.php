@@ -1,9 +1,9 @@
-<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+<?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
     <div class="project_save_container">
         <div class="button button-silver" id="add_edition_button" style="<?php if (!$project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" onclick="$('add_edition_form').toggle();if ($('add_edition_form').visible()) $('edition_name').focus();"><?php echo __('Add an edition'); ?></div>
         <div class="button button-silver" id="add_component_button" style="<?php if (!$project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" onclick="$('add_component_form').toggle();if ($('add_component_form').visible()) $('component_name').focus();"><?php echo __('Add a component'); ?></div>
     </div>
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="TBG.Project.Edition.add('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="TBG.Project.Edition.add('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
         <div class="lightyellowbox">
             <input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
             <label for="edition_name"><?php echo __('Add edition'); ?></label>
@@ -16,7 +16,7 @@
             </tr>
         </table>
     </form>
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="TBG.Project.Component.add('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="TBG.Project.Component.add('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
         <div class="lightyellowbox">
             <input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
             <label for="component_name"><?php echo __('Add component'); ?></label>

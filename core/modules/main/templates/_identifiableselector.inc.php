@@ -7,7 +7,7 @@
         <li class="separator"></li>
     <?php endif; ?>
     <li class="dropdown_content nohover form_container">
-        <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+        <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
             <?php if ($include_teams && $include_users): ?>
                 <label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
             <?php elseif ($include_teams): ?>

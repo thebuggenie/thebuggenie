@@ -24,7 +24,7 @@
             <div class="fullpage_backdrop_content backdrop_box medium">
                 <div class="backdrop_detail_header"><?php echo __('Edit client settings'); ?></div>
                 <div class="backdrop_detail_content">
-                    <form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Client.update('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>', '<?php echo $client->getID(); ?>');return false;">
+                    <form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Client.update('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>', '<?php echo $client->getID(); ?>');return false;">
                     <input type="hidden" name="client_id" value="<?php echo $client->getID(); ?>">
                         <div id="edit_client">
                             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>

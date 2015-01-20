@@ -4,5 +4,5 @@
      * Configuration for theme
      */
 
-    TBGContext::getResponse()->addStylesheet('firehouse.css');
+    \thebuggenie\core\framework\Context::getResponse()->addStylesheet('firehouse.css');
     

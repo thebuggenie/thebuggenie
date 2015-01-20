@@ -2,10 +2,12 @@
 
     namespace thebuggenie\modules\mailing\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * @Table(name="mailing_incoming_email_account_32")
      */
-    class TBGIncomingEmailAccountTable extends \TBGB2DBTable
+    class TBGIncomingEmailAccountTable extends ScopedTable
     {
 
         const B2DBNAME = 'mailing_incoming_email_account';

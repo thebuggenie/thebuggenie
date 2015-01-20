@@ -29,14 +29,14 @@
     </div>
     <div id="fullpage_backdrop_content" class="fullpage_backdrop_content"> </div>
 </div>
-<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page' && $tbg_user->isGuest()): ?>
+<?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page' && $tbg_user->isGuest()): ?>
     <div id="login_backdrop" class="fullpage_backdrop" style="display: none;">
         <div id="login_content" class="fullpage_backdrop_content">
             <?php include_component('main/loginpopup', array('content' => get_component_html('main/login'), 'mandatory' => false)); ?>
         </div>
     </div>
 <?php endif; ?>
-<?php if (TBGSettings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
+<?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
     <script src="https://login.persona.org/include.js"></script>
     <script type="text/javascript">
         document.observe('dom:loaded', function() {
@@ -50,7 +50,7 @@
                 // 2. Update your UI.
                 TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
                     url_method: 'post',
-                    additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo TBGContext::getRouting()->getCurrentRouteName(); ?>',
+                    additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
                     loading: {
                         indicator: 'fullpage_backdrop',
                         clear: 'fullpage_backdrop_content',

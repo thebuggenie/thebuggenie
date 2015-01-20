@@ -13,7 +13,7 @@
         <span class="column_count under"><?php echo __('%count (under %min_workitems)', array('%count' => '<span class="under_count"></span>', '%min_workitems' => $column->getMinWorkitems())); ?></span>
         <span class="column_count over"><?php echo __('%count (over %max_workitems)', array('%count' => '<span class="over_count"></span>', '%max_workitems' => $column->getMaxWorkitems())); ?></span>
         <?php foreach ($column->getStatusIds() as $status_id): ?>
-            <?php if (isset($statuses[$status_id]) && $statuses[$status_id] instanceof TBGDatatype): ?>
+            <?php if (isset($statuses[$status_id]) && $statuses[$status_id] instanceof \thebuggenie\core\entities\Datatype): ?>
                 <div class="status_badge status-<?php echo $status_id; ?>" style="background-color: <?php echo $statuses[$status_id]->getColor(); ?>;" title="<?php echo $statuses[$status_id]->getName(); ?>" data-status-id="<?php echo $status_id; ?>">-</div>
             <?php endif; ?>
         <?php endforeach; ?>

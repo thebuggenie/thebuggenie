@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Workflows table
      *
@@ -20,7 +22,7 @@
      *
      * @Table(name="workflows")
      */
-    class TBGWorkflowsTable extends \TBGB2DBTable
+    class TBGWorkflowsTable extends ScopedTable
     {
 
         const B2DBNAME = 'workflows';

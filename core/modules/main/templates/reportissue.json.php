@@ -1,6 +1,6 @@
 <?php
 
-    if (isset($issue) && $issue instanceof TBGIssue)
+    if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue)
     {
         echo json_encode(array('issue' => $issue->toJSON()));
     }

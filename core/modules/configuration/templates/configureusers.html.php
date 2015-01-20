@@ -1,13 +1,13 @@
 <?php
 
     $tbg_response->setTitle(__('Configure users, teams and clients'));
-    $users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num/%max)', array('%num' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max' => TBGContext::getScope()->getMaxUsers())) : __('Users');
-    $teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
+    $users_text = (\thebuggenie\core\framework\Context::getScope()->getMaxUsers()) ? __('Users (%num/%max)', array('%num' => '<span id="current_user_num_count">'.\thebuggenie\core\entities\User::getUsersCount().'</span>', '%max' => \thebuggenie\core\framework\Context::getScope()->getMaxUsers())) : __('Users');
+    $teams_text = (\thebuggenie\core\framework\Context::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.\thebuggenie\core\entities\Team::countAll().'</span>', '%max' => \thebuggenie\core\framework\Context::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_USERS)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)); ?>
         <td valign="top" style="padding-left: 15px;">
             <div style="width: 730px;">
                 <h3><?php echo __('Configure users, teams and clients'); ?></h3>
@@ -26,7 +26,7 @@
                                 <label for="quick_add_user_username"><?php echo __('Quick add user'); ?></label>
                                 <input type="text" id="quick_add_user_username" name="username" placeholder="<?php echo __('Enter username to add'); ?>">
                                 <input type="submit" value="<?php echo __('Create'); ?>">
-                                <a href="javascript:void(0);" style="float: right; <?php if (!TBGContext::getScope()->hasUsersAvailable()): ?>display: none;<?php endif; ?>" onclick="$('adduser_div').toggle();"><?php echo __('More details'); ?></a>
+                                <a href="javascript:void(0);" style="float: right; <?php if (!\thebuggenie\core\framework\Context::getScope()->hasUsersAvailable()): ?>display: none;<?php endif; ?>" onclick="$('adduser_div').toggle();"><?php echo __('More details'); ?></a>
                             </form>
                         </div>
                         <strong><?php echo __('Quick selection'); ?></strong>
@@ -97,12 +97,12 @@
                                             <dd>
                                                 <input type="text" name="email" id="adduser_email" style="width: 300px;">
                                             </dd>
-                                            <?php TBGEvent::createNew('core', 'config.createuser.email')->trigger(); ?>
+                                            <?php \thebuggenie\core\framework\Event::createNew('core', 'config.createuser.email')->trigger(); ?>
                                             <dt><label for="adduser_group"><?php echo __('Add user to group'); ?>:</label></dt>
                                             <dd>
                                                 <select name="group_id">
                                                     <?php foreach ($groups as $group): ?>
-                                                        <option value="<?php echo $group->getID(); ?>" <?php if ($group->getID() == TBGSettings::getDefaultGroup()->getID()) echo ' selected'; ?>><?php echo $group->getName(); ?></option>
+                                                        <option value="<?php echo $group->getID(); ?>" <?php if ($group->getID() == \thebuggenie\core\framework\Settings::getDefaultGroup()->getID()) echo ' selected'; ?>><?php echo $group->getName(); ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </dd>
@@ -117,7 +117,7 @@
                                         </dl>
                                         <br style="clear: both;">
                                         <div class="createuser_submit_container">
-                                            <input type="submit" value="<?php echo (TBGContext::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
+                                            <input type="submit" value="<?php echo (\thebuggenie\core\framework\Context::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
                                         </div>
                                     </form>
                                 </div>
@@ -129,7 +129,7 @@
                     </div>
                     <div id="tab_groups_pane" style="display: none;">
                         <div class="lightyellowbox" style="margin-top: 5px; padding: 7px;">
-                            <form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Group.add('<?php echo make_url('configure_users_add_group'); ?>');return false;">
+                            <form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Group.add('<?php echo make_url('configure_users_add_group'); ?>');return false;">
                                 <div id="add_group">
                                     <label for="group_name"><?php echo __('Create a new group'); ?></label>
                                     <input type="text" id="group_name" name="group_name" placeholder="<?php echo __('Enter group name here'); ?>">
@@ -150,8 +150,8 @@
                         </div>
                     </div>
                     <div id="tab_teams_pane" style="display: none;">
-                        <div class="lightyellowbox" style="margin-top: 5px; padding: 7px;<?php if (!TBGContext::getScope()->hasTeamsAvailable()): ?> display: none;<?php endif; ?>" id="add_team_div">
-                            <form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Team.add('<?php echo make_url('configure_users_add_team'); ?>');return false;">
+                        <div class="lightyellowbox" style="margin-top: 5px; padding: 7px;<?php if (!\thebuggenie\core\framework\Context::getScope()->hasTeamsAvailable()): ?> display: none;<?php endif; ?>" id="add_team_div">
+                            <form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Team.add('<?php echo make_url('configure_users_add_team'); ?>');return false;">
                                 <label for="team_name"><?php echo __('Create a new team'); ?></label>
                                 <input type="text" id="team_name" name="team_name" placeholder="<?php echo __('Enter team name here'); ?>">
                                 <input type="submit" value="<?php echo __('Create'); ?>">
@@ -166,7 +166,7 @@
                     </div>
                     <div id="tab_clients_pane" style="display: none;">
                         <div class="lightyellowbox" style="margin-top: 5px; padding: 7px;">
-                            <form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Client.add('<?php echo make_url('configure_users_add_client'); ?>');return false;">
+                            <form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Client.add('<?php echo make_url('configure_users_add_client'); ?>');return false;">
                                 <div id="add_client">
                                     <label for="client_name"><?php echo __('Create a new client'); ?></label>
                                     <input type="text" id="client_name" name="client_name" placeholder="<?php echo __('Enter client name here'); ?>">

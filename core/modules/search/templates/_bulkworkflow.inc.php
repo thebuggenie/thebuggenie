@@ -2,7 +2,7 @@
     <div class="backdrop_detail_header"><?php echo __('Perform workflow step'); ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="header"><?php echo __('%number_of issues selected', array('%number_of' => count($issues))); ?></div>
-        <?php if (!$project instanceof TBGProject): ?>
+        <?php if (!$project instanceof \thebuggenie\core\entities\Project): ?>
             <div class="content faded_out">
                 <?php echo __('You can only apply workflow transitions on issues in the same project.'); ?>
             </div>
@@ -20,7 +20,7 @@
                                 <?php echo javascript_link_tag($transition->getName(), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID()))."&project_key=".$project->getKey()."&issue_ids[]=".join('&issue_ids[]=', array_keys($issues))."');", 'class' => 'button button-silver workflow_transition_submit_button')); ?>
                                 <?php echo image_tag('spinning_16.gif', array('style' => 'margin: -3px 0 -3px 5px; display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')); ?>
                             <?php else: ?>
-                                <form action="<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>" method="post" onsubmit="TBG.Search.bulkWorkflowTransition('<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>', <?php echo $transition->getID(); ?>);return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" id="bulk_workflow_transition_form">
+                                <form action="<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>" method="post" onsubmit="TBG.Search.bulkWorkflowTransition('<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>', <?php echo $transition->getID(); ?>);return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="bulk_workflow_transition_form">
                                     <?php foreach ($issues as $issue_id => $i): ?>
                                         <input type="hidden" name="issue_ids[<?php echo $issue_id; ?>]" value="<?php echo $issue_id; ?>">
                                     <?php endforeach; ?>

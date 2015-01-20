@@ -9,7 +9,7 @@
                     <p><?php echo __('Edit built-in and custom issue fields and values here. Remember that the issue fields visibility (in the issue view or during reporting) is decided by the %issuetype_scheme in use by the project.', array('%issuetype_scheme' => link_tag(make_url('configure_issuetypes_schemes'), __('Issuetype scheme')))); ?></p>
                 </div>
                 <div class="lightyellowbox" style="margin: 15px 0 10px 0; position: relative;">
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Config.Issuefields.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Config.Issuefields.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
                         <div style="position: absolute; right: 15px; top: 15px;">
                             <input type="submit" value="<?php echo __('Add issue field'); ?>" style="font-weight: normal; font-size: 14px;" id="add_custom_type_button">
                             <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_custom_type_indicator')); ?>
@@ -19,7 +19,7 @@
                         <br style="clear: both;">
                         <label for="new_custom_field_name" style="width: 150px; display: inline-block;"><?php echo __('Field type'); ?></label>
                         <select id="new_custom_field_type" name="field_type" style="width: 400px;">
-                            <?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
+                            <?php foreach (\thebuggenie\core\entities\CustomDatatype::getFieldTypes() as $type => $description): ?>
                                 <option value="<?php echo $type; ?>"><?php echo $description; ?></option>
                             <?php endforeach; ?>
                         </select>

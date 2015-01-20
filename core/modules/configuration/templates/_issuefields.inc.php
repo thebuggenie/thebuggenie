@@ -1,11 +1,11 @@
 <?php if ($showitems): ?>
-    <?php if (isset($customtype) && $customtype->getType() == TBGCustomDatatype::CALCULATED_FIELD): ?>
+    <?php if (isset($customtype) && $customtype->getType() == \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD): ?>
         <div class="header_div" style="margin-top: 15px;">
             <?php echo __('Formula'); ?>
         </div>
         <p><?php echo __('To use a custom field in the formula, enter the field key (displayed in light gray text next to the name) between curly braces.'); ?></p>
         <p><?php echo __('Example: ({myfield}+{otherfield})/({thirdfield}*2)'); ?></p>
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
             <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Value'); ?></label>
             <input type="hidden" id="add_option_<?php echo $type; ?>_name" name="name" value="Formula">
             <?php $value = (!empty($items) ? array_pop($items)->getValue() : ''); ?>
@@ -15,14 +15,14 @@
         </form>
     <?php else: ?>
         <div class="lightyellowbox" style="margin: 20px 0 0 0;">
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
                 <label for="add_option_<?php echo $type; ?>_name"><?php echo __('Add an option'); ?>:</label>
                 <input type="text" id="add_option_<?php echo $type; ?>_name" name="name" style="width: 200px;">
                 <?php if ($type == 'status'): ?>
                     <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Color'); ?></label>
                     #<input type="text" id="add_option_<?php echo $type; ?>_itemdata" name="itemdata" style="width: 45px;">
                 <?php endif; ?>
-                <?php if (!array_key_exists($type, TBGDatatype::getTypes())): ?>
+                <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>
                     <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Value'); ?></label>
                     <input type="text" id="add_option_<?php echo $type; ?>_itemdata" name="value" style="width: 45px;">
                 <?php endif; ?>

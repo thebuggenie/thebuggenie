@@ -4,7 +4,7 @@
             <?php if ($build->hasDownload()): ?>
                 <?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), __('Download'), array('class' => 'button button-silver')) : link_tag($build->getFileURL(), __('Download'), array('class' => 'button button-silver')); ?>
             <?php endif; ?>
-            <?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'search' => true, 'fs[state]' => array('o' => '=', 'v' => TBGIssue::STATE_OPEN), 'fs[build]' => array('o' => '=', 'v' => $build->getID())))."?sortfields=issues.posted=desc", __('Issues'), array('class' => 'button button-silver', 'title' => __('Show all issues for this release'))); ?>
+            <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'search' => true, 'fs[state]' => array('o' => '=', 'v' => \thebuggenie\core\entities\Issue::STATE_OPEN), 'fs[build]' => array('o' => '=', 'v' => $build->getID())))."?sortfields=issues.posted=desc", __('Issues'), array('class' => 'button button-silver', 'title' => __('Show all issues for this release'))); ?>
             <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $build->getProject()->getId(), 'build_id' => $build->getID()))."');", 'class' => 'button button-silver')); ?>
         <?php else: ?>
             <?php if ($build->hasDownload()): ?>

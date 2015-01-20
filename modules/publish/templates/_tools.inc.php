@@ -16,10 +16,10 @@
                     <?php echo link_tag(make_url('publish_special_whatlinkshere', array('linked_article_name' => $article_name)), __('What links here')); ?>
                 </li>
             <?php endif; ?>
-            <?php if (TBGContext::isProjectContext()): ?>
+            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                 <li>
                     <?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
-                    <?php echo link_tag(make_url('publish_article', array('article_name' => 'Special:'.ucfirst(mb_strtolower(TBGContext::getCurrentProject()->getKey())).':SpecialPages')), __('Project special pages')); ?>
+                    <?php echo link_tag(make_url('publish_article', array('article_name' => 'Special:'.ucfirst(mb_strtolower(\thebuggenie\core\framework\Context::getCurrentProject()->getKey())).':SpecialPages')), __('Project special pages')); ?>
                 </li>
             <?php endif; ?>
             <li>

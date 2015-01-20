@@ -12,7 +12,7 @@
             $categories = array("main", "B2DB", "routing", "i18n", "cache", "search", "publish");
             foreach($categories as $category)
             {
-                echo '.cat-'.$category.' .catname {color:#'.TBGLogging::getCategoryColor($category).'}';
+                echo '.cat-'.$category.' .catname {color:#'.\thebuggenie\core\framework\Logging::getCategoryColor($category).'}';
             }
         ?>
         .cat .catname {color:#999}
@@ -138,7 +138,7 @@
         <div class="log">
         <?php foreach ($tbg_summary['log'] as $entry): ?>
             <div class="cat-<?php echo $entry['category']; ?>">
-                <strong><?php echo mb_strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong>
+                <strong><?php echo mb_strtoupper(\thebuggenie\core\framework\Logging::getLevelName($entry['level'])); ?></strong>
                 <strong class="catname">[<?php echo $entry['category']; ?>]</strong>
                 <span class="time"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
         <?php endforeach; ?>

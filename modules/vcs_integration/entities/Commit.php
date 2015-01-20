@@ -2,13 +2,13 @@
 
     namespace thebuggenie\modules\vcs_integration\entities;
 
-    use TBGTextParser,
-        TBGNotification,
-        TBGProject,
-        TBGUser,
-        thebuggenie\modules\vcs_integration\entities\b2db\Commits,
-        thebuggenie\modules\vcs_integration\entities\b2db\Files,
-        thebuggenie\modules\vcs_integration\entities\b2db\IssueLinks,
+    use thebuggenie\core\helpers\TextParser,
+        \thebuggenie\core\entities\Notification,
+        \thebuggenie\core\entities\Project,
+        \thebuggenie\core\entities\User,
+        thebuggenie\modules\vcs_integration\entities\tables\Commits,
+        thebuggenie\modules\vcs_integration\entities\tables\Files,
+        thebuggenie\modules\vcs_integration\entities\tables\IssueLinks,
         thebuggenie\modules\vcs_integration\Vcs_integration;
 
     /**
@@ -27,9 +27,9 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      *
-     * @Table(name="\thebuggenie\modules\vcs_integration\entities\b2db\Commits")
+     * @Table(name="\thebuggenie\modules\vcs_integration\entities\tables\Commits")
      */
-    class Commit extends \TBGIdentifiableScopedClass
+    class Commit extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
@@ -55,8 +55,8 @@
 
         /**
          * Commit author
-         * @var \TBGUser
-         * @Relates(class="\TBGUser")
+         * @var \thebuggenie\core\entities\User
+         * @Relates(class="\thebuggenie\core\entities\User")
          * @Column(type="integer")
          */
         protected $_author = null;
@@ -89,15 +89,15 @@
 
         /**
          * Project
-         * @var TBGProject
-         * @Relates(class="\TBGProject")
+         * @var \thebuggenie\core\entities\Project
+         * @Relates(class="\thebuggenie\core\entities\Project")
          *  @Column(type="integer", name="project_id")
          */
         protected $_project = null;
 
         public function _addNotifications()
         {
-            $parser = new TBGTextParser($this->_log);
+            $parser = new TextParser($this->_log);
             $parser->setOption('plain', true);
             $parser->doParse();
             foreach ($parser->getMentions() as $user)
@@ -105,7 +105,7 @@
                 if (!$this->getAuthor() || $user->getID() == $this->getAuthor())
                     continue;
 
-                $notification = new TBGNotification();
+                $notification = new \thebuggenie\core\entities\Notification();
                 $notification->setTarget($this);
                 $notification->setTriggeredByUser($this->getAuthor());
                 $notification->setUser($user);
@@ -166,12 +166,12 @@
          */
         public function getPreviousCommit()
         {
-            return Commits::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
+            return tables\Commits::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
         }
 
         /**
          * Get the author of this commit
-         * @return \TBGUser
+         * @return \thebuggenie\core\entities\User
          */
         public function getAuthor()
         {
@@ -207,8 +207,8 @@
         }
 
         /**
-         * Get an array of TBGIssues affected by this commit
-         * @return array|\TBGIssue
+         * Get an array of \thebuggenie\core\entities\Issues affected by this commit
+         * @return array|\thebuggenie\core\entities\Issue
          */
         public function getIssues()
         {
@@ -218,7 +218,7 @@
 
         /**
          * Get the project this commit applies to
-         * @return \TBGProject
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
@@ -227,9 +227,9 @@
 
         /**
          * Set a new commit author
-         * @param \TBGUser $user
+         * @param \thebuggenie\core\entities\User $user
          */
-        public function setAuthor(TBGUser $user)
+        public function setAuthor(\thebuggenie\core\entities\User $user)
         {
             $this->_author = $user;
         }
@@ -281,9 +281,9 @@
 
         /**
          * Set the project this commit applies to
-         * @param \TBGProject $project
+         * @param \thebuggenie\core\entities\Project $project
          */
-        public function setProject(TBGProject $project)
+        public function setProject(\thebuggenie\core\entities\Project $project)
         {
             $this->_project = $project;
         }
@@ -292,7 +292,7 @@
         {
             if ($this->_files == null)
             {
-                $this->_files = Files::getTable()->getByCommitID($this->_id);
+                $this->_files = tables\Files::getTable()->getByCommitID($this->_id);
             }
         }
 
@@ -300,7 +300,7 @@
         {
             if ($this->_issues == null)
             {
-                $this->_issues = IssueLinks::getTable()->getByCommitID($this->_id);
+                $this->_issues = tables\IssueLinks::getTable()->getByCommitID($this->_id);
             }
         }
 
@@ -314,7 +314,7 @@
          */
         public static function getByProject($id, $limit = 40, $offset = null)
         {
-            $commits = Commits::getTable()->getCommitsByProject($id, $limit, $offset);
+            $commits = tables\Commits::getTable()->getCommitsByProject($id, $limit, $offset);
             return $commits;
         }
 

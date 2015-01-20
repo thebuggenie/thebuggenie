@@ -26,7 +26,7 @@
     </div>
     <?php if ($milestone->isReached()): ?>
         <div class="status">
-            <?php if ($milestone->getType() == TBGMilestone::TYPE_REGULAR): ?>
+            <?php if ($milestone->getType() == \thebuggenie\core\entities\Milestone::TYPE_REGULAR): ?>
                 <?php echo __('This milestone has been reached'); ?>
             <?php else: ?>
                 <?php echo __('This sprint is completed'); ?>
@@ -34,7 +34,7 @@
         </div>
     <?php elseif ($milestone->isOverdue()): ?>
         <div class="status">
-            <?php if ($milestone->getType() == TBGMilestone::TYPE_REGULAR): ?>
+            <?php if ($milestone->getType() == \thebuggenie\core\entities\Milestone::TYPE_REGULAR): ?>
                 <?php echo __('This milestone is overdue'); ?>
             <?php else: ?>
                 <?php echo __('This sprint is overdue'); ?>

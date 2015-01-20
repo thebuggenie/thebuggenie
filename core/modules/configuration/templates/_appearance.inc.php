@@ -2,9 +2,9 @@
     <tr>
         <td><label for="theme_name"><?php echo __('Selected theme'); ?></label></td>
         <td>
-            <select name="<?php echo TBGSettings::SETTING_THEME_NAME; ?>" id="theme_name" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_THEME_NAME; ?>" id="theme_name" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
             <?php foreach ($themes as $aTheme): ?>
-                <option value="<?php echo $aTheme; ?>"<?php if (TBGSettings::getThemeName() == $aTheme): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $aTheme; ?></option>
+                <option value="<?php echo $aTheme; ?>"<?php if (\thebuggenie\core\framework\Settings::getThemeName() == $aTheme): ?> selected<?php endif; ?><?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $aTheme; ?></option>
             <?php endforeach; ?>
             </select>
         </td>
@@ -15,9 +15,9 @@
     <tr>
         <td><label for="theme_name"><?php echo __('Selected iconset'); ?></label></td>
         <td>
-            <select name="<?php echo TBGSettings::SETTING_ICONSET; ?>" id="iconset" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ICONSET; ?>" id="iconset" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
             <?php foreach ($icons as $anIcon): ?>
-                <option value="<?php echo $anIcon; ?>"<?php if (TBGSettings::getIconsetName() == $anIcon): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $anIcon; ?></option>
+                <option value="<?php echo $anIcon; ?>"<?php if (\thebuggenie\core\framework\Settings::getIconsetName() == $anIcon): ?> selected<?php endif; ?><?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $anIcon; ?></option>
             <?php endforeach; ?>
             </select>
         </td>
@@ -36,7 +36,7 @@
     <tr>
         <td><label for="header_link"><?php echo __('Custom header link'); ?></label></td>
         <td>
-            <input type="text" name="<?php echo TBGSettings::SETTING_HEADER_LINK; ?>" id="header_link" value="<?php echo TBGSettings::getHeaderLink(); ?>" style="width: 100%;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+            <input type="text" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_HEADER_LINK; ?>" id="header_link" value="<?php echo \thebuggenie\core\framework\Settings::getHeaderLink(); ?>" style="width: 100%;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
         </td>
     </tr>
     <tr>

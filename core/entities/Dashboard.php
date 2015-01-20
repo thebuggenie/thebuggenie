@@ -2,11 +2,12 @@
 
     namespace thebuggenie\core\entities;
 
-    use TBGContext,
-        TBGProject,
-        TBGUser,
-        TBGTeam,
-        TBGClient;
+    use thebuggenie\core\framework;
+    use thebuggenie\core\entities\common\IdentifiableScoped,
+        \thebuggenie\core\entities\Project,
+        \thebuggenie\core\entities\User,
+        \thebuggenie\core\entities\Team,
+        \thebuggenie\core\entities\Client;
 
     /**
      * Dashboard class
@@ -24,9 +25,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\Dashboards")
+     * @Table(name="\thebuggenie\core\entities\tables\Dashboards")
      */
-    class Dashboard extends \TBGIdentifiableScopedClass
+    class Dashboard extends IdentifiableScoped
     {
 
         const TYPE_USER = 1;
@@ -51,30 +52,30 @@
         protected $_is_default = false;
 
         /**
-         * @var \TBGUser
+         * @var \thebuggenie\core\entities\User
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGUser")
+         * @Relates(class="\thebuggenie\core\entities\User")
          */
         protected $_user_id;
 
         /**
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGProject")
+         * @Relates(class="\thebuggenie\core\entities\Project")
          */
         protected $_project_id;
 
         /**
-         * @var \TBGTeam
+         * @var \thebuggenie\core\entities\Team
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGTeam")
+         * @Relates(class="\thebuggenie\core\entities\Team")
          */
         protected $_team_id;
 
         /**
-         * @var \TBGClient
+         * @var \thebuggenie\core\entities\Client
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGClient")
+         * @Relates(class="\thebuggenie\core\entities\Client")
          */
         protected $_client_id;
 
@@ -151,7 +152,7 @@
         /**
          * Returns the associated user
          *
-         * @return \TBGUser
+         * @return \thebuggenie\core\entities\User
          */
         public function getUser()
         {
@@ -166,7 +167,7 @@
         /**
          * Returns the associated team
          *
-         * @return \TBGTeam
+         * @return \thebuggenie\core\entities\Team
          */
         public function getTeam()
         {
@@ -181,7 +182,7 @@
         /**
          * Returns the associated client
          *
-         * @return \TBGClient
+         * @return \thebuggenie\core\entities\Client
          */
         public function getClient()
         {
@@ -196,7 +197,7 @@
         /**
          * Returns the associated project
          *
-         * @return \TBGProject
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
@@ -254,25 +255,25 @@
 
         public function canEdit()
         {
-            if ($this->getProject() instanceof TBGProject)
+            if ($this->getProject() instanceof \thebuggenie\core\entities\Project)
             {
-                return TBGContext::getUser()->canEditProjectDetails($this->getProject());
+                return framework\Context::getUser()->canEditProjectDetails($this->getProject());
             }
-            elseif ($this->getUser() instanceof TBGUser)
+            elseif ($this->getUser() instanceof \thebuggenie\core\entities\User)
             {
-                return $this->getUser()->getID() == TBGContext::getUser()->getID();
+                return $this->getUser()->getID() == framework\Context::getUser()->getID();
             }
         }
 
         public function getType()
         {
-            if ($this->getProject() instanceof TBGProject)
+            if ($this->getProject() instanceof \thebuggenie\core\entities\Project)
                 return self::TYPE_PROJECT;
-            if ($this->getUser() instanceof TBGUser)
+            if ($this->getUser() instanceof \thebuggenie\core\entities\User)
                 return self::TYPE_USER;
-            if ($this->getClient() instanceof TBGClient)
+            if ($this->getClient() instanceof \thebuggenie\core\entities\Client)
                 return self::TYPE_CLIENT;
-            if ($this->getTeam() instanceof TBGTeam)
+            if ($this->getTeam() instanceof \thebuggenie\core\entities\Team)
                 return self::TYPE_TEAM;
         }
 

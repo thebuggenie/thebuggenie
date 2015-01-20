@@ -1,6 +1,6 @@
 <?php
 
-    if ($workflow instanceof TBGWorkflow)
+    if ($workflow instanceof \thebuggenie\core\entities\Workflow)
         $tbg_response->setTitle(__('Configure workflow "%workflow_name"', array('%workflow_name' => $workflow->getName())));
     else
         $tbg_response->setTitle(__('Configure workflows'));
@@ -8,11 +8,11 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
             <?php include_component('configuration/workflowmenu', array('selected_tab' => 'transition', 'workflow' => $workflow, 'transition' => $transition)); ?>
             <div class="content" style="width: 730px;" id="workflow_step_container">
-                <?php if ($transition instanceof TBGWorkflowTransition): ?>
+                <?php if ($transition instanceof \thebuggenie\core\entities\WorkflowTransition): ?>
                     <h3>
                         <?php if (!$transition->isCore()): ?>
                             <?php echo javascript_link_tag(__('Edit details'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();", 'class' => 'button button-silver')); ?>
@@ -63,7 +63,7 @@
                             <dd><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $transition->getOutgoingStep()->getWorkflow()->getID(), 'step_id' => $transition->getOutgoingStep()->getID())), $transition->getOutgoingStep()->getName()); ?></dd>
                         </dl>
                         <?php if (!$transition->isCore()): ?>
-                            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'mode' => 'edit')); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
+                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'mode' => 'edit')); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
                                 <dl>
                                     <?php if (!$transition->isInitialTransition()): ?>
                                         <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
@@ -80,7 +80,7 @@
                                         <dd>
                                             <select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
                                                 <option value=""<?php if ($transition->getTemplate() == ''): ?> selected<?php endif; ?>><?php echo __('No template used - transition happens instantly'); ?></option>
-                                                <?php foreach (TBGWorkflowTransition::getTemplates() as $template_key => $template_name): ?>
+                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransition::getTemplates() as $template_key => $template_name): ?>
                                                     <option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -119,7 +119,7 @@
                                 <?php if (!$transition->isCore()): ?>
                                     <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
                                     <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_pre_validation_rule">
-                                        <?php foreach (TBGWorkflowTransitionValidationRule::getAvailablePreValidationRules() as $key => $description): ?>
+                                        <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePreValidationRules() as $key => $description): ?>
                                             <li <?php if ($transition->hasPreValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>">
                                                 <a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre', 'rule' => $key)); ?>', 'pre', '<?php echo $key; ?>');"><?php echo $description; ?></a>
                                             </li>
@@ -150,7 +150,7 @@
                                 <?php if (!$transition->isCore() && $transition->hasTemplate()): ?>
                                     <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
                                     <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_validation_rule">
-                                        <?php foreach (TBGWorkflowTransitionValidationRule::getAvailablePostValidationRules() as $key => $description): ?>
+                                        <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePostValidationRules() as $key => $description): ?>
                                             <li <?php if ($transition->hasPostValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post', 'rule' => $key)); ?>', 'post', '<?php echo $key; ?>');"><?php echo $description; ?></a></li>
                                         <?php endforeach; ?>
                                     </ul>
@@ -182,7 +182,7 @@
                                         <div class="column">
                                             <h1><?php echo __('Set issue fields'); ?></h1>
                                             <ul class="simple_list">
-                                                <?php foreach (TBGWorkflowTransitionAction::getAvailableTransitionActions('set') as $key => $description): ?>
+                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('set') as $key => $description): ?>
                                                     <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
@@ -190,7 +190,7 @@
                                         <div class="column">
                                             <h1><?php echo __('Clear issue fields'); ?></h1>
                                             <ul class="simple_list">
-                                                <?php foreach (TBGWorkflowTransitionAction::getAvailableTransitionActions('clear') as $key => $description): ?>
+                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('clear') as $key => $description): ?>
                                                     <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
@@ -198,7 +198,7 @@
                                         <div class="column">
                                             <h1><?php echo __('Special actions'); ?></h1>
                                             <ul class="simple_list">
-                                                <?php foreach (TBGWorkflowTransitionAction::getAvailableTransitionActions('special') as $key => $description): ?>
+                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('special') as $key => $description): ?>
                                                     <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>

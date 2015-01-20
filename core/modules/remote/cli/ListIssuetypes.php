@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ListIssuetypes extends \TBGCliRemoteCommand
+    class ListIssuetypes extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()

@@ -1,9 +1,9 @@
 <?php $tbg_response->setTitle(__('Configure scopes')); ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_SCOPES)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_SCOPES)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <form method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>">
+            <form method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>">
                 <div style="width: 730px;" class="config_header"><?php echo __('Configure scope "%scope_name"', array('%scope_name' => $scope->getName())); ?></div>
                 <div style="width: 730px;" id="config_scopes">
                     <?php if ($scope_save_error): ?>
@@ -83,7 +83,7 @@
                             </table>
                             <div class="header" style="margin: 20px 0 5px 0;"><?php echo __('Available modules'); ?></div>
                             <table style="clear: both; width: 700px;" class="padded_table" cellpadding=0 cellspacing=0>
-                                <?php foreach (TBGContext::getModules() as $module): ?>
+                                <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module): ?>
                                     <?php $module_is_disabled = (array_key_exists($module->getName(), $modules) && !$modules[$module->getName()]); ?>
                                     <tr>
                                         <td style="width: 300px; vertical-align: top;"><label for="module_<?php echo $module->getName(); ?>_available_yes"<?php if ($module_is_disabled): ?> class="faded_out" title="<?php echo __('This module has been disabled in the selected scope by its admin'); ?>"<?php endif; ?>><?php echo $module->getLongname(); ?></label></td>

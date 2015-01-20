@@ -352,7 +352,7 @@
   $strings['Settings'] = 'Opciones';
   $strings['Release center'] = 'Centro de liberación';
 
-// First occurrence is in: .\core\classes\TBGTextParser.class.php
+// First occurrence is in: .\core\classes\\thebuggenie\core\helpers\TextParser.class.php
 // ----------------------------------------------------------------------------
   $strings['top'] = 'arriba';
   $strings['Open image in new window'] = 'Abrir imagen en una nueva pantalla';

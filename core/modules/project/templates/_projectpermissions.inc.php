@@ -19,7 +19,7 @@
         </ul>
         <h4><?php echo __('Project-specific roles'); ?></h4>
         <div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute; right: 0; z-index: 10">
-            <form id="new_project_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>'); return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+            <form id="new_project_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>'); return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                 <label for="new_project_role_name"><?php echo __('Role name'); ?></label>
                 <input type="text" style="width: 300px;" name="role_name" id="add_new_role_input">
                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin: 2px 5px 2px 5px;', 'id' => 'new_project_role_form_indicator')); ?>
@@ -47,8 +47,8 @@
         <p><?php echo __('These permissions directly control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration page. You may want to use roles and assignments instead of applying these permissions directly.', array('%permissions_configuration' => '<b>'.link_tag(make_url('configure_permissions'), __('permissions configuration')).'</b>')); ?></p>
     </div>
     <ul id="project_permission_details_<?php echo $project->getID(); ?>" style="margin-top: 10px;">
-        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+        <?php include_component('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
     </ul>
 </div>
