@@ -365,7 +365,7 @@
                         {
                             $type = "TBG{$fieldname}";
                             $getter = "get{$fieldname}";
-                            if (framework\Context::factory()->$type((int) $item)->getID() == $input->$getter()->getID())
+                            if ($type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID())
                             {
                                 $valid = true;
                                 break;

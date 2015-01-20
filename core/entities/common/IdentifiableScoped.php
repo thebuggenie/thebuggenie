@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\common;
 
+    use thebuggenie\core\framework;
+
     /**
      * An identifiable class
      *

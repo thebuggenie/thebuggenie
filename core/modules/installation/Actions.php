@@ -506,20 +506,20 @@
         {
             set_time_limit(0);
 
-            \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\Milestone::getB2DBTable());
-            \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Projects::getTable());
-            \thebuggenie\core\entities\tables\Log::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Log::getTable());
-            \thebuggenie\core\entities\tables\Users::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Users::getTable());
-            \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Issues::getTable());
-            \thebuggenie\core\entities\tables\Workflows::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Workflows::getTable());
-            \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\IssueSpentTimes::getTable());
-            \thebuggenie\core\entities\tables\Comments::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Comments::getTable());
-            \thebuggenie\core\entities\tables\SavedSearches::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\SavedSearches::getTable());
-            \thebuggenie\core\entities\tables\Settings::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Settings::getTable());
-            \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Notifications::getTable());
-            \thebuggenie\core\entities\tables\Permissions::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Permissions::getTable());
+            \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone::getB2DBTable());
+            \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGProjectsTable::getTable());
+            \thebuggenie\core\entities\tables\Log::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGLogTable::getTable());
+            \thebuggenie\core\entities\tables\Users::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable());
+            \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssuesTable::getTable());
+            \thebuggenie\core\entities\tables\Workflows::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGWorkflowsTable::getTable());
+            \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssueSpentTimesTable::getTable());
+            \thebuggenie\core\entities\tables\Comments::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGCommentsTable::getTable());
+            \thebuggenie\core\entities\tables\SavedSearches::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSavedSearchesTable::getTable());
+            \thebuggenie\core\entities\tables\Settings::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSettingsTable::getTable());
+            \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGNotificationsTable::getTable());
+            \thebuggenie\core\entities\tables\Permissions::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGPermissionsTable::getTable());
             \thebuggenie\core\entities\Dashboard::getB2DBTable()->create();
-            \thebuggenie\core\entities\DashboardView::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\DashboardViews::getTable());
+            \thebuggenie\core\entities\DashboardView::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGDashboardViewsTable::getTable());
             \thebuggenie\core\entities\ApplicationPassword::getB2DBTable()->create();
             \thebuggenie\core\entities\NotificationSetting::getB2DBTable()->create();
             \thebuggenie\core\entities\AgileBoard::getB2DBTable()->create();
@@ -620,7 +620,7 @@
                 framework\Context::setScope($scope);
 
                 $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
-                $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\thebuggenie\core\entities\tables\Users::getTable()->getAdminUsername();
+                $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
             }
             $this->upgrade_complete = false;
 

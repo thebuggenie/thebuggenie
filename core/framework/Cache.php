@@ -27,7 +27,6 @@
         const KEY_ROUTES_CACHE = '_all_routes';
         const KEY_PERMISSIONS_CACHE = '_permissions';
         const KEY_MAIN_MENU_LINKS = '_mainmenu_links';
-        const KEY_TBG_FACTORY = '\thebuggenie\core\entities\Factory_cache';
         const KEY_I18N = '_i18n_';
         const KEY_TEXTPARSER_ISSUE_REGEX = 'thebuggenie\core\framework\helpers\TextParser::getIssueRegex';
 

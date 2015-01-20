@@ -2211,7 +2211,7 @@
                             $parameter_id = $request->getParameter($parameter_id_name);
                             if ($parameter_id !== 0)
                             {
-                                $is_valid = ($is_pain) ? in_array($parameter_id, array_keys(Issue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = framework\Context::factory()->manufacture($lab_function_name, $parameter_id)) instanceof $classname));
+                                $is_valid = ($is_pain) ? in_array($parameter_id, array_keys(Issue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = $lab_function_name::getB2DBTable()->selectByID($parameter_id)) instanceof $classname));
                             }
                             if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
                             {

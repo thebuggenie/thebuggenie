@@ -21,7 +21,7 @@
         {
             parent::_setup(self::B2DBNAME, self::ID);
             parent::_addForeignKeyColumn(self::USER_ID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
-            parent::_addForeignKeyColumn(self::ARTICLE_ID, tables\Articles::getTable(), Articles::ID);
+            parent::_addForeignKeyColumn(self::ARTICLE_ID, Articles::getTable(), Articles::ID);
         }
     }
 

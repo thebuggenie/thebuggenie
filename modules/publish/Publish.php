@@ -95,7 +95,7 @@
             switch ($this->_version)
             {
                 case '1.0':
-                    \thebuggenie\modules\publish\entities\Article::getB2DBTable()->upgrade(\thebuggenie\modules\publish\upgrade_32\tables\TBGArticlesTable::getTable());
+                    \thebuggenie\modules\publish\entities\Article::getB2DBTable()->upgrade(\thebuggenie\modules\publish\upgrade_32\TBGArticlesTable::getTable());
                     \thebuggenie\modules\publish\entities\tables\UserArticles::getTable()->create();
                     break;
             }

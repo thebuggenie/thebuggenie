@@ -164,13 +164,6 @@
         protected static $_scope = null;
 
         /**
-         * The factory instance
-         *
-         * @var \thebuggenie\core\framework\Factory
-         */
-        protected static $_factory = null;
-
-        /**
          * The currently selected project, if any
          *
          * @var \thebuggenie\core\entities\Project
@@ -785,20 +778,6 @@
 
             self::$_debug_mode = self::$_configuration['core']['debug'];
             Logging::log('...done', 'core');
-        }
-
-        /**
-         * Returns the factory object
-         *
-         * @return \thebuggenie\core\framework\Factory
-         */
-        public static function factory()
-        {
-            if (!self::$_factory instanceof Factory)
-            {
-                self::$_factory = new Factory();
-            }
-            return self::$_factory;
         }
 
         /**

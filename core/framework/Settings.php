@@ -366,7 +366,7 @@
 
         public static function getAdminGroup()
         {
-            return Context::factory()->manufacture('\thebuggenie\core\entities\Group', (int) self::get(self::SETTING_ADMIN_GROUP));
+            return \thebuggenie\core\entities\Group::getB2DBTable()->selectByID((int) self::get(self::SETTING_ADMIN_GROUP));
         }
 
         public static function isRegistrationEnabled()
@@ -544,7 +544,7 @@
         {
             try
             {
-                return Context::factory()->manufacture('\thebuggenie\core\entities\User', (int) self::get(self::SETTING_DEFAULT_USER_ID));
+                return \thebuggenie\core\entities\User::getB2DBTable()->selectByID((int) self::get(self::SETTING_DEFAULT_USER_ID));
             }
             catch (\Exception $e)
             {
@@ -576,7 +576,7 @@
         {
             try
             {
-                return Context::factory()->manufacture('\thebuggenie\core\entities\Group', self::get(self::SETTING_USER_GROUP));
+                return \thebuggenie\core\entities\Group::getB2DBTable()->selectByID(self::get(self::SETTING_USER_GROUP));
             }
             catch (\Exception $e)
             {
@@ -617,7 +617,7 @@
         {
             try
             {
-                return Context::factory()->manufacture('\thebuggenie\core\entities\Userstate', self::get(self::SETTING_ONLINESTATE));
+                return \thebuggenie\core\entities\Userstate::getB2DBTable()->selectByID(self::get(self::SETTING_ONLINESTATE));
             }
             catch (\Exception $e)
             {
@@ -629,7 +629,7 @@
         {
             try
             {
-                return Context::factory()->manufacture('\thebuggenie\core\entities\Userstate', self::get(self::SETTING_OFFLINESTATE));
+                return \thebuggenie\core\entities\Userstate::getB2DBTable()->selectByID(self::get(self::SETTING_OFFLINESTATE));
             }
             catch (\Exception $e)
             {
@@ -647,7 +647,7 @@
         {
             try
             {
-                return Context::factory()->manufacture('\thebuggenie\core\entities\Userstate', self::get(self::SETTING_AWAYSTATE));
+                return \thebuggenie\core\entities\Userstate::getB2DBTable()->selectByID(self::get(self::SETTING_AWAYSTATE));
             }
             catch (\Exception $e)
             {

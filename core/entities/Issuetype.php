@@ -233,7 +233,7 @@
 
         protected function _postSave($is_new)
         {
-            framework\Context::getCache()->delete(Cache::KEY_TEXTPARSER_ISSUE_REGEX);
+            framework\Context::getCache()->delete(framework\Cache::KEY_TEXTPARSER_ISSUE_REGEX);
         }
 
         /**

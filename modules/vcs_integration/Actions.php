@@ -66,7 +66,7 @@
                 $branch = null;
             }
 
-            $project = framework\Context::factory()->manufacture('Project', $project_id);
+            $project = Project::getB2DBTable()->selectByID($project_id);
 
             if (!$project)
             {
@@ -133,7 +133,7 @@
 
             try
             {
-                $project = framework\Context::factory()->manufacture('Project', $project_id);
+                $project = Project::getB2DBTable()->selectByID($project_id);
             }
             catch (\Exception $e)
             {
@@ -273,7 +273,7 @@
 
             try
             {
-                $project = framework\Context::factory()->manufacture('Project', $project_id);
+                $project = Project::getB2DBTable()->selectByID($project_id);
             }
             catch (\Exception $e)
             {
@@ -344,7 +344,7 @@
 
             $passkey = framework\Context::getRequest()->getParameter('passkey');
             $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
-            $project = framework\Context::factory()->manufacture('Project', $project_id);
+            $project = Project::getB2DBTable()->selectByID($project_id);
 
             // Validate access
             if (!$project)

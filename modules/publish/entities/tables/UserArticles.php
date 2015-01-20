@@ -36,7 +36,7 @@
         protected function _initialize()
         {
             parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ARTICLE, tables\Articles::getTable(), Articles::ID);
+            parent::_addForeignKeyColumn(self::ARTICLE, Articles::getTable(), Articles::ID);
             parent::_addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
         }
 

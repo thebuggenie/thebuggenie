@@ -39,7 +39,7 @@
                 if ($project_key = $request['project_key'])
                     $this->selected_project = Project::getByKey($project_key);
                 elseif ($project_id = (int) $request['project_id'])
-                    $this->selected_project = Context::factory()->manufacture('\thebuggenie\core\entities\Project', $project_id);
+                    $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectByID($project_id);
 
                 if ($this->selected_project instanceof Project)
                     Context::setCurrentProject($this->selected_project);

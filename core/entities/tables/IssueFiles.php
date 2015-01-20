@@ -85,7 +85,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById($row->get(Files::ID), $row);
+                    $file = new \thebuggenie\core\entities\File($row->get(Files::ID), $row);
                     $file->setUploadedAt($row->get(self::ATTACHED_AT));
                     $ret_arr[$row->get(Files::ID)] = $file;
                 }

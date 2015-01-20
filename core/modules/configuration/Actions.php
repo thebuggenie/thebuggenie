@@ -695,8 +695,8 @@
                     {
                         if (array_key_exists($request['type'], $types))
                         {
-                            $labname = $types[$request['type']];
-                            $item = framework\Context::factory()->$labname($request['id']);
+                            $classname = $types[$request['type']];
+                            $item = $classname::getB2DBTable()->selectByID($request['id']);
                         }
                         else
                         {
@@ -727,8 +727,8 @@
                     {
                         if (array_key_exists($request['type'], $types))
                         {
-                            $classname = '\\thebuggenie\\core\\entities\\' . ucfirst($request['type']);
-                            $item = framework\Context::factory()->manufacture($classname, $request['id'])->delete();
+                            $classname = $types[$request['type']];
+                            $item = $classname::getB2DBTable()->selectByID($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                         else
@@ -869,7 +869,7 @@
          */
         public function runGetUserEditForm(framework\Request $request)
         {
-            return $this->renderJSON(array("content" => $this->getComponentHTML('finduser_row_editable', array('user' => framework\Context::factory()->manufacture('User', $request['user_id'])))));
+            return $this->renderJSON(array("content" => $this->getComponentHTML('finduser_row_editable', array('user' => User::getB2DBTable()->selectByID($request['user_id'])))));
         }
 
         /**
@@ -885,7 +885,7 @@
             {
                 try
                 {
-                    $theProject = framework\Context::factory()->manufacture('Project', $request['project_id']);
+                    $theProject = Project::getB2DBTable()->selectByID($request['project_id']);
                     $theProject->setDeleted();
                     $theProject->save();
                     return $this->renderJSON(array('title' => $i18n->__('The project was deleted'), 'total_count' => Project::getProjectsCount(), 'more_available' => framework\Context::getScope()->hasProjectsAvailable()));
@@ -914,7 +914,7 @@
             {
                 try
                 {
-                    $theProject = framework\Context::factory()->manufacture('Project', $request['project_id']);
+                    $theProject = Project::getB2DBTable()->selectByID($request['project_id']);
                     $theProject->setArchived($archived);
                     $theProject->save();
 
@@ -1347,7 +1347,7 @@
                 try
                 {
                     $return_options = array();
-                    $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                    $user = User::getB2DBTable()->selectByID($request['user_id']);
                     if ($user->getGroup() instanceof Group)
                     {
                         $return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
@@ -1506,7 +1506,7 @@
             try
             {
                 $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['team_id']);
-                $user = framework\Context::factory()->manufacture('User', (int) $request['user_id']);
+                $user = User::getB2DBTable()->selectByID((int) $request['user_id']);
 
                 $team->removeMember($user);
                 return $this->renderJSON(array('update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
@@ -1524,7 +1524,7 @@
             {
                 $user_id = (int) $request['user_id'];
                 $team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['team_id']);
-                $user = framework\Context::factory()->manufacture('User', $user_id);
+                $user = User::getB2DBTable()->selectByID($user_id);
 
                 $team->addMember($user);
                 return $this->renderJSON(array('teamlistitem' => $this->getComponentHTML('configuration/teamuserlistitem', compact('team', 'user_id', 'user')), 'update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
@@ -1648,7 +1648,7 @@
         {
             try
             {
-                $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                $user = User::getB2DBTable()->selectByID($request['user_id']);
                 if ($user instanceof User)
                 {
                     if (!$user->isConfirmedMemberOfScope(framework\Context::getScope()))
@@ -1816,7 +1816,7 @@
                 if (!framework\Context::getScope()->isDefault())
                     throw new \Exception('This operation is not allowed');
 
-                $user = framework\Context::factory()->manufacture('User', $request['user_id']);
+                $user = User::getB2DBTable()->selectByID($request['user_id']);
                 if ($user instanceof User)
                 {
                     $return_options = array('message' => $this->getI18n()->__("The user's scope access was successfully updated"));
@@ -2380,7 +2380,7 @@
             try
             {
                 $client = \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $request['client_id']);
-                $user = framework\Context::factory()->manufacture('User', (int) $request['user_id']);
+                $user = User::getB2DBTable()->selectByID((int) $request['user_id']);
 
                 $client->removeMember($user);
                 return $this->renderJSON(array('update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
@@ -2398,7 +2398,7 @@
             {
                 $user_id = (int) $request['user_id'];
                 $client = \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $request['client_id']);
-                $user = framework\Context::factory()->manufacture('User', $user_id);
+                $user = User::getB2DBTable()->selectByID($user_id);
 
                 $client->addMember($user);
                 return $this->renderJSON(array('clientlistitem' => $this->getComponentHTML('configuration/clientuserlistitem', compact('client', 'user_id', 'user')), 'update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
@@ -2607,7 +2607,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_USER:
                                                 try
                                                 {
-                                                    framework\Context::factory()->manufacture('User', $activerow[$identifiableitem[0]]);
+                                                    User::getB2DBTable()->selectByID($activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2706,7 +2706,7 @@
                                 // Check if project exists
                                 try
                                 {
-                                    $prjtmp = framework\Context::factory()->manufacture('Project', $activerow[self::CSV_ISSUE_PROJECT]);
+                                    $prjtmp = Project::getB2DBTable()->selectByID($activerow[self::CSV_ISSUE_PROJECT]);
                                 }
                                 catch (\Exception $e)
                                 {
@@ -2773,7 +2773,7 @@
                                             case self::CSV_IDENTIFIER_TYPE_USER:
                                                 try
                                                 {
-                                                    framework\Context::factory()->manufacture('User', $activerow[$identifiableitem[0]]);
+                                                    User::getB2DBTable()->selectByID($activerow[$identifiableitem[0]]);
                                                 }
                                                 catch (\Exception $e)
                                                 {
@@ -2811,7 +2811,7 @@
                                     {
                                         try
                                         {
-                                            framework\Context::factory()->manufacture('User', $activerow[self::CSV_ISSUE_POSTED_BY]);
+                                            User::getB2DBTable()->selectByID($activerow[self::CSV_ISSUE_POSTED_BY]);
                                         }
                                         catch (\Exception $e)
                                         {
@@ -3209,7 +3209,7 @@
                                     $issue->setStatus($activerow[self::CSV_ISSUE_STATUS]);
 
                                 if (isset($activerow[self::CSV_ISSUE_POSTED_BY]))
-                                    $issue->setPostedBy(framework\Context::factory()->manufacture('User', $activerow[self::CSV_ISSUE_POSTED_BY]));
+                                    $issue->setPostedBy(User::getB2DBTable()->selectByID($activerow[self::CSV_ISSUE_POSTED_BY]));
 
                                 if (isset($activerow[self::CSV_ISSUE_OWNER]) && isset($activerow[self::CSV_ISSUE_OWNER_TYPE]))
                                 {

@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestones")
+     * @Table(name="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestonesTable")
      */
     class TBGMilestone extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
