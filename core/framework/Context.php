@@ -680,13 +680,20 @@
             Logging::log('Loading routes from routing file', 'routing');
             $routes_filename = \THEBUGGENIE_CONFIGURATION_PATH . "routes.yml";
             if (!file_exists($routes_filename))
-                throw new \Exception("The routing file ({$routes_filename} does not exist.");
+                throw new exceptions\ConfigurationException("The routing file ({$routes_filename} does not exist.");
 
             $routes = \Spyc::YAMLLoad($routes_filename, true);
 
             foreach ($routes as $route => $details)
             {
-                self::getRouting()->addYamlRoute($route, $details);
+                if (isset($details['mode']) && $details['mode'] == 'annotations')
+                {
+                    self::getRouting()->loadAnnotationRoutes($details['module']);
+                }
+                else
+                {
+                    self::getRouting()->addYamlRoute($route, $details);
+                }
             }
 
             foreach (self::getModules() as $module_name => $module)
@@ -699,8 +706,19 @@
                     foreach ($module_routes as $route => $details)
                     {
                         if (!isset($details['module'])) $details['module'] = $module_name;
-                        self::getRouting()->addYamlRoute($route, $details);
+                        if (isset($details['mode']) && $details['mode'] == 'annotations')
+                        {
+                            self::getRouting()->loadAnnotationRoutes($details['module']);
+                        }
+                        else
+                        {
+                            self::getRouting()->addYamlRoute($route, $details);
+                        }
                     }
+                }
+                else
+                {
+                    self::getRouting()->loadAnnotationRoutes($module_name);
                 }
             }
 

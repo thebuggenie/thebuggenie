@@ -2,6 +2,9 @@
 
     namespace thebuggenie\core\framework;
 
+    use b2db\AnnotationSet,
+        b2db\Annotation;
+
     /**
      * Routing class
      *
@@ -89,16 +92,70 @@
             return array_key_exists($route, $this->routes);
         }
 
-        public function addYamlRoute($key, $details)
+        public function loadAnnotationRoutes($module_name)
         {
-                    $name = $key;
-                    $route = $details['route'];
-                    $module = $details['module'];
-                    $action = $details['action'];
-                    $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
-                    $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+            $namespace = (Context::isInternalModule($module_name)) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
+            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\Actions', $module_name);
+        }
+
+        protected function loadModuleAnnotationRoutes($classname, $module)
+        {
+            $internal = Context::isInternalModule($module);
+            $reflection = new \ReflectionClass($classname);
+            $docblock = $reflection->getDocComment();
+            $annotationset = new AnnotationSet($docblock);
+
+            $route_url_prefix = '';
+            $route_name_prefix = '';
+            $default_route_name_prefix = ($internal) ? '' : $module . '_';
+            if ($annotationset->hasAnnotation('Routes'))
+            {
+                $routes = $annotationset->getAnnotation('Routes');
+                if ($routes->hasProperty('url_prefix'))
+                {
+                    $route_url_prefix = $routes->getProperty('url_prefix');
+                }
+                if ($routes->hasProperty('name_prefix'))
+                {
+                    $route_name_prefix = $routes->getProperty('name_prefix', $default_route_name_prefix);
+                }
+            }
+            else
+            {
+                $route_name_prefix = $default_route_name_prefix;
+            }
+
+            foreach ($reflection->getMethods() as $method)
+            {
+                $annotationset = new AnnotationSet($method->getDocComment());
+                if ($annotationset->hasAnnotation('Route'))
+                {
+                    if (substr($method->name, 0, 3) != 'run')
+                    {
+                        throw new exceptions\InvalidRouteException('A @Route annotation can only be used on methods prefixed with "run"');
+                    }
+                    $route_annotation = $annotationset->getAnnotation('Route');
+                    $action = substr($method->name, 3);
+                    $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($action));
+                    $route = $route_url_prefix . $route_annotation->getProperty('url');
+                    $csrf_enabled = $route_annotation->getProperty('csrf_enabled', false);
+                    $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 
                     $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled);
+                }
+            }
+        }
+
+        public function addYamlRoute($key, $details)
+        {
+            $name = $key;
+            $route = $details['route'];
+            $module = $details['module'];
+            $action = $details['action'];
+            $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
+            $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+
+            $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled);
         }
 
         public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false)
