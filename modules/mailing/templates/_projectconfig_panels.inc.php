@@ -23,7 +23,7 @@
     };
 </script>
 <div id="tab_mailing_settings_pane"<?php if ($selected_tab != 'mailing_settings'): ?> style="display: none;"<?php endif; ?>>
-    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>', 'mailing'); return false;" id="mailing">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_configure_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('mailing_configure_settings', array('project_id' => $project->getID())); ?>', 'mailing'); return false;" id="mailing">
         <div class="project_save_container">
             <span id="mailing_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
             <input type="submit" class="button button-silver" id="mailing_button" value="<?php echo __('Save outgoing email settings'); ?>">

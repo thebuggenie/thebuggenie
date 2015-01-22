@@ -10,6 +10,7 @@
         /**
          * Forgotten password logic (AJAX call)
          *
+         * @Route(url="/mailing/forgot")
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runForgot(framework\Request $request)
@@ -60,6 +61,7 @@
         /**
          * Send a test email
          *
+         * @Route(url="/mailing/test")
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runTestEmail(framework\Request $request)
@@ -91,6 +93,13 @@
             $this->forward(framework\Context::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
         }
 
+        /**
+         * Save incoming email account
+         *
+         * @Route(url="/mailing/:project_key/incoming_account/*", name="save_incoming_account")
+         * @param \thebuggenie\core\framework\Request $request
+         * @return type
+         */
         public function runSaveIncomingAccount(framework\Request $request)
         {
             $project = null;
@@ -148,6 +157,14 @@
             }
         }
 
+        /**
+         * Check incoming email accounts for incoming emails
+         *
+         * @Route(url="/mailing/incoming_account/:account_id/check", name="check_account")
+         * @param \thebuggenie\core\framework\Request $request
+         * @return type
+         * @throws \Exception
+         */
         public function runCheckIncomingAccount(framework\Request $request)
         {
             framework\Context::loadLibrary('common');
@@ -185,6 +202,13 @@
             }
         }
 
+        /**
+         * Delete an incoming email account
+         *
+         * @Route(url="/mailing/incoming_account/:account_id/delete", name="delete_account")
+         * @param \thebuggenie\core\framework\Request $request
+         * @return type
+         */
         public function runDeleteIncomingAccount(framework\Request $request)
         {
             if ($account_id = $request['account_id'])
@@ -209,6 +233,14 @@
             }
         }
 
+        /**
+         * Save project settings
+         *
+         * @Route(url="/configure/project/:project_id/mailing", name="configure_settings")
+         * @Parameters(config_module="core", section=15)
+         * @param \thebuggenie\core\framework\Request $request
+         * @return type
+         */
         public function runConfigureProjectSettings(framework\Request $request)
         {
             $this->forward403unless($request->isPost());
