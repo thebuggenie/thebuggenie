@@ -2295,28 +2295,6 @@
                     self::visitPartial($visited_templatename, $posttime - $pretime);
                 }
 
-                if (!isset($tbg_response))
-                {
-                    /**
-                     * @global \thebuggenie\core\framework\Request The request object
-                     */
-                    $tbg_request = self::getRequest();
-
-                    /**
-                     * @global \thebuggenie\core\entities\User The user object
-                     */
-                    $tbg_user = self::getUser();
-
-                    /**
-                     * @global \thebuggenie\core\framework\Response The action object
-                     */
-                    $tbg_response = self::getResponse();
-
-                    // Load the "ui" library, since this is used a lot
-                    self::loadLibrary('ui');
-                }
-
-                self::loadLibrary('common');
                 Logging::log('rendering final content');
 
                 if (Settings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
@@ -2327,7 +2305,7 @@
                     }
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    require THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php';
+                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php');
                     $content = ob_get_clean();
                 }
 
@@ -2338,7 +2316,7 @@
                 {
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
+                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/layout.php', array('content' => $content));
                     ob_flush();
                 }
                 else
@@ -2351,7 +2329,7 @@
                         {
                             throw new exceptions\TemplateNotFoundException('Can not find header decoration: ' . self::getResponse()->getHeaderDecoration());
                         }
-                        require self::getResponse()->getHeaderDecoration();
+                        ActionComponent::presentTemplate(self::getResponse()->getHeaderDecoration());
                     }
 
                     echo $content;
@@ -2366,7 +2344,7 @@
                         {
                             throw new exceptions\TemplateNotFoundException('Can not find footer decoration: ' . self::getResponse()->getFooterDecoration());
                         }
-                        require self::getResponse()->getFooterDecoration();
+                        ActionComponent::presentTemplate(self::getResponse()->getFooterDecoration());
                     }
 
                     Logging::log('...done');
