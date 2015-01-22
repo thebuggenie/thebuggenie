@@ -521,7 +521,12 @@
             header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
             header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
             header("Pragma: no-cache"); // HTTP/1.0
-            header("x-tbg-debugid: ".Context::getDebugID());
+            if (Context::isDebugMode()) {
+                header("x-tbg-debugid: ".Context::getDebugID());
+                $load_time = Context::getLoadTime();
+                $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+                header("x-tbg-loadtime: ".$load_time);
+            }
             if (Context::isI18nInitialized())
             {
                 header("Content-Type: " . $this->_content_type . "; charset=" . Context::getI18n()->getCharset());

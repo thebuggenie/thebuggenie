@@ -104,8 +104,12 @@
                 var f_init = function() {TBG.initialize({ basepath: '<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>', data_url: '<?php echo make_url('userdata'); ?>', autocompleter_url: '<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
                 <?php if (\thebuggenie\core\framework\Context::isDebugMode()): ?>
                     TBG.debug = true;
-                    TBG.debugUrl = '<?php echo make_url('debug', array('debug_id' => '___debugid___')); ?>';
-                    TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>'});
+                    TBG.debugUrl = '<?php echo make_url('debugger', array('debug_id' => '___debugid___')); ?>';
+                    <?php
+                        $load_time = \thebuggenie\core\framework\Context::getLoadTime();
+                        $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+                    ?>
+                    TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', loadtime: '<?php echo $load_time; ?>'});
                     TBG.loadDebugInfo('<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', f_init);
                 <?php else: ?>
                     f_init();

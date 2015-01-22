@@ -585,7 +585,7 @@
                 Logging::log('Loading i18n strings');
                 if (!self::$_i18n = self::getCache()->get(Cache::KEY_I18N . $language, false))
                 {
-                    Logging::log("Loading strings from file ({$language})");
+                    Logging::log("Initializing i18n with language {$language}");
                     self::$_i18n = new I18n($language);
                     if (!self::isInstallmode())
                         self::getCache()->add(Cache::KEY_I18N . $language, self::$_i18n, false);
@@ -915,7 +915,7 @@
                     {
                         self::$_user->updateLastSeen();
                     }
-                    if (!self::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debug', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(self::getScope()))
+                    if (!self::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debugger', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(self::getScope()))
                     {
                         self::getResponse()->headerRedirect(self::getRouting()->generate('add_scope'));
                     }
@@ -2142,7 +2142,7 @@
             }
             else
             {
-                self::$_partials_visited[$template_name]['count'] ++;
+                self::$_partials_visited[$template_name]['count']++;
                 self::$_partials_visited[$template_name]['time'] += $time;
             }
         }
@@ -2242,7 +2242,7 @@
                         {
                             $time = explode(' ', microtime());
                             $action_posttime = $time[1] + $time[0];
-                            self::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);
+                            self::visitPartial("{$actionClassName}::{$actionToRunName}()", $action_posttime - $action_pretime);
                         }
                     }
                     if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
@@ -2544,7 +2544,7 @@
                     $_SESSION['___DEBUGINFO___'] = array();
                 }
                 $_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
-                while (count($_SESSION['___DEBUGINFO___']) > 10)
+                while (count($_SESSION['___DEBUGINFO___']) > 25)
                     array_shift($_SESSION['___DEBUGINFO___']);
             }
         }

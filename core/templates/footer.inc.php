@@ -6,9 +6,19 @@
         | <b><?php echo link_tag(make_url('configure'), __('Configure %thebuggenie_name', array('%thebuggenie_name' => \thebuggenie\core\framework\Settings::getSiteHeaderName()))); ?></b>
     <?php endif; ?>
     <?php if (\thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Logging::isEnabled()): ?>
+        <script>
+            function tbg_debug_show_menu_tab(tab, clicked) {
+                $('debug-bar').childElements().each(function (unclicked) {
+                    unclicked.removeClassName('selected');
+                });
+                clicked.addClassName('selected');
+                $('debug-frames-container').childElements().each(function (container) {
+                    (container.id == tab) ? container.addClassName('selected') : container.removeClassName('selected');
+                });
+            }
+        </script>
         <div id="tbg___DEBUGINFO___" style="position: fixed; bottom: 0; left: 0; z-index: 100; display: none; width: 100%;">
         </div>
         <?php echo image_tag('spinning_16.gif', array('style' => 'position: fixed; bottom: 5px; right: 23px;', 'id' => 'tbg___DEBUGINFO___indicator')); ?>
-        <?php echo image_tag('debug_show.png', array('style' => 'position: fixed; bottom: 5px; right: 3px; cursor: pointer;', 'onclick' => "$('tbg___DEBUGINFO___').toggle();", 'title' => 'Show debug bar')); ?>
     <?php endif; ?>
 </footer>

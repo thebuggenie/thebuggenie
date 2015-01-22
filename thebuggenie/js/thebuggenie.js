@@ -777,9 +777,10 @@ TBG.Main.Helpers.ajax = function (url, options) {
             if (TBG.debug) {
                 $('tbg___DEBUGINFO___indicator').hide();
                 var d = new Date(),
-                        d_id = response.getHeader('x-tbg-debugid');
+                    d_id = response.getHeader('x-tbg-debugid'),
+                    d_time = response.getHeader('x-tbg-loadtime');
 
-                TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id});
+                TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id, loadtime: d_time});
                 TBG.updateDebugInfo();
             }
             $(options.loading.indicator).hide();
@@ -804,7 +805,7 @@ TBG.updateDebugInfo = function () {
             return (time < 10) ? '0' + time : time;
         };
         TBG.Core.AjaxCalls.each(function (info) {
-            var content = '<li style="clear: both;"><span class="faded_out dark small">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '</span> ' + info.location + ' <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Show debug info</a></li>';
+            var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing">' + info.loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
             lai.insert(content, 'top');
         });
     }

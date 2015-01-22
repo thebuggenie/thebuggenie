@@ -13,12 +13,10 @@ home:
     parameters: [ ]
     csrf_enabled: false
 
-debug:
-    route: /debug/:debug_id
-    module: main
-    action: debug
-    parameters: [ ]
-    csrf_enabled: false
+debugger:
+    route: /debugger/:debug_id
+    module: debugger
+    action: index
 
 upgrade:
     route: /upgrade

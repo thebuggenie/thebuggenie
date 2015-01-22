@@ -4671,12 +4671,6 @@
                 return $this->renderComponent('main/teamdropdown', array('team' => $request['i_id']));
         }
 
-        public function runDebug(framework\Request $request)
-        {
-            $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
-            $this->tbg_summary = framework\Context::getDebugData($request['debug_id']);
-        }
-
         public function runGetACLFormEntry(framework\Request $request)
         {
             switch ($request['identifiable_type'])

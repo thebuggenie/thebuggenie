@@ -114,6 +114,7 @@
             {
                 Logging::log("Initiating with file '{$filename}", 'i18n');
                 include $filename;
+                Logging::log("Done Initiating", 'i18n');
             }
             if ($this->_strings === null)
             {
@@ -203,6 +204,7 @@
                         $this->addString($source_tag->item(0)->nodeValue, $target_tag->item(0)->nodeValue);
                     }
                 }
+                Logging::log("Done loading strings from file", 'i18n');
             }
             else
             {
