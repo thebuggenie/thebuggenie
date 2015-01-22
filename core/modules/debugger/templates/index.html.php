@@ -33,7 +33,7 @@
         #debug-bar.enabled { position: fixed; top: 0; left: 0; border: 0; }
         #debug-bar > li { display: block; float: left; padding: 11px 20px; border-right: 1px solid rgba(100, 100, 100, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.8); vertical-align: middle; }
         #debug-bar > li:first-child { border-left: none; }
-        #debug-bar.enabled > li.selected { background-color: #FFF; }
+        #debug-bar.enabled > li.selected { background-color: #FFF; box-shadow: 0 -4px 4px rgba(100, 100, 100, 0.3); }
         #debug-bar > li img { display: inline; margin-right: 5px; float: left; vertical-align: middle; }
         #debug-bar.enabled + #debug-frames-container { display: block; }
         #debug-bar .minimizer { display: none; }
@@ -46,7 +46,7 @@
     <ul class="" id="debug-bar" onclick="$(this).addClassName('enabled');">
         <li onclick="tbg_debug_show_menu_tab('debug_routes', $(this));">
             <?php echo image_tag('debug_route.png'); ?>
-            <b>Current route: </b>[<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
+            [<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
         </li>
         <li onclick="tbg_debug_show_menu_tab('log_timing', $(this));" title="Click to toggle timing overview">
             <?php echo image_tag('debug_time.png'); ?>
