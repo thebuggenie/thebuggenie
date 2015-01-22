@@ -162,7 +162,7 @@
          * Array of scopes this user is a member of
          *
          * @var array
-         * @Relates(class="Scope", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\UserScopes")
+         * @Relates(class="\thebuggenie\core\entities\Scope", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\UserScopes")
          */
         protected $_scopes = null;
 

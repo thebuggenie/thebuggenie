@@ -73,7 +73,7 @@
             $crit->addInsert(self::SCOPE, $scope);
             $res = $this->doInsert($crit);
 
-            framework\Context::getCache()->clearCacheKeys(array(\thebuggenie\core\entities\Cache::KEY_MAIN_MENU_LINKS));
+            framework\Context::getCache()->clearCacheKeys(array(framework\Cache::KEY_MAIN_MENU_LINKS));
 
             return $res->getInsertID();
         }
@@ -123,7 +123,7 @@
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $res = $this->doDelete($crit);
 
-            framework\Context::getCache()->clearCacheKeys(array(\thebuggenie\core\entities\Cache::KEY_MAIN_MENU_LINKS));
+            framework\Context::getCache()->clearCacheKeys(array(framework\Cache::KEY_MAIN_MENU_LINKS));
             
             return true;
         }

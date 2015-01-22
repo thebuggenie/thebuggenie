@@ -176,7 +176,7 @@
                 framework\Context::clearRoutingCache();
                 framework\Context::clearPermissionsCache();
                 $this->_install($scope);
-                $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'entities' . DS . 'b2db';
+                $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'entities' . DS . 'tables';
 
                 if (framework\Context::getScope()->isDefault() && is_dir($b2db_classpath))
                 {
@@ -185,7 +185,7 @@
                     {
                         if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
                         {
-                            \b2db\Core::getTable("\\thebuggenie\\modules\\".$this->_name."\\entities\\b2db\\".$tablename)->create();
+                            \b2db\Core::getTable("\\thebuggenie\\modules\\".$this->_name."\\entities\\tables\\".$tablename)->create();
                         }
                     }
                 }
@@ -420,33 +420,23 @@
 
             $crit = new \b2db\Criteria();
             $crit->addWhere(tables\ModulePermissions::MODULE_NAME, $module);
-            //$sql = "select b2mp.allowed from tbg_2_modulepermissions b2mp where b2mp.module_name = '$module'";
             switch (true)
             {
                 case ($uid != 0):
-                    //$sql .= " and uid = $uid";
                     $crit->addWhere(tables\ModulePermissions::UID, $uid);
                 case ($tid != 0):
-                    //$sql .= " and tid = $tid";
                     $crit->addWhere(tables\ModulePermissions::TID, $tid);
                 case ($gid != 0):
-                    //$sql .= " and gid = $gid";
                     $crit->addWhere(tables\ModulePermissions::GID, $gid);
             }
             if (($uid + $tid + $gid) == 0)
             {
-                //$sql .= " and uid = $uid and tid = $tid and gid = $gid";
                 $crit->addWhere(tables\ModulePermissions::UID, $uid);
                 $crit->addWhere(tables\ModulePermissions::TID, $tid);
                 $crit->addWhere(tables\ModulePermissions::GID, $gid);
             }
 
-            //$sql .= " AND b2mp.scope = " . framework\Context::getScope()->getID();
             $crit->addWhere(tables\ModulePermissions::SCOPE, framework\Context::getScope()->getID());
-
-            //$res = b2db_sql_query($sql, \b2db\Core::getDBlink());
-
-            #print $sql;
 
             $permissions = array();
             $res = tables\ModulePermissions::getTable()->doSelect($crit);

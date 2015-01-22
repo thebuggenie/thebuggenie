@@ -57,7 +57,7 @@
 
         protected function _postSave($is_new)
         {
-            framework\Context::getCache()->delete(Cache::KEY_TEXTPARSER_ISSUE_REGEX);
+            framework\Context::getCache()->delete(framework\Cache::KEY_TEXTPARSER_ISSUE_REGEX);
         }
         
         /**
@@ -79,7 +79,7 @@
             $scheme->setDescription("This is the default issuetype scheme. It is used by all projects with no specific issuetype scheme selected. This scheme cannot be edited or removed.");
             $scheme->save();
 
-            \thebuggenie\core\framework\Settings::saveSetting(\thebuggenie\core\framework\Settings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID(), 'core', $scope->getID());
+            framework\Settings::saveSetting(framework\Settings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID(), 'core', $scope->getID());
             
             foreach (Issuetype::getAll() as $issuetype)
             {
@@ -125,7 +125,7 @@
          */
         public function isCore()
         {
-            return ($this->getID() == \thebuggenie\core\framework\Settings::getCoreIssuetypeScheme()->getID());
+            return ($this->getID() == framework\Settings::getCoreIssuetypeScheme()->getID());
         }
 
         protected function _populateAssociatedIssuetypes()

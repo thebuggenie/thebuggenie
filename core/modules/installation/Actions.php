@@ -255,23 +255,8 @@
                     throw new \Exception('You must provide a database username');
                 }
 
-                // Create legacy tables
-                $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
-                foreach (scandir($tables_path) as $tablefile)
-                {
-                    if (in_array($tablefile, array('.', '..')))
-                        continue;
-
-                    if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
-                    {
-                        \b2db\Core::getTable($tablename)->create();
-                        \b2db\Core::getTable($tablename)->createIndexes();
-                        $tables_created[] = $tablename;
-                    }
-                }
-
                 // Create v4 tables
-                $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'b2db' . DS;
+                $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'tables' . DS;
                 foreach (scandir($b2db_entities_path) as $tablefile)
                 {
                     if (in_array($tablefile, array('.', '..')))
@@ -279,10 +264,16 @@
 
                     if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
                     {
-                        $tablename = "\\thebuggenie\\core\\entities\\b2db\\{$tablename}";
-                        \b2db\Core::getTable($tablename)->create();
-                        \b2db\Core::getTable($tablename)->createIndexes();
-                        $tables_created[] = $tablename;
+                        $tablename = "\\thebuggenie\\core\\entities\\tables\\{$tablename}";
+                        $reflection = new \ReflectionClass($tablename);
+                        $docblock = $reflection->getDocComment();
+                        $annotationset = new \b2db\AnnotationSet($docblock);
+                        if ($annotationset->hasAnnotation('Table'))
+                        {
+                            \b2db\Core::getTable($tablename)->create();
+                            \b2db\Core::getTable($tablename)->createIndexes();
+                            $tables_created[] = $tablename;
+                        }
                     }
                 }
                 sort($tables_created);
@@ -364,18 +355,18 @@
                         }
                     }
                     if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini')))
-					{
-						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini';
-					}
-					else
-					{
-						$content = file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/user.ini.template');
-						file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini', $content);
-						if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') != $content)
-						{
-							$this->htaccess_error = true;
-						}
-					}
+                    {
+                            $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini';
+                    }
+                    else
+                    {
+                        $content = file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/user.ini.template');
+                        file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini', $content);
+                        if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') != $content)
+                        {
+                            $this->htaccess_error = true;
+                        }
+                    }
                 }
             }
             catch (\Exception $e)

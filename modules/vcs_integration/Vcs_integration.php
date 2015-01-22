@@ -59,9 +59,9 @@
 
         protected function _loadFixtures($scope)
         {
-            tables\Commits::getTable()->createIndexes();
-            tables\Files::getTable()->createIndexes();
-            tables\IssueLinks::getTable()->createIndexes();
+            Commits::getTable()->createIndexes();
+            Files::getTable()->createIndexes();
+            IssueLinks::getTable()->createIndexes();
         }
 
         protected function _addListeners()
@@ -81,9 +81,9 @@
         {
             if (framework\Context::getScope()->getID() == 1)
             {
-                tables\Commits::getTable()->drop();
-                tables\Files::getTable()->drop();
-                tables\IssueLinks::getTable()->drop();
+                Commits::getTable()->drop();
+                Files::getTable()->drop();
+                IssueLinks::getTable()->drop();
             }
             parent::_uninstall();
         }
@@ -145,7 +145,7 @@
             if ($event->getSubject()->getModuleName() != 'vcs_integration')
                 return;
 
-            $commit = tables\Commits::getTable()->selectById($event->getSubject()->getTargetID());
+            $commit = Commits::getTable()->selectById($event->getSubject()->getTargetID());
             $event->setReturnValue($commit);
             $event->setProcessed();
         }
