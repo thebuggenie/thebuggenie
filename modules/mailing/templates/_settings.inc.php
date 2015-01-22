@@ -105,7 +105,7 @@
 <?php endif; ?>
 </form>
 <?php if ($module->isEnabled()): ?>
-    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_test_email'); ?>" method="post">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_testemail'); ?>" method="post">
         <div class="greybox" style="margin: 5px 0 30px 0;">
             <table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
