@@ -26,6 +26,20 @@
     class SavedSearch extends IdentifiableScoped
     {
 
+        const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES = 1;
+        const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS = 12;
+        const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES = 2;
+        const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS = 13;
+        const PREDEFINED_SEARCH_PROJECT_WISHLIST = 10;
+        const PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO = 6;
+        const PREDEFINED_SEARCH_PROJECT_MOST_VOTED = 7;
+        const PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH = 8;
+        const PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS = 9;
+        const PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES = 3;
+        const PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES = 4;
+        const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
+        const PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES = 11;
+
         /**
          * The name of the saved search
          *
@@ -210,51 +224,51 @@
             $i18n = framework\Context::getI18n();
             switch ($type)
             {
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Open issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('All open issues');
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
                     $this->_searchtitle = $i18n->__('Open issues for %project_name (including subprojects)', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Closed issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('All closed issues');
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
                     $this->_searchtitle = $i18n->__('Closed issues for %project_name (including subprojects)', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
                     $this->_searchtitle = $i18n->__('%project_name wishlist', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
                     $this->_searchtitle = $i18n->__('Milestone todo-list for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_templatename = 'results_todo';
                     $this->_groupby = 'milestone';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Most voted issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('Most voted issues');
                     $this->_templatename = 'results_votes';
                     $this->_groupby = 'votes';
                     $this->_grouporder = 'desc';
                     $this->_issues_per_page = 100;
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
                     $this->_searchtitle = $i18n->__('Issues reported by me');
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues assigned to me');
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues assigned to my teams');
                     $this->_groupby = 'issuetype';
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues owned by me');
                     $this->_groupby = 'issuetype';
                     break;

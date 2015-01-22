@@ -120,10 +120,10 @@
                     {
                         $searches['info'][self::VIEW_RECENT_COMMENTS] = array(0 => array('title' => $i18n->__('Recent comments'), 'description' => $i18n->__('Shows a list of your most recent comments')));
                     }
-                    $searches['searches'][self::VIEW_PREDEFINED_SEARCH] = array(framework\Context::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => array('title' => $i18n->__('Issues reported by me'), 'description' => $i18n->__('Shows a list of all issues you have reported, across all projects')),
-                        framework\Context::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to me'), 'description' => $i18n->__('Shows a list of all issues assigned to you')),
-                        framework\Context::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues owned by me'), 'description' => $i18n->__('Shows a list of all issues owned by you')),
-                        framework\Context::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to my teams'), 'description' => $i18n->__('Shows all issues assigned to any of your teams')));
+                    $searches['searches'][self::VIEW_PREDEFINED_SEARCH] = array(\thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => array('title' => $i18n->__('Issues reported by me'), 'description' => $i18n->__('Shows a list of all issues you have reported, across all projects')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to me'), 'description' => $i18n->__('Shows a list of all issues assigned to you')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues owned by me'), 'description' => $i18n->__('Shows a list of all issues owned by you')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to my teams'), 'description' => $i18n->__('Shows all issues assigned to any of your teams')));
                     $searches['info'][self::VIEW_PROJECTS] = array(0 => array('title' => $i18n->__("Your projects"), 'description' => $i18n->__('A widget that shows projects you are involved in')));
                     $searches['info'][self::VIEW_MILESTONES] = array(0 => array('title' => $i18n->__("Upcoming milestones / sprints"), 'description' => $i18n->__('A widget that shows all upcoming milestones or sprints for any projects you are involved in')));
                     break;

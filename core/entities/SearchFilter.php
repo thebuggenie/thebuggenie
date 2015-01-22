@@ -97,25 +97,25 @@
             $filters = array();
             switch ($type)
             {
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $types = array();
@@ -129,7 +129,7 @@
                         $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => join(',', $types)));
                     }
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $units = framework\Context::getRequest()->getParameter('units');
                     switch (framework\Context::getRequest()->getParameter('time_unit'))
@@ -160,28 +160,28 @@
                     }
                     $filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['milestone'] = self::createFilter('milestone', array('operator' => '!=', 'value' => 0), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['votes_total'] = self::createFilter('votes_total', array('operator' => '>=', 'value' => '1'), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
                     $filters['posted_by'] = self::createFilter('posted_by', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['assignee_user'] = self::createFilter('assignee_user', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $teams = array();
                     foreach (framework\Context::getUser()->getTeams() as $team_id => $team)
@@ -190,7 +190,7 @@
                     }
                     $filters['assignee_team'] = self::createFilter('assignee_team', array('operator' => '=', 'value' => join(',', $teams)), $search);
                     break;
-                case framework\Context::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['owner_user'] = self::createFilter('owner_user', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;

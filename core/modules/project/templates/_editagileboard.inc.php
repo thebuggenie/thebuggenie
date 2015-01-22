@@ -109,7 +109,7 @@
                         <div class="fancyfilter filter interactive_dropdown" data-filterkey="backlog_search" data-value="<?php echo $board->getTaskIssuetypeID(); ?>" data-no-selection-value="<?php echo __('None selected'); ?>">
                             <input type="hidden" name="backlog_search" value="<?php echo $board->getBacklogSearchIdentifier(); ?>" id="filter_backlog_search_value_input">
                             <label><?php echo __('Backlog search'); ?></label>
-                            <span class="value"><?php echo ($board->getBacklogSearch() instanceof \thebuggenie\core\entities\SavedSearch) ? $board->getBacklogSearch()->getName() : $autosearches[\thebuggenie\core\framework\Context::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES]; ?></span>
+                            <span class="value"><?php echo ($board->getBacklogSearch() instanceof \thebuggenie\core\entities\SavedSearch) ? $board->getBacklogSearch()->getName() : $autosearches[\thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES]; ?></span>
                             <div class="interactive_menu">
                                 <h1><?php echo __('Select search to use for backlog'); ?></h1>
                                 <div class="interactive_values_container">
