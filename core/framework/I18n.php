@@ -120,17 +120,19 @@
             {
                 if (Context::getCache()->fileHas(Cache::KEY_I18N . 'strings_' . $this->_language, false))
                 {
+                    Logging::log('Trying cached strings');
                     $strings = Context::getCache()->fileGet(Cache::KEY_I18N . 'strings_' . $this->_language, false);
-                    $this->_strings = (is_array($strings) && !empty($strings)) ? $strings : null;
+                    $this->_strings = (is_array($strings)) ? $strings : null;
                 }
                 if ($this->_strings === null)
                 {
+                    Logging::log('No usable cached strings available');
                     $this->loadStrings();
                     foreach (array_keys(Context::getModules()) as $module_name)
                     {
                         $this->loadStrings($module_name);
                     }
-                    if (is_array($this->_strings) && !empty($this->_strings)) 
+                    if (is_array($this->_strings))
                     {
                         Context::getCache()->fileAdd(Cache::KEY_I18N . 'strings_' . $this->_language, $this->_strings, false);
                     }
@@ -277,17 +279,15 @@
             else
             {
                 $retstring = $text;
-                Logging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
-                $this->_missing_strings[$text] = true;
+                if (Context::isDebugMode())
+                {
+                    Logging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
+                    $this->_missing_strings[$text] = true;
+                }
             }
             if (!empty($replacements))
             {
-                $tmp = array();
-                foreach ($replacements as $key => $value)
-                {
-                    $tmp[$key] = $value;
-                    $retstring = str_replace(array_keys($tmp), array_values($tmp), $retstring);
-                }
+                $retstring = str_replace(array_keys($replacements), array_values($replacements), $retstring);
             }
             if ($html_decode) {
                 $retstring = html_entity_decode($retstring);

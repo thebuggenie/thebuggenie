@@ -568,18 +568,8 @@
                     $language = Settings::getLanguage();
                 }
 
-                Logging::log('Loading i18n strings');
-                if (!self::$_i18n = self::getCache()->get(Cache::KEY_I18N . $language, false))
-                {
-                    Logging::log("Initializing i18n with language {$language}");
-                    self::$_i18n = new I18n($language);
-                    if (!self::isInstallmode())
-                        self::getCache()->add(Cache::KEY_I18N . $language, self::$_i18n, false);
-                }
-                else
-                {
-                    Logging::log('Using cached i18n strings');
-                }
+                Logging::log("Initializing i18n with language {$language}");
+                self::$_i18n = new I18n($language);
                 self::$_i18n->initialize();
             }
             Logging::log('done (initializing i18n)');
