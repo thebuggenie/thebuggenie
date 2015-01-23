@@ -383,10 +383,10 @@
                             $project->addAssignee($user, $roles[array_rand($roles)]);
                         }
                     }
+
+                    $transaction->commitAndEnd();
                 }
             }
-
-            $transaction->commitAndEnd();
 
             $project1 = Project::getByKey('sampleproject1');
             $project2 = Project::getByKey('sampleproject2');
