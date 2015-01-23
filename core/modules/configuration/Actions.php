@@ -162,7 +162,8 @@
             {
                 if ($request['import_sample_data'])
                 {
-                    ini_set('memory_limit', '64M');
+                    $transaction = \b2db\Core::startTransaction();
+
                     $users = array();
 
                     $user1 = new User();
@@ -384,6 +385,8 @@
                     }
                 }
             }
+
+            $transaction->commitAndEnd();
 
             $project1 = Project::getByKey('sampleproject1');
             $project2 = Project::getByKey('sampleproject2');
