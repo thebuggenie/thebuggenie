@@ -20,7 +20,6 @@
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "ext-gd" : "*",
-        "ext-gmp" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
         "ext-iconv" : "*",
@@ -31,7 +30,7 @@
         "lib-pcre" : "8.*"
     },
     "require-dev" : {
-        "symfony/finder" : "dev-master",
+        "symfony/finder" : "~2.7",
         "phpunit/phpunit": "4.2.*"
     },
     "suggest" : {
@@ -41,8 +40,7 @@
         "psr-4" : {
             "thebuggenie\\modules\\" : "modules/",
             "thebuggenie\\core\\" : "core/"
-        },
-        "classmap" : [ "core/classes/", "core/classes/B2DB/" ]
+        }
     },
     "minimum-stability" : "dev",
         "prefer-stable" : true
