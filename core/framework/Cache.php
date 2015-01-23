@@ -54,11 +54,18 @@
 
         public function __construct()
         {
-            if (!file_exists(THEBUGGENIE_CACHE_PATH))
-                throw new exceptions\CacheException('The cache directory is not writable', exceptions\CacheException::NO_FOLDER);
+            if (Context::isCLI())
+            {
+                $this->disable();
+            }
+            else
+            {
+                if (!file_exists(THEBUGGENIE_CACHE_PATH))
+                    throw new exceptions\CacheException('The cache directory is not writable', exceptions\CacheException::NO_FOLDER);
 
-            if (!is_writable(THEBUGGENIE_CACHE_PATH))
-                throw new exceptions\CacheException('The cache directory is not writable', exceptions\CacheException::NOT_WRITABLE);
+                if (!is_writable(THEBUGGENIE_CACHE_PATH))
+                    throw new exceptions\CacheException('The cache directory is not writable', exceptions\CacheException::NOT_WRITABLE);
+            }
         }
 
         protected function getScopedKeyIfAppliccable($key, $prepend_scope)
@@ -237,7 +244,7 @@
 
         public function isEnabled()
         {
-            return $this->_enabled;
+            return (Context::isCLI()) ? false : $this->_enabled;
         }
 
         public function disable()
