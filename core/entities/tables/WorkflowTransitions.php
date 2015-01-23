@@ -66,7 +66,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $return_array[$row->get(self::ID)] = \thebuggenie\core\entities\WorkflowTransition::getB2DBTable()->selectById($row->get(self::ID), $row);
+                    $return_array[$row->get(self::ID)] = new \thebuggenie\core\entities\WorkflowTransition($row->get(self::ID), $row);
                 }
             }
 

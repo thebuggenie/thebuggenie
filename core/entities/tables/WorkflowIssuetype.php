@@ -126,7 +126,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $return_array[$row->get(self::ISSUETYPE_ID)] = \thebuggenie\core\entities\Workflow::getB2DBTable()->selectById($row->get(self::WORKFLOW_ID), $row);
+                    $return_array[$row->get(self::ISSUETYPE_ID)] = new \thebuggenie\core\entities\Workflow($row->get(self::WORKFLOW_ID), $row);
                 }
             }
 

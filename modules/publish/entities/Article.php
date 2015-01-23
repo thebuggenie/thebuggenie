@@ -481,7 +481,7 @@
                 {
                     while ($row = $history->getNextRow())
                     {
-                        $author = ($row->get(ArticleHistory::AUTHOR)) ? \thebuggenie\core\entities\User::getB2DBTable()->selectById($row->get(ArticleHistory::AUTHOR)) : null;
+                        $author = ($row->get(ArticleHistory::AUTHOR)) ? new \thebuggenie\core\entities\User($row->get(ArticleHistory::AUTHOR)) : null;
                         $this->_history[$row->get(ArticleHistory::REVISION)] = array('old_content' => $row->get(ArticleHistory::OLD_CONTENT), 'new_content' => $row->get(ArticleHistory::NEW_CONTENT), 'change_reason' => $row->get(ArticleHistory::REASON), 'updated' => $row->get(ArticleHistory::DATE), 'author' => $author);
                     }
                 }

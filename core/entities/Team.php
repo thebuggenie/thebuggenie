@@ -174,7 +174,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $teams[$row->get(tables\Teams::ID)] = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($row->get(tables\Teams::ID), $row);
+                    $teams[$row->get(tables\Teams::ID)] = new \thebuggenie\core\entities\Team($row->get(tables\Teams::ID), $row);
                 }
             }
             return $teams;

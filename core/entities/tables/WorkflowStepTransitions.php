@@ -74,11 +74,11 @@
                 {
                     if ($type == 'step')
                     {
-                        $return_array[$row->get(self::TRANSITION_ID)] = \thebuggenie\core\entities\WorkflowTransition::getB2DBTable()->selectById($row->get(self::TRANSITION_ID));
+                        $return_array[$row->get(self::TRANSITION_ID)] = new \thebuggenie\core\entities\WorkflowTransition($row->get(self::TRANSITION_ID));
                     }
                     else
                     {
-                        $return_array[$row->get(self::FROM_STEP_ID)] = \thebuggenie\core\entities\WorkflowStep::getB2DBTable()->selectById($row->get(self::FROM_STEP_ID));
+                        $return_array[$row->get(self::FROM_STEP_ID)] = new \thebuggenie\core\entities\WorkflowStep($row->get(self::FROM_STEP_ID));
                     }
                 }
             }

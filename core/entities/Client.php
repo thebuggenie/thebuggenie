@@ -239,7 +239,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $clients[$row->get(tables\Clients::ID)] = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($row->get(tables\Clients::ID), $row);
+                    $clients[$row->get(tables\Clients::ID)] = new \thebuggenie\core\entities\Client($row->get(tables\Clients::ID), $row);
                 }
             }
             return $clients;

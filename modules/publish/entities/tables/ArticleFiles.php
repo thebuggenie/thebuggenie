@@ -76,7 +76,7 @@
                 {
                     try
                     {
-                        $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById($row->get(\thebuggenie\core\entities\tables\Files::ID), $row);
+                        $file = new \thebuggenie\core\entities\File($row->get(\thebuggenie\core\entities\tables\Files::ID), $row);
                         $file->setUploadedAt($row->get(self::ATTACHED_AT));
                         $ret_arr[$row->get(\thebuggenie\core\entities\tables\Files::ID)] = $file;
                     }

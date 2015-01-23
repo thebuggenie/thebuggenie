@@ -440,7 +440,7 @@
                 {
                     while ($row = $res->getNextRow())
                     {
-                        self::$_users[$row->get(tables\Users::ID)] = \thebuggenie\core\entities\User::getB2DBTable()->selectById($row->get(tables\Users::ID), $row);
+                        self::$_users[$row->get(tables\Users::ID)] = new \thebuggenie\core\entities\User($row->get(tables\Users::ID), $row);
                     }
                 }
             }
@@ -1107,7 +1107,7 @@
                 {
                     while ($row = $res->getNextRow())
                     {
-                        $this->userassigned[$row->get(tables\Issues::ID)] = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\Issues::ID), $row);
+                        $this->userassigned[$row->get(tables\Issues::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID), $row);
                     }
                     ksort($this->userassigned, SORT_NUMERIC);
                 }

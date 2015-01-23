@@ -2142,12 +2142,12 @@
                         {
                             if ($row->get(tables\IssueRelations::PARENT_ID) == $this->getID())
                             {
-                                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\IssueRelations::CHILD_ID));
+                                $issue = new \thebuggenie\core\entities\Issue($row->get(tables\IssueRelations::CHILD_ID));
                                 $this->_child_issues[$row->get(tables\IssueRelations::ID)] = $issue;
                             }
                             else
                             {
-                                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\IssueRelations::PARENT_ID));
+                                $issue = new \thebuggenie\core\entities\Issue($row->get(tables\IssueRelations::PARENT_ID));
                                 $this->_parent_issues[$row->get(tables\IssueRelations::ID)] = $issue;
                             }
                         }
@@ -2332,7 +2332,7 @@
                     {
                         while ($row = $resultset->getNextRow())
                         {
-                            $this->_tasks[$row->get(tables\IssueTasks::ID)] = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\IssueTasks::ID), $row);
+                            $this->_tasks[$row->get(tables\IssueTasks::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\IssueTasks::ID), $row);
                         }
                     }
                 }

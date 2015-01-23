@@ -725,7 +725,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($row->get(tables\Projects::ID), $row);
+                    $project = new \thebuggenie\core\entities\Project($row->get(tables\Projects::ID), $row);
                     if ($project->hasAccess() && $project->isDeleted() == 0)
                     {
                         return $row->get(tables\Projects::ID);
@@ -796,7 +796,7 @@
         {
             if ($row = self::getB2DBTable()->getByPrefix($prefix))
             {
-                return \thebuggenie\core\entities\Project::getB2DBTable()->selectById($row->get(tables\Projects::ID), $row);
+                return new \thebuggenie\core\entities\Project($row->get(tables\Projects::ID), $row);
             }
             return null;
         }
@@ -1604,7 +1604,7 @@
                 {
                     while ($row = $res->getNextRow())
                     {
-                        $this->_unassignedissues[$row->get(tables\Issues::ID)] = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\Issues::ID));
+                        $this->_unassignedissues[$row->get(tables\Issues::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID));
                     }
                 }
             }
@@ -1634,7 +1634,7 @@
                     {
                         while ($row = $res->getNextRow())
                         {
-                            $this->_unassignedstories[$row->get(tables\Issues::ID)] = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\Issues::ID));
+                            $this->_unassignedstories[$row->get(tables\Issues::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID));
                         }
                     }
                 }
@@ -1679,7 +1679,7 @@
                     {
                         try
                         {
-                            $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($row->get(tables\Milestones::ID), $row);
+                            $milestone = new \thebuggenie\core\entities\Milestone($row->get(tables\Milestones::ID), $row);
                             if ($milestone->hasAccess())
                             {
                                 $this->_visible_milestones[$milestone->getID()] = $milestone;
@@ -2149,7 +2149,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\Issues::ID));
+                    $issue = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID));
                     if (!$issue->hasAccess()) continue;
                     if (!$merged)
                     {
@@ -2590,7 +2590,7 @@
                     {
                         try
                         {
-                            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($row->get(tables\Issues::ID), $row);
+                            $issue = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID), $row);
                             if ($issue->hasAccess()) $this->_recentissues[$issuetype_id][$issue->getID()] = $issue;
                         }
                         catch (\Exception $e) {}
