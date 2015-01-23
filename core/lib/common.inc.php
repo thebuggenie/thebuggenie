@@ -439,7 +439,7 @@
         $tbg_response->addJavascript('slider.js');
         $tbg_response->addJavascript('thebuggenie.js');
         $tbg_response->addJavascript('tablekit.js');
-        $tbg_response->addJavascript('/js/jquery-ui.min.js');
+        $tbg_response->addJavascript('jquery-ui.min.js');
 
         $jsstrings = array();
         $sepjs = array();
