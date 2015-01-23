@@ -295,7 +295,7 @@
                     {
                         $target = \thebuggenie\core\entities\Group::getB2DBTable()->selectById($gid);
                     }
-                    if ($target instanceof \thebuggenie\core\entities\Identifiable)
+                    if ($target instanceof \thebuggenie\core\entities\common\Identifiable)
                     {
                         $permissions[] = array('target' => $target, 'allowed' => (boolean) $row->get(self::ALLOWED), 'user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
                     }

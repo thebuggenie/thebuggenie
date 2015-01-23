@@ -229,9 +229,9 @@
                     }
                     elseif ($customdatatype->hasPredefinedOptions())
                     {
-                        $customfields_list[$key]['name'] = ($customvalue instanceof \thebuggenie\core\entities\Identifiable) ? $customvalue->getName() : '';
-                        $customfields_list[$key]['name_visible'] = (bool) ($customvalue instanceof \thebuggenie\core\entities\Identifiable);
-                        $customfields_list[$key]['noname_visible'] = (bool) (!$customvalue instanceof \thebuggenie\core\entities\Identifiable);
+                        $customfields_list[$key]['name'] = ($customvalue instanceof \thebuggenie\core\entities\common\Identifiable) ? $customvalue->getName() : '';
+                        $customfields_list[$key]['name_visible'] = (bool) ($customvalue instanceof \thebuggenie\core\entities\common\Identifiable);
+                        $customfields_list[$key]['noname_visible'] = (bool) (!$customvalue instanceof \thebuggenie\core\entities\common\Identifiable);
                         $customfields_list[$key]['choices'] = $customdatatype->getOptions();
                     }
                     else

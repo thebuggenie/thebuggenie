@@ -115,13 +115,13 @@
             {
                 if (property_exists($this, $property))
                 {
-                    if ($this->$property instanceof \thebuggenie\core\entities\Identifiable) $this->$property = $this->$property->getID();
+                    if ($this->$property instanceof \thebuggenie\core\entities\common\Identifiable) $this->$property = $this->$property->getID();
                 }
                 else
                 {
                     $this->$property = null;
                 }
-                if ($value instanceof \thebuggenie\core\entities\Identifiable) $value = $value->getID();
+                if ($value instanceof \thebuggenie\core\entities\common\Identifiable) $value = $value->getID();
                 if ($this->$property != $value)
                 {
                     if (array_key_exists($property, $this->_changed_items))
@@ -295,7 +295,7 @@
                 {
                     if (property_exists($this, $property))
                     {
-                        if ($this->$property instanceof \thebuggenie\core\entities\Identifiable)
+                        if ($this->$property instanceof \thebuggenie\core\entities\common\Identifiable)
                         {
                             $unmergeable = (bool) ($this->$property->getID() != $value['original_value']);
                         }

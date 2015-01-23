@@ -74,12 +74,12 @@
         public function getLeaderID()
         {
             $leader = $this->getLeader();
-            return ($leader instanceof \thebuggenie\core\entities\Identifiable) ? $leader->getID() : null;
+            return ($leader instanceof \thebuggenie\core\entities\common\Identifiable) ? $leader->getID() : null;
         }
 
         public function hasLeader()
         {
-            return (bool) ($this->getLeader() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getLeader() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function setLeader(\thebuggenie\core\entities\common\Identifiable $leader)
@@ -119,12 +119,12 @@
         public function getQaResponsibleID()
         {
             $qa_responsible = $this->getQaResponsible();
-            return ($qa_responsible instanceof \thebuggenie\core\entities\Identifiable) ? $qa_responsible->getID() : null;
+            return ($qa_responsible instanceof \thebuggenie\core\entities\common\Identifiable) ? $qa_responsible->getID() : null;
         }
 
         public function hasQaResponsible()
         {
-            return (bool) ($this->getQaResponsible() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getQaResponsible() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function setQaResponsible(\thebuggenie\core\entities\common\Identifiable $qa_responsible)

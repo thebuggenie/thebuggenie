@@ -518,7 +518,7 @@
                 $poster = $this->getPostedBy();
             }
             catch (\Exception $e) {}
-            return ($poster instanceof \thebuggenie\core\entities\Identifiable) ? $poster->getID() : null;
+            return ($poster instanceof \thebuggenie\core\entities\common\Identifiable) ? $poster->getID() : null;
         }
 
         /**
@@ -692,7 +692,7 @@
                 'id' => $this->getID(),
                 'created_at' => $this->getPosted(),
                 'comment_number' => $this->getCommentNumber(),
-                'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getPostedBy()->toJSON() : null,
+                'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
                 'content' => $this->getContent(),
                 'system_comment' => $this->isSystemComment(),
             );

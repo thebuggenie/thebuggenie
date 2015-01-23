@@ -221,7 +221,7 @@
                         {
                             $field = tables\CustomFieldOptions::getTable()->selectById((int) $value);
                         }
-                        if ($field instanceof \thebuggenie\core\entities\Identifiable)
+                        if ($field instanceof \thebuggenie\core\entities\common\Identifiable)
                         {
                             $return_values[] = $field->getName();
                         }

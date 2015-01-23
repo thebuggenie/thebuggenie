@@ -1903,7 +1903,7 @@
 
             }
 
-            $this->forward403unless($item instanceof \thebuggenie\core\entities\Identifiable);
+            $this->forward403unless($item instanceof \thebuggenie\core\entities\common\Identifiable);
 
             if ($request->hasParameter('value'))
             {
@@ -1921,7 +1921,7 @@
                                 $identified = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['value']);
                                 break;
                         }
-                        if ($identified instanceof \thebuggenie\core\entities\Identifiable)
+                        if ($identified instanceof \thebuggenie\core\entities\common\Identifiable)
                         {
                             if ($request['field'] == 'owned_by')
                                 $item->setOwner($identified);

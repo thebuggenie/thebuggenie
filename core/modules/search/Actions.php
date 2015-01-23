@@ -563,7 +563,7 @@
                         }
                         break;
                     case 'assignee':
-                        if ($issue->getAssignee() instanceof \thebuggenie\core\entities\Identifiable)
+                        if ($issue->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable)
                         {
                             $groupby_id = $issue->getAssignee()->getID();
                             $groupby_description = $issue->getAssignee()->getName();

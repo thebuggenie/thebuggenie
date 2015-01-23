@@ -2728,7 +2728,7 @@
                 {
                     $this->$var_name = new \thebuggenie\core\entities\CustomDatatypeOption($this->$var_name);
                 }
-                elseif ($this->$var_name && $customtype->hasPredefinedOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\Identifiable)
+                elseif ($this->$var_name && $customtype->hasPredefinedOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\common\Identifiable)
                 {
                     try
                     {
@@ -2991,7 +2991,7 @@
          */
         public function isPostedBy()
         {
-            return (bool) ($this->getPostedBy() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         /**
@@ -3002,7 +3002,7 @@
         public function getPostedByID()
         {
             $poster = $this->getPostedBy();
-            return ($poster instanceof \thebuggenie\core\entities\Identifiable) ? $poster->getID() : null;
+            return ($poster instanceof \thebuggenie\core\entities\common\Identifiable) ? $poster->getID() : null;
         }
 
         /**
@@ -3447,7 +3447,7 @@
 
         public function isOwned()
         {
-            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function revertOwner()
@@ -3513,7 +3513,7 @@
 
         public function isAssigned()
         {
-            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         /**
@@ -4841,7 +4841,7 @@
                             case '_assignee_user':
                                 if (!$is_saved_assignee)
                                 {
-                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getAssignee()->getName() : framework\Context::getI18n()->__('Not assigned');
+                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getName() : framework\Context::getI18n()->__('Not assigned');
 
                                     if ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
                                     {
@@ -4877,7 +4877,7 @@
                             case '_owner_user':
                                 if (!$is_saved_owner)
                                 {
-                                    $new_name = ($this->getOwner() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getOwner()->getName() : framework\Context::getI18n()->__('Not owned by anyone');
+                                    $new_name = ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getOwner()->getName() : framework\Context::getI18n()->__('Not owned by anyone');
 
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_OWNED, $new_name);
                                     $is_saved_owner = true;
@@ -5597,9 +5597,9 @@
                 'created_at' => $this->getPosted(),
                 'updated_at' => $this->getLastUpdatedTime(),
                 'title' => $this->getRawTitle(),
-                'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getPostedBy()->toJSON() : null,
-                'assignee' => ($this->getAssignee() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getAssignee()->toJSON() : null,
-                'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\Identifiable) ? $this->getStatus()->toJSON() : null,
+                'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
+                'assignee' => ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->toJSON() : null,
+                'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getStatus()->toJSON() : null,
             );
 
             $fields = $this->getProject()->getVisibleFieldsArray($this->getIssueType());
@@ -5660,7 +5660,7 @@
                 if (isset($value))
                 {
                     if ($identifiable)
-                        $return_values[$field] = ($value instanceof \thebuggenie\core\entities\Identifiable) ? $value->toJSON() : null;
+                        $return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
                     else
                         $return_values[$field] = $value;
                 }
@@ -5695,7 +5695,7 @@
 
         public function hasAssignee()
         {
-            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function setAssignee(\thebuggenie\core\entities\common\Identifiable $assignee)
@@ -5731,7 +5731,7 @@
 
         public function hasOwner()
         {
-            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function setOwner(\thebuggenie\core\entities\common\Identifiable $owner)

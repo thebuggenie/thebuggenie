@@ -55,7 +55,7 @@
 
         public function hasOwner()
         {
-            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\Identifiable);
+            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable);
         }
 
         public function setOwner(Identifiable $owner)
