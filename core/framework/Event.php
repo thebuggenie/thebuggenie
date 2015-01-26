@@ -180,7 +180,7 @@
         /**
          * Return the event subject
          *
-         * @return string
+         * @return mixed
          */
         public function getSubject()
         {
