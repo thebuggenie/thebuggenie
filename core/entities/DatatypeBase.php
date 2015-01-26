@@ -137,8 +137,8 @@
 
         public function canUserSet(\thebuggenie\core\entities\User $user)
         {
-            $retval = $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true);
-            $retval = ($retval === null) ? $user->hasPermission($this->getPermissionsKey(), 0, 'core', true) : $retval;
+            $retval = $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core');
+            $retval = ($retval === null) ? $user->hasPermission($this->getPermissionsKey(), 0, 'core') : $retval;
 
             return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
         }

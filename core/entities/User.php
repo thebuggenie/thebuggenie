@@ -2227,7 +2227,7 @@
          */
         public function canEditMainMenu()
         {
-            $retval = $this->hasPermission('caneditmainmenu', 0, 'core', true);
+            $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
             return ($retval !== null) ? $retval : false;
         }
 
