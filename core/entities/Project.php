@@ -2209,8 +2209,8 @@
                         {
                             if ($reportable)
                             {
-                                if (in_array($row->get(tables\IssueFields::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(tables\IssueFields::FIELD_KEY), $reportable) && !($row->get(tables\IssueFields::REQUIRED) && $reportable))) continue;
-                                elseif (!in_array($row->get(tables\IssueFields::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(tables\IssueFields::FIELD_KEY), $reportable, true) && !($row->get(tables\IssueFields::REQUIRED) && $reportable))) continue;
+                                if (in_array($row->get(tables\IssueFields::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(tables\IssueFields::FIELD_KEY)) && !($row->get(tables\IssueFields::REQUIRED) && $reportable))) continue;
+                                elseif (!in_array($row->get(tables\IssueFields::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(tables\IssueFields::FIELD_KEY), true) && !($row->get(tables\IssueFields::REQUIRED) && $reportable))) continue;
                             }
                             $field_key = $row->get(tables\IssueFields::FIELD_KEY);
                             $retval[$field_key] = array('required' => (bool) $row->get(tables\IssueFields::REQUIRED), 'additional' => (bool) $row->get(tables\IssueFields::ADDITIONAL));
@@ -2835,10 +2835,10 @@
          */
         public function permissionCheck($key, $explicit = false)
         {
-            $retval = framework\Context::getUser()->hasPermission($key, $this->getID(), 'core', true, null);
+            $retval = framework\Context::getUser()->hasPermission($key, $this->getID(), 'core');
             if ($explicit)
             {
-                $retval = ($retval !== null) ? $retval : framework\Context::getUser()->hasPermission($key, 0, 'core', true, null);
+                $retval = ($retval !== null) ? $retval : framework\Context::getUser()->hasPermission($key, 0, 'core');
             }
             else
             {
@@ -2848,7 +2848,7 @@
             return $retval;
         }
 
-        public function fieldPermissionCheck($field, $reportable, $custom = false)
+        public function fieldPermissionCheck($field, $custom = false)
         {
             if ($custom)
             {

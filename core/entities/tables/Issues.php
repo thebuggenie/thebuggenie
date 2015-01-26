@@ -234,16 +234,6 @@
             return array($this->doCount($crit), $this->doCount($crit2));
         }
 
-        public function getOpenAffectedIssuesByProjectID($project_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doSelect($crit);
-            return $res;
-        }
-
         public function getPriorityCountByProjectID($project_id)
         {
             return $this->_getCountByProjectIDAndColumn($project_id, self::PRIORITY);

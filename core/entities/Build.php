@@ -255,42 +255,6 @@
         }
 
         /**
-         * Adds this build to all open issues in this edition or project
-         * Returns true if any issues were updated, false if not
-         *
-         * @param integer $limit_status Limit to only a specific status type
-         * @param integer $limit_category Limit to only a specific category
-         * @param integer $limit_issuetype Limit to only a specific issue type
-         *
-         * @return boolean
-         */
-        public function addToOpenParentIssues($limit_status = null, $limit_category = null, $limit_issuetype = null)
-        {
-            if ($this->isEditionBuild())
-            {
-                $res = tables\IssueAffectsEdition::getTable()->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
-            }
-            else
-            {
-                $res = tables\Issues::getTable()->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
-            }
-
-            $retval = false;
-            if ($res)
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $issue_id = $row->get(tables\Issues::ID);
-                    if (tables\IssueAffectsBuild::getTable()->setIssueAffected($issue_id, $this->getID()))
-                    {
-                        $retval = true;
-                    }
-                }
-            }
-            return $retval;
-        }
-
-        /**
          * Whether or not the current user can access the build
          *
          * @return boolean

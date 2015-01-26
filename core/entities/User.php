@@ -2029,8 +2029,6 @@
          * @param string $permission_type The permission key
          * @param integer $target_id[optional] a target id if applicable
          * @param string $module_name[optional] the module for which the permission is valid
-         * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
-         * @param boolean $permissive[optional] whether to return false or true when explicit fails
          *
          * @return boolean
          */

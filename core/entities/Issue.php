@@ -946,7 +946,7 @@
             $user = framework\Context::getUser();
             if (!$user->isGuest() && $user->isAuthenticated())
             {
-                $specific_access = $user->hasPermission("canviewissue", $i_id, 'core', true, null);
+                $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
                 if ($specific_access !== null)
                 {
                     \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));

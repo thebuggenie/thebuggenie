@@ -51,27 +51,6 @@
             $this->_addIndex('issue', self::ISSUE);
         }
 
-        public function getOpenAffectedIssuesByEditionID($edition_id, $limit_status, $limit_category, $limit_issuetype)
-        {
-            $crit = $this->getCriteria();
-            if ($limit_status)
-            {
-                $crit->addWhere(Issues::STATUS, $limit_status);
-            }
-            if ($limit_category)
-            {
-                $crit->addWhere(Issues::CATEGORY, $limit_category);
-            }
-            if ($limit_issuetype)
-            {
-                $crit->addWhere(Issues::ISSUE_TYPE, $limit_issuetype);
-            }
-            $crit->addWhere(Issues::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            $crit->addWhere(self::EDITION, $edition_id);
-            $res = $this->doSelect($crit);
-            return $res;
-        }
-        
         public function getByIssueIDs($issue_ids)
         {
             $crit = $this->getCriteria();

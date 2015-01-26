@@ -207,8 +207,8 @@
          */
         protected function _permissionCheckWithID($key)
         {
-            $retval = framework\Context::getUser()->hasPermission($key, $this->getID(), 'core', true, null);
-            $retval = ($retval !== null) ? $retval : framework\Context::getUser()->hasPermission($key, 0, 'core', true, null);
+            $retval = framework\Context::getUser()->hasPermission($key, $this->getID(), 'core');
+            $retval = ($retval !== null) ? $retval : framework\Context::getUser()->hasPermission($key, 0, 'core');
 
             return $retval;
         }
