@@ -310,7 +310,7 @@
          */
         public function countIssues()
         {
-            return $this->getProject()->countIssuesByMilestone($this->getID(), $this->isSprint());
+            return $this->getProject()->countIssuesByMilestone($this->getID());
         }
 
         /**
@@ -330,7 +330,7 @@
          */
         public function countClosedIssues()
         {
-            return $this->getProject()->countClosedIssuesByMilestone($this->getID(), $this->isSprint());
+            return $this->getProject()->countClosedIssuesByMilestone($this->getID());
         }
 
         /**

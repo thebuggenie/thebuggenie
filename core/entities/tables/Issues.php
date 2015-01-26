@@ -211,7 +211,7 @@
             return $statuses;
         }
 
-        public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
+        public function getCountsByProjectIDandMilestone($project_id, $milestone_id)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);

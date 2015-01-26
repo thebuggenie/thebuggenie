@@ -1746,7 +1746,7 @@
             }
         }
 
-        protected function _populateIssueCountsByMilestone($milestone_id, $exclude_tasks = false)
+        protected function _populateIssueCountsByMilestone($milestone_id)
         {
             if ($this->_issuecounts === null)
             {
@@ -1758,7 +1758,7 @@
             }
             if (!array_key_exists($milestone_id, $this->_issuecounts['milestone']))
             {
-                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id, $exclude_tasks);
+                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
             }
         }
 

@@ -648,9 +648,9 @@
          *
          * @return array
          */
-        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
+        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
         {
-            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks);
+            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id);
         }
 
         /**
