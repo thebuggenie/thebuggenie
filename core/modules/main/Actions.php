@@ -1821,11 +1821,14 @@
                 return $this->renderText('no issue');
             }
 
-            $spenttime->delete();
-            $spenttime->getIssue()->save();
-            $timesum = array_sum($spenttime->getIssue()->getSpentTime());
+            if ($spenttime instanceof entities\IssueSpentTime)
+            {
+                $spenttime->delete();
+                $spenttime->getIssue()->save();
+            }
+            $timesum = array_sum($issue->getSpentTime());
 
-            return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime())));
+            return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime())));
         }
 
         public function runIssueEditTimeSpent(framework\Request $request)
