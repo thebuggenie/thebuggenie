@@ -1789,16 +1789,6 @@ configure_update_module:
       mode: update
     csrf_enabled: false
 
-configure_upload_module:
-    route: /configure/modules/upload
-    module: configuration
-    action: moduleAction
-    parameters:
-      config_module: core
-      section: 15
-      mode: upload
-    csrf_enabled: false
-
 configure_module:
     route: /configure/module/:config_module
     module: configuration

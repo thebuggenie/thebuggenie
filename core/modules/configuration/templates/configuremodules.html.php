@@ -60,18 +60,6 @@
                                 <input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
                             </form>
                         <?php endif; ?>
-                        <?php if (\thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
-                            <h5 style="margin-bottom: 0; padding-bottom: 0; margin-top: 10px;"><?php echo __('Upload and install'); ?></h5>
-                            <div class="content faded_out">
-                                <p>
-                                    <?php echo __('To add a new module in The Bug Genie, download it then select it from the %browse-button and press the %upload-button', array('%upload' => '<b>' . __('Upload') . '</b>', '%browse' => '<b>' . __('Browse') . '</b>')); ?>
-                                </p>
-                            </div>
-                            <form action="<?php echo make_url('configure_upload_module'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" enctype="multipart/form-data">
-                                <input type="file" name="archive" style="margin-top: 5px; background-color: #fff;"><br>
-                                <input type="submit" value="<?php echo __('Upload'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
-                            </form>
-                        <?php endif; ?>
                     </div>
                     <div id="tab_outdated_pane" style="padding-top: 0; width: 100%; display: none;">
                         <?php if (count($outdated_modules) == 0): ?>

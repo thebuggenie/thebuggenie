@@ -981,19 +981,6 @@
                         framework\Context::setMessage('module_error', framework\Context::getI18n()->__('There was an error install the module "%module_name"', array('%module_name' => $request['module_key'])));
                     }
                 }
-                else if ($request['mode'] == 'upload')
-                {
-                    $archive = $request->getUploadedFile('archive');
-                    if ($archive == null || $archive['error'] != UPLOAD_ERR_OK || !preg_match('/application\/(x-)?zip/i', $archive['type']))
-                    {
-                        framework\Context::setMessage('module_error', framework\Context::getI18n()->__('Invalid or empty archive uploaded'));
-                    }
-                    else
-                    {
-                        $module_name = entities\Module::uploadModule($archive);
-                        framework\Context::setMessage('module_message', framework\Context::getI18n()->__('The module "%module_name" was uploaded successfully', array('%module_name' => $module_name)));
-                    }
-                }
                 else
                 {
                     $module = framework\Context::getModule($request['module_key']);

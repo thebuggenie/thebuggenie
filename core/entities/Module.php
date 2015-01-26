@@ -92,58 +92,6 @@
             return $module;
         }
 
-        /**
-         * Upload a new module from ZIP archive
-         *
-         * @param file $module_archive the module archive file (.zip)
-         * @return string the module name uploaded
-         */
-        public static function uploadModule($module_archive, $scope = null)
-        {
-            $zip = new ZipArchive();
-            if ($zip->open($module_archive['tmp_name']) === false) {
-                throw new \Exception('Can not open module archive ' . $module_archive['name']);
-            }
-            else
-            {
-                $module_name = preg_replace('/(\w*)\.zip$/i', '$1', $module_archive['name']);
-                $module_info = $zip->getFromName('module');
-                $module_details = explode('|',$zip->getFromName('class'));
-                list($module_classname, $module_version) = $module_details;
-                $module_basepath = THEBUGGENIE_MODULES_PATH . $module_name;
-
-                if (($module_info & $module_details) === false)
-                {
-                    throw new \Exception('Invalid module archive ' . $module_archive['name']);
-                }
-
-                $modules = framework\Context::getModules();
-                foreach($modules as $module)
-                {
-                    if ($module->getName() == $module_name || $module->getClassname() == $module_classname)
-                    {
-                        throw new \Exception('Conflict with the module ' . $module->getLongName() . ' that is already installed with version ' . $module->getVersion());
-                    }
-                }
-
-                if (is_dir($module_basepath) === false)
-                {
-                    if (mkdir($module_basepath) === false)
-                    {
-                        framework\Logging::log('Try to upload module archive ' . $module_archive['name'] . ': unable to create module directory ' . $module_basepath);
-                        throw new \Exception('Unable to create module directory ' . $module_basepath);
-                    }
-                    if ($zip->extractTo($module_basepath) === false)
-                    {
-                        framework\Logging::log('Try to upload module archive ' . $module_archive['name'] . ': unable to extract archive into ' . $module_basepath);
-                        throw new \Exception('Unable to extract module into ' . $module_basepath);
-                    }
-                }
-                return $module_name;
-            }
-            return null;
-        }
-
         protected function _addAvailablePermissions() { }
 
         protected function _addListeners() { }
