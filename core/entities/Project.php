@@ -400,7 +400,7 @@
         /**
          * Parent project
          *
-         * @var \thebuggenie\core\entities\Project
+         * @var Project
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\Project")
          */
@@ -449,7 +449,7 @@
          *
          * @param string $key
          *
-         * @return \thebuggenie\core\entities\Project
+         * @return Project
          */
         public static function getByKey($key)
         {
@@ -460,7 +460,7 @@
             }
         }
 
-        public static function getValidSubprojects(\thebuggenie\core\entities\Project $project)
+        public static function getValidSubprojects(Project $project)
         {
             $valid_subproject_targets = array();
             foreach (self::getAll() as $aproject)
@@ -495,7 +495,7 @@
         /**
          * Retrieve all projects
          *
-         * @return array|\thebuggenie\core\entities\Project
+         * @return array|Project
          */
         public static function getAll()
         {
@@ -506,7 +506,7 @@
         /**
          * Retrieve all projects by id
          *
-         * @return array|\thebuggenie\core\entities\Project
+         * @return array|Project
          */
         public static function getAllByIDs($ids)
         {
@@ -534,7 +534,7 @@
             $final = array();
             foreach (self::$_projects as $project)
             {
-                if (($project->getParent() instanceof \thebuggenie\core\entities\Project) && $project->getParent()->getID() == $id)
+                if (($project->getParent() instanceof Project) && $project->getParent()->getID() == $id)
                 {
                     $final[] = $project;
                 }
@@ -683,7 +683,7 @@
             return $final;
         }
 
-        public static function getIncludingAllSubprojectsAsArray(\thebuggenie\core\entities\Project $project)
+        public static function getIncludingAllSubprojectsAsArray(Project $project)
         {
             $projects = array();
             self::getSubprojectsArray($project, $projects);
@@ -691,7 +691,7 @@
             return $projects;
         }
 
-        public static function getSubprojectsArray(\thebuggenie\core\entities\Project $project, &$projects)
+        public static function getSubprojectsArray(Project $project, &$projects)
         {
             $projects[$project->getID()] = $project;
             foreach ($project->getChildProjects() as $subproject)
@@ -730,7 +730,7 @@
         {
             parent::_preSave($is_new);
             $project = self::getByKey($this->getKey());
-            if ($project instanceof \thebuggenie\core\entities\Project && $project->getID() != $this->getID())
+            if ($project instanceof Project && $project->getID() != $this->getID())
             {
                 throw new InvalidArgumentException("A project with this key already exists");
             }
@@ -776,7 +776,7 @@
         /**
          * Returns the project for a specified prefix
          *
-         * @return \thebuggenie\core\entities\Project
+         * @return Project
          */
         static function getByPrefix($prefix)
         {
@@ -2916,7 +2916,7 @@
 
         public function hasParent()
         {
-            return ($this->getParent() instanceof \thebuggenie\core\entities\Project);
+            return ($this->getParent() instanceof Project);
         }
 
         public function hasChildren()
@@ -2932,7 +2932,7 @@
 
         public function getParentID()
         {
-            return ($this->getParent() instanceof \thebuggenie\core\entities\Project) ? $this->getParent()->getID() : 0;
+            return ($this->getParent() instanceof Project) ? $this->getParent()->getID() : 0;
         }
 
         public function clearParent()
@@ -2940,7 +2940,7 @@
             $this->_parent = null;
         }
 
-        public function setParent(\thebuggenie\core\entities\Project $project)
+        public function setParent(Project $project)
         {
             $this->_parent = $project;
         }
