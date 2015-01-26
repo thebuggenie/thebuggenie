@@ -87,8 +87,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::PREFIX, $prefix);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $row = $this->doSelectOne($crit);
-            return $row;
+            return $this->selectOne($crit);
         }
 
         public function getAll()
@@ -109,16 +108,6 @@
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->indexBy(self::KEY);
             $res = $this->select($crit, false);
-            return $res;
-        }
-
-        public function getAllSortedByIsDefault()
-        {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy(self::IS_DEFAULT, Criteria::SORT_DESC);
-            $crit->addOrderBy(self::ID, Criteria::SORT_DESC);
-            $crit->addWhere(self::LOCKED, false);
-            $res = $this->doSelect($crit);
             return $res;
         }
 

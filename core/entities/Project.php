@@ -701,27 +701,6 @@
         }
 
         /**
-         * Retrieve the default project
-         *
-         * @return \thebuggenie\core\entities\Project
-         */
-        public static function getDefaultProject()
-        {
-            if ($res = self::getB2DBTable()->getAllSortedByIsDefault())
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $project = new \thebuggenie\core\entities\Project($row->get(tables\Projects::ID), $row);
-                    if ($project->hasAccess() && $project->isDeleted() == 0)
-                    {
-                        return $row->get(tables\Projects::ID);
-                    }
-                }
-            }
-            return null;
-        }
-
-        /**
          * Pre save check for conflicting keys
          *
          * @param boolean $is_new
@@ -780,11 +759,7 @@
          */
         static function getByPrefix($prefix)
         {
-            if ($row = self::getB2DBTable()->getByPrefix($prefix))
-            {
-                return new \thebuggenie\core\entities\Project($row->get(tables\Projects::ID), $row);
-            }
-            return null;
+            return self::getB2DBTable()->getByPrefix($prefix);
         }
 
         /**
@@ -2866,7 +2841,6 @@
             {
                 return (bool) ($this->permissionCheck('caneditissue'.$field) || $this->permissionCheck('caneditissue'));
             }
-            return false;
         }
 
         protected function _dualPermissionsCheck($permission_1, $permission_2, $fallback = null)
@@ -2926,7 +2900,6 @@
 
         public function getParent()
         {
-//            if ($this->getKey() == 'sampleproject2'): return Project::getByKey('sampleproject1'); endif;
             return $this->_b2dbLazyload('_parent');
         }
 
@@ -2964,25 +2937,15 @@
             {
                 if ($archived)
                 {
-                    if ($project->isArchived() && $project->hasAccess()): $f_projects[] = $project; endif;
+                    if ($project->isArchived() && $project->hasAccess()) $f_projects[] = $project;
                 }
                 else
                 {
-                    if (!$project->isArchived() && $project->hasAccess()): $f_projects[] = $project; endif;
+                    if (!$project->isArchived() && $project->hasAccess()) $f_projects[] = $project;
                 }
             }
 
             return $f_projects;
-        }
-
-        /**
-         * Get all child projects
-         * @param bool $archived[optional] Show archived projects
-         */
-        public function getAllChildren($archived = false)
-        {
-            $this->_populateChildren();
-            return $this->_children;
         }
 
         protected function _populateChildren()
