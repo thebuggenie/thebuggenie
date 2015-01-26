@@ -1009,14 +1009,6 @@ EOT;
             return IncomingEmailAccount::getAllByProjectID($project->getID());
         }
 
-        public function processIncomingEmails($limit = 25)
-        {
-            foreach ($this->getIncomingEmailAccounts() as $account)
-            {
-                $this->processIncomingEmailAccount($account, $limit);
-            }
-        }
-
         public function getEmailAdressFromSenderString($from)
         {
             $tokens = explode(" ", $from);
@@ -1061,7 +1053,7 @@ EOT;
             return $user;
         }
 
-        public function processIncomingEmailCommand($content, Issue $issue, User $user)
+        public function processIncomingEmailCommand($content, Issue $issue)
         {
             if (!$issue->isWorkflowTransitionsAvailable())
                 return false;
@@ -1102,7 +1094,7 @@ EOT;
             }
         }
 
-        public function processIncomingEmailAccount(IncomingEmailAccount $account, $limit = 25)
+        public function processIncomingEmailAccount(IncomingEmailAccount $account)
         {
             $count = 0;
             if ($emails = $account->getUnprocessedEmails())
@@ -1153,7 +1145,7 @@ EOT;
                                 {
                                     $text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
                                     $text = trim($text);
-                                    if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+                                    if (!$this->processIncomingEmailCommand($text, $issue) && $user->canPostComments())
                                     {
                                         $comment = new Comment();
                                         $comment->setContent($text);
