@@ -159,7 +159,7 @@
                         if (Articles::getTable()->getArticleByName(urldecode($original_article_name)) === null)
                         {
                             $content = file_get_contents(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS . $original_article_name);
-                            Article::createNew(urldecode($original_article_name), $content, true, $scope, array('overwrite' => $overwrite, 'noauthor' => true));
+                            Article::createNew(urldecode($original_article_name), $content, $scope, array('overwrite' => $overwrite, 'noauthor' => true));
                             $imported = true;
                         }
                         framework\Event::createNew('publish', 'fixture_article_loaded', urldecode($original_article_name), array('imported' => $imported))->trigger();
@@ -221,7 +221,7 @@
                     $cc++;
                     Articles::getTable()->deleteArticleByName(urldecode($article_name));
                     $content = file_get_contents(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS . $article_name);
-                    Article::createNew(urldecode($article_name), $content, true, null, array('overwrite' => true, 'noauthor' => true));
+                    Article::createNew(urldecode($article_name), $content, null, array('overwrite' => true, 'noauthor' => true));
                 }
                 framework\Context::setMessage('module_message', framework\Context::getI18n()->__('%number_of_articles articles imported successfully', array('%number_of_articles' => $cc)));
             }
@@ -392,7 +392,7 @@
             if (!Article::getByName(ucfirst($event->getSubject()->getKey()) . ':MainPage') instanceof Article)
             {
                 $project_key = $event->getSubject()->getKey();
-                $article = Article::createNew("{$project_key}:MainPage", "This is the wiki frontpage for {$event->getSubject()->getName()} \n\n[[Category:{$project_key}:About]]", true);
+                $article = Article::createNew("{$project_key}:MainPage", "This is the wiki frontpage for {$event->getSubject()->getName()} \n\n[[Category:{$project_key}:About]]");
                 $this->loadArticles($project_key);
             }
         }

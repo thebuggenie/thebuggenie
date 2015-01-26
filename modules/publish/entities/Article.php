@@ -209,7 +209,7 @@
             return array($resultcount, $articles);
         }
 
-        public static function getByName($article_name, $row = null)
+        public static function getByName($article_name)
         {
             return tables\Articles::getTable()->getArticleByName($article_name);
         }
@@ -225,7 +225,7 @@
             tables\ArticleLinks::getTable()->deleteLinksByArticle($article_name);
         }
 
-        public static function createNew($name, $content, $published, $scope = null, $options = array())
+        public static function createNew($name, $content, $scope = null, $options = array())
         {
             $user_id = (framework\Context::getUser() instanceof User) ? framework\Context::getUser()->getID() : 0;
 
