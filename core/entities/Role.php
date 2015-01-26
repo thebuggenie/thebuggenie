@@ -124,10 +124,6 @@
             tables\RolePermissions::getTable()->clearPermissionsForRole($this->getID());
             tables\ProjectAssignedTeams::getTable()->deleteByRoleID($this->getID());
             tables\ProjectAssignedUsers::getTable()->deleteByRoleID($this->getID());
-            tables\EditionAssignedTeams::getTable()->deleteByRoleID($this->getID());
-            tables\EditionAssignedUsers::getTable()->deleteByRoleID($this->getID());
-            tables\ComponentAssignedTeams::getTable()->deleteByRoleID($this->getID());
-            tables\ComponentAssignedUsers::getTable()->deleteByRoleID($this->getID());
         }
 
         public function isSystemRole()

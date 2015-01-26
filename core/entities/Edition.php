@@ -65,16 +65,6 @@
         protected $_description;
 
         /**
-         * @Relates(class="\thebuggenie\core\entities\User", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\EditionAssignedUsers")
-         */
-        protected $_assigned_users;
-
-        /**
-         * @Relates(class="\thebuggenie\core\entities\Team", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\EditionAssignedTeams")
-         */
-        protected $_assigned_teams;
-
-        /**
          * The editions documentation URL
          *
          * @var string
@@ -292,63 +282,6 @@
         }
 
         /**
-         * Add an assignee to the edition
-         *
-         * @param \thebuggenie\core\entities\common\Identifiable $assignee
-         * @param integer $role
-         *
-         * @return boolean
-         */
-        public function addAssignee(\thebuggenie\core\entities\common\Identifiable $assignee, $role)
-        {
-            if ($assignee instanceof \thebuggenie\core\entities\User)
-                $retval = tables\EditionAssignedUsers::getTable()->addUserToEdition($this->getID(), $assignee, $role);
-            elseif ($assignee instanceof \thebuggenie\core\entities\Team)
-                $retval = tables\EditionAssignedTeams::getTable()->addTeamToEdition($this->getID(), $assignee, $role);
-
-            return $retval;
-        }
-
-        /**
-         * Add an assignee to the edition
-         *
-         * @param \thebuggenie\core\entities\common\Identifiable $assignee
-         * @param integer $role
-         *
-         * @return boolean
-         */
-        public function removeAssignee(\thebuggenie\core\entities\common\Identifiable $assignee)
-        {
-            if ($assignee instanceof \thebuggenie\core\entities\User)
-                $retval = tables\EditionAssignedUsers::getTable()->removeUserFromEdition($this->getID(), $assignee, $role);
-            elseif ($assignee instanceof \thebuggenie\core\entities\Team)
-                $retval = tables\EditionAssignedTeams::getTable()->removeTeamFromEdition($this->getID(), $assignee, $role);
-
-            return $retval;
-        }
-
-        protected function _populateAssignees()
-        {
-            if ($this->_assigned_users === null)
-                $this->_b2dbLazyload('_assigned_users');
-
-            if ($this->_assigned_teams === null)
-                $this->_b2dbLazyload('_assigned_teams');
-        }
-
-        public function getAssignedUsers()
-        {
-            $this->_populateAssignees();
-            return $this->_assigned_users;
-        }
-
-        public function getAssignedTeams()
-        {
-            $this->_populateAssignees();
-            return $this->_assigned_teams;
-        }
-
-        /**
          * Set the edition description
          *
          * @param string $description
@@ -371,8 +304,6 @@
         protected function _preDelete()
         {
             tables\EditionComponents::getTable()->deleteByEditionID($this->getID());
-            tables\EditionAssignedUsers::getTable()->deleteByEditionID($this->getID());
-            tables\EditionAssignedTeams::getTable()->deleteByEditionID($this->getID());
         }
 
         /**

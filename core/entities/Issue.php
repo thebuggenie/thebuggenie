@@ -5211,27 +5211,6 @@
                 {
                     $uids[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsibleID();
                 }
-                foreach ($edition_list['edition']->getAssignedTeams() as $team)
-                {
-                    $teams[$team->getID()] = $team;
-                }
-                foreach ($edition_list['edition']->getAssignedUsers() as $user)
-                {
-                    $uids[$user->getID()] = $user->getID();
-                }
-            }
-
-            // Add all users relevant for all affected components
-            foreach ($this->getComponents() as $component_list)
-            {
-                foreach ($component_list['component']->getAssignedTeams() as $team)
-                {
-                    $teams[$team->getID()] = $team;
-                }
-                foreach ($component_list['component']->getAssignedUsers() as $user)
-                {
-                    $uids[$user->getID()] = $user->getID();
-                }
             }
 
             foreach ($teams as $team)

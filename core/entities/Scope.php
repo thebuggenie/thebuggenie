@@ -227,9 +227,7 @@
                 '\thebuggenie\core\entities\tables\IssueAffectsBuild', '\thebuggenie\core\entities\tables\IssueAffectsComponent', '\thebuggenie\core\entities\tables\IssueFiles',
                 '\thebuggenie\core\entities\tables\IssueRelations', '\thebuggenie\core\entities\tables\IssuetypeSchemeLink', '\thebuggenie\core\entities\tables\IssuetypeSchemes',
                 '\thebuggenie\core\entities\tables\IssueTypes', '\thebuggenie\core\entities\tables\ListTypes', '\thebuggenie\core\entities\tables\Issues', '\thebuggenie\core\entities\tables\Comments',
-                '\thebuggenie\core\entities\tables\ComponentAssignedTeams', '\thebuggenie\core\entities\tables\ComponentAssignedUsers',
                 '\thebuggenie\core\entities\tables\ProjectAssignedTeams', '\thebuggenie\core\entities\tables\ProjectAssignedUsers',
-                '\thebuggenie\core\entities\tables\EditionAssignedTeams', '\thebuggenie\core\entities\tables\EditionAssignedUsers',
                 '\thebuggenie\core\entities\tables\Components', '\thebuggenie\core\entities\tables\Editions', '\thebuggenie\core\entities\tables\Builds', '\thebuggenie\core\entities\tables\Milestones',
                 '\thebuggenie\core\entities\tables\Issues', '\thebuggenie\core\entities\tables\Projects', '\thebuggenie\core\entities\tables\UserScopes', '\thebuggenie\core\entities\tables\Dashboards', '\thebuggenie\core\entities\tables\DashboardViews',
                 '\thebuggenie\core\entities\tables\ScopeHostnames'
