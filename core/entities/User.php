@@ -2020,7 +2020,7 @@
          */
         public static function findUsers($details, $limit = null)
         {
-            return self::getB2DBTable()->getByDetails($details);
+            return self::getB2DBTable()->getByDetails($details, $limit);
         }
 
         /**
@@ -2086,11 +2086,11 @@
          * Check whether the user can access the specified project page
          *
          * @param string $page The page key
-         * @param integer $project_id
+         * @param Project $project
          *
          * @return boolean
          */
-        public function hasProjectPageAccess($page, \thebuggenie\core\entities\Project $project)
+        public function hasProjectPageAccess($page, Project $project)
         {
             $retval = $this->hasPageAccess($page, $project->getID());
             $retval = ($retval === null) ? $this->hasPageAccess('project_allpages', $project->getID()) : $retval;
