@@ -163,7 +163,7 @@
                     $b2db_filename = \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml";
                     if (file_exists($b2db_filename))
                     {
-                        $b2db_config = \Spyc::YAMLLoad($b2db_filename, true);
+                        $b2db_config = \Spyc::YAMLLoad($b2db_filename);
                         \b2db\Core::initialize($b2db_config);
                     }
                 }

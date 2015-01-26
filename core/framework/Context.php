@@ -672,7 +672,7 @@
             if (!file_exists($routes_filename))
                 throw new exceptions\ConfigurationException("The routing file ({$routes_filename} does not exist.");
 
-            $routes = \Spyc::YAMLLoad($routes_filename, true);
+            $routes = \Spyc::YAMLLoad($routes_filename);
 
             foreach ($routes as $route => $details)
             {
@@ -691,7 +691,7 @@
                 $module_routes_filename = \THEBUGGENIE_MODULES_PATH . $module_name . DS . 'configuration' . DS . 'routes.yml';
                 if (file_exists($module_routes_filename))
                 {
-                    $module_routes = \Spyc::YAMLLoad($module_routes_filename, true);
+                    $module_routes = \Spyc::YAMLLoad($module_routes_filename);
 
                     foreach ($module_routes as $route => $details)
                     {
@@ -758,8 +758,8 @@
                 if (!file_exists($config_filename))
                     throw new \Exception("The configuration file ({$config_filename} does not exist.");
 
-                $config = \Spyc::YAMLLoad($config_filename, true);
-                $b2db_config = \Spyc::YAMLLoad($b2db_filename, true);
+                $config = \Spyc::YAMLLoad($config_filename);
+                $b2db_config = \Spyc::YAMLLoad($b2db_filename);
                 $configuration = array_merge($config, $b2db_config);
 
                 if (self::isReadySetup())
