@@ -187,16 +187,12 @@
                                 case UPLOAD_ERR_INI_SIZE:
                                 case UPLOAD_ERR_FORM_SIZE:
                                     throw new \Exception(Context::getI18n()->__('You cannot upload files bigger than %max_size MB', array('%max_size' => Settings::getUploadsEffectiveMaxSize())));
-                                    break;
                                 case UPLOAD_ERR_PARTIAL:
                                     throw new \Exception(Context::getI18n()->__('The upload was interrupted, please try again'));
-                                    break;
                                 case UPLOAD_ERR_NO_FILE:
                                     throw new \Exception(Context::getI18n()->__('No file was uploaded'));
-                                    break;
                                 default:
                                     throw new \Exception(Context::getI18n()->__('An unhandled error occured') . ': ' . $thefile['error']);
-                                    break;
                             }
                         }
                     }
