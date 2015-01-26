@@ -589,7 +589,7 @@
         }
 
         /**
-         * @param string $fields
+         * @param array $fields
          */
         public function setSortFields($fields)
         {
