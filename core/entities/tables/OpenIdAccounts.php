@@ -62,7 +62,7 @@
             parent::_addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
         }
         
-        public function addIdentity($identity, $email, $user_id)
+        public function addIdentity($identity, $user_id)
         {
             $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
             $crit = $this->getCriteria();

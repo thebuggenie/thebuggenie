@@ -796,7 +796,7 @@
                             }
                             if (!$user->hasOpenIDIdentity($openid->identity))
                             {
-                                tables\OpenIdAccounts::getTable()->addIdentity($openid->identity, $email, $user->getID());
+                                tables\OpenIdAccounts::getTable()->addIdentity($openid->identity, $user->getID());
                             }
                             framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
                             framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
