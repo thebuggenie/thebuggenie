@@ -3754,10 +3754,10 @@
 
             $cc = 0;
             $message = framework\Context::getI18n()->__('Unknown error');
+            $content = '';
             if (count($related_issues))
             {
                 $mode = $request['relate_action'];
-                $content = '';
                 foreach ($related_issues as $issue_id)
                 {
                     try
@@ -4391,9 +4391,12 @@
                         $identifiable = entities\Team::getB2DBTable()->selectById($request['value']);
                         $content = $this->getComponentHTML('main/teamdropdown', array('team' => $identifiable));
                     }
+                    else
+                    {
+                        $content = '';
+                    }
 
                     return $this->renderJSON(array('content' => $content));
-                    break;
             }
         }
 
@@ -4472,6 +4475,13 @@
                     $target = entities\Team::getB2DBTable()->selectById((int) $request['identifiable_value']);
                     break;
             }
+
+            if (!$target instanceof entities\common\Identifiable)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $this->getI18n()->__('Could not show permissions list')));
+            }
+
             return $this->renderJSON(array('content' => $this->getComponentHTML('main/issueaclformentry', array('target' => $target))));
         }
 
