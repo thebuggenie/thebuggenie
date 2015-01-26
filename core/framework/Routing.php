@@ -521,7 +521,7 @@
                 throw new \Exception("The route '$name' does not exist");
             }
 
-            list($url, $regexp, $names, $names_hash, $action, $module, $defaults, $csrf_enabled) = $this->routes[$name];
+            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled) = $this->routes[$name];
 
             $defaults = array('action' => $action, 'module' => $module);
 
