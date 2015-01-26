@@ -16,7 +16,7 @@
     /**
      * @Table(name="\thebuggenie\modules\publish\entities\tables\Articles")
      */
-    class Article extends \thebuggenie\core\entities\common\IdentifiableScoped
+    class Article extends \thebuggenie\core\entities\common\IdentifiableScoped implements \thebuggenie\core\helpers\Attachable
     {
 
         const TYPE_WIKI = 1;
@@ -743,7 +743,7 @@
          *
          * @param \thebuggenie\core\entities\File $file The file to attach
          */
-        public function attachFile(File $file)
+        public function attachFile(File $file, $file_comment = '', $file_description = '')
         {
             tables\ArticleFiles::getTable()->addByArticleIDandFileID($this->getID(), $file->getID());
             if ($this->_files !== null)
@@ -759,7 +759,7 @@
          *
          * @return boolean
          */
-        public function removeFile(File $file)
+        public function detachFile(File $file)
         {
             tables\ArticleFiles::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
             if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))

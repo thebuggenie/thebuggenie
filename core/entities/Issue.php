@@ -2,9 +2,10 @@
 
     namespace thebuggenie\core\entities;
 
-    use thebuggenie\core\entities\common\Changeable;
-    use thebuggenie\core\helpers\MentionableProvider;
-    use thebuggenie\core\framework;
+    use thebuggenie\core\framework,
+        thebuggenie\core\entities\common\Changeable,
+        thebuggenie\core\helpers\Attachable,
+        thebuggenie\core\helpers\MentionableProvider;
 
     /**
      * Issue class
@@ -23,10 +24,11 @@
      * @subpackage main
      *
      * @method boolean isTitleChanged() Whether the title is changed or not
+     * @method boolean isSpentTimeChanged() Whether the spent_time is changed or not
      *
      * @Table(name="\thebuggenie\core\entities\tables\Issues")
      */
-    class Issue extends Changeable implements MentionableProvider
+    class Issue extends Changeable implements MentionableProvider, Attachable
     {
 
         /**
@@ -2121,7 +2123,7 @@
          *
          * @param \thebuggenie\core\entities\File $file The file to attach
          */
-        public function attachFile(\thebuggenie\core\entities\File $file, $file_comment = '', $description = '')
+        public function attachFile(\thebuggenie\core\entities\File $file, $file_comment = '', $file_description = '')
         {
             $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
             if (!$existed)
@@ -2132,11 +2134,11 @@
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$file_description}]]")));
                 }
                 else
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$file_description}]]")));
                 }
                 $comment->save();
                 if ($this->_files !== null)
@@ -4250,7 +4252,7 @@
          *
          * @return boolean
          */
-        public function removeFile(File $file)
+        public function detachFile(File $file)
         {
             tables\IssueFiles::getTable()->removeByIssueIDandFileID($this->getID(), $file->getID());
             if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))

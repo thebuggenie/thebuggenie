@@ -2949,33 +2949,33 @@
         {
             try
             {
+                $file = entities\File::getB2DBTable()->selectById((int) $request['file_id']);
                 switch ($request['mode'])
                 {
                     case 'issue':
                         $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-                        if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
+                        if ($issue instanceof entities\Issue && $issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
                         {
-                            tables\IssueFiles::getTable()->removeByIssueIDAndFileID($issue->getID(), (int) $request['file_id']);
+                            $issue->detachFile($file);
                             return $this->renderJSON(array('file_id' => $request['file_id'], 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'message' => framework\Context::getI18n()->__('The attachment has been removed')));
                         }
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You can not remove items from this issue')));
-                        break;
                     case 'article':
                         $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
                         if ($article instanceof \thebuggenie\modules\publish\entities\Article && $article->canEdit() && (int) $request->getParameter('file_id', 0))
                         {
-                            $article->removeFile(entities\File::getB2DBTable()->selectById((int) $request['file_id']));
+                            $article->detachFile($file);
                             return $this->renderJSON(array('file_id' => $request['file_id'], 'attachmentcount' => count($article->getFiles()), 'message' => framework\Context::getI18n()->__('The attachment has been removed')));
                         }
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You can not remove items from this issue')));
-                        break;
                 }
             }
             catch (\Exception $e)
             {
-                throw $e;
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occurred when removing the file')));
             }
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Invalid mode')));
