@@ -2126,7 +2126,7 @@
                             }
                             if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
                             {
-                                if ($classname == 'Issuetype')
+                                if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                 {
                                     $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
                                 }
@@ -2157,7 +2157,7 @@
                                     }
 
                                     $field = array('id' => $parameter_id, 'name' => $name);
-                                    if ($classname == 'Issuetype')
+                                    if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                     {
                                         framework\Context::loadLibrary('ui');
                                         $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
@@ -2905,6 +2905,7 @@
                             case 'article':
                                 if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                                     break;
+
                                 $article->attachFile($file);
                                 break;
                         }
@@ -2921,7 +2922,6 @@
             }
             else
             {
-//                $this->getResponse()->setHttpStatus(401);
                 $this->error = framework\Context::getI18n()->__('You are not allowed to attach files here');
             }
             if (!$apc_exists)
@@ -2931,11 +2931,13 @@
                     case 'issue':
                         if (!$issue instanceof entities\Issue)
                             break;
+
                         $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                         break;
                     case 'article':
                         if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                             break;
+
                         $this->forward(framework\Context::getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
                         break;
                 }
