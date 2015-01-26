@@ -2069,7 +2069,7 @@
             return $_SESSION['csrf_token'];
         }
 
-        public static function checkCSRFtoken($handle_response = false)
+        public static function checkCSRFtoken()
         {
             $token = self::generateCSRFtoken();
             if ($token == self::getRequest()->getParameter('csrf_token'))
@@ -2183,7 +2183,7 @@
                 if (self::getRouting()->isCurrentRouteCSRFenabled())
                 {
                     // If the csrf check fails, don't proceed
-                    if (!self::checkCSRFtoken(true))
+                    if (!self::checkCSRFtoken())
                     {
                         return true;
                     }
