@@ -515,7 +515,6 @@
             
             if ($request->hasParameter('comment_body') && trim($request['comment_body'] != '')) {
                 $comment = new \thebuggenie\core\entities\Comment();
-                $comment->setTitle('');
                 $comment->setContent($request->getParameter('comment_body', null, false));
                 $comment->setPostedBy(framework\Context::getUser()->getID());
                 $comment->setTargetID($issue->getID());

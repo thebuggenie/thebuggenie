@@ -4107,7 +4107,6 @@
         public function addSystemComment($text, $uid)
         {
             $comment = new Comment();
-            $comment->setTitle('');
             $comment->setContent($text);
             $comment->setPostedBy($uid);
             $comment->setTargetID($this->getID());

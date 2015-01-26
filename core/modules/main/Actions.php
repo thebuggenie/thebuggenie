@@ -3169,16 +3169,6 @@
                     }
 
                     $comment->setContent($request->getRawParameter('comment_body'));
-
-                    if ($request['comment_title'] == '')
-                    {
-                        $comment->setTitle(framework\Context::getI18n()->__('Untitled comment'));
-                    }
-                    else
-                    {
-                        $comment->setTitle($request['comment_title']);
-                    }
-
                     $comment->setIsPublic($request['comment_visibility']);
                     $comment->setSyntax((int) $request['comment_body_syntax']);
                     $comment->setUpdatedBy($this->getUser()->getID());
@@ -3187,7 +3177,7 @@
                     framework\Context::loadLibrary('common');
                     $body = $comment->getParsedContent();
 
-                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));
+                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Comment edited!'), 'comment_body' => $body));
                 }
             }
             else
@@ -3209,7 +3199,6 @@
             {
                 $this->comment_error = true;
                 $this->error = framework\Context::getMessageAndClear('comment_error');
-                $this->comment_error_title = framework\Context::getMessageAndClear('comment_error_title');
                 $this->comment_error_body = framework\Context::getMessageAndClear('comment_error_body');
             }
         }
@@ -3230,7 +3219,6 @@
                 }
 
                 $comment = new entities\Comment();
-                $comment->setTitle('');
                 $comment->setContent($request->getParameter('comment_body', null, false));
                 $comment->setPostedBy($this->getUser()->getID());
                 $comment->setTargetID($request['comment_applies_id']);
@@ -3283,7 +3271,6 @@
                 {
                     framework\Context::setMessage('comment_error', $e->getMessage());
                     framework\Context::setMessage('comment_error_body', $request['comment_body']);
-                    framework\Context::setMessage('comment_error_title', $request['comment_title']);
                     framework\Context::setMessage('comment_error_visibility', $request['comment_visibility']);
                 }
             }

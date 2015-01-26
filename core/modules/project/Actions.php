@@ -1313,7 +1313,6 @@
                 if (!array_key_exists('transition_ok', $return_values) || $return_values['transition_ok'])
                 {
                     $comment = new entities\Comment();
-                    $comment->setTitle('');
                     $comment->setContent($request->getParameter('message', null, false));
                     $comment->setPostedBy(framework\Context::getUser()->getID());
                     $comment->setTargetID($issue->getID());

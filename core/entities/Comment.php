@@ -170,11 +170,6 @@
             return (int) self::$_comment_count[$target_type][$target_id][(int) $include_system_comments];
         }
 
-        public function setTitle($var)
-        {
-            $this->_name = $var;
-        }
-
         public function setPublic($var)
         {
             $this->_is_public = (bool) $var;
@@ -473,11 +468,6 @@
             return $can_view;
         }
 
-        public function __toString()
-        {
-            return $this->_name;
-        }
-
         /**
          * Returns the user who last updated the comment
          *
@@ -559,11 +549,6 @@
                 $var = $var->getID();
             }
             $this->_posted_by = $var;
-        }
-
-        public function getTitle()
-        {
-            return $this->_name;
         }
 
         public function isPublic()
