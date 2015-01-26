@@ -617,7 +617,7 @@
             catch (\Exception $e)
             {
                 Logging::log("Something happened while setting up user: " . $e->getMessage(), 'main', Logging::LEVEL_WARNING);
-                $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
+                $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
                 if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
                 {
                     self::setMessage('login_message_err', $e->getMessage());
@@ -909,7 +909,7 @@
                     {
                         self::$_user->updateLastSeen();
                     }
-                    if (!self::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debugger', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(self::getScope()))
+                    if (!self::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'debugger', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(self::getScope()))
                     {
                         self::getResponse()->headerRedirect(self::getRouting()->generate('add_scope'));
                     }
@@ -1002,11 +1002,10 @@
                 return;
             }
 
-            self::$_modules = Module::getB2DBTable()->getAll();
-
             Logging::log('getting modules from database');
-
+            self::$_modules = Module::getB2DBTable()->getAll();
             Logging::log('done (setting up module objects)');
+
             Logging::log('initializing modules');
             if (!empty(self::$_modules))
             {

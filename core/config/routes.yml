@@ -1,11 +1,3 @@
-
-serve:
-    route: /serve
-    module: main
-    action: serve
-    parameters: [ ]
-    csrf_enabled: false
-
 home:
     route: /
     module: main
