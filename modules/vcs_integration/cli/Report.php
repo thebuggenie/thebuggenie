@@ -50,7 +50,6 @@
             }
             catch (\Exception $e)
             {
-                throw $e;
                 $this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
                 exit;
             }
