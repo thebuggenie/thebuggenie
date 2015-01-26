@@ -1081,13 +1081,13 @@ EOT;
                             switch ($key)
                             {
                                 case 'resolution':
-                                    if (($resolution = Resolution::getResolutionByKeyish($val)) instanceof Resolution)
+                                    if (($resolution = Resolution::getByKeyish($val)) instanceof Resolution)
                                     {
                                         framework\Context::getRequest()->setParameter('resolution_id', $resolution->getID());
                                     }
                                     break;
                                 case 'status':
-                                    if (($status = Status::getStatusByKeyish($val)) instanceof Status)
+                                    if (($status = Status::getByKeyish($val)) instanceof Status)
                                     {
                                         framework\Context::getRequest()->setParameter('status_id', $status->getID());
                                     }

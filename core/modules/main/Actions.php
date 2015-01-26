@@ -1332,7 +1332,7 @@
 
             $this->selected_issuetype = null;
             if ($request->hasParameter('issuetype'))
-                $this->selected_issuetype = entities\Issuetype::getIssuetypeByKeyish($request['issuetype']);
+                $this->selected_issuetype = entities\Issuetype::getByKeyish($request['issuetype']);
 
             $this->locked_issuetype = (bool) $request['lock_issuetype'];
 

@@ -1063,7 +1063,7 @@
 
             if (mb_strtolower($filter_issuetype) != 'all')
             {
-                $issuetype = entities\Issuetype::getIssuetypeByKeyish($filter_issuetype);
+                $issuetype = entities\Issuetype::getByKeyish($filter_issuetype);
                 if ($issuetype instanceof entities\Issuetype)
                 {
                     $filters['issuetype'] = array('operator' => '=', 'value' => $issuetype->getID());

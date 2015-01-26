@@ -43,13 +43,13 @@
         public function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
             $steps = array();
-            $steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('new')->getID(), 'editable' => true, 'is_closed' => false);
-            $steps[] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('investigating')->getID(), 'editable' => true, 'is_closed' => false);
-            $steps[] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('confirmed')->getID(), 'editable' => false, 'is_closed' => false);
-            $steps[] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('beingworkedon')->getID(), 'editable' => false, 'is_closed' => false);
-            $steps[] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('readyfortesting/qa')->getID(), 'editable' => false, 'is_closed' => false);
-            $steps[] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('testing/qa')->getID(), 'editable' => false, 'is_closed' => false);
-            $steps[] = array('name' => 'Rejected', 'description' => 'A closed issue that has been rejected', 'status_id' => \thebuggenie\core\entities\Status::getStatusByKeyish('notabug')->getID(), 'editable' => false, 'is_closed' => true);
+            $steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('new')->getID(), 'editable' => true, 'is_closed' => false);
+            $steps[] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('investigating')->getID(), 'editable' => true, 'is_closed' => false);
+            $steps[] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('confirmed')->getID(), 'editable' => false, 'is_closed' => false);
+            $steps[] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('beingworkedon')->getID(), 'editable' => false, 'is_closed' => false);
+            $steps[] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('readyfortesting/qa')->getID(), 'editable' => false, 'is_closed' => false);
+            $steps[] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('testing/qa')->getID(), 'editable' => false, 'is_closed' => false);
+            $steps[] = array('name' => 'Rejected', 'description' => 'A closed issue that has been rejected', 'status_id' => \thebuggenie\core\entities\Status::getByKeyish('notabug')->getID(), 'editable' => false, 'is_closed' => true);
             $steps[] = array('name' => 'Closed', 'description' => 'A closed issue', 'status_id' => null, 'editable' => false, 'is_closed' => true);
 
             foreach ($steps as $step)

@@ -94,7 +94,7 @@
         {
             try
             {
-                $issuetype = entities\Issuetype::getIssuetypeByKeyish($request['issuetype']);
+                $issuetype = entities\Issuetype::getByKeyish($request['issuetype']);
                 $issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
             }
             catch (\Exception $e)

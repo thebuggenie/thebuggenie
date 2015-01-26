@@ -40,18 +40,6 @@
             }
         }
 
-        public static function getStatusByKeyish($key)
-        {
-            foreach (self::getAll() as $status)
-            {
-                if ($status->getKey() == str_replace(array(' ', '/'), array('', ''), mb_strtolower($key)))
-                {
-                    return $status;
-                }
-            }
-            return null;
-        }
-        
         /**
          * Return the status color
          * 

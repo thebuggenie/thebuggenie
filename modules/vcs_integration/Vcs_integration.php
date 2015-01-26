@@ -322,13 +322,13 @@
                                         switch ($parameter)
                                         {
                                             case 'resolution':
-                                                if (($resolution = \thebuggenie\core\entities\Resolution::getResolutionByKeyish($value)) instanceof \thebuggenie\core\entities\Resolution)
+                                                if (($resolution = \thebuggenie\core\entities\Resolution::getByKeyish($value)) instanceof \thebuggenie\core\entities\Resolution)
                                                 {
                                                     framework\Context::getRequest()->setParameter('resolution_id', $resolution->getID());
                                                 }
                                                 break;
                                             case 'status':
-                                                if (($status = \thebuggenie\core\entities\Status::getStatusByKeyish($value)) instanceof \thebuggenie\core\entities\Status)
+                                                if (($status = \thebuggenie\core\entities\Status::getByKeyish($value)) instanceof \thebuggenie\core\entities\Status)
                                                 {
                                                     framework\Context::getRequest()->setParameter('status_id', $status->getID());
                                                 }

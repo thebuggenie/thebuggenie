@@ -155,18 +155,6 @@
             return $icons;
         }
 
-        public static function getIssuetypeByKeyish($key)
-        {
-            foreach (self::getAll() as $issuetype)
-            {
-                if ($issuetype->getKey() == str_replace(array(' ', '/'), array('', ''), mb_strtolower($key)))
-                {
-                    return $issuetype;
-                }
-            }
-            return null;
-        }
-
         /**
          * Returns whether or not this issue type is the default for promoting tasks to issues
          *

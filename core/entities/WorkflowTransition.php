@@ -93,21 +93,21 @@
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope, \thebuggenie\core\entities\Workflow $workflow, $steps)
         {
             $rejected_resolutions = array();
-            $rejected_resolutions[] = Resolution::getResolutionByKeyish('notanissue')->getID();
-            $rejected_resolutions[] = Resolution::getResolutionByKeyish('wontfix')->getID();
-            $rejected_resolutions[] = Resolution::getResolutionByKeyish('cantfix')->getID();
-            $rejected_resolutions[] = Resolution::getResolutionByKeyish('cantreproduce')->getID();
-            $rejected_resolutions[] = Resolution::getResolutionByKeyish('duplicate')->getID();
+            $rejected_resolutions[] = Resolution::getByKeyish('notanissue')->getID();
+            $rejected_resolutions[] = Resolution::getByKeyish('wontfix')->getID();
+            $rejected_resolutions[] = Resolution::getByKeyish('cantfix')->getID();
+            $rejected_resolutions[] = Resolution::getByKeyish('cantreproduce')->getID();
+            $rejected_resolutions[] = Resolution::getByKeyish('duplicate')->getID();
             $resolved_resolutions = array();
-            $resolved_resolutions[] = Resolution::getResolutionByKeyish('resolved')->getID();
-            $resolved_resolutions[] = Resolution::getResolutionByKeyish('wontfix')->getID();
-            $resolved_resolutions[] = Resolution::getResolutionByKeyish('postponed')->getID();
-            $resolved_resolutions[] = Resolution::getResolutionByKeyish('duplicate')->getID();
+            $resolved_resolutions[] = Resolution::getByKeyish('resolved')->getID();
+            $resolved_resolutions[] = Resolution::getByKeyish('wontfix')->getID();
+            $resolved_resolutions[] = Resolution::getByKeyish('postponed')->getID();
+            $resolved_resolutions[] = Resolution::getByKeyish('duplicate')->getID();
             $closed_statuses = array();
-            $closed_statuses[] = Status::getStatusByKeyish('closed')->getID();
-            $closed_statuses[] = Status::getStatusByKeyish('postponed')->getID();
-            $closed_statuses[] = Status::getStatusByKeyish('done')->getID();
-            $closed_statuses[] = Status::getStatusByKeyish('fixed')->getID();
+            $closed_statuses[] = Status::getByKeyish('closed')->getID();
+            $closed_statuses[] = Status::getByKeyish('postponed')->getID();
+            $closed_statuses[] = Status::getByKeyish('done')->getID();
+            $closed_statuses[] = Status::getByKeyish('fixed')->getID();
             $transitions = array();
             $transitions['investigateissue'] = array('name' => 'Investigate issue', 'description' => 'Assign the issue to yourself and start investigating it', 'outgoing_step' => 'investigating', 'template' => null, 'pre_validations' => array(WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5), 'actions' => array(WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0));
             $transitions['requestmoreinformation'] = array('name' => 'Request more information', 'description' => 'Move issue back to new state for more details', 'outgoing_step' => 'new', 'template' => 'main/updateissueproperties', 'actions' => array(WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0));

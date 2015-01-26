@@ -242,7 +242,7 @@
 
                     foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)
                     {
-                        $issuetype = entities\Issuetype::getIssuetypeByKeyish($issuetype);
+                        $issuetype = entities\Issuetype::getByKeyish($issuetype);
                         for ($cc = 1; $cc <= 10; $cc++)
                         {
                             $issue1 = new entities\Issue();

@@ -18,17 +18,11 @@
 
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-            $activitytypes["Investigation"] = '';
-            $activitytypes["Documentation"] = '';
-            $activitytypes["Development"] = '';
-            $activitytypes["Testing"] = '';
-            $activitytypes["Deployment"] = '';
-
-            foreach ($activitytypes as $name => $itemdata)
+            foreach (array("Investigation", "Documentation", "Development", "Testing", "Deployment") as $name)
             {
                 $activitytype = new \thebuggenie\core\entities\ActivityType();
                 $activitytype->setName($name);
-                $activitytype->setItemdata($itemdata);
+                $activitytype->setItemdata('');
                 $activitytype->setScope($scope);
                 $activitytype->save();
             }
@@ -36,28 +30,7 @@
 
         public static function getActivityTypeByKeyish($key)
         {
-            foreach (self::getAll() as $activitytype)
-            {
-                if ($activitytype->getKey() == str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($key)))
-                {
-                    return $activitytype;
-                }
-            }
-            return null;
+            return self::getByKeyish($key);
         }
 
-        protected function _generateKey()
-        {
-            $this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($this->getName()));
-        }
-        
-        public function getKey()
-        {
-            if ($this->_key == null)
-            {
-                $this->_generateKey();
-            }
-            return $this->_key;
-        }
-        
     }

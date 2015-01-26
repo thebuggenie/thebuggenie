@@ -29,6 +29,18 @@
          */
         protected $_key = null;
 
+        public static function getByKeyish($key)
+        {
+            foreach (self::getAll() as $item)
+            {
+                if ($item->getKey() == str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($key)))
+                {
+                    return $item;
+                }
+            }
+            return null;
+        }
+
         protected function _generateKey()
         {
             if ($this->_key === null)
