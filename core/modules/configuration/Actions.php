@@ -560,7 +560,6 @@
                     }
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid name for the issue type')));
-                    break;
                 case 'update':
                     if (($issuetype = entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof entities\Issuetype)
                     {
@@ -586,7 +585,6 @@
                     }
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
-                    break;
                 case 'updatechoices':
                     if (($issuetype = entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof entities\Issuetype)
                     {
@@ -602,9 +600,6 @@
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
                     }
-                    $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Not implemented yet')));
-                    break;
                 case 'delete':
                     if (($issuetype = entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof entities\Issuetype)
                     {
@@ -616,7 +611,6 @@
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid issue type')));
                     }
-                    break;
                 case 'toggletype':
                     if (($issuetype = entities\Issuetype::getB2DBTable()->selectById($request['id'])) instanceof entities\Issuetype)
                     {
@@ -628,7 +622,6 @@
                     }
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid action for this issue type / scheme')));
-                    break;
                 default:
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid action for this issue type')));
@@ -1009,8 +1002,8 @@
                                 }
                                 catch (\Exception $e)
                                 {
-                                    throw $e;
                                     framework\Context::setMessage('module_error', framework\Context::getI18n()->__('The module "%module_name" was not successfully upgraded', array('%module_name' => $module->getName())));
+                                    throw $e;
                                 }
                                 break;
                         }
@@ -1018,9 +1011,9 @@
             }
             catch (\Exception $e)
             {
-                throw $e;
                 framework\Logging::log('Trying to run action ' . $request['mode'] . ' on module ' . $request['module_key'] . ' made an exception: ' . $e->getMessage(), framework\Logging::LEVEL_FATAL);
                 framework\Context::setMessage('module_error', framework\Context::getI18n()->__('This module (%module_name) does not exist', array('%module_name' => $request['module_key'])));
+                throw $e;
             }
             $this->forward(framework\Context::getRouting()->generate('configure_modules'));
         }
@@ -2260,7 +2253,6 @@
             }
             catch (\Exception $e)
             {
-                throw $e;
                 $this->error = $this->getI18n()->__('This workflow / transition does not exist');
             }
             if (isset($redirect_transition) && $redirect_transition)
