@@ -37,6 +37,7 @@
 
         protected function _getIssueFromRequest(framework\Request $request)
         {
+            $issue = null;
             if ($issue_no = framework\Context::getRequest()->getParameter('issue_no'))
             {
                 $issue = entities\Issue::getIssueFromLink($issue_no);
