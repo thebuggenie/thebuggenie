@@ -22,6 +22,8 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method boolean isTitleChanged() Whether the title is changed or not
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Issues")
      */
     class Issue extends Changeable implements MentionableProvider
