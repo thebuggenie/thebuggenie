@@ -2068,18 +2068,17 @@
          *
          * @return boolean
          */
-        public function hasPageAccess($page, $target_id = null, $explicit = true, $permissive = null)
+        public function hasPageAccess($page, $target_id = null)
         {
-            $permissive = (isset($permissive)) ? $permissive : framework\Settings::isPermissive();
             if ($target_id === null)
             {
-                $retval = $this->hasPermission("page_{$page}_access", 0, "core", $explicit, $permissive);
+                $retval = $this->hasPermission("page_{$page}_access", 0, "core");
                 return $retval;
             }
             else
             {
-                $retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, $permissive);
-                return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, $permissive) : $retval;
+                $retval = $this->hasPermission("page_{$page}_access", $target_id, "core");
+                return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core") : $retval;
             }
         }
 

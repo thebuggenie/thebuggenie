@@ -967,14 +967,14 @@
                     \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
                     return true;
                 }
-                if ($user->hasPermission('canseegroupissues', 0, 'core', true, true) &&
+                if ($user->hasPermission('canseegroupissues', 0, 'core') &&
                     $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
                     $this->getPostedBy()->getGroupID() == $user->getGroupID())
                 {
                     \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
                     return true;
                 }
-                if ($user->hasPermission('canseeallissues', 0, 'core', true, true) === false)
+                if ($user->hasPermission('canseeallissues', 0, 'core') === false)
                 {
                     \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
                     return false;
