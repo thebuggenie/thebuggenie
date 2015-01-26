@@ -497,7 +497,7 @@
 
     function tbg_get_timezones()
     {
-        return \thebuggenie\core\entities\I18n::getTimezones();
+        return \thebuggenie\core\framework\I18n::getTimezones();
     }
 
     function tbg_hex_to_rgb($hex)

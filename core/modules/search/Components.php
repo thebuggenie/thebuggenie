@@ -3,13 +3,14 @@
     namespace thebuggenie\core\modules\search;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities\DashboardView;
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     class Components extends framework\ActionComponent
     {
 
         /**
-         * @protected \thebuggenie\core\entities\SavedSearch $search_object
+         * @protected entities\SavedSearch $search_object
          */
         public function componentPagination()
         {
@@ -44,13 +45,13 @@
             $this->filter_info = (isset($this->filter_info)) ? $this->filter_info : null;
 
             $filters = array();
-            $filters['status'] = array('description' => $i18n->__('Status'), 'options' => \thebuggenie\core\entities\Status::getAll());
-            $filters['category'] = array('description' => $i18n->__('Category'), 'options' => \thebuggenie\core\entities\Category::getAll());
-            $filters['priority'] = array('description' => $i18n->__('Priority'), 'options' => \thebuggenie\core\entities\Priority::getAll());
-            $filters['severity'] = array('description' => $i18n->__('Severity'), 'options' => \thebuggenie\core\entities\Severity::getAll());
-            $filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => \thebuggenie\core\entities\Reproducability::getAll());
-            $filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => \thebuggenie\core\entities\Resolution::getAll());
-            $filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => \thebuggenie\core\entities\Issuetype::getAll());
+            $filters['status'] = array('description' => $i18n->__('Status'), 'options' => entities\Status::getAll());
+            $filters['category'] = array('description' => $i18n->__('Category'), 'options' => entities\Category::getAll());
+            $filters['priority'] = array('description' => $i18n->__('Priority'), 'options' => entities\Priority::getAll());
+            $filters['severity'] = array('description' => $i18n->__('Severity'), 'options' => entities\Severity::getAll());
+            $filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => entities\Reproducability::getAll());
+            $filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => entities\Resolution::getAll());
+            $filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => entities\Issuetype::getAll());
             $filters['component'] = array('description' => $i18n->__('Component'), 'options' => array());
             $filters['build'] = array('description' => $i18n->__('Build'), 'options' => array());
             $filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => array());
@@ -59,7 +60,7 @@
             if (framework\Context::isProjectContext())
             {
                 $filters['subprojects'] = array('description' => $i18n->__('Include subproject(s)'), 'options' => array('all' => $this->getI18n()->__('All subprojects'), 'none' => $this->getI18n()->__("Don't include subprojects (default, unless specified otherwise)")));
-                $projects = \thebuggenie\core\entities\Project::getIncludingAllSubprojectsAsArray(framework\Context::getCurrentProject());
+                $projects = entities\Project::getIncludingAllSubprojectsAsArray(framework\Context::getCurrentProject());
                 foreach ($projects as $project)
                 {
                     if ($project->getID() == framework\Context::getCurrentProject()->getID())
@@ -71,9 +72,9 @@
             else
             {
                 $projects = array();
-                foreach (\thebuggenie\core\entities\Project::getAllRootProjects() as $project)
+                foreach (entities\Project::getAllRootProjects() as $project)
                 {
-                    \thebuggenie\core\entities\Project::getSubprojectsArray($project, $projects);
+                    entities\Project::getSubprojectsArray($project, $projects);
                 }
             }
             if (count($projects) > 0)
@@ -106,8 +107,8 @@
             {
                 $this->show_project = false;
             }
-            $this->default_columns = \thebuggenie\core\entities\SavedSearch::getDefaultVisibleColumns();
-            $this->custom_columns = \thebuggenie\core\entities\CustomDatatype::getAll();
+            $this->default_columns = entities\SavedSearch::getDefaultVisibleColumns();
+            $this->custom_columns = entities\CustomDatatype::getAll();
             $this->visible_columns = $this->search_object->getColumns();
         }
 
@@ -128,15 +129,15 @@
 
         public function componentResults_view()
         {
-            if ($this->view->getType() == DashboardView::VIEW_PREDEFINED_SEARCH)
+            if ($this->view->getType() == entities\DashboardView::VIEW_PREDEFINED_SEARCH)
             {
                 $request = framework\Context::getRequest();
                 $request->setParameter('predefined_search', $this->view->getDetail());
-                $search = \thebuggenie\core\entities\SavedSearch::getFromRequest($request);
+                $search = entities\SavedSearch::getFromRequest($request);
             }
-            elseif ($this->view->getType() == DashboardView::VIEW_SAVED_SEARCH)
+            elseif ($this->view->getType() == entities\DashboardView::VIEW_SAVED_SEARCH)
             {
-                $search = \thebuggenie\core\entities\tables\SavedSearches::getTable()->selectById($this->view->getDetail());
+                $search = tables\SavedSearches::getTable()->selectById($this->view->getDetail());
             }
             $this->issues = $search->getIssues();
             $this->resultcount = $search->getTotalNumberOfIssues();
@@ -144,7 +145,7 @@
 
         public function componentSidebar()
         {
-            $savedsearches = \thebuggenie\core\entities\tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getID() : 0);
+            $savedsearches = tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getID() : 0);
             foreach ($savedsearches['user'] as $a_savedsearch)
                 $this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), __($a_savedsearch->getName()));
 
@@ -156,10 +157,10 @@
 
         public function componentSearchbuilder()
         {
-            $this->templates = \thebuggenie\core\entities\SavedSearch::getTemplates();
+            $this->templates = entities\SavedSearch::getTemplates();
             $this->filters = $this->appliedfilters;
-            $this->nondatecustomfields = \thebuggenie\core\entities\CustomDatatype::getAllExceptTypes(array(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER));
-            $this->datecustomfields = \thebuggenie\core\entities\CustomDatatype::getByFieldType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER);
+            $this->nondatecustomfields = entities\CustomDatatype::getAllExceptTypes(array(entities\CustomDatatype::DATE_PICKER));
+            $this->datecustomfields = entities\CustomDatatype::getByFieldType(entities\CustomDatatype::DATE_PICKER);
             $i18n = framework\Context::getI18n();
             $columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('Percent completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
             foreach ($this->nondatecustomfields as $field)
@@ -197,14 +198,14 @@
             {
                 case framework\Context::getRequest()->hasParameter('quicksearch'):
                     $searchfor = framework\Context::getRequest()->getParameter('searchfor');
-                    $project_key = (framework\Context::getCurrentProject() instanceof \thebuggenie\core\entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
+                    $project_key = (framework\Context::getCurrentProject() instanceof entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
                     $this->csv_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'csv')) . '?searchfor=' . $searchfor;
                     $this->rss_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'rss')) . '?searchfor=' . $searchfor;
                     break;
                 case framework\Context::getRequest()->hasParameter('predefined_search'):
                     $searchno = framework\Context::getRequest()->getParameter('predefined_search');
-                    $project_key = (framework\Context::getCurrentProject() instanceof \thebuggenie\core\entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
-                    $url = (framework\Context::getCurrentProject() instanceof \thebuggenie\core\entities\Project) ? 'project_issues' : 'search';
+                    $project_key = (framework\Context::getCurrentProject() instanceof entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
+                    $url = (framework\Context::getCurrentProject() instanceof entities\Project) ? 'project_issues' : 'search';
                     $this->csv_url = framework\Context::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv'));
                     $this->rss_url = framework\Context::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss'));
                     break;
@@ -241,7 +242,7 @@
             $first = true;
             foreach ($this->issue_ids as $issue_id)
             {
-                $issue = new \thebuggenie\core\entities\Issue($issue_id);
+                $issue = new entities\Issue($issue_id);
                 $issues[$issue_id] = $issue;
                 if ($first)
                 {

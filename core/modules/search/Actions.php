@@ -3,12 +3,8 @@
     namespace thebuggenie\core\modules\search;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities\Issue,
-        thebuggenie\core\entities\Issuetype,
-        thebuggenie\core\entities\Project,
-        thebuggenie\core\entities\tables\Projects,
-        thebuggenie\core\entities\SavedSearch,
-        thebuggenie\core\entities\SearchFilter;
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     /**
      * actions for the search module
@@ -20,7 +16,7 @@
         protected $filters = array();
 
         /**
-         * @var \thebuggenie\core\entities\SavedSearch
+         * @var entities\SavedSearch
          * @property $search_object
          */
 
@@ -35,24 +31,24 @@
 
             if ($project_key = $request['project_key'])
             {
-                $project = Project::getByKey($project_key);
+                $project = entities\Project::getByKey($project_key);
             }
             elseif (is_numeric($request['project_id']) && $project_id = (int) $request['project_id'])
             {
-                $project = Projects::getTable()->selectById($project_id);
+                $project = tables\Projects::getTable()->selectById($project_id);
             }
             else
             {
                 $project = false;
             }
 
-            if ($project instanceof Project)
+            if ($project instanceof entities\Project)
             {
                 $this->forward403unless(framework\Context::getUser()->hasProjectPageAccess('project_issues', $project));
                 framework\Context::getResponse()->setPage('project_issues');
                 framework\Context::setCurrentProject($project);
             }
-            $this->search_object = SavedSearch::getFromRequest($request);
+            $this->search_object = entities\SavedSearch::getFromRequest($request);
             $this->issavedsearch = ($this->search_object instanceof SavedSearch && $this->search_object->getB2DBID());
             $this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('fs') || $request->getParameter('search', false)) ? true : false;
 
@@ -77,14 +73,14 @@
         {
             if ($this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_USERS))
             {
-                $this->found_users = \thebuggenie\core\entities\tables\Users::getTable()->findInConfig($this->searchterm, 10, false);
-                $this->found_teams = \thebuggenie\core\entities\tables\Teams::getTable()->quickfind($this->searchterm);
-                $this->found_clients = \thebuggenie\core\entities\tables\Clients::getTable()->quickfind($this->searchterm);
+                $this->found_users = tables\Users::getTable()->findInConfig($this->searchterm, 10, false);
+                $this->found_teams = tables\Teams::getTable()->quickfind($this->searchterm);
+                $this->found_clients = tables\Clients::getTable()->quickfind($this->searchterm);
                 $this->num_users = count($this->found_users);
                 $this->num_teams = count($this->found_teams);
                 $this->num_clients = count($this->found_clients);
             }
-            $found_projects = Projects::getTable()->quickfind($this->searchterm);
+            $found_projects = tables\Projects::getTable()->quickfind($this->searchterm);
             $projects = array();
             foreach ($found_projects as $project)
             {
@@ -100,12 +96,12 @@
             $i18n = framework\Context::getI18n();
             if ($this->searchterm)
             {
-                preg_replace_callback(\thebuggenie\core\entities\TextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
+                preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
 
                 if (!count($this->foundissues))
                 {
-                    $issue = Issue::getIssueFromLink($this->searchterm);
-                    if ($issue instanceof Issue)
+                    $issue = entities\Issue::getIssueFromLink($this->searchterm);
+                    if ($issue instanceof entities\Issue)
                     {
                         $this->foundissues = array($issue);
                         $this->resultcount = 1;
@@ -188,8 +184,8 @@
                 }
                 elseif ($request['saved_search_name'] != '')
                 {
-                    if (!$search instanceof SavedSearch)
-                        $search = new SavedSearch();
+                    if (!$search instanceof entities\SavedSearch)
+                        $search = new entities\SavedSearch();
 
                     $search->setName($request['saved_search_name']);
                     $search->setDescription($request['saved_search_description']);
@@ -242,7 +238,7 @@
                 {
                     $issues = $this->issues;
                     $issue = array_shift($issues);
-                    if ($issue instanceof Issue)
+                    if ($issue instanceof entities\Issue)
                     {
                         return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     }
@@ -251,7 +247,7 @@
             $this->search_error = framework\Context::getMessageAndClear('search_error');
             $this->search_message = framework\Context::getMessageAndClear('search_message');
             $this->appliedfilters = $this->filters;
-            $this->templates = SavedSearch::getTemplates();
+            $this->templates = entities\SavedSearch::getTemplates();
         }
 
         public function runFindIssuesPaginated(framework\Request $request)
@@ -266,12 +262,12 @@
 
         public function runAddFilter(framework\Request $request)
         {
-            if ($request['filter_name'] == 'project_id' && count(Project::getAll()) == 0)
+            if ($request['filter_name'] == 'project_id' && count(entities\Project::getAll()) == 0)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => framework\Context::getI18n()->__('No projects exist so this filter can not be added')));
             }
-            elseif (in_array($request['filter_name'], SearchFilter::getValidSearchFilters()) || \thebuggenie\core\entities\CustomDatatype::doesKeyExist($request['filter_name']))
+            elseif (in_array($request['filter_name'], entities\SearchFilter::getValidSearchFilters()) || entities\CustomDatatype::doesKeyExist($request['filter_name']))
             {
                 return $this->renderJSON(array('content' => $this->getComponentHTML('search/filter', array('filter' => $request['filter_name'], 'key' => $request->getParameter('key', 0)))));
             }
@@ -291,7 +287,7 @@
             if (strlen($filter) < 3)
                 return $this->renderJSON(array('results' => '<li>' . $this->getI18n()->__('Please enter 3 characters or more') . '</li>'));
 
-            $users = \thebuggenie\core\entities\tables\Users::getTable()->getByDetails($filter, 10);
+            $users = tables\Users::getTable()->getByDetails($filter, 10);
             foreach ($existing_users as $id)
             {
                 if (isset($users[$id]))
@@ -310,7 +306,7 @@
             if (strlen($filter) < 3)
                 return $this->renderJSON(array('results' => '<li>' . $this->getI18n()->__('Please enter 3 characters or more') . '</li>'));
 
-            $teams = \thebuggenie\core\entities\tables\Teams::getTable()->quickfind($filter, 10);
+            $teams = tables\Teams::getTable()->quickfind($filter, 10);
             if (isset($existing_teams))
             {
                 foreach ($existing_teams as $id => $one)
@@ -332,7 +328,7 @@
             if (strlen($filter) < 3)
                 return $this->renderJSON(array('results' => '<li>' . $this->getI18n()->__('Please enter 3 characters or more') . '</li>'));
 
-            $clients = \thebuggenie\core\entities\tables\Clients::getTable()->quickfind($filter, 10);
+            $clients = tables\Clients::getTable()->quickfind($filter, 10);
             if (isset($existing_clients))
             {
                 foreach ($existing_clients as $id => $one)
@@ -350,7 +346,7 @@
             $subproject_ids = explode(',', $request['subprojects']);
             $existing_ids = $request['existing_ids'];
             $results = array();
-            $projects = ($request['project_id'] != '') ? Project::getAllByIDs(explode(',', $request['project_id'])) : Project::getAll();
+            $projects = ($request['project_id'] != '') ? entities\Project::getAllByIDs(explode(',', $request['project_id'])) : entities\Project::getAll();
 
             $items = array('build' => array(), 'edition' => array(), 'component' => array(), 'milestone' => array());
 
@@ -370,34 +366,34 @@
             }
 
             $filters = array();
-            $filters['build'] = SearchFilter::createFilter('build');
-            $filters['edition'] = SearchFilter::createFilter('edition');
-            $filters['component'] = SearchFilter::createFilter('component');
-            $filters['milestone'] = SearchFilter::createFilter('milestone');
+            $filters['build'] = entities\SearchFilter::createFilter('build');
+            $filters['edition'] = entities\SearchFilter::createFilter('edition');
+            $filters['component'] = entities\SearchFilter::createFilter('component');
+            $filters['milestone'] = entities\SearchFilter::createFilter('milestone');
             if (isset($existing_ids['build']))
             {
-                foreach (\thebuggenie\core\entities\tables\Builds::getTable()->getByIDs($existing_ids['build']) as $build)
+                foreach (tables\Builds::getTable()->getByIDs($existing_ids['build']) as $build)
                     $items['build'][$build->getID()] = $build;
 
                 $filters['build']->setValue(join(',', $existing_ids['build']));
             }
             if (isset($existing_ids['edition']))
             {
-                foreach (\thebuggenie\core\entities\tables\Editions::getTable()->getByIDs($existing_ids['edition']) as $edition)
+                foreach (tables\Editions::getTable()->getByIDs($existing_ids['edition']) as $edition)
                     $items['edition'][$edition->getID()] = $edition;
 
                 $filters['edition']->setValue(join(',', $existing_ids['edition']));
             }
             if (isset($existing_ids['component']))
             {
-                foreach (\thebuggenie\core\entities\tables\Components::getTable()->getByIDs($existing_ids['component']) as $component)
+                foreach (tables\Components::getTable()->getByIDs($existing_ids['component']) as $component)
                     $items['component'][$component->getID()] = $component;
 
                 $filters['component']->setValue(join(',', $existing_ids['component']));
             }
             if (isset($existing_ids['milestone']))
             {
-                foreach (\thebuggenie\core\entities\tables\Milestones::getTable()->getByIDs($existing_ids['milestone']) as $milestone)
+                foreach (tables\Milestones::getTable()->getByIDs($existing_ids['milestone']) as $milestone)
                     $items['milestone'][$milestone->getID()] = $milestone;
 
                 $filters['milestone']->setValue(join(',', $existing_ids['milestone']));
@@ -413,8 +409,8 @@
 
         public function extractIssues($matches)
         {
-            $issue = Issue::getIssueFromLink($matches["issues"]);
-            if ($issue instanceof Issue)
+            $issue = entities\Issue::getIssueFromLink($matches["issues"]);
+            if ($issue instanceof entities\Issue)
             {
                 if (!framework\Context::isProjectContext() || (framework\Context::isProjectContext() && $issue->getProjectID() == framework\Context::getCurrentProject()->getID()))
                 {
@@ -429,7 +425,7 @@
 
         }
 
-        static function resultGrouping(\thebuggenie\core\entities\Issue $issue, $groupby, $cc, $prevgroup_id)
+        static function resultGrouping(entities\Issue $issue, $groupby, $cc, $prevgroup_id)
         {
             $i18n = framework\Context::getI18n();
             $showtablestart = false;
@@ -443,7 +439,7 @@
                 switch ($groupby)
                 {
                     case 'category':
-                        if ($issue->getCategory() instanceof \thebuggenie\core\entities\Category)
+                        if ($issue->getCategory() instanceof entities\Category)
                         {
                             $groupby_id = $issue->getCategory()->getID();
                             $groupby_description = $issue->getCategory()->getName();
@@ -455,7 +451,7 @@
                         }
                         break;
                     case 'status':
-                        if ($issue->getStatus() instanceof \thebuggenie\core\entities\Status)
+                        if ($issue->getStatus() instanceof entities\Status)
                         {
                             $groupby_id = $issue->getStatus()->getID();
                             $groupby_description = $issue->getStatus()->getName();
@@ -467,7 +463,7 @@
                         }
                         break;
                     case 'severity':
-                        if ($issue->getSeverity() instanceof \thebuggenie\core\entities\Severity)
+                        if ($issue->getSeverity() instanceof entities\Severity)
                         {
                             $groupby_id = $issue->getSeverity()->getID();
                             $groupby_description = $issue->getSeverity()->getName();
@@ -479,7 +475,7 @@
                         }
                         break;
                     case 'resolution':
-                        if ($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution)
+                        if ($issue->getResolution() instanceof entities\Resolution)
                         {
                             $groupby_id = $issue->getResolution()->getID();
                             $groupby_description = $issue->getResolution()->getName();
@@ -527,7 +523,7 @@
                         }
                         break;
                     case 'priority':
-                        if ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority)
+                        if ($issue->getPriority() instanceof entities\Priority)
                         {
                             $groupby_id = $issue->getPriority()->getID();
                             $groupby_description = $issue->getPriority()->getName();
@@ -539,7 +535,7 @@
                         }
                         break;
                     case 'issuetype':
-                        if ($issue->getIssueType() instanceof Issuetype)
+                        if ($issue->getIssueType() instanceof entities\Issuetype)
                         {
                             $groupby_id = $issue->getIssueType()->getID();
                             $groupby_description = $issue->getIssueType()->getName();
@@ -551,7 +547,7 @@
                         }
                         break;
                     case 'milestone':
-                        if ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone)
+                        if ($issue->getMilestone() instanceof entities\Milestone)
                         {
                             $groupby_id = $issue->getMilestone()->getID();
                             $groupby_description = $issue->getMilestone()->getName();
@@ -563,7 +559,7 @@
                         }
                         break;
                     case 'assignee':
-                        if ($issue->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable)
+                        if ($issue->getAssignee() instanceof entities\common\Identifiable)
                         {
                             $groupby_id = $issue->getAssignee()->getID();
                             $groupby_description = $issue->getAssignee()->getName();
@@ -577,12 +573,12 @@
                     case 'state':
                         if ($issue->isClosed())
                         {
-                            $groupby_id = Issue::STATE_CLOSED;
+                            $groupby_id = entities\Issue::STATE_CLOSED;
                             $groupby_description = $i18n->__('Closed');
                         }
                         else
                         {
-                            $groupby_id = Issue::STATE_OPEN;
+                            $groupby_id = entities\Issue::STATE_OPEN;
                             $groupby_description = $i18n->__('Open');
                         }
                         break;
@@ -597,7 +593,7 @@
             return array($showtablestart, $showheader, $prevgroup_id, $groupby_description);
         }
 
-        public static function userPainSort(\thebuggenie\core\entities\Issue $first_issue, \thebuggenie\core\entities\Issue $second_issue)
+        public static function userPainSort(entities\Issue $first_issue, entities\Issue $second_issue)
         {
             $first_issue_pain = $first_issue->getUserPain();
             $second_issue_pain = $second_issue->getUserPain();
@@ -630,7 +626,7 @@
                         $milestone = null;
                         if ($request['milestone'] == 'new')
                         {
-                            $milestone = new \thebuggenie\core\entities\Milestone();
+                            $milestone = new entities\Milestone();
                             $milestone->setProject(framework\Context::getCurrentProject());
                             $milestone->setName($request['milestone_name']);
                             $milestone->save();
@@ -638,14 +634,14 @@
                         }
                         elseif ($request['milestone'])
                         {
-                            $milestone = new \thebuggenie\core\entities\Milestone($request['milestone']);
+                            $milestone = new entities\Milestone($request['milestone']);
                         }
-                        $milestone_id = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getID() : null;
+                        $milestone_id = ($milestone instanceof entities\Milestone) ? $milestone->getID() : null;
                         foreach (array_keys($issue_ids) as $issue_id)
                         {
                             if (is_numeric($issue_id))
                             {
-                                $issue = new Issue($issue_id);
+                                $issue = new entities\Issue($issue_id);
                                 $issue->setMilestone($milestone_id);
                                 $issue->save();
                             }
@@ -656,12 +652,12 @@
                     case 'set_status':
                         if (is_numeric($request['status']))
                         {
-                            $status = new \thebuggenie\core\entities\Status($request['status']);
+                            $status = new entities\Status($request['status']);
                             foreach (array_keys($issue_ids) as $issue_id)
                             {
                                 if (is_numeric($issue_id))
                                 {
-                                    $issue = new Issue($issue_id);
+                                    $issue = new entities\Issue($issue_id);
                                     $issue->setStatus($status->getID());
                                     $issue->save();
                                 }
@@ -672,69 +668,69 @@
                     case 'set_severity':
                         if (is_numeric($request['severity']))
                         {
-                            $severity = ($request['severity']) ? new \thebuggenie\core\entities\Severity($request['severity']) : null;
+                            $severity = ($request['severity']) ? new entities\Severity($request['severity']) : null;
                             foreach (array_keys($issue_ids) as $issue_id)
                             {
                                 if (is_numeric($issue_id))
                                 {
-                                    $issue = new Issue($issue_id);
-                                    $severity_id = ($severity instanceof \thebuggenie\core\entities\Severity) ? $severity->getID() : 0;
+                                    $issue = new entities\Issue($issue_id);
+                                    $severity_id = ($severity instanceof entities\Severity) ? $severity->getID() : 0;
                                     $issue->setSeverity($severity_id);
                                     $issue->save();
                                 }
                             }
-                            $options['severity'] = array('name' => ($severity instanceof \thebuggenie\core\entities\Severity) ? $severity->getName() : '-', 'id' => ($severity instanceof \thebuggenie\core\entities\Severity) ? $severity->getID() : 0);
+                            $options['severity'] = array('name' => ($severity instanceof entities\Severity) ? $severity->getName() : '-', 'id' => ($severity instanceof entities\Severity) ? $severity->getID() : 0);
                         }
                         break;
                     case 'set_resolution':
                         if (is_numeric($request['resolution']))
                         {
-                            $resolution = ($request['resolution']) ? new \thebuggenie\core\entities\Resolution($request['resolution']) : null;
+                            $resolution = ($request['resolution']) ? new entities\Resolution($request['resolution']) : null;
                             foreach (array_keys($issue_ids) as $issue_id)
                             {
                                 if (is_numeric($issue_id))
                                 {
-                                    $issue = new Issue($issue_id);
-                                    $resolution_id = ($resolution instanceof \thebuggenie\core\entities\Resolution) ? $resolution->getID() : 0;
+                                    $issue = new entities\Issue($issue_id);
+                                    $resolution_id = ($resolution instanceof entities\Resolution) ? $resolution->getID() : 0;
                                     $issue->setResolution($resolution_id);
                                     $issue->save();
                                 }
                             }
-                            $options['resolution'] = array('name' => ($resolution instanceof \thebuggenie\core\entities\Resolution) ? $resolution->getName() : '-', 'id' => ($resolution instanceof \thebuggenie\core\entities\Resolution) ? $resolution->getID() : 0);
+                            $options['resolution'] = array('name' => ($resolution instanceof entities\Resolution) ? $resolution->getName() : '-', 'id' => ($resolution instanceof entities\Resolution) ? $resolution->getID() : 0);
                         }
                         break;
                     case 'set_priority':
                         if (is_numeric($request['priority']))
                         {
-                            $priority = ($request['priority']) ? new \thebuggenie\core\entities\Priority($request['priority']) : null;
+                            $priority = ($request['priority']) ? new entities\Priority($request['priority']) : null;
                             foreach (array_keys($issue_ids) as $issue_id)
                             {
                                 if (is_numeric($issue_id))
                                 {
-                                    $issue = new Issue($issue_id);
-                                    $priority_id = ($priority instanceof \thebuggenie\core\entities\Priority) ? $priority->getID() : 0;
+                                    $issue = new entities\Issue($issue_id);
+                                    $priority_id = ($priority instanceof entities\Priority) ? $priority->getID() : 0;
                                     $issue->setPriority($priority_id);
                                     $issue->save();
                                 }
                             }
-                            $options['priority'] = array('name' => ($priority instanceof \thebuggenie\core\entities\Priority) ? $priority->getName() : '-', 'id' => ($priority instanceof \thebuggenie\core\entities\Priority) ? $priority->getID() : 0);
+                            $options['priority'] = array('name' => ($priority instanceof entities\Priority) ? $priority->getName() : '-', 'id' => ($priority instanceof entities\Priority) ? $priority->getID() : 0);
                         }
                         break;
                     case 'set_category':
                         if (is_numeric($request['category']))
                         {
-                            $category = ($request['category']) ? new \thebuggenie\core\entities\Category($request['category']) : null;
+                            $category = ($request['category']) ? new entities\Category($request['category']) : null;
                             foreach (array_keys($issue_ids) as $issue_id)
                             {
                                 if (is_numeric($issue_id))
                                 {
-                                    $issue = new Issue($issue_id);
-                                    $category_id = ($category instanceof \thebuggenie\core\entities\Category) ? $category->getID() : 0;
+                                    $issue = new entities\Issue($issue_id);
+                                    $category_id = ($category instanceof entities\Category) ? $category->getID() : 0;
                                     $issue->setCategory($category_id);
                                     $issue->save();
                                 }
                             }
-                            $options['category'] = array('name' => ($category instanceof \thebuggenie\core\entities\Category) ? $category->getName() : '-', 'id' => ($category instanceof \thebuggenie\core\entities\Category) ? $category->getID() : 0);
+                            $options['category'] = array('name' => ($category instanceof entities\Category) ? $category->getName() : '-', 'id' => ($category instanceof entities\Category) ? $category->getID() : 0);
                         }
                         break;
                 }

@@ -3,7 +3,8 @@
     namespace thebuggenie\core\modules\project;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities\DashboardView;
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     /**
      * Project action components
@@ -23,7 +24,7 @@
 
         public function componentBoardColumnheader()
         {
-            $this->statuses = \thebuggenie\core\entities\Status::getAll();
+            $this->statuses = entities\Status::getAll();
         }
 
         public function componentMilestoneIssue()
@@ -44,9 +45,9 @@
 
         public function componentMilestoneWhiteboardStatusDetails()
         {
-            $this->statuses = \thebuggenie\core\entities\Status::getAll();
-            if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
-                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
+            $this->statuses = entities\Status::getAll();
+            if ($this->milestone instanceof entities\Milestone)
+                $this->status_details = tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
         }
 
         public function componentRecentActivities()
@@ -75,31 +76,31 @@
         {
             $i18n = framework\Context::getI18n();
             $this->autosearches = array(
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => $i18n->__('Project open issues (recommended)'),
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project open issues (including subprojects)'),
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => $i18n->__('Project closed issues'),
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project closed issues (including subprojects)'),
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH => $i18n->__('Project issues reported last month'),
-                \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST => $i18n->__('Project wishlist')
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => $i18n->__('Project open issues (recommended)'),
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project open issues (including subprojects)'),
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => $i18n->__('Project closed issues'),
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project closed issues (including subprojects)'),
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH => $i18n->__('Project issues reported last month'),
+                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST => $i18n->__('Project wishlist')
             );
-            $this->savedsearches = \thebuggenie\core\entities\tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), $this->board->getProject()->getID());
+            $this->savedsearches = tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), $this->board->getProject()->getID());
             $this->issuetypes = $this->board->getProject()->getIssuetypeScheme()->getIssuetypes();
             $this->swimlane_groups = array(
                 'priority' => $i18n->__('Issue priority'),
                 'severity' => $i18n->__('Issue severity'),
                 'category' => $i18n->__('Issue category'),
             );
-            $this->priorities = \thebuggenie\core\entities\Priority::getAll();
-            $this->severities = \thebuggenie\core\entities\Severity::getAll();
-            $this->categories = \thebuggenie\core\entities\Category::getAll();
-            $fakecolumn = new \thebuggenie\core\entities\BoardColumn();
+            $this->priorities = entities\Priority::getAll();
+            $this->severities = entities\Severity::getAll();
+            $this->categories = entities\Category::getAll();
+            $fakecolumn = new entities\BoardColumn();
             $fakecolumn->setBoard($this->board);
             $this->fakecolumn = $fakecolumn;
         }
 
         public function componentEditBoardColumn()
         {
-            $this->statuses = \thebuggenie\core\entities\Status::getAll();
+            $this->statuses = entities\Status::getAll();
         }
 
         public function componentAgileBoardbox()
@@ -121,7 +122,7 @@
         {
             if (!isset($this->milestone))
             {
-                $this->milestone = new \thebuggenie\core\entities\Milestone();
+                $this->milestone = new entities\Milestone();
                 $this->milestone->setProject($this->project);
             }
         }
@@ -174,37 +175,37 @@
         {
             switch ($this->view->getType())
             {
-                case DashboardView::VIEW_PROJECT_STATISTICS_PRIORITY:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_PRIORITY:
                     $counts = framework\Context::getCurrentProject()->getPriorityCount();
-                    $items = \thebuggenie\core\entities\Priority::getAll();
+                    $items = entities\Priority::getAll();
                     $key = 'priority';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_SEVERITY:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_SEVERITY:
                     $counts = framework\Context::getCurrentProject()->getSeverityCount();
-                    $items = \thebuggenie\core\entities\Severity::getAll();
+                    $items = entities\Severity::getAll();
                     $key = 'priority';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_CATEGORY:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_CATEGORY:
                     $counts = framework\Context::getCurrentProject()->getCategoryCount();
-                    $items = \thebuggenie\core\entities\Category::getAll();
+                    $items = entities\Category::getAll();
                     $key = 'category';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_RESOLUTION:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_RESOLUTION:
                     $counts = framework\Context::getCurrentProject()->getResolutionCount();
-                    $items = \thebuggenie\core\entities\Resolution::getAll();
+                    $items = entities\Resolution::getAll();
                     $key = 'resolution';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_STATUS:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_STATUS:
                     $counts = framework\Context::getCurrentProject()->getStatusCount();
-                    $items = \thebuggenie\core\entities\Status::getAll();
+                    $items = entities\Status::getAll();
                     $key = 'status';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
                     $counts = framework\Context::getCurrentProject()->getWorkflowCount();
-                    $items = \thebuggenie\core\entities\WorkflowStep::getAllByWorkflowSchemeID(framework\Context::getCurrentProject()->getWorkflowScheme()->getID());
+                    $items = entities\WorkflowStep::getAllByWorkflowSchemeID(framework\Context::getCurrentProject()->getWorkflowScheme()->getID());
                     $key = 'workflowstep';
                     break;
-                case DashboardView::VIEW_PROJECT_STATISTICS_STATE:
+                case entities\DashboardView::VIEW_PROJECT_STATISTICS_STATE:
                     $counts = framework\Context::getCurrentProject()->getStateCount();
                     $items = array('open' => $this->getI18n()->__('Open'), 'closed' => $this->getI18n()->__('Closed'));
                     $key = 'state';
@@ -258,18 +259,18 @@
         public function componentProjectConfig()
         {
             $this->access_level = ($this->getUser()->canEditProjectDetails(framework\Context::getCurrentProject())) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
-            $this->statustypes = \thebuggenie\core\entities\Status::getAll();
+            $this->statustypes = entities\Status::getAll();
             $this->selected_tab = isset($this->section) ? $this->section : 'info';
         }
 
         public function componentProjectInfo()
         {
-            $this->valid_subproject_targets = \thebuggenie\core\entities\Project::getValidSubprojects($this->project);
+            $this->valid_subproject_targets = entities\Project::getValidSubprojects($this->project);
         }
 
         public function componentProjectSettings()
         {
-            $this->statustypes = \thebuggenie\core\entities\Status::getAll();
+            $this->statustypes = entities\Status::getAll();
         }
 
         public function componentProjectEdition()
@@ -289,8 +290,8 @@
 
         public function componentProjectPermissions()
         {
-            $this->roles = \thebuggenie\core\entities\Role::getAll();
-            $this->project_roles = \thebuggenie\core\entities\Role::getByProjectID($this->project->getID());
+            $this->roles = entities\Role::getAll();
+            $this->project_roles = entities\Role::getByProjectID($this->project->getID());
         }
 
         public function componentBuildbox()
@@ -302,10 +303,10 @@
         {
             if (!isset($this->build))
             {
-                $this->build = new \thebuggenie\core\entities\Build();
+                $this->build = new entities\Build();
                 $this->build->setProject(framework\Context::getCurrentProject());
                 $this->build->setName(framework\Context::getI18n()->__('%project_name version 0.0.0', array('%project_name' => $this->project->getName())));
-                if (framework\Context::getRequest()->getParameter('edition_id') && $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('edition_id')))
+                if (framework\Context::getRequest()->getParameter('edition_id') && $edition = entities\Edition::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('edition_id')))
                 {
                     $this->build->setEdition($edition);
                 }

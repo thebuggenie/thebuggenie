@@ -1,7 +1,7 @@
 <?php
 
     $themes = \thebuggenie\core\framework\Context::getThemes();
-    $languages = \thebuggenie\core\entities\I18n::getLanguages();
+    $languages = \thebuggenie\core\framework\I18n::getLanguages();
     
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>

@@ -2,15 +2,14 @@
 
     namespace thebuggenie\core\modules\remote;
 
-    use thebuggenie\core\framework\Action,
-        thebuggenie\core\framework\Context,
-        thebuggenie\core\framework\Request,
-        thebuggenie\core\entities\Project;
+    use thebuggenie\core\framework,
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     /**
      * actions for the remote module
      */
-    class Actions extends Action
+    class Actions extends framework\Action
     {
 
         public function getAuthenticationMethodForAction($action)
@@ -18,10 +17,10 @@
             switch ($action)
             {
                 case 'authenticate':
-                    return Action::AUTHENTICATION_METHOD_DUMMY;
+                    return framework\Action::AUTHENTICATION_METHOD_DUMMY;
                     break;
                 default:
-                    return Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
+                    return framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
                     break;
             }
         }
@@ -30,19 +29,19 @@
          * The currently selected project in actions where there is one
          *
          * @access protected
-         * @property \thebuggenie\core\entities\Project $selected_project
+         * @property entities\Project $selected_project
          */
         public function preExecute(framework\Request $request, $action)
         {
             try
             {
                 if ($project_key = $request['project_key'])
-                    $this->selected_project = Project::getByKey($project_key);
+                    $this->selected_project = entities\Project::getByKey($project_key);
                 elseif ($project_id = (int) $request['project_id'])
-                    $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectByID($project_id);
+                    $this->selected_project = entities\Project::getB2DBTable()->selectByID($project_id);
 
-                if ($this->selected_project instanceof Project)
-                    Context::setCurrentProject($this->selected_project);
+                if ($this->selected_project instanceof entities\Project)
+                    framework\Context::setCurrentProject($this->selected_project);
             }
             catch (\Exception $e)
             {
@@ -56,14 +55,14 @@
             $password = trim($request['password']);
             if ($username)
             {
-                $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($username);
-                if ($password && $user instanceof \thebuggenie\core\entities\User)
+                $user = tables\Users::getTable()->getByUsername($username);
+                if ($password && $user instanceof entities\User)
                 {
                     foreach ($user->getApplicationPasswords() as $app_password)
                     {
                         if (!$app_password->isUsed())
                         {
-                            if ($app_password->getHashPassword() == \thebuggenie\core\entities\User::hashPassword($password, $user->getSalt()))
+                            if ($app_password->getHashPassword() == entities\User::hashPassword($password, $user->getSalt()))
                             {
                                 $app_password->useOnce();
                                 $app_password->save();
@@ -80,7 +79,7 @@
 
         public function runListProjects(framework\Request $request)
         {
-            $projects = Project::getAll();
+            $projects = entities\Project::getAll();
 
             $return_array = array();
             foreach ($projects as $project)
@@ -95,7 +94,7 @@
         {
             try
             {
-                $issuetype = \thebuggenie\core\entities\Issuetype::getIssuetypeByKeyish($request['issuetype']);
+                $issuetype = entities\Issuetype::getIssuetypeByKeyish($request['issuetype']);
                 $issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
             }
             catch (\Exception $e)
@@ -109,7 +108,7 @@
 
         public function runListIssuetypes(framework\Request $request)
         {
-            $issuetypes = \thebuggenie\core\entities\Issuetype::getAll();
+            $issuetypes = entities\Issuetype::getAll();
 
             $return_array = array();
             foreach ($issuetypes as $issuetype)
@@ -124,17 +123,17 @@
         {
             $field_key = $request['field_key'];
             $return_array = array('description' => null, 'type' => null, 'choices' => null);
-            if ($field_key == 'title' || in_array($field_key, \thebuggenie\core\entities\DatatypeBase::getAvailableFields(true)))
+            if ($field_key == 'title' || in_array($field_key, entities\DatatypeBase::getAvailableFields(true)))
             {
                 switch ($field_key)
                 {
                     case 'title':
-                        $return_array['description'] = Context::getI18n()->__('Single line text input without formatting');
+                        $return_array['description'] = framework\Context::getI18n()->__('Single line text input without formatting');
                         $return_array['type'] = 'single_line_input';
                         break;
                     case 'description':
                     case 'reproduction_steps':
-                        $return_array['description'] = Context::getI18n()->__('Text input with wiki formatting capabilities');
+                        $return_array['description'] = framework\Context::getI18n()->__('Text input with wiki formatting capabilities');
                         $return_array['type'] = 'wiki_input';
                         break;
                     case 'status':
@@ -143,7 +142,7 @@
                     case 'priority':
                     case 'severity':
                     case 'category':
-                        $return_array['description'] = Context::getI18n()->__('Choose one of the available values');
+                        $return_array['description'] = framework\Context::getI18n()->__('Choose one of the available values');
                         $return_array['type'] = 'choice';
 
                         $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
@@ -154,24 +153,24 @@
                         }
                         break;
                     case 'percent_complete':
-                        $return_array['description'] = Context::getI18n()->__('Value of percentage completed');
+                        $return_array['description'] = framework\Context::getI18n()->__('Value of percentage completed');
                         $return_array['type'] = 'choice';
                         $return_array['choices'][] = "1-100%";
                         break;
                     case 'owner':
                     case 'assignee':
-                        $return_array['description'] = Context::getI18n()->__('Select an existing user or <none>');
+                        $return_array['description'] = framework\Context::getI18n()->__('Select an existing user or <none>');
                         $return_array['type'] = 'select_user';
                         break;
                     case 'estimated_time':
                     case 'spent_time':
-                        $return_array['description'] = Context::getI18n()->__('Enter time, such as points, hours, minutes, etc or <none>');
+                        $return_array['description'] = framework\Context::getI18n()->__('Enter time, such as points, hours, minutes, etc or <none>');
                         $return_array['type'] = 'time';
                         break;
                     case 'milestone':
-                        $return_array['description'] = Context::getI18n()->__('Select from available project milestones');
+                        $return_array['description'] = framework\Context::getI18n()->__('Select from available project milestones');
                         $return_array['type'] = 'choice';
-                        if ($this->selected_project instanceof Project)
+                        if ($this->selected_project instanceof entities\Project)
                         {
                             $milestones = $this->selected_project->getAvailableMilestones();
                             foreach ($milestones as $milestone)

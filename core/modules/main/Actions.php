@@ -3,47 +3,8 @@
     namespace thebuggenie\core\modules\main;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities\AgileBoard,
-        thebuggenie\core\entities\tables\AgileBoards,
-        thebuggenie\core\entities\Build,
-        thebuggenie\core\entities\tables\Builds,
-        thebuggenie\core\entities\Category,
-        thebuggenie\core\entities\Client,
-        thebuggenie\core\entities\tables\Clients,
-        thebuggenie\core\entities\Component,
-        thebuggenie\core\entities\tables\Components,
-        thebuggenie\core\entities\Comment,
-        thebuggenie\core\entities\Dashboard,
-        thebuggenie\core\entities\DashboardView,
-        thebuggenie\core\entities\Edition,
-        thebuggenie\core\entities\tables\Editions,
-        thebuggenie\core\entities\File,
-        thebuggenie\core\entities\Issue,
-        thebuggenie\core\entities\tables\Issues,
-        thebuggenie\core\entities\Milestone,
-        thebuggenie\core\entities\tables\Milestones,
-        thebuggenie\core\entities\Notification,
-        thebuggenie\core\entities\tables\Notifications,
-        thebuggenie\core\entities\CustomDatatype,
-        thebuggenie\core\entities\CustomDatatypeOption,
-        thebuggenie\core\entities\DatatypeBase,
-        thebuggenie\core\entities\Datatype,
-        thebuggenie\core\entities\tables\ListTypes,
-        thebuggenie\core\entities\tables\Links,
-        thebuggenie\core\entities\tables\Permissions,
-        thebuggenie\core\entities\Priority,
-        thebuggenie\core\entities\Project,
-        thebuggenie\core\entities\tables\Projects,
-        thebuggenie\core\entities\Reproducability,
-        thebuggenie\core\entities\Resolution,
-        thebuggenie\core\entities\Severity,
-        thebuggenie\core\entities\Status,
-        thebuggenie\core\entities\Team,
-        thebuggenie\core\entities\User,
-        thebuggenie\core\entities\tables\Users,
-        thebuggenie\core\entities\tables\OpenIdAccounts,
-        thebuggenie\modules\publish\entities\Article,
-        thebuggenie\modules\publish\entities\tables\Articles;
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     /**
      * actions for the main module
@@ -55,16 +16,16 @@
          * The currently selected project in actions where there is one
          *
          * @access protected
-         * @property \thebuggenie\core\entities\Project $selected_project
+         * @property entities\Project $selected_project
          */
         public function preExecute(framework\Request $request, $action)
         {
             try
             {
                 if ($project_key = $request['project_key'])
-                    $this->selected_project = Project::getByKey($project_key);
+                    $this->selected_project = entities\Project::getByKey($project_key);
                 elseif ($project_id = (int) $request['project_id'])
-                    $this->selected_project = Projects::getTable()->selectById($project_id);
+                    $this->selected_project = tables\Projects::getTable()->selectById($project_id);
 
                 framework\Context::setCurrentProject($this->selected_project);
             }
@@ -78,10 +39,10 @@
         {
             if ($issue_no = framework\Context::getRequest()->getParameter('issue_no'))
             {
-                $issue = Issue::getIssueFromLink($issue_no);
-                if ($issue instanceof Issue)
+                $issue = entities\Issue::getIssueFromLink($issue_no);
+                if ($issue instanceof entities\Issue)
                 {
-                    if (!$this->selected_project instanceof Project || $issue->getProjectID() != $this->selected_project->getID())
+                    if (!$this->selected_project instanceof entities\Project || $issue->getProjectID() != $this->selected_project->getID())
                     {
                         $issue = null;
                     }
@@ -92,7 +53,7 @@
                 }
             }
             framework\Logging::log('done (Loading issue)');
-            if ($issue instanceof Issue && (!$issue->hasAccess() || $issue->isDeleted()))
+            if ($issue instanceof entities\Issue && (!$issue->hasAccess() || $issue->isDeleted()))
                 $issue = null;
 
             return $issue;
@@ -107,7 +68,7 @@
         {
             $issue = $this->_getIssueFromRequest($request);
 
-            if (!$issue instanceof Issue)
+            if (!$issue instanceof entities\Issue)
             {
                 $this->getResponse()->setTemplate('viewissue');
                 return;
@@ -117,18 +78,18 @@
             {
                 if ($request['direction'] == 'next')
                 {
-                    $found_issue = Issues::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                 }
                 else
                 {
-                    $found_issue = Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                 }
                 if (is_null($found_issue))
                     break;
             }
-            while ($found_issue instanceof Issue && !$found_issue->hasAccess());
+            while ($found_issue instanceof entities\Issue && !$found_issue->hasAccess());
 
-            if ($found_issue instanceof Issue)
+            if ($found_issue instanceof entities\Issue)
             {
                 $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
             }
@@ -150,7 +111,7 @@
 
             $issue = $this->_getIssueFromRequest($request);
 
-            if ($issue instanceof Issue)
+            if ($issue instanceof entities\Issue)
             {
                 if (!array_key_exists('viewissue_list', $_SESSION))
                 {
@@ -174,7 +135,7 @@
             $message = framework\Context::getMessageAndClear('issue_saved');
             $uploaded = framework\Context::getMessageAndClear('issue_file_uploaded');
 
-            if ($request->isPost() && $issue instanceof Issue && $request->hasParameter('issue_action'))
+            if ($request->isPost() && $issue instanceof entities\Issue && $request->hasParameter('issue_action'))
             {
                 if ($request['issue_action'] == 'save')
                 {
@@ -238,7 +199,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -249,7 +210,7 @@
             {
                 try
                 {
-                    $project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($project_id);
+                    $project = entities\Project::getB2DBTable()->selectById($project_id);
                 }
                 catch (\Exception $e)
                 {
@@ -257,7 +218,7 @@
                 }
             }
 
-            if (!$issue instanceof Issue)
+            if (!$issue instanceof entities\Issue)
             {
                 if ($multi)
                 {
@@ -267,7 +228,7 @@
                 return $this->return404(framework\Context::getI18n()->__('Cannot find the issue specified'));
             }
 
-            if (!$project instanceof Project)
+            if (!$project instanceof entities\Project)
             {
                 if ($multi)
                 {
@@ -317,18 +278,18 @@
         {
             if (framework\Settings::isSingleProjectTracker())
             {
-                if (($projects = Project::getAllRootProjects(false)) && $project = array_shift($projects))
+                if (($projects = entities\Project::getAllRootProjects(false)) && $project = array_shift($projects))
                 {
                     $this->forward(framework\Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
                 }
             }
             $this->forward403unless($this->getUser()->hasPageAccess('home'));
-            $this->links = Links::getTable()->getMainLinks();
+            $this->links = tables\Links::getTable()->getMainLinks();
             $this->show_project_list = framework\Settings::isFrontpageProjectListVisible();
             $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS);
             if ($this->show_project_list || $this->show_project_config_link)
             {
-                $projects = Project::getAllRootProjects(false);
+                $projects = entities\Project::getAllRootProjects(false);
                 foreach ($projects as $k => $project)
                 {
                     if (!$project->hasAccess())
@@ -353,8 +314,8 @@
                     switch ($request['say'])
                     {
                         case 'notificationstatus':
-                            $notification = Notifications::getTable()->selectById($request['notification_id']);
-                            if ($notification instanceof Notification)
+                            $notification = tables\Notifications::getTable()->selectById($request['notification_id']);
+                            if ($notification instanceof entities\Notification)
                             {
                                 $notification->setIsRead(!$notification->isRead());
                                 $notification->save();
@@ -376,13 +337,13 @@
                             switch ($request['target_type'])
                             {
                                 case 'issue':
-                                    $target = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                                    $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
                                     break;
                                 case 'article':
-                                    $target = Articles::getTable()->selectById($request['target_id']);
+                                    $target = tables\Articles::getTable()->selectById($request['target_id']);
                                     break;
                                 case 'project':
-                                    $target = Projects::getTable()->selectById($request['target_id']);
+                                    $target = tables\Projects::getTable()->selectById($request['target_id']);
                                     break;
                             }
                             $mentionables = array();
@@ -440,25 +401,25 @@
             $this->forward403unless(!$this->getUser()->isThisGuest() && $this->getUser()->hasPageAccess('dashboard'));
             if (framework\Settings::isSingleProjectTracker())
             {
-                if (($projects = Project::getAll()) && $project = array_shift($projects))
+                if (($projects = entities\Project::getAll()) && $project = array_shift($projects))
                 {
                     framework\Context::setCurrentProject($project);
                 }
             }
             if ($request['dashboard_id'])
             {
-                $dashboard = Dashboard::getB2DBTable()->selectById((int) $request['dashboard_id']);
-                if ($dashboard->getType() == Dashboard::TYPE_PROJECT && !$dashboard->getProject()->hasAccess())
+                $dashboard = entities\Dashboard::getB2DBTable()->selectById((int) $request['dashboard_id']);
+                if ($dashboard->getType() == entities\Dashboard::TYPE_PROJECT && !$dashboard->getProject()->hasAccess())
                 {
                     unset($dashboard);
                 }
-                elseif ($dashboard->getType() == Dashboard::TYPE_USER && $dashboard->getUser()->getID() != framework\Context::getUser()->getID())
+                elseif ($dashboard->getType() == entities\Dashboard::TYPE_USER && $dashboard->getUser()->getID() != framework\Context::getUser()->getID())
                 {
                     unset($dashboard);
                 }
             }
 
-            if (!isset($dashboard) || !$dashboard instanceof Dashboard)
+            if (!isset($dashboard) || !$dashboard instanceof entities\Dashboard)
             {
                 $dashboard = $this->getUser()->getDefaultDashboard();
             }
@@ -474,7 +435,7 @@
                             if ($view->getColumn() == $request['column'])
                                 $sort_order++;
                         }
-                        $view = new DashboardView();
+                        $view = new entities\DashboardView();
                         $view->setDashboard($dashboard);
                         $view->setType($request['view_type']);
                         $view->setDetail($request['view_subtype']);
@@ -507,11 +468,11 @@
          */
         public function runDashboardSort(framework\Request $request)
         {
-            $dashboard = Dashboard::getB2DBTable()->selectById($request['dashboard_id']);
+            $dashboard = entities\Dashboard::getB2DBTable()->selectById($request['dashboard_id']);
             $column = $request['column'];
             foreach ($request['view_ids'] as $order => $view_id)
             {
-                $view = DashboardView::getB2DBTable()->selectById($view_id);
+                $view = entities\DashboardView::getB2DBTable()->selectById($view_id);
                 $view->setSortOrder($order);
                 $view->setColumn($column);
                 $view->save();
@@ -530,8 +491,8 @@
             $this->client = null;
             try
             {
-                $this->client = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($request['client_id']);
-                $projects = Project::getAllByClientID($this->client->getID());
+                $this->client = entities\Client::getB2DBTable()->selectById($request['client_id']);
+                $projects = entities\Project::getAllByClientID($this->client->getID());
 
                 $final_projects = array();
 
@@ -561,19 +522,19 @@
         {
             try
             {
-                $this->team = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['team_id']);
+                $this->team = entities\Team::getB2DBTable()->selectById($request['team_id']);
                 $this->forward403Unless($this->team->hasAccess());
 
                 $projects = array();
-                foreach (Project::getAllByOwner($this->team) as $project)
+                foreach (entities\Project::getAllByOwner($this->team) as $project)
                 {
                     $projects[$project->getID()] = $project;
                 }
-                foreach (Project::getAllByLeader($this->team) as $project)
+                foreach (entities\Project::getAllByLeader($this->team) as $project)
                 {
                     $projects[$project->getID()] = $project;
                 }
-                foreach (Project::getAllByQaResponsible($this->team) as $project)
+                foreach (entities\Project::getAllByQaResponsible($this->team) as $project)
                 {
                     $projects[$project->getID()] = $project;
                 }
@@ -629,7 +590,7 @@
          */
         public function runLogout(framework\Request $request)
         {
-            if ($this->getUser() instanceof User)
+            if ($this->getUser() instanceof entities\User)
             {
                 framework\Logging::log('Setting user logout state');
                 $this->getUser()->setOffline();
@@ -696,7 +657,7 @@
             $response = $this->getResponse();
             if ($request['user_id'])
             {
-                $user = new User($request['user_id']);
+                $user = new entities\User($request['user_id']);
                 $response->setCookie('tbg3_original_username', $request->getCookie('tbg3_username'));
                 $response->setCookie('tbg3_original_password', $request->getCookie('tbg3_password'));
                 framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
@@ -762,8 +723,8 @@
                 $user = null;
                 if ($details->status == 'okay')
                 {
-                    $user = User::getByEmail($details->email);
-                    if ($user instanceof User)
+                    $user = entities\User::getByEmail($details->email);
+                    if ($user instanceof entities\User)
                     {
                         framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
                         framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
@@ -772,7 +733,7 @@
                     }
                 }
 
-                if (!$user instanceof User)
+                if (!$user instanceof entities\User)
                 {
                     $this->getResponse()->setHttpStatus(401);
                     $this->renderJSON(array('message' => $this->getI18n()->__('Invalid login')));
@@ -802,7 +763,7 @@
                     {
                         if ($this->getUser()->isAuthenticated() && !$this->getUser()->isGuest())
                         {
-                            if (\thebuggenie\core\entities\tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($openid->identity))
+                            if (tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($openid->identity))
                             {
                                 framework\Context::setMessage('openid_used', true);
                                 throw new \Exception('OpenID already in use');
@@ -811,9 +772,9 @@
                         }
                         else
                         {
-                            $user = User::getByOpenID($openid->identity);
+                            $user = entities\User::getByOpenID($openid->identity);
                         }
-                        if ($user instanceof User)
+                        if ($user instanceof entities\User)
                         {
                             $attributes = $openid->getAttributes();
                             $email = (array_key_exists('contact/email', $attributes)) ? $attributes['contact/email'] : null;
@@ -835,7 +796,7 @@
                             }
                             if (!$user->hasOpenIDIdentity($openid->identity))
                             {
-                                OpenIdAccounts::getTable()->addIdentity($openid->identity, $email, $user->getID());
+                                tables\OpenIdAccounts::getTable()->addIdentity($openid->identity, $email, $user->getID());
                             }
                             framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
                             framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
@@ -865,7 +826,7 @@
                 {
                     if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request['tbg3_username'] != '' && $request['tbg3_password'] != '')
                     {
-                        $user = User::loginCheck($request, $this);
+                        $user = entities\User::loginCheck($request, $this);
 
                         framework\Context::setUser($user);
                         if ($this->checkScopeMembership($user))
@@ -939,7 +900,7 @@
         public function runRegisterCheckUsernameAvailability(framework\Request $request)
         {
             $username = mb_strtolower(trim($request['fieldusername']));
-            $available = ($username != '') ? Users::getTable()->isUsernameAvailable($username) : false;
+            $available = ($username != '') ? tables\Users::getTable()->isUsernameAvailable($username) : false;
 
             return $this->renderJSON(array('available' => (bool) $available));
         }
@@ -963,7 +924,7 @@
                 $security = $request['verification_no'];
                 $realname = $request['realname'];
 
-                $available = Users::getTable()->isUsernameAvailable($username);
+                $available = tables\Users::getTable()->isUsernameAvailable($username);
 
                 $fields = array();
 
@@ -1039,8 +1000,8 @@
                         throw new \Exception($i18n->__('To prevent automatic sign-ups, enter the verification number shown below.'));
                     }
 
-                    $password = User::createPassword();
-                    $user = new User();
+                    $password = entities\User::createPassword();
+                    $user = new entities\User();
                     $user->setUsername($username);
                     $user->setRealname($realname);
                     $user->setBuddyname($buddyname);
@@ -1080,8 +1041,8 @@
         {
             $this->getResponse()->setPage('login');
 
-            $user = Users::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
-            if ($user instanceof User)
+            $user = tables\Users::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
+            if ($user instanceof entities\User)
             {
                 if ($user->getActivationKey() != $request['key'])
                 {
@@ -1248,10 +1209,10 @@
             $this->forward403unless($this->getUser()->hasPageAccess('account'));
             if (trim($request['name']))
             {
-                $password = new \thebuggenie\core\entities\ApplicationPassword();
+                $password = new entities\ApplicationPassword();
                 $password->setUser($this->getUser());
                 $password->setName(trim($request['name']));
-                $visible_password = strtolower(User::createPassword());
+                $visible_password = strtolower(entities\User::createPassword());
                 $password->setPassword($visible_password);
                 $password->save();
                 $spans = '';
@@ -1341,7 +1302,7 @@
             $this->selected_pain_likelihood = null;
             $this->selected_pain_effect = null;
             $selected_customdatatype = array();
-            foreach (CustomDatatype::getAll() as $customdatatype)
+            foreach (entities\CustomDatatype::getAll() as $customdatatype)
             {
                 $selected_customdatatype[$customdatatype->getKey()] = null;
             }
@@ -1353,36 +1314,36 @@
             try
             {
                 if ($project_key = $request['project_key'])
-                    $this->selected_project = Project::getByKey($project_key);
+                    $this->selected_project = entities\Project::getByKey($project_key);
                 elseif ($project_id = $request['project_id'])
-                    $this->selected_project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($project_id);
+                    $this->selected_project = entities\Project::getB2DBTable()->selectById($project_id);
             }
             catch (\Exception $e)
             {
 
             }
 
-            if ($this->selected_project instanceof Project)
+            if ($this->selected_project instanceof entities\Project)
                 framework\Context::setCurrentProject($this->selected_project);
-            if ($this->selected_project instanceof Project)
+            if ($this->selected_project instanceof entities\Project)
                 $this->issuetypes = $this->selected_project->getIssuetypeScheme()->getIssuetypes();
             else
-                $this->issuetypes = Issuetype::getAll();
+                $this->issuetypes = entities\Issuetype::getAll();
 
             $this->selected_issuetype = null;
             if ($request->hasParameter('issuetype'))
-                $this->selected_issuetype = Issuetype::getIssuetypeByKeyish($request['issuetype']);
+                $this->selected_issuetype = entities\Issuetype::getIssuetypeByKeyish($request['issuetype']);
 
             $this->locked_issuetype = (bool) $request['lock_issuetype'];
 
-            if (!$this->selected_issuetype instanceof Issuetype)
+            if (!$this->selected_issuetype instanceof entities\Issuetype)
             {
                 $this->issuetype_id = $request['issuetype_id'];
                 if ($this->issuetype_id)
                 {
                     try
                     {
-                        $this->selected_issuetype = Issuetype::getB2DBTable()->selectById($this->issuetype_id);
+                        $this->selected_issuetype = entities\Issuetype::getB2DBTable()->selectById($this->issuetype_id);
                     }
                     catch (\Exception $e)
                     {
@@ -1399,9 +1360,9 @@
         protected function _postIssueValidation(framework\Request $request, &$errors, &$permission_errors)
         {
             $i18n = framework\Context::getI18n();
-            if (!$this->selected_project instanceof Project)
+            if (!$this->selected_project instanceof entities\Project)
                 $errors['project'] = $i18n->__('You have to select a valid project');
-            if (!$this->selected_issuetype instanceof Issuetype)
+            if (!$this->selected_issuetype instanceof entities\Issuetype)
                 $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
             if (empty($errors))
             {
@@ -1415,11 +1376,11 @@
                 $this->selected_reproduction_steps_syntax = $request->getRawParameter('reproduction_steps_syntax', null, false);
 
                 if ($edition_id = (int) $request['edition_id'])
-                    $this->selected_edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($edition_id);
+                    $this->selected_edition = entities\Edition::getB2DBTable()->selectById($edition_id);
                 if ($build_id = (int) $request['build_id'])
-                    $this->selected_build = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($build_id);
+                    $this->selected_build = entities\Build::getB2DBTable()->selectById($build_id);
                 if ($component_id = (int) $request['component_id'])
-                    $this->selected_component = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($component_id);
+                    $this->selected_component = entities\Component::getB2DBTable()->selectById($component_id);
 
                 if (trim($this->title) == '' || $this->title == $this->default_title)
                     $errors['title'] = true;
@@ -1440,28 +1401,28 @@
                     $errors['component'] = true;
 
                 if ($category_id = (int) $request['category_id'])
-                    $this->selected_category = \thebuggenie\core\entities\Category::getB2DBTable()->selectById($category_id);
+                    $this->selected_category = entities\Category::getB2DBTable()->selectById($category_id);
 
                 if ($status_id = (int) $request['status_id'])
-                    $this->selected_status = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($status_id);
+                    $this->selected_status = entities\Status::getB2DBTable()->selectById($status_id);
 
                 if ($reproducability_id = (int) $request['reproducability_id'])
-                    $this->selected_reproducability = \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($reproducability_id);
+                    $this->selected_reproducability = entities\Reproducability::getB2DBTable()->selectById($reproducability_id);
 
                 if ($milestone_id = (int) $request['milestone_id'])
-                    $this->selected_milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($milestone_id);
+                    $this->selected_milestone = entities\Milestone::getB2DBTable()->selectById($milestone_id);
 
                 if ($parent_issue_id = (int) $request['parent_issue_id'])
-                    $this->parent_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($parent_issue_id);
+                    $this->parent_issue = entities\Issue::getB2DBTable()->selectById($parent_issue_id);
 
                 if ($resolution_id = (int) $request['resolution_id'])
-                    $this->selected_resolution = \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($resolution_id);
+                    $this->selected_resolution = entities\Resolution::getB2DBTable()->selectById($resolution_id);
 
                 if ($severity_id = (int) $request['severity_id'])
-                    $this->selected_severity = \thebuggenie\core\entities\Severity::getB2DBTable()->selectById($severity_id);
+                    $this->selected_severity = entities\Severity::getB2DBTable()->selectById($severity_id);
 
                 if ($priority_id = (int) $request['priority_id'])
-                    $this->selected_priority = \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($priority_id);
+                    $this->selected_priority = entities\Priority::getB2DBTable()->selectById($priority_id);
 
                 if ($request['estimated_time'])
                     $this->selected_estimated_time = $request['estimated_time'];
@@ -1482,7 +1443,7 @@
                     $this->selected_pain_effect = $pain_effect_id;
 
                 $selected_customdatatype = array();
-                foreach (CustomDatatype::getAll() as $customdatatype)
+                foreach (entities\CustomDatatype::getAll() as $customdatatype)
                 {
                     $customdatatype_id = $customdatatype->getKey() . '_id';
                     $customdatatype_value = $customdatatype->getKey() . '_value';
@@ -1492,7 +1453,7 @@
                         if ($request->hasParameter($customdatatype_id))
                         {
                             $$customdatatype_id = (int) $request->getParameter($customdatatype_id);
-                            $selected_customdatatype[$customdatatype->getKey()] = new CustomDatatypeOption($$customdatatype_id);
+                            $selected_customdatatype[$customdatatype->getKey()] = new entities\CustomDatatypeOption($$customdatatype_id);
                         }
                     }
                     else
@@ -1500,8 +1461,8 @@
                         $selected_customdatatype[$customdatatype->getKey()] = null;
                         switch ($customdatatype->getType())
                         {
-                            case CustomDatatype::INPUT_TEXTAREA_MAIN:
-                            case CustomDatatype::INPUT_TEXTAREA_SMALL:
+                            case entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                            case entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                 if ($request->hasParameter($customdatatype_value))
                                     $selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_value, null, false);
 
@@ -1533,14 +1494,14 @@
                     elseif ($info['required'])
                     {
                         $var_name = "selected_{$field}";
-                        if ((in_array($field, Datatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, DatatypeBase::getAvailableFields(true)) && !in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && (array_key_exists($field, $selected_customdatatype) && $selected_customdatatype[$field] === null)))
+                        if ((in_array($field, entities\Datatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, entities\DatatypeBase::getAvailableFields(true)) && !in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && (array_key_exists($field, $selected_customdatatype) && $selected_customdatatype[$field] === null)))
                         {
                             $errors[$field] = true;
                         }
                     }
                     else
                     {
-                        if (in_array($field, Datatype::getAvailableFields(true)))
+                        if (in_array($field, entities\Datatype::getAvailableFields(true)))
                         {
                             if (!$this->selected_project->fieldPermissionCheck($field, true))
                             {
@@ -1563,7 +1524,7 @@
         protected function _postIssue()
         {
             $fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
-            $issue = new Issue();
+            $issue = new entities\Issue();
             $issue->setTitle($this->title);
             $issue->setIssuetype($this->issuetype_id);
             $issue->setProject($this->selected_project);
@@ -1577,17 +1538,17 @@
                 $issue->setReproductionSteps($this->selected_reproduction_steps);
             if (isset($fields_array['reproduction_steps_syntax']))
                 $issue->setReproductionStepsSyntax($this->selected_reproduction_steps_syntax);
-            if (isset($fields_array['category']) && $this->selected_category instanceof Datatype)
+            if (isset($fields_array['category']) && $this->selected_category instanceof entities\Datatype)
                 $issue->setCategory($this->selected_category->getID());
-            if (isset($fields_array['status']) && $this->selected_status instanceof Datatype)
+            if (isset($fields_array['status']) && $this->selected_status instanceof entities\Datatype)
                 $issue->setStatus($this->selected_status->getID());
-            if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof Datatype)
+            if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof entities\Datatype)
                 $issue->setReproducability($this->selected_reproducability->getID());
-            if (isset($fields_array['resolution']) && $this->selected_resolution instanceof Datatype)
+            if (isset($fields_array['resolution']) && $this->selected_resolution instanceof entities\Datatype)
                 $issue->setResolution($this->selected_resolution->getID());
-            if (isset($fields_array['severity']) && $this->selected_severity instanceof Datatype)
+            if (isset($fields_array['severity']) && $this->selected_severity instanceof entities\Datatype)
                 $issue->setSeverity($this->selected_severity->getID());
-            if (isset($fields_array['priority']) && $this->selected_priority instanceof Datatype)
+            if (isset($fields_array['priority']) && $this->selected_priority instanceof entities\Datatype)
                 $issue->setPriority($this->selected_priority->getID());
             if (isset($fields_array['estimated_time']))
                 $issue->setEstimatedTime($this->selected_estimated_time);
@@ -1603,13 +1564,13 @@
                 $issue->setPainLikelihood($this->selected_pain_likelihood);
             if (isset($fields_array['pain_effect']))
                 $issue->setPainEffect($this->selected_pain_effect);
-            foreach (CustomDatatype::getAll() as $customdatatype)
+            foreach (entities\CustomDatatype::getAll() as $customdatatype)
             {
                 if (!isset($fields_array[$customdatatype->getKey()]))
                     continue;
                 if ($customdatatype->hasCustomOptions())
                 {
-                    if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof CustomDatatypeOption)
+                    if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof entities\CustomDatatypeOption)
                     {
                         $selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
                         $issue->setCustomField($customdatatype->getKey(), $selected_option->getID());
@@ -1624,11 +1585,11 @@
             // FIXME: If we set the issue assignee during report issue, this needs to be set INSTEAD of this
             if ($this->selected_project->canAutoassign())
             {
-                if (isset($fields_array['component']) && $this->selected_component instanceof Component && $this->selected_component->hasLeader())
+                if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component && $this->selected_component->hasLeader())
                 {
                     $issue->setAssignee($this->selected_component->getLeader());
                 }
-                elseif (isset($fields_array['edition']) && $this->selected_edition instanceof Edition && $this->selected_edition->hasLeader())
+                elseif (isset($fields_array['edition']) && $this->selected_edition instanceof entities\Edition && $this->selected_edition->hasLeader())
                 {
                     $issue->setAssignee($this->selected_edition->getLeader());
                 }
@@ -1642,11 +1603,11 @@
 
             if (isset($this->parent_issue))
                 $issue->addParentIssue($this->parent_issue);
-            if (isset($fields_array['edition']) && $this->selected_edition instanceof Edition)
+            if (isset($fields_array['edition']) && $this->selected_edition instanceof entities\Edition)
                 $issue->addAffectedEdition($this->selected_edition);
-            if (isset($fields_array['build']) && $this->selected_build instanceof Build)
+            if (isset($fields_array['build']) && $this->selected_build instanceof entities\Build)
                 $issue->addAffectedBuild($this->selected_build);
-            if (isset($fields_array['component']) && $this->selected_component instanceof Component)
+            if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
                 $issue->addAffectedComponent($this->selected_component);
 
 
@@ -1660,7 +1621,7 @@
             {
                 try
                 {
-                    $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+                    $milestone = entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
                     return $milestone;
                 }
                 catch (\Exception $e) { }
@@ -1673,7 +1634,7 @@
             {
                 try
                 {
-                    $build = \thebuggenie\core\entities\Build::getB2DBTable()->selectById((int) $request['build_id']);
+                    $build = entities\Build::getB2DBTable()->selectById((int) $request['build_id']);
                     return $build;
                 }
                 catch (\Exception $e) { }
@@ -1686,7 +1647,7 @@
             {
                 try
                 {
-                    $parent_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['parent_issue_id']);
+                    $parent_issue = entities\Issue::getB2DBTable()->selectById((int) $request['parent_issue_id']);
                     return $parent_issue;
                 }
                 catch (\Exception $e) { }
@@ -1699,7 +1660,7 @@
             {
                 try
                 {
-                    $board = AgileBoards::getTable()->selectById((int) $request['board_id']);
+                    $board = tables\AgileBoards::getTable()->selectById((int) $request['board_id']);
                     return $board;
                 }
                 catch (\Exception $e) { }
@@ -1721,7 +1682,7 @@
 
             $this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 
-            $this->forward403unless(framework\Context::getCurrentProject() instanceof Project && framework\Context::getCurrentProject()->hasAccess() && $this->getUser()->canReportIssues(framework\Context::getCurrentProject()));
+            $this->forward403unless(framework\Context::getCurrentProject() instanceof entities\Project && framework\Context::getCurrentProject()->hasAccess() && $this->getUser()->canReportIssues(framework\Context::getCurrentProject()));
 
             if ($request->isPost())
             {
@@ -1736,10 +1697,10 @@
                             $file_descriptions = $request['file_description'];
                             foreach ($files as $file_id => $nothing)
                             {
-                                $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById((int) $file_id);
+                                $file = entities\File::getB2DBTable()->selectById((int) $file_id);
                                 $file->setDescription($file_descriptions[$file_id]);
                                 $file->save();
-                                \thebuggenie\core\entities\tables\IssueFiles::getTable()->addByIssueIDandFileID($issue->getID(), $file->getID());
+                                tables\IssueFiles::getTable()->addByIssueIDandFileID($issue->getID(), $file->getID());
                             }
                         }
                         if ($request['return_format'] == 'planning')
@@ -1799,13 +1760,13 @@
          */
         public function runReportIssueGetFields(framework\Request $request)
         {
-            if (!$this->selected_project instanceof Project)
+            if (!$this->selected_project instanceof entities\Project)
             {
                 return $this->renderText('invalid project');
             }
 
             $fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id']);
-            $available_fields = DatatypeBase::getAvailableFields();
+            $available_fields = entities\DatatypeBase::getAvailableFields();
             $available_fields[] = 'pain_bug_type';
             $available_fields[] = 'pain_likelihood';
             $available_fields[] = 'pain_effect';
@@ -1823,8 +1784,8 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
-                    $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['user_id']);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $user = entities\User::getB2DBTable()->selectById($request['user_id']);
                 }
                 catch (\Exception $e)
                 {
@@ -1859,10 +1820,10 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                     if ($entry_id = $request['entry_id'])
                     {
-                        $spenttime = \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->selectById($entry_id);
+                        $spenttime = tables\IssueSpentTimes::getTable()->selectById($entry_id);
                     }
                 }
                 catch (\Exception $e)
@@ -1881,19 +1842,19 @@
             $spenttime->getIssue()->save();
             $timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-            return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => Issue::getFormattedTime($spenttime->getIssue()->getSpentTime())));
+            return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime())));
         }
 
         public function runIssueEditTimeSpent(framework\Request $request)
         {
             $entry_id = $request['entry_id'];
-            $spenttime = ($entry_id) ? \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->selectById($entry_id) : new IssueSpentTime();
+            $spenttime = ($entry_id) ? tables\IssueSpentTimes::getTable()->selectById($entry_id) : new entities\IssueSpentTime();
 
             if ($issue_id = $request['issue_id'])
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -1911,7 +1872,7 @@
             {
                 if ($request['timespent_manual'])
                 {
-                    $times = Issue::convertFancyStringToTime($request['timespent_manual']);
+                    $times = entities\Issue::convertFancyStringToTime($request['timespent_manual']);
                 }
                 else
                 {
@@ -1945,7 +1906,7 @@
 
             $timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
         }
 
         /**
@@ -1959,7 +1920,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -1975,7 +1936,7 @@
 
             framework\Context::loadLibrary('common');
 
-            if (!$issue instanceof Issue)
+            if (!$issue instanceof entities\Issue)
                 return false;
 
             switch ($request['field'])
@@ -2051,7 +2012,7 @@
                     {
                         $issue->save();
                     }
-                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
                     break;
                 case 'posted_by':
                 case 'owned_by':
@@ -2072,17 +2033,17 @@
                                 switch ($request['identifiable_type'])
                                 {
                                     case 'user':
-                                        $identified = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['value']);
+                                        $identified = entities\User::getB2DBTable()->selectById($request['value']);
                                         break;
                                     case 'team':
-                                        $identified = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['value']);
+                                        $identified = entities\Team::getB2DBTable()->selectById($request['value']);
                                         break;
                                 }
-                                if ($identified instanceof User || $identified instanceof Team)
+                                if ($identified instanceof entities\User || $identified instanceof entities\Team)
                                 {
                                     if ((bool) $request->getParameter('teamup', false))
                                     {
-                                        $team = new Team();
+                                        $team = new entities\Team();
                                         $team->setName($identified->getBuddyname() . ' & ' . $this->getUser()->getBuddyname());
                                         $team->setOndemand(true);
                                         $team->save();
@@ -2106,8 +2067,8 @@
                         }
                         elseif ($request['field'] == 'posted_by')
                         {
-                            $identified = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['value']);
-                            if ($identified instanceof User)
+                            $identified = entities\User::getB2DBTable()->selectById($request['value']);
+                            if ($identified instanceof entities\User)
                             {
                                 $issue->setPostedBy($identified);
                             }
@@ -2115,9 +2076,9 @@
                         if ($request['field'] == 'posted_by')
                             return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
                         if ($request['field'] == 'owned_by')
-                            return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
+                            return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
                         if ($request['field'] == 'assigned_to')
-                            return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
+                            return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
                     }
                     break;
                 case 'spent_time':
@@ -2140,7 +2101,7 @@
                         $issue->addSpentHours($request['hours']);
                         $issue->addSpentPoints($request['points']);
                     }
-                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
                     break;
                 case 'category':
                 case 'resolution':
@@ -2211,13 +2172,13 @@
                             $parameter_id = $request->getParameter($parameter_id_name);
                             if ($parameter_id !== 0)
                             {
-                                $is_valid = ($is_pain) ? in_array($parameter_id, array_keys(Issue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = $lab_function_name::getB2DBTable()->selectByID($parameter_id)) instanceof $classname));
+                                $is_valid = ($is_pain) ? in_array($parameter_id, array_keys(entities\Issue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = $lab_function_name::getB2DBTable()->selectByID($parameter_id)) instanceof $classname));
                             }
                             if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
                             {
                                 if ($classname == 'Issuetype')
                                 {
-                                    $visible_fields = ($issue->getIssuetype() instanceof Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
+                                    $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
                                 }
                                 else
                                 {
@@ -2277,7 +2238,7 @@
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('No valid field value specified')));
                     break;
                 default:
-                    if ($customdatatype = CustomDatatype::getByKey($request['field']))
+                    if ($customdatatype = entities\CustomDatatype::getByKey($request['field']))
                     {
                         $key = $customdatatype->getKey();
 
@@ -2286,14 +2247,14 @@
                         {
                             switch ($customdatatype->getType())
                             {
-                                case CustomDatatype::EDITIONS_CHOICE:
-                                case CustomDatatype::COMPONENTS_CHOICE:
-                                case CustomDatatype::RELEASES_CHOICE:
-                                case CustomDatatype::STATUS_CHOICE:
-                                case CustomDatatype::MILESTONE_CHOICE:
-                                case CustomDatatype::USER_CHOICE:
-                                case CustomDatatype::TEAM_CHOICE:
-                                case CustomDatatype::CLIENT_CHOICE:
+                                case entities\CustomDatatype::EDITIONS_CHOICE:
+                                case entities\CustomDatatype::COMPONENTS_CHOICE:
+                                case entities\CustomDatatype::RELEASES_CHOICE:
+                                case entities\CustomDatatype::STATUS_CHOICE:
+                                case entities\CustomDatatype::MILESTONE_CHOICE:
+                                case entities\CustomDatatype::USER_CHOICE:
+                                case entities\CustomDatatype::TEAM_CHOICE:
+                                case entities\CustomDatatype::CLIENT_CHOICE:
                                     if ($customdatatypeoption_value == '')
                                     {
                                         $issue->setCustomField($key, "");
@@ -2302,44 +2263,44 @@
                                     {
                                         switch ($customdatatype->getType())
                                         {
-                                            case CustomDatatype::EDITIONS_CHOICE:
-                                                $temp = Editions::getTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::EDITIONS_CHOICE:
+                                                $temp = tables\Editions::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::COMPONENTS_CHOICE:
-                                                $temp = Components::getTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::COMPONENTS_CHOICE:
+                                                $temp = tables\Components::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::RELEASES_CHOICE:
-                                                $temp = Builds::getTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::RELEASES_CHOICE:
+                                                $temp = tables\Builds::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::MILESTONE_CHOICE:
-                                                $temp = Milestones::getTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::MILESTONE_CHOICE:
+                                                $temp = tables\Milestones::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::STATUS_CHOICE:
-                                                $temp = Status::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::STATUS_CHOICE:
+                                                $temp = entities\Status::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::USER_CHOICE:
-                                                $temp = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::USER_CHOICE:
+                                                $temp = entities\User::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::TEAM_CHOICE:
-                                                $temp = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::TEAM_CHOICE:
+                                                $temp = entities\Team::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
-                                            case CustomDatatype::CLIENT_CHOICE:
-                                                $temp = Clients::getTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            case entities\CustomDatatype::CLIENT_CHOICE:
+                                                $temp = tables\Clients::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
                                         }
                                         $finalvalue = $temp->getName();
                                         $issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
                                     }
 
-                                    if ($customdatatype->getType() == CustomDatatype::STATUS_CHOICE && isset($temp) && is_object($temp))
+                                    if ($customdatatype->getType() == entities\CustomDatatype::STATUS_CHOICE && isset($temp) && is_object($temp))
                                     {
                                         $finalvalue = '<div class="status_badge" style="background-color: ' . $temp->getColor() . ';"><span>' . $finalvalue . '</span></div>';
                                     }
-                                    elseif ($customdatatype->getType() == CustomDatatype::USER_CHOICE && isset($temp) && is_object($temp))
+                                    elseif ($customdatatype->getType() == entities\CustomDatatype::USER_CHOICE && isset($temp) && is_object($temp))
                                     {
                                         $finalvalue = $this->getComponentHTML('main/userdropdown', array('user' => $temp));
                                     }
-                                    elseif ($customdatatype->getType() == CustomDatatype::TEAM_CHOICE && isset($temp) && is_object($temp))
+                                    elseif ($customdatatype->getType() == entities\CustomDatatype::TEAM_CHOICE && isset($temp) && is_object($temp))
                                     {
                                         $finalvalue = $this->getComponentHTML('main/teamdropdown', array('team' => $temp));
                                     }
@@ -2349,8 +2310,8 @@
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => $finalvalue)));
                                     break;
-                                case CustomDatatype::INPUT_TEXTAREA_MAIN:
-                                case CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                case entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                case entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     if ($customdatatypeoption_value == '')
                                     {
                                         $issue->setCustomField($key, "");
@@ -2364,7 +2325,7 @@
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
                                     break;
-                                case CustomDatatype::DATE_PICKER:
+                                case entities\CustomDatatype::DATE_PICKER:
                                     if ($customdatatypeoption_value == '')
                                     {
                                         $issue->setCustomField($key, "");
@@ -2394,8 +2355,8 @@
                                     break;
                             }
                         }
-                        $customdatatypeoption = ($customdatatypeoption_value) ? CustomDatatypeOption::getB2DBTable()->selectById($customdatatypeoption_value) : null;
-                        if ($customdatatypeoption instanceof CustomDatatypeOption)
+                        $customdatatypeoption = ($customdatatypeoption_value) ? entities\CustomDatatypeOption::getB2DBTable()->selectById($customdatatypeoption_value) : null;
+                        if ($customdatatypeoption instanceof entities\CustomDatatypeOption)
                         {
                             $issue->setCustomField($key, $customdatatypeoption->getID());
                         }
@@ -2406,7 +2367,7 @@
                         $changed_methodname = "isCustomfield{$key}Changed";
                         if (!$issue->$changed_methodname())
                             return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
-                        return (!$customdatatypeoption instanceof CustomDatatypeOption) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $customdatatypeoption->getID(), 'name' => $customdatatypeoption->getName())));
+                        return (!$customdatatypeoption instanceof entities\CustomDatatypeOption) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $customdatatypeoption->getID(), 'name' => $customdatatypeoption->getName())));
                     }
                     break;
             }
@@ -2426,7 +2387,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -2464,23 +2425,23 @@
                     break;
                 case 'category':
                     $issue->revertCategory();
-                    $field = ($issue->getCategory() instanceof Category) ? array('id' => $issue->getCategory()->getID(), 'name' => $issue->getCategory()->getName()) : array('id' => 0);
+                    $field = ($issue->getCategory() instanceof entities\Category) ? array('id' => $issue->getCategory()->getID(), 'name' => $issue->getCategory()->getName()) : array('id' => 0);
                     break;
                 case 'resolution':
                     $issue->revertResolution();
-                    $field = ($issue->getResolution() instanceof Resolution) ? array('id' => $issue->getResolution()->getID(), 'name' => $issue->getResolution()->getName()) : array('id' => 0);
+                    $field = ($issue->getResolution() instanceof entities\Resolution) ? array('id' => $issue->getResolution()->getID(), 'name' => $issue->getResolution()->getName()) : array('id' => 0);
                     break;
                 case 'severity':
                     $issue->revertSeverity();
-                    $field = ($issue->getSeverity() instanceof Severity) ? array('id' => $issue->getSeverity()->getID(), 'name' => $issue->getSeverity()->getName()) : array('id' => 0);
+                    $field = ($issue->getSeverity() instanceof entities\Severity) ? array('id' => $issue->getSeverity()->getID(), 'name' => $issue->getSeverity()->getName()) : array('id' => 0);
                     break;
                 case 'reproducability':
                     $issue->revertReproducability();
-                    $field = ($issue->getReproducability() instanceof Reproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
+                    $field = ($issue->getReproducability() instanceof entities\Reproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
                     break;
                 case 'priority':
                     $issue->revertPriority();
-                    $field = ($issue->getPriority() instanceof Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
+                    $field = ($issue->getPriority() instanceof entities\Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
                     break;
                 case 'percent_complete':
                     $issue->revertPercentCompleted();
@@ -2488,7 +2449,7 @@
                     break;
                 case 'status':
                     $issue->revertStatus();
-                    $field = ($issue->getStatus() instanceof Status) ? array('id' => $issue->getStatus()->getID(), 'name' => $issue->getStatus()->getName(), 'color' => $issue->getStatus()->getColor()) : array('id' => 0);
+                    $field = ($issue->getStatus() instanceof entities\Status) ? array('id' => $issue->getStatus()->getID(), 'name' => $issue->getStatus()->getName(), 'color' => $issue->getStatus()->getColor()) : array('id' => 0);
                     break;
                 case 'pain_bug_type':
                     $issue->revertPainBugType();
@@ -2504,36 +2465,36 @@
                     break;
                 case 'issuetype':
                     $issue->revertIssuetype();
-                    $field = ($issue->getIssuetype() instanceof Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
-                    $visible_fields = ($issue->getIssuetype() instanceof Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
+                    $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+                    $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
                     return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields));
                     break;
                 case 'milestone':
                     $issue->revertMilestone();
-                    $field = ($issue->getMilestone() instanceof Milestone) ? array('id' => $issue->getMilestone()->getID(), 'name' => $issue->getMilestone()->getName()) : array('id' => 0);
+                    $field = ($issue->getMilestone() instanceof entities\Milestone) ? array('id' => $issue->getMilestone()->getID(), 'name' => $issue->getMilestone()->getName()) : array('id' => 0);
                     break;
                 case 'estimated_time':
                     $issue->revertEstimatedTime();
-                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
                     break;
                 case 'spent_time':
                     $issue->revertSpentTime();
-                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
                     break;
                 case 'owned_by':
                     $issue->revertOwner();
-                    return $this->renderJSON(array('changed' => $issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
+                    return $this->renderJSON(array('changed' => $issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
                     break;
                 case 'assigned_to':
                     $issue->revertAssignee();
-                    return $this->renderJSON(array('changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
+                    return $this->renderJSON(array('changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
                     break;
                 case 'posted_by':
                     $issue->revertPostedBy();
                     return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
                     break;
                 default:
-                    if ($customdatatype = CustomDatatype::getByKey($request['field']))
+                    if ($customdatatype = entities\CustomDatatype::getByKey($request['field']))
                     {
                         $key = $customdatatype->getKey();
                         $revert_methodname = "revertCustomfield{$key}";
@@ -2541,14 +2502,14 @@
 
                         if ($customdatatype->hasCustomOptions())
                         {
-                            $field = ($issue->getCustomField($key) instanceof CustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getID(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+                            $field = ($issue->getCustomField($key) instanceof entities\CustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getID(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
                         }
                         else
                         {
                             switch ($customdatatype->getType())
                             {
-                                case CustomDatatype::INPUT_TEXTAREA_MAIN:
-                                case CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                case entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                case entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     $field = ($issue->getCustomField($key) != '') ? array('value' => $key, 'name' => tbg_parse_text($issue->getCustomField($key))) : array('id' => 0);
                                     break;
                                 default:
@@ -2582,12 +2543,12 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                     if (!$issue->canEditIssueDetails())
                         return $this->forward403();
                     $issue->setLocked(false);
                     $issue->save();
-                    Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
+                    tables\Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -2615,7 +2576,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                     if (!$issue->canEditIssueDetails())
                     {
                         $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
@@ -2631,7 +2592,7 @@
                     $i_al = $issue->getAccessList();
                     foreach ($i_al as $k => $item)
                     {
-                        if ($item['target'] instanceof Team)
+                        if ($item['target'] instanceof entities\Team)
                         {
                             $tid = $item['target']->getID();
                             if (array_key_exists($tid, $al_teams))
@@ -2643,7 +2604,7 @@
                                 framework\Context::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
                             }
                         }
-                        elseif ($item['target'] instanceof User)
+                        elseif ($item['target'] instanceof entities\User)
                         {
                             $uid = $item['target']->getID();
                             if (array_key_exists($uid, $al_users))
@@ -2693,7 +2654,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -2726,7 +2687,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -2757,7 +2718,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -2791,14 +2752,14 @@
             {
                 if ($request['include_clients'])
                 {
-                    $clients = Clients::getTable()->quickfind($find_identifiable_by);
+                    $clients = tables\Clients::getTable()->quickfind($find_identifiable_by);
                 }
                 else
                 {
-                    $users = Users::getTable()->getByDetails($find_identifiable_by, 10);
+                    $users = tables\Users::getTable()->getByDetails($find_identifiable_by, 10);
                     if ($request['include_teams'])
                     {
-                        $teams = Teams::getTable()->quickfind($find_identifiable_by);
+                        $teams = tables\Teams::getTable()->quickfind($find_identifiable_by);
                     }
                     else
                     {
@@ -2838,18 +2799,18 @@
             framework\Logging::log('status was: ' . (int) $status['finished'] . ', pct: ' . (int) $status['percent']);
             if (array_key_exists('file_id', $status) && $request['mode'] == 'issue')
             {
-                $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById($status['file_id']);
+                $file = entities\File::getB2DBTable()->selectById($status['file_id']);
                 $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request['issue_id'], 'file' => $file));
                 $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request['issue_id'], 'file' => $file));
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
                 $status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
             }
             elseif (array_key_exists('file_id', $status) && $request['mode'] == 'article')
             {
-                $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById($status['file_id']);
+                $file = entities\File::getB2DBTable()->selectById($status['file_id']);
                 $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
                 $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
-                $article = Article::getByName($request['article_name']);
+                $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
                 $status['attachmentcount'] = count($article->getFiles());
             }
 
@@ -2861,14 +2822,14 @@
             switch ($request['target'])
             {
                 case 'issue':
-                    $target = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                    $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
                     $base_id = 'viewissue_files';
                     $container_id = 'viewissue_uploaded_files';
                     $target_identifier = 'issue_id';
                     $target_id = $target->getID();
                     break;
                 case 'article':
-                    $target = Articles::getTable()->selectById($request['target_id']);
+                    $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
                     $base_id = 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files';
                     $container_id = 'article_' . $target->getID() . '_files';
                     $target_identifier = 'article_name';
@@ -2879,7 +2840,7 @@
             $files = array();
             foreach ($request['file_description'] as $file_id => $description)
             {
-                $file = \thebuggenie\core\entities\File::getB2DBTable()->selectById($file_id);
+                $file = entities\File::getB2DBTable()->selectById($file_id);
                 $file->setDescription($description);
                 $file->save();
                 if (in_array($file_id, $saved_file_ids))
@@ -2927,8 +2888,8 @@
                 else
                 {
                     framework\Logging::log('Upload complete and ok, storing upload status and returning filename ' . $new_filename);
-                    $content_type = File::getMimeType($filename);
-                    $file_object = new File();
+                    $content_type = entities\File::getMimeType($filename);
+                    $file_object = new entities\File();
                     $file_object->setRealFilename($new_filename);
                     $file_object->setOriginalFilename(basename($file['name']));
                     $file_object->setContentType($content_type);
@@ -2959,13 +2920,13 @@
 
             if ($request['mode'] == 'issue')
             {
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-                $canupload = (bool) ($issue instanceof Issue && $issue->hasAccess() && $issue->canAttachFiles());
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $canupload = (bool) ($issue instanceof entities\Issue && $issue->hasAccess() && $issue->canAttachFiles());
             }
             elseif ($request['mode'] == 'article')
             {
-                $article = Article::getByName($request['article_name']);
-                $canupload = (bool) ($article instanceof Article && $article->canEdit());
+                $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
+                $canupload = (bool) ($article instanceof \thebuggenie\modules\publish\entities\Article && $article->canEdit());
             }
             else
             {
@@ -2980,18 +2941,18 @@
                 try
                 {
                     $file = framework\Context::getRequest()->handleUpload('uploader_file');
-                    if ($file instanceof File)
+                    if ($file instanceof entities\File)
                     {
                         switch ($request['mode'])
                         {
                             case 'issue':
-                                if (!$issue instanceof Issue)
+                                if (!$issue instanceof entities\Issue)
                                     break;
                                 $issue->attachFile($file, $request->getRawParameter('comment'), $request['uploader_file_description']);
                                 $issue->save();
                                 break;
                             case 'article':
-                                if (!$article instanceof Article)
+                                if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                                     break;
                                 $article->attachFile($file);
                                 break;
@@ -3017,12 +2978,12 @@
                 switch ($request['mode'])
                 {
                     case 'issue':
-                        if (!$issue instanceof Issue)
+                        if (!$issue instanceof entities\Issue)
                             break;
                         $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                         break;
                     case 'article':
-                        if (!$article instanceof Article)
+                        if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                             break;
                         $this->forward(framework\Context::getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
                         break;
@@ -3040,20 +3001,20 @@
                 switch ($request['mode'])
                 {
                     case 'issue':
-                        $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                        $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
                         if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
                         {
-                            IssueFiles::getTable()->removeByIssueIDAndFileID($issue->getID(), (int) $request['file_id']);
+                            tables\IssueFiles::getTable()->removeByIssueIDAndFileID($issue->getID(), (int) $request['file_id']);
                             return $this->renderJSON(array('file_id' => $request['file_id'], 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'message' => framework\Context::getI18n()->__('The attachment has been removed')));
                         }
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You can not remove items from this issue')));
                         break;
                     case 'article':
-                        $article = Article::getByName($request['article_name']);
-                        if ($article instanceof Article && $article->canEdit() && (int) $request->getParameter('file_id', 0))
+                        $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
+                        if ($article instanceof \thebuggenie\modules\publish\entities\Article && $article->canEdit() && (int) $request->getParameter('file_id', 0))
                         {
-                            $article->removeFile(\thebuggenie\core\entities\File::getB2DBTable()->selectById((int) $request['file_id']));
+                            $article->removeFile(entities\File::getB2DBTable()->selectById((int) $request['file_id']));
                             return $this->renderJSON(array('file_id' => $request['file_id'], 'attachmentcount' => count($article->getFiles()), 'message' => framework\Context::getI18n()->__('The attachment has been removed')));
                         }
                         $this->getResponse()->setHttpStatus(400);
@@ -3071,8 +3032,8 @@
 
         public function runGetFile(framework\Request $request)
         {
-            $file = new File((int) $request['id']);
-            if ($file instanceof File)
+            $file = new entities\File((int) $request['id']);
+            if ($file instanceof entities\File)
             {
                 if ($file->hasAccess())
                 {
@@ -3100,8 +3061,8 @@
 
         public function runAttachLinkToIssue(framework\Request $request)
         {
-            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-            if ($issue instanceof Issue && $issue->canAttachLinks())
+            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            if ($issue instanceof entities\Issue && $issue->canAttachLinks())
             {
                 if ($request['link_url'] != '')
                 {
@@ -3117,8 +3078,8 @@
 
         public function runRemoveLinkFromIssue(framework\Request $request)
         {
-            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-            if ($issue instanceof Issue && $issue->canRemoveAttachments())
+            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            if ($issue instanceof entities\Issue && $issue->canRemoveAttachments())
             {
                 if ($request['link_id'] != 0)
                 {
@@ -3133,7 +3094,7 @@
 
         public function runAttachLink(framework\Request $request)
         {
-            $link_id = \thebuggenie\core\entities\tables\Links::getTable()->addLink($request['target_type'], $request['target_id'], $request['link_url'], $request->getRawParameter('description'));
+            $link_id = tables\Links::getTable()->addLink($request['target_type'], $request['target_id'], $request['link_url'], $request->getRawParameter('description'));
             return $this->renderJSON(array('message' => framework\Context::getI18n()->__('Link added!'), 'content' => $this->getComponentHTML('main/menulink', array('link_id' => $link_id, 'link' => array('target_type' => $request['target_type'], 'target_id' => $request['target_id'], 'description' => $request->getRawParameter('description'), 'url' => $request['link_url'])))));
         }
 
@@ -3151,7 +3112,7 @@
                 return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You have to provide a valid link id')));
             }
 
-            \thebuggenie\core\entities\tables\Links::getTable()->removeByTargetTypeTargetIDandLinkID($request['target_type'], $request['target_id'], $request['link_id']);
+            tables\Links::getTable()->removeByTargetTypeTargetIDandLinkID($request['target_type'], $request['target_id'], $request['link_id']);
             return $this->renderJSON(array('message' => framework\Context::getI18n()->__('Link removed!')));
         }
 
@@ -3159,14 +3120,14 @@
         {
             $target_type = $request['target_type'];
             $target_id = $request['target_id'];
-            \thebuggenie\core\entities\tables\Links::getTable()->saveLinkOrder($request[$target_type . '_' . $target_id . '_links']);
+            tables\Links::getTable()->saveLinkOrder($request[$target_type . '_' . $target_id . '_links']);
             return $this->renderJSON('ok');
         }
 
         public function runDeleteComment(framework\Request $request)
         {
-            $comment = \thebuggenie\core\entities\Comment::getB2DBTable()->selectById($request['comment_id']);
-            if ($comment instanceof Comment)
+            $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
+            if ($comment instanceof entities\Comment)
             {
                 if (!$comment->canUserDeleteComment())
                 {
@@ -3176,7 +3137,7 @@
                 else
                 {
                     unset($comment);
-                    $comment = \thebuggenie\core\entities\Comment::getB2DBTable()->selectById((int) $request['comment_id']);
+                    $comment = entities\Comment::getB2DBTable()->selectById((int) $request['comment_id']);
                     $comment->delete();
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Comment deleted!')));
                 }
@@ -3191,8 +3152,8 @@
         public function runUpdateComment(framework\Request $request)
         {
             framework\Context::loadLibrary('ui');
-            $comment = \thebuggenie\core\entities\Comment::getB2DBTable()->selectById($request['comment_id']);
-            if ($comment instanceof Comment)
+            $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
+            if ($comment instanceof entities\Comment)
             {
                 if (!$comment->canUserEditComment())
                 {
@@ -3268,7 +3229,7 @@
                     throw new \Exception($i18n->__('The comment must have some content'));
                 }
 
-                $comment = new Comment();
+                $comment = new entities\Comment();
                 $comment->setTitle('');
                 $comment->setContent($request->getParameter('comment_body', null, false));
                 $comment->setPostedBy($this->getUser()->getID());
@@ -3280,9 +3241,9 @@
                 $comment->setSyntax($request['comment_body_syntax']);
                 $comment->save();
 
-                if ($comment_applies_type == Comment::TYPE_ISSUE)
+                if ($comment_applies_type == entities\Comment::TYPE_ISSUE)
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['comment_applies_id']);
+                    $issue = entities\Issue::getB2DBTable()->selectById((int) $request['comment_applies_id']);
                     if (!$request->isAjaxCall() || $request['comment_save_changes'])
                     {
                         $issue->setSaveComment($comment);
@@ -3290,21 +3251,21 @@
                     }
                     else
                     {
-                        \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
+                        \thebuggenie\core\framework\Event::createNew('core', 'entities\Comment::createNew', $comment, compact('issue'))->trigger();
                     }
                 }
-                elseif ($comment_applies_type == Comment::TYPE_ARTICLE)
+                elseif ($comment_applies_type == entities\Comment::TYPE_ARTICLE)
                 {
-                    $article = Articles::getTable()->selectById((int) $request['comment_applies_id']);
-                    \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\Comment::createNew', $comment, compact('article'))->trigger();
+                    $article = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById((int) $request['comment_applies_id']);
+                    \thebuggenie\core\framework\Event::createNew('core', 'entities\Comment::createNew', $comment, compact('article'))->trigger();
                 }
 
                 switch ($comment_applies_type)
                 {
-                    case Comment::TYPE_ISSUE:
-                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['comment_applies_id'])));
+                    case entities\Comment::TYPE_ISSUE:
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => entities\Issue::getB2DBTable()->selectById($request['comment_applies_id'])));
                         break;
-                    case Comment::TYPE_ARTICLE:
+                    case entities\Comment::TYPE_ARTICLE:
                         $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
                         break;
                     default:
@@ -3327,8 +3288,8 @@
                 }
             }
             if ($request->isAjaxCall())
-                return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/* , $request['comment_module'] */)));
-            if (isset($comment) && $comment instanceof Comment)
+                return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => entities\Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/* , $request['comment_module'] */)));
+            if (isset($comment) && $comment instanceof entities\Comment)
                 $this->forward($request['forward_url'] . "#comment_{$request['comment_applies_type']}_{$request['comment_applies_id']}_{$comment->getID()}");
             else
                 $this->forward($request['forward_url']);
@@ -3336,7 +3297,7 @@
 
         public function runListProjects(framework\Request $request)
         {
-            $projects = Project::getAll();
+            $projects = entities\Project::getAll();
 
             $return_array = array();
             foreach ($projects as $project)
@@ -3349,7 +3310,7 @@
 
         public function runListIssuetypes(framework\Request $request)
         {
-            $issuetypes = Issuetype::getAll();
+            $issuetypes = entities\Issuetype::getAll();
 
             $return_array = array();
             foreach ($issuetypes as $issuetype)
@@ -3364,7 +3325,7 @@
         {
             $field_key = $request['field_key'];
             $return_array = array('description' => null, 'type' => null, 'choices' => null);
-            if ($field_key == 'title' || in_array($field_key, DatatypeBase::getAvailableFields(true)))
+            if ($field_key == 'title' || in_array($field_key, entities\DatatypeBase::getAvailableFields(true)))
             {
                 switch ($field_key)
                 {
@@ -3412,7 +3373,7 @@
                     case 'milestone':
                         $return_array['description'] = framework\Context::getI18n()->__('Select from available project milestones');
                         $return_array['type'] = 'choice';
-                        if ($this->selected_project instanceof Project)
+                        if ($this->selected_project instanceof entities\Project)
                         {
                             $milestones = $this->selected_project->getAvailableMilestones();
                             foreach ($milestones as $milestone)
@@ -3442,7 +3403,7 @@
                 $template_name = null;
                 if ($request->hasParameter('issue_id'))
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                    $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
                     $options = array('issue' => $issue);
                 }
                 else
@@ -3455,7 +3416,7 @@
                         $template_name = 'main/usercard';
                         if ($user_id = $request['user_id'])
                         {
-                            $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
+                            $user = entities\User::getB2DBTable()->selectById($user_id);
                             $options['user'] = $user;
                         }
                         break;
@@ -3477,7 +3438,7 @@
                         $template_name = 'main/notifications';
                         break;
                     case 'workflow_transition':
-                        $transition = \thebuggenie\core\entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
+                        $transition = entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
                         $template_name = $transition->getTemplate();
                         $options['transition'] = $transition;
                         if ($request->hasParameter('issue_ids'))
@@ -3485,12 +3446,12 @@
                             $options['issues'] = array();
                             foreach ($request['issue_ids'] as $issue_id)
                             {
-                                $options['issues'][$issue_id] = new Issue($issue_id);
+                                $options['issues'][$issue_id] = new entities\Issue($issue_id);
                             }
                         }
                         else
                         {
-                            $options['issue'] = new Issue($request['issue_id']);
+                            $options['issue'] = new entities\Issue($request['issue_id']);
                         }
                         $options['show'] = true;
                         $options['interactive'] = true;
@@ -3532,31 +3493,31 @@
                         break;
                     case 'milestone_finish':
                         $template_name = 'project/milestonefinish';
-                        $options['project'] = Projects::getTable()->selectById($request['project_id']);
-                        $options['board'] = AgileBoards::getTable()->selectById($request['board_id']);
-                        $options['milestone'] = Milestones::getTable()->selectById($request['milestone_id']);
+                        $options['project'] = tables\Projects::getTable()->selectById($request['project_id']);
+                        $options['board'] = tables\AgileBoards::getTable()->selectById($request['board_id']);
+                        $options['milestone'] = tables\Milestones::getTable()->selectById($request['milestone_id']);
                         if (!$options['milestone']->hasReachedDate()) $options['milestone']->setReachedDate(time());
                         break;
                     case 'milestone':
                         $template_name = 'project/milestone';
-                        $options['project'] = Projects::getTable()->selectById($request['project_id']);
-                        $options['board'] = AgileBoards::getTable()->selectById($request['board_id']);
+                        $options['project'] = tables\Projects::getTable()->selectById($request['project_id']);
+                        $options['board'] = tables\AgileBoards::getTable()->selectById($request['board_id']);
                         if ($request->hasParameter('milestone_id'))
-                            $options['milestone'] = Milestones::getTable()->selectById($request['milestone_id']);
+                            $options['milestone'] = tables\Milestones::getTable()->selectById($request['milestone_id']);
                         break;
                     case 'project_build':
                         $template_name = 'project/build';
-                        $options['project'] = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
+                        $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
                         if ($request->hasParameter('build_id'))
-                            $options['build'] = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($request['build_id']);
+                            $options['build'] = entities\Build::getB2DBTable()->selectById($request['build_id']);
                         break;
                     case 'project_icons':
                         $template_name = 'project/projecticons';
-                        $options['project'] = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
+                        $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
                         break;
                     case 'project_workflow':
                         $template_name = 'project/projectworkflow';
-                        $options['project'] = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
+                        $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
                         break;
                     case 'permissions':
                         $options['key'] = $request['permission_key'];
@@ -3589,22 +3550,22 @@
                         break;
                     case 'project_config':
                         $template_name = 'project/projectconfig_container';
-                        $project = \thebuggenie\core\entities\Project::getB2DBTable()->selectById($request['project_id']);
+                        $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
                         $options['project'] = $project;
                         $options['section'] = $request->getParameter('section', 'info');
                         if ($request->hasParameter('edition_id'))
                         {
-                            $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['edition_id']);
+                            $edition = entities\Edition::getB2DBTable()->selectById($request['edition_id']);
                             $options['edition'] = $edition;
                             $options['selected_section'] = $request->getParameter('section', 'general');
                         }
                         break;
                     case 'issue_add_item':
-                        $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                        $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
                         $template_name = 'main/issueadditem';
                         break;
                     case 'client_users':
-                        $options['client'] = \thebuggenie\core\entities\Client::getB2DBTable()->selectById($request['client_id']);
+                        $options['client'] = entities\Client::getB2DBTable()->selectById($request['client_id']);
                         $template_name = 'main/clientusers';
                         break;
                     case 'dashboard_config':
@@ -3649,10 +3610,10 @@
                         break;
                     case 'agileboard':
                         $template_name = 'project/editagileboard';
-                        $board = ($request['board_id']) ? AgileBoards::getTable()->selectById($request['board_id']) : new AgileBoard();
+                        $board = ($request['board_id']) ? tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
                         if (!$board->getID())
                         {
-                            $board->setAutogeneratedSearch(\thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES);
+                            $board->setAutogeneratedSearch(entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES);
                             $board->setTaskIssuetype(framework\Settings::get('issuetype_task'));
                             $board->setEpicIssuetype(framework\Settings::get('issuetype_epic'));
                             $board->setIsPrivate($request->getParameter('is_private', true));
@@ -3665,7 +3626,7 @@
                             throw new \Exception($this->getI18n()->__('This is not allowed outside the default scope'));
 
                         $template_name = 'configuration/userscopes';
-                        $options['user'] = new User((int) $request['user_id']);
+                        $options['user'] = new entities\User((int) $request['user_id']);
                         break;
                     default:
                         $event = new \thebuggenie\core\framework\Event('core', 'get_backdrop_partial', $request['key']);
@@ -3698,7 +3659,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -3729,7 +3690,7 @@
                     return $this->renderJSON(array('error' => $message));
                 }
 
-                list ($issues, $count) = Issue::findIssuesByText($searchfor, $this->selected_project);
+                list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
             }
             $options = array('project' => $this->selected_project, 'issues' => $issues, 'count' => $count);
             if (isset($issue))
@@ -3746,7 +3707,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -3774,7 +3735,7 @@
                 return $this->renderJSON(array('error' => $message));
             }
 
-            list ($issues, $count) = Issue::findIssuesByText($searchfor, $this->selected_project);
+            list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
             return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
         }
 
@@ -3790,10 +3751,10 @@
                     $related_issue = null;
                     if ($issue_id && $related_issue_id)
                     {
-                        $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
-                        $related_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($related_issue_id);
+                        $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                        $related_issue = entities\Issue::getB2DBTable()->selectById($related_issue_id);
                     }
-                    if (!$issue instanceof Issue || !$related_issue instanceof Issue)
+                    if (!$issue instanceof entities\Issue || !$related_issue instanceof entities\Issue)
                     {
                         throw new \Exception('');
                     }
@@ -3821,7 +3782,7 @@
             {
                 try
                 {
-                    $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -3859,7 +3820,7 @@
                 {
                     try
                     {
-                        $related_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $issue_id);
+                        $related_issue = entities\Issue::getB2DBTable()->selectById((int) $issue_id);
                         if ($mode == 'relate_children')
                         {
                             $issue->addChildIssue($related_issue);
@@ -3900,7 +3861,7 @@
             {
                 try
                 {
-                    $this->issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                    $this->issue = entities\Issue::getB2DBTable()->selectById($issue_id);
                 }
                 catch (\Exception $e)
                 {
@@ -3912,9 +3873,9 @@
         public function runVoteForIssue(framework\Request $request)
         {
             $i18n = framework\Context::getI18n();
-            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
             $vote_direction = $request['vote'];
-            if ($issue instanceof Issue && !$issue->hasUserVoted($this->getUser()->getID(), ($vote_direction == 'up')))
+            if ($issue instanceof entities\Issue && !$issue->hasUserVoted($this->getUser()->getID(), ($vote_direction == 'up')))
             {
                 $issue->vote(($vote_direction == 'up'));
                 return $this->renderJSON(array('content' => $issue->getVotes(), 'message' => $i18n->__('Vote added')));
@@ -3925,11 +3886,11 @@
         {
             try
             {
-                $friend_user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['user_id']);
+                $friend_user = entities\User::getB2DBTable()->selectById($request['user_id']);
                 $mode = $request['mode'];
                 if ($mode == 'add')
                 {
-                    if ($friend_user instanceof User && $friend_user->isDeleted())
+                    if ($friend_user instanceof entities\User && $friend_user->isDeleted())
                     {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('This user has been deleted')));
@@ -3953,7 +3914,7 @@
         {
             try
             {
-                $state = \thebuggenie\core\entities\Userstate::getB2DBTable()->selectById($request['state_id']);
+                $state = entities\Userstate::getB2DBTable()->selectById($request['state_id']);
                 $this->getUser()->setState($state);
                 $this->getUser()->save();
                 return $this->renderJSON(array('userstate' => $this->getI18n()->__($state->getName())));
@@ -3969,7 +3930,7 @@
         {
             try
             {
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
                 $itemtype = $request['affected_type'];
 
                 if (!(($itemtype == 'build' && $issue->canEditAffectedBuilds()) || ($itemtype == 'component' && $issue->canEditAffectedComponents()) || ($itemtype == 'edition' && $issue->canEditAffectedEditions())))
@@ -4076,7 +4037,7 @@
             framework\Context::loadLibrary('ui');
             try
             {
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
 
                 if (!$issue->canEditIssue())
                 {
@@ -4177,8 +4138,8 @@
             framework\Context::loadLibrary('ui');
             try
             {
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-                $status = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($request['status_id']);
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $status = entities\Status::getB2DBTable()->selectById($request['status_id']);
                 if (!$issue->canEditIssue())
                 {
                     $this->getResponse()->setHttpStatus(400);
@@ -4239,8 +4200,8 @@
             framework\Context::loadLibrary('ui');
             try
             {
-                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-                $statuses = Status::getAll();
+                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $statuses = entities\Status::getAll();
 
                 switch ($request['item_type'])
                 {
@@ -4256,9 +4217,9 @@
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                         }
 
-                        $edition = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($request['which_item_edition']);
+                        $edition = entities\Edition::getB2DBTable()->selectById($request['which_item_edition']);
 
-                        if (\thebuggenie\core\entities\tables\IssueAffectsEdition::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
+                        if (tables\IssueAffectsEdition::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
                         {
                             $this->getResponse()->setHttpStatus(400);
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('%item is already affected by this issue', array('%item' => $edition->getName()))));
@@ -4289,9 +4250,9 @@
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                         }
 
-                        $component = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($request['which_item_component']);
+                        $component = entities\Component::getB2DBTable()->selectById($request['which_item_component']);
 
-                        if (\thebuggenie\core\entities\tables\IssueAffectsComponent::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
+                        if (tables\IssueAffectsComponent::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
                         {
                             $this->getResponse()->setHttpStatus(400);
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('%item is already affected by this issue', array('%item' => $component->getName()))));
@@ -4322,9 +4283,9 @@
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                         }
 
-                        $build = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($request['which_item_build']);
+                        $build = entities\Build::getB2DBTable()->selectById($request['which_item_build']);
 
-                        if (\thebuggenie\core\entities\tables\IssueAffectsBuild::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
+                        if (tables\IssueAffectsBuild::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
                         {
                             $this->getResponse()->setHttpStatus(400);
                             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('%item is already affected by this issue', array('%item' => $build->getName()))));
@@ -4392,8 +4353,8 @@
             {
                 if ($request->hasParameter('user') && $request->hasParameter('reset_hash'))
                 {
-                    $user = User::getByUsername(str_replace('%2E', '.', $request['user']));
-                    if ($user instanceof User)
+                    $user = entities\User::getByUsername(str_replace('%2E', '.', $request['user']));
+                    if ($user instanceof entities\User)
                     {
                         if ($request['reset_hash'] == $user->getActivationKey())
                         {
@@ -4484,12 +4445,12 @@
                 case 'assigned_to':
                     if ($request['identifiable_type'] == 'user')
                     {
-                        $identifiable = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['value']);
+                        $identifiable = entities\User::getB2DBTable()->selectById($request['value']);
                         $content = $this->getComponentHTML('main/userdropdown', array('user' => $identifiable));
                     }
                     elseif ($request['identifiable_type'] == 'team')
                     {
-                        $identifiable = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($request['value']);
+                        $identifiable = entities\Team::getB2DBTable()->selectById($request['value']);
                         $content = $this->getComponentHTML('main/teamdropdown', array('team' => $identifiable));
                     }
 
@@ -4498,118 +4459,9 @@
             }
         }
 
-        public function runServe(framework\Request $request)
-        {
-            if (!framework\Context::isMinifyEnabled())
-            {
-                $itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
-
-                if (array_key_exists('js', $itemarray))
-                {
-                    header('Content-type: text/javascript');
-                    foreach ($itemarray['js'] as $file)
-                    {
-                        $ext = substr($file, -2);
-                        if ($ext == 'js' && file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
-                        {
-                            echo file_get_contents($file);
-                        }
-                    }
-                }
-                else
-                {
-                    header('Content-type: text/css');
-                    foreach ($itemarray['css'] as $file)
-                    {
-                        $ext = substr($file, -3);
-                        if ($ext == 'css' && file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
-                        {
-                            echo file_get_contents($file);
-                        }
-                    }
-                }
-                exit();
-            }
-
-            $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
-            define('MINIFY_MIN_DIR', dirname(__FILE__) . '/../../../core/min');
-
-            // load config
-            require MINIFY_MIN_DIR . '/config.php';
-
-            // setup include path
-            set_include_path($min_libPath . PATH_SEPARATOR . get_include_path());
-
-            require 'Minify.php';
-
-            Minify::$uploaderHoursBehind = $min_uploaderHoursBehind;
-            Minify::setCache(
-                    isset($min_cachePath) ? $min_cachePath : ''
-                    , $min_cacheFileLocking
-            );
-
-            if ($min_documentRoot)
-            {
-                $_SERVER['DOCUMENT_ROOT'] = $min_documentRoot;
-            }
-            elseif (0 === mb_stripos(PHP_OS, 'win'))
-            {
-                Minify::setDocRoot(); // IIS may need help
-            }
-
-            $min_serveOptions['minifierOptions']['text/css']['symlinks'] = $min_symlinks;
-
-            if ($min_allowDebugFlag && isset($_GET['debug']))
-            {
-                $min_serveOptions['debug'] = true;
-            }
-
-            if ($min_errorLogger)
-            {
-                require_once 'Minify/Logger.php';
-                if (true === $min_errorLogger)
-                {
-                    require_once 'FirePHP.php';
-                    Minify_Logger::setLogger(FirePHP::getInstance(true));
-                }
-                else
-                {
-                    Minify_Logger::setLogger($min_errorLogger);
-                }
-            }
-
-            // check for URI versioning
-            if (preg_match('/&\\d/', $_SERVER['QUERY_STRING']))
-            {
-                $min_serveOptions['maxAge'] = 31536000;
-            }
-
-            $itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
-            $min_serveOptions['minApp']['groups'] = $itemarray;
-
-            ob_end_clean();
-
-            $data = Minify::serve('MinApp', $min_serveOptions);
-            header_remove('Pragma');
-
-            foreach ($data['headers'] as $name => $val)
-            {
-                header($name . ': ' . $val);
-            }
-
-            header('HTTP/1.1 ' . $data['statusCode']);
-
-            if ($data['statusCode'] != 304)
-            {
-                echo $data['content'];
-            }
-
-            exit();
-        }
-
         public function runAccountCheckUsername(framework\Request $request)
         {
-            if ($request['desired_username'] && User::isUsernameAvailable($request['desired_username']))
+            if ($request['desired_username'] && entities\User::isUsernameAvailable($request['desired_username']))
             {
                 return $this->renderJSON(array('available' => true, 'url' => framework\Context::getRouting()->generate('get_partial_for_backdrop', array('key' => 'confirm_username', 'username' => $request['desired_username']))));
             }
@@ -4621,12 +4473,12 @@
 
         public function runAccountPickUsername(framework\Request $request)
         {
-            if (User::isUsernameAvailable($request['selected_username']))
+            if (entities\User::isUsernameAvailable($request['selected_username']))
             {
                 $user = $this->getUser();
                 $user->setUsername($request['selected_username']);
                 $user->setOpenIdLocked(false);
-                $user->setPassword(User::createPassword());
+                $user->setPassword(entities\User::createPassword());
                 $user->save();
 
                 $this->getResponse()->setCookie('tbg3_username', $user->getUsername());
@@ -4642,8 +4494,8 @@
 
         public function runDashboardView(framework\Request $request)
         {
-            $view = DashboardView::getB2DBTable()->selectById($request['view_id']);
-            if ($view->getTargetType() == DashboardView::TYPE_PROJECT)
+            $view = entities\DashboardView::getB2DBTable()->selectById($request['view_id']);
+            if ($view->getTargetType() == entities\DashboardView::TYPE_PROJECT)
             {
                 framework\Context::setCurrentProject($view->getDashboard()->getProject());
             }
@@ -4652,10 +4504,10 @@
 
         public function runRemoveOpenIDIdentity(framework\Request $request)
         {
-            $identity = OpenIdAccounts::getTable()->getIdentityFromID($request['openid']);
+            $identity = tables\OpenIdAccounts::getTable()->getIdentityFromID($request['openid']);
             if ($identity && $this->getUser()->hasOpenIDIdentity($identity))
             {
-                OpenIdAccounts::getTable()->doDeleteById($request['openid']);
+                tables\OpenIdAccounts::getTable()->doDeleteById($request['openid']);
                 return $this->renderJSON(array('message' => $this->getI18n()->__('The OpenID identity has been removed from this user account')));
             }
 
@@ -4676,10 +4528,10 @@
             switch ($request['identifiable_type'])
             {
                 case 'user':
-                    $target = \thebuggenie\core\entities\User::getB2DBTable()->selectById((int) $request['identifiable_value']);
+                    $target = entities\User::getB2DBTable()->selectById((int) $request['identifiable_value']);
                     break;
                 case 'team':
-                    $target = \thebuggenie\core\entities\Team::getB2DBTable()->selectById((int) $request['identifiable_value']);
+                    $target = entities\Team::getB2DBTable()->selectById((int) $request['identifiable_value']);
                     break;
             }
             return $this->renderJSON(array('content' => $this->getComponentHTML('main/issueaclformentry', array('target' => $target))));
@@ -4713,7 +4565,7 @@
         {
             try
             {
-                $this->issue = Issues::getTable()->getIssueById((int) $request['issue_id']);
+                $this->issue = tables\Issues::getTable()->getIssueById((int) $request['issue_id']);
                 $this->log_items = $this->issue->getLogEntries();
                 if ($this->issue->isDeleted() || !$this->issue->hasAccess())
                     $this->issue = null;
@@ -4728,10 +4580,10 @@
         {
             try
             {
-                $issue = Issues::getTable()->getIssueById((int) $request['issue_id']);
-                if ($request['board_id']) $board = AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
+                $issue = tables\Issues::getTable()->getIssueById((int) $request['issue_id']);
+                if ($request['board_id']) $board = entities\AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
 
-                $times = (!isset($board) || $board->getType() != AgileBoard::TYPE_KANBAN);
+                $times = (!isset($board) || $board->getType() != entities\AgileBoard::TYPE_KANBAN);
 
                 return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board'))));
             }

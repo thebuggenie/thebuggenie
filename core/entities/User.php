@@ -3,9 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableEventContainer;
-    use thebuggenie\core\framework,
-        thebuggenie\core\entities\Group,
-        thebuggenie\core\entities\Scope;
+    use thebuggenie\core\framework;
 
     /**
      * User class
