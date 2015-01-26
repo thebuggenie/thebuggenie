@@ -412,14 +412,15 @@ EOT;
 
         protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user)
         {
+            $u_id = ($triggered_by_user instanceof User) ? $triggered_by_user->getID() : $triggered_by_user;
             $users = $article->getSubscribers();
-            foreach ($users as $user)
+            foreach ($users as $key => $user)
             {
                 if ($user->getNotificationSetting(self::NOTIFY_SUBSCRIBED_ARTICLES, true, 'mailing')->isOff())
                     unset($users[$key]);
                 if ($user->getNotificationSetting(self::NOTIFY_UPDATED_SELF, true, 'mailing')->isOff() && $user->getID() == $u_id)
                     unset($users[$key]);
-                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $issue->getID(), false, 'mailing')->isOn())
+                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), false, 'mailing')->isOn())
                     unset($users[$key]);
             }
             return $users;
