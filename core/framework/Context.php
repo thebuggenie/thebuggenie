@@ -1823,7 +1823,6 @@
                         // If this happens, throw an exception
 
                         throw new \Exception(self::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
-                        continue;
                     }
                     else
                     {
