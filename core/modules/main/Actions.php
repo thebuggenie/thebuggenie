@@ -2019,7 +2019,7 @@
                                 }
                                 if ($identified instanceof entities\User || $identified instanceof entities\Team)
                                 {
-                                    if ((bool) $request->getParameter('teamup', false))
+                                    if ($identified instanceof entities\User && (bool) $request->getParameter('teamup', false))
                                     {
                                         $team = new entities\Team();
                                         $team->setName($identified->getBuddyname() . ' & ' . $this->getUser()->getBuddyname());
