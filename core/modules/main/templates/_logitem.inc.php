@@ -56,7 +56,7 @@
                     case \thebuggenie\core\entities\tables\Log::LOG_COMMENT:
                         $comment = \thebuggenie\core\entities\Comment::getB2DBTable()->selectById((int) $log_action['text']);
                         echo '<div class="timeline_inline_details">';
-                        echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent()), 300));
+                        echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent())));
                         echo '</div>';
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:

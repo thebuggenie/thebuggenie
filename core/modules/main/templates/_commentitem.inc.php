@@ -22,7 +22,7 @@
             </span>
             <?php
                 echo '<div class="timeline_inline_details">';
-                echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent()), 300));
+                echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent())));
                 echo '</div>';
             ?>
         </td>
