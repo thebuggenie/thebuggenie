@@ -9,9 +9,9 @@
             <?php 
                 $file_details = explode(DS, $details['filename']);
                 $filename = array_pop($file_details);
-                $classname = $details['class'];
-                $type = $details['type'];
-                $function = $details['function'];
+                $classname = (isset($details['class'])) ? $details['class'] : 'unknown';
+                $type = (isset($details['type'])) ? $details['type'] : 'unknown';
+                $function = (isset($details['function'])) ? $details['function'] : 'unknown';
             ?>
             <span class="badge timing"><?php echo ($details['time'] >= 1) ? round($details['time'], 2) . 's' : round($details['time'] * 1000, 1) . 'ms'; ?></span>
             <span class="partial"><?php echo $classname . $type . $function; ?>()</span>
