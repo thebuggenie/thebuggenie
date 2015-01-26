@@ -70,7 +70,6 @@
             $this->show_article_options = (bool) ($this->article instanceof Article);
             $this->links_target_id = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getID() : 0;
             $this->links = framework\Context::getModule('publish')->getMenuItems($this->links_target_id);
-            $this->user_drafts = framework\Context::getModule('publish')->getUserDrafts();
         }
 
         public function componentManualSidebar()

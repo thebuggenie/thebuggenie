@@ -291,12 +291,6 @@
             return Links::getTable()->getLinks('wiki', $target_id);
         }
 
-        public function getUserDrafts()
-        {
-            $articles = Articles::getTable()->getUnpublishedArticlesByUser(framework\Context::getUser()->getID());
-            return $articles;
-        }
-
         public function getFrontpageArticle($type)
         {
             $article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';

@@ -105,7 +105,7 @@
             return $articles;
         }
 
-        public function getArticles(\thebuggenie\core\entities\Project $project = null, $limit = 10)
+        public function getArticles(\thebuggenie\core\entities\Project $project = null)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
@@ -163,17 +163,6 @@
             $row = $this->doDelete($crit);
 
             return $row;
-        }
-
-        public function getUnpublishedArticlesByUser($user_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::IS_PUBLISHED, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-
-            $res = $this->select($crit);
-
-            return $res;
         }
 
         public function doesNameConflictExist($name, $id, $scope = null)
