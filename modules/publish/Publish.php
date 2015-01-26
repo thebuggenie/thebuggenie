@@ -412,7 +412,7 @@
                     $permissive = false;
                     break;
             }
-            $retval = $user->hasPermission($permission_name, $article_name, 'publish', true, $permissive);
+            $retval = $user->hasPermission($permission_name, $article_name, 'publish');
             if ($retval !== null)
             {
                 return $retval;
@@ -425,14 +425,14 @@
                 foreach ($namespaces as $namespace)
                 {
                     $composite_ns .= ($composite_ns != '') ? ":{$namespace}" : $namespace;
-                    if ($user->hasPermission($permission_name, $composite_ns, 'publish', true, $permissive))
+                    if ($user->hasPermission($permission_name, $composite_ns, 'publish'))
                     {
                         return true;
                     }
                 }
             }
             $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
-            $retval = $user->hasPermission($permission_name, 0, 'publish', true, $permissive);
+            $retval = $user->hasPermission($permission_name, 0, 'publish');
             return ($retval !== null) ? $retval : $permissive;
         }
 
