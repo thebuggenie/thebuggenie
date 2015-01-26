@@ -644,7 +644,6 @@
          *
          * @param integer $project_id The project ID
          * @param integer $milestone_id The milestone ID
-         * @param boolean $exclude_tasks Whether to exclude tasks
          *
          * @return array
          */
@@ -656,15 +655,15 @@
         /**
          * Returns a \thebuggenie\core\entities\Issue from an issue no
          *
-         * @param string $issue_no An integer or issue number
+         * @param string $issue_number An integer or issue number
          *
          * @return \thebuggenie\core\entities\Issue
          */
-        public static function getIssueFromLink($issue_no, $project = null)
+        public static function getIssueFromLink($issue_number)
         {
-            $project = ($project !== null) ? $project : framework\Context::getCurrentProject();
-            $theIssue = null;
-            $issue_no = mb_strtolower($issue_no);
+            $project = framework\Context::getCurrentProject();
+            $found_issue = null;
+            $issue_no = mb_strtolower(trim($issue_number));
             if (mb_strpos($issue_no, ' ') !== false)
             {
                 $issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
@@ -676,7 +675,7 @@
                 {
                     if (!$project instanceof \thebuggenie\core\entities\Project) return null;
                     if ($project->usePrefix()) return null;
-                    $theIssue = tables\Issues::getTable()->getByProjectIDAndIssueNo($project->getID(), (integer) $issue_no);
+                    $found_issue = tables\Issues::getTable()->getByProjectIDAndIssueNo($project->getID(), (integer) $issue_no);
                 }
                 catch (\Exception $e)
                 {
@@ -687,14 +686,14 @@
             {
                 $issue_no = explode('-', mb_strtoupper($issue_no));
                 \thebuggenie\core\framework\Logging::log('exploding');
-                if (count($issue_no) == 2 && ($theIssue = tables\Issues::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1])) instanceof \thebuggenie\core\entities\Issue)
+                if (count($issue_no) == 2 && ($found_issue = tables\Issues::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1])) instanceof \thebuggenie\core\entities\Issue)
                 {
-                    if (!$theIssue->getProject()->usePrefix()) return null;
+                    if (!$found_issue->getProject()->usePrefix()) return null;
                 }
                 \thebuggenie\core\framework\Logging::log('exploding done');
             }
 
-            return ($theIssue instanceof \thebuggenie\core\entities\Issue) ? $theIssue : null;
+            return ($found_issue instanceof \thebuggenie\core\entities\Issue) ? $found_issue : null;
         }
 
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'asc'))
