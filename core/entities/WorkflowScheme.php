@@ -158,9 +158,9 @@
         }
 
         /**
-         * Get all steps in this workflow
+         * Get the workflow associated with this issue type
          *
-         * @return array An array of \thebuggenie\core\entities\WorkflowStep objects
+         * @return Workflow The associated workflow for this issue type
          */
         public function getWorkflowForIssuetype(\thebuggenie\core\entities\Issuetype $issuetype)
         {

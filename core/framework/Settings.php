@@ -364,6 +364,11 @@
             return self::isRegistrationEnabled();
         }
 
+        /**
+         * Return the default admin group
+         *
+         * @return \thebuggenie\core\entities\Group
+         */
         public static function getAdminGroup()
         {
             return \thebuggenie\core\entities\Group::getB2DBTable()->selectByID((int) self::get(self::SETTING_ADMIN_GROUP));
@@ -613,6 +618,10 @@
             return self::get(self::SETTING_MAINTENANCE_MESSAGE);
         }
 
+        /**
+         * Return the "online" userstate object
+         * @return \thebuggenie\core\entities\Userstate
+         */
         public static function getOnlineState()
         {
             try
@@ -625,6 +634,10 @@
             }
         }
 
+        /**
+         * Return the "offline" userstate object
+         * @return \thebuggenie\core\entities\Userstate
+         */
         public static function getOfflineState()
         {
             try
@@ -643,6 +656,10 @@
             return $salt;
         }
 
+        /**
+         * Return the "away" userstate object
+         * @return \thebuggenie\core\entities\Userstate
+         */
         public static function getAwayState()
         {
             try
@@ -683,7 +700,7 @@
         }
 
         /**
-         * @return DateTimeZone
+         * @return \DateTimeZone
          */
         public static function getServerTimezone()
         {
@@ -794,18 +811,34 @@
             return self::get(self::SETTING_AUTH_BACKEND);
         }
 
+        /**
+         * Get default comment syntax
+         *
+         * @return integer
+         */
         public static function getDefaultCommentSyntax()
         {
             $syntax = self::get(self::SETTING_DEFAULT_COMMENT_SYNTAX);
             return ($syntax == null) ? self::SYNTAX_MW : $syntax;
         }
 
+        /**
+         * Get default issue syntax
+         *
+         * @return integer
+         */
         public static function getDefaultIssueSyntax()
         {
             $syntax = self::get(self::SETTING_DEFAULT_ISSUE_SYNTAX);
             return ($syntax == null) ? self::SYNTAX_MW : $syntax;
         }
 
+        /**
+         * Get associated syntax class for a given syntax value
+         *
+         * @param integer $syntax
+         * @return string
+         */
         public static function getSyntaxClass($syntax)
         {
             switch ($syntax)
@@ -820,6 +853,13 @@
             }
         }
 
+        /**
+         * Return syntax value for a given syntax shorthand
+         *
+         * @param string $syntax
+         * 
+         * @return integer
+         */
         public static function getSyntaxValue($syntax)
         {
             switch ($syntax)
@@ -834,11 +874,21 @@
             }
         }
 
+        /**
+         * Whether or not the authentication backend is external
+         * 
+         * @return boolean
+         */
         public static function isUsingExternalAuthenticationBackend()
         {
             if (self::getAuthenticationBackend() !== null && self::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;
         }
 
+        /**
+         * Return the core workflow
+         *
+         * @return \thebuggenie\core\entities\Workflow
+         */
         public static function getCoreWorkflow()
         {
             if (self::$_core_workflow === null)
@@ -848,6 +898,11 @@
             return self::$_core_workflow;
         }
 
+        /**
+         * Return the core workflow scheme
+         *
+         * @return \thebuggenie\core\entities\WorkflowScheme
+         */
         public static function getCoreWorkflowScheme()
         {
             if (self::$_core_workflowscheme === null)
@@ -857,6 +912,11 @@
             return self::$_core_workflowscheme;
         }
 
+        /**
+         * Return the core issue type scheme
+         *
+         * @return \thebuggenie\core\entities\IssuetypeScheme
+         */
         public static function getCoreIssuetypeScheme()
         {
             if (self::$_core_issuetypescheme === null)
@@ -866,6 +926,11 @@
             return self::$_core_issuetypescheme;
         }
 
+        /**
+         * File access listener
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
         public static function listen_thebuggenie_core_entities_File_hasAccess(Event $event)
         {
             $file = $event->getSubject();
@@ -876,6 +941,13 @@
             }
         }
 
+        /**
+         * Return associated configuration sections
+         *
+         * @param I18n $i18n The translation object
+         *
+         * @return array
+         */
         public static function getConfigSections($i18n)
         {
             $config_sections = array('general' => array(), self::CONFIGURATION_SECTION_MODULES => array());

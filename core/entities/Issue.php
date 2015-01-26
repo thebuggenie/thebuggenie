@@ -1033,6 +1033,11 @@
             return $this->_b2dbLazyload('_workflow_step_id');
         }
 
+        /**
+         * Return the current workflow
+         * 
+         * @return Workflow
+         */
         public function getWorkflow()
         {
             return $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType());
@@ -1054,6 +1059,7 @@
         }
 
         /**
+         * Get current available statuses
          *
          * @return array|\thebuggenie\core\entities\Status
          */
@@ -1898,7 +1904,7 @@
         /**
          * Returns the issue status
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Status
          */
         public function getStatus()
         {
@@ -1930,6 +1936,11 @@
             return false;
         }
 
+        /**
+         * Return the first affected edition, if any
+         *
+         * @return Edition
+         */
         public function getFirstAffectedEdition()
         {
             $editions = $this->getEditions();
@@ -1973,6 +1984,11 @@
             return false;
         }
 
+        /**
+         * Return the first affected build, if any
+         *
+         * @return Build
+         */
         public function getFirstAffectedBuild()
         {
             $builds = $this->getBuilds();
@@ -2028,6 +2044,11 @@
             return $names;
         }
 
+        /**
+         * Return the first affected component, if any
+         *
+         * @return Component
+         */
         public function getFirstAffectedComponent()
         {
             $components = $this->getComponents();
@@ -2205,7 +2226,7 @@
         /**
          * Return related issues
          *
-         * @return array
+         * @return array|\thebuggenie\core\entities\Issue
          */
         public function getChildIssues()
         {
@@ -2577,7 +2598,7 @@
         /**
          * Returns the category
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Category
          */
         public function getCategory()
         {
@@ -2607,7 +2628,7 @@
         /**
          * Returns the reproducability
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Reproducability
          */
         public function getReproducability()
         {
@@ -2627,7 +2648,7 @@
         /**
          * Returns the priority
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Priority
          */
         public function getPriority()
         {
@@ -3073,7 +3094,7 @@
         /**
          * Returns the resolution
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Resolution
          */
         public function getResolution()
         {
@@ -3093,7 +3114,7 @@
         /**
          * Returns the severity
          *
-         * @return \thebuggenie\core\entities\Datatype
+         * @return \thebuggenie\core\entities\Severity
          */
         public function getSeverity()
         {
@@ -4172,7 +4193,7 @@
         /**
          * Return an array with all files attached to this issue
          *
-         * @return array
+         * @return array|File
          */
         public function getFiles()
         {
@@ -4305,7 +4326,7 @@
         /**
          * Retrieve all comments for this issue
          *
-         * @return array
+         * @return array|Comment
          */
         public function getComments()
         {
@@ -5657,6 +5678,11 @@
             return $return_values;
         }
 
+        /**
+         * Return the currently assigned user or team
+         *
+         * @return common\Identifiable
+         */
         public function getAssignee()
         {
             $this->_b2dbLazyload('_assignee_team');
@@ -5693,6 +5719,11 @@
             $this->_addChangedProperty('_assignee_team', null);
         }
 
+        /**
+         * Return the current owner
+         *
+         * @return common\Identifiable
+         */
         public function getOwner()
         {
             $this->_b2dbLazyload('_owner_team');
@@ -5734,6 +5765,11 @@
             $this->_save_comment = $comment;
         }
 
+        /**
+         * Return an arary of subscribed users
+         *
+         * @return array|User
+         */
         public function getSubscribers()
         {
             $this->_b2dbLazyload('_subscribers');
@@ -5745,6 +5781,11 @@
             tables\UserIssues::getTable()->addStarredIssue($user_id, $this->getID());
         }
 
+        /**
+         * Return an array of users available for mention autocompletion
+         *
+         * @return array|User
+         */
         public function getMentionableUsers()
         {
             $users = array();
