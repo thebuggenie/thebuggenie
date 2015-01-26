@@ -920,6 +920,7 @@
         {
             framework\Context::loadLibrary('common');
             $i18n = framework\Context::getI18n();
+            $fields = array();
 
             try
             {
@@ -932,7 +933,6 @@
 
                 $available = tables\Users::getTable()->isUsernameAvailable($username);
 
-                $fields = array();
 
                 if (!$available)
                 {
