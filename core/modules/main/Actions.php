@@ -954,7 +954,6 @@
                     }
 
                     $email_ok = false;
-                    $valid_domain = false;
 
                     if (tbg_check_syntax($email, "EMAIL"))
                     {
@@ -970,29 +969,7 @@
                             array_push($fields, 'email_address', 'email_confirm');
                             throw new \Exception($i18n->__('Email adresses from this domain can not be used.'));
                         }
-                        /* if (count($allowed_domains) > 0)
-                          {
-                          foreach ($allowed_domains as $allowed_domain)
-                          {
-                          $allowed_domain = '@' . trim($allowed_domain);
-                          if (mb_strpos($email, $allowed_domain) !== false ) //mb_strpos checks if $to
-                          {
-                          $valid_domain = true;
-                          break;
-                          }
-                          }
-
-                          }
-                          else
-                          {
-                          $valid_domain = true;
-                          } */
                     }
-                    /* if ($valid_domain == false)
-                      {
-                      array_push($fields, 'email_address', 'email_confirm');
-                      throw new \Exception($i18n->__('Email adresses from this domain can not be used.'));
-                      } */
 
                     if ($email_ok == false)
                     {
