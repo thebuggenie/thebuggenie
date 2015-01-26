@@ -3738,7 +3738,7 @@
                 $message = framework\Context::getI18n()->__('Please provide an issue number');
             }
 
-            if (!$issue->canAddRelatedIssues())
+            if ($issue instanceof entities\Issue && !$issue->canAddRelatedIssues())
             {
                 $status = 400;
                 $message = framework\Context::getI18n()->__('You are not allowed to relate issues');
