@@ -639,7 +639,7 @@
                             framework\Logging::log('Using internal authentication', 'auth', framework\Logging::LEVEL_INFO);
 
                             $user = self::getB2DBTable()->getByUsername($username);
-                            if (!$user->hasPassword($password)) $user = null;
+                            if ($user instanceof User && !$user->hasPassword($password)) $user = null;
 
                             if (!$user instanceof User)
                             {
