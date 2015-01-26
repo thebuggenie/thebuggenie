@@ -129,7 +129,7 @@
          *
          * @param string $module
          * @param string $identifier
-         * @param string $subject
+         * @param mixed $subject
          *
          * @return Event
          */
@@ -144,7 +144,7 @@
          *
          * @param string $module
          * @param string $identifier
-         * @param string $subject
+         * @param mixed $subject
          */
         public function __construct($module, $identifier, $subject = null, $parameters = array(), $initial_list = array())
         {
@@ -200,7 +200,7 @@
         /**
          * Return a specific event parameter
          *
-         * @param mixed $key
+         * @param string $key
          *
          * @return mixed The parameter
          */
