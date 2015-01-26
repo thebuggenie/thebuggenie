@@ -455,7 +455,7 @@
             return $filters;
         }
 
-        public function getAvailableValues($filters = array())
+        public function getAvailableValues()
         {
             switch ($this->getFilterKey())
             {
