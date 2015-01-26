@@ -194,9 +194,9 @@
             {
                 throw new \Exception('Cannot uninstall core modules');
             }
+            $this->_uninstall();
+            $this->delete();
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $this->_uninstall($scope);
-            tables\Modules::getTable()->doDeleteById($this->getID());
             framework\Settings::deleteModuleSettings($this->getName(), $scope);
             framework\Context::deleteModulePermissions($this->getName(), $scope);
             framework\Context::clearRoutingCache();
