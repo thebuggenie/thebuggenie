@@ -673,7 +673,7 @@
             $this->forward($this->getRouting()->generate('home'));
         }
 
-        protected function checkScopeMembership(User $user)
+        protected function checkScopeMembership(entities\User $user)
         {
             if (!framework\Context::getScope()->isDefault() && !$user->isGuest() && !$user->isConfirmedMemberOfScope(framework\Context::getScope()))
             {

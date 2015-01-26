@@ -49,7 +49,7 @@
                 framework\Context::setCurrentProject($project);
             }
             $this->search_object = entities\SavedSearch::getFromRequest($request);
-            $this->issavedsearch = ($this->search_object instanceof SavedSearch && $this->search_object->getB2DBID());
+            $this->issavedsearch = ($this->search_object instanceof entities\SavedSearch && $this->search_object->getB2DBID());
             $this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('fs') || $request->getParameter('search', false)) ? true : false;
 
             $this->searchterm = $this->search_object->getSearchterm();
@@ -57,7 +57,7 @@
 
             if ($this->issavedsearch)
             {
-                if (!($this->search_object instanceof SavedSearch && framework\Context::getUser()->canAccessSavedSearch($this->search_object)))
+                if (!($this->search_object instanceof entities\SavedSearch && framework\Context::getUser()->canAccessSavedSearch($this->search_object)))
                 {
                     framework\Context::setMessage('search_error', framework\Context::getI18n()->__("You don't have access to this saved search"));
                 }
@@ -168,7 +168,7 @@
                 {
                     try
                     {
-                        if (!$this->search_object instanceof SavedSearch || !$this->search_object->getB2DBID())
+                        if (!$this->search_object instanceof entities\SavedSearch || !$this->search_object->getB2DBID())
                             throw new \Exception('not a saved search');
 
                         if ($this->search_object->getUserID() == framework\Context::getUser()->getID() || $this->search_object->isPublic() && framework\Context::getUser()->canCreatePublicSearches())

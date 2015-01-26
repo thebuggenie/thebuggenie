@@ -388,7 +388,7 @@
 
             $project1 = entities\Project::getByKey('sampleproject1');
             $project2 = entities\Project::getByKey('sampleproject2');
-            $this->canimport = (!$project1 instanceof Project && !$project2 instanceof entities\Project);
+            $this->canimport = (!$project1 instanceof entities\Project && !$project2 instanceof entities\Project);
         }
 
         /**
@@ -1660,7 +1660,7 @@
                     if (!empty($request['username']))
                     {
                         $testuser = entities\User::getByUsername($request['username']);
-                        if (!$testuser instanceof User || $testuser->getID() == $user->getID())
+                        if (!$testuser instanceof entities\User || $testuser->getID() == $user->getID())
                         {
                             $user->setUsername($request['username']);
                         }
