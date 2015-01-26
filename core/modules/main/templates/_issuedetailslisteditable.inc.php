@@ -500,7 +500,7 @@
                                                 break;
                                             case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
                                                 ?>
-                                                <?php foreach (\thebuggenie\core\entities\Status::getAll($issue->getProject()->getID()) as $choice): ?>
+                                                <?php foreach (\thebuggenie\core\entities\Status::getAll() as $choice): ?>
                                                     <li>
                                                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');">
                                                             <div class="status_badge" style="background-color: <?php echo ($choice instanceof \thebuggenie\core\entities\Datatype) ? $choice->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
