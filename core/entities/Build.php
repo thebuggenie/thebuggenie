@@ -247,23 +247,6 @@
         }
 
         /**
-         * Make the build the default for it's edition or project
-         */
-        public function setDefault()
-        {
-            if ($this->isEditionBuild())
-            {
-                tables\Builds::getTable()->clearDefaultsByEditionID($this->getParent()->getID());
-            }
-            else
-            {
-                tables\Builds::getTable()->clearDefaultsByProjectID($this->getParent()->getID());
-            }
-            $res = tables\Builds::getTable()->setDefaultBuild($this->getID());
-            $this->_isdefault = true;
-        }
-
-        /**
          * Delete this build
          */
         protected function _preDelete()

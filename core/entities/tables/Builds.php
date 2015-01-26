@@ -121,31 +121,4 @@
             return $this->select($crit);
         }
 
-        public function clearDefaultsByProjectID($project_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::IS_DEFAULT, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::PROJECT, $project_id);
-            $res = $this->doUpdate($crit);
-        }
-
-        public function clearDefaultsByEditionID($edition_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::IS_DEFAULT, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::EDITION, $edition_id);
-            $res = $this->doUpdate($crit);
-        }
-
-        public function setDefaultBuild($build_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::IS_DEFAULT, true);
-            $res = $this->doUpdateById($crit, $build_id);
-        }
-
-
-
     }

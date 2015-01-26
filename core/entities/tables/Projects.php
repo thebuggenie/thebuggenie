@@ -82,21 +82,6 @@
             $this->_addIndex('parent_scope', array(self::PARENT_PROJECT_ID, self::SCOPE));
         }
 
-        public function clearDefaults()
-        {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::IS_DEFAULT, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doUpdate($crit);
-        }
-
-        public function setDefaultProject($project_id)
-        {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::IS_DEFAULT, true);
-            $res = $this->doUpdateById($crit, $project_id);
-        }
-
         public function getByPrefix($prefix)
         {
             $crit = $this->getCriteria();

@@ -445,20 +445,6 @@
         protected $_dashboards = null;
 
         /**
-         * Make a project default
-         *
-         * @param $p_id integer The id for the default project
-         *
-         * @return boolean
-         */
-        public static function setDefault($p_id)
-        {
-            self::getB2DBTable()->clearDefaults();
-            self::getB2DBTable()->setDefaultProject($p_id);
-            return true;
-        }
-
-        /**
          * Retrieve a project by its key
          *
          * @param string $key
