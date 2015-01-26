@@ -1860,7 +1860,7 @@
         /**
          * Returns the number of issues for this project with a specific issue type
          *
-         * @param integer $issue_type ID of the issue type
+         * @param integer $issuetype ID of the issue type
          *
          * @return integer
          */
@@ -1874,13 +1874,12 @@
          * Returns the number of issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
-         * @param boolean $exclude_tasks Whether to exclude tasks
          *
          * @return integer
          */
-        public function countIssuesByMilestone($milestone, $exclude_tasks = false)
+        public function countIssuesByMilestone($milestone)
         {
-            $this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
+            $this->_populateIssueCountsByMilestone($milestone);
             if (!$milestone)
             {
                 return $this->_issuecounts['milestone'][$milestone]['open'];
@@ -1959,9 +1958,9 @@
          *
          * @return integer
          */
-        public function countClosedIssuesByMilestone($milestone, $exclude_tasks = false)
+        public function countClosedIssuesByMilestone($milestone)
         {
-            $this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
+            $this->_populateIssueCountsByMilestone($milestone);
             return $this->_issuecounts['milestone'][$milestone]['closed'];
         }
 
