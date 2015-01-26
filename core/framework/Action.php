@@ -210,7 +210,7 @@
                 else
                 {
                     $this->getResponse()->setHttpStatus(403);
-                    $this->getResponse()->setTemplate('main/forbidden', array('message' => $message));
+                    $this->getResponse()->setTemplate('main/forbidden');
                 }
             }
         }
