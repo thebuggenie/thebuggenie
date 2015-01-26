@@ -508,8 +508,8 @@
             }
             catch (\Exception $e)
             {
-                return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
                 framework\Logging::log($e->getMessage(), 'core', framework\Logging::LEVEL_WARNING);
+                return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
             }
         }
 
@@ -557,8 +557,8 @@
             }
             catch (\Exception $e)
             {
-                return $this->return404(framework\Context::getI18n()->__('This team does not exist'));
                 framework\Logging::log($e->getMessage(), 'core', framework\Logging::LEVEL_WARNING);
+                return $this->return404(framework\Context::getI18n()->__('This team does not exist'));
             }
         }
 
@@ -1369,11 +1369,11 @@
                 $fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 
                 $this->title = $request->getRawParameter('title');
-                $this->selected_shortname = $request->getRawParameter('shortname', null, false);
-                $this->selected_description = $request->getRawParameter('description', null, false);
-                $this->selected_description_syntax = $request->getParameter('description_syntax', null, false);
-                $this->selected_reproduction_steps = $request->getRawParameter('reproduction_steps', null, false);
-                $this->selected_reproduction_steps_syntax = $request->getRawParameter('reproduction_steps_syntax', null, false);
+                $this->selected_shortname = $request->getRawParameter('shortname', null);
+                $this->selected_description = $request->getRawParameter('description', null);
+                $this->selected_description_syntax = $request->getRawParameter('description_syntax', null);
+                $this->selected_reproduction_steps = $request->getRawParameter('reproduction_steps', null);
+                $this->selected_reproduction_steps_syntax = $request->getRawParameter('reproduction_steps_syntax', null);
 
                 if ($edition_id = (int) $request['edition_id'])
                     $this->selected_edition = entities\Edition::getB2DBTable()->selectById($edition_id);
@@ -1948,14 +1948,12 @@
                     $issue->setDescription($request->getRawParameter('value'));
                     $issue->setDescriptionSyntax($request->getParameter('value_syntax'));
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => $issue->getParsedDescription(array('issue' => $issue))), 'description' => $issue->getParsedDescription(array('issue' => $issue))));
-                    break;
                 case 'shortname':
                     if (!$issue->canEditShortname())
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
 
                     $issue->setShortname($request->getRawParameter('shortname_value'));
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isShortnameChanged(), 'field' => array('id' => (int) ($issue->getShortname() != ''), 'name' => $issue->getShortname()), 'shortname' => $issue->getShortname()));
-                    break;
                 case 'reproduction_steps':
                     if (!$issue->canEditReproductionSteps())
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
@@ -1963,7 +1961,6 @@
                     $issue->setReproductionSteps($request->getRawParameter('value'));
                     $issue->setReproductionStepsSyntax($request->getParameter('value_syntax'));
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => $issue->getParsedReproductionSteps(array('issue' => $issue))), 'reproduction_steps' => $issue->getParsedReproductionSteps(array('issue' => $issue))));
-                    break;
                 case 'title':
                     if (!$issue->canEditTitle())
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
@@ -1973,19 +1970,15 @@
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You have to provide a title')));
                     }
-                    else
-                    {
-                        $issue->setTitle($request->getRawParameter('value'));
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle()))));
-                    }
-                    break;
+
+                    $issue->setTitle($request->getRawParameter('value'));
+                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle()))));
                 case 'percent_complete':
                     if (!$issue->canEditPercentage())
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
 
                     $issue->setPercentCompleted($request['percent']);
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'field' => 'percent_complete', 'changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
-                    break;
                 case 'estimated_time':
                     if (!$issue->canEditEstimatedTime())
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
@@ -2013,7 +2006,6 @@
                         $issue->save();
                     }
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
-                    break;
                 case 'posted_by':
                 case 'owned_by':
                 case 'assigned_to':
@@ -2102,7 +2094,6 @@
                         $issue->addSpentPoints($request['points']);
                     }
                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
-                    break;
                 case 'category':
                 case 'resolution':
                 case 'severity':
@@ -2114,24 +2105,18 @@
                 case 'pain_bug_type':
                 case 'pain_likelihood':
                 case 'pain_effect':
-                    if ($request['field'] == 'category' && !$issue->canEditCategory())
+                    if (($request['field'] == 'category' && !$issue->canEditCategory())
+                        || ($request['field'] == 'resolution' && !$issue->canEditResolution())
+                        || ($request['field'] == 'severity' && !$issue->canEditSeverity())
+                        || ($request['field'] == 'reproducability' && !$issue->canEditReproducability())
+                        || ($request['field'] == 'priority' && !$issue->canEditPriority())
+                        || ($request['field'] == 'milestone' && !$issue->canEditMilestone())
+                        || ($request['field'] == 'issuetype' && !$issue->canEditIssuetype())
+                        || ($request['field'] == 'status' && !$issue->canEditStatus())
+                        || (in_array($request['field'], array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain()))
+                    {
                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'resolution' && !$issue->canEditResolution())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'severity' && !$issue->canEditSeverity())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'reproducability' && !$issue->canEditReproducability())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'priority' && !$issue->canEditPriority())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'milestone' && !$issue->canEditMilestone())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'issuetype' && !$issue->canEditIssuetype())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif ($request['field'] == 'status' && !$issue->canEditStatus())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-                    elseif (in_array($request['field'], array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
+                    }
 
                     try
                     {
@@ -2189,6 +2174,7 @@
                                 {
                                     if (!$issue->$is_changed_function_name())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+
                                     return ($parameter_id == 0) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => $parameter_id, 'name' => $issue->$get_pain_type_label_function()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
                                 }
                                 else
@@ -2236,7 +2222,6 @@
                     }
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('No valid field value specified')));
-                    break;
                 default:
                     if ($customdatatype = entities\CustomDatatype::getByKey($request['field']))
                     {
@@ -2308,8 +2293,8 @@
                                     $changed_methodname = "isCustomfield{$key}Changed";
                                     if (!$issue->$changed_methodname())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
+
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => $finalvalue)));
-                                    break;
                                 case entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                 case entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     if ($customdatatypeoption_value == '')
@@ -2323,8 +2308,8 @@
                                     $changed_methodname = "isCustomfield{$key}Changed";
                                     if (!$issue->$changed_methodname())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
+
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
-                                    break;
                                 case entities\CustomDatatype::DATE_PICKER:
                                     if ($customdatatypeoption_value == '')
                                     {
@@ -2337,8 +2322,8 @@
                                     $changed_methodname = "isCustomfield{$key}Changed";
                                     if (!$issue->$changed_methodname())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
+
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d', (int) $request->getRawParameter("{$key}_value")))));
-                                    break;
                                 default:
                                     if ($customdatatypeoption_value == '')
                                     {
@@ -2351,8 +2336,8 @@
                                     $changed_methodname = "isCustomfield{$key}Changed";
                                     if (!$issue->$changed_methodname())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
+
                                     return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => (filter_var($customdatatypeoption_value, FILTER_VALIDATE_URL) !== false) ? "<a href=\"{$customdatatypeoption_value}\">{$customdatatypeoption_value}</a>" : $customdatatypeoption_value)));
-                                    break;
                             }
                         }
                         $customdatatypeoption = ($customdatatypeoption_value) ? entities\CustomDatatypeOption::getB2DBTable()->selectById($customdatatypeoption_value) : null;
@@ -2367,6 +2352,7 @@
                         $changed_methodname = "isCustomfield{$key}Changed";
                         if (!$issue->$changed_methodname())
                             return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
+
                         return (!$customdatatypeoption instanceof entities\CustomDatatypeOption) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $customdatatypeoption->getID(), 'name' => $customdatatypeoption->getName())));
                     }
                     break;
@@ -3053,7 +3039,6 @@
                         echo $file->getContent();
                         exit();
                     }
-                    return true;
                 }
             }
             $this->return404(framework\Context::getI18n()->__('This file does not exist'));
@@ -4007,7 +3992,6 @@
                         break;
                     default:
                         throw new \Exception('Internal error');
-                        break;
                 }
 
                 return $this->renderJSON(array('confirmed' => $confirmed, 'text' => ($confirmed) ? $this->getI18n()->__('Confirmed') : $this->getI18n()->__('Unconfirmed')));
@@ -4087,7 +4071,6 @@
                         break;
                     default:
                         throw new \Exception('Internal error');
-                        break;
                 }
 
                 $editions = array();
@@ -4170,7 +4153,6 @@
                         break;
                     default:
                         throw new \Exception('Internal error');
-                        break;
                 }
 
                 return $this->renderJSON(array('colour' => $status->getColor(), 'name' => $status->getName()));
@@ -4293,7 +4275,6 @@
                         break;
                     default:
                         throw new \Exception('Internal error');
-                        break;
                 }
 
                 $editions = array();
