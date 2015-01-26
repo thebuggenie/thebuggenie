@@ -469,7 +469,6 @@
          */
         public function runDashboardSort(framework\Request $request)
         {
-            $dashboard = entities\Dashboard::getB2DBTable()->selectById($request['dashboard_id']);
             $column = $request['column'];
             foreach ($request['view_ids'] as $order => $view_id)
             {
@@ -881,8 +880,14 @@
                 }
             }
 
+            if (!isset($user))
+            {
+                $this->forward403($i18n->__("Invalid login details"));
+            }
+
             if ($this->checkScopeMembership($user))
                 return true;
+
             if ($request->isAjaxCall())
             {
                 return $this->renderJSON(array('forward' => $forward_url));
