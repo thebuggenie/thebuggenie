@@ -196,7 +196,6 @@
          * check if the permission is explicitly set
          *
          * @param string $key The permission key to check for
-         * @param boolean $exclusive Whether to make sure the permission is explicitly set
          *
          * @return boolean
          */
