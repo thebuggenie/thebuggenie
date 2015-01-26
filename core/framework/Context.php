@@ -1783,7 +1783,6 @@
                 }
                 elseif (!self::isInstallmode())
                 {
-                    throw $e;
                     Logging::log("Couldn't find a scope for hostname {$_SERVER['HTTP_HOST']}", 'main', Logging::LEVEL_FATAL);
                     Logging::log($e->getMessage(), 'main', Logging::LEVEL_FATAL);
                     throw new \Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");
