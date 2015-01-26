@@ -337,7 +337,6 @@
                         case 'getmilestonestatus':
                             $milestone = tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
                             return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
-                            break;
                         case 'whiteboardissues':
                             if ($request->isPost())
                             {
@@ -391,7 +390,6 @@
                                 $milestone = tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
                                 return $this->renderJSON(array('component' => $this->getComponentHTML('project/agilewhiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
                             }
-                            break;
                         default:
                             if ($request->isPost())
                             {
@@ -1586,7 +1584,6 @@
             }
             catch (\Exception $e)
             {
-                throw $e;
                 return $this->return404();
             }
         }
@@ -1629,6 +1626,7 @@
                     }
                     if ($status === null)
                         $status = $issue->getStatus();
+
                     $closed = $issue->isClosed();
                 }
 
@@ -1771,7 +1769,6 @@
                             break;
                         default:
                             throw new \Exception('Invalid assignee');
-                            break;
                     }
                 }
                 catch (\Exception $e)
