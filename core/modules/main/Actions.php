@@ -2059,27 +2059,6 @@
                             return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof entities\User) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
                     }
                     break;
-                case 'spent_time':
-                    if (!$issue->canEditSpentTime())
-                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
-
-                    if ($request['spent_time'] != framework\Context::getI18n()->__('Enter time spent here') && $request['spent_time'])
-                    {
-                        $issue->addSpentTime($request['spent_time']);
-                    }
-                    elseif ($request->hasParameter('value'))
-                    {
-                        $issue->addSpentTime($request['value']);
-                    }
-                    else
-                    {
-                        $issue->addSpentMonths($request['months']);
-                        $issue->addSpentWeeks($request['weeks']);
-                        $issue->addSpentDays($request['days']);
-                        $issue->addSpentHours($request['hours']);
-                        $issue->addSpentPoints($request['points']);
-                    }
-                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
                 case 'category':
                 case 'resolution':
                 case 'severity':
