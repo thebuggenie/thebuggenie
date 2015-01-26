@@ -1101,11 +1101,11 @@
             if ($this->userassigned === null)
             {
                 $this->userassigned = array();
-                if ($res = tables\Issues::getTable()->getOpenIssuesByUserAssigned($this->getID()))
+                if ($issues = tables\Issues::getTable()->getOpenIssuesByUserAssigned($this->getID()))
                 {
-                    while ($row = $res->getNextRow())
+                    foreach ($issues as $issue)
                     {
-                        $this->userassigned[$row->get(tables\Issues::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID), $row);
+                        $this->userassigned[$issue->getID()] = $issue;
                     }
                     ksort($this->userassigned, SORT_NUMERIC);
                 }
@@ -1124,11 +1124,11 @@
             if (!array_key_exists($team_id, $this->teamassigned))
             {
                 $this->teamassigned[$team_id] = array();
-                if ($res = tables\Issues::getTable()->getOpenIssuesByTeamAssigned($team_id))
+                if ($issues = tables\Issues::getTable()->getOpenIssuesByTeamAssigned($team_id))
                 {
-                    while ($row = $res->getNextRow())
+                    foreach ($issues as $issue)
                     {
-                        $this->teamassigned[$team_id][$row->get(tables\Issues::ID)] = tables\Issues::getTable()->selectById($row->get(tables\Issues::ID), $row);
+                        $this->teamassigned[$team_id][$issue->getID()] = $issue;
                     }
                 }
                 ksort($this->teamassigned[$team_id], SORT_NUMERIC);

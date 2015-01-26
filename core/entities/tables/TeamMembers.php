@@ -120,13 +120,6 @@
             }
         }
         
-        public function getTeamIDsForUserID($user_id, $ondemand = false)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            return $this->doSelect($crit, 'all');
-        }
-        
         public function addUserToTeam($user_id, $team_id)
         {
             $crit = $this->getCriteria();

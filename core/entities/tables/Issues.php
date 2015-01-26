@@ -458,7 +458,7 @@
             $crit->addWhere(self::ASSIGNED_TEAM, $team_id);
             $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
-            $res = $this->doSelect($crit);
+            $res = $this->select($crit);
 
             return $res;
         }
@@ -470,7 +470,7 @@
             $crit->addWhere(self::ASSIGNEE_USER, $user_id);
             $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
-            $res = $this->doSelect($crit);
+            $res = $this->select($crit);
 
             return $res;
         }
