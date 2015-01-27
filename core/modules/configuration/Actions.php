@@ -946,7 +946,7 @@
             if (!framework\Context::getScope()->hasProjectsAvailable())
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array("error" => $i18n->__("There are no more projects available in this instance")));
+                return $this->renderJSON(array("error" => $this->getI18n()->__("There are no more projects available in this instance")));
             }
 
             return $this->_setArchived(false, $request);
