@@ -45,7 +45,6 @@
          *
          * @param string $url The URL to forward to
          * @param integer $code [optional] HTTP status code
-         * @param integer $method [optional] 2 for meta redirect instead of header
          */
         public function forward($url, $code = 200)
         {

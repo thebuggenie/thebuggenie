@@ -212,7 +212,7 @@
         /**
          * Invoke a trigger
          *
-         * @param array $params [optional] Parameters to pass to the registered listeners
+         * @param array $parameters [optional] Parameters to pass to the registered listeners
          *
          * @return Event
          */
@@ -230,7 +230,7 @@
         /**
          * Invoke a trigger and return as soon as it is processed
          *
-         * @param array $params [optional] Parameters to pass to the registered listeners
+         * @param array $parameters [optional] Parameters to pass to the registered listeners
          *
          * @return Event
          */

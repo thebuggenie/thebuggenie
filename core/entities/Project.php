@@ -2802,7 +2802,7 @@
          * check if the permission is explicitly set
          *
          * @param string $key The permission key to check for
-         * @param boolean $explisit (optional) Whether to make sure the permission is explicitly set
+         * @param boolean $explicit (optional) Whether to make sure the permission is explicitly set
          *
          * @return boolean
          */

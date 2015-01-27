@@ -34,7 +34,6 @@
      * Template escaping function without translation
      *
      * @param string $text the text to translate
-     * @param array $replacements [optional] replacements
      *
      * @return string
      */
@@ -48,7 +47,6 @@
      *
      * @param string $text
      * @param integer $length
-     * @param boolean $add_dots [optional] defaults to true
      *
      * @return string The truncated string
      */
