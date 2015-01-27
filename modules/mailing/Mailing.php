@@ -832,7 +832,7 @@ EOT;
             return $mailer->send($message);
         }
 
-        public function sendMail(Swift_Message $email, $debug = false)
+        public function sendMail(Swift_Message $email)
         {
             if ($this->isOutgoingNotificationsEnabled())
             {
