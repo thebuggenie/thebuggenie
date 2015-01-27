@@ -2776,21 +2776,21 @@
         }
 
         /**
-         * Returns the scrum color
+         * Returns the agile board color
          *
          * @return string
          */
-        public function getScrumColor()
+        public function getAgileColor()
         {
             return $this->_scrumcolor;
         }
 
         /**
-         * Set the priority
+         * Set the agile board color for this issue
          *
-         * @param integer $priority_id The priority id to change to
+         * @param integer $color The color to change to
          */
-        public function setScrumColor($color)
+        public function setAgileColor($color)
         {
             $this->_addChangedProperty('_scrumcolor', $color);
         }

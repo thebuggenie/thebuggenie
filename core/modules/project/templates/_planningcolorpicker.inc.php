@@ -1,4 +1,4 @@
-<div class="story_color <?php if ($issue->canEditIssue()) echo 'dropper'; ?>" title="<?php echo ($issue->canEditIssue()) ? __('Click to select a planning color for this issue') : __('Planning color for this issue'); ?>" id="story_color_<?php echo $issue->getID(); ?>" style="background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
+<div class="story_color <?php if ($issue->canEditIssue()) echo 'dropper'; ?>" title="<?php echo ($issue->canEditIssue()) ? __('Click to select a planning color for this issue') : __('Planning color for this issue'); ?>" id="story_color_<?php echo $issue->getID(); ?>" style="background-color: <?php echo $issue->getAgileColor(); ?>;">&nbsp;</div>
 <?php if ($issue->canEditIssue()): ?>
     <div style="display: none;" class="rounded_box shadowed white story_color_selector popup_box" id="color_selector_<?php echo $issue->getID(); ?>">
         <div>

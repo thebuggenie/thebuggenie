@@ -28,7 +28,7 @@
             <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
                 <?php foreach ($issue->getParentIssues() as $parent): ?>
                     <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
-                        <div class="epic_badge" style="background-color: <?php echo $parent->getScrumColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
+                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>

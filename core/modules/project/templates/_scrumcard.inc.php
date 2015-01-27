@@ -17,7 +17,7 @@
         <?php endif; ?>
         <?php echo __('%pointspt(s)', array('%points' => '<span id="scrum_story_' . $issue->getID() . '_points">' . $issue->getEstimatedPoints() . '</span>')); ?>
     </div>
-    <div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" <?php if ($issue->canEditIssue()): ?>onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();"<?php endif; ?> style="cursor: pointer; background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
+    <div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" <?php if ($issue->canEditIssue()): ?>onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();"<?php endif; ?> style="cursor: pointer; background-color: <?php echo $issue->getAgileColor(); ?>;">&nbsp;</div>
     <div class="story_no"><?php echo $issue->getFormattedIssueNo(); ?></div>
     <div class="story_title"><?php echo $issue->getTitle(); ?></div>
     <input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">

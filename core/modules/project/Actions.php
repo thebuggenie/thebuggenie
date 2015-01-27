@@ -635,7 +635,7 @@
                 switch ($request['detail'])
                 {
                     case 'color':
-                        $issue->setScrumColor($request['color']);
+                        $issue->setAgileColor($request['color']);
                         $issue->save();
                         return $this->renderJSON(array('failed' => false));
                         break;
