@@ -101,7 +101,7 @@
         /**
          * Renders JSON output, also takes care of setting the correct headers
          *
-         * @param array $content The array to render
+         * @param mixed $text An array, or text, to serve as json
          *
          * @return boolean
          */
