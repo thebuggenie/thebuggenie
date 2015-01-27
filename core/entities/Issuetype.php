@@ -121,8 +121,7 @@
         /**
          * Returns an array of issue types
          *
-         * @param integer $scope_id  The ID number of the scope to load issue types from
-         * @return array
+         * @return array|Issuetype
          */
         public static function getAll()
         {

@@ -34,9 +34,18 @@
         protected $_name;
 
         protected $_visiblefields = array();
-        
+
+        /**
+         * Issue type details
+         * @var array
+         */
         protected $_issuetypedetails = null;
-        
+
+        /**
+         * Number of projects using this issue type scheme
+         *
+         * @var integer
+         */
         protected $_number_of_projects = null;
         
         /**
