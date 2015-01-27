@@ -2148,6 +2148,10 @@
                         }
                         elseif ($mode == 'new_validation_rule')
                         {
+                            if (!in_array($request['postorpre'], array('post', 'pre')))
+                            {
+                                throw new \InvalidArgumentException($this->getI18n()->__('Invalid transition definition'));
+                            }
                             $rule = new entities\WorkflowTransitionValidationRule();
                             if ($request['postorpre'] == 'post')
                             {
