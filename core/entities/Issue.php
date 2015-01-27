@@ -2808,7 +2808,7 @@
         /**
          * Set the milestone
          *
-         * @param integer $milestone_id The milestone id to assign
+         * @param integer|Milestone $milestone_id The milestone id to assign
          */
         public function setMilestone($milestone_id)
         {

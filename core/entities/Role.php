@@ -131,6 +131,11 @@
             return !(bool) $this->getItemdata();
         }
 
+        /**
+         * Return the associated project if any
+         * 
+         * @return Project
+         */
         public function getProject()
         {
             return ($this->getItemdata()) ? \thebuggenie\core\entities\Project::getB2DBTable()->selectById((int) $this->getItemdata()) : null;
