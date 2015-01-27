@@ -232,7 +232,7 @@
         /**
          * The timezone this user is in
          *
-         * @var DateTimeZone
+         * @var \DateTimeZone
          * @Column(type="string", length=100)
          */
         protected $_timezone = null;

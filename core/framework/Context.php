@@ -1444,7 +1444,7 @@
          * @param string $permission_type The permission type
          * @param integer $uid The user id for which the permission is valid, 0 for all
          * @param integer $gid The group id for which the permission is valid, 0 for all
-         * @param integer $tid The team id for which the permission is valid, 0 for all
+         * @param mixed $tid The team id (or an array of teams or team ids) for which the permission is valid, 0 for all
          * @param integer $target_id[optional] The target id
          * @param string $module_name[optional] The name of the module for which the permission is valid
          * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
