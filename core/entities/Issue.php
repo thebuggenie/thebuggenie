@@ -408,13 +408,6 @@
         protected $_being_worked_on_by_user_since;
 
         /**
-         * List of tasks for this issue
-         *
-         * @var array
-         */
-        protected $_tasks;
-
-        /**
          * List of tags for this issue
          *
          * @var array
@@ -2326,31 +2319,6 @@
             {
                 return false;
             }
-        }
-
-        /**
-         * Returns an array with tasks
-         *
-         * @return array
-         */
-        public function getTasks()
-        {
-            if ($this->getProject()->isTasksEnabled())
-            {
-                if ($this->_tasks == null)
-                {
-                    $this->_tasks = array();
-                    if ($res = tables\IssueTasks::getTable()->getByIssueID($this->getID()))
-                    {
-                        while ($row = $resultset->getNextRow())
-                        {
-                            $this->_tasks[$row->get(tables\IssueTasks::ID)] = new \thebuggenie\core\entities\Issue($row->get(tables\IssueTasks::ID), $row);
-                        }
-                    }
-                }
-            }
-
-            return $this->_tasks;
         }
 
         /**
