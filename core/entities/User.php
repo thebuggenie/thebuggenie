@@ -1953,7 +1953,7 @@
         /**
          * Set whether the user uses gravatar
          *
-         * @param string $val
+         * @param boolean $val
          */
         public function setUsesGravatar($val)
         {
