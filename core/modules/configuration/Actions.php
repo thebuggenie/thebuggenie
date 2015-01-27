@@ -840,7 +840,7 @@
                         $project->save();
                         return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getComponentHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => entities\Project::getProjectsCount(), 'more_available' => framework\Context::getScope()->hasProjectsAvailable()));
                     }
-                    catch (InvalidArgumentException $e)
+                    catch (\InvalidArgumentException $e)
                     {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array("error" => $i18n->__('A project with the same key already exists')));
@@ -2246,9 +2246,8 @@
                     throw new \InvalidArgumentException('Invalid action');
                 }
             }
-            catch (InvalidArgumentException $e)
+            catch (\InvalidArgumentException $e)
             {
-                //throw $e;
                 $this->error = $e->getMessage();
             }
             catch (\Exception $e)
