@@ -2382,8 +2382,6 @@
         /**
          * Return if the user can change its own password
          *
-         * @param \thebuggenie\core\entities\Project $project
-         *
          * @return boolean
          */
         public function canChangePassword()
@@ -2609,18 +2607,18 @@
             }
         }
 
-        public function removeScope($scope_id)
+        public function removeScope($scope)
         {
-            $scope_id = ($scope_id instanceof Scope) ? $scope->getID() : $scope_id;
+            $scope_id = ($scope instanceof Scope) ? $scope->getID() : $scope;
             tables\UserScopes::getTable()->removeUserFromScope($this->getID(), $scope_id);
             $this->_scopes = null;
             $this->_unconfirmed_scopes = null;
             $this->_confirmed_scopes = null;
         }
 
-        public function confirmScope($scope_id)
+        public function confirmScope($scope)
         {
-            $scope_id = ($scope_id instanceof Scope) ? $scope->getID() : $scope_id;
+            $scope_id = ($scope instanceof Scope) ? $scope->getID() : $scope;
             tables\UserScopes::getTable()->confirmUserInScope($this->getID(), $scope_id);
             $this->_scopes = null;
             $this->_unconfirmed_scopes = null;
