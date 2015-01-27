@@ -1063,7 +1063,7 @@
         /**
          * Return all this user's clients
          *
-         * @return array
+         * @return array|Client
          */
         public function getClients()
         {
@@ -1094,7 +1094,7 @@
         /**
          * Returns an array of issue ids which are directly assigned to the current user
          *
-         * @return array
+         * @return array|Issue
          */
         public function getUserAssignedIssues()
         {
@@ -1117,7 +1117,8 @@
          * Returns an array of issue ids assigned to the given team
          *
          * @param integer $team_id The team id
-         * @return array
+         *
+         * @return array|Issue
          */
         public function getUserTeamAssignedIssues($team_id)
         {
@@ -1267,7 +1268,7 @@
         /**
          * Get all this users friends
          *
-         * @return array An array of \thebuggenie\core\entities\Users
+         * @return array|User An array of users
          */
         public function getFriends()
         {
@@ -1282,7 +1283,7 @@
          */
         public function removeFriend($user)
         {
-            $user_id = ($user instanceof User) ? $user->getID() : $user_id;
+            $user_id = ($user instanceof User) ? $user->getID() : $user;
             tables\Buddies::getTable()->removeFriendByUserID($this->getID(), $user_id);
             if (is_array($this->_friends))
             {
@@ -1333,8 +1334,7 @@
         /**
          * Set the user state to this state
          *
-         * @param integer $s_id
-         * @return nothing
+         * @param Userstate $state The userstate to set
          */
         public function setState(Userstate $state)
         {
@@ -1458,7 +1458,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array
+         * @return array|Team
          */
         public function getTeams()
         {
@@ -1475,7 +1475,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array
+         * @return array|Team
          */
         public function getOndemandTeams()
         {
@@ -2417,7 +2417,7 @@
         /**
          * Get all the projects a user is associated with
          *
-         * @return array
+         * @return array|Project
          */
         public function getAssociatedProjects()
         {
@@ -2505,6 +2505,11 @@
             }
         }
 
+        /**
+         * Get associated openid accounts
+         *
+         * @return array
+         */
         public function getOpenIDAccounts()
         {
             $this->_populateOpenIDAccounts();
@@ -2524,6 +2529,11 @@
                         'username' => $this->getUsername());
         }
 
+        /**
+         * Return the users associated scopes
+         *
+         * @return array|Scope
+         */
         public function getScopes()
         {
             $this->_b2dbLazyload('_scopes');
@@ -2554,12 +2564,22 @@
             }
         }
 
+        /**
+         * Get users unconfirmed scope memberships
+         *
+         * @return array|Scope
+         */
         public function getUnconfirmedScopes()
         {
             $this->_populateScopeDetails();
             return $this->_unconfirmed_scopes;
         }
 
+        /**
+         * Get users confirmed scope memberships
+         *
+         * @return array|Scope
+         */
         public function getConfirmedScopes()
         {
             $this->_populateScopeDetails();
@@ -2763,6 +2783,11 @@
             return $this->_dashboards;
         }
 
+        /**
+         * Get the users default dashboard, create one if none exists
+         *
+         * @return \thebuggenie\core\entities\Dashboard
+         */
         public function getDefaultDashboard()
         {
             foreach ($this->getDashboards() as $dashboard)
