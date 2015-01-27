@@ -2653,7 +2653,6 @@
         {
             $this->_recentactivities = null;
             $this->_recentissues = null;
-            $this->_recentfeatures = null;
             $this->_recentlogitems = null;
         }
 
