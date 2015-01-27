@@ -187,20 +187,15 @@
 
         public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
         {
-            $articles = array();
-            list ($resultcount, $res) = tables\Articles::getTable()->findArticlesContaining($content, $project, $limit, $offset);
+            list ($resultcount, $articles) = tables\Articles::getTable()->findArticlesContaining($content, $project, $limit, $offset);
 
-            if ($res)
+            if ($resultcount)
             {
-                while ($row = $res->getNextRow())
+                foreach ($articles as $key => $article)
                 {
-                    $article = self::getByName($row->get(Articles::NAME), $row);
-                    if ($article->hasAccess())
+                    if (!$article->hasAccess())
                     {
-                        $articles[$row->get(Articles::ID)] = $article;
-                    }
-                    else
-                    {
+                        unset($articles[$key]);
                         $resultcount--;
                     }
                 }

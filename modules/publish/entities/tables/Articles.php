@@ -209,7 +209,7 @@
                 if ($offset)
                     $crit->setOffset($offset);
 
-                return array($resultcount, $this->doSelect($crit));
+                return array($resultcount, $this->select($crit));
             }
             else
             {
