@@ -2112,7 +2112,7 @@
         /**
          * Get this users timezone
          *
-         * @return DateTimeZone
+         * @return \DateTimeZone
          */
         public function getTimezone()
         {
@@ -2124,7 +2124,7 @@
                 }
                 else
                 {
-                    $this->_timezone = new DateTimeZone($this->_timezone);
+                    $this->_timezone = new \DateTimeZone($this->_timezone);
                 }
             }
             return $this->_timezone;
