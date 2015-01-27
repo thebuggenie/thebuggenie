@@ -210,16 +210,6 @@
             return $this->getDashboard()->getProject();
         }
 
-        public function getTargetID()
-        {
-            return $this->_tid;
-        }
-
-        public function setTargetID($tid)
-        {
-            $this->_tid = $tid;
-        }
-
         public function getTargetType()
         {
             if ($this->getDashboard()->getUser() instanceof \thebuggenie\core\entities\User)
@@ -230,11 +220,6 @@
                 return self::TYPE_TEAM;
             if ($this->getDashboard()->getClient() instanceof \thebuggenie\core\entities\Client)
                 return self::TYPE_CLIENT;
-        }
-
-        public function setTargetType($target_type)
-        {
-            $this->_target_type = $target_type;
         }
 
         public function isSearchView()
