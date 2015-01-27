@@ -119,7 +119,7 @@
         /**
          * List of editions for this project
          *
-         * @var array
+         * @var array|Edition
          * @Relates(class="\thebuggenie\core\entities\Edition", collection=true, foreign_column="project")
          */
         protected $_editions = null;
@@ -135,7 +135,7 @@
         /**
          * List of milestones for this project
          *
-         * @var array
+         * @var array|Milestone
          * @Relates(class="\thebuggenie\core\entities\Milestone", collection=true, foreign_column="project", orderby="sort_order")
          */
         protected $_milestones = null;
@@ -143,7 +143,7 @@
         /**
          * List of components for this project
          *
-         * @var array
+         * @var array|Component
          * @Relates(class="\thebuggenie\core\entities\Component", collection=true, foreign_column="project")
          */
         protected $_components = null;
@@ -151,7 +151,7 @@
         /**
          * Count of issues registered for this project
          *
-         * @var integer
+         * @var array
          */
         protected $_issuecounts = null;
 
@@ -1384,7 +1384,7 @@
          * Adds an assignee with a given role
          *
          * @param \thebuggenie\core\entities\common\Identifiable $assignee The user or team to add
-         * @param integer $role The role to add
+         * @param Role $role The role to add
          *
          * @return null
          */
@@ -2803,7 +2803,7 @@
          * check if the permission is explicitly set
          *
          * @param string $key The permission key to check for
-         * @param boolean $exclusive Whether to make sure the permission is explicitly set
+         * @param boolean $explisit (optional) Whether to make sure the permission is explicitly set
          *
          * @return boolean
          */
