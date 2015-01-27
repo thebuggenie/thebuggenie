@@ -111,10 +111,10 @@
         public static function getAvailableViews($target_type)
         {
             $i18n = framework\Context::getI18n();
+            $searches = array('info' => array(), 'searches' => array());
             switch ($target_type)
             {
                 case self::TYPE_USER:
-                    $searches = array('info' => array(), 'searches' => array());
                     $searches['info'][self::VIEW_LOGGED_ACTIONS] = array(0 => array('title' => $i18n->__("What you've done recently"), 'description' => $i18n->__('A widget that shows your most recent actions, such as issue edits, wiki edits and more')));
                     if (framework\Context::getUser()->canViewComments())
                     {
@@ -128,13 +128,14 @@
                     $searches['info'][self::VIEW_MILESTONES] = array(0 => array('title' => $i18n->__("Upcoming milestones / sprints"), 'description' => $i18n->__('A widget that shows all upcoming milestones or sprints for any projects you are involved in')));
                     break;
                 case self::TYPE_PROJECT:
+                    $searches['statistics'] = array();
+
                     $issuetype_icons = array();
                     foreach (Issuetype::getAll() as $id => $issuetype)
                     {
                         $issuetype_icons[$id] = array('title' => $i18n->__('Recent issues: %issuetype', array('%issuetype' => $issuetype->getName())), 'description' => $i18n->__('Show recent issues of type %issuetype', array('%issuetype' => $issuetype->getName())));
                     }
 
-                    $searches = array('info' => array(), 'statistics' => array(), 'searches' => array());
                     $searches['info'][self::VIEW_PROJECT_INFO] = array(0 => array('title' => $i18n->__('About this project'), 'description' => $i18n->__('Basic project information widget, showing project name, important people and links')));
                     $searches['info'][self::VIEW_PROJECT_TEAM] = array(0 => array('title' => $i18n->__('Project team'), 'description' => $i18n->__('A widget with information about project developers and the project team and their respective project roles')));
                     $searches['info'][self::VIEW_PROJECT_CLIENT] = array(0 => array('title' => $i18n->__('Project client'), 'description' => $i18n->__('Shows information about the associated project client (if any)')));
