@@ -2190,7 +2190,7 @@
         /**
          * Return if the user can report new issues
          *
-         * @param integer $project_id [optional] A project id
+         * @param integer|Project $project_id [optional] A project id
          * @return boolean
          */
         public function canReportIssues($project_id = null)
