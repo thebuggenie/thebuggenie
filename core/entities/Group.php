@@ -54,7 +54,7 @@
             return self::$_groups;
         }
 
-        public static function postSave($is_new)
+        protected function _postSave($is_new)
         {
             if ($is_new)
             {
