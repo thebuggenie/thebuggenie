@@ -1729,7 +1729,7 @@
         /**
          * Find and set the current scope
          *
-         * @param integer $scope Specify a scope to set for this request
+         * @param Scope $scope Specify a scope to set for this request
          */
         public static function setScope($scope = null)
         {
