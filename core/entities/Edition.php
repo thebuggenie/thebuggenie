@@ -121,13 +121,10 @@
          *
          * @return boolean
          */
-        public function hasComponent($c_id)
+        public function hasComponent($component)
         {
-            if ($c_id instanceof \thebuggenie\core\entities\Component)
-            {
-                $c_id = $c_id->getID();
-            }
-            return array_key_exists($c_id, $this->getComponents());
+            $component_id = ($component instanceof \thebuggenie\core\entities\Component) ? $component->getID() : $component;
+            return array_key_exists($component_id, $this->getComponents());
         }
 
         /**
@@ -145,27 +142,21 @@
          *
          * @param \thebuggenie\core\entities\Component|integer $component
          */
-        public function addComponent($c_id)
+        public function addComponent($component)
         {
-            if ($c_id instanceof \thebuggenie\core\entities\Component)
-            {
-                $c_id = $c_id->getID();
-            }
-            return tables\EditionComponents::getTable()->addEditionComponent($this->getID(), $c_id);
+            $component_id = ($component instanceof \thebuggenie\core\entities\Component) ? $component->getID() : $component;
+            return tables\EditionComponents::getTable()->addEditionComponent($this->getID(), $component_id);
         }
 
         /**
          * Removes an existing component from the edition
          *
-         * @param \thebuggenie\core\entities\Component|integer $c_id
+         * @param \thebuggenie\core\entities\Component|integer $component
          */
-        public function removeComponent($c_id)
+        public function removeComponent($component)
         {
-            if ($c_id instanceof \thebuggenie\core\entities\Component)
-            {
-                $c_id = $c_id->getID();
-            }
-            tables\EditionComponents::getTable()->removeEditionComponent($this->getID(), $c_id);
+            $component_id = ($component instanceof \thebuggenie\core\entities\Component) ? $component->getID() : $component;
+            tables\EditionComponents::getTable()->removeEditionComponent($this->getID(), $component_id);
         }
 
         /**
