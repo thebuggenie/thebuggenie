@@ -201,11 +201,6 @@
             return $this->getProject()->getID();
         }
 
-        public function setProjectID($pid)
-        {
-            $this->_pid = $pid;
-        }
-
         /**
          * @return \thebuggenie\core\entities\Project
          */
