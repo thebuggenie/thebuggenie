@@ -784,7 +784,7 @@
          * array( 'PARAM1' => 'VALUE1', 'PARAM2' => 'VALUE2', ...)
          *
          *
-         * @param text Text that should be parsed for issue numbers and transitions.
+         * @param string $text Text that should be parsed for issue numbers and transitions.
          *
          * @return An array with two elements, one denoting the matched issues, one
          * denoting the transitions for issues. These elements can be accessed using
