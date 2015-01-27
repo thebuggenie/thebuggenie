@@ -4078,7 +4078,6 @@
         /**
          * Adds a system comment
          *
-         * @param string $title Comment title
          * @param string $text Comment text
          * @param integer $uid The user ID that posted the comment
          *
@@ -5108,7 +5107,6 @@
         /**
          * Returns an array with everyone related to this project
          *
-         * @param boolean $strict
          * @return array|\thebuggenie\core\entities\User
          */
         public function getRelatedUsers()
