@@ -201,8 +201,6 @@
                         Logging::log('Uploads not enabled');
                         throw new \Exception(Context::getI18n()->__('Uploads are not enabled'));
                     }
-                    Logging::log('Uploaded file could not be uploaded');
-                    throw new \Exception(Context::getI18n()->__('The file could not be uploaded'));
                 }
                 Logging::log('Could not find uploaded file' . $key);
                 throw new \Exception(Context::getI18n()->__('Could not find the uploaded file. Please make sure that it is not too big.'));
