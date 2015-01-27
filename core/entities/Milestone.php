@@ -597,7 +597,7 @@
          */
         public function setReached($reached = true)
         {
-            $this->_isreached = $reached;
+            $this->_reached = $reached;
         }
 
         /**
