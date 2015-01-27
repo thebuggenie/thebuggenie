@@ -243,17 +243,6 @@
             return array();
         }
 
-        public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
-        {
-            $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            tables\ModulePermissions::getTable()->deleteByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $scope);
-            tables\ModulePermissions::getTable()->setPermissionByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $allowed, $scope);
-            if ($scope == framework\Context::getScope()->getID())
-            {
-                self::cacheAccessPermission($this->getName(), $uid, $gid, $tid, 0, $allowed);
-            }
-        }
-
         public function setConfigTitle($title)
         {
             $this->_module_config_title = $title;
@@ -361,40 +350,6 @@
         public function getDescription()
         {
             return $this->_description;
-        }
-
-        public static function getAllModulePermissions($module, $uid, $tid, $gid)
-        {
-
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\ModulePermissions::MODULE_NAME, $module);
-            switch (true)
-            {
-                case ($uid != 0):
-                    $crit->addWhere(tables\ModulePermissions::UID, $uid);
-                case ($tid != 0):
-                    $crit->addWhere(tables\ModulePermissions::TID, $tid);
-                case ($gid != 0):
-                    $crit->addWhere(tables\ModulePermissions::GID, $gid);
-            }
-            if (($uid + $tid + $gid) == 0)
-            {
-                $crit->addWhere(tables\ModulePermissions::UID, $uid);
-                $crit->addWhere(tables\ModulePermissions::TID, $tid);
-                $crit->addWhere(tables\ModulePermissions::GID, $gid);
-            }
-
-            $crit->addWhere(tables\ModulePermissions::SCOPE, framework\Context::getScope()->getID());
-
-            $permissions = array();
-            $res = tables\ModulePermissions::getTable()->doSelect($crit);
-
-            while ($row = $res->getNextRow())
-            {
-                $permissions[] = array('allowed' => $row->get(tables\ModulePermissions::ALLOWED));
-            }
-
-            return $permissions;
         }
 
         public function loadHelpTitle($topic)
