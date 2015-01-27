@@ -851,6 +851,7 @@
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::POSTED_BY, $user_id);
             $crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
+            $crit->setLimit($limit);
 
             return $this->select($crit);
         }
