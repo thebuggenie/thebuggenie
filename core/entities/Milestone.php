@@ -136,7 +136,7 @@
         /**
          * Internal cache of issues assigned
          *
-         * @var string
+         * @var array|Issue
          */
         protected $_issues = null;
 
@@ -150,14 +150,14 @@
         /**
          * Points spent or estimated
          *
-         * @var integer
+         * @var array
          */
         protected $_points;
 
         /**
          * Hours spent or estimated
          *
-         * @var integer
+         * @var array
          */
         protected $_hours;
 
@@ -198,7 +198,7 @@
         /**
          * Returns an array with issues
          *
-         * @return array
+         * @return array|Issue
          */
         public function getIssues()
         {
