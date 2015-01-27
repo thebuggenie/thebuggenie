@@ -701,7 +701,7 @@
                         {
                             $item->setName($request['name']);
                             $item->setItemdata($request['itemdata']);
-                            if (!$item->isBuiltin())
+                            if ($item instanceof entities\CustomDatatypeOption)
                             {
                                 $item->setValue($request['value']);
                             }

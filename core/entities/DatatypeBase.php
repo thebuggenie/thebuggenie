@@ -158,4 +158,6 @@
             return array('id' => $this->getID(), 'itemdata' => $this->getItemdata(), 'itemtype' => $this->_itemtype, 'name' => $this->getName(), 'key' => $this->getKey());
         }
 
+        abstract function isBuiltin();
+
     }

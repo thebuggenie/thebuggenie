@@ -368,5 +368,10 @@
             return true;
         }
 
+        public function isBuiltin()
+        {
+            return false;
+        }
+
     }
 
