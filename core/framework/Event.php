@@ -47,7 +47,7 @@
          *
          * @param string $module The module for which the trigger is active
          * @param string $identifier The trigger identifier
-         * @param string $callback_function Which function to call
+         * @param mixed $callback_function Which function to call
          */
         public static function listen($module, $identifier, $callback_function)
         {
@@ -90,9 +90,8 @@
          *
          * @param string $module The module for which the trigger is active
          * @param string $identifier The trigger identifier
-         * @param array $params Parameters to pass to the registered listeners
          *
-         * @return unknown_type
+         * @return mixed
          */
         protected static function _trigger(Event $event, $return_when_processed = false)
         {
@@ -130,6 +129,8 @@
          * @param string $module
          * @param string $identifier
          * @param mixed $subject
+         * @param array $parameters
+         * @param array $initial_list
          *
          * @return Event
          */
@@ -145,6 +146,8 @@
          * @param string $module
          * @param string $identifier
          * @param mixed $subject
+         * @param array $parameters
+         * @param array $initial_list
          */
         public function __construct($module, $identifier, $subject = null, $parameters = array(), $initial_list = array())
         {
