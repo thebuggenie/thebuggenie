@@ -125,11 +125,6 @@
             }
         }
 
-        /**
-         * Delete a custom type by id
-         *
-         * @param integer $id
-         */
         protected function _preDelete()
         {
             tables\CustomFieldOptions::getTable()->deleteCustomFieldOptions($this->getID());
