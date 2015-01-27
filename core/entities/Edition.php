@@ -330,7 +330,7 @@
         /**
          * Specify whether or not this item is locked
          *
-         * @param boolean $locked[optional]
+         * @param boolean $locked [optional]
          */
         public function setLocked($locked = true)
         {

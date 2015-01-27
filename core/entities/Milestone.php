@@ -463,7 +463,7 @@
         /**
          * Set whether or not the milestone is scheduled for finishing
          *
-         * @param boolean $scheduled[optional] scheduled or not (default true)
+         * @param boolean $scheduled [optional] scheduled or not (default true)
          */
         public function setScheduled($scheduled = true)
         {
@@ -543,7 +543,7 @@
         /**
          * Set whether or not the milestone is scheduled for start
          *
-         * @param boolean $starting[optional] starting or not (default true)
+         * @param boolean $starting [optional] starting or not (default true)
          */
         public function setStarting($starting = true)
         {
@@ -593,7 +593,7 @@
         /**
          * Set whether or not the milestone is scheduled for start
          *
-         * @param boolean $reached[optional] reached or not (default true)
+         * @param boolean $reached [optional] reached or not (default true)
          */
         public function setReached($reached = true)
         {

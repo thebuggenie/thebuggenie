@@ -841,22 +841,16 @@
          * Return list of issue reported by an user
          *
          * @param int $user_id user ID
-         * @param int $limit number of issues to  retrieve [optional]
-         * @param Criteria $sort sort order [optional]
+         * @param int $limit [optional] number of issues to retrieve
          *
-         * @return B2DBResultset
+         * @return array|Issue
          */
-        public function getIssuesPostedByUser($user_id, $limit=null, $sort=Criteria::SORT_DESC)
+        public function getIssuesPostedByUser($user_id, $limit = 15)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
-            $crit->addJoin(Projects::getTable(), Projects::ID, self::PROJECT_ID);
             $crit->addWhere(self::POSTED_BY, $user_id);
-            $crit->addOrderBy(self::POSTED, $sort);
-            if ($limit !== null)
-            {
-                $crit->setLimit($limit);
-            }
+            $crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
 
             return $this->select($crit);
         }

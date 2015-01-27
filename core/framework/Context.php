@@ -1135,8 +1135,8 @@
          * @param integer $uid
          * @param integer $tid
          * @param integer $gid
-         * @param integer $target_id[optional]
-         * @param boolean $all[optional]
+         * @param integer $target_id [optional]
+         * @param boolean $all [optional]
          *
          * @return array
          */
@@ -1291,7 +1291,7 @@
          * @param integer $gid The group id for which the permission is valid, 0 for none
          * @param integer $tid The team id for which the permission is valid, 0 for none
          * @param boolean $allowed Allowed or not
-         * @param integer $scope[optional] A specified scope if not the default
+         * @param integer $scope [optional] A specified scope if not the default
          */
         public static function setPermission($permission_type, $target_id, $module, $uid, $gid, $tid, $allowed, $scope = null, $role_id = null)
         {
@@ -1445,10 +1445,10 @@
          * @param integer $uid The user id for which the permission is valid, 0 for all
          * @param integer $gid The group id for which the permission is valid, 0 for all
          * @param mixed $tid The team id (or an array of teams or team ids) for which the permission is valid, 0 for all
-         * @param integer $target_id[optional] The target id
-         * @param string $module_name[optional] The name of the module for which the permission is valid
-         * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
-         * @param boolean $permissive[optional] whether to return false or true when explicit fails
+         * @param integer $target_id [optional] The target id
+         * @param string $module_name [optional] The name of the module for which the permission is valid
+         * @param boolean $explicit [optional] whether to check for an explicit permission and return false if not set
+         * @param boolean $permissive [optional] whether to return false or true when explicit fails
          *
          * @return unknown_type
          */

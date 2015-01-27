@@ -213,9 +213,9 @@
          * Add to the breadcrumb trail for the current page
          *
          * @param string $breadcrumb
-         * @param string $url[optional] The menu item's url if any
-         * @param array $subitems[optional] An array of submenu items to add
-         * @param string $class[optional] An optional class
+         * @param string $url [optional] The menu item's url if any
+         * @param array $subitems [optional] An array of submenu items to add
+         * @param string $class [optional] An optional class
          */
         public function addBreadcrumb($breadcrumb, $url = null, $subitems = null, $class = null)
         {
@@ -423,7 +423,7 @@
          * Set the decoration mode
          *
          * @param integer $mode The mode used (see class constants)
-         * @param array $params [optional] array('header' => templatename, 'footer' => templatename) optional decoration specifiers
+         * @param array $params [optional] optional decoration specifiers in the format "array('header' => templatename, 'footer' => templatename)"
          *
          * @return null
          */

@@ -8,7 +8,7 @@
      * Run the I18n translation function
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
+     * @param array $replacements [optional] replacements
      *
      * @return string
      */
@@ -21,7 +21,7 @@
      * Template escaping translation function
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
+     * @param array $replacements [optional] replacements
      *
      * @return string
      */
@@ -34,7 +34,7 @@
      * Template escaping function without translation
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
+     * @param array $replacements [optional] replacements
      *
      * @return string
      */
@@ -48,7 +48,7 @@
      *
      * @param string $text
      * @param integer $length
-     * @param boolean $add_dots[optional] defaults to true
+     * @param boolean $add_dots [optional] defaults to true
      *
      * @return string The truncated string
      */
@@ -84,7 +84,7 @@
      * Returns a formatted string of the given timestamp
      *
      * @param integer $tstamp the timestamp to format
-     * @param integer $format[optional] the format
+     * @param integer $format [optional] the format
      * @param integer $skipusertimestamp ignore user timestamp
      */
     function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false, $skiptimestamp = false)

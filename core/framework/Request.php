@@ -452,7 +452,7 @@
          * @see getParameter
          *
          * @param string $key The parameter you want to retrieve
-         * @param mixed $default_value[optional] The value to return if it doesn't exist
+         * @param mixed $default_value [optional] The value to return if it doesn't exist
          *
          * @return mixed
          */

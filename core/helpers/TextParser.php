@@ -135,8 +135,8 @@
          * Setup the parser object
          *
          * @param string $text The text to be parsed
-         * @param boolean $use_toc[optional] Whether to use a TOC if found
-         * @param string $toc_base_id[optional] Base id to use for the TOC element
+         * @param boolean $use_toc [optional] Whether to use a TOC if found
+         * @param string $toc_base_id [optional] Base id to use for the TOC element
          */
         public function __construct($text, $use_toc = false, $toc_base_id = null)
         {

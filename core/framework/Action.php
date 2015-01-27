@@ -44,8 +44,8 @@
          * Forward the user to a specified url
          *
          * @param string $url The URL to forward to
-         * @param integer $code[optional] HTTP status code
-         * @param integer $method[optional] 2 for meta redirect instead of header
+         * @param integer $code [optional] HTTP status code
+         * @param integer $method [optional] 2 for meta redirect instead of header
          */
         public function forward($url, $code = 200)
         {
@@ -163,7 +163,7 @@
         /**
          * Sets the response to 404 and shows an error, with an optional message
          *
-         * @param string $message[optional] The message
+         * @param string $message [optional] The message
          */
         public function return404($message = null)
         {
@@ -181,7 +181,7 @@
         /**
          * Forward the user with HTTP status code 403 and an (optional) message
          *
-         * @param string $message[optional] The message
+         * @param string $message [optional] The message
          */
         public function forward403($message = null)
         {
@@ -193,7 +193,7 @@
          * based on a boolean check
          *
          * @param boolean $condition
-         * @param string $message[optional] The message
+         * @param string $message [optional] The message
          */
         public function forward403unless($condition, $message = null)
         {

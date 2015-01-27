@@ -793,13 +793,6 @@
          *
          * @param text Text that should be parsed for issue numbers and transitions.
          *
-         * @param preg An array of regular expressions that should be used for
-         * matching issue numbers. If an empty array is provided (default), regular
-         * expressions are obtained through TextParser::getIssueRegex() call. The
-         * regular expressions should contain two named parameters - 'issues' and
-         * 'transitions'. These two will be used for extracting the issue number and
-         * transition information.
-         *
          * @return An array with two elements, one denoting the matched issues, one
          * denoting the transitions for issues. These elements can be accessed using
          * keys 'issues', and 'transitions'. The key 'issues' can be used for
@@ -809,14 +802,9 @@
          * and contains ordered transition information (see above for detailed
          * description of format).
          */
-        public static function getIssuesFromTextByRegex($text, $preg = array())
+        public static function getIssuesFromTextByRegex($text)
         {
-            // Fetch the default regular expressions if required.
-            if (!$preg)
-            {
-                $issue_match_regexes = TextParser::getIssueRegex();
-            }
-
+            $issue_match_regexes = TextParser::getIssueRegex();
             $issue_numbers = array(); // Issue numbers
             $issues = array(); // Issue objects
             $transitions = array(); // Transition information
@@ -887,13 +875,13 @@
 
             // Make sure that each issue gets procssed only once for a single commit
             // (avoid duplication of commits).
-            $issue_numbers = array_unique($issue_numbers);
+            $unique_issue_numbers = array_unique($issue_numbers);
 
             // Fetch all issues affected by the commit.
-            foreach ($issue_numbers as $issue_no)
+            foreach ($unique_issue_numbers as $issue_no)
             {
                 $issue = Issue::getIssueFromLink($issue_no);
-                if ($issue instanceof \thebuggenie\core\entities\Issue): $issues[] = $issue; endif;
+                if ($issue instanceof \thebuggenie\core\entities\Issue) $issues[] = $issue;
             }
 
             // Return array consisting out of two arrays - one with \thebuggenie\core\entities\Issue
@@ -922,7 +910,7 @@
         /**
          * Print the issue number and title nicely formatted
          *
-         * @param boolean $link_formatted[optional] Whether to include the # if it's only numeric (default false)
+         * @param boolean $link_formatted [optional] Whether to include the # if it's only numeric (default false)
          *
          * @return string
          */
@@ -1312,7 +1300,7 @@
         /**
          * Specify whether or not this item is locked
          *
-         * @param boolean $locked[optional]
+         * @param boolean $locked [optional]
          */
         public function setLocked($locked = true)
         {
@@ -1815,7 +1803,7 @@
         /**
          * Returns a complete issue no
          *
-         * @param boolean $link_formatted[optional] Whether to include the # if it's only numeric (default false)
+         * @param boolean $link_formatted [optional] Whether to include the # if it's only numeric (default false)
          *
          * @return string
          */
@@ -2110,7 +2098,7 @@
          * Attach a link to the issue
          *
          * @param string $url The url of the link
-         * @param string $description[optional] a description
+         * @param string $description [optional] a description
          */
         public function attachLink($url, $description = null)
         {
@@ -3928,7 +3916,7 @@
          * @see confirmAffectedComponent()
          *
          * @param \thebuggenie\core\entities\Edition $item The edition to remove
-         * @param boolean $confirmed[optional] Whether it's confirmed or not
+         * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
          */
@@ -3958,7 +3946,7 @@
          * @see confirmAffectedComponent()
          *
          * @param \thebuggenie\core\entities\Build $item The build to remove
-         * @param boolean $confirmed[optional] Whether it's confirmed or not
+         * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
          */
@@ -3988,7 +3976,7 @@
          * @see confirmAffectedBuild()
          *
          * @param \thebuggenie\core\entities\Component $item The component to remove
-         * @param boolean $confirmed[optional] Whether it's confirmed or not
+         * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
          */
@@ -4287,7 +4275,7 @@
         /**
          * Mark issue as blocking or not blocking
          *
-         * @param boolean $blocking[optional] Whether it's blocking or not
+         * @param boolean $blocking [optional] Whether it's blocking or not
          */
         public function setBlocking($blocking = true)
         {

@@ -17,8 +17,8 @@
      * Returns an <img> tag with a specified image
      * 
      * @param string $image image source
-     * @param array $params[optional] html parameters
-     * @param boolean $notheme[optional] whether this is a themed image or a top level path
+     * @param array $params [optional] html parameters
+     * @param boolean $notheme [optional] whether this is a themed image or a top level path
      * @param string $module whether this is a module image or in the core image set
      * @param boolean $relative whether the path is relative or absolute
      * 
@@ -64,7 +64,7 @@
      * Returns the URL to a specified image
      * 
      * @param string $image image source
-     * @param bool $notheme[optional] whether this is a themed image or a top level path
+     * @param bool $notheme [optional] whether this is a themed image or a top level path
      * 
      * @return string
      */
@@ -101,7 +101,7 @@
      * 
      * @param string $url link target
      * @param string $link_text the text displayed in the tag
-     * @param array $params[optional] html parameters
+     * @param array $params [optional] html parameters
      * 
      * @return string
      */
@@ -166,7 +166,7 @@
      * @see link_tag()
      * 
      * @param string $link_text the text displayed in the tag
-     * @param array $params[optional] html parameters
+     * @param array $params [optional] html parameters
      *
      * @return string
      */
@@ -179,8 +179,8 @@
      * Returns an <input type="image"> tag
      * 
      * @param string $image image source
-     * @param array $params[optional] html parameters
-     * @param bool $notheme[optional] whether this is a themed image or a top level path
+     * @param array $params [optional] html parameters
+     * @param bool $notheme [optional] whether this is a themed image or a top level path
      * 
      * @return string
      */
@@ -217,7 +217,7 @@
      * 
      * @param string    $name     The route key
      * @param array     $params    key => value pairs of route parameters
-     * @param bool        $relative[optional] Whether to generate a full url or relative
+     * @param bool        $relative [optional] Whether to generate a full url or relative
      * 
      * @return string
      */

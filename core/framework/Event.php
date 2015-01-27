@@ -212,7 +212,7 @@
         /**
          * Invoke a trigger
          *
-         * @param array $params[optional] Parameters to pass to the registered listeners
+         * @param array $params [optional] Parameters to pass to the registered listeners
          *
          * @return Event
          */
@@ -230,7 +230,7 @@
         /**
          * Invoke a trigger and return as soon as it is processed
          *
-         * @param array $params[optional] Parameters to pass to the registered listeners
+         * @param array $params [optional] Parameters to pass to the registered listeners
          *
          * @return Event
          */
@@ -289,7 +289,7 @@
          * Add an element to the return list
          *
          * @param mixed $val The value to add to the list
-         * @param mixed $key[optional] Specify the key
+         * @param mixed $key [optional] Specify the key
          */
         public function addToReturnList($val, $key = null)
         {

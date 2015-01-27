@@ -44,8 +44,8 @@
          * Log a message to the logger
          *
          * @param string $message The message to log
-         * @param string $category[optional] The message category (default "main")
-         * @param integer $level[optional] The loglevel
+         * @param string $category [optional] The message category (default "main")
+         * @param integer $level [optional] The loglevel
          */
         public static function log($message, $category = 'main', $level = 1)
         {
@@ -149,7 +149,7 @@
          * Get complete log entries for a specific category
          *
          * @param string $category
-         * @param integer $min_level[optional]
+         * @param integer $min_level [optional]
          * 
          * @return array
          */
@@ -170,7 +170,7 @@
          * Get log messages for a specific category
          *
          * @param string $category
-         * @param integer $min_level[optional]
+         * @param integer $min_level [optional]
          *
          * @return array
          */

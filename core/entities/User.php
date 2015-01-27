@@ -1423,7 +1423,7 @@
         /**
          * Set whether this user is activated or not
          *
-         * @param boolean $val[optional]
+         * @param boolean $val [optional]
          */
         public function setActivated($val = true)
         {
@@ -1819,7 +1819,7 @@
         /**
          * Return the users avatar url
          *
-         * @param boolean $small[optional] Whether to get the URL for the small avatar (default small)
+         * @param boolean $small [optional] Whether to get the URL for the small avatar (default small)
          *
          * @return string an URL to put in an <img> tag
          */
@@ -1963,7 +1963,7 @@
         /**
          * Set whether this user is enabled or not
          *
-         * @param boolean $val[optional]
+         * @param boolean $val [optional]
          */
         public function setEnabled($val = true)
         {
@@ -1973,7 +1973,7 @@
         /**
          * Set whether this user is validated or not
          *
-         * @param boolean $val[optional]
+         * @param boolean $val [optional]
          */
         public function setValidated($val = true)
         {
@@ -1983,7 +1983,7 @@
         /**
          * Set the user's joined date
          *
-         * @param integer $val[optional]
+         * @param integer $val [optional]
          */
         public function setJoined($val = null)
         {
@@ -2014,7 +2014,7 @@
          * Find users based on details
          *
          * @param string $details Any user detail (email, username, realname or buddyname)
-         * @param integer $limit[optional] an optional limit on the number of results
+         * @param integer $limit [optional] an optional limit on the number of results
          *
          * @return array
          */
@@ -2027,8 +2027,8 @@
          * Perform a permission check on this user
          *
          * @param string $permission_type The permission key
-         * @param integer $target_id[optional] a target id if applicable
-         * @param string $module_name[optional] the module for which the permission is valid
+         * @param integer $target_id [optional] a target id if applicable
+         * @param string $module_name [optional] the module for which the permission is valid
          *
          * @return boolean
          */
@@ -2190,7 +2190,7 @@
         /**
          * Return if the user can report new issues
          *
-         * @param integer $product_id[optional] A product id
+         * @param integer $product_id [optional] A product id
          * @return boolean
          */
         public function canReportIssues($project_id = null)
@@ -2285,7 +2285,7 @@
         /**
          * Return if the user can access configuration pages
          *
-         * @param integer $section[optional] a section, or the configuration frontpage
+         * @param integer $section [optional] a section, or the configuration frontpage
          *
          * @return boolean
          */
@@ -2469,15 +2469,15 @@
         }
 
         /**
-         * Return an array of issues that has changes pending
+         * Return an array of issues posted by this user
          *
-         * @param int $number number of issues to be retrieved
+         * @param int $limit number of issues to be retrieved
          *
          * @return array
          */
-        public function getIssues($number = null)
+        public function getIssues($limit = null)
         {
-            return tables\Issues::getTable()->getIssuesPostedByUser($this->getID(), $number);
+            return tables\Issues::getTable()->getIssuesPostedByUser($this->getID(), $limit);
         }
 
         public function isOpenIdLocked()
@@ -2866,7 +2866,7 @@
          *
          * @param type $setting The setting name
          * @param type $value The value to set
-         * @param type $module[optional] The module if not 'core'
+         * @param type $module [optional] The module if not 'core'
          * @return type
          */
         public function setNotificationSetting($setting, $value, $module = 'core')

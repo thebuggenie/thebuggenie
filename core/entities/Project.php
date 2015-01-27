@@ -545,7 +545,7 @@
         /**
          * Retrieve all projects with no parent. If the parent is archived, the project will not be shown
          *
-         * @param bool $archived[optional] Show archived projects instead
+         * @param bool $archived [optional] Show archived projects instead
          *
          * @return array
          */
@@ -1310,7 +1310,7 @@
         /**
          * Returns a list of upcoming milestones
          *
-         * @param integer $days[optional] Number of days, default 21
+         * @param integer $days [optional] Number of days, default 21
          *
          * @return array
          */
@@ -1334,7 +1334,7 @@
         /**
          * Returns a list of milestones starting soon
          *
-         * @param integer $days[optional] Number of days, default 21
+         * @param integer $days [optional] Number of days, default 21
          *
          * @return array
          */
@@ -2163,7 +2163,7 @@
          * Return an array specifying visibility, requirement and choices for fields in issues
          *
          * @param integer $issue_type
-         * @param boolean $reportable[optional] Whether to only include fields that can be reported
+         * @param boolean $reportable [optional] Whether to only include fields that can be reported
          *
          * @return array
          */
@@ -2925,7 +2925,7 @@
         /**
          * Get children based on archived state
          *
-         * @param bool $archived[optional] Show archived projects
+         * @param bool $archived [optional] Show archived projects
          */
         public function getChildren($archived = false)
         {
@@ -3061,7 +3061,7 @@
         /**
          * Specify whether or not this item is locked
          *
-         * @param boolean $locked[optional]
+         * @param boolean $locked [optional]
          */
         public function setLocked($locked = true)
         {
