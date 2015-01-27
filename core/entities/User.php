@@ -2831,9 +2831,10 @@
         /**
          * Get a notification setting for a specific module
          *
-         * @param type $setting The setting to retrieve
-         * @param type $module The module if not 'core'
-         * @return \thebuggenie\core\entities\NotificationSetting
+         * @param string $setting The setting to retrieve
+         * @param string $module The module if not 'core'
+         * 
+         * @return NotificationSetting
          */
         public function getNotificationSetting($setting, $default_value = null, $module = 'core')
         {
@@ -2864,16 +2865,17 @@
         /**
          * Set notification setting for a specific setting / module
          *
-         * @param type $setting The setting name
-         * @param type $value The value to set
-         * @param type $module [optional] The module if not 'core'
-         * @return type
+         * @param string $setting The setting name
+         * @param mixed $value The value to set
+         * @param string $module [optional] The module if not 'core'
+         *
+         * @return NotificationSetting
          */
         public function setNotificationSetting($setting, $value, $module = 'core')
         {
-            $setting = $this->getNotificationSetting($setting, null, $module);
-            $setting->setValue($value);
-            return $setting;
+            $setting_object = $this->getNotificationSetting($setting, null, $module);
+            $setting_object->setValue($value);
+            return $setting_object;
         }
 
     }
