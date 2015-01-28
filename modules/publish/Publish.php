@@ -555,7 +555,7 @@
         /**
          * Removes an article from the list of flagged articles
          *
-         * @param integer $article_id ID of article to remove
+         * @param framework\Event $event
          */
         public function TBGUser__removeStarredArticle(framework\Event $event)
         {
