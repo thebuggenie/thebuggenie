@@ -12,7 +12,7 @@
             <?php if (!$status->canUserSet($tbg_user)) continue; ?>
             <li>
                 <a href="javascript:void(0);" onclick="TBG.Issues.Affected.setStatus('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');">
-                    <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Datatype) ? $status->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                    <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
                         <span id="status_content">&nbsp;&nbsp;</span>
                     </div>
                     <?php echo __($status->getName()); ?>
