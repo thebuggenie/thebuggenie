@@ -83,7 +83,8 @@
      *
      * @param integer $tstamp the timestamp to format
      * @param integer $format [optional] the format
-     * @param integer $skipusertimestamp ignore user timestamp
+     * @param boolean $skipusertimestamp ignore user timestamp
+     * @param boolean $skiptimestamp ignore rebasing timestamp
      */
     function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false, $skiptimestamp = false)
     {
