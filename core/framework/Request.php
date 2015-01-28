@@ -43,7 +43,7 @@
          * Handles an uploaded file, stores it to the correct folder, adds an entry
          * to the database and returns a \thebuggenie\core\entities\File object
          *
-         * @param string $thefile The request parameter the file was sent as
+         * @param string $key The request parameter the file was sent as
          *
          * @return \thebuggenie\core\entities\File The File object
          */
