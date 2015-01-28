@@ -360,10 +360,14 @@
                             $fieldname = 'Priority';
                             $fieldname_small = 'priority';
                         }
+                        else
+                        {
+                            throw new framework\exceptions\ConfigurationException(framework\Context::getI18n()->__('Invalid workflow validation rule: %rule_name', array('%rule_name' => $this->_name)));
+                        }
 
                         if ($input instanceof \thebuggenie\core\entities\Issue)
                         {
-                            $type = "TBG{$fieldname}";
+                            $type = "\\thebuggenie\\core\\entities\\{$fieldname}";
                             $getter = "get{$fieldname}";
                             if ($type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID())
                             {
