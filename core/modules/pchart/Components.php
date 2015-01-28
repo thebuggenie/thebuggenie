@@ -18,6 +18,7 @@
                 $maxvals[] = max($dataset['values']);
                 if (isset($dataset['burndown']))
                 {
+                    $burndownValues = array();
                     $amount = (count($dataset['values']) > 1) ? $dataset['burndown']['maxEstimation'] / (count($dataset['values']) - 1) : 0;
                     for ($i = 0; $i < count($dataset['values']); $i++)
                         $burndownValues[] = $dataset['burndown']['maxEstimation'] - ($i * $amount);
