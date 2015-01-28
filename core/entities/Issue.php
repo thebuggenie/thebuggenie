@@ -2331,7 +2331,7 @@
             if ($this->_tags == null)
             {
                 $this->_tags = array();
-                if ($res = tables\IssueTags::getTable()->getByIssueID($this->getID()))
+                if ($resultset = tables\IssueTags::getTable()->getByIssueID($this->getID()))
                 {
                     while ($row = $resultset->getNextRow())
                     {
