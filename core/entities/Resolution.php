@@ -18,7 +18,7 @@
 
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-            foreach (array("CANT'T REPRODUCE", "WON'T FIX", "NOT AN ISSUE", "POSTPONED", "RESOLVED", "CAN'T FIX", "DUPLICATE") as $name)
+            foreach (array("CAN'T REPRODUCE", "WON'T FIX", "NOT AN ISSUE", "POSTPONED", "RESOLVED", "CAN'T FIX", "DUPLICATE") as $name)
             {
                 $resolution = new \thebuggenie\core\entities\Resolution();
                 $resolution->setName($name);
