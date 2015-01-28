@@ -1689,6 +1689,7 @@
                         if ($request['return_format'] == 'planning')
                         {
                             $this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+                            $options = array();
                             $options['selected_issuetype'] = $issue->getIssueType();
                             $options['selected_project'] = $this->selected_project;
                             $options['issuetypes'] = $this->issuetypes;

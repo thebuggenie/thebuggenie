@@ -1694,6 +1694,7 @@
 
                     $existing_teams = array_keys($user->getTeams());
                     $new_teams = array();
+                    $new_clients = array();
                     $user->clearTeams();
                     try
                     {
