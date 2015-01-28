@@ -529,6 +529,11 @@
             if (!framework\Context::isProjectContext() && !isset($this->_filters['project_id'])) $this->_filters['project_id'] = SearchFilter::createFilter('project_id', array(), $this);
         }
 
+        /**
+         * Return current filters
+         *
+         * @return array
+         */
         public function getFilters()
         {
             if ($this->_filters === null)
