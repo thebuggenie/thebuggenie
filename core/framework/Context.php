@@ -2492,6 +2492,9 @@
             {
                 $tbg_summary['db']['queries'] = \b2db\Core::getSQLHits();
                 $tbg_summary['db']['timing'] = \b2db\Core::getSQLTiming();
+                $tbg_summary['db']['objectpopulation'] = \b2db\Core::getObjectPopulationHits();
+                $tbg_summary['db']['objecttiming'] = \b2db\Core::getObjectPopulationTiming();
+                $tbg_summary['db']['objectcount'] = \b2db\Core::getObjectPopulationCount();
             }
             $tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
             $tbg_summary['scope'] = array();

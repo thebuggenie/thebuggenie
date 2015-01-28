@@ -28,6 +28,8 @@
         #debug-frames-container .badge.timestamp { background-color: rgba(255, 255, 255, 1); min-width: 90px; }
         #debug-frames-container .badge.count, #debug-frames-container .badge.loglevel { background-color: rgba(225, 225, 225, 0.5); }
         #debug-frames-container .badge.routename { background-color: rgba(225, 225, 225, 0.5); min-width: 200px; }
+        #debug-frames-container .badge.classname { background-color: rgba(235, 235, 205, 0.5); min-width: 200px; }
+        #debug-frames-container .badge.classcount { background-color: rgba(205, 205, 235, 0.5); min-width: 30px; }
         #debug-frames-container .badge.modulename { background-color: rgba(225, 225, 225, 0.5); margin: 0; }
         #debug-bar { cursor: pointer; text-align: left; border-top: 1px solid rgba(100, 100, 100, 0.2); width: 100%; padding: 0; background-color: #FAFAFA; z-index: 10000; box-shadow: 0 -3px 2px rgba(100, 100, 100, 0.2); font-size: 1.1em; list-style: none; margin: 0; height: 40px; }
         #debug-bar.enabled { position: fixed; top: 0; left: 0; border: 0; }
@@ -61,14 +63,20 @@
             <?php echo image_tag('debug_scope.png'); ?>
             <b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?>
         </li>
-        <li onclick="tbg_debug_show_menu_tab('log_sql', $(this));" title="Database queries">
-            <?php echo image_tag('debug_database.png'); ?>
-            <?php if (array_key_exists('db', $tbg_summary)): ?>
+        <?php if (array_key_exists('db', $tbg_summary)): ?>
+            <li onclick="tbg_debug_show_menu_tab('log_sql', $(this));" title="Database queries">
+                <?php echo image_tag('debug_database.png'); ?>
                 <b><?php echo count($tbg_summary['db']['queries']); ?></b> (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
-            <?php else: ?>
+            </li>
+            <li onclick="tbg_debug_show_menu_tab('log_objectpopulation', $(this));" title="Database object population">
+                <?php echo image_tag('debug_population.png'); ?>
+                <b><?php echo $tbg_summary['db']['objectcount']; ?></b> (<?php echo ($tbg_summary['db']['objecttiming'] > 1) ? round($tbg_summary['db']['objecttiming'], 2) . 's' : round($tbg_summary['db']['objecttiming'] * 1000, 1) . 'ms'; ?>)
+            </li>
+        <?php else: ?>
+            <li title="Database queries">
                 <span class="faded_out">No database queries</span>
-            <?php endif; ?>
-        </li>
+            </li>
+        <?php endif; ?>
         <li onclick="tbg_debug_show_menu_tab('log_messages', $(this));" style="cursor: pointer;">
             <?php echo image_tag('debug_log.png'); ?>
             Log
