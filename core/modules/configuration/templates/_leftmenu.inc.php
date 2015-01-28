@@ -12,9 +12,9 @@
             <a href="<?php echo $url; ?>"<?php if ($is_selected): ?> class="selected"<?php endif; ?>>
                 <?php
                     if (isset($info['module']) && $info['module'] != 'core'):
-                        echo image_tag('cfg_icon_'.$info['icon'].'.png', null, false, $info['module']);
+                        echo image_tag('cfg_icon_'.$info['icon'].'.png', array(), false, $info['module']);
                       else:
-                        echo image_tag('cfg_icon_'.$info['icon'].'.png', null);
+                        echo image_tag('cfg_icon_'.$info['icon'].'.png', array());
                     endif;
                     echo $info['description'];
                 ?>
