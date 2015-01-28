@@ -60,7 +60,7 @@
             {
                 if (self::$_groups !== null)
                 {
-                    self::$_groups[$group->getID()] = $this;
+                    self::$_groups[$this->getID()] = $this;
                 }
             }
         }
