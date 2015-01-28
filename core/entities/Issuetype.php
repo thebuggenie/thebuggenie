@@ -189,29 +189,6 @@
             $this->_description = $description;
         }
 
-        static function getTask()
-        {
-            try
-            {
-                $crit = new \b2db\Criteria();
-                $crit->addWhere(tables\IssueTypes::ICON, 'task');
-                $crit->addWhere(tables\IssueTypes::SCOPE, framework\Context::getScope()->getID());
-                $row = tables\IssueTypes::getTable()->doSelectOne($crit);
-                if ($row instanceof \b2db\Row)
-                {
-                    return Issuetype::getB2DBTable()->selectById($row->get(tables\IssueTypes::ID), $row);
-                }
-                else
-                {
-                    throw new \Exception("Couldn't find any 'task' issue types");
-                }
-            }
-            catch (\Exception $e)
-            {
-                throw $e;
-            }
-        }
-
         protected function _preDelete()
         {
             tables\IssuetypeSchemeLink::getTable()->deleteByIssuetypeID($this->getID());
