@@ -85,7 +85,7 @@
                             $action = $file->getAction();
                             if ($action == 'M'): $action = 'U'; endif;
 
-                            echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
+                            echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', array(), false, 'vcs_integration') . '</td>';
 
                             $link_file = str_replace('%revno%', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
                             $link_file = str_replace('%oldrev%', $oldrevision, $link_file);
