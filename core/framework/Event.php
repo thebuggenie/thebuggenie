@@ -88,8 +88,8 @@
         /**
          * Invoke a trigger
          *
-         * @param string $module The module for which the trigger is active
-         * @param string $identifier The trigger identifier
+         * @param Event $event The event that is triggered
+         * @param boolean $return_when_processed (optional) whether to return when processed or continue
          *
          * @return mixed
          */
@@ -156,8 +156,6 @@
             $this->_subject = $subject;
             $this->_parameters = $parameters;
             $this->_return_list = $initial_list;
-
-            return $this;
         }
 
         /**
