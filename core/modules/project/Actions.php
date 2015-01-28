@@ -811,10 +811,13 @@
         public function runStatisticsImagesets(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
-            $success = false;
-            if (in_array($request['set'], array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
+            try
             {
-                $success = true;
+                if (!in_array($request['set'], array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
+                {
+                    throw new \InvalidArgumentException(framework\Context::getI18n()->__('Invalid image set'));
+                }
+
                 $base_url = framework\Context::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key', 'mode' => '%mode', 'image_number' => '%image_number'));
                 $key = urlencode('%key');
                 $mode = urlencode('%mode');
@@ -834,14 +837,14 @@
                 {
                     $images = array('main' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url));
                 }
+                $this->getResponse()->setHttpStatus(200);
+                return $this->renderJSON(array('images' => $images));
             }
-            else
+            catch (\Exception $e)
             {
-                $error = framework\Context::getI18n()->__('Invalid image set');
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $e->getMessage()));
             }
-
-            $this->getResponse()->setHttpStatus(($success) ? 200 : 400);
-            return $this->renderJSON(($success) ? array('success' => $success, 'images' => $images) : array('success' => $success, 'error' => $error));
         }
 
         protected function _calculateImageDetails($counts)
