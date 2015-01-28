@@ -375,7 +375,7 @@
                                 break;
                             }
                         }
-                        elseif ($input instanceof \thebuggenie\core\entities\Request)
+                        elseif ($input instanceof framework\Request)
                         {
                             if ($input->getParameter("{$fieldname_small}_id") == $item)
                             {
