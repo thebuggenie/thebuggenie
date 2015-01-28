@@ -257,6 +257,7 @@
 
                 // Create v4 tables
                 $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'tables' . DS;
+                $tables_created = array();
                 foreach (scandir($b2db_entities_path) as $tablefile)
                 {
                     if (in_array($tablefile, array('.', '..')))
@@ -430,67 +431,6 @@
                 $this->error = "Couldn't remove the file " . THEBUGGENIE_PATH . "upgrade. Please remove this file manually.";
             }
             framework\Context::clearRoutingCache();
-        }
-
-        protected function _upgradeFrom3dot0()
-        {
-            // Add new tables
-            \thebuggenie\core\entities\tables\ScopeHostnames::getTable()->create();
-
-            // Add classpath for existing old tables used for upgrade
-            framework\Context::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
-
-            // Upgrade old tables
-            \thebuggenie\core\entities\tables\Scopes::getTable()->upgrade(\thebuggenie\core\entities\tables\ScopesTable3dot0::getTable());
-            \thebuggenie\core\entities\tables\IssueFields::getTable()->upgrade(\thebuggenie\core\entities\tables\IssueFieldsTable3dot0::getTable());
-
-            // Upgrade all modules
-            foreach (framework\Context::getModules() as $module)
-            {
-                if (method_exists($module, 'upgradeFrom3dot0'))
-                {
-                    $module->upgradeFrom3dot0();
-                }
-            }
-
-            // Start a transaction to preserve the upgrade path
-            $transaction = \b2db\Core::startTransaction();
-
-            // Add votes to feature requests for default issue type scheme
-            $its = new \thebuggenie\core\entities\IssuetypeScheme(1);
-            foreach (\thebuggenie\core\entities\Issuetype::getAll() as $fr)
-            {
-                if ($fr instanceof \thebuggenie\core\entities\Issuetype)
-                {
-                    if (in_array($fr->getKey(), array('featurerequest', 'bugreport', 'enhancement')))
-                    {
-                        $its->setFieldAvailableForIssuetype($fr, 'votes');
-                    }
-                }
-            }
-
-            $ut = \thebuggenie\core\entities\tables\Users::getTable();
-            $crit = $ut->getCriteria();
-            $crit->addUpdate(\thebuggenie\core\entities\tables\Users::PRIVATE_EMAIL, true);
-            $ut->doUpdate($crit);
-
-            // Add default gravatar setting
-            framework\Settings::saveSetting(framework\Settings::SETTING_ENABLE_GRAVATARS, 1);
-
-            $trans_crit = \thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->getCriteria();
-            $trans_crit->addWhere(\thebuggenie\core\entities\tables\WorkflowTransitions::NAME, 'Request more information');
-            $trans_crit->addWhere(\thebuggenie\core\entities\tables\WorkflowTransitions::WORKFLOW_ID, 1);
-            $trans_row = \thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->doSelectOne($trans_crit);
-            if ($trans_row)
-            {
-                $transition = new \thebuggenie\core\entities\WorkflowTransition($trans_row->get(\thebuggenie\core\entities\tables\WorkflowTransitions::ID), $trans_row);
-                $transition->setTemplate('main/updateissueproperties');
-                $transition->save();
-            }
-
-            // End transaction and finalize upgrade
-            $transaction->commitAndEnd();
-            $this->upgrade_complete = true;
         }
 
         protected function _upgradeFrom3dot2(framework\Request $request)
