@@ -5,7 +5,7 @@
     if (function_exists('imagecreatetruecolor'))
     {
             // use of timestamped paramter in the captcha route for preventing image cache
-            echo image_tag(\thebuggenie\core\framework\Context::getRouting()->generate('captcha', array(time())), null, true, 'core', true);
+            echo image_tag(\thebuggenie\core\framework\Context::getRouting()->generate('captcha', array(time())), array(), true, 'core', true);
     }
     else 
     {

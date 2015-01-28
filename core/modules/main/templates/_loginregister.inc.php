@@ -1,6 +1,6 @@
 <div id="register" class="logindiv regular">
     <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
-        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('register_message'), null, null, array('embedded' => true)); ?>
+        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('register_message'), false, null, array('embedded' => true)); ?>
     <?php else: ?>
         <div id="register_container">
             <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('register'); ?>" method="post" id="register_form" onsubmit="TBG.Main.Login.register('<?php echo make_url('register'); ?>'); return false;">
