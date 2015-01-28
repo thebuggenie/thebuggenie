@@ -889,7 +889,7 @@
                 libxml_use_internal_errors(true);
                 $element = simplexml_load_string("<t{$mode} ".trim($matches[0])."></t{$mode}>");
 
-                if ($element instanceof SimpleXMLElement)
+                if ($element instanceof \SimpleXMLElement)
                 {
                     if ($element['class']) $output .= ' class="'.$element['class'].'"';
                     if ($element['style']) $output .= ' style="'.$element['style'].'"';
@@ -940,7 +940,7 @@
             libxml_use_internal_errors(true);
             $element = simplexml_load_string("<{$matches[1]}{$matches[2]}>{$matches[3]}</{$matches[1]}>");
 
-            if ($element instanceof SimpleXMLElement)
+            if ($element instanceof \SimpleXMLElement)
             {
                 $html = "<{$element->getName()}";
                 if (isset($element['style'])) $html .= ' style="'.$element['style'].'"';
