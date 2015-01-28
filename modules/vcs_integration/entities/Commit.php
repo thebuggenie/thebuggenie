@@ -125,6 +125,7 @@
 
         /**
          * Get the commit log for this commit
+         * 
          * @return string
          */
         public function getLog()
@@ -134,7 +135,8 @@
 
         /**
          * Get this commit's revision number or hash
-         * @return string/integer
+         * 
+         * @return mixed
          */
         public function getRevision()
         {
@@ -148,7 +150,8 @@
 
         /**
          * Get the preceeding commit's revision number or hash
-         * @return string/integer
+         *
+         * @return mixed
          */
         public function getPreviousRevision()
         {
@@ -162,7 +165,8 @@
 
         /**
          * Get the previous commit
-         * @return Vcs_integrationCommit
+         *
+         * @return Commit
          */
         public function getPreviousCommit()
         {
@@ -171,6 +175,7 @@
 
         /**
          * Get the author of this commit
+         *
          * @return \thebuggenie\core\entities\User
          */
         public function getAuthor()
@@ -180,6 +185,7 @@
 
         /**
          * Get the POSIX timestamp of this comment
+         *
          * @return integer
          */
         public function getDate()
@@ -189,6 +195,7 @@
 
         /**
          * Get any other data for this comment, will need parsing
+         *
          * @return string
          */
         public function getMiscData()
@@ -198,6 +205,7 @@
 
         /**
          * Get an array of Vcs_integrationFiles affected by this commit
+         *
          * @return array
          */
         public function getFiles()
@@ -208,6 +216,7 @@
 
         /**
          * Get an array of \thebuggenie\core\entities\Issues affected by this commit
+         *
          * @return array|\thebuggenie\core\entities\Issue
          */
         public function getIssues()
@@ -218,6 +227,7 @@
 
         /**
          * Get the project this commit applies to
+         *
          * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
@@ -227,6 +237,7 @@
 
         /**
          * Set a new commit author
+         *
          * @param \thebuggenie\core\entities\User $user
          */
         public function setAuthor(\thebuggenie\core\entities\User $user)
@@ -236,6 +247,7 @@
 
         /**
          * Set a new date for the commit
+         *
          * @param integer $date
          */
         public function setDate($date)
@@ -245,6 +257,7 @@
 
         /**
          * Set a new log for the commit. This will not affect the issues which are affected
+         *
          * @param string $log
          */
         public function setLog($log)
@@ -254,6 +267,7 @@
 
         /**
          * Set a new parent revision
+         *
          * @param integer $revno
          */
         public function setPreviousRevision($revno)
@@ -263,6 +277,7 @@
 
         /**
          * Set THIS revisions revno
+         *
          * @param integer $revno
          */
         public function setRevision($revno)
@@ -272,6 +287,7 @@
 
         /**
          * Set misc data for this commit (see other docs)
+         *
          * @param string $data
          */
         public function setMiscData($data)
@@ -281,6 +297,7 @@
 
         /**
          * Set the project this commit applies to
+         *
          * @param \thebuggenie\core\entities\Project $project
          */
         public function setProject(\thebuggenie\core\entities\Project $project)
@@ -306,11 +323,12 @@
 
         /**
          * Get all commits relating to issues inside a project
+         *
          * @param integer $id
          * @param integer $limit
          * @param integer $offset
          *
-         * @return array/false
+         * @return mixed
          */
         public static function getByProject($id, $limit = 40, $offset = null)
         {
