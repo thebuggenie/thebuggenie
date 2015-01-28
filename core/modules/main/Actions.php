@@ -1805,7 +1805,7 @@
                 try
                 {
                     $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                    $spenttime = tables\IssueSpentTimes::getTable()->selectById($entry_id);
+                    $spenttime = tables\IssueSpentTimes::getTable()->selectById($request['entry_id']);
 
                     if ($spenttime instanceof entities\IssueSpentTime)
                     {
