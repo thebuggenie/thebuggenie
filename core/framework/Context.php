@@ -234,7 +234,6 @@
         /**
          * Displays a nicely formatted exception message
          *
-         * @param string $title
          * @param \Exception $exception
          */
         public static function exceptionHandler($exception)

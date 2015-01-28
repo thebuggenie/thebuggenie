@@ -75,6 +75,14 @@
             return ($prepend_scope) ? "{$key}.{$scope_id}" : $key;
         }
 
+        /**
+         * Retrieve an item from the cache
+         *
+         * @param string $key
+         * @param boolean $prepend_scope [optional] Whether to append scope id (for non-global cache keys)
+         *
+         * @return mixed
+         */
         public function get($key, $prepend_scope = true)
         {
             if (!$this->isEnabled())
@@ -96,6 +104,14 @@
             return ($success) ? $var : null;
         }
 
+        /**
+         * Check if an item is in the cache
+         *
+         * @param string $key
+         * @param boolean $prepend_scope [optional] Whether to append scope id (for non-global cache keys)
+         *
+         * @return boolean
+         */
         public function has($key, $prepend_scope = true)
         {
             if (!$this->isEnabled())
