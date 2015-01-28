@@ -3185,11 +3185,18 @@
 
         public function preloadValues()
         {
-            $milestones = tables\Milestones::getTable()->getByProjectID($this->getID());
-            unset($milestones);
-            $issuetypes = IssueType::getAll();
-            unset($issuetypes);
-            tables\ListTypes::getTable()->populateItemCache();
+            static $preloaded = false;
+
+            if (!$preloaded)
+            {
+                $milestones = tables\Milestones::getTable()->getByProjectID($this->getID());
+                unset($milestones);
+                $issuetypes = IssueType::getAll();
+                unset($issuetypes);
+                tables\ListTypes::getTable()->populateItemCache();
+            }
+
+            $preloaded = true;
         }
 
     }
