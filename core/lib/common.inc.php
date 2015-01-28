@@ -303,6 +303,17 @@
         return htmlentities($tstring, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
     }
 
+    /**
+     * Return parsed text, based on provided syntax and options
+     *
+     * @param string $text The text that should be parsed
+     * @param boolean $toc [optional] Whether a TOC should be generated and included
+     * @param mixed $article_id [optional] An article id to use as an element id prefix
+     * @param array $options [optional] Parser options
+     * @param integer $syntax [optional] Which parser syntax to use
+     *
+     * @return string
+     */
     function tbg_parse_text($text, $toc = false, $article_id = null, $options = array(), $syntax = \thebuggenie\core\framework\Settings::SYNTAX_MW)
     {
         switch ($syntax)
