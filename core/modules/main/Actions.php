@@ -1805,10 +1805,16 @@
                 try
                 {
                     $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                    if ($entry_id = $request['entry_id'])
+                    $spenttime = tables\IssueSpentTimes::getTable()->selectById($entry_id);
+
+                    if ($spenttime instanceof entities\IssueSpentTime)
                     {
-                        $spenttime = tables\IssueSpentTimes::getTable()->selectById($entry_id);
+                        $spenttime->delete();
+                        $spenttime->getIssue()->save();
                     }
+                    $timesum = array_sum($issue->getSpentTime());
+
+                    return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime())));
                 }
                 catch (\Exception $e)
                 {
@@ -1821,15 +1827,6 @@
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderText('no issue');
             }
-
-            if ($spenttime instanceof entities\IssueSpentTime)
-            {
-                $spenttime->delete();
-                $spenttime->getIssue()->save();
-            }
-            $timesum = array_sum($issue->getSpentTime());
-
-            return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime())));
         }
 
         public function runIssueEditTimeSpent(framework\Request $request)
