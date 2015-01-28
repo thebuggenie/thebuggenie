@@ -10,7 +10,7 @@
             <div class="backdrop_detail_content login_content">
                 <div class="logindiv regular active" id="change_password_container">
                     <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
-                        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changepw_message'), null, null, array('embedded' => true)); ?>
+                        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changepw_message'), false, null, array('embedded' => true)); ?>
                     <?php else: ?>
                         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
                             <h2><?php echo __('Changing your password'); ?></h2>
@@ -125,7 +125,7 @@
                 <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
                 <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
                     <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
+                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array(), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_security.png').__('Security'); ?></a></li>
@@ -137,7 +137,7 @@
         <div id="account_tabs_panes">
             <div id="tab_profile_pane" style="<?php if ($selected_tab != 'profile'): ?> display: none;<?php endif; ?>">
                 <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
-                    <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changedetails_message'), null, null, array('embedded' => true)); ?>
+                    <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changedetails_message'), false, null, array('embedded' => true)); ?>
                 <?php else: ?>
                     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
                         <h3><?php echo __('About yourself'); ?></h3>
