@@ -611,7 +611,7 @@ EOT;
             if ($this->isOutgoingNotificationsEnabled())
             {
                 $issue = $event->getSubject();
-                $event->getParameter('user');
+                $user = $event->getParameter('user');
                 if ($issue instanceof Issue)
                 {
                     $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
