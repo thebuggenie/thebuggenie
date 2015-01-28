@@ -70,30 +70,27 @@
      */
     function image_url($image, $notheme = false, $module = 'core', $relative = true)
     {
+        $image_src = '';
         if ($notheme)
         {
-            $params['src'] = $image;
+            $image_src = $image;
         }
         else
         {
             if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image))
             {
-                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . "iconsets/" . Settings::getIconsetName() . "/modules/{$module}/" . $image;
+                $image_src = \thebuggenie\core\framework\Context::getWebroot() . "iconsets/" . Settings::getIconsetName() . "/modules/{$module}/" . $image;
             }
             elseif ($module != 'core')
             {
-                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image;
+                $image_src = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . "/{$module}/" . $image;
             }
             else
             {
-                $params['src'] = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . '/' . $image;
+                $image_src = \thebuggenie\core\framework\Context::getWebroot() . 'iconsets/' . Settings::getIconsetName() . '/' . $image;
             }
         }
-        if (!$relative)
-        {
-            $params['src'] = \thebuggenie\core\framework\Context::getUrlHost() . $params['src'];
-        }
-        return $params['src'];
+        return ($relative) ? $image_src : \thebuggenie\core\framework\Context::getUrlHost() . $image_src;
     }
     
     /**
