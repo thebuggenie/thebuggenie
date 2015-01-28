@@ -196,6 +196,7 @@
                 $route = $route.$suffix;
 
                 $regexp_suffix = preg_quote($suffix);
+                $parsed = array();
 
                 foreach ($elements as $element)
                 {
@@ -442,7 +443,7 @@
         /**
          * Set the current route csrf enabled/disabled
          *
-         * @param boolean $current_route_module
+         * @param boolean $csrf_enabled
          */
         public function setCurrentRouteCSRFenabled($csrf_enabled = true)
         {
