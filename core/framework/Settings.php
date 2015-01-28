@@ -124,8 +124,8 @@
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 0;
-        protected static $_ver_rev = 'b6';
-        protected static $_ver_name = "Nil admirari";
+        protected static $_ver_rev = '0-RC1';
+        protected static $_ver_name = "Libertas quae sera tamen";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
