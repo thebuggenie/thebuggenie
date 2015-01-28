@@ -70,6 +70,8 @@
         protected $_request = null;
         
         protected $_pre_validation_rules = null;
+
+        protected $_post_validation_rules = null;
         
         protected $_validation_errors = array();
 
