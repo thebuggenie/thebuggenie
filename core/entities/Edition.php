@@ -232,31 +232,6 @@
             return $builds;
         }
 
-        public function _sortBuildsByReleaseDate(\thebuggenie\core\entities\Build $build1, \thebuggenie\core\entities\Build $build2)
-        {
-            if ($build1->getReleaseDate() == $build2->getReleaseDate())
-            {
-                return 0;
-            }
-            return ($build1->getReleaseDate() < $build2->getReleaseDate()) ? -1 : 1;
-        }
-
-        /**
-         * Returns the latest build
-         *
-         * @return \thebuggenie\core\entities\Build
-         */
-        public function getLatestBuild()
-        {
-            $this->_populateBuilds();
-            if (count($this->getBuilds()) > 0)
-            {
-                $builds = usort($this->getBuilds(), array($this, '_sortBuildsByReleaseDate'));
-                return array_slice($builds, 0, 1);
-            }
-            return null;
-        }
-
         /**
          * Returns the parent project
          *
