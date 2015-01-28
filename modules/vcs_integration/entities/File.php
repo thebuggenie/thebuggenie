@@ -39,7 +39,8 @@
 
         /**
          * Associated commit
-         * @var \thebuggenie\core\entities\VCSIntegrationCommit
+         * @var Commit
+         *
          * @Column(type="integer", name="commit_id")
          * @Relates(class="\thebuggenie\modules\vcs_integration\entities\Commit")
          */

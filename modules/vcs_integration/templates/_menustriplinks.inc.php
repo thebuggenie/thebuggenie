@@ -5,7 +5,7 @@
      
     $link_repo = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('browser_url_' . \thebuggenie\core\framework\Context::getCurrentProject()->getID());
     
-    if (\thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . \thebuggenie\core\framework\Context::getCurrentProject()->getID()) != \thebuggenie\core\entities\VCSIntegration::MODE_DISABLED)
+    if (\thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . \thebuggenie\core\framework\Context::getCurrentProject()->getID()) != \thebuggenie\modules\vcs_integration\Vcs_integration::MODE_DISABLED)
     {
             echo link_tag(make_url('vcs_commitspage', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Commits'), (($tbg_response->getPage() == 'vcs_commitspage') ? array('class' => 'selected') : array()));
             if (!($submenu) && $tbg_response->getPage() == 'vcs_commitspage'): ?>
