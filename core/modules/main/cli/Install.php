@@ -81,7 +81,7 @@
                 }
 
                 $not_well = array();
-                if (!is_writable('core/B2DB/'))
+                if (!is_writable(\THEBUGGENIE_CONFIGURATION_PATH))
                 {
                     $not_well[] = 'b2db_perm';
                 }
@@ -100,7 +100,7 @@
                             case 'b2db_perm':
                                 $this->cliEcho("Could not write to the B2DB directory\n", 'red', 'bold');
                                 $this->cliEcho('The folder ');
-                                $this->cliEcho('include/B2DB', 'white', 'bold');
+                                $this->cliEcho(\THEBUGGENIE_CONFIGURATION_PATH, 'white', 'bold');
                                 $this->cliEcho(' folder needs to be writable');
                                 break;
                             case 'root':
@@ -192,12 +192,7 @@
                             \b2db\Core::setUname($db_username);
                             \b2db\Core::setPasswd($db_password);
                             \b2db\Core::setDBtype($db_type);
-                            \b2db\Core::initialize();
-                            $engine_path = \b2db\Core::getEngineClassPath();
-                            if ($engine_path !== null)
-                                \thebuggenie\core\framework\Context::addAutoloaderClassPath($engine_path);
-                            else
-                                throw new \Exception("Cannot initialize the B2DB engine");
+                            \b2db\Core::setTablePrefix('tbg_');
 
                             \b2db\Core::doConnect();
                             \b2db\Core::createDatabase($db_name);
@@ -215,7 +210,7 @@
                         $this->cliEcho("\n");
                         $this->cliEcho("Saving database connection information ... ", 'white', 'bold');
                         $this->cliEcho("\n");
-                        \b2db\Core::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+                        \b2db\Core::saveConnectionParameters(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
                         $this->cliEcho("Successfully saved database connection information.\n", 'green');
                         $this->cliEcho("\n");
                     }
@@ -356,35 +351,27 @@
                         $this->pressEnterToContinue();
                         $this->cliEcho("\n");
                     }
-
-                    $enable_modules = array();
-
-                    if ($this->getProvidedArgument('enable_all_modules') != 'yes')
-                    {
-                        $this->cliEcho("You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n");
-                    }
-
-                    $this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-                    $enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-                    if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-                    $this->cliEcho("Enable communication with version control systems (i.e. svn)? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-                    $enable_modules['vcs_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-                    if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-
-                    $enable_modules['publish'] = true;
-
                     $this->cliEcho("\n");
                     $this->cliEcho("Creating tables ...\n", 'white', 'bold');
-                    $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-                    \thebuggenie\core\framework\Context::addAutoloaderClassPath($tables_path);
-                    $tables_path_handle = opendir($tables_path);
+                    $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'tables' . DS;
                     $tables_created = array();
-                    while ($table_class_file = readdir($tables_path_handle))
+                    foreach (scandir($b2db_entities_path) as $tablefile)
                     {
-                        if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
+                        if (in_array($tablefile, array('.', '..')))
+                            continue;
+
+                        if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
                         {
-                            \b2db\Core::getTable($tablename)->create();
-                            $this->cliEcho("Creating table {$tablename}\n", 'white', 'bold');
+                            $tablename = "\\thebuggenie\\core\\entities\\tables\\{$tablename}";
+                            $reflection = new \ReflectionClass($tablename);
+                            $docblock = $reflection->getDocComment();
+                            $annotationset = new \b2db\AnnotationSet($docblock);
+                            if ($annotationset->hasAnnotation('Table'))
+                            {
+                                \b2db\Core::getTable($tablename)->create();
+                                \b2db\Core::getTable($tablename)->createIndexes();
+                                $tables_created[] = $tablename;
+                            }
                         }
                     }
 
@@ -404,14 +391,10 @@
                     $this->cliEcho("Setting up modules... \n", 'white', 'bold');
                     try
                     {
-                        foreach ($enable_modules as $module => $install)
+                        foreach (array('publish', 'mailing', 'vcs_integration') as $module)
                         {
-                            if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
-                            {
-                                $this->cliEcho("Installing {$module}... \n");
-                                \thebuggenie\core\entities\Module::installModule($module);
-                                $this->cliEcho("Module {$module} installed successfully...\n", 'green');
-                            }
+                            $this->cliEcho("Installing {$module}... \n");
+                            \thebuggenie\core\entities\Module::installModule($module);
                         }
 
                         $this->cliEcho("\n");
