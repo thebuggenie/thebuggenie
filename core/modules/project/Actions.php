@@ -867,7 +867,7 @@
                 {
                     $value = $details['closed'];
                 }
-                if ($value > 0)
+                if (isset($value) && $value > 0)
                 {
                     if ($item_id != 0 || $this->key == 'issues_per_state')
                     {
@@ -891,6 +891,8 @@
                             case 'issues_per_state':
                                 $item = ($item_id == entities\Issue::STATE_OPEN) ? $i18n->__('Open', array(), true) : $i18n->__('Closed', array(), true);
                                 break;
+                            default:
+                                $item = null;
                         }
                         if ($this->key != 'issues_per_state')
                         {
@@ -1673,7 +1675,6 @@
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
-                framework\Logging::log(framework\Logging::LEVEL_WARNING, 'Transition ' . $transition->getID() . ' failed for issue ' . $issue_id);
                 framework\Logging::log(framework\Logging::LEVEL_WARNING, $e->getMessage());
                 return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to apply the transition')));
             }
@@ -1899,7 +1900,7 @@
 
             }
 
-            $this->forward403unless($item instanceof entities\common\Identifiable);
+            $this->forward403unless(isset($item) && $item instanceof entities\common\Identifiable);
 
             if ($request->hasParameter('value'))
             {
@@ -2242,8 +2243,6 @@
                                     break;
                             }
 
-                            if ($request['edition_id'])
-                                $build->setEdition($edition);
                             if (!$build->getID())
                                 $build->setProject($this->selected_project);
 
