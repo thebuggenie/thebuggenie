@@ -173,7 +173,7 @@
 
                         if ($this->search_object->getUserID() == framework\Context::getUser()->getID() || $this->search_object->isPublic() && framework\Context::getUser()->canCreatePublicSearches())
                         {
-                            $search->delete();
+                            $this->search_object->delete();
                             return $this->renderJSON(array('failed' => false, 'message' => framework\Context::getI18n()->__('The saved search was deleted successfully')));
                         }
                     }
@@ -184,13 +184,13 @@
                 }
                 elseif ($request['saved_search_name'] != '')
                 {
-                    if (!$search instanceof entities\SavedSearch)
-                        $search = new entities\SavedSearch();
+                    if (!$this->saved_search instanceof entities\SavedSearch)
+                        $this->saved_search = new entities\SavedSearch();
 
-                    $search->setName($request['saved_search_name']);
-                    $search->setDescription($request['saved_search_description']);
-                    $search->setIsPublic((bool) $request['saved_search_public']);
-                    $search->save();
+                    $this->saved_search->setName($request['saved_search_name']);
+                    $this->saved_search->setDescription($request['saved_search_description']);
+                    $this->saved_search->setIsPublic((bool) $request['saved_search_public']);
+                    $this->saved_search->save();
 
                     if ($request['saved_search_id'])
                     {
