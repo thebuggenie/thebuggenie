@@ -63,12 +63,12 @@
                     {
                         $i_id = $row->get(self::ISSUETYPE_ID);
                         $issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($i_id);
+                        $return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => $issuetype);
                     }
                     catch (\Exception $e)
                     {
                         $this->deleteByIssuetypeID($i_id);
                     }
-                    $return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => $issuetype);
                 }
             }
 
