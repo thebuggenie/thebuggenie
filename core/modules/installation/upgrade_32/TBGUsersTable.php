@@ -56,7 +56,6 @@
             parent::_addVarchar(self::PASSWORD, 100);
             parent::_addVarchar(self::BUDDYNAME, 50);
             parent::_addVarchar(self::REALNAME, 100);
-            parent::_addVarchar(self::SALT, 100);
             parent::_addVarchar(self::EMAIL, 200);
             parent::_addInteger(self::USERSTATE, 10);
             parent::_addBoolean(self::CUSTOMSTATE);

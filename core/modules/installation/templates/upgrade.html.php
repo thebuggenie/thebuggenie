@@ -132,7 +132,7 @@
                 <div class="padded_box installpage" id="install_page_5">
                     <?php include_component('main/percentbar', array('percent' => 90, 'height' => 5)); ?>
                     <h2>Almost done</h2>
-                    As mentioned on the previous page, version 3.3 will make <strong>all current user passwords stop working</strong> - you did read that, right?<br>
+                    As mentioned on the previous page, this new version of The Bug Genie will make <strong>all current user passwords stop working</strong> - you did read that, right?<br>
                     Because of this, we need to set a password for the admin account <span class="command_box"><?php echo strtolower($adminusername); ?></span>.<br>
                     <br>
                     <h5><label for="upgrade_password_admin">Please specify a password for the admin account <u>only</u></label></h5>
