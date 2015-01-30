@@ -1,4 +1,4 @@
-<phpunit bootstrap="core_bootstrap.php">
+<phpunit bootstrap="bootstrap.php">
 	<testsuites>
 		<testsuite name="The Bug Genie core libraries">
 			<directory>./core</directory>

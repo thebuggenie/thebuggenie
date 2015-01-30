@@ -415,6 +415,9 @@
                 $current_version = $version_info[0];
                 if ($current_version != Settings::getVersion(false, false))
                     throw new exceptions\ConfigurationException("You are trying to use a newer version of The Bug Genie than the one you installed", exceptions\ConfigurationException::UPGRADE_REQUIRED);
+
+                self::$_installmode = false;
+                self::$_upgrademode = false;
             }
             if (self::$_installmode)
             {
