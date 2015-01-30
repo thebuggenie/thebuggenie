@@ -1557,7 +1557,7 @@
 
                 if ($username = trim($request['username']))
                 {
-                    if (!User::isUsernameAvailable($username))
+                    if (!entities\User::isUsernameAvailable($username))
                     {
                         if ($request->getParameter('mode') == 'import')
                         {
@@ -1575,14 +1575,14 @@
                             return $this->renderJSON(array('allow_import' => true));
                         }
                     }
+
                     $user = new entities\User();
                     $user->setUsername($username);
                     $user->setRealname($request->getParameter('realname', $username));
                     $user->setBuddyname($request->getParameter('buddyname', $username));
                     $user->setEmail($request->getParameter('email'));
-                    $user->setGroup(entities\Group::getB2DBTable()->selectById((int) $request->getParameter('group_id', framework\Settings::get(framework\Settings::SETTING_USER_GROUP))));
-                    $user->setEnabled();
-                    $user->setActivated();
+                    $group_id = ($request->getParameter('group_id')) ? $request->getParameter('group_id') : framework\Settings::get(framework\Settings::SETTING_USER_GROUP);
+                    $user->setGroup($group_id);
                     if ($request->hasParameter('password') && !(empty($request['password']) && empty($request['password_repeat'])))
                     {
                         if (empty($request['password']) || $request['password'] != $request['password_repeat'])
@@ -1597,7 +1597,6 @@
                         $password = entities\User::createPassword();
                         $user->setPassword($password);
                     }
-                    $user->setJoined();
                     $user->save();
                     foreach ((array) $request['teams'] as $team_id)
                     {

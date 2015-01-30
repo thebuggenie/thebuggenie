@@ -791,6 +791,10 @@
             {
                 $this->_timezone = $this->_timezone->getName();
             }
+            if ($is_new && $this->_joined === null)
+            {
+                $this->_joined = NOW;
+            }
             if ($is_new && $this->_group_id === null)
             {
                 $this->setGroup(framework\Settings::getDefaultGroup());
@@ -1622,9 +1626,9 @@
         /**
          * Set this users group
          *
-         * @param Group $group
+         * @param Group|integer $group
          */
-        public function setGroup(Group $group)
+        public function setGroup($group)
         {
             $this->_group_id = $group;
         }
