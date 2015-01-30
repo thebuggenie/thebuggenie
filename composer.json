@@ -31,7 +31,8 @@
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit-skeleton-generator": "*"
     },
     "suggest" : {
         "ext-apc" : "Enables APC caching of configuration files and table class definitions"
