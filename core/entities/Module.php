@@ -92,8 +92,6 @@
             return $module;
         }
 
-        protected function _addAvailablePermissions() { }
-
         protected function _addListeners() { }
 
         abstract protected function _initialize();
@@ -337,7 +335,6 @@
             $this->_initialize();
             if ($this->isEnabled())
             {
-                $this->_addAvailablePermissions();
                 $this->_addListeners();
             }
         }
@@ -355,11 +352,6 @@
         public function loadHelpTitle($topic)
         {
             return $topic;
-        }
-
-        public function getRoute()
-        {
-            return 'login';
         }
 
         public function setHasAccountSettings($val = true)

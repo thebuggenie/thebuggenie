@@ -53,11 +53,6 @@
             return parent::MODULE_AUTH;
         }
 
-        public function getRoute()
-        {
-            return framework\Context::getRouting()->generate('ldap_authentication_index');
-        }
-
         public function postConfigSettings(framework\Request $request)
         {
             $settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth', 'integrated_auth_header');

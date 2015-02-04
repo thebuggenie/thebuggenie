@@ -191,11 +191,6 @@
             parent::_uninstall();
         }
 
-        public function getRoute()
-        {
-            return framework\Context::getRouting()->generate('publish');
-        }
-
         public function hasProjectAwareRoute()
         {
             return true;
