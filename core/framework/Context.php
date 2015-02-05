@@ -464,6 +464,7 @@
                 self::setLoadStart($starttime[1] + $starttime[0]);
 
                 self::checkInstallMode();
+                self::getCache()->setPrefix(str_replace('.', '_', Settings::getVersion()));
 
                 if (!self::isReadySetup())
                 {
@@ -474,7 +475,6 @@
                     self::getCache()->checkEnabled();
                     if (self::getCache()->isEnabled())
                     {
-                        self::getCache()->setPrefix(str_replace('.', '_', Settings::getVersion()));
                         Logging::log((self::getCache()->getCacheType() == Cache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
                     }
                     else
@@ -642,11 +642,8 @@
 
         public static function clearRoutingCache()
         {
-            foreach (array(Cache::KEY_ROUTES_CACHE) as $key)
-            {
-                self::getCache()->delete($key, true, true);
-                self::getCache()->fileDelete($key, true, true);
-            }
+            self::getCache()->delete(Cache::KEY_ROUTES_CACHE, true, true);
+            self::getCache()->fileDelete(Cache::KEY_ROUTES_CACHE, true, true);
         }
 
         public static function clearMenuLinkCache()
@@ -658,13 +655,6 @@
                 self::getCache()->delete($key);
                 self::getCache()->fileDelete($key);
             }
-        }
-
-        protected static function loadPreModuleRoutes()
-        {
-            Logging::log('Loading first batch of routes', 'routing');
-            require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-            Logging::log('...done (loading first batch of routes)', 'routing');
         }
 
         protected static function loadRoutes()
