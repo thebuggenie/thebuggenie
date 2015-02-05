@@ -2,8 +2,7 @@
 
     namespace thebuggenie\core\modules\configuration;
 
-    require_once THEBUGGENIE_PATH . 'tests' . DS . 'b2dbmock.php';
-
+    if (!class_exists('\\b2db\\Core')) require THEBUGGENIE_CORE_PATH . 'tests/b2dbmock.php';
     if (!class_exists('\\thebuggenie\\core\\framework\\Parameterholder')) require THEBUGGENIE_CORE_PATH . 'framework/Parameterholder.php';
     if (!class_exists('\\thebuggenie\\core\\framework\\Action')) require THEBUGGENIE_CORE_PATH . 'framework/Action.php';
     if (!class_exists('\\thebuggenie\\core\\framework\\Context')) require THEBUGGENIE_CORE_PATH . 'framework/Context.php';
@@ -14,6 +13,8 @@
     if (!class_exists('\\thebuggenie\\core\\entities\\common\\Identifiable')) require THEBUGGENIE_CORE_PATH . 'entities/common/Identifiable.php';
     if (!class_exists('\\thebuggenie\\core\\entities\\common\\IdentifiableEventContainer')) require THEBUGGENIE_CORE_PATH . 'entities/common/IdentifiableEventContainer.php';
     if (!class_exists('\\thebuggenie\\core\\entities\\User')) require THEBUGGENIE_CORE_PATH . 'entities/User.php';
+    if (!class_exists('\\thebuggenie\\core\\entities\\tables\\ScopedTable')) require THEBUGGENIE_CORE_PATH . 'entities/tables/ScopedTable.php';
+    if (!class_exists('\\thebuggenie\\core\\entities\\tables\\UserScopes')) require THEBUGGENIE_CORE_PATH . 'entities/tables/UserScopes.php';
     if (!class_exists('\\thebuggenie\\core\\modules\\configuration\\Actions')) require THEBUGGENIE_INTERNAL_MODULES_PATH . '/configuration/Actions.php';
 
     /**
@@ -574,7 +575,8 @@
          */
         public function testRunAddUser($username, $buddyname, $email, $password, $group_id)
         {
-            $scope = $this->getMockBuilder('\\thebuggenie\\core\\entities\\Scope')
+            \b2db\Core::resetMocks();
+            $scope = $this->getMockBuilder('thebuggenie\core\entities\Scope')
                           ->setMethods(array('hasUsersAvailable'))
                           ->getMock();
             $scope->method('hasUsersAvailable')->willReturn(true);
@@ -589,25 +591,24 @@
             $request->setParameter('password_repeat', $password);
             $request->setParameter('group_id', $group_id);
 
-            $usertablestub = $this->getMockBuilder('\\thebuggenie\\core\\entities\\tables\\Users')
+            $usertablestub = $this->getMockBuilder('b2db\Table')
                          ->setMethods(array('isUsernameAvailable'))
                          ->getMock();
-            $userscopestablestub = $this->getMockBuilder('\\thebuggenie\\core\\entities\\tables\\UserScopes')
-                         ->setMethods(array('countUsers'))
+            $userscopestablestub = $this->getMockBuilder('b2db\Table')
                          ->getMock();
 
-            \b2db\Core::setTableMock('thebuggenie\\core\\entities\\User', $usertablestub);
-            \b2db\Core::setTableMock('thebuggenie\\core\\entities\\tables\\Users', $usertablestub);
-            \b2db\Core::setTableMock('thebuggenie\\core\\entities\\tables\\UserScopes', $userscopestablestub);
+            \b2db\Core::setTableMock('thebuggenie\core\entities\tables\UserScopes', $userscopestablestub);
+            \b2db\Core::setTableMock('thebuggenie\core\entities\User', $usertablestub);
+            \b2db\Core::setTableMock('thebuggenie\core\entities\tables\Users', $usertablestub);
 
             $usertablestub->method('isUsernameAvailable')->will($this->returnValue(true));
-            $userscopestablestub->method('countUsers')->will($this->returnValue(1));
 
             // Expect action to verify that username is available
             $usertablestub->expects($this->once())->method('isUsernameAvailable')->with($username);
+            $userscopestablestub->expects($this->once())->method('countUsers');
 
             $this->object->runAddUser($request);
-            $userobject = \b2db\Core::getTable('thebuggenie\\core\\entities\\User')->getLastMockObject();
+            $userobject = \b2db\Core::getTable('thebuggenie\core\entities\tables\Users')->getLastMockObject();
 
             // Expect action to set correct user properties
             $this->assertEquals($userobject->getUsername(), $username);
