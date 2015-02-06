@@ -22,7 +22,6 @@
             <div class="header"><?php echo __('Subcategories'); ?></div>
             <ul class="category_list">
                 <?php foreach ($article->getSubCategories() as $subcategory): ?>
-                    <?php if (!is_object($subcategory)) { var_dump($subcategory); die(); } ?>
                     <li><?php echo link_tag(make_url('publish_article', array('article_name' => $subcategory->getName())), $subcategory->getCategoryName()); ?></li>
                 <?php endforeach; ?>
             </ul>

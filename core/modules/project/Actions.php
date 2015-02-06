@@ -1145,7 +1145,9 @@
                     throw new \Exception($i18n->__('This issue is not valid for this project'));
                 }
                 if (!$issue instanceof entities\Issue)
-                    die();
+                {
+                    throw new \Exception($i18n->__('Cannot find this issue'));
+                }
 
                 $workflow_transition = null;
                 if ($passed_transition = $request['workflow_transition'])

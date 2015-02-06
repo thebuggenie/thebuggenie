@@ -3481,9 +3481,6 @@
                             $options['access_level'] = $request['access_level'];
                         }
                         else
-                        {
-                            die('fu');
-                        }
                         break;
                     case 'site_icons':
                         $template_name = 'configuration/siteicons';
