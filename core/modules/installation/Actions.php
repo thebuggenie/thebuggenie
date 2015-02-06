@@ -462,7 +462,7 @@
             switch ($request['upgrade_passwords'])
             {
                 case 'manual':
-                    $password = $request['manul_password'];
+                    $password = $request['manual_password'];
                     foreach (\thebuggenie\core\entities\tables\Users::getTable()->selectAll() as $user)
                     {
                         $user->setPassword($password);
