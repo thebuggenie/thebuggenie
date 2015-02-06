@@ -139,9 +139,10 @@
                     $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($action));
                     $route = $route_url_prefix . $route_annotation->getProperty('url');
                     $csrf_enabled = $route_annotation->getProperty('csrf_enabled', false);
+                    $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 
-                    $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled);
+                    $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods);
                 }
             }
         }
@@ -154,20 +155,22 @@
             $action = $details['action'];
             $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
             $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+            $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
-            $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled);
+            $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
         }
 
-        public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false)
+        public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false, $allowed_methods = array())
         {
             $names = array();
             $names_hash = array();
             $r = null;
+            $methods = (!is_array($allowed_methods)) ? array_filter(explode(',', $allowed_methods), function($element) { return trim(strtolower($element)); }) : $allowed_methods;
 
             if (($route == '') || ($route == '/'))
             {
                 $regexp = '/^[\/]*$/';
-                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled);
+                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled, $methods);
             }
             else
             {
@@ -237,7 +240,7 @@
                 }
                 $regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
 
-                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled);
+                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $methods);
             }
         }
 
@@ -274,7 +277,7 @@
                 $out = array();
                 $r = null;
 
-                list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled) = $route;
+                list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $allowed_methods) = $route;
 
                 $break = false;
 
@@ -347,6 +350,10 @@
                         {
                             $break = false;
                         }
+                    }
+                    if (!empty($allowed_methods) && !in_array(Context::getRequest()->getMethod(), $allowed_methods))
+                    {
+                        $break = false;
                     }
 
                     if ($break)
@@ -522,7 +529,7 @@
                 throw new \Exception("The route '$name' does not exist");
             }
 
-            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled) = $this->routes[$name];
+            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled, ) = $this->routes[$name];
 
             $defaults = array('action' => $action, 'module' => $module);
 
