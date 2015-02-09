@@ -3480,7 +3480,6 @@
                             $options['item_id'] = $request['item_id'];
                             $options['access_level'] = $request['access_level'];
                         }
-                        else
                         break;
                     case 'site_icons':
                         $template_name = 'configuration/siteicons';

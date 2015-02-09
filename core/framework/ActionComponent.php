@@ -30,6 +30,12 @@
          */
         protected static function getModuleAndTemplate($template)
         {
+            if (Context::getRouting()->hasComponentOverride($template))
+            {
+                $override_details = Context::getRouting()->getComponentOverride($template);
+                $template = strtolower($override_details['module'] . '/' . $override_details['method']);
+            }
+
             if ($separator_pos = mb_strpos($template, '/'))
             {
                 $module = mb_substr($template, 0, $separator_pos);

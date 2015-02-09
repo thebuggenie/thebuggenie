@@ -1,0 +1,124 @@
+publish:
+    route: /wiki
+    module: publish
+    action: showArticle
+    parameters:
+      article_name: MainPage
+    csrf_enabled: false
+
+publish_article_new:
+    route: '/wiki/new/*'
+    module: publish
+    action: editArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_parents:
+    route: '/wiki/getavailableparents/*'
+    module: publish
+    action: getAvailableParents
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_revision:
+    route: /wiki/:article_name/revision/:revision
+    module: publish
+    action: showArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_edit:
+    route: /wiki/:article_name/edit
+    module: publish
+    action: editArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_permissions:
+    route: /wiki/:article_name/permissions
+    module: publish
+    action: articlePermissions
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_attachments:
+    route: /wiki/:article_name/attachments
+    module: publish
+    action: articleAttachments
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_delete:
+    route: /wiki/:article_name/delete
+    module: publish
+    action: deleteArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_save:
+    route: /wiki/savearticle
+    module: publish
+    action: saveArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_article_history:
+    route: /wiki/:article_name/history
+    module: publish
+    action: articleHistory
+    parameters:
+      history_action: list
+    csrf_enabled: false
+
+publish_article_diff:
+    route: '/wiki/:article_name/diff/*'
+    module: publish
+    action: articleHistory
+    parameters:
+      history_action: diff
+    csrf_enabled: false
+
+publish_article_restore:
+    route: /wiki/:article_name/revert/to/revision/:revision
+    module: publish
+    action: articleHistory
+    parameters:
+      history_action: revert
+    csrf_enabled: false
+
+publish_find_project_articles:
+    route: '/wiki/:project_key/find/*'
+    module: publish
+    action: findArticles
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_find_articles:
+    route: '/wiki/find/*'
+    module: publish
+    action: findArticles
+    parameters: [ ]
+    csrf_enabled: false
+
+publish_special_whatlinkshere:
+    route: /wiki/Special:WhatLinksHere/:linked_article_name
+    module: publish
+    action: specialArticle
+    parameters:
+      article_name: Special:WhatLinksHere
+    csrf_enabled: false
+
+publish_article:
+    route: '/wiki/:article_name/*'
+    module: publish
+    action: showArticle
+    parameters: [ ]
+    csrf_enabled: false
+
+toggle_favourite_article:
+    route: /toggle_favourite_article/:article_id/:user_id
+    module: publish
+    action: toggleFavouriteArticle
+    parameters:
+      format: json
+    csrf_enabled: false

@@ -1,0 +1,4 @@
+debugger:
+    route: /debugger/:debug_id
+    module: debugger
+    action: index

@@ -24,7 +24,9 @@
     class Routing
     {
         protected $routes = array();
+        protected $component_override_map = array();
         protected $has_cached_routes = null;
+        protected $has_cached_component_override_map = null;
         protected $current_route_name = null;
         protected $current_route_module = null;
         protected $current_route_action = null;
@@ -61,10 +63,40 @@
             return $this->has_cached_routes;
         }
 
+        public function hasCachedComponentOverrideMap()
+        {
+            if ($this->has_cached_component_override_map === null)
+            {
+                if (Context::isInstallmode())
+                {
+                    $this->has_cached_component_override_map = false;
+                }
+                else
+                {
+                    $this->has_cached_component_override_map = Context::getCache()->has(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
+                    if ($this->has_cached_component_override_map)
+                    {
+                        Logging::log('Component override mappings are cached', 'routing');
+                    }
+                    else
+                    {
+                        Logging::log('Component override mappings are not cached', 'routing');
+                    }
+                }
+            }
+            return $this->has_cached_component_override_map;
+        }
+
         public function cacheRoutes()
         {
             Context::getCache()->fileAdd(Cache::KEY_ROUTES_CACHE, $this->getRoutes());
             Context::getCache()->add(Cache::KEY_ROUTES_CACHE, $this->getRoutes());
+        }
+
+        public function cacheComponentOverrideMap()
+        {
+            Context::getCache()->fileAdd(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getRoutes());
+            Context::getCache()->add(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getRoutes());
         }
 
         /**
@@ -78,6 +110,16 @@
         }
 
         /**
+         * Set component override map manually (used by cache functions)
+         *
+         * @param array $component_override_map
+         */
+        public function setComponentOverrideMap($component_override_map)
+        {
+            $this->component_override_map = $component_override_map;
+        }
+
+        /**
          * Get all the routes
          *
          * @return array
@@ -87,19 +129,81 @@
             return $this->routes;
         }
 
+        /**
+         * Get all component override mappings
+         *
+         * @return array
+         */
+        public function getComponentOverrideMap()
+        {
+            return $this->component_override_map;
+        }
+
         public function hasRoute($route)
         {
             return array_key_exists($route, $this->routes);
         }
 
+        public function hasComponentOverride($component)
+        {
+            return array_key_exists($component, $this->component_override_map);
+        }
+
+        public function getComponentOverride($component)
+        {
+            return $this->component_override_map[$component];
+        }
+
+        public function loadRoutes($module_name, $module_type = null)
+        {
+            if ($module_type === null) $module_type = (Context::isInternalModule($module_name)) ? 'internal' : 'external';
+
+            $module_routes_filename = (($module_type == 'internal') ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH) . $module_name . DS . 'configuration' . DS . 'routes.yml';
+            if (file_exists($module_routes_filename))
+            {
+                $module_routes = \Spyc::YAMLLoad($module_routes_filename);
+
+                foreach ($module_routes as $route => $details)
+                {
+                    if (!isset($details['module'])) $details['module'] = $module_name;
+                    $this->addYamlRoute($route, $details);
+                }
+            }
+
+            $this->loadAnnotationRoutes($module_name);
+        }
+
         public function loadAnnotationRoutes($module_name)
         {
-            $namespace = (Context::isInternalModule($module_name)) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
+            $is_internal = Context::isInternalModule($module_name);
+            $namespace = ($is_internal) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
             $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\Actions', $module_name);
+            if (!$is_internal)
+            {
+                $this->loadModuleOverrideMappings($namespace . $module_name . '\\Components', $module_name);
+            }
+        }
+
+        protected function loadModuleOverrideMappings($classname, $module)
+        {
+            $reflection = new \ReflectionClass($classname);
+            foreach ($reflection->getMethods() as $method)
+            {
+                $annotationset = new AnnotationSet($method->getDocComment());
+                if ($annotationset->hasAnnotation('Overrides'))
+                {
+                    $overridden_component = $annotationset->getAnnotation('Overrides')->getProperty('name');
+                    $component = array('module' => $module, 'method' => $method->name);
+                    $this->component_override_map[$overridden_component] = $component;
+                }
+            }
         }
 
         protected function loadModuleAnnotationRoutes($classname, $module)
         {
+            if (!class_exists($classname))
+                return;
+
             $internal = Context::isInternalModule($module);
             $reflection = new \ReflectionClass($classname);
             $docblock = $reflection->getDocComment();
@@ -141,8 +245,18 @@
                     $csrf_enabled = $route_annotation->getProperty('csrf_enabled', false);
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
+                    $overridden = false;
 
-                    $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods);
+                    if ($annotationset->hasAnnotation('Overrides'))
+                    {
+                        $name = $annotationset->getAnnotation('Overrides')->getProperty('name');
+                        $overridden = true;
+                    }
+                    elseif ($this->hasRoute($name))
+                    {
+                        throw new exceptions\RoutingException('A route that overrides another route must have an @Override annotation');
+                    }
+                    $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods, $overridden);
                 }
             }
         }
@@ -160,8 +274,17 @@
             $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
         }
 
-        public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false, $allowed_methods = array())
+        public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false, $allowed_methods = array(), $overridden = false)
         {
+            if ($this->hasRoute($name))
+            {
+                if ($this->routes[$name][9]) 
+                {
+                    Logging::log("Skipping overridden route {$name}", 'routing');
+                    return;
+                }
+            }
+
             $names = array();
             $names_hash = array();
             $r = null;
@@ -170,7 +293,7 @@
             if (($route == '') || ($route == '/'))
             {
                 $regexp = '/^[\/]*$/';
-                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled, $methods);
+                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled, $methods, $overridden);
             }
             else
             {
@@ -240,7 +363,7 @@
                 }
                 $regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
 
-                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $methods);
+                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $methods, $overridden);
             }
         }
 
@@ -277,7 +400,7 @@
                 $out = array();
                 $r = null;
 
-                list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $allowed_methods) = $route;
+                list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $allowed_methods, ) = $route;
 
                 $break = false;
 
@@ -529,7 +652,7 @@
                 throw new \Exception("The route '$name' does not exist");
             }
 
-            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled, ) = $this->routes[$name];
+            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled, , ) = $this->routes[$name];
 
             $defaults = array('action' => $action, 'module' => $module);
 

@@ -539,8 +539,6 @@
                 if (!self::getRouting()->hasCachedRoutes())
                 {
                     self::loadRoutes();
-                    if (!self::isInstallmode())
-                        self::getRouting()->cacheRoutes();
                 }
                 else
                 {
@@ -659,49 +657,20 @@
 
         protected static function loadRoutes()
         {
-            Logging::log('Loading routes from routing file', 'routing');
-            $routes_filename = \THEBUGGENIE_CONFIGURATION_PATH . "routes.yml";
-            if (!file_exists($routes_filename))
-                throw new exceptions\ConfigurationException("The routing file ({$routes_filename} does not exist.");
+            Logging::log('Loading routes from routing files', 'routing');
 
-            $routes = \Spyc::YAMLLoad($routes_filename);
-
-            foreach ($routes as $route => $details)
+            foreach (array('internal' => self::$_internal_modules, 'external' => self::getModules()) as $module_type => $modules)
             {
-                if (isset($details['mode']) && $details['mode'] == 'annotations')
+                foreach ($modules as $module_name => $module)
                 {
-                    self::getRouting()->loadAnnotationRoutes($details['module']);
-                }
-                else
-                {
-                    self::getRouting()->addYamlRoute($route, $details);
+                    self::getRouting()->loadRoutes($module_name, $module_type);
                 }
             }
 
-            foreach (self::getModules() as $module_name => $module)
+            if (!self::isInstallmode())
             {
-                $module_routes_filename = \THEBUGGENIE_MODULES_PATH . $module_name . DS . 'configuration' . DS . 'routes.yml';
-                if (file_exists($module_routes_filename))
-                {
-                    $module_routes = \Spyc::YAMLLoad($module_routes_filename);
-
-                    foreach ($module_routes as $route => $details)
-                    {
-                        if (!isset($details['module'])) $details['module'] = $module_name;
-                        if (isset($details['mode']) && $details['mode'] == 'annotations')
-                        {
-                            self::getRouting()->loadAnnotationRoutes($details['module']);
-                        }
-                        else
-                        {
-                            self::getRouting()->addYamlRoute($route, $details);
-                        }
-                    }
-                }
-                else
-                {
-                    self::getRouting()->loadAnnotationRoutes($module_name);
-                }
+                self::getRouting()->cacheRoutes();
+                self::getRouting()->cacheComponentOverrideMap();
             }
 
             Logging::log('...done (loading routes from routing file)', 'routing');
@@ -711,21 +680,28 @@
         {
             Logging::log('Loading routes from cache', 'routing');
             $routes = self::getCache()->get(Cache::KEY_ROUTES_CACHE);
+            $component_override_map = self::getCache()->get(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
             if (!$routes)
             {
                 Logging::log('Loading routes from disk cache', 'routing');
                 $routes = self::getCache()->fileGet(Cache::KEY_ROUTES_CACHE);
             }
+            if (!$component_override_map)
+            {
+                Logging::log('Loading component override mappings from disk cache', 'routing');
+                $routes = self::getCache()->fileGet(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
+            }
 
             if (!$routes)
-            {
                 throw new \Exception('Routes should be cached, but no routes found!');
-            }
-            else
-            {
-                self::getRouting()->setRoutes($routes);
-                Logging::log('Setting routes from cache', 'routing');
-            }
+
+            if (!$component_override_map)
+                throw new \Exception('Routes should be cached, but no routes found!');
+
+            Logging::log('Setting routes from cache', 'routing');
+            self::getRouting()->setRoutes($routes);
+            Logging::log('Setting component override mappings from cache', 'routing');
+            self::getRouting()->setComponentOverrideMap($component_override_map);
             Logging::log('...done', 'routing');
         }
 
