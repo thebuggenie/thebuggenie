@@ -266,14 +266,22 @@
         public function addYamlRoute($key, $details)
         {
             $name = $key;
-            $route = $details['route'];
             $module = $details['module'];
             $action = $details['action'];
-            $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
-            $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
-            $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
+            if (array_key_exists('overrides', $details))
+            {
+                $this->overrideRoute($name, $module, $details['overrides']);
+            }
+            else
+            {
+                $route = $details['route'];
+                $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
+                $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+                $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
-            $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
+                $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
+            }
+        }
 
         public function overrideRoute($name, $module, $action)
         {
