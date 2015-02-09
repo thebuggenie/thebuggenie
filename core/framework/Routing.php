@@ -245,18 +245,20 @@
                     $csrf_enabled = $route_annotation->getProperty('csrf_enabled', false);
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
-                    $overridden = false;
 
                     if ($annotationset->hasAnnotation('Overrides'))
                     {
                         $name = $annotationset->getAnnotation('Overrides')->getProperty('name');
-                        $overridden = true;
+                        $this->overrideRoute($name, $module, $action);
                     }
                     elseif ($this->hasRoute($name))
                     {
                         throw new exceptions\RoutingException('A route that overrides another route must have an @Override annotation');
                     }
-                    $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods, $overridden);
+                    else
+                    {
+                        $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods);
+                    }
                 }
             }
         }
@@ -272,6 +274,12 @@
             $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
             $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
+
+        public function overrideRoute($name, $module, $action)
+        {
+            $this->routes[$name][4] = $module;
+            $this->routes[$name][5] = $action;
+            $this->routes[$name][9] = true;
         }
 
         public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false, $allowed_methods = array(), $overridden = false)
