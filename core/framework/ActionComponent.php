@@ -161,6 +161,9 @@
         public static function presentTemplate($template_file, $params = array())
         {
             Logging::log("configuring template variables for template {$template_file}");
+            if (!file_exists($template_file))
+                throw new exceptions\TemplateNotFoundException("The template file <b>{$template_file}</b> cannot be found.");
+
             foreach ($params as $key => $val)
             {
                 $$key = $val;
