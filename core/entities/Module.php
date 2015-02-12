@@ -85,8 +85,18 @@
             if (!framework\Context::getScope() instanceof \thebuggenie\core\entities\Scope) throw new \Exception('No scope??');
 
             framework\Logging::log('installing module ' . $module_name);
-            $module = tables\Modules::getTable()->installModule($module_name, $scope_id);
-            $module->install($scope_id);
+            $transaction = \b2db\Core::startTransaction();
+            try
+            {
+                $module = tables\Modules::getTable()->installModule($module_name, $scope_id);
+                $module->install($scope_id);
+                $transaction->commitAndEnd();
+            }
+            catch (Exception $e)
+            {
+                $transaction->rollback();
+                throw $e;
+            }
             framework\Logging::log('done (installing module ' . $module_name . ')');
 
             return $module;
