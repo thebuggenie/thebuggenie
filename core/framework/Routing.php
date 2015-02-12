@@ -205,17 +205,22 @@
             $module_routes_filename = (($module_type == 'internal') ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH) . $module_name . DS . 'configuration' . DS . 'routes.yml';
             if (file_exists($module_routes_filename))
             {
-                $module_routes = \Spyc::YAMLLoad($module_routes_filename);
-
-                foreach ($module_routes as $route => $details)
-                {
-                    if (!isset($details['module'])) $details['module'] = $module_name;
-                    $this->addYamlRoute($route, $details);
-                }
+                $this->loadYamlRoutes($module_routes_filename, $module_name);
             }
 
             $this->loadAnnotationRoutes($module_name);
             $this->loadAnnotationListeners($module_name);
+        }
+
+        public function loadYamlRoutes($yaml_filename, $module_name = null)
+        {
+            $routes = \Spyc::YAMLLoad($yaml_filename);
+
+            foreach ($routes as $route => $details)
+            {
+                if (!isset($details['module'])) $details['module'] = $module_name;
+                $this->addYamlRoute($route, $details);
+            }
         }
 
         public function loadAnnotationRoutes($module_name)

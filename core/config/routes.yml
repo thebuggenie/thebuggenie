@@ -1,0 +1,13 @@
+viewissue:
+    route: '/:project_key/issues/:issue_no/*'
+    module: main
+    action: viewIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+project_dashboard:
+    route: /:project_key
+    module: project
+    action: dashboard
+    parameters: [ ]
+    csrf_enabled: false

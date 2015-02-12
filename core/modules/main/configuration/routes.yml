@@ -683,13 +683,6 @@ previousissue:
       direction: previous
     csrf_enabled: false
 
-viewissue:
-    route: '/:project_key/issues/:issue_no/*'
-    module: main
-    action: viewIssue
-    parameters: [ ]
-    csrf_enabled: false
-
 issue_log:
     route: /:project_key/issuelog/:issue_id
     module: main

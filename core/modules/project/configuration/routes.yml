@@ -451,10 +451,3 @@ project_dashboard_specific:
     action: dashboard
     parameters: [ ]
     csrf_enabled: false
-
-project_dashboard:
-    route: /:project_key
-    module: project
-    action: dashboard
-    parameters: [ ]
-    csrf_enabled: false

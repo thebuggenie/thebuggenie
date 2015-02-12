@@ -678,6 +678,7 @@
                     self::loadEventListeners(self::getRouting()->getAnnotationListeners());
                 }
             }
+            self::getRouting()->loadYamlRoutes(\THEBUGGENIE_CONFIGURATION_PATH . 'routes.yml');
 
             if (!self::isInstallmode())
             {
