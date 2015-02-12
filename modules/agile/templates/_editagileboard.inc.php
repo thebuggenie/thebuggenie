@@ -1,6 +1,6 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
 
 ?>
 <div class="backdrop_box large edit_agileboard sectioned">
@@ -8,7 +8,7 @@
         <?php echo ($board->getId()) ? __('Edit agile board') : __('Add agile board'); ?>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_planning_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_agileboard_form" onsubmit="TBG.Project.Planning.saveAgileBoard(this);return false;" data-board-id="<?php echo (int) $board->getId(); ?>">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_agileboard_form" onsubmit="TBG.Project.Planning.saveAgileBoard(this);return false;" data-board-id="<?php echo (int) $board->getId(); ?>">
             <input type="hidden" name="is_private" value="<?php echo (int) $board->isPrivate(); ?>">
             <input type="hidden" name="type" value="<?php echo $board->getType(); ?>" id="agileboard_type_input">
             <input type="hidden" name="swimlane" value="<?php echo $board->getSwimlaneType(); ?>" id="swimlane_input">

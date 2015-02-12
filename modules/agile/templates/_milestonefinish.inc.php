@@ -1,6 +1,6 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
 
     switch ($board->getType())
     {
@@ -114,6 +114,6 @@
         </div>
     </div>
     <?php if ($milestone->countOpenIssues()): ?>
-        <?php include_component('project/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone(), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
+        <?php include_component('agile/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone(), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
     <?php endif; ?>
 </form>

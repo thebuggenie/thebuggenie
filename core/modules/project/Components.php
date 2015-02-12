@@ -17,37 +17,8 @@
             $this->issuetypes = $this->project->getIssuetypeScheme()->getReportableIssuetypes();
         }
 
-        public function componentBoardSwimlane()
-        {
-            $this->issues = $this->swimlane->getIssues();
-        }
-
-        public function componentBoardColumnheader()
-        {
-            $this->statuses = entities\Status::getAll();
-        }
-
         public function componentMilestoneIssue()
         {
-        }
-
-        public function componentAgileWhiteboardTransitionSelector()
-        {
-            foreach ($this->board->getColumns() as $column)
-            {
-                if ($column->hasIssue($this->issue))
-                {
-                    $this->current_column = $column;
-                    break;
-                }
-            }
-        }
-
-        public function componentMilestoneWhiteboardStatusDetails()
-        {
-            $this->statuses = entities\Status::getAll();
-            if ($this->milestone instanceof entities\Milestone)
-                $this->status_details = tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
         }
 
         public function componentRecentActivities()
@@ -55,76 +26,11 @@
             $this->default_displayed = isset($this->default_displayed) ? $this->default_displayed : false;
         }
 
-        public function componentMilestoneEpic()
-        {
-
-        }
-
-        public function componentPlanningColorPicker()
-        {
-            $this->colors = array('#E20700', '#6094CF', '#37A42B', '#E3AA00', '#FFE955', '#80B5FF', '#80FF80', '#00458A', '#8F6A32', '#FFF');
-        }
-
         public function componentTimeline()
         {
             $this->prev_date = null;
             $this->prev_timestamp = null;
             $this->prev_issue = null;
-        }
-
-        public function componentEditAgileBoard()
-        {
-            $i18n = framework\Context::getI18n();
-            $this->autosearches = array(
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => $i18n->__('Project open issues (recommended)'),
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project open issues (including subprojects)'),
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => $i18n->__('Project closed issues'),
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS => $i18n->__('Project closed issues (including subprojects)'),
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH => $i18n->__('Project issues reported last month'),
-                entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST => $i18n->__('Project wishlist')
-            );
-            $this->savedsearches = tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), $this->board->getProject()->getID());
-            $this->issuetypes = $this->board->getProject()->getIssuetypeScheme()->getIssuetypes();
-            $this->swimlane_groups = array(
-                'priority' => $i18n->__('Issue priority'),
-                'severity' => $i18n->__('Issue severity'),
-                'category' => $i18n->__('Issue category'),
-            );
-            $this->priorities = entities\Priority::getAll();
-            $this->severities = entities\Severity::getAll();
-            $this->categories = entities\Category::getAll();
-            $fakecolumn = new entities\BoardColumn();
-            $fakecolumn->setBoard($this->board);
-            $this->fakecolumn = $fakecolumn;
-        }
-
-        public function componentEditBoardColumn()
-        {
-            $this->statuses = entities\Status::getAll();
-        }
-
-        public function componentAgileBoardbox()
-        {
-
-        }
-
-        public function componentMilestoneFinish()
-        {
-        }
-
-        public function componentMilestoneBox()
-        {
-            $this->include_counts = (isset($this->include_counts)) ? $this->include_counts : false;
-            $this->include_buttons = (isset($this->include_buttons)) ? $this->include_buttons : true;
-        }
-
-        public function componentMilestone()
-        {
-            if (!isset($this->milestone))
-            {
-                $this->milestone = new entities\Milestone();
-                $this->milestone->setProject($this->project);
-            }
         }
 
         public function componentMilestoneDetails()

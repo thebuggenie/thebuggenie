@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\entities;
+    namespace thebuggenie\modules\agile\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\framework;
@@ -12,16 +12,16 @@
      * @version 3.1
      * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      */
 
     /**
      * Agile board class
      *
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      *
-     * @Table(name="\thebuggenie\core\entities\tables\AgileBoards")
+     * @Table(name="\thebuggenie\modules\agile\entities\tables\AgileBoards")
      */
     class AgileBoard extends IdentifiableScoped
     {
@@ -157,8 +157,8 @@
         /**
          * Board columns
          *
-         * @var array|\thebuggenie\core\entities\BoardColumn
-         * @Relates(class="\thebuggenie\core\entities\BoardColumn", collection=true, foreign_column="board_id", orderby="sort_order")
+         * @var array|\thebuggenie\modules\agile\entities\BoardColumn
+         * @Relates(class="\thebuggenie\modules\agile\entities\BoardColumn", collection=true, foreign_column="board_id", orderby="sort_order")
          */
         protected $_board_columns = null;
 
@@ -371,7 +371,7 @@
         {
             if ($this->_epic_issues === null)
             {
-                $this->_epic_issues = tables\Issues::getTable()->getOpenIssuesByProjectIDAndIssuetypeID($this->getProject()->getID(), $this->getEpicIssuetypeID());
+                $this->_epic_issues = \thebuggenie\core\entities\tables\Issues::getTable()->getOpenIssuesByProjectIDAndIssuetypeID($this->getProject()->getID(), $this->getEpicIssuetypeID());
             }
             return $this->_epic_issues;
         }
@@ -379,6 +379,17 @@
         public function getMilestones()
         {
             return $this->getProject()->getOpenMilestones();
+        }
+
+        public function getDefaultSelectedMilestone()
+        {
+            foreach ($this->getMilestones() as $milestone)
+            {
+                if (!$milestone->isReached())
+                {
+                    return $milestone;
+                }
+            }
         }
 
         public function getReleases()
@@ -459,7 +470,7 @@
         /**
          * Returns an array of board columns
          *
-         * @return array|\thebuggenie\core\entities\BoardColumn
+         * @return array|\thebuggenie\modules\agile\entities\BoardColumn
          */
         public function getColumns()
         {
@@ -481,13 +492,13 @@
                             switch ($this->getSwimlaneIdentifier())
                             {
                                 case 'priority':
-                                    $items = Priority::getAll();
+                                    $items = \thebuggenie\core\entities\Priority::getAll();
                                     break;
                                 case 'severity':
-                                    $items = Severity::getAll();
+                                    $items = \thebuggenie\core\entities\Severity::getAll();
                                     break;
                                 case 'category':
-                                    $items = Category::getAll();
+                                    $items = \thebuggenie\core\entities\Category::getAll();
                                     break;
                             }
                             if ($this->getSwimlaneType() == self::SWIMLANES_EXPEDITE)

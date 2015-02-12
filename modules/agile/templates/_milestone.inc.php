@@ -1,6 +1,6 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
 
     switch ($board->getType())
     {
@@ -33,7 +33,7 @@
         ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php if (!isset($includeform) || $includeform): ?>
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
             <?php endif; ?>
             <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php
                             switch ($board->getType())

@@ -1,7 +1,7 @@
 <td data-min-workitems="<?php echo $column->getMinWorkitems(); ?>" data-max-workitems="<?php echo $column->getMaxWorkitems(); ?>">
     <h1>
         <?php echo $column->getName(); ?>
-        <?php if ($column->getBoard()->getType() != thebuggenie\core\entities\AgileBoard::TYPE_KANBAN || (!$column->getMinWorkitems() && !$column->getMaxWorkitems())): ?>
+        <?php if ($column->getBoard()->getType() != thebuggenie\modules\agile\entities\AgileBoard::TYPE_KANBAN || (!$column->getMinWorkitems() && !$column->getMaxWorkitems())): ?>
             <span class="column_count primary">-</span>
         <?php elseif ($column->getMinWorkitems() && $column->getMaxWorkitems()): ?>
             <span class="column_count workitems"><?php echo __('%count (min %min_workitems - max %max_workitems)', array('%count' => '<span class="count"></span>', '%min_workitems' => $column->getMinWorkitems(), '%max_workitems' => $column->getMaxWorkitems())); ?></span>

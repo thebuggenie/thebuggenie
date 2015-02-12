@@ -1,12 +1,12 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
     $tbg_response->addBreadcrumb(__('Planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" agile whiteboard', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName(), 'board' => $board));
 
 ?>
-<div id="project_planning" class="project_info_container whiteboard <?php if (!count($board->getColumns())) echo ' edit-mode'; ?> <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('project_planning_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-retrieve-issue-url="<?php echo make_url('project_planning_get_issue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-board-id="<?php echo $board->getID(); ?>">
+<div id="project_planning" class="project_info_container whiteboard <?php if (!count($board->getColumns())) echo ' edit-mode'; ?> <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('agile_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-retrieve-issue-url="<?php echo make_url('agile_retrieveissue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'whiteboard')); ?>" data-board-id="<?php echo $board->getID(); ?>">
     <div class="planning_indicator" id="planning_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
     <div class="project_right_container">
         <div class="project_right planning_container" id="planning_container">
@@ -16,7 +16,7 @@
                     <?php if (count($board->getColumns())): ?>
                         <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
                     <?php endif; ?>
-                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('project_planning_board_whiteboard_column', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
+                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('agile_whiteboardcolumn', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
                     <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
                 </div>
                 <div class="button-group whiteboard-view-mode">
@@ -30,7 +30,7 @@
                     <span id="selected_milestone_status_details" style="display: none;"></span>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'selected_milestone_status_indicator')); ?>
                 </a>
-                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof \thebuggenie\core\entities\Milestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
+                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof \thebuggenie\core\entities\Milestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('agile_whiteboardmilestonestatus', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
                     <?php foreach ($board->getMilestones() as $milestone): ?>
                         <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="window.location='#<?php echo $milestone->getID(); ?>';">
                             <h1><?php echo $milestone->getName(); ?></h1>
@@ -47,16 +47,16 @@
             </div>
             <div id="planning_whiteboard">
                 <div class="planning_indicator" id="whiteboard_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
-                <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('project_planning_board_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
                     <table class="whiteboard-columns">
                         <tr id="planning_whiteboard_columns_form_row">
                             <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_component('project/editboardcolumn', compact('column')); ?>
+                                <?php include_component('agile/editboardcolumn', compact('column')); ?>
                             <?php endforeach; ?>
                         </tr>
                     </table>
                 </form>
-                <table class="whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('project_planning_whiteboard_issues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                <table class="whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
                     <thead id="whiteboard-headers-placeholder">
                         <tr>
                             <?php foreach ($board->getColumns() as $column): ?>
@@ -67,7 +67,7 @@
                     <thead id="whiteboard-headers">
                         <tr>
                             <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_component('project/boardcolumnheader', compact('column')); ?>
+                                <?php include_component('agile/boardcolumnheader', compact('column')); ?>
                             <?php endforeach; ?>
                         </tr>
                     </thead>
@@ -77,7 +77,7 @@
     </div>
     <?php /* <div class="project_left_container" id="project_backlog_sidebar">
         <div class="project_left">
-            <div id="milestone_0" class="milestone_box" data-milestone-id="0" data-issues-url="<?php echo make_url('project_planning_milestone_issues', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0, 'board_id' => $board->getID())); ?>" data-assign-issue-url="<?php echo make_url('project_planning_assign_milestone', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0)); ?>" data-backlog-search="<?php echo ($board->usesAutogeneratedSearchBacklog()) ? 'predefined_'.$board->getAutogeneratedSearch() : 'saved_'.$board->getBacklogSearchObject()->getID(); ?>">
+            <div id="milestone_0" class="milestone_box" data-milestone-id="0" data-issues-url="<?php echo make_url('agile_milestoneissues', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0, 'board_id' => $board->getID())); ?>" data-assign-issue-url="<?php echo make_url('agile_assignmilestone', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0)); ?>" data-backlog-search="<?php echo ($board->usesAutogeneratedSearchBacklog()) ? 'predefined_'.$board->getAutogeneratedSearch() : 'saved_'.$board->getBacklogSearchObject()->getID(); ?>">
                 <div class="planning_indicator" id="milestone_0_indicator" style="display: none;"><?php echo image_tag('spinning_30.gif'); ?></div>
                 <div class="header backlog" id="milestone_0_header">
                     <div class="milestone_basic_container">

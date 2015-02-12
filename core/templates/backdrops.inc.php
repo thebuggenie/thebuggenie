@@ -23,7 +23,7 @@
     </div>
 </div>
 <div id="fullpage_backdrop" class="fullpage_backdrop" style="display: none;">
-    <div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;" id="fullpage_backdrop_indicator">
+    <div id="fullpage_backdrop_indicator">
         <?php echo image_tag('spinning_32.gif'); ?><br>
         <?php echo __('Please wait ...'); ?>
     </div>

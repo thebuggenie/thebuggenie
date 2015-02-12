@@ -1043,6 +1043,25 @@
         }
 
         /**
+         * Returns an array of workflow transitions
+         *
+         * @return array|\thebuggenie\core\entities\WorkflowTransition
+         */
+        public function getAvailableWorkflowStatusIDsAndTransitions()
+        {
+            $status_ids = array();
+            $transitions = array();
+
+            foreach ($this->getAvailableWorkflowTransitions() as $transition)
+            {
+                $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
+                $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+            }
+
+            return array($status_ids, $transitions);
+        }
+
+        /**
          * Get current available statuses
          *
          * @return array|\thebuggenie\core\entities\Status

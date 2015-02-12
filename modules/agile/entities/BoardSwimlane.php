@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\entities;
+    namespace thebuggenie\modules\agile\entities;
 
     use thebuggenie\core\framework;
 
@@ -11,14 +11,14 @@
      * @version 3.1
      * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      */
 
     /**
      * Agile board swimlane class
      *
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      */
     class BoardSwimlane
     {
@@ -31,7 +31,7 @@
         protected $_identifiables;
 
         /**
-         * @var \thebuggenie\core\entities\AgileBoard
+         * @var \thebuggenie\modules\agile\entities\AgileBoard
          */
         protected $_board;
 
@@ -66,7 +66,7 @@
             $this->_identifiables = (is_array($identifiables)) ? $identifiables : array($identifiables);
         }
 
-        public function setBoard(\thebuggenie\core\entities\AgileBoard $board)
+        public function setBoard(AgileBoard $board)
         {
             $this->_board = $board;
         }
@@ -129,10 +129,10 @@
             if ($this->_search_object === null)
             {
                 $this->_search_object = new \thebuggenie\core\entities\SavedSearch();
-                $this->_search_object->setFilter('project_id', SearchFilter::createFilter('project_id', array('o' => '=', 'v' => $this->getBoard()->getProject()->getID())));
-                $this->_search_object->setFilter('milestone', SearchFilter::createFilter('milestone', array('o' => '=', 'v' => $this->getMilestone()->getID())));
-                $this->_search_object->setFilter('state', SearchFilter::createFilter('state', array('o' => '=', 'v' => array(Issue::STATE_CLOSED, Issue::STATE_OPEN))));
-                $this->_search_object->setFilter('issuetype', SearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getBoard()->getEpicIssuetypeID())));
+                $this->_search_object->setFilter('project_id', \thebuggenie\core\entities\SearchFilter::createFilter('project_id', array('o' => '=', 'v' => $this->getBoard()->getProject()->getID())));
+                $this->_search_object->setFilter('milestone', \thebuggenie\core\entities\SearchFilter::createFilter('milestone', array('o' => '=', 'v' => $this->getMilestone()->getID())));
+                $this->_search_object->setFilter('state', \thebuggenie\core\entities\SearchFilter::createFilter('state', array('o' => '=', 'v' => array(\thebuggenie\core\entities\Issue::STATE_CLOSED, \thebuggenie\core\entities\Issue::STATE_OPEN))));
+                $this->_search_object->setFilter('issuetype', \thebuggenie\core\entities\SearchFilter::createFilter('issuetype', array('o' => '!=', 'v' => $this->getBoard()->getEpicIssuetypeID())));
                 if ($this->getBoard()->usesSwimlanes() && $this->getBoard()->getSwimlaneType() == AgileBoard::SWIMLANES_ISSUES)
                 {
                     $values = array();
@@ -142,7 +142,7 @@
                         $values[] = $swimlane->getIdentifierIssue()->getID();
                         foreach ($swimlane->getIssues() as $issue) $values[] = $issue->getID();
                     }
-                    $this->_search_object->setFilter('id', SearchFilter::createFilter('id', array('o' => '!=', 'v' => $values)));
+                    $this->_search_object->setFilter('id', \thebuggenie\core\entities\SearchFilter::createFilter('id', array('o' => '!=', 'v' => $values)));
                 }
                 else
                 {
@@ -150,7 +150,7 @@
                     {
                         $values = array();
                         foreach ($this->_identifiables as $identifiable) $values[] = ($identifiable instanceof \thebuggenie\core\entities\common\Identifiable) ? $identifiable->getID() : $identifiable;
-                        $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), SearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
+                        $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), \thebuggenie\core\entities\SearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
                     }
                 }
                 $this->_search_object->setSortFields(array('issues.milestone_order' => \b2db\Criteria::SORT_ASC));

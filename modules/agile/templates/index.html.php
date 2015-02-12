@@ -10,14 +10,14 @@
         <h3><?php echo __('Public project boards'); ?></h3>
         <ul id="agileboards_project">
             <?php foreach ($project_boards as $board): ?>
-                <?php include_component('project/agileboardbox', compact('board')); ?>
+                <?php include_component('agile/agileboardbox', compact('board')); ?>
             <?php endforeach; ?>
             <li id="add_board_project_link" class="add_board_container" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $selected_project->getID(), 'is_private' => 0)); ?>');">+</li>
         </ul>
         <h3><?php echo __('Private project boards'); ?></h3>
         <ul id="agileboards_user">
             <?php foreach ($user_boards as $board): ?>
-                <?php include_component('project/agileboardbox', compact('board')); ?>
+                <?php include_component('agile/agileboardbox', compact('board')); ?>
             <?php endforeach; ?>
             <li id="add_board_user_link" class="add_board_container" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $selected_project->getID(), 'is_private' => 1)); ?>');">+</li>
         </ul>

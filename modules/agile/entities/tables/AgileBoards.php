@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\entities\tables;
+    namespace thebuggenie\modules\agile\entities\tables;
 
     use thebuggenie\core\entities\tables\ScopedTable;
 
@@ -21,10 +21,10 @@
      * @subpackage tables
      *
      * @method \thebuggenie\core\entities\tables\AgileBoards getTable() Retrieves an instance of this table
-     * @method \thebuggenie\core\entities\AgileBoard selectById(integer $id) Retrieves an agile board
+     * @method \thebuggenie\modules\agile\entities\AgileBoard selectById(integer $id) Retrieves an agile board
      *
      * @Table(name="agileboards")
-     * @Entity(class="\thebuggenie\core\entities\AgileBoard")
+     * @Entity(class="\thebuggenie\modules\agile\entities\AgileBoard")
      */
     class AgileBoards extends ScopedTable
     {

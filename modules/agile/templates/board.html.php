@@ -1,10 +1,10 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
 
     $tbg_response->addBreadcrumb(__('Planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" project planning', array('%project_name' => $selected_project->getName())));
-    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName(), 'board' => $board));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName()));
 
     switch ($board->getType())
     {
@@ -22,7 +22,7 @@
     }
 
 ?>
-<div id="project_planning" class="project_info_container left_toggled <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('project_planning_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-retrieve-issue-url="<?php echo make_url('project_planning_get_issue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-board-id="<?php echo $board->getID(); ?>">
+<div id="project_planning" class="project_info_container left_toggled <?php if ($board->getType() == AgileBoard::TYPE_GENERIC) echo 'type-generic'; if ($board->getType() == AgileBoard::TYPE_SCRUM) echo 'type-scrum'; if ($board->getType() == AgileBoard::TYPE_KANBAN) echo 'type-kanban'; ?>" data-last-refreshed="<?php echo time(); ?>" data-poll-url="<?php echo make_url('agile_poll', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-retrieve-issue-url="<?php echo make_url('agile_retrieveissue', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID(), 'mode' => 'planning')); ?>" data-board-id="<?php echo $board->getID(); ?>">
     <div class="planning_indicator" id="planning_indicator">
         <?php echo image_tag('spinning_30.gif'); ?>
         <div class="milestone_percentage" id="planning_loading_progress_indicator">
@@ -55,11 +55,11 @@
                 <button class="button button-silver" id="milestone_sort_toggler_button" onclick="TBG.Project.Planning.toggleMilestoneSorting();"><?php echo __('Done sorting'); ?></button>
             </div>
             <?php if ($board->getProject()->isBuildsEnabled()): ?>
-                <ul id="builds_list" data-releases-url="<?php echo make_url('project_planning_get_releases', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
+                <ul id="builds_list" data-releases-url="<?php echo make_url('agile_getreleases', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
                 </ul>
             <?php endif; ?>
             <?php if ($board->getEpicIssuetypeID()): ?>
-                <ul id="epics_list" data-epics-url="<?php echo make_url('project_planning_get_epics', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
+                <ul id="epics_list" data-epics-url="<?php echo make_url('agile_getepics', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getID())); ?>">
                 </ul>
             <?php endif; ?>
             <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
@@ -70,7 +70,7 @@
                     </tr>
                 </table>
             <?php endif; ?>
-            <ul id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('project_planning_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
+            <ul id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('agile_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
                 <?php foreach ($board->getMilestones() as $milestone): ?>
                     <?php include_component('milestonebox', array('milestone' => $milestone, 'board' => $board, 'include_counts' => !$milestone->isVisibleRoadmap())); ?>
                 <?php endforeach; ?>
@@ -82,7 +82,7 @@
     </div>
     <div class="project_left_container" id="project_backlog_sidebar">
         <div class="project_left">
-            <div id="milestone_0" class="milestone_box open available backlog_milestone" data-milestone-id="0" data-issues-url="<?php echo make_url('project_planning_milestone_issues', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0, 'board_id' => $board->getID())); ?>" data-assign-issue-url="<?php echo make_url('project_planning_assign_milestone', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0)); ?>" data-backlog-search="<?php echo ($board->usesAutogeneratedSearchBacklog()) ? 'predefined_'.$board->getAutogeneratedSearch() : 'saved_'.$board->getBacklogSearchObject()->getID(); ?>">
+            <div id="milestone_0" class="milestone_box open available backlog_milestone" data-milestone-id="0" data-issues-url="<?php echo make_url('agile_milestoneissues', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0, 'board_id' => $board->getID())); ?>" data-assign-issue-url="<?php echo make_url('agile_assignmilestone', array('project_key' => $board->getProject()->getKey(), 'milestone_id' => 0)); ?>" data-backlog-search="<?php echo ($board->usesAutogeneratedSearchBacklog()) ? 'predefined_'.$board->getAutogeneratedSearch() : 'saved_'.$board->getBacklogSearchObject()->getID(); ?>">
                 <div class="planning_indicator" id="milestone_0_indicator" style="display: none;"><?php echo image_tag('spinning_30.gif'); ?></div>
                 <div class="header backlog" id="milestone_0_header">
                     <div class="milestone_basic_container">

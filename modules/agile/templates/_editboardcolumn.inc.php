@@ -1,7 +1,7 @@
 <?php
 
-    use thebuggenie\core\entities\BoardColumn,
-        thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\BoardColumn,
+        thebuggenie\modules\agile\entities\AgileBoard;
 
     $column_id = ($column->getID()) ? $column->getID() : md5(rand(0,1000000));
 

@@ -630,7 +630,7 @@
                             $milestone->setProject(framework\Context::getCurrentProject());
                             $milestone->setName($request['milestone_name']);
                             $milestone->save();
-                            $options['milestone_url'] = framework\Context::getRouting()->generate('project_planning_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()));
+                            $options['milestone_url'] = framework\Context::getRouting()->generate('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()));
                         }
                         elseif ($request['milestone'])
                         {

@@ -3211,6 +3211,7 @@ TBG.Project.Milestone.save = function (form) {
 TBG.Project.Milestone.remove = function (url, milestone_id) {
     TBG.Main.Helpers.Dialog.dismiss();
     TBG.Main.Helpers.ajax(url, {
+        url_method: 'delete',
         loading: {
             indicator: 'dialog_indicator',
         },
@@ -4363,6 +4364,7 @@ TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction
     var trans_sib = $('transition_' + transition_id).next(1);
     var parameters = "&direction=" + direction;
     TBG.Main.Helpers.ajax(url, {
+        url_method: 'delete',
         params: parameters,
         loading: {indicator: 'delete_transition_' + transition_id + '_indicator'},
         success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}

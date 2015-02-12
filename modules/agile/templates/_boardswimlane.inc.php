@@ -1,6 +1,6 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\modules\agile\entities\AgileBoard;
 
 ?>
 <tbody class="<?php if (!count($issues)) echo 'collapsed'; ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>">
@@ -27,7 +27,7 @@
         <?php foreach ($swimlane->getBoard()->getColumns() as $column): ?>
             <td class="column" id="swimlane_<?php echo $swimlane->getIdentifier(); ?>_column_<?php echo $column->getID(); ?>" data-column-id="<?php echo $column->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>" data-status-ids="<?php echo join(',', $column->getStatusIds()); ?>">
                 <?php foreach ($issues as $issue): ?>
-                    <?php if ($column->hasIssue($issue)) include_component('project/whiteboardissue', compact('issue', 'column', 'swimlane')); ?>
+                    <?php if ($column->hasIssue($issue)) include_component('agile/whiteboardissue', compact('issue', 'column', 'swimlane')); ?>
                 <?php endforeach; ?>
                 <br style="clear: both;">
             </td>

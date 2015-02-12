@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\entities;
+    namespace thebuggenie\modules\agile\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
 
@@ -11,16 +11,16 @@
      * @version 3.1
      * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      */
 
     /**
      * Agile board column class
      *
      * @package thebuggenie
-     * @subpackage main
+     * @subpackage agile
      *
-     * @Table(name="\thebuggenie\core\entities\tables\BoardColumns")
+     * @Table(name="\thebuggenie\modules\agile\entities\tables\BoardColumns")
      */
     class BoardColumn extends IdentifiableScoped
     {
@@ -42,9 +42,9 @@
         protected $_description;
 
         /**
-         * @var \thebuggenie\core\entities\AgileBoard
+         * @var \thebuggenie\modules\agile\entities\AgileBoard
          * @Column(type="integer", length=10)
-         * @Relates(class="\thebuggenie\core\entities\AgileBoard")
+         * @Relates(class="\thebuggenie\modules\agile\entities\AgileBoard")
          */
         protected $_board_id;
 
@@ -102,7 +102,7 @@
         /**
          * Returns the associated project
          *
-         * @return \thebuggenie\core\entities\AgileBoard
+         * @return \thebuggenie\modules\agile\entities\AgileBoard
          */
         public function getBoard()
         {

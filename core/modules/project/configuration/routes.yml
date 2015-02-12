@@ -241,98 +241,6 @@ transition_issues:
     parameters: [ ]
     csrf_enabled: false
 
-project_planning_sort_milestones:
-    route: /:project_key/milestones/sort
-    module: project
-    action: sortMilestones
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning:
-    route: /:project_key/boards
-    module: project
-    action: planning
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_board:
-    route: /:project_key/boards/:board_id
-    module: project
-    action: agileboardPlanning
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_board_whiteboard_column:
-    route: /:project_key/boards/:board_id/whiteboard/column/*
-    module: project
-    action: agileboardWhiteboardColumn
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_whiteboard_issues:
-    route: /:project_key/boards/:board_id/whiteboard/issues/*
-    module: project
-    action: agileboardWhiteboard
-    parameters: 
-        mode: whiteboardissues
-    csrf_enabled: false
-
-project_planning_board_whiteboard:
-    route: /:project_key/boards/:board_id/whiteboard/*
-    module: project
-    action: agileboardWhiteboard
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_poll:
-    route: /:project_key/boards/:board_id/poll/:mode
-    module: project
-    action: pollPlanning
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_get_issue:
-    route: /:project_key/boards/:board_id/retrieveissue/:mode
-    module: project
-    action: retrievePlanningIssue
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_get_releases:
-    route: /:project_key/boards/:board_id/getreleases
-    module: project
-    action: getReleases
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_get_epics:
-    route: /:project_key/boards/:board_id/getepics
-    module: project
-    action: getEpics
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_add_epic:
-    route: /:project_key/boards/:board_id/addepic
-    module: project
-    action: addEpic
-    parameters: [ ]
-    csrf_enabled: false
-
-project_milestone_mark_finished:
-    route: /:project_key/boards/:board_id/milestone/:milestone_id/markfinished
-    module: project
-    action: markMilestoneFinished
-    parameters: [ ]
-    csrf_enabled: false
-
-project_milestone:
-    route: /:project_key/boards/:board_id/milestone
-    module: project
-    action: milestone
-    parameters: [ ]
-    csrf_enabled: false
-
 project_settings:
     route: /:project_key/settings
     module: project
@@ -479,49 +387,6 @@ project_files:
     parameters: [ ]
     csrf_enabled: false
 
-project_planning_milestone:
-    route: /:project_key/planning/milestone/:milestone_id
-    module: project
-    action: getMilestone
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_milestone_remove:
-    route: /:project_key/planning/milestone/:milestone_id/remove
-    module: project
-    action: removeMilestone
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_milestone_issues:
-    route: /:project_key/boards/:board_id/milestone/:milestone_id/issues
-    module: project
-    action: milestoneIssues
-    parameters:
-      mode: planning
-    csrf_enabled: false
-
-project_planning_assign_milestone:
-    route: /:project_key/planning/assign/issue/milestone/:milestone_id
-    module: project
-    action: assignMilestone
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_assign_release:
-    route: /:project_key/planning/assign/issue/release/:release_id
-    module: project
-    action: assignRelease
-    parameters: [ ]
-    csrf_enabled: false
-
-project_planning_assign_epic:
-    route: /:project_key/planning/assign/issue/epic/:epic_id
-    module: project
-    action: assignEpic
-    parameters: [ ]
-    csrf_enabled: false
-
 project_roadmap_upcoming:
     route: /:project_key/roadmap/upcoming
     module: project
@@ -556,13 +421,6 @@ project_roadmap_milestone_issues:
     route: /:project_key/milestone/:milestone_id/get/issues
     module: project
     action: getMilestoneRoadmapIssues
-    parameters: [ ]
-    csrf_enabled: false
-
-project_roadmap_milestone_refresh:
-    route: /:project_key/milestone/:milestone_id/get/details
-    module: project
-    action: getMilestoneDetails
     parameters: [ ]
     csrf_enabled: false
 

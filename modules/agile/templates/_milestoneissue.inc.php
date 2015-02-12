@@ -6,7 +6,7 @@
 ?>>
     <div class="planning_indicator" id="issue_<?php echo $issue->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
     <div id="issue_<?php echo $issue->getID(); ?>" class="issue_container <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?> <?php echo ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) ? 'child_issue' : 'draggable'; ?>" data-estimated-points="<?php echo $issue->getEstimatedPoints(); ?>" data-estimated-hours="<?php echo $issue->getEstimatedHours(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>">
-        <?php include_component('project/planningcolorpicker', array('issue' => $issue)); ?>
+        <?php include_component('agile/colorpicker', array('issue' => $issue)); ?>
         <div class="priority priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
         <div class="issue_link"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png').$issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new')); ?></div>
         <div class="issue_info">
@@ -47,7 +47,7 @@
     <ul class="child_issues_container" id="child_issues_<?php echo $issue->getID(); ?>_container">
         <?php foreach ($issue->getChildIssues() as $child_issue): ?>
             <?php if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) continue; ?>
-            <?php include_component('project/milestoneissue', array('issue' => $child_issue, 'board' => $board)); ?>
+            <?php include_component('agile/milestoneissue', array('issue' => $child_issue, 'board' => $board)); ?>
         <?php endforeach; ?>
     </ul>
 </li>
