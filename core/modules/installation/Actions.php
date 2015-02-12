@@ -334,6 +334,7 @@
                 framework\Settings::saveSetting('language', 'en_US', 'core', 1);
 
                 \thebuggenie\core\entities\Module::installModule('publish');
+                \thebuggenie\core\entities\Module::installModule('agile');
                 \thebuggenie\core\entities\Module::installModule('mailing');
                 \thebuggenie\core\entities\Module::installModule('vcs_integration');
 
@@ -453,8 +454,6 @@
             \thebuggenie\core\entities\DashboardView::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGDashboardViewsTable::getTable());
             \thebuggenie\core\entities\ApplicationPassword::getB2DBTable()->create();
             \thebuggenie\core\entities\NotificationSetting::getB2DBTable()->create();
-            \thebuggenie\core\entities\AgileBoard::getB2DBTable()->create();
-            \thebuggenie\core\entities\BoardColumn::getB2DBTable()->create();
 
             $transaction = \b2db\Core::startTransaction();
 
