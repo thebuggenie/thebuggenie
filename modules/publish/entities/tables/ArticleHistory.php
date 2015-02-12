@@ -58,7 +58,7 @@
 
         public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
         {
-            $transaction = Core::startTransaction();
+            if (!Core::isTransactionActive()) $transaction = Core::startTransaction();
             $crit = $this->getCriteria();
             $crit->addInsert(self::ARTICLE_NAME, $article_name);
             $crit->addInsert(self::AUTHOR, $user_id);
@@ -84,7 +84,7 @@
             $crit->addInsert(self::DATE, NOW);
 
             $res = $this->doInsert($crit);
-            $transaction->commitAndEnd();
+            if (isset($transaction)) $transaction->commitAndEnd();
 
             return $revision_number;
         }
