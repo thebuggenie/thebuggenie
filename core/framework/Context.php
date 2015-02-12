@@ -641,7 +641,11 @@
         public static function clearRoutingCache()
         {
             self::getCache()->delete(Cache::KEY_ROUTES_CACHE, true, true);
+            self::getCache()->delete(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, true, true);
+            self::getCache()->delete(Cache::KEY_ANNOTATION_LISTENERS_CACHE, true, true);
             self::getCache()->fileDelete(Cache::KEY_ROUTES_CACHE, true, true);
+            self::getCache()->fileDelete(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, true, true);
+            self::getCache()->fileDelete(Cache::KEY_ANNOTATION_LISTENERS_CACHE, true, true);
         }
 
         public static function clearMenuLinkCache()
@@ -675,10 +679,10 @@
                 foreach ($modules as $module_name => $module)
                 {
                     self::getRouting()->loadRoutes($module_name, $module_type);
-                    self::loadEventListeners(self::getRouting()->getAnnotationListeners());
                 }
             }
             self::getRouting()->loadYamlRoutes(\THEBUGGENIE_CONFIGURATION_PATH . 'routes.yml');
+            self::loadEventListeners(self::getRouting()->getAnnotationListeners());
 
             if (!self::isInstallmode())
             {
