@@ -655,6 +655,17 @@
             }
         }
 
+        protected static function loadEventListeners($event_listeners)
+        {
+            Logging::log('Loading event listeners');
+            foreach ($event_listeners as $listener)
+            {
+                list($event_module, $event_identifier, $module, $method) = $listener;
+                Event::listen($event_module, $event_identifier, array(self::getModule($module), $method));
+            }
+            Logging::log('... done (loading event listeners)');
+        }
+
         protected static function loadRoutes()
         {
             Logging::log('Loading routes from routing files', 'routing');
@@ -664,13 +675,13 @@
                 foreach ($modules as $module_name => $module)
                 {
                     self::getRouting()->loadRoutes($module_name, $module_type);
+                    self::loadEventListeners(self::getRouting()->getAnnotationListeners());
                 }
             }
 
             if (!self::isInstallmode())
             {
-                self::getRouting()->cacheRoutes();
-                self::getRouting()->cacheComponentOverrideMap();
+                self::getRouting()->cache();
             }
 
             Logging::log('...done (loading routes from routing file)', 'routing');
@@ -681,27 +692,32 @@
             Logging::log('Loading routes from cache', 'routing');
             $routes = self::getCache()->get(Cache::KEY_ROUTES_CACHE);
             $component_override_map = self::getCache()->get(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
-            if (!$routes)
+            $annotation_listeners = self::getCache()->get(Cache::KEY_ANNOTATION_LISTENERS_CACHE);
+            if ($routes === null)
             {
                 Logging::log('Loading routes from disk cache', 'routing');
                 $routes = self::getCache()->fileGet(Cache::KEY_ROUTES_CACHE);
             }
-            if (!$component_override_map)
+            if ($component_override_map === null)
             {
                 Logging::log('Loading component override mappings from disk cache', 'routing');
-                $routes = self::getCache()->fileGet(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
+                $component_override_map = self::getCache()->fileGet(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE);
+            }
+            if ($annotation_listeners === null)
+            {
+                Logging::log('Loading event listeners from disk cache', 'routing');
+                $annotation_listeners = self::getCache()->fileGet(Cache::KEY_ANNOTATION_LISTENERS_CACHE);
             }
 
-            if (!$routes)
-                throw new \Exception('Routes should be cached, but no routes found!');
-
-            if (!$component_override_map)
-                throw new \Exception('Routes should be cached, but no routes found!');
+            if ($routes === null || $component_override_map === null || $annotation_listeners === null)
+                throw new exceptions\CacheException('There is an issue with the cache. Clear the cache and try again.');
 
             Logging::log('Setting routes from cache', 'routing');
             self::getRouting()->setRoutes($routes);
             Logging::log('Setting component override mappings from cache', 'routing');
             self::getRouting()->setComponentOverrideMap($component_override_map);
+            Logging::log('Setting annotation listeners from cache', 'routing');
+            self::loadEventListeners($annotation_listeners);
             Logging::log('...done', 'routing');
         }
 
@@ -1059,7 +1075,10 @@
                     if (self::isModuleLoaded($module_name))
                         continue;
                     $module_class = "\\thebuggenie\\modules\\{$module_name}\\".ucfirst($module_name);
-                    $modules[$module_name] = new $module_class();
+                    if (class_exists($module_class))
+                    {
+                        $modules[$module_name] = new $module_class();
+                    }
                 }
             }
             return $modules;

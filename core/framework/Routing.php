@@ -25,8 +25,10 @@
     {
         protected $routes = array();
         protected $component_override_map = array();
+        protected $annotation_listeners = array();
         protected $has_cached_routes = null;
         protected $has_cached_component_override_map = null;
+        protected $has_cached_annotation_listeners = null;
         protected $current_route_name = null;
         protected $current_route_module = null;
         protected $current_route_action = null;
@@ -87,16 +89,38 @@
             return $this->has_cached_component_override_map;
         }
 
-        public function cacheRoutes()
+        public function hasCachedAnnotationListeners()
+        {
+            if ($this->has_cached_annotation_listeners === null)
+            {
+                if (Context::isInstallmode())
+                {
+                    $this->has_cached_annotation_listeners = false;
+                }
+                else
+                {
+                    $this->has_cached_annotation_listeners = Context::getCache()->has(Cache::KEY_ANNOTATION_LISTENERS_CACHE);
+                    if ($this->has_cached_annotation_listeners)
+                    {
+                        Logging::log('Annotation listeners are cached', 'routing');
+                    }
+                    else
+                    {
+                        Logging::log('Annotation listeners are not cached', 'routing');
+                    }
+                }
+            }
+            return $this->has_cached_annotation_listeners;
+        }
+
+        public function cache()
         {
             Context::getCache()->fileAdd(Cache::KEY_ROUTES_CACHE, $this->getRoutes());
             Context::getCache()->add(Cache::KEY_ROUTES_CACHE, $this->getRoutes());
-        }
-
-        public function cacheComponentOverrideMap()
-        {
-            Context::getCache()->fileAdd(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getRoutes());
-            Context::getCache()->add(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getRoutes());
+            Context::getCache()->fileAdd(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getComponentOverrideMap());
+            Context::getCache()->add(Cache::KEY_COMPONENT_OVERRIDE_MAP_CACHE, $this->getComponentOverrideMap());
+            Context::getCache()->fileAdd(Cache::KEY_ANNOTATION_LISTENERS_CACHE, $this->getAnnotationListeners());
+            Context::getCache()->add(Cache::KEY_ANNOTATION_LISTENERS_CACHE, $this->getAnnotationListeners());
         }
 
         /**
@@ -120,6 +144,16 @@
         }
 
         /**
+         * Set component override map manually (used by cache functions)
+         *
+         * @param array $annotation_listeners
+         */
+        public function setAnnotationListeners($annotation_listeners)
+        {
+            $this->annotation_listeners = $annotation_listeners;
+        }
+
+        /**
          * Get all the routes
          *
          * @return array
@@ -137,6 +171,16 @@
         public function getComponentOverrideMap()
         {
             return $this->component_override_map;
+        }
+
+        /**
+         * Get all registered annotation module listeners
+         *
+         * @return array
+         */
+        public function getAnnotationListeners()
+        {
+            return $this->annotation_listeners;
         }
 
         public function hasRoute($route)
@@ -171,6 +215,7 @@
             }
 
             $this->loadAnnotationRoutes($module_name);
+            $this->loadAnnotationListeners($module_name);
         }
 
         public function loadAnnotationRoutes($module_name)
@@ -184,8 +229,18 @@
             }
         }
 
+        public function loadAnnotationListeners($module_name)
+        {
+            $is_internal = Context::isInternalModule($module_name);
+            $namespace = ($is_internal) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
+            $this->loadModuleAnnotationListeners($namespace . $module_name . '\\' . ucfirst($module_name), $module_name);
+        }
+
         protected function loadModuleOverrideMappings($classname, $module)
         {
+            if (!class_exists($classname))
+                return;
+
             $reflection = new \ReflectionClass($classname);
             foreach ($reflection->getMethods() as $method)
             {
@@ -195,6 +250,25 @@
                     $overridden_component = $annotationset->getAnnotation('Overrides')->getProperty('name');
                     $component = array('module' => $module, 'method' => $method->name);
                     $this->component_override_map[$overridden_component] = $component;
+                }
+            }
+        }
+
+        protected function loadModuleAnnotationListeners($classname, $module)
+        {
+            if (!class_exists($classname))
+                return;
+
+            $reflection = new \ReflectionClass($classname);
+            foreach ($reflection->getMethods() as $method)
+            {
+                $annotationset = new AnnotationSet($method->getDocComment());
+                if ($annotationset->hasAnnotation('Listener'))
+                {
+                    $listener_annotation = $annotationset->getAnnotation('Listener');
+                    $event_module = $listener_annotation->getProperty('module');
+                    $event_identifier = $listener_annotation->getProperty('identifier');
+                    $this->annotation_listeners[] = array($event_module, $event_identifier, $module, $method->name);
                 }
             }
         }
@@ -242,7 +316,7 @@
                     $action = substr($method->name, 3);
                     $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($action));
                     $route = $route_url_prefix . $route_annotation->getProperty('url');
-                    $csrf_enabled = $route_annotation->getProperty('csrf_enabled', false);
+                    $csrf_enabled = $annotationset->hasAnnotation('CsrfProtected');
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 

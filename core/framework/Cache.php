@@ -26,6 +26,7 @@
         const KEY_CONFIGURATION = '_configuration';
         const KEY_ROUTES_CACHE = '_all_routes';
         const KEY_COMPONENT_OVERRIDE_MAP_CACHE = '_component_override_map';
+        const KEY_ANNOTATION_LISTENERS_CACHE = '_annotation_listeners';
         const KEY_PERMISSIONS_CACHE = '_permissions';
         const KEY_MAIN_MENU_LINKS = '_mainmenu_links';
         const KEY_I18N = '_i18n_';

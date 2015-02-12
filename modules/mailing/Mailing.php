@@ -112,7 +112,6 @@
             framework\Event::listen('core', 'config.createuser.email', array($this, 'listen_configCreateuserEmail'));
             framework\Event::listen('core', 'config.createuser.save', array($this, 'listen_configCreateuserSave'));
             framework\Event::listen('core', 'mainActions::myAccount::saveNotificationSettings', array($this, 'listen_accountSaveNotificationSettings'));
-            framework\Event::listen('core', 'get_backdrop_partial', array($this, 'listen_get_backdrop_partial'));
         }
 
         protected function _install($scope)
@@ -741,6 +740,10 @@ EOT;
             }
         }
 
+        /**
+         * @Listener(module='core', identifier='get_backdrop_partial')
+         * @param \thebuggenie\core\framework\Event $event
+         */
         public function listen_get_backdrop_partial(framework\Event $event)
         {
             if ($event->getSubject() == 'mailing_editincomingemailaccount')

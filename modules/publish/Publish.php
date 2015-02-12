@@ -11,7 +11,7 @@
         thebuggenie\modules\publish\entities\tables\UserArticles,
         thebuggenie\modules\publish\entities\tables\Articles;
 
-/**
+    /**
      * The wiki class
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
@@ -60,7 +60,6 @@
             if ($this->isWikiTabsEnabled())
             {
                 framework\Event::listen('core', 'project_overview_item_links', array($this, 'listen_projectLinks'));
-                framework\Event::listen('core', 'menustrip_item_links', array($this, 'listen_MenustripLinks'));
                 framework\Event::listen('core', 'breadcrumb_main_links', array($this, 'listen_BreadcrumbMainLinks'));
                 framework\Event::listen('core', 'breadcrumb_project_links', array($this, 'listen_BreadcrumbProjectLinks'));
             }
@@ -368,6 +367,13 @@
             $event->addToReturnList($link);
         }
 
+        /**
+         * Header wiki menu and search dropdown / list
+         *
+         * @Listener(module="core", identifier="templates/headermainmenu::projectmenulinks")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
         public function listen_MenustripLinks(framework\Event $event)
         {
             $project_url = (framework\Context::isProjectContext()) ? framework\Context::getRouting()->generate('publish_article', array('article_name' => ucfirst(framework\Context::getCurrentProject()->getKey()) . ':MainPage')) : null;
