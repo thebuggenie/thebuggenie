@@ -23,7 +23,8 @@
     class module_name extends \thebuggenie\core\entities\Module
     {
 
-        protected $_module_version = '0.1';
+        const VERSION = '0.1';
+
         protected $_longname = 'module_name';
         protected $_description = 'module_name description here';
         protected $_module_config_title = 'module_name';
