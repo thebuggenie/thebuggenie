@@ -1,23 +1,12 @@
 <?php
 
-    /*
-
-project_planning_board_whiteboard:
-    route: /:project_key/boards/:board_id/whiteboard/*
-    module: project
-    action: agileboardWhiteboard
-    parameters: [ ]
-    csrf_enabled: false
-
-     */
-
     namespace thebuggenie\modules\agile;
 
     use thebuggenie\core\framework,
         thebuggenie\core\helpers;
 
     /**
-     * actions for the agile module
+     * Actions for the agile module
      *
      * @Routes(name_prefix="agile_", url_prefix="/:project_key/agile")
      */
@@ -40,8 +29,8 @@ project_planning_board_whiteboard:
                     throw new \Exception("You don't have access to modify milestones");
                 }
                 $return_options = array('finished' => 'ok');
-                $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
-                $milestone = entities\Milestone::getB2DBTable()->selectById($request['milestone_id']);
+                $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
+                $milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['milestone_id']);
                 $reached_date = mktime(23, 59, 59, framework\Context::getRequest()->getParameter('milestone_finish_reached_month'), framework\Context::getRequest()->getParameter('milestone_finish_reached_day'), framework\Context::getRequest()->getParameter('milestone_finish_reached_year'));
                 $milestone->setReachedDate($reached_date);
                 $milestone->setReached();
@@ -52,10 +41,10 @@ project_planning_board_whiteboard:
                     switch ($request['unresolved_issues_action'])
                     {
                         case 'backlog':
-                            tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), null, 0);
+                            \thebuggenie\core\entities\tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), null, 0);
                             break;
                         case 'reassign':
-                            $new_milestone = entities\Milestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
+                            $new_milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                         case 'addnew':
@@ -64,9 +53,9 @@ project_planning_board_whiteboard:
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                     }
-                    if (isset($new_milestone) && $new_milestone instanceof entities\Milestone)
+                    if (isset($new_milestone) && $new_milestone instanceof \thebuggenie\core\entities\Milestone)
                     {
-                        tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), $new_milestone->getID());
+                        \thebuggenie\core\entities\tables\Issues::getTable()->reAssignIssuesByMilestoneIds($milestone->getID(), $new_milestone->getID());
                     }
                 }
 
@@ -82,14 +71,14 @@ project_planning_board_whiteboard:
         /**
          * Sorting milestones
          *
-         * @Route(url="/milestones/sort", name="sort_milestones"
+         * @Route(url="/milestones/sort", name="sort_milestones")
          * @CsrfProtected
          * 
          * @param framework\Request $request
          */
         public function runSortMilestones(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $milestones = $request->getParameter('milestone_ids', array());
 
             try
@@ -149,7 +138,7 @@ project_planning_board_whiteboard:
          */
         public function runBoard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
             if ($request->isDelete())
             {
@@ -228,7 +217,7 @@ project_planning_board_whiteboard:
          */
         public function runWhiteboardIssues(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);
@@ -307,7 +296,7 @@ project_planning_board_whiteboard:
          */
         public function runWhiteboard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('project_planning_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);
@@ -375,10 +364,10 @@ project_planning_board_whiteboard:
         public function runRetrieveIssue(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-            $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
 
-            $this->forward403unless($issue instanceof entities\Issue && $issue->hasAccess());
+            $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
             if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))
             {
@@ -402,7 +391,7 @@ project_planning_board_whiteboard:
         public function runGetReleases(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-            $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             return $this->renderComponent('agile/releasestrip', compact('board'));
         }
@@ -417,7 +406,7 @@ project_planning_board_whiteboard:
         public function runGetEpics(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-            $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             return $this->renderComponent('agile/epicstrip', compact('board'));
         }
@@ -432,7 +421,7 @@ project_planning_board_whiteboard:
         public function runAddEpic(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-            $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             try
             {
@@ -443,7 +432,7 @@ project_planning_board_whiteboard:
                 if (!$shortname)
                     throw new \Exception($this->getI18n()->__('You have to provide a label'));
 
-                $issue = new entities\Issue();
+                $issue = new \thebuggenie\core\entities\Issue();
                 $issue->setTitle($title);
                 $issue->setShortname($shortname);
                 $issue->setIssuetype($board->getEpicIssuetypeID());
@@ -463,7 +452,7 @@ project_planning_board_whiteboard:
         /**
          * Retrieving or sorting milestone issues
          *
-         * @Route(url="/boards:board_id/milestone/:milestone_id/issues")
+         * @Route(url="/boards/:board_id/milestone/:milestone_id/issues")
          *
          * @param \thebuggenie\core\framework\Request $request
          */
@@ -474,7 +463,7 @@ project_planning_board_whiteboard:
                 switch (true)
                 {
                     case $request->isPost():
-                        $issue_table = tables\Issues::getTable();
+                        $issue_table = \thebuggenie\core\entities\tables\Issues::getTable();
                         $orders = array_keys($request["issue_ids"]);
                         foreach ($request["issue_ids"] as $issue_id)
                         {
@@ -483,10 +472,10 @@ project_planning_board_whiteboard:
                         return $this->renderJSON(array('sorted' => 'ok'));
                     default:
                         if ($request->getParameter('milestone_id'))
-                            $milestone = tables\Milestones::getTable()->selectById($request['milestone_id']);
+                            $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
 
-                        $board = ($request['board_id']) ? tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
-                        $component = (isset($milestone) && $milestone instanceof entities\Milestone) ? 'milestoneissues' : 'backlog';
+                        $board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
+                        $component = (isset($milestone) && $milestone instanceof \thebuggenie\core\entities\Milestone) ? 'milestoneissues' : 'backlog';
                         
                         return $this->renderJSON(array('content' => $this->getComponentHTML("agile/{$component}", compact('milestone', 'board'))));
                 }
@@ -545,14 +534,11 @@ project_planning_board_whiteboard:
             
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
-                $milestone = tables\Milestones::getTable()->selectById($request['milestone_id']);
+                $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
+                $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
 
                 if (!$issue instanceof \thebuggenie\core\entities\Issue)
                     throw new \Exception($this->getI18n ()->__('This is not a valid issues'));
-
-                if (!$milestone instanceof \thebuggenie\core\entities\Milestone)
-                    throw new \Exception($this->getI18n ()->__('This is not a valid milestone'));
 
                 $issue->setMilestone($milestone);
                 $issue->save();
@@ -561,9 +547,9 @@ project_planning_board_whiteboard:
                     $child_issue->setMilestone($milestone);
                     $child_issue->save();
                 }
-                $new_issues = ($milestone instanceof entities\Milestone) ? $milestone->countIssues() : 0;
-                $new_e_points = ($milestone instanceof entities\Milestone) ? $milestone->getPointsEstimated() : 0;
-                $new_e_hours = ($milestone instanceof entities\Milestone) ? $milestone->getHoursEstimated() : 0;
+                $new_issues = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->countIssues() : 0;
+                $new_e_points = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getPointsEstimated() : 0;
+                $new_e_hours = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getHoursEstimated() : 0;
                 return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours));
             }
             catch (\Exception $e)
@@ -614,7 +600,7 @@ project_planning_board_whiteboard:
 
                 $epic->addChildIssue($issue);
 
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => entities\Issue::getFormattedTime($epic->getEstimatedTime())));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime())));
             }
             catch (\Exception $e)
             {
@@ -626,17 +612,18 @@ project_planning_board_whiteboard:
         /**
          * Milestone actions
          *
-         * @Route(url="/milestone/:milestone_id")
+         * @Route(url="/milestone/:milestone_id/*")
          *
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runMilestone(framework\Request $request)
         {
-            $milestone = new entities\Milestone($request['milestone_id']);
+            $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
+            $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
 
             try
             {
-                if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
+                if (!$this->getUser()->canManageProject($this->selected_project) || !$this->getUser()->canManageProjectReleases($this->selected_project))
                     throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
 
                 switch (true)
@@ -644,12 +631,12 @@ project_planning_board_whiteboard:
                     case $request->isDelete():
                         $milestone->delete();
 
-                        $no_milestone = new entities\Milestone(0);
+                        $no_milestone = new \thebuggenie\core\entities\Milestone(0);
                         $no_milestone->setProject($milestone->getProject());
                         return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
                     case $request->isPost():
                         $this->_saveMilestoneDetails($request, $milestone);
-                        $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
+                        $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
                         if ($request->hasParameter('issues') && $request['include_selected_issues'])
                             \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
@@ -678,7 +665,7 @@ project_planning_board_whiteboard:
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $last_refreshed = $request['last_refreshed'];
-            $board = tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
             $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
 

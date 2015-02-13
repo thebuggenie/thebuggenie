@@ -1,5 +1,5 @@
 <?php if ($tbg_user->hasProjectPageAccess('project_planning', $project)): ?>
-    <li<?php if (in_array($tbg_response->getPage(), array('project_planning', 'project_planning_board', 'project_planning_board_whiteboard'))): ?> class="selected"<?php endif; ?>>
+    <li<?php if (in_array($tbg_response->getPage(), array('project_planning', 'agile_board', 'agile_whiteboard'))): ?> class="selected"<?php endif; ?>>
         <div class="menuitem_container">
             <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), image_tag('icon_agile.png') . __('Agile')); ?>
             <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
