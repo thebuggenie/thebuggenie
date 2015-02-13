@@ -6,6 +6,12 @@
             "email" : "zegenie@gmail.com"
         }
     ],
+    "support" : {
+        "email" : "support@thebuggenie.com",
+        "forum" : "http://forum.thebuggenie.org",
+        "issues" : "http://issues.thebuggenie.com",
+        "irc" : "irc://irc.freenode.org/thebuggenie"
+    },
     "license" : [
         "MPL 1.1"
     ],
