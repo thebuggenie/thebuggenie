@@ -398,6 +398,10 @@
             {
                 $url = '/'.$url;
             }
+            if (mb_strlen($url) > 1 && mb_substr($url, -1) == '/')
+            {
+                $url = mb_substr($url, 0, -1);
+            }
             Logging::log("URL is now '".htmlentities($url, ENT_COMPAT, 'utf-8')."'", 'routing');
 
             // we remove the query string
