@@ -816,6 +816,7 @@
         protected function _parse_tableopener($matches)
         {
             $element = simplexml_load_string("<table ".trim($matches[1])."></table>");
+            $output = $this->_parse_tablecloser(false);
             $output = "<table class=\"";
             $output .= ($element['class']) ? $element['class'] : 'sortable resizable';
             $output .= '"';
@@ -831,6 +832,7 @@
 
         protected function _parse_tablecloser($matches)
         {
+            if (!$this->tablemode) return "";
             $this->tablemode = false;
             $this->stop_all = true;
             $output = '';
@@ -1125,6 +1127,7 @@
                 if ($this->deflist) $output .= $this->_parse_definitionlist(false, true);
                 if ($this->preformat) $output .= $this->_parse_preformat(false, true);
                 if ($this->quote) $output .= $this->_parse_quote(false, true);
+                $output .= $this->_parse_tablecloser(false);
 
                 $this->nowikis = array_reverse($this->nowikis);
                 $this->codeblocks = array_reverse($this->codeblocks);
