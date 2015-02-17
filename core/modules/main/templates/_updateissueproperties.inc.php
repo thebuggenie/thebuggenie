@@ -150,7 +150,7 @@
                     <li id="transition_popup_milestone_div_<?php echo $transition->getID(); ?>">
                         <label for="transition_popup_set_milestone_<?php echo $transition->getID(); ?>"><?php echo __('Milestone'); ?></label>
                         <select name="milestone_id" id="transition_popup_set_milestone_<?php echo $transition->getID(); ?>">
-                            <option value="0"<?php if (!$issue instanceof \thebuggenie\core\entities\Issue && $issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
+                            <option value="0"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
                             <?php foreach ($project->getMilestonesForIssues() as $milestone): ?>
                                 <option value="<?php echo $milestone->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone && $issue->getMilestone()->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
                             <?php endforeach; ?>
