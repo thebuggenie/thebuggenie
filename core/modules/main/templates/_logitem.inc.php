@@ -50,7 +50,7 @@
                         echo '<i>' . __('Issue created') . '</i>';
                         if (isset($include_details) && $include_details)
                         {
-                            echo '<div class="timeline_inline_details">'.nl2br(htmlentities($issue->getDescription())).'</div>';
+                            echo '<div class="timeline_inline_details">'.nl2br(__e($issue->getDescription())).'</div>';
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_COMMENT:
