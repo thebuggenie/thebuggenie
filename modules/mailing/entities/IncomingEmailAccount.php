@@ -275,7 +275,7 @@
                 if ($this->usesPlaintextAuthentication())
                     $options['DISABLE_AUTHENTICATOR'] = 'GSSAPI';
 
-                $this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), $options);
+                $this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), 0, 0, $options);
             }
             if (!is_resource($this->_connection))
             {
