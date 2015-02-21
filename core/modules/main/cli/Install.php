@@ -211,7 +211,7 @@
                         $this->cliEcho("\n");
                         $this->cliEcho("Saving database connection information ... ", 'white', 'bold');
                         $this->cliEcho("\n");
-                        \b2db\Core::saveConnectionParameters($this->$_b2db_config_file);
+                        \b2db\Core::saveConnectionParameters($this->_b2db_config_file);
                         $this->cliEcho("Successfully saved database connection information.\n", 'green');
                         $this->cliEcho("\n");
                     }
