@@ -660,11 +660,6 @@
                         $user = self::getB2DBTable()->getByUsername($request['api_username']);
                         if (!$user->authenticateApplicationPassword($request['api_token'])) $user = null;
                         break;
-                    default:
-                        if (!framework\Settings::isLoginRequired())
-                        {
-                            $user = self::getB2DBTable()->getByUserID(framework\Settings::getDefaultUserID());
-                        }
                 }
 
                 if ($user === null && !framework\Settings::isLoginRequired())
