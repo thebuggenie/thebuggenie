@@ -667,6 +667,11 @@
                         }
                 }
 
+                if ($user === null && !framework\Settings::isLoginRequired())
+                    {
+                        $user = self::getB2DBTable()->getByUserID(framework\Settings::getDefaultUserID());
+                    }
+
                 if ($user instanceof User)
                 {
                     if (!$user->isActivated())
