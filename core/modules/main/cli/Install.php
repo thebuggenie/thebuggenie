@@ -115,7 +115,7 @@
                 else
                 {
                     $this->cliEcho("Step 1 - database information\n");
-                    if (file_exists('core/b2db_bootstrap.inc.php'))
+                    if (file_exists(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml"))
                     {
                         $this->cliEcho("You seem to already have completed this step successfully.\n");
                         if ($this->getProvidedArgument('use_existing_db_info') == 'yes')
@@ -216,13 +216,26 @@
                     }
                     else
                     {
-                        \b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-                        $this->cliEcho("Successfully connected to the database.\n", 'green');
-                        if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
+                        $b2db_config = \Spyc::YAMLLoad(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
+
+                        if (!array_key_exists("b2db", $b2db_config))
                         {
-                            $this->cliEcho("Press ENTER to continue ... ");
-                            $this->pressEnterToContinue();
+                            throw new \Exception("Could not find database configuration in file " . \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
                         }
+
+                        try
+                        {
+                            \b2db\Core::initialize($b2db_config, \thebuggenie\core\framework\Context::getCache());
+                            \b2db\Core::doConnect();
+                        }
+                        catch (\Exception $e)
+                        {
+                            throw new \Exception("Could not connect to the database:\n" .
+                                                 $e->getMessage() . "\nPlease check your configuration file " .
+                                                 \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml" );
+                        }
+
+                        $this->cliEcho("Successfully connected to the database.\n", 'green');
                     }
                     $this->cliEcho("\nThe Bug Genie needs some server settings to function properly...\n\n");
 
