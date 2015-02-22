@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 34 -->
-<!-- Number of Strings: 220 -->
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
+<!-- Number of Strings: 218 -->
+<!-- Keys extracted from sources on: 2015 Feb 22. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -250,12 +250,6 @@
         <body>
             <trans-unit id="af0ffc120b21ea659714ced2d6eaa58a">
                 <source>Wiki menu</source>
-            </trans-unit>
-            <trans-unit id="70ff4ce8c66550418c2cee618def19f7">
-                <source>Your drafts</source>
-            </trans-unit>
-            <trans-unit id="806aa6cb273949805cf1aae455589e7b">
-                <source>You don't have any unpublished pages</source>
             </trans-unit>
         </body>
     </file>

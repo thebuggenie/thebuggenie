@@ -4,14 +4,667 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 282 -->
-<!-- Number of Strings: 3173 -->
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
+<!-- Number of Sections: 263 -->
+<!-- Number of Strings: 2993 -->
+<!-- Keys extracted from sources on: 2015 Feb 22. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="core/classes/TBGAction.class.php">
+    <file source-language="en" datatype="php" original="core/entities/CustomDatatype.php">
+        <body>
+            <trans-unit id="ecd0790de1c1d5836b4acd4784bcdf12">
+                <source>Dropdown list with custom text choices</source>
+            </trans-unit>
+            <trans-unit id="82f0d0ecd8fa86e938e1f59d649bbfdc">
+                <source>Single line text input</source>
+            </trans-unit>
+            <trans-unit id="174dad14a512198dd4631a9c28258779">
+                <source>Textarea in issue main area</source>
+            </trans-unit>
+            <trans-unit id="f70bb114d846933c78482c9957709a66">
+                <source>Textarea (small) in issue details list</source>
+            </trans-unit>
+            <trans-unit id="2b2d640959f945ab33f30e832336193c">
+                <source>Radio choices</source>
+            </trans-unit>
+            <trans-unit id="e1a9adfc12508885d52814130049ce55">
+                <source>Dropdown list of available releases</source>
+            </trans-unit>
+            <trans-unit id="8e2339aebec41e3311b6ed87328886d1">
+                <source>Dropdown list of available components</source>
+            </trans-unit>
+            <trans-unit id="1d26d309dbb24698665ea95391f72306">
+                <source>Dropdown list of available editions</source>
+            </trans-unit>
+            <trans-unit id="1c5b6e0267892088a3d195365720b9f4">
+                <source>Dropdown list of available milestones</source>
+            </trans-unit>
+            <trans-unit id="edf6bc2fd162ba9769992c8a896b076b">
+                <source>Dropdown list of all statuses</source>
+            </trans-unit>
+            <trans-unit id="25b8a6a3f5daf891eb6c2eb4ae686a8c">
+                <source>Calculated field</source>
+            </trans-unit>
+            <trans-unit id="f70a48405c5fb6041132e8b1254ba282">
+                <source>Date picker</source>
+            </trans-unit>
+            <trans-unit id="fd8144e9c562482d4e25ddeed6c44857">
+                <source>Find and pick a user</source>
+            </trans-unit>
+            <trans-unit id="518833698bb7d50155408456a3fe4a87">
+                <source>Find and pick a team</source>
+            </trans-unit>
+            <trans-unit id="cdf08326d784f1f01fef2ad29baa2e55">
+                <source>Find and pick a client</source>
+            </trans-unit>
+            <trans-unit id="aae10e7cd86934e09406a82f64f5f377">
+                <source>This field key already exists</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/DashboardView.php">
+        <body>
+            <trans-unit id="ab191177a627ce131bef40c2610c6f08">
+                <source>What you've done recently</source>
+            </trans-unit>
+            <trans-unit id="40d2e58e98773baffc549a62d96f60a4">
+                <source>A widget that shows your most recent actions, such as issue edits, wiki edits and more</source>
+            </trans-unit>
+            <trans-unit id="a6dcfc2f9a32c281135b5b89eeee31bc">
+                <source>Recent comments</source>
+            </trans-unit>
+            <trans-unit id="3265e323d092afd3a121474c9f5eee2c">
+                <source>Shows a list of your most recent comments</source>
+            </trans-unit>
+            <trans-unit id="b3a6d00bcbbc30a4cdb4e4f4cbd22005">
+                <source>Issues reported by me</source>
+            </trans-unit>
+            <trans-unit id="27fcdff30237702a137d052c8072de39">
+                <source>Shows a list of all issues you have reported, across all projects</source>
+            </trans-unit>
+            <trans-unit id="86fb6fd70809a36ccd67e001c05a8a59">
+                <source>Open issues assigned to me</source>
+            </trans-unit>
+            <trans-unit id="99d54afa5f2460482028343c3399ed2b">
+                <source>Shows a list of all issues assigned to you</source>
+            </trans-unit>
+            <trans-unit id="66c4255bad231dd5d05adbaae50ff48c">
+                <source>Open issues owned by me</source>
+            </trans-unit>
+            <trans-unit id="a1216e2611e964018ad5ae3267d994ae">
+                <source>Shows a list of all issues owned by you</source>
+            </trans-unit>
+            <trans-unit id="04cf918b101cc8c80a7959bc0be78178">
+                <source>Open issues assigned to my teams</source>
+            </trans-unit>
+            <trans-unit id="7ecaf827e6233553a280f2dbeb53f978">
+                <source>Shows all issues assigned to any of your teams</source>
+            </trans-unit>
+            <trans-unit id="8683b9134e1f507b4f7d7e0a51b8bbc4">
+                <source>Your projects</source>
+            </trans-unit>
+            <trans-unit id="3d25b27a65eb5e4bf9cac7488522287f">
+                <source>A widget that shows projects you are involved in</source>
+            </trans-unit>
+            <trans-unit id="ea7af6e94aecaabb121bb68b54428e9f">
+                <source>Upcoming milestones / sprints</source>
+            </trans-unit>
+            <trans-unit id="41c9782da4c5228ba36fc6e94bf28c0e">
+                <source>A widget that shows all upcoming milestones or sprints for any projects you are involved in</source>
+            </trans-unit>
+            <trans-unit id="a2c44426a4653e51b73bf7b10c9d23bc">
+                <source>Recent issues: %issuetype</source>
+            </trans-unit>
+            <trans-unit id="26a4faf6ff2886a7d786f8a7d5304fd1">
+                <source>Show recent issues of type %issuetype</source>
+            </trans-unit>
+            <trans-unit id="340b2432a91c77a28dff03c3c3dbb648">
+                <source>About this project</source>
+            </trans-unit>
+            <trans-unit id="2896e1378bad150c364afa08efd60021">
+                <source>Basic project information widget, showing project name, important people and links</source>
+            </trans-unit>
+            <trans-unit id="f450e914bc68d1cf3067c1d78d9cbd91">
+                <source>Project team</source>
+            </trans-unit>
+            <trans-unit id="72758cfca81778ee6dc0489e467e756a">
+                <source>A widget with information about project developers and the project team and their respective project roles</source>
+            </trans-unit>
+            <trans-unit id="570e6c7d45f2985cd14be5a37bca8bdc">
+                <source>Project client</source>
+            </trans-unit>
+            <trans-unit id="eaf52763657451ffa7fd3c2c98b366dc">
+                <source>Shows information about the associated project client (if any)</source>
+            </trans-unit>
+            <trans-unit id="0504ff6d5a8aecf8fe45e66bbafd1483">
+                <source>Subprojects</source>
+            </trans-unit>
+            <trans-unit id="3471159981e5b7a6b4e6a60fef7371a5">
+                <source>Lists all subprojects of this project, with quick links to report an issue, open the project wiki and more</source>
+            </trans-unit>
+            <trans-unit id="c23610a63a15a4cfe8d55795f1bd7936">
+                <source>Recent activities</source>
+            </trans-unit>
+            <trans-unit id="39840ce136500158beb84c275fb59052">
+                <source>Displays project timeline</source>
+            </trans-unit>
+            <trans-unit id="2a2bcfe4e6d48394be32600212e586f3">
+                <source>Upcoming milestones and deadlines</source>
+            </trans-unit>
+            <trans-unit id="6fde77115162f74f7fc925b6213581b7">
+                <source>A widget showing a list of upcoming milestones and deadlines for the next three weeks</source>
+            </trans-unit>
+            <trans-unit id="e47976b42e8e3cf0d90dfaaad459a2d7">
+                <source>Latest downloads</source>
+            </trans-unit>
+            <trans-unit id="a67c46cb7b932ec0b63c50a420d14c9e">
+                <source>Lists recent downloads released in the release center</source>
+            </trans-unit>
+            <trans-unit id="fabff87bd847e6065403bc1a4f9972eb">
+                <source>Graph of closed vs open issues</source>
+            </trans-unit>
+            <trans-unit id="6bb4ce3e0c25daf89af6b298c3b027d4">
+                <source>Shows a line graph comparing closed vs open issues for the past 15 days</source>
+            </trans-unit>
+            <trans-unit id="ea075e6a62cc36411d6e5e104cd8d427">
+                <source>Statistics by priority</source>
+            </trans-unit>
+            <trans-unit id="773be25858ba70d43c0ecd80c87c5c3b">
+                <source>Displays a bar graph of open and closed issues grouped by priority</source>
+            </trans-unit>
+            <trans-unit id="97a4bada7e113f2bff60043e4465f21c">
+                <source>Statistics by severity</source>
+            </trans-unit>
+            <trans-unit id="383e580c2e7a5a098f6cc070a8c496b3">
+                <source>Displays a bar graph of open and closed issues grouped by severity</source>
+            </trans-unit>
+            <trans-unit id="f3010532522e4a9c3b6602d0aee5a2cd">
+                <source>Statistics by category</source>
+            </trans-unit>
+            <trans-unit id="ed0add5d6fbbebf0251626f50adc84da">
+                <source>Displays a bar graph of open and closed issues grouped by category</source>
+            </trans-unit>
+            <trans-unit id="3ab147a8b5a506961441cb27d27fe18f">
+                <source>Statistics by status</source>
+            </trans-unit>
+            <trans-unit id="5220ba94723ac88d2116d52f39234c1d">
+                <source>Displays a bar graph of open and closed issues grouped by status</source>
+            </trans-unit>
+            <trans-unit id="dfc5874d7a259d351c1212bc79cb870e">
+                <source>Statistics by resolution</source>
+            </trans-unit>
+            <trans-unit id="4182ea9488cc01a21b5b7ab146179837">
+                <source>Displays a bar graph of open and closed issues grouped by resolution</source>
+            </trans-unit>
+            <trans-unit id="5ee2d7b2cd84c3a1823361733725c1eb">
+                <source>Statistics by workflow step</source>
+            </trans-unit>
+            <trans-unit id="818f721872770bb1d6158c13324035cc">
+                <source>Displays a bar graph of open and closed issues grouped by current workflow step</source>
+            </trans-unit>
+            <trans-unit id="ca01b5c0b1d8a59a8786570d9c1a7f20">
+                <source>Unknown dashboard item</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/Issue.php">
+        <body>
+            <trans-unit id="bf347fd455b80c38b40676dc16076e9a">
+                <source>Crash: Bug causes crash or data loss / asserts in the debug release</source>
+            </trans-unit>
+            <trans-unit id="3ad0707aac1732aada96223493086073">
+                <source>Major usability: Impairs usability in key scenarios</source>
+            </trans-unit>
+            <trans-unit id="4e0cdbe1b642de174a9e66a9175653ed">
+                <source>Minor usability: Impairs usability in secondary scenarios</source>
+            </trans-unit>
+            <trans-unit id="08048c310450d36366dc3b28629b5a9d">
+                <source>Balancing: Enables degenerate usage strategies that harm the experience</source>
+            </trans-unit>
+            <trans-unit id="521a246a1004a64c60ab9076aea478fa">
+                <source>Visual and Sound Polish: Aesthetic issues</source>
+            </trans-unit>
+            <trans-unit id="369686331c93d55e587441143ccdf427">
+                <source>Localization</source>
+            </trans-unit>
+            <trans-unit id="e360beb771d17455d49d00629d31cc9d">
+                <source>Documentation: A documentation issue</source>
+            </trans-unit>
+            <trans-unit id="abf61d356c0450d7dbb5bfe245ea5f62">
+                <source>Blocking further progress on the daily build</source>
+            </trans-unit>
+            <trans-unit id="8b19e9a5541e3442fd52ada45d0f5bff">
+                <source>A User would return the product / cannot RTM / the team would hold the release for this bug</source>
+            </trans-unit>
+            <trans-unit id="4e96a0dd264667a87bd91531ded7dd6b">
+                <source>A User would likely not purchase the product / will show up in review / clearly a noticeable issue</source>
+            </trans-unit>
+            <trans-unit id="fd92715bf001b88b389e6892ce48a104">
+                <source>A Pain - users won't like this once they notice it / a moderate number of users won't buy</source>
+            </trans-unit>
+            <trans-unit id="45bfc286c692d8fda17a5b73bc0b58dc">
+                <source>Nuisance - not a big deal but noticeable / extremely unlikely to affect sales</source>
+            </trans-unit>
+            <trans-unit id="af2e1d61889d0531b2208db8e78b8628">
+                <source>Will affect all users</source>
+            </trans-unit>
+            <trans-unit id="1c2de256ed6c79180d283152a803d5fa">
+                <source>Will affect most users</source>
+            </trans-unit>
+            <trans-unit id="790e650cc3b133019f14e3a0b9e62aed">
+                <source>Will affect average number of users</source>
+            </trans-unit>
+            <trans-unit id="5bc85f022866aa165343227eae00ecb6">
+                <source>Will only affect a few users</source>
+            </trans-unit>
+            <trans-unit id="3ae65058a47e98e877e468f26a345561">
+                <source>Will affect almost no one</source>
+            </trans-unit>
+            <trans-unit id="6726d20ec8e08625bf633e423d6b387e">
+                <source>This issue has been deleted</source>
+            </trans-unit>
+            <trans-unit id="9cbc09dee8b98fcb1c779c31563361cb">
+                <source>Unknown issuetype</source>
+            </trans-unit>
+            <trans-unit id="1634e66b522edaa910370cc5581a47f1">
+                <source>1 month</source>
+            </trans-unit>
+            <trans-unit id="ee80cffa230b673293b8379f1da77465">
+                <source>%number_of months</source>
+            </trans-unit>
+            <trans-unit id="705fbbd6e1667845569c00fd7523d343">
+                <source>1 week</source>
+            </trans-unit>
+            <trans-unit id="824032a228621f04039a9cf9650feddf">
+                <source>%number_of weeks</source>
+            </trans-unit>
+            <trans-unit id="e3b481d5297f475abc283227bedbd9b9">
+                <source>1 day</source>
+            </trans-unit>
+            <trans-unit id="54ce9a38c1f1ff7a6ccb7c42f7c78af9">
+                <source>%number_of days</source>
+            </trans-unit>
+            <trans-unit id="72ab9d0304d3e84c6aa2dd15eda282f2">
+                <source>1 hour</source>
+            </trans-unit>
+            <trans-unit id="e2cdf7b415155883cef85ccf03cbe2a0">
+                <source>%number_of hours</source>
+            </trans-unit>
+            <trans-unit id="3599fd1768689596291edfc8acd53602">
+                <source>1 point</source>
+            </trans-unit>
+            <trans-unit id="fbc396a771c9e5d3b69e9bef0d6e45bb">
+                <source>%number_of points</source>
+            </trans-unit>
+            <trans-unit id="bd21734fa62bc2d6f944f9dd422589bf">
+                <source>No time</source>
+            </trans-unit>
+            <trans-unit id="379c0e6cfbc6a2825e5142db16d03364">
+                <source>A file was uploaded. %link_to_file This comment was attached: %comment</source>
+            </trans-unit>
+            <trans-unit id="48d8b51eef27cc21422b7df0704696de">
+                <source>A file was uploaded. %link_to_file</source>
+            </trans-unit>
+            <trans-unit id="370ddcb4adc5a3a2a6b78a4e38e5a81c">
+                <source>This issue no longer depends on the solution of issue %issue_no</source>
+            </trans-unit>
+            <trans-unit id="764f7c81c599d7d0d244834377321666">
+                <source>Issue %issue_no no longer depends on the solution of this issue</source>
+            </trans-unit>
+            <trans-unit id="941b0fe711eb7063d2b420370f797af2">
+                <source>This %this_issuetype now depends on the solution of %issuetype %issue_no</source>
+            </trans-unit>
+            <trans-unit id="4ac0bbc4b43a98d800e83658a12392dd">
+                <source>%issuetype %issue_no now depends on the solution of this %this_issuetype</source>
+            </trans-unit>
+            <trans-unit id="917a2a56ea3b352e553217b5ba84f809">
+                <source>'%release_name' added</source>
+            </trans-unit>
+            <trans-unit id="633fb23c3af2bc824a2536fd8d7d7dca">
+                <source>'%edition_name' added</source>
+            </trans-unit>
+            <trans-unit id="d5a5e59d3a6815aa2fb2fea81e29a359">
+                <source>'%component_name' added</source>
+            </trans-unit>
+            <trans-unit id="4372c70000a6770aa52ca0c3b387b703">
+                <source>'%item_name' removed</source>
+            </trans-unit>
+            <trans-unit id="689bfcc652f2660200f46dd7197bccca">
+                <source>'%edition' is now confirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="0594a17303251719d7b02ab2338e1209">
+                <source>'%edition' is now unconfirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="31197919924bbb78217d79e0584393d0">
+                <source>'%build' is now confirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="39398a05fdca7ea0b3b5235c94d2fd26">
+                <source>'%build' is now unconfirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="a23ef8f7780e4aa1601167d84e7b56f4">
+                <source>'%component' is now confirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="abebdb972f9da0b20cab6d2858ae7949">
+                <source>'%component' is now unconfirmed for this issue</source>
+            </trans-unit>
+            <trans-unit id="2c28b9cc5a26e9957d17c833ed21979d">
+                <source>'%item_name' -&gt; '%status_name</source>
+            </trans-unit>
+            <trans-unit id="bd318a552ba2b9b9c45b041a8aec2ed2">
+                <source>Title updated</source>
+            </trans-unit>
+            <trans-unit id="0ed30ff9be711452ec6f65ff7048d76b">
+                <source>Issue label updated</source>
+            </trans-unit>
+            <trans-unit id="971431d829c479664afeb7c021486100">
+                <source>Description updated</source>
+            </trans-unit>
+            <trans-unit id="cc63e35ba72400c1f7f8f8769cae3fd5">
+                <source>Reproduction steps updated</source>
+            </trans-unit>
+            <trans-unit id="083b021a4e92dbb5f70381e2fb771e3c">
+                <source>Not determined</source>
+            </trans-unit>
+            <trans-unit id="88183b946cc5f0e8c96b2e66e1c74a7e">
+                <source>Unknown</source>
+            </trans-unit>
+            <trans-unit id="63d8c71daa2adfb569eb9c363eaa7a89">
+                <source>Not assigned</source>
+            </trans-unit>
+            <trans-unit id="f33c5f8fcc932f3605054e7ae2a0fe11">
+                <source>Not being worked on</source>
+            </trans-unit>
+            <trans-unit id="b2855fa74467ff5d5bfaaeb0255d3525">
+                <source>Not owned by anyone</source>
+            </trans-unit>
+            <trans-unit id="c21c6f75582fb9d4862aa601e96e0e59">
+                <source>Not estimated</source>
+            </trans-unit>
+            <trans-unit id="ab0ce08ebd8e02e0a2dbbde343b00dcc">
+                <source>No time spent</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/Issuetype.php">
+        <body>
+            <trans-unit id="a666445d5820aa4f557b0c70ea13bf35">
+                <source>Bug report</source>
+            </trans-unit>
+            <trans-unit id="15926464cfc61f68f2687269d891f8cf">
+                <source>Documentation request</source>
+            </trans-unit>
+            <trans-unit id="0a56f366087444c361920747002cdcea">
+                <source>Enhancement</source>
+            </trans-unit>
+            <trans-unit id="20bb7f0b99cacf97be5202d7c859dec6">
+                <source>Feature request</source>
+            </trans-unit>
+            <trans-unit id="158d7558ee87d9a8caa77b59abcdd9ef">
+                <source>Idea</source>
+            </trans-unit>
+            <trans-unit id="e3f530e977d74053c6d70eb84886e756">
+                <source>Epic</source>
+            </trans-unit>
+            <trans-unit id="7798141cfb5955ca55788984937dff74">
+                <source>Support request</source>
+            </trans-unit>
+            <trans-unit id="eaeb30f9f18e0c50b178676f3eaef45f">
+                <source>Task</source>
+            </trans-unit>
+            <trans-unit id="850fa6f859c69864faa649e7a2f9cab2">
+                <source>User story</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/Milestone.php">
+        <body>
+            <trans-unit id="3a172d2139db612c3b2ae6e5b9fe6a51">
+                <source>%milestone_name (started %start_date - ended %end_date)</source>
+            </trans-unit>
+            <trans-unit id="38a9d05abd409b86fccf19e0b37d7924">
+                <source>%milestone_name (started %start_date - ends %end_date)</source>
+            </trans-unit>
+            <trans-unit id="50a2313f66db26a2eee13f9b86305c83">
+                <source>%milestone_name (starts %start_date - ended %end_date)</source>
+            </trans-unit>
+            <trans-unit id="300a08d974907937a16b7660abcefd34">
+                <source>%milestone_name (started %start_date)</source>
+            </trans-unit>
+            <trans-unit id="58ede5b41bfb11ff1c06d963bfe96989">
+                <source>%milestone_name (starts %start_date)</source>
+            </trans-unit>
+            <trans-unit id="773d000ea9b4bcb2c036bc75a7ff0cce">
+                <source>%milestone_name (released: %date)</source>
+            </trans-unit>
+            <trans-unit id="04563c15f67b2d70cf21ef8ff32104b4">
+                <source>%milestone_name (will be released: %date)</source>
+            </trans-unit>
+            <trans-unit id="ee30bbdcbb5b102dfa7cfc6ccb6abb13">
+                <source>%milestone_name (reached: %date)</source>
+            </trans-unit>
+            <trans-unit id="358732977a13ab1120f0ce0e139373a9">
+                <source>Not scheduled</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/Project.php">
+        <body>
+            <trans-unit id="6adf97f83acf6453d4a6a4b1070f3754">
+                <source>None</source>
+            </trans-unit>
+            <trans-unit id="556053dd772b30e8b1306a9ee6c42a88">
+                <source>Triaging: User pain</source>
+            </trans-unit>
+            <trans-unit id="4002e265caa0acdcfa02aeeaa51540dd">
+                <source>Percent completed</source>
+            </trans-unit>
+            <trans-unit id="b8e7b465df7c5979dc731d06e84ce2cf">
+                <source>Release</source>
+            </trans-unit>
+            <trans-unit id="05bbb43b3d923283e0b6ffafd088f41f">
+                <source>Components</source>
+            </trans-unit>
+            <trans-unit id="226c03c443192cffffa4a924b4ccffde">
+                <source>Edition</source>
+            </trans-unit>
+            <trans-unit id="3c777dccfab775384ca91be9af72ca0c">
+                <source>Estimated time to complete</source>
+            </trans-unit>
+            <trans-unit id="1a57ba0596a6a2e45fc71a595264fb55">
+                <source>Time spent working on the issue</source>
+            </trans-unit>
+            <trans-unit id="8c3560971347019d5f97199e943831f0">
+                <source>Votes</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/SavedSearch.php">
+        <body>
+            <trans-unit id="eb6d8ae6f20283755b339c0dc273988b">
+                <source>Standard</source>
+            </trans-unit>
+            <trans-unit id="f6fc09e1032273c0126963881b4b43cf">
+                <source>Standard search results</source>
+            </trans-unit>
+            <trans-unit id="b76d4922973ed09f26e3c0e3ab9d34d2">
+                <source>Todo-list</source>
+            </trans-unit>
+            <trans-unit id="210c3e5710f92ec32fcb70e52358784f">
+                <source>Todo-list with progress indicator</source>
+            </trans-unit>
+            <trans-unit id="d7312cbb00ad732e4371218bb5b76a0b">
+                <source>Voting results</source>
+            </trans-unit>
+            <trans-unit id="4a92316488f791b5af970794b470b658">
+                <source>Most voted-for issues</source>
+            </trans-unit>
+            <trans-unit id="4be1ce21b913f8bfe2cfa8c8200c4e73">
+                <source>User pain with threshold</source>
+            </trans-unit>
+            <trans-unit id="ae35fe7d70b95ed558f9bb2b20e5eb6f">
+                <source>User pain indicator with custom single bug pain threshold</source>
+            </trans-unit>
+            <trans-unit id="6b878789670614e4590d6d2d56029081">
+                <source>Specify user pain threshold</source>
+            </trans-unit>
+            <trans-unit id="9680162225162baf2a085dfdc2814deb">
+                <source>RSS feed</source>
+            </trans-unit>
+            <trans-unit id="49f64de6b2b75bb2b5d0904cdab568e4">
+                <source>Open issues for %project_name</source>
+            </trans-unit>
+            <trans-unit id="5c7338c8c9bafb1352398769016aa85a">
+                <source>All open issues</source>
+            </trans-unit>
+            <trans-unit id="d88d444bde1724c51c5f4b40eb095070">
+                <source>Open issues for %project_name (including subprojects)</source>
+            </trans-unit>
+            <trans-unit id="81cb2729a8637874cfb22f759d19fe48">
+                <source>Closed issues for %project_name</source>
+            </trans-unit>
+            <trans-unit id="e52d9debdc64d1523f647aec5fab8481">
+                <source>All closed issues</source>
+            </trans-unit>
+            <trans-unit id="5cfedaee14d288abed4904d400e55a41">
+                <source>Closed issues for %project_name (including subprojects)</source>
+            </trans-unit>
+            <trans-unit id="eabea97d3b04725e21c347af91ccdb1d">
+                <source>%project_name wishlist</source>
+            </trans-unit>
+            <trans-unit id="45997339109d70f909d8c46b19932469">
+                <source>Milestone todo-list for %project_name</source>
+            </trans-unit>
+            <trans-unit id="b078faeab3f572daba40ffd3225c261d">
+                <source>Most voted issues for %project_name</source>
+            </trans-unit>
+            <trans-unit id="35c1e0529b8e5bc012b591b215bfcc4d">
+                <source>Most voted issues</source>
+            </trans-unit>
+            <trans-unit id="fa38151c041b352b4f8444a5342f6208">
+                <source>Showing "bug report" issues sorted by user pain, threshold set at %threshold</source>
+            </trans-unit>
+            <trans-unit id="52d915fec82e9ccb7abc36cc522b022e">
+                <source>Showing issues ordered by number of votes</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/User.php">
+        <body>
+            <trans-unit id="e2162885d59741bd35e43e69ce82037c">
+                <source>This username already exists</source>
+            </trans-unit>
+            <trans-unit id="125c4d20d02ef5b3d0fbf7f11bf1acd5">
+                <source>No such user</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/WorkflowTransitionAction.php">
+        <body>
+            <trans-unit id="c7ed7c4c3e01cf840a50fa171f183867">
+                <source>Assign the issue to a user</source>
+            </trans-unit>
+            <trans-unit id="8516157b2f1e151e6012711ec27cbe0e">
+                <source>Assign the issue to the current user</source>
+            </trans-unit>
+            <trans-unit id="fb7c6c16f5330926902273c2e987cf5c">
+                <source>Mark as not duplicate</source>
+            </trans-unit>
+            <trans-unit id="cc483e83eac6a3f06c3ab418f349bd30">
+                <source>Possibly mark as duplicate</source>
+            </trans-unit>
+            <trans-unit id="ae63b7eb5972e953735a99f045f81d99">
+                <source>Start logging time</source>
+            </trans-unit>
+            <trans-unit id="4fe9d263171c357246bacf179953d0ce">
+                <source>Stop logging time and optionally add time spent</source>
+            </trans-unit>
+            <trans-unit id="1e1d4024d8daeab72430211870f14634">
+                <source>Clear issue assignee</source>
+            </trans-unit>
+            <trans-unit id="348e1fd376022189b62fd70d97483ebe">
+                <source>Clear issue priority</source>
+            </trans-unit>
+            <trans-unit id="c313511e5e2ee00c7babddf675847d2f">
+                <source>Clear issue percent</source>
+            </trans-unit>
+            <trans-unit id="185b79e6d1758ea12a8ea91032a2496c">
+                <source>Clear issue reproducability</source>
+            </trans-unit>
+            <trans-unit id="980749a508d7ac5dc3fdff94106fe8d8">
+                <source>Clear issue resolution</source>
+            </trans-unit>
+            <trans-unit id="23de64c049953fc7e19670069be1851a">
+                <source>Clear issue milestone</source>
+            </trans-unit>
+            <trans-unit id="ab4f59523e60c3d27103ee8b307725a0">
+                <source>Set issue priority</source>
+            </trans-unit>
+            <trans-unit id="b206337c497c02a5ebfdeda1ce1e394f">
+                <source>Set issue percent</source>
+            </trans-unit>
+            <trans-unit id="d0b3d4c3c32fe2e80e56801c97d85566">
+                <source>Set issue reproducability</source>
+            </trans-unit>
+            <trans-unit id="c7e3e5ed93a78e1526accd870e46c2b0">
+                <source>Set issue resolution</source>
+            </trans-unit>
+            <trans-unit id="d94b55f1c4be77000b3935c4a12d6b27">
+                <source>Set issue status</source>
+            </trans-unit>
+            <trans-unit id="97e3229c5d1056b966eb878614dea2b7">
+                <source>Set issue milestone</source>
+            </trans-unit>
+            <trans-unit id="f399eda2c32e42f1367930321d267928">
+                <source>Clear issue field %key</source>
+            </trans-unit>
+            <trans-unit id="f0b55dbbc289524a7c6759455a8bf70a">
+                <source>Set issue field %key</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/WorkflowTransitionValidationRule.php">
+        <body>
+            <trans-unit id="bda627a4908d2bd8db65a99e9eb89ff1">
+                <source>Max number of assigned issues</source>
+            </trans-unit>
+            <trans-unit id="553d56182b10c9c58f64a7a65e4360b3">
+                <source>User must be member of a certain team</source>
+            </trans-unit>
+            <trans-unit id="04902141b151953fa8a3009fb92080dc">
+                <source>Validate specified priority</source>
+            </trans-unit>
+            <trans-unit id="df53795c27e72b954a7a4093f5c4eb17">
+                <source>Validate specified reproducability</source>
+            </trans-unit>
+            <trans-unit id="e06c7025f5002e158bca55d39df798a2">
+                <source>Validate specified resolution</source>
+            </trans-unit>
+            <trans-unit id="cb60f5ba82e53559944150a7759229fd">
+                <source>Validate specified status</source>
+            </trans-unit>
+            <trans-unit id="19143c639dfac9e6b6689080cb10e498">
+                <source>Validate specified %key</source>
+            </trans-unit>
+            <trans-unit id="82999e038b22ca35aca6831da24e70d4">
+                <source>Validate team membership of assignee</source>
+            </trans-unit>
+            <trans-unit id="c3d81028506af0eaf6dc793f51f36eb6">
+                <source>Invalid workflow validation rule: %rule_name</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/framework/Action.php">
         <body>
             <trans-unit id="3af0e63ff45f01cd770ac63c854503fb">
                 <source>You are not allowed to access this page</source>
@@ -19,7 +672,7 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/classes/TBGContext.class.php">
+    <file source-language="en" datatype="php" original="core/framework/Context.php">
         <body>
             <trans-unit id="246e7625ce94a209c8ee3cd7f141a504">
                 <source>Can see issues reported by other users</source>
@@ -405,335 +1058,7 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/classes/TBGCustomDatatype.class.php">
-        <body>
-            <trans-unit id="ecd0790de1c1d5836b4acd4784bcdf12">
-                <source>Dropdown list with custom text choices</source>
-            </trans-unit>
-            <trans-unit id="82f0d0ecd8fa86e938e1f59d649bbfdc">
-                <source>Single line text input</source>
-            </trans-unit>
-            <trans-unit id="174dad14a512198dd4631a9c28258779">
-                <source>Textarea in issue main area</source>
-            </trans-unit>
-            <trans-unit id="f70bb114d846933c78482c9957709a66">
-                <source>Textarea (small) in issue details list</source>
-            </trans-unit>
-            <trans-unit id="2b2d640959f945ab33f30e832336193c">
-                <source>Radio choices</source>
-            </trans-unit>
-            <trans-unit id="e1a9adfc12508885d52814130049ce55">
-                <source>Dropdown list of available releases</source>
-            </trans-unit>
-            <trans-unit id="8e2339aebec41e3311b6ed87328886d1">
-                <source>Dropdown list of available components</source>
-            </trans-unit>
-            <trans-unit id="1d26d309dbb24698665ea95391f72306">
-                <source>Dropdown list of available editions</source>
-            </trans-unit>
-            <trans-unit id="1c5b6e0267892088a3d195365720b9f4">
-                <source>Dropdown list of available milestones</source>
-            </trans-unit>
-            <trans-unit id="edf6bc2fd162ba9769992c8a896b076b">
-                <source>Dropdown list of all statuses</source>
-            </trans-unit>
-            <trans-unit id="25b8a6a3f5daf891eb6c2eb4ae686a8c">
-                <source>Calculated field</source>
-            </trans-unit>
-            <trans-unit id="f70a48405c5fb6041132e8b1254ba282">
-                <source>Date picker</source>
-            </trans-unit>
-            <trans-unit id="fd8144e9c562482d4e25ddeed6c44857">
-                <source>Find and pick a user</source>
-            </trans-unit>
-            <trans-unit id="518833698bb7d50155408456a3fe4a87">
-                <source>Find and pick a team</source>
-            </trans-unit>
-            <trans-unit id="cdf08326d784f1f01fef2ad29baa2e55">
-                <source>Find and pick a client</source>
-            </trans-unit>
-            <trans-unit id="aae10e7cd86934e09406a82f64f5f377">
-                <source>This field key already exists</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGIssue.class.php">
-        <body>
-            <trans-unit id="bf347fd455b80c38b40676dc16076e9a">
-                <source>Crash: Bug causes crash or data loss / asserts in the debug release</source>
-            </trans-unit>
-            <trans-unit id="3ad0707aac1732aada96223493086073">
-                <source>Major usability: Impairs usability in key scenarios</source>
-            </trans-unit>
-            <trans-unit id="4e0cdbe1b642de174a9e66a9175653ed">
-                <source>Minor usability: Impairs usability in secondary scenarios</source>
-            </trans-unit>
-            <trans-unit id="08048c310450d36366dc3b28629b5a9d">
-                <source>Balancing: Enables degenerate usage strategies that harm the experience</source>
-            </trans-unit>
-            <trans-unit id="521a246a1004a64c60ab9076aea478fa">
-                <source>Visual and Sound Polish: Aesthetic issues</source>
-            </trans-unit>
-            <trans-unit id="369686331c93d55e587441143ccdf427">
-                <source>Localization</source>
-            </trans-unit>
-            <trans-unit id="e360beb771d17455d49d00629d31cc9d">
-                <source>Documentation: A documentation issue</source>
-            </trans-unit>
-            <trans-unit id="abf61d356c0450d7dbb5bfe245ea5f62">
-                <source>Blocking further progress on the daily build</source>
-            </trans-unit>
-            <trans-unit id="8b19e9a5541e3442fd52ada45d0f5bff">
-                <source>A User would return the product / cannot RTM / the team would hold the release for this bug</source>
-            </trans-unit>
-            <trans-unit id="4e96a0dd264667a87bd91531ded7dd6b">
-                <source>A User would likely not purchase the product / will show up in review / clearly a noticeable issue</source>
-            </trans-unit>
-            <trans-unit id="fd92715bf001b88b389e6892ce48a104">
-                <source>A Pain - users won't like this once they notice it / a moderate number of users won't buy</source>
-            </trans-unit>
-            <trans-unit id="45bfc286c692d8fda17a5b73bc0b58dc">
-                <source>Nuisance - not a big deal but noticeable / extremely unlikely to affect sales</source>
-            </trans-unit>
-            <trans-unit id="af2e1d61889d0531b2208db8e78b8628">
-                <source>Will affect all users</source>
-            </trans-unit>
-            <trans-unit id="1c2de256ed6c79180d283152a803d5fa">
-                <source>Will affect most users</source>
-            </trans-unit>
-            <trans-unit id="790e650cc3b133019f14e3a0b9e62aed">
-                <source>Will affect average number of users</source>
-            </trans-unit>
-            <trans-unit id="5bc85f022866aa165343227eae00ecb6">
-                <source>Will only affect a few users</source>
-            </trans-unit>
-            <trans-unit id="3ae65058a47e98e877e468f26a345561">
-                <source>Will affect almost no one</source>
-            </trans-unit>
-            <trans-unit id="6726d20ec8e08625bf633e423d6b387e">
-                <source>This issue has been deleted</source>
-            </trans-unit>
-            <trans-unit id="9cbc09dee8b98fcb1c779c31563361cb">
-                <source>Unknown issuetype</source>
-            </trans-unit>
-            <trans-unit id="1634e66b522edaa910370cc5581a47f1">
-                <source>1 month</source>
-            </trans-unit>
-            <trans-unit id="ee80cffa230b673293b8379f1da77465">
-                <source>%number_of months</source>
-            </trans-unit>
-            <trans-unit id="705fbbd6e1667845569c00fd7523d343">
-                <source>1 week</source>
-            </trans-unit>
-            <trans-unit id="824032a228621f04039a9cf9650feddf">
-                <source>%number_of weeks</source>
-            </trans-unit>
-            <trans-unit id="e3b481d5297f475abc283227bedbd9b9">
-                <source>1 day</source>
-            </trans-unit>
-            <trans-unit id="54ce9a38c1f1ff7a6ccb7c42f7c78af9">
-                <source>%number_of days</source>
-            </trans-unit>
-            <trans-unit id="72ab9d0304d3e84c6aa2dd15eda282f2">
-                <source>1 hour</source>
-            </trans-unit>
-            <trans-unit id="e2cdf7b415155883cef85ccf03cbe2a0">
-                <source>%number_of hours</source>
-            </trans-unit>
-            <trans-unit id="3599fd1768689596291edfc8acd53602">
-                <source>1 point</source>
-            </trans-unit>
-            <trans-unit id="fbc396a771c9e5d3b69e9bef0d6e45bb">
-                <source>%number_of points</source>
-            </trans-unit>
-            <trans-unit id="bd21734fa62bc2d6f944f9dd422589bf">
-                <source>No time</source>
-            </trans-unit>
-            <trans-unit id="379c0e6cfbc6a2825e5142db16d03364">
-                <source>A file was uploaded. %link_to_file This comment was attached: %comment</source>
-            </trans-unit>
-            <trans-unit id="48d8b51eef27cc21422b7df0704696de">
-                <source>A file was uploaded. %link_to_file</source>
-            </trans-unit>
-            <trans-unit id="370ddcb4adc5a3a2a6b78a4e38e5a81c">
-                <source>This issue no longer depends on the solution of issue %issue_no</source>
-            </trans-unit>
-            <trans-unit id="764f7c81c599d7d0d244834377321666">
-                <source>Issue %issue_no no longer depends on the solution of this issue</source>
-            </trans-unit>
-            <trans-unit id="941b0fe711eb7063d2b420370f797af2">
-                <source>This %this_issuetype now depends on the solution of %issuetype %issue_no</source>
-            </trans-unit>
-            <trans-unit id="4ac0bbc4b43a98d800e83658a12392dd">
-                <source>%issuetype %issue_no now depends on the solution of this %this_issuetype</source>
-            </trans-unit>
-            <trans-unit id="917a2a56ea3b352e553217b5ba84f809">
-                <source>'%release_name' added</source>
-            </trans-unit>
-            <trans-unit id="633fb23c3af2bc824a2536fd8d7d7dca">
-                <source>'%edition_name' added</source>
-            </trans-unit>
-            <trans-unit id="d5a5e59d3a6815aa2fb2fea81e29a359">
-                <source>'%component_name' added</source>
-            </trans-unit>
-            <trans-unit id="4372c70000a6770aa52ca0c3b387b703">
-                <source>'%item_name' removed</source>
-            </trans-unit>
-            <trans-unit id="689bfcc652f2660200f46dd7197bccca">
-                <source>'%edition' is now confirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="0594a17303251719d7b02ab2338e1209">
-                <source>'%edition' is now unconfirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="31197919924bbb78217d79e0584393d0">
-                <source>'%build' is now confirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="39398a05fdca7ea0b3b5235c94d2fd26">
-                <source>'%build' is now unconfirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="a23ef8f7780e4aa1601167d84e7b56f4">
-                <source>'%component' is now confirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="abebdb972f9da0b20cab6d2858ae7949">
-                <source>'%component' is now unconfirmed for this issue</source>
-            </trans-unit>
-            <trans-unit id="2c28b9cc5a26e9957d17c833ed21979d">
-                <source>'%item_name' -&gt; '%status_name</source>
-            </trans-unit>
-            <trans-unit id="bd318a552ba2b9b9c45b041a8aec2ed2">
-                <source>Title updated</source>
-            </trans-unit>
-            <trans-unit id="0ed30ff9be711452ec6f65ff7048d76b">
-                <source>Issue label updated</source>
-            </trans-unit>
-            <trans-unit id="971431d829c479664afeb7c021486100">
-                <source>Description updated</source>
-            </trans-unit>
-            <trans-unit id="cc63e35ba72400c1f7f8f8769cae3fd5">
-                <source>Reproduction steps updated</source>
-            </trans-unit>
-            <trans-unit id="083b021a4e92dbb5f70381e2fb771e3c">
-                <source>Not determined</source>
-            </trans-unit>
-            <trans-unit id="88183b946cc5f0e8c96b2e66e1c74a7e">
-                <source>Unknown</source>
-            </trans-unit>
-            <trans-unit id="63d8c71daa2adfb569eb9c363eaa7a89">
-                <source>Not assigned</source>
-            </trans-unit>
-            <trans-unit id="f33c5f8fcc932f3605054e7ae2a0fe11">
-                <source>Not being worked on</source>
-            </trans-unit>
-            <trans-unit id="b2855fa74467ff5d5bfaaeb0255d3525">
-                <source>Not owned by anyone</source>
-            </trans-unit>
-            <trans-unit id="c21c6f75582fb9d4862aa601e96e0e59">
-                <source>Not estimated</source>
-            </trans-unit>
-            <trans-unit id="ab0ce08ebd8e02e0a2dbbde343b00dcc">
-                <source>No time spent</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGIssuetype.class.php">
-        <body>
-            <trans-unit id="a666445d5820aa4f557b0c70ea13bf35">
-                <source>Bug report</source>
-            </trans-unit>
-            <trans-unit id="15926464cfc61f68f2687269d891f8cf">
-                <source>Documentation request</source>
-            </trans-unit>
-            <trans-unit id="0a56f366087444c361920747002cdcea">
-                <source>Enhancement</source>
-            </trans-unit>
-            <trans-unit id="20bb7f0b99cacf97be5202d7c859dec6">
-                <source>Feature request</source>
-            </trans-unit>
-            <trans-unit id="158d7558ee87d9a8caa77b59abcdd9ef">
-                <source>Idea</source>
-            </trans-unit>
-            <trans-unit id="e3f530e977d74053c6d70eb84886e756">
-                <source>Epic</source>
-            </trans-unit>
-            <trans-unit id="7798141cfb5955ca55788984937dff74">
-                <source>Support request</source>
-            </trans-unit>
-            <trans-unit id="eaeb30f9f18e0c50b178676f3eaef45f">
-                <source>Task</source>
-            </trans-unit>
-            <trans-unit id="850fa6f859c69864faa649e7a2f9cab2">
-                <source>User story</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGMilestone.class.php">
-        <body>
-            <trans-unit id="3a172d2139db612c3b2ae6e5b9fe6a51">
-                <source>%milestone_name (started %start_date - ended %end_date)</source>
-            </trans-unit>
-            <trans-unit id="38a9d05abd409b86fccf19e0b37d7924">
-                <source>%milestone_name (started %start_date - ends %end_date)</source>
-            </trans-unit>
-            <trans-unit id="50a2313f66db26a2eee13f9b86305c83">
-                <source>%milestone_name (starts %start_date - ended %end_date)</source>
-            </trans-unit>
-            <trans-unit id="300a08d974907937a16b7660abcefd34">
-                <source>%milestone_name (started %start_date)</source>
-            </trans-unit>
-            <trans-unit id="58ede5b41bfb11ff1c06d963bfe96989">
-                <source>%milestone_name (starts %start_date)</source>
-            </trans-unit>
-            <trans-unit id="773d000ea9b4bcb2c036bc75a7ff0cce">
-                <source>%milestone_name (released: %date)</source>
-            </trans-unit>
-            <trans-unit id="04563c15f67b2d70cf21ef8ff32104b4">
-                <source>%milestone_name (will be released: %date)</source>
-            </trans-unit>
-            <trans-unit id="ee30bbdcbb5b102dfa7cfc6ccb6abb13">
-                <source>%milestone_name (reached: %date)</source>
-            </trans-unit>
-            <trans-unit id="358732977a13ab1120f0ce0e139373a9">
-                <source>Not scheduled</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGProject.class.php">
-        <body>
-            <trans-unit id="6adf97f83acf6453d4a6a4b1070f3754">
-                <source>None</source>
-            </trans-unit>
-            <trans-unit id="556053dd772b30e8b1306a9ee6c42a88">
-                <source>Triaging: User pain</source>
-            </trans-unit>
-            <trans-unit id="4002e265caa0acdcfa02aeeaa51540dd">
-                <source>Percent completed</source>
-            </trans-unit>
-            <trans-unit id="b8e7b465df7c5979dc731d06e84ce2cf">
-                <source>Release</source>
-            </trans-unit>
-            <trans-unit id="05bbb43b3d923283e0b6ffafd088f41f">
-                <source>Components</source>
-            </trans-unit>
-            <trans-unit id="226c03c443192cffffa4a924b4ccffde">
-                <source>Edition</source>
-            </trans-unit>
-            <trans-unit id="3c777dccfab775384ca91be9af72ca0c">
-                <source>Estimated time to complete</source>
-            </trans-unit>
-            <trans-unit id="1a57ba0596a6a2e45fc71a595264fb55">
-                <source>Time spent working on the issue</source>
-            </trans-unit>
-            <trans-unit id="8c3560971347019d5f97199e943831f0">
-                <source>Votes</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGRequest.class.php">
+    <file source-language="en" datatype="php" original="core/framework/Request.php">
         <body>
             <trans-unit id="962360c8330c4fa389bbb1fbe57948da">
                 <source>You cannot upload files bigger than %max_size MB</source>
@@ -762,16 +1087,13 @@
             <trans-unit id="f3b79c899f0577f902adbdd50afd5101">
                 <source>Uploads are not enabled</source>
             </trans-unit>
-            <trans-unit id="7be6c2281a67e3148e1cd5357293c017">
-                <source>The file could not be uploaded</source>
-            </trans-unit>
             <trans-unit id="26658b30da93bd57ac5636d09208b6e6">
                 <source>Could not find the uploaded file. Please make sure that it is not too big.</source>
             </trans-unit>
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/classes/TBGResponse.class.php">
+    <file source-language="en" datatype="php" original="core/framework/Response.php">
         <body>
             <trans-unit id="f322286231c92ec27ec303c8a859eec1">
                 <source>Frontpage</source>
@@ -824,90 +1146,7 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/classes/TBGSavedSearch.class.php">
-        <body>
-            <trans-unit id="eb6d8ae6f20283755b339c0dc273988b">
-                <source>Standard</source>
-            </trans-unit>
-            <trans-unit id="f6fc09e1032273c0126963881b4b43cf">
-                <source>Standard search results</source>
-            </trans-unit>
-            <trans-unit id="b76d4922973ed09f26e3c0e3ab9d34d2">
-                <source>Todo-list</source>
-            </trans-unit>
-            <trans-unit id="210c3e5710f92ec32fcb70e52358784f">
-                <source>Todo-list with progress indicator</source>
-            </trans-unit>
-            <trans-unit id="d7312cbb00ad732e4371218bb5b76a0b">
-                <source>Voting results</source>
-            </trans-unit>
-            <trans-unit id="4a92316488f791b5af970794b470b658">
-                <source>Most voted-for issues</source>
-            </trans-unit>
-            <trans-unit id="4be1ce21b913f8bfe2cfa8c8200c4e73">
-                <source>User pain with threshold</source>
-            </trans-unit>
-            <trans-unit id="ae35fe7d70b95ed558f9bb2b20e5eb6f">
-                <source>User pain indicator with custom single bug pain threshold</source>
-            </trans-unit>
-            <trans-unit id="6b878789670614e4590d6d2d56029081">
-                <source>Specify user pain threshold</source>
-            </trans-unit>
-            <trans-unit id="9680162225162baf2a085dfdc2814deb">
-                <source>RSS feed</source>
-            </trans-unit>
-            <trans-unit id="49f64de6b2b75bb2b5d0904cdab568e4">
-                <source>Open issues for %project_name</source>
-            </trans-unit>
-            <trans-unit id="5c7338c8c9bafb1352398769016aa85a">
-                <source>All open issues</source>
-            </trans-unit>
-            <trans-unit id="d88d444bde1724c51c5f4b40eb095070">
-                <source>Open issues for %project_name (including subprojects)</source>
-            </trans-unit>
-            <trans-unit id="81cb2729a8637874cfb22f759d19fe48">
-                <source>Closed issues for %project_name</source>
-            </trans-unit>
-            <trans-unit id="e52d9debdc64d1523f647aec5fab8481">
-                <source>All closed issues</source>
-            </trans-unit>
-            <trans-unit id="5cfedaee14d288abed4904d400e55a41">
-                <source>Closed issues for %project_name (including subprojects)</source>
-            </trans-unit>
-            <trans-unit id="eabea97d3b04725e21c347af91ccdb1d">
-                <source>%project_name wishlist</source>
-            </trans-unit>
-            <trans-unit id="45997339109d70f909d8c46b19932469">
-                <source>Milestone todo-list for %project_name</source>
-            </trans-unit>
-            <trans-unit id="b078faeab3f572daba40ffd3225c261d">
-                <source>Most voted issues for %project_name</source>
-            </trans-unit>
-            <trans-unit id="35c1e0529b8e5bc012b591b215bfcc4d">
-                <source>Most voted issues</source>
-            </trans-unit>
-            <trans-unit id="b3a6d00bcbbc30a4cdb4e4f4cbd22005">
-                <source>Issues reported by me</source>
-            </trans-unit>
-            <trans-unit id="86fb6fd70809a36ccd67e001c05a8a59">
-                <source>Open issues assigned to me</source>
-            </trans-unit>
-            <trans-unit id="04cf918b101cc8c80a7959bc0be78178">
-                <source>Open issues assigned to my teams</source>
-            </trans-unit>
-            <trans-unit id="66c4255bad231dd5d05adbaae50ff48c">
-                <source>Open issues owned by me</source>
-            </trans-unit>
-            <trans-unit id="fa38151c041b352b4f8444a5342f6208">
-                <source>Showing "bug report" issues sorted by user pain, threshold set at %threshold</source>
-            </trans-unit>
-            <trans-unit id="52d915fec82e9ccb7abc36cc522b022e">
-                <source>Showing issues ordered by number of votes</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGSettings.class.php">
+    <file source-language="en" datatype="php" original="core/framework/Settings.php">
         <body>
             <trans-unit id="48b26d57c14af0500090800c2cdd0d58">
                 <source>Scopes</source>
@@ -987,7 +1226,15 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/classes/TBGTextParser.class.php">
+    <file source-language="en" datatype="php" original="core/helpers/ProjectActions.php">
+        <body>
+            <trans-unit id="4a66bb70af3f6ad629030f2a0e975974">
+                <source>This project does not exist</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/helpers/TextParser.php">
         <body>
             <trans-unit id="b28354b543375bfa94dabaeda722927f">
                 <source>top</source>
@@ -997,253 +1244,6 @@
             </trans-unit>
             <trans-unit id="09d1ab2ccf43df3223903012287670d9">
                 <source>Open file in new window</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGUser.class.php">
-        <body>
-            <trans-unit id="e2162885d59741bd35e43e69ce82037c">
-                <source>This username already exists</source>
-            </trans-unit>
-            <trans-unit id="125c4d20d02ef5b3d0fbf7f11bf1acd5">
-                <source>No such user</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGWorkflowTransitionAction.class.php">
-        <body>
-            <trans-unit id="c7ed7c4c3e01cf840a50fa171f183867">
-                <source>Assign the issue to a user</source>
-            </trans-unit>
-            <trans-unit id="8516157b2f1e151e6012711ec27cbe0e">
-                <source>Assign the issue to the current user</source>
-            </trans-unit>
-            <trans-unit id="fb7c6c16f5330926902273c2e987cf5c">
-                <source>Mark as not duplicate</source>
-            </trans-unit>
-            <trans-unit id="cc483e83eac6a3f06c3ab418f349bd30">
-                <source>Possibly mark as duplicate</source>
-            </trans-unit>
-            <trans-unit id="ae63b7eb5972e953735a99f045f81d99">
-                <source>Start logging time</source>
-            </trans-unit>
-            <trans-unit id="4fe9d263171c357246bacf179953d0ce">
-                <source>Stop logging time and optionally add time spent</source>
-            </trans-unit>
-            <trans-unit id="1e1d4024d8daeab72430211870f14634">
-                <source>Clear issue assignee</source>
-            </trans-unit>
-            <trans-unit id="348e1fd376022189b62fd70d97483ebe">
-                <source>Clear issue priority</source>
-            </trans-unit>
-            <trans-unit id="c313511e5e2ee00c7babddf675847d2f">
-                <source>Clear issue percent</source>
-            </trans-unit>
-            <trans-unit id="185b79e6d1758ea12a8ea91032a2496c">
-                <source>Clear issue reproducability</source>
-            </trans-unit>
-            <trans-unit id="980749a508d7ac5dc3fdff94106fe8d8">
-                <source>Clear issue resolution</source>
-            </trans-unit>
-            <trans-unit id="23de64c049953fc7e19670069be1851a">
-                <source>Clear issue milestone</source>
-            </trans-unit>
-            <trans-unit id="ab4f59523e60c3d27103ee8b307725a0">
-                <source>Set issue priority</source>
-            </trans-unit>
-            <trans-unit id="b206337c497c02a5ebfdeda1ce1e394f">
-                <source>Set issue percent</source>
-            </trans-unit>
-            <trans-unit id="d0b3d4c3c32fe2e80e56801c97d85566">
-                <source>Set issue reproducability</source>
-            </trans-unit>
-            <trans-unit id="c7e3e5ed93a78e1526accd870e46c2b0">
-                <source>Set issue resolution</source>
-            </trans-unit>
-            <trans-unit id="d94b55f1c4be77000b3935c4a12d6b27">
-                <source>Set issue status</source>
-            </trans-unit>
-            <trans-unit id="97e3229c5d1056b966eb878614dea2b7">
-                <source>Set issue milestone</source>
-            </trans-unit>
-            <trans-unit id="f399eda2c32e42f1367930321d267928">
-                <source>Clear issue field %key</source>
-            </trans-unit>
-            <trans-unit id="f0b55dbbc289524a7c6759455a8bf70a">
-                <source>Set issue field %key</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/classes/TBGWorkflowTransitionValidationRule.class.php">
-        <body>
-            <trans-unit id="bda627a4908d2bd8db65a99e9eb89ff1">
-                <source>Max number of assigned issues</source>
-            </trans-unit>
-            <trans-unit id="553d56182b10c9c58f64a7a65e4360b3">
-                <source>User must be member of a certain team</source>
-            </trans-unit>
-            <trans-unit id="04902141b151953fa8a3009fb92080dc">
-                <source>Validate specified priority</source>
-            </trans-unit>
-            <trans-unit id="df53795c27e72b954a7a4093f5c4eb17">
-                <source>Validate specified reproducability</source>
-            </trans-unit>
-            <trans-unit id="e06c7025f5002e158bca55d39df798a2">
-                <source>Validate specified resolution</source>
-            </trans-unit>
-            <trans-unit id="cb60f5ba82e53559944150a7759229fd">
-                <source>Validate specified status</source>
-            </trans-unit>
-            <trans-unit id="19143c639dfac9e6b6689080cb10e498">
-                <source>Validate specified %key</source>
-            </trans-unit>
-            <trans-unit id="82999e038b22ca35aca6831da24e70d4">
-                <source>Validate team membership of assignee</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/entities/BoardSwimlane.php">
-        <body>
-            <trans-unit id="e5a93185a2d2caeb8f4df8f1d1861b2c">
-                <source>Unknown / not set</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/entities/DashboardView.php">
-        <body>
-            <trans-unit id="ab191177a627ce131bef40c2610c6f08">
-                <source>What you've done recently</source>
-            </trans-unit>
-            <trans-unit id="40d2e58e98773baffc549a62d96f60a4">
-                <source>A widget that shows your most recent actions, such as issue edits, wiki edits and more</source>
-            </trans-unit>
-            <trans-unit id="a6dcfc2f9a32c281135b5b89eeee31bc">
-                <source>Recent comments</source>
-            </trans-unit>
-            <trans-unit id="3265e323d092afd3a121474c9f5eee2c">
-                <source>Shows a list of your most recent comments</source>
-            </trans-unit>
-            <trans-unit id="27fcdff30237702a137d052c8072de39">
-                <source>Shows a list of all issues you have reported, across all projects</source>
-            </trans-unit>
-            <trans-unit id="99d54afa5f2460482028343c3399ed2b">
-                <source>Shows a list of all issues assigned to you</source>
-            </trans-unit>
-            <trans-unit id="a1216e2611e964018ad5ae3267d994ae">
-                <source>Shows a list of all issues owned by you</source>
-            </trans-unit>
-            <trans-unit id="7ecaf827e6233553a280f2dbeb53f978">
-                <source>Shows all issues assigned to any of your teams</source>
-            </trans-unit>
-            <trans-unit id="8683b9134e1f507b4f7d7e0a51b8bbc4">
-                <source>Your projects</source>
-            </trans-unit>
-            <trans-unit id="3d25b27a65eb5e4bf9cac7488522287f">
-                <source>A widget that shows projects you are involved in</source>
-            </trans-unit>
-            <trans-unit id="ea7af6e94aecaabb121bb68b54428e9f">
-                <source>Upcoming milestones / sprints</source>
-            </trans-unit>
-            <trans-unit id="41c9782da4c5228ba36fc6e94bf28c0e">
-                <source>A widget that shows all upcoming milestones or sprints for any projects you are involved in</source>
-            </trans-unit>
-            <trans-unit id="a2c44426a4653e51b73bf7b10c9d23bc">
-                <source>Recent issues: %issuetype</source>
-            </trans-unit>
-            <trans-unit id="26a4faf6ff2886a7d786f8a7d5304fd1">
-                <source>Show recent issues of type %issuetype</source>
-            </trans-unit>
-            <trans-unit id="340b2432a91c77a28dff03c3c3dbb648">
-                <source>About this project</source>
-            </trans-unit>
-            <trans-unit id="2896e1378bad150c364afa08efd60021">
-                <source>Basic project information widget, showing project name, important people and links</source>
-            </trans-unit>
-            <trans-unit id="f450e914bc68d1cf3067c1d78d9cbd91">
-                <source>Project team</source>
-            </trans-unit>
-            <trans-unit id="72758cfca81778ee6dc0489e467e756a">
-                <source>A widget with information about project developers and the project team and their respective project roles</source>
-            </trans-unit>
-            <trans-unit id="570e6c7d45f2985cd14be5a37bca8bdc">
-                <source>Project client</source>
-            </trans-unit>
-            <trans-unit id="eaf52763657451ffa7fd3c2c98b366dc">
-                <source>Shows information about the associated project client (if any)</source>
-            </trans-unit>
-            <trans-unit id="0504ff6d5a8aecf8fe45e66bbafd1483">
-                <source>Subprojects</source>
-            </trans-unit>
-            <trans-unit id="3471159981e5b7a6b4e6a60fef7371a5">
-                <source>Lists all subprojects of this project, with quick links to report an issue, open the project wiki and more</source>
-            </trans-unit>
-            <trans-unit id="c23610a63a15a4cfe8d55795f1bd7936">
-                <source>Recent activities</source>
-            </trans-unit>
-            <trans-unit id="39840ce136500158beb84c275fb59052">
-                <source>Displays project timeline</source>
-            </trans-unit>
-            <trans-unit id="2a2bcfe4e6d48394be32600212e586f3">
-                <source>Upcoming milestones and deadlines</source>
-            </trans-unit>
-            <trans-unit id="6fde77115162f74f7fc925b6213581b7">
-                <source>A widget showing a list of upcoming milestones and deadlines for the next three weeks</source>
-            </trans-unit>
-            <trans-unit id="e47976b42e8e3cf0d90dfaaad459a2d7">
-                <source>Latest downloads</source>
-            </trans-unit>
-            <trans-unit id="a67c46cb7b932ec0b63c50a420d14c9e">
-                <source>Lists recent downloads released in the release center</source>
-            </trans-unit>
-            <trans-unit id="fabff87bd847e6065403bc1a4f9972eb">
-                <source>Graph of closed vs open issues</source>
-            </trans-unit>
-            <trans-unit id="6bb4ce3e0c25daf89af6b298c3b027d4">
-                <source>Shows a line graph comparing closed vs open issues for the past 15 days</source>
-            </trans-unit>
-            <trans-unit id="ea075e6a62cc36411d6e5e104cd8d427">
-                <source>Statistics by priority</source>
-            </trans-unit>
-            <trans-unit id="773be25858ba70d43c0ecd80c87c5c3b">
-                <source>Displays a bar graph of open and closed issues grouped by priority</source>
-            </trans-unit>
-            <trans-unit id="97a4bada7e113f2bff60043e4465f21c">
-                <source>Statistics by severity</source>
-            </trans-unit>
-            <trans-unit id="383e580c2e7a5a098f6cc070a8c496b3">
-                <source>Displays a bar graph of open and closed issues grouped by severity</source>
-            </trans-unit>
-            <trans-unit id="f3010532522e4a9c3b6602d0aee5a2cd">
-                <source>Statistics by category</source>
-            </trans-unit>
-            <trans-unit id="ed0add5d6fbbebf0251626f50adc84da">
-                <source>Displays a bar graph of open and closed issues grouped by category</source>
-            </trans-unit>
-            <trans-unit id="3ab147a8b5a506961441cb27d27fe18f">
-                <source>Statistics by status</source>
-            </trans-unit>
-            <trans-unit id="5220ba94723ac88d2116d52f39234c1d">
-                <source>Displays a bar graph of open and closed issues grouped by status</source>
-            </trans-unit>
-            <trans-unit id="dfc5874d7a259d351c1212bc79cb870e">
-                <source>Statistics by resolution</source>
-            </trans-unit>
-            <trans-unit id="4182ea9488cc01a21b5b7ab146179837">
-                <source>Displays a bar graph of open and closed issues grouped by resolution</source>
-            </trans-unit>
-            <trans-unit id="5ee2d7b2cd84c3a1823361733725c1eb">
-                <source>Statistics by workflow step</source>
-            </trans-unit>
-            <trans-unit id="818f721872770bb1d6158c13324035cc">
-                <source>Displays a bar graph of open and closed issues grouped by current workflow step</source>
-            </trans-unit>
-            <trans-unit id="ca01b5c0b1d8a59a8786570d9c1a7f20">
-                <source>Unknown dashboard item</source>
             </trans-unit>
         </body>
     </file>
@@ -1324,9 +1324,6 @@
             </trans-unit>
             <trans-unit id="5891aaec7c1ae521525c950d2e5c0618">
                 <source>Available choices updated</source>
-            </trans-unit>
-            <trans-unit id="c0a00b3b0f657d038562423fe6c7d736">
-                <source>Not implemented yet</source>
             </trans-unit>
             <trans-unit id="4761734ddceb8a1db6659b7055bea57f">
                 <source>Issue type deleted</source>
@@ -1409,12 +1406,6 @@
             <trans-unit id="88ab3bae2711748c3488238628cce664">
                 <source>There was an error install the module "%module_name"</source>
             </trans-unit>
-            <trans-unit id="a64ebbed96f6b98926134127e53bff63">
-                <source>Invalid or empty archive uploaded</source>
-            </trans-unit>
-            <trans-unit id="e9572b3d9f12dcff61d612e787bd7814">
-                <source>The module "%module_name" was uploaded successfully</source>
-            </trans-unit>
             <trans-unit id="463d5098d988e6c6123b732c392f6ca6">
                 <source>The module "%module_name" was uninstalled successfully</source>
             </trans-unit>
@@ -1436,8 +1427,8 @@
             <trans-unit id="7e05220fc956117cd5c47ccbd3e8a2ef">
                 <source>The module "%module_name" is not configurable</source>
             </trans-unit>
-            <trans-unit id="7087812af19fb130017bb722359bec17">
-                <source>The upload path isn't writable</source>
+            <trans-unit id="92f6311143a630cadc437c0ea1cf4f0f">
+                <source>The upload path isn't wri</source>
             </trans-unit>
             <trans-unit id="f9e47a76fefc16619c6e143ab9a174bc">
                 <source>The maximum file size must be a number</source>
@@ -1603,6 +1594,9 @@
             </trans-unit>
             <trans-unit id="744fe8f996021d5fd6c6d8fb7fbdad4e">
                 <source>The validation rule has been deleted</source>
+            </trans-unit>
+            <trans-unit id="6a08e921ef3fc5f5c6fdc8cf3f8d80a9">
+                <source>Invalid transition definition</source>
             </trans-unit>
             <trans-unit id="f46aa51c21aa8096ba51d3706d429a04">
                 <source>This validation rule already exist</source>
@@ -3608,18 +3602,6 @@
             <trans-unit id="349838fb1d851d3e2014b9fe39203275">
                 <source>Install</source>
             </trans-unit>
-            <trans-unit id="78bb3cebb34087cd9a9ad695f0c8ac33">
-                <source>Upload and install</source>
-            </trans-unit>
-            <trans-unit id="05cd82cfcbeba5c106111a7a28e7f700">
-                <source>To add a new module in The Bug Genie, download it then select it from the %browse-button and press the %upload-button</source>
-            </trans-unit>
-            <trans-unit id="91412465ea9169dfd901dd5e7c96dd99">
-                <source>Upload</source>
-            </trans-unit>
-            <trans-unit id="1b9abf135ccb7ed2f2cd9c155137c351">
-                <source>Browse</source>
-            </trans-unit>
             <trans-unit id="f8b4b029578726046f14607bbd544731">
                 <source>There are no outdated modules to upgrade</source>
             </trans-unit>
@@ -4598,9 +4580,6 @@
             <trans-unit id="3ea22b117b89cdf25f0b89585caf74ae">
                 <source>This issue cannot be updated</source>
             </trans-unit>
-            <trans-unit id="090fc0696d9f853c1ef03d30d97c76c7">
-                <source>Enter time spent here</source>
-            </trans-unit>
             <trans-unit id="ba9f98a1a5e1448830c79ddf7584ce9a">
                 <source>No valid field value specified</source>
             </trans-unit>
@@ -4630,6 +4609,9 @@
             </trans-unit>
             <trans-unit id="cad944dc16de4ced905542187306f06c">
                 <source>You can not remove items from this issue</source>
+            </trans-unit>
+            <trans-unit id="34555aff47b69be3065ec12de5aebbbb">
+                <source>An error occurred when removing the file</source>
             </trans-unit>
             <trans-unit id="03dd224805d96edc9dbf5527221f955c">
                 <source>Invalid mode</source>
@@ -4669,9 +4651,6 @@
             </trans-unit>
             <trans-unit id="601651cf75d7d9a88833e7337cd76efb">
                 <source>The comment must have some content</source>
-            </trans-unit>
-            <trans-unit id="f2b11726142bcbc01f7b1c442378a7cd">
-                <source>Untitled comment</source>
             </trans-unit>
             <trans-unit id="f8ffb06aa3f592bd0bc49d33e0e2c436">
                 <source>Comment edited!</source>
@@ -4822,6 +4801,9 @@
             </trans-unit>
             <trans-unit id="0d35925895ad54e3c5e005c342fb1ff1">
                 <source>Could not remove this OpenID account</source>
+            </trans-unit>
+            <trans-unit id="d6f5bffb207272b9ba407562b1c2e56b">
+                <source>Could not show permissions list</source>
             </trans-unit>
         </body>
     </file>
@@ -5711,6 +5693,9 @@
             </trans-unit>
             <trans-unit id="5c34344340c36908d48d1f64f528de00">
                 <source>Enter your estimate here</source>
+            </trans-unit>
+            <trans-unit id="090fc0696d9f853c1ef03d30d97c76c7">
+                <source>Enter time spent here</source>
             </trans-unit>
             <trans-unit id="7c4d5fd3a005d7c3d715d5037d1c40be">
                 <source>Enter a value in plain text, like "1 hour", "7 hours", or similar</source>
@@ -7261,8 +7246,8 @@
             <trans-unit id="17108949bd897c3068cd9c07058f0e9a">
                 <source>Enjoy using The Bug Genie!</source>
             </trans-unit>
-            <trans-unit id="5e9946c1b9626f3f7cc6526adedd6f7f">
-                <source>Licensed under the MPL 1.1 only, read it at %link_to_MPL</source>
+            <trans-unit id="37d889db8562a51343f5ee9bba1ee774">
+                <source>Licensed under the MPL 2.0, read it at %link_to_MPL</source>
             </trans-unit>
             <trans-unit id="45b6d625d1e1c88a5a9f669685259108">
                 <source>The Bug Genie uses icons from the %link_to_iconset</source>
@@ -7929,35 +7914,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/Actions.php">
         <body>
-            <trans-unit id="4a66bb70af3f6ad629030f2a0e975974">
-                <source>This project does not exist</source>
-            </trans-unit>
-            <trans-unit id="43cc7d7d4e6b18599229cfb8e5243c43">
-                <source>You have to provide a label</source>
-            </trans-unit>
-            <trans-unit id="39c936f51cf83ed9a4ee0bc4bff4d00b">
-                <source>There are no valid transitions to any states in this column</source>
-            </trans-unit>
-            <trans-unit id="0ffe9c59457923822d8b165678988f21">
-                <source>There was an error trying to save column %column</source>
-            </trans-unit>
-            <trans-unit id="42ba653a0f5f30fe515e62ba76ac856d">
-                <source>An error occured when trying to save the milestone order</source>
-            </trans-unit>
-            <trans-unit id="8d484b1a1a4c80e279c610bdfd455cf1">
-                <source>The board has been deleted</source>
-            </trans-unit>
             <trans-unit id="bddb7cc3f170280dbdacd41c9cb3e61c">
                 <source>Remaining effort</source>
             </trans-unit>
             <trans-unit id="6be6277f4f6d18acd0dd98262981aef1">
                 <source>Invalid user story</source>
-            </trans-unit>
-            <trans-unit id="65fb64192cef876931e0b74b76806298">
-                <source>An error occured when trying to assign the issue to the release</source>
-            </trans-unit>
-            <trans-unit id="79ce461fed9ae7b3d64d2443e0d89f66">
-                <source>An error occured when trying to assign the issue to the new milestone</source>
             </trans-unit>
             <trans-unit id="254a553df585a49b4e02d13640b363b6">
                 <source>Please specify a sprint name</source>
@@ -8028,6 +7989,9 @@
             <trans-unit id="eb4a566daa457aa5fda3269e856bf6f2">
                 <source>This issue is not valid for this project</source>
             </trans-unit>
+            <trans-unit id="339707f8eef508d11aaa4170a35c95bc">
+                <source>Cannot find this issue</source>
+            </trans-unit>
             <trans-unit id="36ed65ce17306e812fd68d9f634c0c57">
                 <source>Invalid title</source>
             </trans-unit>
@@ -8036,15 +8000,6 @@
             </trans-unit>
             <trans-unit id="af59ada35f73493c423d5e3727e0d1a5">
                 <source>Invalid milestone</source>
-            </trans-unit>
-            <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
-                <source>You don't have access to modify milestones</source>
-            </trans-unit>
-            <trans-unit id="41cfbf2d1ffadde035a02128b0cdfda5">
-                <source>You must provide a valid milestone name</source>
-            </trans-unit>
-            <trans-unit id="0b0bb4cf1efaa6c3d5212f52e4af2190">
-                <source>Milestone saved</source>
             </trans-unit>
             <trans-unit id="9b3df3754089e8cdad36b1237d2bfb7e">
                 <source>You are not allowed to perform any workflow transitions on this issue</source>
@@ -8186,100 +8141,8 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/Components.php">
         <body>
-            <trans-unit id="53fbb4285f5a5c035c9e3e102e477dee">
-                <source>Project open issues (recommended)</source>
-            </trans-unit>
-            <trans-unit id="99e20eccdd510a9e910d0ebabe8a5d9b">
-                <source>Project open issues (including subprojects)</source>
-            </trans-unit>
-            <trans-unit id="a1cd459dbde431342fddb9617cf4657b">
-                <source>Project closed issues</source>
-            </trans-unit>
-            <trans-unit id="9143ad219afa931ac95781de42189680">
-                <source>Project closed issues (including subprojects)</source>
-            </trans-unit>
-            <trans-unit id="682df718d8ca6ff3a80694b72412e995">
-                <source>Project issues reported last month</source>
-            </trans-unit>
-            <trans-unit id="a4db0eee4609427e771accb67c15ddaf">
-                <source>Project wishlist</source>
-            </trans-unit>
-            <trans-unit id="83f8beea45e1f017503377dd3d01e057">
-                <source>Issue priority</source>
-            </trans-unit>
-            <trans-unit id="02536e4f321db0c679cb74ed94dc5b88">
-                <source>Issue severity</source>
-            </trans-unit>
-            <trans-unit id="eea46167f99b2f1e56de823a86fe422e">
-                <source>Issue category</source>
-            </trans-unit>
             <trans-unit id="2dc49eeb16476677e2d468c8aec121dc">
                 <source>%project_name version 0.0.0</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_agileboardbacklog.inc.php">
-        <body>
-            <trans-unit id="75dd5f1160a3f02b6fae89c54361a1b3">
-                <source>Points</source>
-            </trans-unit>
-            <trans-unit id="6a7e73161603d87b26a8eac49dab0a9c">
-                <source>Hours</source>
-            </trans-unit>
-            <trans-unit id="34608350abc2777b56c28701fd0e1ae2">
-                <source>Create new sprint</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_agileboardbox.inc.php">
-        <body>
-            <trans-unit id="43b53d4637c0f3a52c51d2bd61895f5f">
-                <source>Edit this board</source>
-            </trans-unit>
-            <trans-unit id="443ff1eeef1d16ba3896959c16e6b291">
-                <source>Delete this board?</source>
-            </trans-unit>
-            <trans-unit id="8b71c8824e5178963bde4c3725b3ac4b">
-                <source>Do you really want to delete this board?</source>
-            </trans-unit>
-            <trans-unit id="54122230de08989f2d5489c55f8619e7">
-                <source>Deleting this will make it unavailable. No issues or saved searches will be affected by this action.</source>
-            </trans-unit>
-            <trans-unit id="6f5a47fbafbc91e57390664677e68416">
-                <source>Delete this board</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_agilewhiteboardtransitionselector.inc.php">
-        <body>
-            <trans-unit id="43e09d3f973823629c4c1692ffa6edc9">
-                <source>Transition issue</source>
-            </trans-unit>
-            <trans-unit id="9c8b48e1273257ce6e65399268dc189c">
-                <source>Please select which transition to apply</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_boardcolumnheader.inc.php">
-        <body>
-            <trans-unit id="279fdac449fbaa1eb1028dc8f003631c">
-                <source>%count (min %min_workitems - max %max_workitems)</source>
-            </trans-unit>
-            <trans-unit id="4d8be710adef54bb0bea9affe9fe8585">
-                <source>%count (min %min_workitems)</source>
-            </trans-unit>
-            <trans-unit id="84c7f56509835253df694f693d0e3378">
-                <source>%count of max %max_workitems</source>
-            </trans-unit>
-            <trans-unit id="67794dfdbc8f956051368f5b29db1d44">
-                <source>%count (under %min_workitems)</source>
-            </trans-unit>
-            <trans-unit id="fb0cf7be596219af81a1c3d13753c0f5">
-                <source>%count (over %max_workitems)</source>
             </trans-unit>
         </body>
     </file>
@@ -8564,169 +8427,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_editagileboard.inc.php">
-        <body>
-            <trans-unit id="e9bfb485e714c812407664d52a4f5052">
-                <source>Edit agile board</source>
-            </trans-unit>
-            <trans-unit id="72b6d39a416506f2f8a4f4274fefd06c">
-                <source>Add agile board</source>
-            </trans-unit>
-            <trans-unit id="1987cadb51151fbdbd3c84e682d76a29">
-                <source>Board type</source>
-            </trans-unit>
-            <trans-unit id="6707dd973118dd7240d743a450912167">
-                <source>Generic planning board</source>
-            </trans-unit>
-            <trans-unit id="5eb736acf6624e2482776c43b5019db1">
-                <source>Scrum board</source>
-            </trans-unit>
-            <trans-unit id="cd5c60292aa6ee5b78d7645417ddf465">
-                <source>Kanban board</source>
-            </trans-unit>
-            <trans-unit id="24dfce853c06bfd07a9c6bfc479b1793">
-                <source>Just a generic planning board for planning upcoming milestones.</source>
-            </trans-unit>
-            <trans-unit id="36f706d897578e3562d09b253c9fc8df">
-                <source>Board tailored for scrum-style workflows, card view as scrum stories with estimates.</source>
-            </trans-unit>
-            <trans-unit id="b05710d4937d203146956661dd6e0831">
-                <source>Kanban board with workload limits and powerful plan mode.</source>
-            </trans-unit>
-            <trans-unit id="be10e45ddb97583c298f1e0786b336ba">
-                <source>Planning mode settings</source>
-            </trans-unit>
-            <trans-unit id="2b340063734382803d14ef2234a59b46">
-                <source>None selected</source>
-            </trans-unit>
-            <trans-unit id="6235ad15862b9a0c90fe3271e0e5f9ec">
-                <source>Epic issuetype</source>
-            </trans-unit>
-            <trans-unit id="d49e3e1bf7e642367109456c26ca9d1e">
-                <source>Select epic issuetype</source>
-            </trans-unit>
-            <trans-unit id="6511c442e4a556da950ccbebb6e558ef">
-                <source>Task issuetype</source>
-            </trans-unit>
-            <trans-unit id="bee9369fe68567e00400b5c5e9c90228">
-                <source>Select task issuetype</source>
-            </trans-unit>
-            <trans-unit id="7a0a00d3faeb2744566da9908ab66f3f">
-                <source>Backlog search</source>
-            </trans-unit>
-            <trans-unit id="53ef2b639928e06802621c01bf9b32b5">
-                <source>Select search to use for backlog</source>
-            </trans-unit>
-            <trans-unit id="00958c490738363db2c4e803b0b1a13c">
-                <source>There are no public saved searches for this project</source>
-            </trans-unit>
-            <trans-unit id="eb6959bd01368f8f942307c7121a583d">
-                <source>You have no saved searches for this project</source>
-            </trans-unit>
-            <trans-unit id="d018919e7198223dfe2ab2d4f96a50a5">
-                <source>The backlog search is used to display the backlog - a list of unassigned issues for this board.</source>
-            </trans-unit>
-            <trans-unit id="1037dc1b4836263210080bccc23d641d">
-                <source>Whiteboard mode settings</source>
-            </trans-unit>
-            <trans-unit id="02807f78d46ab09d2e385d1ac2f74a19">
-                <source>Whiteboard swimlanes</source>
-            </trans-unit>
-            <trans-unit id="aadb3ee341867ca2327dd458d9f1e42b">
-                <source>Not used</source>
-            </trans-unit>
-            <trans-unit id="5ac1b6e2182f78e20f5dd0817f979399">
-                <source>Issue swimlanes</source>
-            </trans-unit>
-            <trans-unit id="5ae5165d3731fcd2dd7e38f9f1a4aeb4">
-                <source>Issues detail swimlanes</source>
-            </trans-unit>
-            <trans-unit id="7136396ae0db832c7944cbd0a6d8808d">
-                <source>Level of service swimlane</source>
-            </trans-unit>
-            <trans-unit id="14d49eb8c543c2fe92a75a755b2007d9">
-                <source>Don't use swimlanes</source>
-            </trans-unit>
-            <trans-unit id="9ccce55c21e547cdcf976351112f555c">
-                <source>The board has a swimlane for each issue of one or more issue type(s).</source>
-            </trans-unit>
-            <trans-unit id="4691406763677aef735c90c78fd2d5ea">
-                <source>Issue detail swimlanes</source>
-            </trans-unit>
-            <trans-unit id="a119c8b7aeed47b34eaed0496fafafcd">
-                <source>The board is grouped in swimlanes where issues that share the same characteristics are grouped together.</source>
-            </trans-unit>
-            <trans-unit id="223b1c2b471954744f980e99fa13f3be">
-                <source>No general grouping, but an increased level of service swimlane at the top for expediting issues</source>
-            </trans-unit>
-            <trans-unit id="d6ab8e812731d11855c0e72ebda8e182">
-                <source>There will be no swimlanes on the board</source>
-            </trans-unit>
-            <trans-unit id="40e33541bff1d98e682e0b10f60ec2ae">
-                <source>Issuetype(s)</source>
-            </trans-unit>
-            <trans-unit id="9798c8343e56dd8e90c01e349c4f885d">
-                <source>Select issuetype(s)</source>
-            </trans-unit>
-            <trans-unit id="b9ff87953e887212a6e7af7602db9fd6">
-                <source>The whiteboard will have separate swimlanes for all issues that is of a certain type. Specify which issuetype qualifies as a swimlane.</source>
-            </trans-unit>
-            <trans-unit id="be87d8c3de2675bbc53f9442af9d8feb">
-                <source>Group by</source>
-            </trans-unit>
-            <trans-unit id="9dbfd8120239e9d5f982dcb26acb6bce">
-                <source>Select detail to group by</source>
-            </trans-unit>
-            <trans-unit id="da7f799993a5f629f77b8ebed979acc1">
-                <source>The whiteboard will have separate swimlanes / groups for issues that share the same characteristics. Specify which issue detail to group issues by.</source>
-            </trans-unit>
-            <trans-unit id="f2582a7f2a679a6c1b09803e63d44015">
-                <source>Issue detail</source>
-            </trans-unit>
-            <trans-unit id="3b019eb51122f50cb783f5fb76060f1b">
-                <source>Select issue field for expedite swimlane</source>
-            </trans-unit>
-            <trans-unit id="3352a8a0aa4f615a9a7cbde4970cfebf">
-                <source>Field value(s)</source>
-            </trans-unit>
-            <trans-unit id="e1a5dd75108e52bbcf3c171232e49663">
-                <source>Select values for expedite issues</source>
-            </trans-unit>
-            <trans-unit id="547d5dbc9b242ea89881f48441ea00d1">
-                <source>The whiteboard will have a separate swimlane at the top for prioritized issues, like a expedite line / fastlane. Select which issue details puts issues in this swimlane.</source>
-            </trans-unit>
-            <trans-unit id="827e1baff2fd19587d3c6f251eb8d1a8">
-                <source>%cancel or %save_board</source>
-            </trans-unit>
-            <trans-unit id="8f54ddc00864c8c3e4131e4b2d6d79f3">
-                <source>Save board</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_editboardcolumn.inc.php">
-        <body>
-            <trans-unit id="710b83fcac12967268bc99b5bab9a093">
-                <source>Column name</source>
-            </trans-unit>
-            <trans-unit id="bd762c8aa6ea93a36a578b9cb9400a05">
-                <source>Min workload</source>
-            </trans-unit>
-            <trans-unit id="e3f1a79f1da90af290b6d905ffc7e911">
-                <source>Max workload</source>
-            </trans-unit>
-            <trans-unit id="68fb177a579cb891f8328775dab1db60">
-                <source>Select which status values are valid for this column</source>
-            </trans-unit>
-            <trans-unit id="fc922a34e5b337e6b450988fd7ec9b0c">
-                <source>Status(es)</source>
-            </trans-unit>
-            <trans-unit id="c1515f2e7cb785e9754711778ad066ed">
-                <source>Select status(es)</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/project/templates/_editionbox.inc.php">
         <body>
             <trans-unit id="af618d8d9c38c120a268fce4722e8f55">
@@ -8747,131 +8447,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_epicstrip.inc.php">
-        <body>
-            <trans-unit id="b78a3223503896721cca1303f776159b">
-                <source>Title</source>
-            </trans-unit>
-            <trans-unit id="c3931393595e425fec348a3626f4e121">
-                <source>Enter the name of the epic here</source>
-            </trans-unit>
-            <trans-unit id="422656f5c8baabfbbe132b4d7ca8065f">
-                <source>Enter a very short label here</source>
-            </trans-unit>
-            <trans-unit id="c978a6bb97e9c7c397e2f5941773e888">
-                <source>%cancel or %add_epic</source>
-            </trans-unit>
-            <trans-unit id="469b5202f1fe7224d3b5ea4e2750d0cb">
-                <source>Add epic</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestone.inc.php">
-        <body>
-            <trans-unit id="e81989bb4880b2fad170dc8b76620220">
-                <source>Save sprint</source>
-            </trans-unit>
-            <trans-unit id="e2dc079981badadef8c7eafc3073b6bd">
-                <source>Save milestone</source>
-            </trans-unit>
-            <trans-unit id="68310110d3364ef7de93dcd18ddc8100">
-                <source>Edit sprint details</source>
-            </trans-unit>
-            <trans-unit id="1cee55b0c706b598f2f06e400bad6afe">
-                <source>Add new sprint</source>
-            </trans-unit>
-            <trans-unit id="bb36feee4d1359b49cdad9f44ec8f08e">
-                <source>Edit milestone details</source>
-            </trans-unit>
-            <trans-unit id="e7480d7aa806b68b3a4e3fb9575fe5e0">
-                <source>Add milestone</source>
-            </trans-unit>
-            <trans-unit id="1604f5f5e3cea4558447efb65c62ee22">
-                <source>Sprint name</source>
-            </trans-unit>
-            <trans-unit id="a54211975c6bba96a5dc4b4dbb5b4cf1">
-                <source>Milestone name</source>
-            </trans-unit>
-            <trans-unit id="ca7baafda6a280d3a4a508488effeec3">
-                <source>Project roadmap visibility</source>
-            </trans-unit>
-            <trans-unit id="f6730d9ed4ce98290a772d1b7658bf7f">
-                <source>Not visible</source>
-            </trans-unit>
-            <trans-unit id="399402d5588629f641b0ede08d04404b">
-                <source>Issue availability</source>
-            </trans-unit>
-            <trans-unit id="610b554d147237a70f70e2351195b7cc">
-                <source>Planned start date</source>
-            </trans-unit>
-            <trans-unit id="b6671925e1922de848565d754897af88">
-                <source>Planned end date</source>
-            </trans-unit>
-            <trans-unit id="d81bd42170e93b88c943d4a539a4aceb">
-                <source>The %number selected issue(s) will be automatically added to the new sprint</source>
-            </trans-unit>
-            <trans-unit id="e6f95452e6e4d6200010e2da889e4ef9">
-                <source>The %number selected issue(s) will be automatically assigned to the new milestone</source>
-            </trans-unit>
-            <trans-unit id="a4c02510fdf9fb9bcd1ef4a4a5a10324">
-                <source>%cancel or %save_milestone</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonebox.inc.php">
-        <body>
-            <trans-unit id="b4438b15f6cdf9bc2115bc6f93221c7d">
-                <source>No issues are assigned to this milestone</source>
-            </trans-unit>
-            <trans-unit id="d1401f2220202c095ccf6b0256593541">
-                <source>No issues assigned to this milestone matches selected filters</source>
-            </trans-unit>
-            <trans-unit id="8aa061c9a9371b8962333a5dc441dabb">
-                <source>There are no issues in this sprint</source>
-            </trans-unit>
-            <trans-unit id="58d2e6f54f5403925df42f8294b2baaa">
-                <source>No issues in this sprint matches selected filters</source>
-            </trans-unit>
-            <trans-unit id="e959c14da7f1f5699e56d62e6c069bab">
-                <source>The issue list could not be loaded</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneboxheader.inc.php">
-        <body>
-            <trans-unit id="4d34f1097f6c8b9cee28bca8b78bbee9">
-                <source>Start date</source>
-            </trans-unit>
-            <trans-unit id="b7de7e4247d4ab279ef031b7a44c201d">
-                <source>End date</source>
-            </trans-unit>
-            <trans-unit id="5023e5b1d1c02cf168a9a67dda6d2d87">
-                <source>Show overview</source>
-            </trans-unit>
-            <trans-unit id="9d269cbc77a9ff85f346a00f8367b25d">
-                <source>Mark as finished</source>
-            </trans-unit>
-            <trans-unit id="2da3d6800ce332259e601b96fdd83abb">
-                <source>Do you really want to delete this milestone?</source>
-            </trans-unit>
-            <trans-unit id="bc1a3f95b7baca6b10cc625b05ff9f57">
-                <source>Removing this milestone will unassign all issues from this milestone and remove it from all available lists. This action cannot be undone.</source>
-            </trans-unit>
-            <trans-unit id="7d2407e430e516437b6d3aa4b333cb40">
-                <source>Do you really want to delete this sprint?</source>
-            </trans-unit>
-            <trans-unit id="12e70dfaccc7cf9f12beb9386610fd62">
-                <source>Deleting this sprint will remove all issues in this sprint and put them in the backlog. This action cannot be undone.</source>
-            </trans-unit>
-            <trans-unit id="ebb3ca06b00a0f26dc79d93298751f11">
-                <source>Add issue</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonedetails.inc.php">
         <body>
             <trans-unit id="a536dd3d7fede1ecaea268e614782379">
@@ -8879,6 +8454,12 @@
             </trans-unit>
             <trans-unit id="701912012a4fa14cc9893fb3b8ca8c7a">
                 <source>Ends %end_date</source>
+            </trans-unit>
+            <trans-unit id="75dd5f1160a3f02b6fae89c54361a1b3">
+                <source>Points</source>
+            </trans-unit>
+            <trans-unit id="6a7e73161603d87b26a8eac49dab0a9c">
+                <source>Hours</source>
             </trans-unit>
             <trans-unit id="eb2e4e4c2147afdb554de372bc896b4f">
                 <source>Total estimated effort</source>
@@ -8927,81 +8508,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneepic.inc.php">
-        <body>
-            <trans-unit id="f9134937ba5da4d91eead723aee72481">
-                <source>Current status</source>
-            </trans-unit>
-            <trans-unit id="b08132a992920729bfa9acbf7a055d94">
-                <source>Child issues</source>
-            </trans-unit>
-            <trans-unit id="50287dc6125c6d4fcd9b535396750cea">
-                <source>%num_child_issues issue(s)</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonefinish.inc.php">
-        <body>
-            <trans-unit id="07be48e2d921063f1ebbe8e01b8b6505">
-                <source>Mark milestone finished</source>
-            </trans-unit>
-            <trans-unit id="70d33ded02d158a4bb39ad0c455c7da0">
-                <source>Mark sprint finished</source>
-            </trans-unit>
-            <trans-unit id="6b1ddd3ebd64e35d3abb41e8f09b3cd7">
-                <source>Mark milestone as finished</source>
-            </trans-unit>
-            <trans-unit id="2cd1be47e9d37908b2f581f434b280f4">
-                <source>Mark sprint as finished</source>
-            </trans-unit>
-            <trans-unit id="b1a3f37273f517ef1f5da20b11f24739">
-                <source>Milestone %milestone_name will be marked as finished.</source>
-            </trans-unit>
-            <trans-unit id="e2fee27a50cb39e36a49e4b2e01f54c3">
-                <source>Sprint %milestone_name will be marked as finished.</source>
-            </trans-unit>
-            <trans-unit id="bd17f5835e0347a629fe2d2ba1a04620">
-                <source>Milestone reached</source>
-            </trans-unit>
-            <trans-unit id="141b90c97c1098f8090542b61e853aed">
-                <source>There are %number issue(s) which are not currently resolved. Please select what to do with these issues, below.</source>
-            </trans-unit>
-            <trans-unit id="73cd962ee77c88a94899e3b7b759b5e6">
-                <source>Unresolved issues action</source>
-            </trans-unit>
-            <trans-unit id="79aa2ab1ca03a4f571f707eb1aaf3e3a">
-                <source>Don't do anything</source>
-            </trans-unit>
-            <trans-unit id="842f0462aa8cfd63606c111bfce41901">
-                <source>Assign to an existing, unfinished milestone</source>
-            </trans-unit>
-            <trans-unit id="a6ad5cadd28a0113311f0a0fd5eedb3d">
-                <source>Assign to an existing, unfinished sprint</source>
-            </trans-unit>
-            <trans-unit id="2b3fbd0e7ef5187dff22709523471ed8">
-                <source>Assign to a new milestone</source>
-            </trans-unit>
-            <trans-unit id="fc4ec31f7228cb810f224277fcbc8578">
-                <source>Assign to a new sprint</source>
-            </trans-unit>
-            <trans-unit id="fe40ee83d34cc3f2f0d716240056f951">
-                <source>%cancel or %mark_milestone_finished</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneissue.inc.php">
-        <body>
-            <trans-unit id="cb253883bfc6845f7227be93e8e27096">
-                <source>Priority not set</source>
-            </trans-unit>
-            <trans-unit id="13974ce136c99bbc104c7b833ecb8c10">
-                <source>This issue is marked as a blocker</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/project/templates/_milestoneissues.inc.php">
         <body>
             <trans-unit id="691c2a0aa6951d434205745497f8e8f0">
@@ -9009,26 +8515,6 @@
             </trans-unit>
             <trans-unit id="63973e39312a18f2c333f8a77154aa89">
                 <source>This milestone also includes issues you do not have access to</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_milestonewhiteboardstatusdetails.inc.php">
-        <body>
-            <trans-unit id="8baebbbb2bf56c7cac55d30348f7c9ad">
-                <source>%status_name - %percentage (%count of %total)</source>
-            </trans-unit>
-            <trans-unit id="59468337d52a54fd6dbde8f39b451f21">
-                <source>Unknown status</source>
-            </trans-unit>
-            <trans-unit id="3e8840a4c791dbdd8cf9ca20ca4b4d78">
-                <source>%percentage % completed</source>
-            </trans-unit>
-            <trans-unit id="a348c30e936ffb9b4df04067f99094c8">
-                <source>%percentage completed</source>
-            </trans-unit>
-            <trans-unit id="619154a2f87fd7bcad9b592de2c8d9ae">
-                <source>No milestones exists</source>
             </trans-unit>
         </body>
     </file>
@@ -9058,26 +8544,6 @@
             </trans-unit>
             <trans-unit id="52f7408415bbd88b839a30c830225b54">
                 <source>%closed closed of %issues assigned</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_planningcolorpicker.inc.php">
-        <body>
-            <trans-unit id="bf1a1db8dc8673071129027191db1485">
-                <source>Click to select a planning color for this issue</source>
-            </trans-unit>
-            <trans-unit id="38a1857a2180115ba0d8393628a39063">
-                <source>Planning color for this issue</source>
-            </trans-unit>
-            <trans-unit id="01489955f3bd7f120d5cef42c5628cb5">
-                <source>Pick a planning color for this issue</source>
-            </trans-unit>
-            <trans-unit id="e554b6d8ff50eaabc7158e77d4106b51">
-                <source>Selecting a color makes the issue easily recognizable in the planning view</source>
-            </trans-unit>
-            <trans-unit id="b3123105b31569f368ae460159b9f06b">
-                <source>%color_list or keep the current color</source>
             </trans-unit>
         </body>
     </file>
@@ -9257,12 +8723,6 @@
             </trans-unit>
             <trans-unit id="98fb49fcf3c83d06778cbc5c98bbc536">
                 <source>Up to %parent</source>
-            </trans-unit>
-            <trans-unit id="a709f53fbab6855ced85d9d508fce3aa">
-                <source>Whiteboard</source>
-            </trans-unit>
-            <trans-unit id="c90dd092eedeba2b2a72f32e17837b5d">
-                <source>Manage columns</source>
             </trans-unit>
             <trans-unit id="b5577d27ebfdd60a3bda83ae726d574b">
                 <source>Edit dashboard</source>
@@ -9633,14 +9093,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_releasestrip.inc.php">
-        <body>
-            <trans-unit id="34b6cd75171affba6957e308dcbd92be">
-                <source>Version</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/project/templates/_scrumcard.inc.php">
         <body>
             <trans-unit id="1060ff15923d59d960c671d7077f4b0a">
@@ -9691,73 +9143,6 @@
             </trans-unit>
             <trans-unit id="0b07e9cf782b23c20b82b057172a5e80">
                 <source>A new milestone has been reached</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/agileboardplanning.html.php">
-        <body>
-            <trans-unit id="b741c0133b1c4bcaa70b46f63f090691">
-                <source>"%project_name" project planning</source>
-            </trans-unit>
-            <trans-unit id="650364c33272fecde30c54def4178070">
-                <source>New milestone</source>
-            </trans-unit>
-            <trans-unit id="5f2337526059c67968f0529ab5745de7">
-                <source>Toggle hidden milestones</source>
-            </trans-unit>
-            <trans-unit id="555ec6672181c8b15a7030c4e4540799">
-                <source>There are no milestones. Why not add one?</source>
-            </trans-unit>
-            <trans-unit id="14da4a079723e98a43f59cf0d0c09406">
-                <source>Toggle past, unfinished sprints</source>
-            </trans-unit>
-            <trans-unit id="a6176a6ef340b6b3ef139cf7de46987b">
-                <source>There are no active sprints. Why not add one?</source>
-            </trans-unit>
-            <trans-unit id="3ba1dca54b66931ed0c0b299039a4a51">
-                <source>Filter issues by title</source>
-            </trans-unit>
-            <trans-unit id="9f77abf0176ae3105228052e351c0648">
-                <source>Epics</source>
-            </trans-unit>
-            <trans-unit id="80dd7bbb9b736478900dd5be6546aa92">
-                <source>Sort milestones</source>
-            </trans-unit>
-            <trans-unit id="6db1a4ff4c99db83763fdcfb8998c347">
-                <source>Toggle closed issues</source>
-            </trans-unit>
-            <trans-unit id="db9d57a44715c55887ba5d1d1c34b53b">
-                <source>Done sorting</source>
-            </trans-unit>
-            <trans-unit id="9c5c3f14416b614e509de58e3d8fe6de">
-                <source>Adding sprint, please wait</source>
-            </trans-unit>
-            <trans-unit id="5c7fac1b9516ef9ff51cbc30a6292a80">
-                <source>Backlog</source>
-            </trans-unit>
-            <trans-unit id="cf83d7994e63c67feb17daf39ad00152">
-                <source>Click to toggle the show / hide the backlog</source>
-            </trans-unit>
-            <trans-unit id="069a04a54fd9ca89f3c997def4fa812e">
-                <source>There are no issues in the backlog</source>
-            </trans-unit>
-            <trans-unit id="7b184583424eed138235282f8ecec05e">
-                <source>No issues in the backlog matches selected filters</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/agileboardwhiteboard.html.php">
-        <body>
-            <trans-unit id="655f838f26b376a27833fdb71586c234">
-                <source>"%project_name" agile whiteboard</source>
-            </trans-unit>
-            <trans-unit id="b61b8f498d489f2e2b916b887b7062bc">
-                <source>Add column</source>
-            </trans-unit>
-            <trans-unit id="2d7e5c6c527bc85b51ccf6eb53cc6953">
-                <source>Save columns</source>
             </trans-unit>
         </body>
     </file>
@@ -9817,20 +9202,6 @@
         <body>
             <trans-unit id="43b07024a7f798b7c91d40112efa1531">
                 <source>"%project_name" issues</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/planning.html.php">
-        <body>
-            <trans-unit id="720cb0855773f3411311be9dd894126a">
-                <source>Manage agile boards</source>
-            </trans-unit>
-            <trans-unit id="6a32df21ae563d6fd9eb9cf446509d33">
-                <source>Public project boards</source>
-            </trans-unit>
-            <trans-unit id="980fa83cba087bb91fbce049b75deb5a">
-                <source>Private project boards</source>
             </trans-unit>
         </body>
     </file>
@@ -10526,6 +9897,9 @@
 
     <file source-language="en" datatype="php" original="core/modules/search/templates/_results_todo.inc.php">
         <body>
+            <trans-unit id="b78a3223503896721cca1303f776159b">
+                <source>Title</source>
+            </trans-unit>
             <trans-unit id="71948aa4f6e12cdaa5e2e63a5eb8f142">
                 <source>More info</source>
             </trans-unit>
@@ -10685,6 +10059,9 @@
             <trans-unit id="eda383fdf4aca9f4f898079ed302a682">
                 <source>Closed issues (including subprojects)</source>
             </trans-unit>
+            <trans-unit id="a4db0eee4609427e771accb67c15ddaf">
+                <source>Project wishlist</source>
+            </trans-unit>
             <trans-unit id="11c045b1b2438122d44a9b90d1737a32">
                 <source>Milestone todo-list for this project</source>
             </trans-unit>
@@ -10842,26 +10219,14 @@
             <trans-unit id="d2ca0f582237fd40b4911f62f8bb8b03">
                 <source>%thebuggenie, &lt;b&gt;friendly&lt;/b&gt; issue tracking since 2002</source>
             </trans-unit>
-            <trans-unit id="b1206c59ff3de1ea2537d2ebc953831c">
-                <source>Read the license (MPL 1.1 only)</source>
+            <trans-unit id="3efc883c999ca65c1f08689ee6c641e5">
+                <source>Read the license (MPL 2.0)</source>
             </trans-unit>
         </body>
     </file>
 
     <file source-language="en" datatype="php" original="core/templates/headermainmenu.inc.php">
         <body>
-            <trans-unit id="657fd3eec6624217c3ad5de3744a69d2">
-                <source>Agile</source>
-            </trans-unit>
-            <trans-unit id="b12900ec6f3fc8df634f92e54ab38e98">
-                <source>Manage boards</source>
-            </trans-unit>
-            <trans-unit id="395e4c0ac45cac61711cc8a1e13027b9">
-                <source>Project boards</source>
-            </trans-unit>
-            <trans-unit id="f3df3239fc557f82121c2694851d3b08">
-                <source>No project boards available</source>
-            </trans-unit>
             <trans-unit id="0af9a305ead57eff820488cee32c9c88">
                 <source>My dashboard</source>
             </trans-unit>
