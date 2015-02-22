@@ -25,6 +25,7 @@
         {
             $this->_command_name = 'install';
             $this->_description = "Run the installation routine";
+            $this->_b2db_config_file = \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml";
             $this->addOptionalArgument('accept_license', 'Set to "yes" to auto-accept license');
             $this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
             $this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
@@ -115,7 +116,7 @@
                 else
                 {
                     $this->cliEcho("Step 1 - database information\n");
-                    if (file_exists('core/b2db_bootstrap.inc.php'))
+                    if (file_exists($this->_b2db_config_file))
                     {
                         $this->cliEcho("You seem to already have completed this step successfully.\n");
                         if ($this->getProvidedArgument('use_existing_db_info') == 'yes')
@@ -210,19 +211,32 @@
                         $this->cliEcho("\n");
                         $this->cliEcho("Saving database connection information ... ", 'white', 'bold');
                         $this->cliEcho("\n");
-                        \b2db\Core::saveConnectionParameters(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
+                        \b2db\Core::saveConnectionParameters($this->_b2db_config_file);
                         $this->cliEcho("Successfully saved database connection information.\n", 'green');
                         $this->cliEcho("\n");
                     }
                     else
                     {
-                        \b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-                        $this->cliEcho("Successfully connected to the database.\n", 'green');
-                        if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
+                        $b2db_config = \Spyc::YAMLLoad($this->_b2db_config_file);
+
+                        if (!array_key_exists("b2db", $b2db_config))
                         {
-                            $this->cliEcho("Press ENTER to continue ... ");
-                            $this->pressEnterToContinue();
+                            throw new \Exception("Could not find database configuration in file " . $this->_b2db_config_file);
                         }
+
+                        try
+                        {
+                            \b2db\Core::initialize($b2db_config["b2db"], \thebuggenie\core\framework\Context::getCache());
+                            \b2db\Core::doConnect();
+                        }
+                        catch (\Exception $e)
+                        {
+                            throw new \Exception("Could not connect to the database:\n" .
+                                                 $e->getMessage() . "\nPlease check your configuration file " .
+                                                 $this->_b2db_config_file);
+                        }
+
+                        $this->cliEcho("Successfully connected to the database.\n", 'green');
                     }
                     $this->cliEcho("\nThe Bug Genie needs some server settings to function properly...\n\n");
 
