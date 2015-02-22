@@ -18,7 +18,7 @@
                     <div style="padding: 15px; color: #AAA; font-size: 12px;"><?php echo __('There is no roadmap to be shown for this project, as it does not have any available milestones'); ?></div>
                 <?php else: ?>
                     <?php foreach ($milestones as $milestone): ?>
-                        <?php include_component('milestonebox', array('milestone' => $milestone, 'include_counts' => true, 'include_buttons' => false)); ?>
+                        <?php include_component('agile/milestonebox', array('milestone' => $milestone, 'include_counts' => true, 'include_buttons' => false)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
