@@ -13,7 +13,7 @@
             break;
     }
 ?>
-<form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone_mark_finished', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID(), 'milestone_id' => $milestone->getID())); ?>" method="post" id="mark_milestone_finished_form" onsubmit="TBG.Project.Milestone.markFinished(this);return false;" data-milestone-id="<?php echo $milestone->getID(); ?>">
+<form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_markmilestonefinished', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID(), 'milestone_id' => $milestone->getID())); ?>" method="post" id="mark_milestone_finished_form" onsubmit="TBG.Project.Milestone.markFinished(this);return false;" data-milestone-id="<?php echo $milestone->getID(); ?>">
     <div class="backdrop_box large sectioned" id="milestone_finish_container">
         <div class="backdrop_detail_header">
             <?php
