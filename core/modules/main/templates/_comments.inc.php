@@ -17,6 +17,11 @@
                 <br />
                 <label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
                 <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $mentionable_target_type, 'target_id' => $target_id, 'area_id' => 'comment_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
+                <?php if (\thebuggenie\core\framework\Settings::isGuestCaptchaEnabled() && $tbg_user->isGuest()): ?>
+                    <label for="verification_no"><?php echo __('Security check'); ?> </label><br>
+                    <?php include_component('main/captcha'); ?>
+                    <br><input style="width: 100%;" type="text" class="required verification_no_input" name="verification_no" maxlength="6" style="left-align: left;" placeholder="<?php echo __('Enter the above number to prove you are human'); ?>"><br>
+                <?php endif ?>
                 <div id="comment_add_indicator" style="display: none;">
                     <?php echo image_tag('spinning_20.gif'); ?>
                 </div>

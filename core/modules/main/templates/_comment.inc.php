@@ -92,6 +92,11 @@
             <div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
                 <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
             </div>
+            <?php if (\thebuggenie\core\framework\Settings::isGuestCaptchaEnabled() && $tbg_user->isGuest()): ?>
+                <label for="verification_no"><?php echo __('Security check'); ?> </label><br>
+                <?php include_component('main/captcha'); ?>
+                <br><input style="width: 100%;" type="text" class="required verification_no_input" name="verification_no" maxlength="6" style="left-align: left;" placeholder="<?php echo __('Enter the above number to prove you are human'); ?>"><br>
+            <?php endif ?>
             <div id="comment_reply_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
                 <?php echo __('%post_reply or %cancel', array('%post_reply' => '<input type="submit" class="comment_replysave button button-silver" value="'.__('Post reply').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_reply_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();")))); ?>
             </div>

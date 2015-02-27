@@ -1352,6 +1352,11 @@
             {
                 $fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 
+                if (!$this->_verifyCaptcha($request))
+                {
+                    $errors['captcha'] = $i18n->__('To prevent automatic issue reporting, enter the verification number shown below.');
+                }
+
                 $this->title = $request->getRawParameter('title');
                 $this->selected_shortname = $request->getRawParameter('shortname', null);
                 $this->selected_description = $request->getRawParameter('description', null);
@@ -1730,8 +1735,12 @@
                 {
                     $err_msg[] = $i18n->__('Please provide a value for the %field_name field', array('%field_name' => $field));
                 }
+
+                $new_captcha = $this->_newCaptcha();
+                framework\Logging::log($new_captcha, "captcha");
+
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg)));
+                return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg), 'captcha' => $new_captcha));
             }
             $this->errors = $errors;
             $this->permission_errors = $permission_errors;
@@ -1755,6 +1764,12 @@
             $available_fields[] = 'pain_bug_type';
             $available_fields[] = 'pain_likelihood';
             $available_fields[] = 'pain_effect';
+
+            if (framework\Context::getUser()->isGuest() && framework\Settings::isGuestCaptchaEnabled()) {
+                $available_fields[] = 'captcha';
+                $fields_array['captcha'] = Array("additional" => "", "required" => "1");
+            }
+
             return $this->renderJSON(array('available_fields' => $available_fields, 'fields' => $fields_array));
         }
 
@@ -3161,6 +3176,7 @@
         {
             $i18n = framework\Context::getI18n();
             $comment_applies_type = $request['comment_applies_type'];
+            $new_captcha = null;
             try
             {
                 if (!$this->getUser()->canPostComments())
@@ -3170,6 +3186,11 @@
                 if (!trim($request['comment_body']))
                 {
                     throw new \Exception($i18n->__('The comment must have some content'));
+                }
+
+                if (!$this->_verifyCaptcha($request))
+                {
+                    throw new \Exception($i18n->__('To prevent automatic comment posting, enter the verification number shown below.'));
                 }
 
                 $comment = new entities\Comment();
@@ -3218,8 +3239,10 @@
             {
                 if ($request->isAjaxCall())
                 {
+                    $new_captcha = $this->_newCaptcha();
+                    framework\Logging::log($new_captcha, "captcha");
                     $this->getResponse()->setHttpStatus(400);
-                    return $this->renderJSON(array('error' => $e->getMessage()));
+                    return $this->renderJSON(array('error' => $e->getMessage(), 'captcha' => $new_captcha));
                 }
                 else
                 {
@@ -3228,8 +3251,11 @@
                     framework\Context::setMessage('comment_error_visibility', $request['comment_visibility']);
                 }
             }
+
+            $new_captcha = $this->_newCaptcha();
+
             if ($request->isAjaxCall())
-                return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => entities\Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/* , $request['comment_module'] */)));
+                return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => entities\Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/*, $request['comment_module']*/), 'captcha' => $new_captcha));
             if (isset($comment) && $comment instanceof entities\Comment)
                 $this->forward($request['forward_url'] . "#comment_{$request['comment_applies_type']}_{$request['comment_applies_id']}_{$comment->getID()}");
             else
@@ -4507,6 +4533,57 @@
             {
                 throw $e;
             }
+        }
+
+        /**
+         * Verifies a captcha attempt. The captcha will be verified only if the
+         * current user is a guest, and if guest captchas have been enabled in the
+         * settings. For all other cases the captcha check is considered to
+         * automatically pass.
+         *
+         * @param request Instance of a framework\Request.
+         *
+         * @return True, if the captcha check has passed, False otherwise.
+         */
+        protected function _verifyCaptcha(framework\Request $request)
+        {
+            // Verify the captcha if a guest is attempting to report an issue (and
+            // if guest captcha feature was enabled).
+            $security = $request['verification_no'];
+
+            if (framework\Context::getUser()->isGuest() && framework\Settings::isGuestCaptchaEnabled() && $security != $_SESSION['activation_number'])
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * Generates a new captcha value, and assigns it to current session if user
+         * is a guest and guest captcha has been enabled.
+         *
+         * @return Relative link to new image representing the generated captcha for
+         * guest users if guest captcha has been enabled. Returns null if user is
+         * not a guest, or if guest captcha has not been enabled.
+         */
+        protected function _newCaptcha()
+        {
+            $new_captcha_image = null;
+
+            if (framework\Context::getUser()->isGuest() && framework\Settings::isGuestCaptchaEnabled())
+            {
+                framework\Context::loadLibrary('common');
+
+                $_SESSION['activation_number'] = tbg_printRandomNumber();
+
+                // The generated captcha image depends on session value. Using timestamp
+                // in the captcha image link will prevent browser from bringing up the
+                // image from cache.
+                $new_captcha_image = framework\Context::getRouting()->generate('captcha', array(time()));
+            }
+
+            return $new_captcha_image;
         }
 
     }
