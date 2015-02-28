@@ -1149,7 +1149,7 @@
                         if (!is_writable($request['upload_localpath']))
                         {
                             $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't wri")));
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't writable")));
                         }
                     }
 
