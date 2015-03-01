@@ -26,7 +26,7 @@
             {
                 if (!($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)))
                 {
-                    throw new \Exception("You don't have access to modify milestones");
+                    throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
                 }
                 $return_options = array('finished' => 'ok');
                 $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
