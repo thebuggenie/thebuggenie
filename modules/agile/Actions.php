@@ -26,7 +26,7 @@
             {
                 if (!($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)))
                 {
-                    throw new \Exception("You don't have access to modify milestones");
+                    throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
                 }
                 $return_options = array('finished' => 'ok');
                 $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
@@ -538,7 +538,7 @@
                 $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
 
                 if (!$issue instanceof \thebuggenie\core\entities\Issue)
-                    throw new \Exception($this->getI18n ()->__('This is not a valid issues'));
+                    throw new \Exception($this->getI18n ()->__('This is not a valid issue'));
 
                 $issue->setMilestone($milestone);
                 $issue->save();
