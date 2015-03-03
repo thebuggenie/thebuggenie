@@ -689,7 +689,7 @@
                     {
                         $password = $user->getHashPassword();
 
-                        if (!$request->hasCookie('tbg3_username'))
+                        if (!$request->hasCookie('tbg3_username') && !$user->isGuest())
                         {
                             if ($request->getParameter('tbg3_rememberme'))
                             {
