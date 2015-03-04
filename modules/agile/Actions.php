@@ -100,7 +100,7 @@
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to save the milestone order')));
+                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occurred when trying to save the milestone order')));
             }
 
             return $this->renderJSON(array('sorted' => 'ok'));
