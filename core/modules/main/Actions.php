@@ -1737,7 +1737,6 @@
                 }
 
                 $new_captcha = $this->_newCaptcha();
-                framework\Logging::log($new_captcha, "captcha");
 
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg), 'captcha' => $new_captcha));
@@ -3240,7 +3239,6 @@
                 if ($request->isAjaxCall())
                 {
                     $new_captcha = $this->_newCaptcha();
-                    framework\Logging::log($new_captcha, "captcha");
                     $this->getResponse()->setHttpStatus(400);
                     return $this->renderJSON(array('error' => $e->getMessage(), 'captcha' => $new_captcha));
                 }
@@ -4553,9 +4551,11 @@
 
             if (framework\Context::getUser()->isGuest() && framework\Settings::isGuestCaptchaEnabled() && $security != $_SESSION['activation_number'])
             {
+                framework\Logging::log("Captcha verification failed (user vs session): " . $security . " vs " . $_SESSION['activation_number'], "captcha");
                 return false;
             }
 
+            framework\Logging::log("Captcha verification passed." , "captcha");
             return true;
         }
 
@@ -4581,6 +4581,8 @@
                 // in the captcha image link will prevent browser from bringing up the
                 // image from cache.
                 $new_captcha_image = framework\Context::getRouting()->generate('captcha', array(time()));
+
+                framework\Logging::log("(Re)generating captcha with value " . $_SESSION['activation_number'] . " and URL " . $new_captcha_image, "captcha");
             }
 
             return $new_captcha_image;
