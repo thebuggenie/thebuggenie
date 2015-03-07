@@ -821,6 +821,7 @@ TBG.Main.Helpers.formSubmit = function (url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function (url, callback) {
+    $('fullpage_backdrop_content').fade({duration: 0});
     $('fullpage_backdrop').appear({duration: 0.2});
     $$('body')[0].setStyle({'overflow': 'hidden'});
     $('fullpage_backdrop_indicator').show();
