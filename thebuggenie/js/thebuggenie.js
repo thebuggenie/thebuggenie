@@ -1032,6 +1032,10 @@ TBG.Main.updateAttachments = function (form) {
                     json.files.each(function (file_elm) {
                         base.insert(file_elm);
                     });
+                    if (json.files.length) {
+                        $('viewissue_uploaded_attachments_count').update(json.files.length);
+                        $('viewissue_no_uploaded_files').hide();
+                    }
                 }
                 TBG.Main.Helpers.Backdrop.reset();
             }
