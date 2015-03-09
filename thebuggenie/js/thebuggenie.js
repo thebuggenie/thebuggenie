@@ -1671,6 +1671,7 @@ TBG.Main.Comment.reply = function (url, reply_comment_id) {
             hide: ['comment_reply_' + reply_comment_id],
             clear: 'comment_reply_bodybox_' + reply_comment_id,
             update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+            show: 'comment_reply_controls_' + reply_comment_id,
             callback: function (json) {
                 $('comment_reply_visibility_' + reply_comment_id).setValue(1);
             }
