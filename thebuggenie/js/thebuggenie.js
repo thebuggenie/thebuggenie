@@ -1620,7 +1620,7 @@ TBG.Main.Comment.update = function (url, cid) {
         success: {
             hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
             show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
-            update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+            update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
         },
         failure: {
             show: ['comment_edit_controls_' + cid]
