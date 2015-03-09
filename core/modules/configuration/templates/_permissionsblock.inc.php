@@ -1,4 +1,4 @@
-<?php $user_id = isset($user_id) ? $user_id : null; ?>
+<?php $user_id = isset($user_id) ? $user_id : $tbg_user->getID(); ?>
 <?php $team_id = isset($team_id) ? $team_id : null; ?>
 <?php if (count($permissions_list) > 0): ?>
     <?php foreach ($permissions_list as $permission_key => $permission): ?>
