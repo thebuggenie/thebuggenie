@@ -4301,11 +4301,11 @@ TBG.Config.Team.getPermissionsBlock = function (url, team_id) {
     if ($('team_' + team_id + '_permissions').innerHTML == '') {
         TBG.Main.Helpers.ajax(url, {
             loading: {
+                show: 'team_' + team_id + '_permissions_container',
                 indicator: 'team_' + team_id + '_permissions_indicator'
             },
             success: {
                 update: 'team_' + team_id + '_permissions',
-                show: 'team_' + team_id + '_permissions_container'
             }
         });
     }
