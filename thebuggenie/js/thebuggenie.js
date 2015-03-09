@@ -3948,7 +3948,14 @@ TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
 
 TBG.Config.Permissions.set = function (url, field) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: field + '_indicator'},
+        loading: {
+            indicator: field + '_indicator',
+            callback: function (json) {
+                $$('#' + field + ' .image img').each(function (element) {
+                    $(element).hide();
+                });
+            }
+        },
         success: {update: field}
     });
 };
