@@ -1934,7 +1934,7 @@ Element.Methods = {
 
   show: function(element) {
     element = $(element);
-    element.style.display = 'block';
+    element.style.display = 'inherit';
     return element;
   },
 
