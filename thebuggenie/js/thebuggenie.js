@@ -4035,7 +4035,10 @@ TBG.Config.Roles.add = function (url) {
         loading: {indicator: 'new_role_form_indicator'},
         success: {
             update: {element: 'global_roles_list', insertion: true},
-            hide: ['global_roles_no_roles', 'new_role']
+            hide: ['global_roles_no_roles'],
+            callback: function  () {
+                $('add_new_role_input').setValue('');
+            }
         }
     });
 };
