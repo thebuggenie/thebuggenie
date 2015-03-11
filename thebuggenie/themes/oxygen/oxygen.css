@@ -1953,7 +1953,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; vertical-align: middle; }
 *.button-pressed + .more_actions_dropdown { display: block; }
 .userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown { right: auto; font-size: 1em; }
-.more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); }
+.more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display: none; background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); }
 .more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; text-transform: none; }
 .more_actions_dropdown li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .more_actions_dropdown li:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
