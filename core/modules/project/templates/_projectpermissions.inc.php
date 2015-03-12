@@ -10,13 +10,6 @@
         <div class="content faded_out">
             <p><?php echo __("Roles are applied when assigning users or teams to a project, granting them access to specific parts of the project or giving users access to update and edit information. Updating permissions in this list will add or remove permissions for all users and / or team members with that role, on all assigned projects. Removing a role removes all permissions granted by that role for all users and teams. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
         </div>
-        <h4><?php echo __('Globally available roles'); ?></h4>
-        <ul id="global_roles_list" class="simple_list" style="width: 788px;">
-            <?php foreach ($roles as $role): ?>
-                <?php include_component('configuration/role', array('role' => $role)); ?>
-            <?php endforeach; ?>
-            <li class="faded_out" id="global_roles_no_roles"<?php if (count($roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no globally available roles'); ?></li>
-        </ul>
         <h4><?php echo __('Project-specific roles'); ?></h4>
         <div class="rounded_box white shadowed" id="new_project<?php echo $project->getID(); ?>_role" style="display: none; position: absolute; right: 0; z-index: 10">
             <form id="new_project<?php echo $project->getID(); ?>_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>', <?php echo $project->getID(); ?>); return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
