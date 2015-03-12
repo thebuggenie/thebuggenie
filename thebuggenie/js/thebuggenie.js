@@ -4043,13 +4043,13 @@ TBG.Config.Roles.add = function (url) {
     });
 };
 
-TBG.Project.Roles.add = function (url) {
+TBG.Project.Roles.add = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'new_project_role_form',
-        loading: {indicator: 'new_project_role_form_indicator'},
+        form: 'new_project' + pid + '_role_form',
+        loading: {indicator: 'new_project' + pid + '_role_form_indicator'},
         success: {
-            update: {element: 'project_roles_list', insertion: true},
-            hide: ['project_roles_no_roles', 'new_project_role']
+            update: {element: 'project' + pid + '_roles_list', insertion: true},
+            hide: ['project' + pid + '_roles_no_roles', 'new_project' + pid + '_role']
         }
     });
 };

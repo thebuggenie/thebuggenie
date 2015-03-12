@@ -1,6 +1,6 @@
 <?php if (isset($roles)): ?>
     <div class="project_save_container">
-        <button class="button button-silver" onclick="$('new_project_role').toggle();if ($('new_project_role').visible()) { $('add_new_role_input').focus(); }"><?php echo __('Create project role'); ?></button>
+        <button class="button button-silver" onclick="$('new_project<?php echo $project->getID(); ?>_role').toggle();if ($('new_project<?php echo $project->getID(); ?>_role').visible()) { $('add_new_role_input').focus(); }"><?php echo __('Create project role'); ?></button>
         <a class="dropper button button-silver"><?php echo __('More actions'); ?></a>
         <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">
             <li><?php echo javascript_link_tag(__('Show advanced permissions'), array('onclick' => "$('project".$project->getID()."_settings_roles').toggle();$('project".$project->getID()."_settings_advanced_permissions').toggle();")); ?></li>
@@ -18,19 +18,19 @@
             <li class="faded_out" id="global_roles_no_roles"<?php if (count($roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no globally available roles'); ?></li>
         </ul>
         <h4><?php echo __('Project-specific roles'); ?></h4>
-        <div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute; right: 0; z-index: 10">
-            <form id="new_project_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>'); return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
-                <label for="new_project_role_name"><?php echo __('Role name'); ?></label>
+        <div class="rounded_box white shadowed" id="new_project<?php echo $project->getID(); ?>_role" style="display: none; position: absolute; right: 0; z-index: 10">
+            <form id="new_project<?php echo $project->getID(); ?>_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>', <?php echo $project->getID(); ?>); return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
+                <label for="new_project<?php echo $project->getID(); ?>_role_name"><?php echo __('Role name'); ?></label>
                 <input type="text" style="width: 300px;" name="role_name" id="add_new_role_input">
-                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin: 2px 5px 2px 5px;', 'id' => 'new_project_role_form_indicator')); ?>
+                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin: 2px 5px 2px 5px;', 'id' => 'new_project' . $project->getID() . '_role_form_indicator')); ?>
                 <input type="submit" value="<?php echo __('Create role'); ?>" class="button button-silver" style="float: right; margin: 1px 1px 1px 5px;">
             </form>
         </div>
-        <ul id="project_roles_list" class="simple_list" style="width: 788px;">
+        <ul id="project<?php echo $project->getID(); ?>_roles_list" class="simple_list project_roles_list" style="width: 788px;">
             <?php foreach ($project_roles as $role): ?>
                 <?php include_component('configuration/role', array('role' => $role)); ?>
             <?php endforeach; ?>
-            <li class="faded_out no_roles" id="project_roles_no_roles"<?php if (count($project_roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no project-specific roles available'); ?></li>
+            <li class="faded_out no_roles" id="project<?php echo $project->getID(); ?>_roles_no_roles"<?php if (count($project_roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no project-specific roles available'); ?></li>
         </ul>
     </div>
 <?php endif; ?>
