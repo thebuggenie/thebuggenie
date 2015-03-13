@@ -83,7 +83,6 @@
         <?php \thebuggenie\core\framework\Event::createNew('core', 'header_ends')->trigger(); ?>
     </head>
     <body id="body">
-        <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <div id="main_container">
             <?php if (!in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), array('login_page', 'elevated_login_page', 'reset_password'))): ?>
                 <?php \thebuggenie\core\framework\Logging::log('Rendering header'); ?>
@@ -99,6 +98,7 @@
             <?php require THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'; ?>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'footer_end')->trigger(); ?>
         </div>
+        <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
             document.observe('dom:loaded', function() {
                 var f_init = function() {TBG.initialize({ basepath: '<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>', data_url: '<?php echo make_url('userdata'); ?>', autocompleter_url: '<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
