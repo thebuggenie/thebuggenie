@@ -3788,13 +3788,13 @@ TBG.Config.Issuetype.toggleForScheme = function (url, issuetype_id, scheme_id, a
     var cb;
     if (action == 'enable') {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greybox");
         };
     } else {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greybox");
         };
     }
     TBG.Main.Helpers.ajax(url, {
