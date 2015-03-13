@@ -1,12 +1,12 @@
 <?php if (isset($roles)): ?>
-    <div class="project_save_container">
-        <button class="button button-silver" onclick="$('new_project<?php echo $project->getID(); ?>_role').toggle();if ($('new_project<?php echo $project->getID(); ?>_role').visible()) { $('add_new_role_input').focus(); }"><?php echo __('Create project role'); ?></button>
-        <a class="dropper button button-silver"><?php echo __('More actions'); ?></a>
-        <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">
-            <li><?php echo javascript_link_tag(__('Show advanced permissions'), array('onclick' => "$('project".$project->getID()."_settings_roles').toggle();$('project".$project->getID()."_settings_advanced_permissions').toggle();")); ?></li>
-        </ul>
-    </div>
     <div id="project<?php echo $project->getID(); ?>_settings_roles" style="position: relative;">
+        <div class="project_save_container">
+            <button class="button button-silver" onclick="$('new_project<?php echo $project->getID(); ?>_role').toggle();if ($('new_project<?php echo $project->getID(); ?>_role').visible()) { $('add_new_role_input').focus(); }"><?php echo __('Create project role'); ?></button>
+            <a class="dropper button button-silver"><?php echo __('More actions'); ?></a>
+            <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">
+                <li><?php echo javascript_link_tag(__('Show advanced permissions'), array('onclick' => "$('project".$project->getID()."_settings_roles').toggle();$('project".$project->getID()."_settings_advanced_permissions').toggle();")); ?></li>
+            </ul>
+        </div>
         <div class="content faded_out">
             <p><?php echo __("Roles are applied when assigning users or teams to a project, granting them access to specific parts of the project or giving users access to update and edit information. Updating permissions in this list will add or remove permissions for all users and / or team members with that role, on all assigned projects. Removing a role removes all permissions granted by that role for all users and teams. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
         </div>
