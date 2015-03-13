@@ -3799,7 +3799,7 @@ TBG.Config.Issuetype.toggleForScheme = function (url, issuetype_id, scheme_id, a
     }
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'edit_issuetype_' + issuetype_id + '_indicator',
+            indicator: 'issuetype_' + issuetype_id + '_indicator',
             hide: hide_element
         },
         success: {
