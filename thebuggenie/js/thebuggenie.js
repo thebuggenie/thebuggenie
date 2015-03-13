@@ -2046,6 +2046,8 @@ TBG.Project.remove = function (url, pid) {
             callback: function (json) {
                 if ($('project_table').childElements().size() == 0)
                     $('noprojects_tr').show();
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 TBG.Project.updateLinks(json);
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2066,7 +2068,10 @@ TBG.Project.archive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr_archived',
             callback: function (json) {
+                if ($('project_table').childElements().size() == 0)
+                    $('noprojects_tr').show();
                 $('project_table_archived').insert({top: json.box});
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2081,7 +2086,10 @@ TBG.Project.unarchive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr',
             callback: function (json) {
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 if (json.parent_id != 0) {
                     $('project_' + json.parent_id + '_children').insert({bottom: json.box});
                 } else {
