@@ -835,6 +835,7 @@ TBG.Main.Helpers.Backdrop.show = function (url, callback) {
                 callback: function () {
                     $('fullpage_backdrop_content').appear({duration: 0.2});
                     $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     setTimeout(TBG.Main.Helpers.initializeFancyFilters, 300);
                     if (callback)
                         setTimeout((callback)(), 300);
