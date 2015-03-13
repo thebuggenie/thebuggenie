@@ -3772,15 +3772,11 @@ TBG.Config.Issuetype.add = function (url) {
     TBG.Main.Helpers.ajax(url, {
         form: 'add_issuetype_form',
         loading: {
-            indicator: 'add_issuetype_indicator',
-            hide: 'add_issuetype_button'
+            reset: 'add_issuetype_form',
+            indicator: 'add_issuetype_indicator'
         },
         success: {
-            reset: 'add_issuetype_form',
             update: {element: 'issuetypes_list', insertion: true}
-        },
-        complete: {
-            show: 'add_issuetype_button'
         }
     });
 }
