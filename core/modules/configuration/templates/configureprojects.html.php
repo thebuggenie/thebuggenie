@@ -67,7 +67,7 @@
                         <?php include_component('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
                     <?php endforeach; ?>
                 </div>
-                <div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($archived_projects) > 0): ?> display: none;<?php endif;?>">
+                <div id="noprojects_tr_archived" style="padding: 3px; color: #AAA;<?php if (count($archived_projects) > 0): ?> display: none;<?php endif;?>">
                     <?php echo __('There are no projects available'); ?>
                 </div>
             </div>

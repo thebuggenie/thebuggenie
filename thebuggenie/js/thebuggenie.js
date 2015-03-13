@@ -821,6 +821,7 @@ TBG.Main.Helpers.formSubmit = function (url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function (url, callback) {
+    $('fullpage_backdrop_content').fade({duration: 0});
     $('fullpage_backdrop').appear({duration: 0.2});
     $$('body')[0].setStyle({'overflow': 'hidden'});
     $('fullpage_backdrop_indicator').show();
@@ -1031,6 +1032,10 @@ TBG.Main.updateAttachments = function (form) {
                     json.files.each(function (file_elm) {
                         base.insert(file_elm);
                     });
+                    if (json.files.length) {
+                        $('viewissue_uploaded_attachments_count').update(json.files.length);
+                        $('viewissue_no_uploaded_files').hide();
+                    }
                 }
                 TBG.Main.Helpers.Backdrop.reset();
             }
@@ -1619,7 +1624,7 @@ TBG.Main.Comment.update = function (url, cid) {
         success: {
             hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
             show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
-            update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+            update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
         },
         failure: {
             show: ['comment_edit_controls_' + cid]
@@ -1666,6 +1671,7 @@ TBG.Main.Comment.reply = function (url, reply_comment_id) {
             hide: ['comment_reply_' + reply_comment_id],
             clear: 'comment_reply_bodybox_' + reply_comment_id,
             update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+            show: 'comment_reply_controls_' + reply_comment_id,
             callback: function (json) {
                 $('comment_reply_visibility_' + reply_comment_id).setValue(1);
             }
@@ -2040,6 +2046,8 @@ TBG.Project.remove = function (url, pid) {
             callback: function (json) {
                 if ($('project_table').childElements().size() == 0)
                     $('noprojects_tr').show();
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 TBG.Project.updateLinks(json);
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2060,7 +2068,10 @@ TBG.Project.archive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr_archived',
             callback: function (json) {
+                if ($('project_table').childElements().size() == 0)
+                    $('noprojects_tr').show();
                 $('project_table_archived').insert({top: json.box});
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2075,7 +2086,10 @@ TBG.Project.unarchive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr',
             callback: function (json) {
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 if (json.parent_id != 0) {
                     $('project_' + json.parent_id + '_children').insert({bottom: json.box});
                 } else {
@@ -3942,7 +3956,14 @@ TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
 
 TBG.Config.Permissions.set = function (url, field) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: field + '_indicator'},
+        loading: {
+            indicator: field + '_indicator',
+            callback: function (json) {
+                $$('#' + field + ' .image img').each(function (element) {
+                    $(element).hide();
+                });
+            }
+        },
         success: {update: field}
     });
 };
@@ -4022,18 +4043,21 @@ TBG.Config.Roles.add = function (url) {
         loading: {indicator: 'new_role_form_indicator'},
         success: {
             update: {element: 'global_roles_list', insertion: true},
-            hide: ['global_roles_no_roles', 'new_role']
+            hide: ['global_roles_no_roles'],
+            callback: function  () {
+                $('add_new_role_input').setValue('');
+            }
         }
     });
 };
 
-TBG.Project.Roles.add = function (url) {
+TBG.Project.Roles.add = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'new_project_role_form',
-        loading: {indicator: 'new_project_role_form_indicator'},
+        form: 'new_project' + pid + '_role_form',
+        loading: {indicator: 'new_project' + pid + '_role_form_indicator'},
         success: {
-            update: {element: 'project_roles_list', insertion: true},
-            hide: ['project_roles_no_roles', 'new_project_role']
+            update: {element: 'project' + pid + '_roles_list', insertion: true},
+            hide: ['project' + pid + '_roles_no_roles', 'new_project' + pid + '_role']
         }
     });
 };
@@ -4295,11 +4319,11 @@ TBG.Config.Team.getPermissionsBlock = function (url, team_id) {
     if ($('team_' + team_id + '_permissions').innerHTML == '') {
         TBG.Main.Helpers.ajax(url, {
             loading: {
+                show: 'team_' + team_id + '_permissions_container',
                 indicator: 'team_' + team_id + '_permissions_indicator'
             },
             success: {
                 update: 'team_' + team_id + '_permissions',
-                show: 'team_' + team_id + '_permissions_container'
             }
         });
     }

@@ -3417,7 +3417,7 @@
                         $role->setName($request['name']);
                         $role->save();
                         $new_permissions = array();
-                        foreach ($request['permissions'] as $new_permission)
+                        foreach ($request['permissions'] ?: array() as $new_permission)
                         {
                             $permission_details = explode(',', $new_permission);
                             $new_permissions[$permission_details[2]] = array('module' => $permission_details[0], 'target_id' => $permission_details[1]);
