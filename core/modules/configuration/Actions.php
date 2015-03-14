@@ -2193,7 +2193,7 @@
                                 case entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
                                 case entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
                                 case entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
-                                    $this->rule->setRuleValue(join(',', $request['rule_value']));
+                                    $this->rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
                                     $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
                                     break;
                             }

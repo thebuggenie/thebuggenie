@@ -4402,7 +4402,12 @@ TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction
     TBG.Main.Helpers.ajax(url, {
         url_method: 'delete',
         params: parameters,
-        loading: {indicator: 'delete_transition_' + transition_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
     });
 }
@@ -4420,8 +4425,12 @@ TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
 
 TBG.Config.Workflows.Scheme.remove = function (url, scheme_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'delete_workflow_scheme_' + scheme_id + '_form',
-        loading: {indicator: 'delete_workflow_scheme_' + scheme_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id],
             update: {element: 'workflow_schemes_list', insertion: true}

@@ -231,6 +231,16 @@ configure_workflow_transition:
       section: 1
     csrf_enabled: false
 
+configure_workflow_delete_transition:
+    route: /configure/workflow/:workflow_id/transition/delete/:transition_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete
+    csrf_enabled: false
+
 configure_workflow_add_transition:
     route: /configure/workflow/:workflow_id/step/:step_id/add/transition
     module: configuration
@@ -243,7 +253,7 @@ configure_workflow_add_transition:
 configure_workflow_transition_add_validation_rule:
     route: /configure/workflow/:workflow_id/transition/:transition_id/add/:postorpre/validationrule/:rule
     module: configuration
-    action: configureWorkflowTransitionValidationRule
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
@@ -253,7 +263,7 @@ configure_workflow_transition_add_validation_rule:
 configure_workflow_transition_update_validation_rule:
     route: /configure/workflow/:workflow_id/transition/:transition_id/validationrule/:rule_id
     module: configuration
-    action: configureWorkflowTransitionValidationRule
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
@@ -263,7 +273,7 @@ configure_workflow_transition_update_validation_rule:
 configure_workflow_transition_delete_validation_rule:
     route: /configure/workflow/:workflow_id/transition/:transition_id/delete/validationrule/:rule_id
     module: configuration
-    action: configureWorkflowTransitionValidationRule
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
