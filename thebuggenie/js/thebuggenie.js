@@ -3895,7 +3895,12 @@ TBG.Config.Issuefields.Options.update = function (url, type, id) {
 
 TBG.Config.Issuefields.Options.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_option_' + type + '_' + id,
             callback: function (json) {
@@ -3950,7 +3955,12 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
 
 TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_' + type + '_' + id,
             callback: function (json) {
