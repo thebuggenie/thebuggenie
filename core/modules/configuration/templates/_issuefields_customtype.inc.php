@@ -18,7 +18,8 @@
         </ul>
     </div>
     <?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
-    <div class="header"><?php echo $type->getName(); ?>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span>
+    <div class="header">
+        <span id="custom_type_<?php echo $type_key; ?>_name"><?php echo $type->getName(); ?></span>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span>
     </div>
     <div class="content">
         <b><?php echo __('Type'); ?>:</b>&nbsp;<?php echo $type->getTypeDescription(); ?>
