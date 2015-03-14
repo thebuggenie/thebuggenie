@@ -3918,14 +3918,10 @@ TBG.Config.Issuefields.Custom.add = function (url) {
         form: 'add_custom_type_form',
         loading: {
             indicator: 'add_custom_type_indicator',
-            hide: 'add_custom_type_button'
+            reset: 'add_custom_type_form'
         },
         success: {
-            reset: 'add_custom_type_form',
             update: {element: 'custom_types_list', insertion: true}
-        },
-        complete: {
-            show: 'add_custom_type_button'
         }
     });
 }
