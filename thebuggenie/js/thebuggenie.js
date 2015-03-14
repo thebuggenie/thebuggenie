@@ -3864,7 +3864,13 @@ TBG.Config.Issuefields.Options.add = function (url, type) {
         success: {
             reset: 'add_' + type + '_form',
             hide: 'no_' + type + '_items',
-            update: {element: type + '_list', insertion: true}
+            update: {element: type + '_list', insertion: true},
+            callback: function () {
+                if (sortable_options != undefined) {
+                    Sortable.destroy(type + '_list');
+                    Sortable.create(type + '_list', sortable_options);
+                }
+            }
         }
     });
 }
