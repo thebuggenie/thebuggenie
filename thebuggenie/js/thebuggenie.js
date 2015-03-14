@@ -3900,6 +3900,9 @@ TBG.Config.Issuefields.Options.remove = function (url, type, id) {
             remove: 'item_option_' + type + '_' + id,
             callback: function (json) {
                 TBG.Main.Helpers.Dialog.dismiss();
+                if ($(type + '_list').childElements().size() == 0) {
+                    $('no_' + type + '_items').show();
+                }
             }
         }
     });
