@@ -3946,7 +3946,7 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
                     $('custom_type_' + type + '_instructions_div').hide();
                     $('custom_type_' + type + '_no_instructions_div').show();
                 }
-                $('custom_type_' + type + '_name_link').update(json.name);
+                $('custom_type_' + type + '_name').update(json.name);
             },
             show: 'custom_type_' + type + '_info'
         }
