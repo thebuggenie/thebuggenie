@@ -5,24 +5,13 @@
             <li>
                 <a href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();"><?php echo __('Edit this issue field'); ?></a>
             </li>
-            <li>
-                <?php
-                    switch ($type->getType())
-                    {
-                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
-                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
-                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
-                        case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
-                        case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
-                        case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
-                        case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
-                            break;
-                        default:
-                            ?><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo __('Show and edit available choices'); ?></a><?php
-                            break;
-                    }
-                ?>
-            </li>
+            <?php
+                if ($type->hasCustomOptions()) {
+            ?>
+                <li><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo __('Show and edit available choices'); ?></a></li>
+            <?php
+                }
+            ?>
             <li>
                 <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this issue field?')."', '".__('This will also remove the value of this issue field from all issues, along with any possible options this field can have.')."', {yes: {click: function() {TBG.Config.Issuefields.Custom.remove('".make_url('configure_issuefields_delete_customtype', array('type' => $type_key))."', '".$type_key."', '".$type->getID()."'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
             </li>
