@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                    <tr class="hover_highlight <?php if (!$user->isScopeConfirmed()): ?>faded_out<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
+                    <tr class="hover_highlight <?php if (!$user->isScopeConfirmed()): ?>faded_out<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>">
                         <?php include_component('finduser_row', array('user' => $user)); ?>
                     </tr>
                     <?php if ($user->isScopeConfirmed()): ?>
