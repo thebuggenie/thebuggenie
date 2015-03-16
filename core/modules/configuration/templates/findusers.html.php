@@ -54,11 +54,6 @@
 <?php endif; ?>
 <?php if (isset($more_available)): ?>
     <script type="text/javascript">
-        <?php if (!$more_available): ?>
-            $('adduser_div').hide();
-        <?php else: ?>
-            $('adduser_div').show();
-        <?php endif; ?>
         <?php if (\thebuggenie\core\framework\Context::getScope()->getMaxUsers()): ?>
             $('current_user_num_count').update(<?php echo $total_count; ?>);
         <?php endif; ?>

@@ -4098,6 +4098,7 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
         failure: {
             callback: function (json) {
                 if (json.allow_import) {
+                if (json.allow_import || false) {
                     callback_function_for_import();
                 }
             }
