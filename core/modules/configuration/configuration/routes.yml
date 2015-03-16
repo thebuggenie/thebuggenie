@@ -283,7 +283,7 @@ configure_workflow_transition_delete_validation_rule:
 configure_workflow_transition_add_action:
     route: /configure/workflow/:workflow_id/transition/:transition_id/add/action/:action_type
     module: configuration
-    action: configureWorkflowTransitionAction
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
@@ -293,7 +293,7 @@ configure_workflow_transition_add_action:
 configure_workflow_transition_update_action:
     route: /configure/workflow/:workflow_id/transition/:transition_id/action/:action_id
     module: configuration
-    action: configureWorkflowTransitionAction
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
@@ -303,7 +303,7 @@ configure_workflow_transition_update_action:
 configure_workflow_transition_delete_action:
     route: /configure/workflow/:workflow_id/transition/:transition_id/delete/action/:action_id
     module: configuration
-    action: configureWorkflowTransitionAction
+    action: configureWorkflowTransition
     parameters:
       config_module: core
       section: 1
