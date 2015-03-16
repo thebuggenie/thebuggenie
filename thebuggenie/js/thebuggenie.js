@@ -2039,8 +2039,10 @@ TBG.Project.add = function (url) {
 TBG.Project.remove = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'project_delete_indicator_' + pid,
-            hide: 'project_delete_controls_' + pid
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'project_delete_controls_' + pid]
         },
         success: {
             remove: 'project_box_' + pid,
@@ -4097,7 +4099,6 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
         },
         failure: {
             callback: function (json) {
-                if (json.allow_import) {
                 if (json.allow_import || false) {
                     callback_function_for_import();
                 }
@@ -4139,7 +4140,12 @@ TBG.Config.User.getEditForm = function (url, uid) {
 
 TBG.Config.User.remove = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_user_' + user_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop']
+        },
         success: {
             remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
             callback: TBG.Config.User._updateLinks
@@ -4148,6 +4154,7 @@ TBG.Config.User.remove = function (url, user_id) {
 };
 
 TBG.Config.User._updateLinks = function (json) {
+    if (json == null) return;
     if ($('current_user_num_count'))
         $('current_user_num_count').update(json.total_count);
     (json.more_available) ? $('adduser_form_container').show() : $('adduser_form_container').hide();
