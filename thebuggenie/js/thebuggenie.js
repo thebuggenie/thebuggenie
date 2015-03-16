@@ -4586,6 +4586,7 @@ TBG.Issues.updateFields = function (url)
             params: 'issuetype_id=' + $('issuetype_id').getValue(),
             success: {
                 callback: function (json) {
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     json.available_fields.each(function (fieldname, key)
                     {
                         if ($(fieldname + '_div')) {
