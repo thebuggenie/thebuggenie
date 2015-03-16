@@ -4202,11 +4202,15 @@ TBG.Config.Collection.add = function (url, type, callback_function) {
 
 TBG.Config.Collection.remove = function (url, type, cid, callback_function) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: type + 'box_' + cid,
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 if (callback_function)
                     callback_function(json);
             }
