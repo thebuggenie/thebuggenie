@@ -4148,7 +4148,7 @@ TBG.Config.User._updateLinks = function (json) {
 
 TBG.Config.User.update = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_form',
+        form: 'edit_user_' + user_id + '_form',
         loading: {indicator: 'edit_user_' + user_id + '_indicator'},
         success: {
             update: 'users_results_user_' + user_id,
@@ -4166,7 +4166,7 @@ TBG.Config.User.update = function (url, user_id) {
 
 TBG.Config.User.updateScopes = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_scopes_form',
+        form: 'edit_user_' + user_id + '_scopes_form',
         loading: {indicator: 'edit_user_' + user_id + '_scopes_form_indicator'},
         success: {
             callback: TBG.Main.Helpers.Backdrop.reset
