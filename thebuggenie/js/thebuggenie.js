@@ -4243,10 +4243,12 @@ TBG.Config.Collection.showMembers = function (url, type, cid) {
 
 TBG.Config.Collection.removeMember = function (url, type, cid, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: type + '_members_' + cid + '_indicator'},
+        loading: {
+            indicator: type + '_members_' + cid + '_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 $(type + '_' + cid + '_' + user_id + '_item').remove();
                 TBG.Config.Collection.updateDetailsFromJSON(json, false);
                 var ul = $(type + '_members_' + cid + '_list').down('ul');
