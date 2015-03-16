@@ -5,7 +5,7 @@
             <button class="button button-silver dropper" id="team_<?php echo $team->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
             <ul id="team_<?php echo $team->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
                 <li>
-                    <?php echo javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle();')); ?>
+                    <?php echo javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle(\'block\');')); ?>
                 </li>
                 <li>
                     <?php echo javascript_link_tag(__('List users in this team'), array('onclick' => 'TBG.Config.Team.showMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');')); ?>

@@ -35,9 +35,7 @@
                             </td>
                         </tr>
                         <tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
-                            <td style="padding: 3px;" colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td">
-                                &nbsp;
-                            </td>
+                            <td colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td"></td>
                         </tr>
                     <?php endif; ?>
                     <tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;" class="fullpage_backdrop">
@@ -56,11 +54,6 @@
 <?php endif; ?>
 <?php if (isset($more_available)): ?>
     <script type="text/javascript">
-        <?php if (!$more_available): ?>
-            $('adduser_div').hide();
-        <?php else: ?>
-            $('adduser_div').show();
-        <?php endif; ?>
         <?php if (\thebuggenie\core\framework\Context::getScope()->getMaxUsers()): ?>
             $('current_user_num_count').update(<?php echo $total_count; ?>);
         <?php endif; ?>

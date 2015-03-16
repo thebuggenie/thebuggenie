@@ -791,7 +791,7 @@
             {
                 $this->_timezone = $this->_timezone->getName();
             }
-            if ($is_new && $this->_joined === null)
+            if ($is_new && $this->_joined === 0)
             {
                 $this->_joined = NOW;
             }
