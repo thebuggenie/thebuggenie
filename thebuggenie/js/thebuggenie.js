@@ -1548,13 +1548,13 @@ TBG.Main.Profile.addFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'add_friend_' + user_id + '_' + rnd_no
+            hide: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
@@ -1563,13 +1563,13 @@ TBG.Main.Profile.removeFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'remove_friend_' + user_id + '_' + rnd_no
+            hide: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
