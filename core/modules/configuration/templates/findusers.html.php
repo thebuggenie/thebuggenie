@@ -35,9 +35,7 @@
                             </td>
                         </tr>
                         <tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
-                            <td style="padding: 3px;" colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td">
-                                &nbsp;
-                            </td>
+                            <td colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td"></td>
                         </tr>
                     <?php endif; ?>
                     <tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;" class="fullpage_backdrop">

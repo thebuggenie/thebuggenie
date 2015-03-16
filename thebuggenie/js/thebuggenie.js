@@ -4121,10 +4121,17 @@ TBG.Config.User.addToScope = function (url) {
 
 TBG.Config.User.getEditForm = function (url, uid) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'user_' + uid + '_edit_spinning'},
+        loading: {
+            indicator: 'user_' + uid + '_edit_spinning',
+            hide: 'users_results_user_' + uid
+        },
         success: {
+            // update: 'user_' + uid + '_edit_td',
             update: 'user_' + uid + '_edit_td',
-            show: 'user_' + uid + '_edit_tr'
+            show: ['user_' + uid + '_edit_tr', 'users_results_user_' + uid]
+        },
+        failure: {
+            show: 'users_results_user_' + uid
         }
     });
 };
