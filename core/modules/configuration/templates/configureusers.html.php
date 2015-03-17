@@ -70,7 +70,7 @@
                                     <p>
                                         <?php echo __('Enter details about the new user here'); ?>
                                     </p>
-                                    <form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb);return false;" id="createuser_form">
+                                    <form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb);$('adduser_div').toggle();return false;" id="createuser_form">
                                         <dl>
                                             <dt><label for="adduser_username" class="required"><?php echo __('Username'); ?>:</label></dt>
                                             <dd>
