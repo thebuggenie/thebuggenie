@@ -7,7 +7,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => 6)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <div style="width: 730px;" id="config_issuetypes">
+            <div style="width: 780px;" id="config_issuetypes">
                 <h3><?php echo __('Configure issue types'); ?></h3>
                 <div class="content faded_out">
                     <p>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     <?php elseif ($mode == 'schemes'): ?>
-                        <div id="tab_schemes_pane" style="padding-top: 0; width: 730px;">
+                        <div id="tab_schemes_pane" style="padding-top: 0; width: 780px;">
                             <div class="content">
                                 <?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?><br>
                                 <br>
@@ -64,7 +64,7 @@
                             </ul>
                         </div>
                     <?php elseif ($mode == 'scheme'): ?>
-                        <div id="tab_scheme_pane" style="padding-top: 0; width: 730px;">
+                        <div id="tab_scheme_pane" style="padding-top: 0; width: 780px;">
                             <div class="content">
                                 <?php echo __('In this tab you can edit issue type associations for this issue type scheme. Enable/disable available issue types, and set options such as reportable issue types and reportable/visible/required issue details.'); ?>
                             </div>
