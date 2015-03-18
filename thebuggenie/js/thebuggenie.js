@@ -4092,9 +4092,9 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
         success: {
             update: 'users_results',
             callback: function (json) {
+                $('adduser_div').hide();
                 TBG.Config.User._updateLinks(json);
                 f.reset();
-                $('adduser_div').hide();
             }
         },
         failure: {
