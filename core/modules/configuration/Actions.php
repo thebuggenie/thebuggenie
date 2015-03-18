@@ -1557,7 +1557,7 @@
 
                 if ($username = trim($request['username']))
                 {
-                    if (!User::isUsernameAvailable($username))
+                    if (!entities\User::isUsernameAvailable($username))
                     {
                         if ($request->getParameter('mode') == 'import')
                         {
