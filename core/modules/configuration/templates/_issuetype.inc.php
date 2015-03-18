@@ -63,11 +63,11 @@
                         <?php if (!$scheme->isCore()): ?>
                             <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_reportable"><?php echo __('Reportable'); ?></label></td>
                         <?php endif; ?>
-                        <td>
+                        <td style="padding-left: 2px;">
                             <?php if ($scheme->isCore()): ?>
                                 <?php echo ($scheme->isIssuetypeReportable($type)) ? __('Users can report new issues with this issue type') : __('Users cannot report new issues with this issue type, but may choose it when editing an issue'); ?>
                             <?php else: ?>
-                                <select name="reportable" id="issuetype_<?php echo $type->getID(); ?>_reportable">
+                                <select name="reportable" id="issuetype_<?php echo $type->getID(); ?>_reportable" style="width:100%">
                                     <option value="1"<?php if ($scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users can report new issues with this issue type'); ?></option>
                                     <option value="0"<?php if (!$scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users cannot report new issues with this issue type, but may choose it when editing an issue'); ?></option>
                                 </select>
@@ -79,11 +79,11 @@
                         <?php if (!$scheme->isCore()): ?>
                             <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_redirect"><?php echo __('Redirect'); ?></label></td>
                         <?php endif; ?>
-                        <td>
+                        <td style="padding-left: 2px;">
                             <?php if ($scheme->isCore()): ?>
                                 <?php echo ($scheme->isIssuetypeRedirectedAfterReporting($type)) ? __('The user is redirected to the reported issue after it has been reported') : __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?>
                             <?php else: ?>
-                                <select name="redirect_after_reporting" id="issuetype_<?php echo $type->getID(); ?>_redirect">
+                                <select name="redirect_after_reporting" id="issuetype_<?php echo $type->getID(); ?>_redirect" style="width:100%">
                                     <option value="1"<?php if ($scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('The user is redirected to the reported issue after it has been reported'); ?></option>
                                     <option value="0"<?php if (!$scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?></option>
                                 </select>
