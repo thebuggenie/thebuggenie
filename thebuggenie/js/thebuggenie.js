@@ -4522,7 +4522,12 @@ TBG.Config.Workflows.Transition.Validations.update = function (url, rule_id) {
 
 TBG.Config.Workflows.Transition.Validations.remove = function (url, rule_id, type, mode) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['workflowtransitionvalidationrule_' + rule_id],
             show: ['add_workflowtransition' + type + 'validationrule_' + mode],
