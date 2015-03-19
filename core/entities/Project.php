@@ -711,7 +711,7 @@
             $project = self::getByKey($this->getKey());
             if ($project instanceof Project && $project->getID() != $this->getID())
             {
-                throw new InvalidArgumentException("A project with this key already exists");
+                throw new \InvalidArgumentException("A project with this key already exists");
             }
             if ($is_new)
             {

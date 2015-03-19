@@ -63,7 +63,7 @@
                             <dd><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $transition->getOutgoingStep()->getWorkflow()->getID(), 'step_id' => $transition->getOutgoingStep()->getID())), $transition->getOutgoingStep()->getName()); ?></dd>
                         </dl>
                         <?php if (!$transition->isCore()): ?>
-                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'mode' => 'edit')); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
+                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_edit_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
                                 <dl>
                                     <?php if (!$transition->isInitialTransition()): ?>
                                         <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
@@ -79,7 +79,6 @@
                                         <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
                                         <dd>
                                             <select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
-                                                <option value=""<?php if ($transition->getTemplate() == ''): ?> selected<?php endif; ?>><?php echo __('No template used - transition happens instantly'); ?></option>
                                                 <?php foreach (\thebuggenie\core\entities\WorkflowTransition::getTemplates() as $template_key => $template_name): ?>
                                                     <option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
                                                 <?php endforeach; ?>

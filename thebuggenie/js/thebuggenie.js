@@ -4092,9 +4092,9 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
         success: {
             update: 'users_results',
             callback: function (json) {
+                $('adduser_div').hide();
                 TBG.Config.User._updateLinks(json);
                 f.reset();
-                $('adduser_div').hide();
             }
         },
         failure: {
@@ -4522,7 +4522,12 @@ TBG.Config.Workflows.Transition.Validations.update = function (url, rule_id) {
 
 TBG.Config.Workflows.Transition.Validations.remove = function (url, rule_id, type, mode) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['workflowtransitionvalidationrule_' + rule_id],
             show: ['add_workflowtransition' + type + 'validationrule_' + mode],
@@ -4586,6 +4591,7 @@ TBG.Issues.updateFields = function (url)
             params: 'issuetype_id=' + $('issuetype_id').getValue(),
             success: {
                 callback: function (json) {
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     json.available_fields.each(function (fieldname, key)
                     {
                         if ($(fieldname + '_div')) {
