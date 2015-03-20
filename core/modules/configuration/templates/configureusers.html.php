@@ -25,7 +25,8 @@
                             <form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb, this);return false;" id="createuser_form_quick">
                                 <label for="quick_add_user_username"><?php echo __('Quick add user'); ?></label>
                                 <input type="text" id="quick_add_user_username" name="username" placeholder="<?php echo __('Enter username to add'); ?>">
-                                <input type="submit" value="<?php echo __('Create'); ?>">
+                                <input type="submit" value="<?php echo __('Create'); ?>" onclick="$('createuser_form_quick_indicator').show()">
+                                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'createuser_form_quick_indicator')); ?>
                                 <a href="javascript:void(0);" style="float: right; <?php if (!\thebuggenie\core\framework\Context::getScope()->hasUsersAvailable()): ?>display: none;<?php endif; ?>" onclick="$('adduser_div').toggle();"><?php echo __('More details'); ?></a>
                             </form>
                         </div>
@@ -117,7 +118,8 @@
                                         </dl>
                                         <br style="clear: both;">
                                         <div class="createuser_submit_container">
-                                            <input type="submit" value="<?php echo (\thebuggenie\core\framework\Context::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
+                                            <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'createuser_form_indicator')); ?>
+                                            <input type="submit" value="<?php echo (\thebuggenie\core\framework\Context::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>" onclick="$('createuser_form_indicator').show()"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
                                         </div>
                                     </form>
                                 </div>

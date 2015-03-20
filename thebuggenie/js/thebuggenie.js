@@ -4088,8 +4088,8 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
     f = (form !== undefined) ? form : 'createuser_form';
     TBG.Main.Helpers.ajax(url, {
         form: f,
-        loading: {indicator: 'find_users_indicator'},
         success: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             update: 'users_results',
             callback: function (json) {
                 $('adduser_div').hide();
@@ -4098,6 +4098,7 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
             }
         },
         failure: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             callback: function (json) {
                 if (json.allow_import || false) {
                     callback_function_for_import();
