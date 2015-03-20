@@ -4145,7 +4145,7 @@ TBG.Config.User.remove = function (url, user_id) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: ['dialog_backdrop']
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
@@ -4222,7 +4222,7 @@ TBG.Config.Collection.remove = function (url, type, cid, callback_function) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: type + 'box_' + cid,
