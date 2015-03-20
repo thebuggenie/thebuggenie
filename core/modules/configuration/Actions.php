@@ -2085,7 +2085,7 @@
                         elseif ($mode == 'delete')
                         {
                             $this->transition->deleteTransition($request['direction']);
-                            return $this->renderJSON('ok');
+                            $this->forward(framework\Context::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
                         }
                         elseif ($mode == 'delete_action')
                         {

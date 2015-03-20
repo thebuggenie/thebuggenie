@@ -4418,19 +4418,7 @@ TBG.Config.Client.update = function (url, client_id) {
 }
 
 TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction) {
-    var trans_sib = $('transition_' + transition_id).next(1);
-    var parameters = "&direction=" + direction;
-    TBG.Main.Helpers.ajax(url, {
-        url_method: 'delete',
-        params: parameters,
-        loading: {
-            indicator: 'fullpage_backdrop',
-            clear: 'fullpage_backdrop_content',
-            show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
-        },
-        success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
-    });
+    $('transition_' + transition_id + '_delete_form').submit();
 }
 
 TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
