@@ -111,7 +111,7 @@
                                             <dd>
                                                 <?php foreach ($teams as $team): ?>
                                                     <div class="teamlist_container">
-                                                        <input type="checkbox" id="adduser_teams_<?php echo $team->getID(); ?>" name="teams[<?php echo $team->getID(); ?>]" value="<?php echo $team->getID(); ?>">&nbsp;<label for="adduser_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?></label>
+                                                        <input type="checkbox" id="adduser_teams_<?php echo $team->getID(); ?>" name="teams[<?php echo $team->getID(); ?>]" value="<?php echo $team->getID(); ?>">&nbsp;<label for="adduser_teams_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?></label>
                                                     </div>
                                                 <?php endforeach; ?>
                                             </dd>
