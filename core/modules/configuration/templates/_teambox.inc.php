@@ -70,8 +70,8 @@
 </div>
 <div id="team_<?php echo $team->getID(); ?>_permissions_container" style="display: none;" class="fullpage_backdrop">
     <div class="fullpage_backdrop_content backdrop_box large">
-        <div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %teamname', array('%team' => $team->getName())); ?></div>
         <?php echo image_tag('spinning_16.gif', array('id' => 'team_'.$team->getID().'_permissions_indicator', 'style' => 'display: none;')); ?>
+        <div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %teamname', array('%teamname' => $team->getName())); ?></div>
         <div class="backdrop_detail_content config_permissions" id="team_<?php echo $team->getID(); ?>_permissions"></div>
         <div class="backdrop_detail_footer"><?php echo javascript_link_tag(__('Close'), array('onclick' => "$('team_".$team->getID()."_permissions_container').toggle();")); ?></div>
     </div>
