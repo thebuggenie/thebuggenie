@@ -16,7 +16,7 @@
                         <li id="tab_users" class="selected"><?php echo javascript_link_tag($users_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_users', 'usersteamsgroups_menu');")); ?></li>
                         <li id="tab_teams"><?php echo javascript_link_tag($teams_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_teams', 'usersteamsgroups_menu');")); ?></li>
                         <li id="tab_clients"><?php echo javascript_link_tag(__('Clients'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_clients', 'usersteamsgroups_menu');")); ?></li>
-                        <li id="tab_groups" class="right modest"><?php echo javascript_link_tag(__('Groups'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_groups', 'usersteamsgroups_menu');")); ?></li>
+                        <li id="tab_groups"><?php echo javascript_link_tag(__('Groups'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_groups', 'usersteamsgroups_menu');")); ?></li>
                     </ul>
                 </div>
                 <div id="usersteamsgroups_menu_panes">
