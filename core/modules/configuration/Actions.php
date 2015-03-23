@@ -2137,6 +2137,58 @@
                                 case entities\WorkflowTransitionAction::ACTION_SET_MILESTONE:
                                     $text = ($this->action->getTargetValue()) ? tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Milestone specified by user');
                                     break;
+                                case entities\WorkflowTransitionAction::CUSTOMFIELD_SET_PREFIX . $this->action->getCustomActionType():
+                                    switch (\thebuggenie\core\entities\CustomDatatype::getByKey($this->action->getCustomActionType())->getType()) {
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                            return $this->renderJSON(array('content' => date('Y-m-d', (int) $text)));
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
+                                            return $this->renderJSON(array('content' => $this->getComponentHTML('main/userdropdown', array('user' => $text))));
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
+                                            return $this->renderJSON(array('content' => $this->getComponentHTML('main/teamdropdown', array('team' => $text))));
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Components::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Editions::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                                        default:
+                                            if (is_numeric($this->action->getTargetValue())) {
+                                                $text = ($this->action->getTargetValue()) ? tables\CustomFieldOptions::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                            }
+                                            break;
+                                    }
+                                    break;
                             }
                             return $this->renderJSON(array('content' => $text));
                         }

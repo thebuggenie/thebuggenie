@@ -4532,7 +4532,10 @@ TBG.Config.Workflows.Transition.Actions.add = function (url, key) {
         loading: {indicator: 'workflowtransitionaction_add_indicator'},
         success: {
             hide: ['no_workflowtransitionactions', 'add_workflowtransitionaction_' + key],
-            update: {element: 'workflowtransitionactions_list', insertion: true}
+            update: {element: 'workflowtransitionactions_list', insertion: true},
+            callback: function () {
+                TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
+            }
         }
     });
 }
@@ -4551,7 +4554,12 @@ TBG.Config.Workflows.Transition.Actions.update = function (url, action_id) {
 
 TBG.Config.Workflows.Transition.Actions.remove = function (url, action_id, type) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'workflowtransitionaction_' + action_id + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             hide: ['workflowtransitionaction_' + action_id + '_delete', 'workflowtransitionaction_' + action_id],
             show: ['add_workflowtransitionaction_' + type],
