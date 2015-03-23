@@ -4088,8 +4088,8 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
     f = (form !== undefined) ? form : 'createuser_form';
     TBG.Main.Helpers.ajax(url, {
         form: f,
-        loading: {indicator: 'find_users_indicator'},
         success: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             update: 'users_results',
             callback: function (json) {
                 $('adduser_div').hide();
@@ -4098,6 +4098,7 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
             }
         },
         failure: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             callback: function (json) {
                 if (json.allow_import || false) {
                     callback_function_for_import();
@@ -4144,7 +4145,7 @@ TBG.Config.User.remove = function (url, user_id) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: ['dialog_backdrop']
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
@@ -4221,7 +4222,7 @@ TBG.Config.Collection.remove = function (url, type, cid, callback_function) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: type + 'box_' + cid,
@@ -4418,19 +4419,7 @@ TBG.Config.Client.update = function (url, client_id) {
 }
 
 TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction) {
-    var trans_sib = $('transition_' + transition_id).next(1);
-    var parameters = "&direction=" + direction;
-    TBG.Main.Helpers.ajax(url, {
-        url_method: 'delete',
-        params: parameters,
-        loading: {
-            indicator: 'fullpage_backdrop',
-            clear: 'fullpage_backdrop_content',
-            show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
-        },
-        success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
-    });
+    $('transition_' + transition_id + '_delete_form').submit();
 }
 
 TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {

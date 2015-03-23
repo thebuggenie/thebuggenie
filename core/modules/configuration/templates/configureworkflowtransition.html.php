@@ -222,7 +222,7 @@
                                 <?php endif; ?>
                                 </tbody>
                             </table>
-                            <span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>
+                            <span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions() || $transition->hasTemplate()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>
                         </div>
                     </div>
                 <?php else: ?>
