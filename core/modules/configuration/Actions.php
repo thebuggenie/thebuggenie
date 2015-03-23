@@ -2085,7 +2085,7 @@
                         elseif ($mode == 'delete')
                         {
                             $this->transition->deleteTransition($request['direction']);
-                            return $this->renderJSON('ok');
+                            $this->forward(framework\Context::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
                         }
                         elseif ($mode == 'delete_action')
                         {
@@ -2193,7 +2193,7 @@
                                 case entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
                                 case entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
                                 case entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
-                                    $this->rule->setRuleValue(join(',', $request['rule_value']));
+                                    $this->rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
                                     $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
                                     break;
                             }
@@ -3417,7 +3417,7 @@
                         $role->setName($request['name']);
                         $role->save();
                         $new_permissions = array();
-                        foreach ($request['permissions'] as $new_permission)
+                        foreach ($request['permissions'] ?: array() as $new_permission)
                         {
                             $permission_details = explode(',', $new_permission);
                             $new_permissions[$permission_details[2]] = array('module' => $permission_details[0], 'target_id' => $permission_details[1]);

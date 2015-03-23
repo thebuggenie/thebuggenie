@@ -55,7 +55,10 @@
         public function deleteFromScope($scope)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(static::SCOPE, $scope);
+            if (defined('static::SCOPE'))
+            {
+                $crit->addWhere(static::SCOPE, $scope);
+            }
             $res = $this->doDelete($crit);
             return $res;
         }

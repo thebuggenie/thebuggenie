@@ -33,7 +33,7 @@
     <button class="button button-silver button-icon dropper" id="user_<?php echo $user->getID(); ?>_more_actions"><?php echo image_tag('action_dropdown_small.png'); ?></button>
     <ul id="user_<?php echo $user->getID(); ?>_more_actions_dropdown" style="position: absolute; font-size: 1.1em; margin-top: 0; z-index: 1000; width: 250px;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();"></li>
         <?php if ($user->isScopeConfirmed()): ?>
-            <li><?php echo javascript_link_tag(__('Edit this user'), array('onclick' => "TBG.Config.User.getEditForm('".make_url('configure_users_edit_user_form', array('user_id' => $user->getID()))."', ".$user->getID().");$('users_results_user_".$user->getID()."').toggle();")); ?></li>
+            <li><?php echo javascript_link_tag(__('Edit this user'), array('onclick' => "TBG.Config.User.getEditForm('".make_url('configure_users_edit_user_form', array('user_id' => $user->getID()))."', ".$user->getID().");")); ?></li>
         <?php else: ?>
             <li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This user cannot be edited'); ?>', '<?php echo __('The user must confirm his membership in this scope before you can perform this action'); ?>');" class="disabled"><?php echo __('Edit this user'); ?></a></li>
         <?php endif; ?>

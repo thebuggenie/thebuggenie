@@ -1,6 +1,6 @@
 <div class="backdrop_box medium" id="viewissue_add_item_div">
     <div class="backdrop_detail_header">
-        <?php echo javascript_link_tag(__('Add a user'), array('onclick' => "$('popup_find_subscriber_{$issue->getID()}').toggle();", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
+        <?php echo javascript_link_tag(__('Add a user'), array('onclick' => "$('popup_find_subscriber_{$issue->getID()}').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
         <?php echo __('Manage issue subscribers'); ?>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">

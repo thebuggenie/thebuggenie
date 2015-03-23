@@ -59,5 +59,10 @@
         {
             return !$this->hasLinkedWorkflowStep();
         }
+        
+        public function setItemdata($itemdata)
+        {
+            $this->_itemdata = (substr($itemdata, 0, 1) == '#' ? '' : '#' ) . $itemdata;
+        }
 
     }

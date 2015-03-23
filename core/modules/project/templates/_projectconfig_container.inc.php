@@ -81,7 +81,8 @@
             <tr>
                 <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
                     <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
-                    <div class="button button-green" id="project_submit_settings_button" onclick="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);"><span><?php echo image_tag('spinning_16.gif', array('id' => 'project_info_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')).__('Save'); ?></span></div>
+                    <?php echo image_tag('spinning_16.gif', array('id' => 'project_info_indicator', 'style' => 'display: none; margin-right: 5px;')); ?>
+                    <div class="button button-green" id="project_submit_settings_button" onclick="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);"><span><?php echo __('Save'); ?></span></div>
                 </td>
             </tr>
         <?php endif; ?>

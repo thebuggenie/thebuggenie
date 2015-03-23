@@ -1461,7 +1461,7 @@ ul.client_users, ul.team_users, ul.project_users { margin: 0; padding: 0; }
 ul.client_users li, ul.team_users li, ul.project_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 .project_commits_box { margin-right: 10px; }
 .commit_box { margin-top: 5px }
-#global_roles_list .button-group .button, #project_roles_list .button-group .button { font-size: 0.9em; padding: 1px 5px; }
+#global_roles_list .button-group .button, .project_roles_list .button-group .button { font-size: 0.9em; padding: 1px 5px; }
 #project_settings_roles { padding: 0 15px; }
 #project_settings_roles h4 { margin: 15px 0 0 0; }
 /* end project styling */

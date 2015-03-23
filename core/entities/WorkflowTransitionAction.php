@@ -45,8 +45,8 @@
         const ACTION_USER_START_WORKING = 'user_start_working';
         const ACTION_USER_STOP_WORKING = 'user_stop_working';
 
-        const CUSTOMFIELD_CLEAR_PREFIX = 'customfield.clear_';
-        const CUSTOMFIELD_SET_PREFIX = 'customfield.set_';
+        const CUSTOMFIELD_CLEAR_PREFIX = 'customfield_clear_';
+        const CUSTOMFIELD_SET_PREFIX = 'customfield_set_';
 
         /**
          * @Column(type="string", length=200)

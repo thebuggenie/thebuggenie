@@ -821,6 +821,7 @@ TBG.Main.Helpers.formSubmit = function (url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function (url, callback) {
+    $('fullpage_backdrop_content').fade({duration: 0});
     $('fullpage_backdrop').appear({duration: 0.2});
     $$('body')[0].setStyle({'overflow': 'hidden'});
     $('fullpage_backdrop_indicator').show();
@@ -834,6 +835,7 @@ TBG.Main.Helpers.Backdrop.show = function (url, callback) {
                 callback: function () {
                     $('fullpage_backdrop_content').appear({duration: 0.2});
                     $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     setTimeout(TBG.Main.Helpers.initializeFancyFilters, 300);
                     if (callback)
                         setTimeout((callback)(), 300);
@@ -1031,6 +1033,10 @@ TBG.Main.updateAttachments = function (form) {
                     json.files.each(function (file_elm) {
                         base.insert(file_elm);
                     });
+                    if (json.files.length) {
+                        $('viewissue_uploaded_attachments_count').update(json.files.length);
+                        $('viewissue_no_uploaded_files').hide();
+                    }
                 }
                 TBG.Main.Helpers.Backdrop.reset();
             }
@@ -1542,13 +1548,13 @@ TBG.Main.Profile.addFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'add_friend_' + user_id + '_' + rnd_no
+            hide: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
@@ -1557,13 +1563,13 @@ TBG.Main.Profile.removeFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'remove_friend_' + user_id + '_' + rnd_no
+            hide: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
@@ -1619,7 +1625,7 @@ TBG.Main.Comment.update = function (url, cid) {
         success: {
             hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
             show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
-            update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+            update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
         },
         failure: {
             show: ['comment_edit_controls_' + cid]
@@ -1666,6 +1672,7 @@ TBG.Main.Comment.reply = function (url, reply_comment_id) {
             hide: ['comment_reply_' + reply_comment_id],
             clear: 'comment_reply_bodybox_' + reply_comment_id,
             update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+            show: 'comment_reply_controls_' + reply_comment_id,
             callback: function (json) {
                 $('comment_reply_visibility_' + reply_comment_id).setValue(1);
             }
@@ -2032,14 +2039,18 @@ TBG.Project.add = function (url) {
 TBG.Project.remove = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'project_delete_indicator_' + pid,
-            hide: 'project_delete_controls_' + pid
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'project_delete_controls_' + pid]
         },
         success: {
             remove: 'project_box_' + pid,
             callback: function (json) {
                 if ($('project_table').childElements().size() == 0)
                     $('noprojects_tr').show();
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 TBG.Project.updateLinks(json);
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2060,7 +2071,10 @@ TBG.Project.archive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr_archived',
             callback: function (json) {
+                if ($('project_table').childElements().size() == 0)
+                    $('noprojects_tr').show();
                 $('project_table_archived').insert({top: json.box});
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2075,7 +2089,10 @@ TBG.Project.unarchive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr',
             callback: function (json) {
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 if (json.parent_id != 0) {
                     $('project_' + json.parent_id + '_children').insert({bottom: json.box});
                 } else {
@@ -3758,15 +3775,11 @@ TBG.Config.Issuetype.add = function (url) {
     TBG.Main.Helpers.ajax(url, {
         form: 'add_issuetype_form',
         loading: {
-            indicator: 'add_issuetype_indicator',
-            hide: 'add_issuetype_button'
+            reset: 'add_issuetype_form',
+            indicator: 'add_issuetype_indicator'
         },
         success: {
-            reset: 'add_issuetype_form',
             update: {element: 'issuetypes_list', insertion: true}
-        },
-        complete: {
-            show: 'add_issuetype_button'
         }
     });
 }
@@ -3777,18 +3790,18 @@ TBG.Config.Issuetype.toggleForScheme = function (url, issuetype_id, scheme_id, a
     var cb;
     if (action == 'enable') {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greybox");
         };
     } else {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greybox");
         };
     }
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'edit_issuetype_' + issuetype_id + '_indicator',
+            indicator: 'issuetype_' + issuetype_id + '_indicator',
             hide: hide_element
         },
         success: {
@@ -3853,7 +3866,13 @@ TBG.Config.Issuefields.Options.add = function (url, type) {
         success: {
             reset: 'add_' + type + '_form',
             hide: 'no_' + type + '_items',
-            update: {element: type + '_list', insertion: true}
+            update: {element: type + '_list', insertion: true},
+            callback: function () {
+                if (sortable_options != undefined) {
+                    Sortable.destroy(type + '_list');
+                    Sortable.create(type + '_list', sortable_options);
+                }
+            }
         }
     });
 }
@@ -3878,11 +3897,19 @@ TBG.Config.Issuefields.Options.update = function (url, type, id) {
 
 TBG.Config.Issuefields.Options.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_option_' + type + '_' + id,
             callback: function (json) {
                 TBG.Main.Helpers.Dialog.dismiss();
+                if ($(type + '_list').childElements().size() == 0) {
+                    $('no_' + type + '_items').show();
+                }
             }
         }
     });
@@ -3893,14 +3920,10 @@ TBG.Config.Issuefields.Custom.add = function (url) {
         form: 'add_custom_type_form',
         loading: {
             indicator: 'add_custom_type_indicator',
-            hide: 'add_custom_type_button'
+            reset: 'add_custom_type_form'
         },
         success: {
-            reset: 'add_custom_type_form',
             update: {element: 'custom_types_list', insertion: true}
-        },
-        complete: {
-            show: 'add_custom_type_button'
         }
     });
 }
@@ -3921,7 +3944,7 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
                     $('custom_type_' + type + '_instructions_div').hide();
                     $('custom_type_' + type + '_no_instructions_div').show();
                 }
-                $('custom_type_' + type + '_name_link').update(json.name);
+                $('custom_type_' + type + '_name').update(json.name);
             },
             show: 'custom_type_' + type + '_info'
         }
@@ -3930,7 +3953,12 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
 
 TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_' + type + '_' + id,
             callback: function (json) {
@@ -3942,7 +3970,14 @@ TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
 
 TBG.Config.Permissions.set = function (url, field) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: field + '_indicator'},
+        loading: {
+            indicator: field + '_indicator',
+            callback: function (json) {
+                $$('#' + field + ' .image img').each(function (element) {
+                    $(element).hide();
+                });
+            }
+        },
         success: {update: field}
     });
 };
@@ -4022,18 +4057,21 @@ TBG.Config.Roles.add = function (url) {
         loading: {indicator: 'new_role_form_indicator'},
         success: {
             update: {element: 'global_roles_list', insertion: true},
-            hide: ['global_roles_no_roles', 'new_role']
+            hide: ['global_roles_no_roles'],
+            callback: function  () {
+                $('add_new_role_input').setValue('');
+            }
         }
     });
 };
 
-TBG.Project.Roles.add = function (url) {
+TBG.Project.Roles.add = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'new_project_role_form',
-        loading: {indicator: 'new_project_role_form_indicator'},
+        form: 'new_project' + pid + '_role_form',
+        loading: {indicator: 'new_project' + pid + '_role_form_indicator'},
         success: {
-            update: {element: 'project_roles_list', insertion: true},
-            hide: ['project_roles_no_roles', 'new_project_role']
+            update: {element: 'project' + pid + '_roles_list', insertion: true},
+            hide: ['project' + pid + '_roles_no_roles', 'new_project' + pid + '_role']
         }
     });
 };
@@ -4050,18 +4088,19 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
     f = (form !== undefined) ? form : 'createuser_form';
     TBG.Main.Helpers.ajax(url, {
         form: f,
-        loading: {indicator: 'find_users_indicator'},
         success: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             update: 'users_results',
             callback: function (json) {
+                $('adduser_div').hide();
                 TBG.Config.User._updateLinks(json);
                 f.reset();
-                $('adduser_div').hide();
             }
         },
         failure: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             callback: function (json) {
-                if (json.allow_import) {
+                if (json.allow_import || false) {
                     callback_function_for_import();
                 }
             }
@@ -4085,17 +4124,29 @@ TBG.Config.User.addToScope = function (url) {
 
 TBG.Config.User.getEditForm = function (url, uid) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'user_' + uid + '_edit_spinning'},
+        loading: {
+            indicator: 'user_' + uid + '_edit_spinning',
+            hide: 'users_results_user_' + uid
+        },
         success: {
+            // update: 'user_' + uid + '_edit_td',
             update: 'user_' + uid + '_edit_td',
-            show: 'user_' + uid + '_edit_tr'
+            show: ['user_' + uid + '_edit_tr', 'users_results_user_' + uid]
+        },
+        failure: {
+            show: 'users_results_user_' + uid
         }
     });
 };
 
 TBG.Config.User.remove = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_user_' + user_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+        },
         success: {
             remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
             callback: TBG.Config.User._updateLinks
@@ -4104,6 +4155,7 @@ TBG.Config.User.remove = function (url, user_id) {
 };
 
 TBG.Config.User._updateLinks = function (json) {
+    if (json == null) return;
     if ($('current_user_num_count'))
         $('current_user_num_count').update(json.total_count);
     (json.more_available) ? $('adduser_form_container').show() : $('adduser_form_container').hide();
@@ -4112,7 +4164,7 @@ TBG.Config.User._updateLinks = function (json) {
 
 TBG.Config.User.update = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_form',
+        form: 'edit_user_' + user_id + '_form',
         loading: {indicator: 'edit_user_' + user_id + '_indicator'},
         success: {
             update: 'users_results_user_' + user_id,
@@ -4130,7 +4182,7 @@ TBG.Config.User.update = function (url, user_id) {
 
 TBG.Config.User.updateScopes = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_scopes_form',
+        form: 'edit_user_' + user_id + '_scopes_form',
         loading: {indicator: 'edit_user_' + user_id + '_scopes_form_indicator'},
         success: {
             callback: TBG.Main.Helpers.Backdrop.reset
@@ -4166,11 +4218,15 @@ TBG.Config.Collection.add = function (url, type, callback_function) {
 
 TBG.Config.Collection.remove = function (url, type, cid, callback_function) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+        },
         success: {
             remove: type + 'box_' + cid,
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 if (callback_function)
                     callback_function(json);
             }
@@ -4203,10 +4259,12 @@ TBG.Config.Collection.showMembers = function (url, type, cid) {
 
 TBG.Config.Collection.removeMember = function (url, type, cid, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: type + '_members_' + cid + '_indicator'},
+        loading: {
+            indicator: type + '_members_' + cid + '_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 $(type + '_' + cid + '_' + user_id + '_item').remove();
                 TBG.Config.Collection.updateDetailsFromJSON(json, false);
                 var ul = $(type + '_members_' + cid + '_list').down('ul');
@@ -4295,11 +4353,11 @@ TBG.Config.Team.getPermissionsBlock = function (url, team_id) {
     if ($('team_' + team_id + '_permissions').innerHTML == '') {
         TBG.Main.Helpers.ajax(url, {
             loading: {
+                show: 'team_' + team_id + '_permissions_container',
                 indicator: 'team_' + team_id + '_permissions_indicator'
             },
             success: {
                 update: 'team_' + team_id + '_permissions',
-                show: 'team_' + team_id + '_permissions_container'
             }
         });
     }
@@ -4361,14 +4419,7 @@ TBG.Config.Client.update = function (url, client_id) {
 }
 
 TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction) {
-    var trans_sib = $('transition_' + transition_id).next(1);
-    var parameters = "&direction=" + direction;
-    TBG.Main.Helpers.ajax(url, {
-        url_method: 'delete',
-        params: parameters,
-        loading: {indicator: 'delete_transition_' + transition_id + '_indicator'},
-        success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
-    });
+    $('transition_' + transition_id + '_delete_form').submit();
 }
 
 TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
@@ -4384,8 +4435,12 @@ TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
 
 TBG.Config.Workflows.Scheme.remove = function (url, scheme_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'delete_workflow_scheme_' + scheme_id + '_form',
-        loading: {indicator: 'delete_workflow_scheme_' + scheme_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id],
             update: {element: 'workflow_schemes_list', insertion: true}
@@ -4456,7 +4511,12 @@ TBG.Config.Workflows.Transition.Validations.update = function (url, rule_id) {
 
 TBG.Config.Workflows.Transition.Validations.remove = function (url, rule_id, type, mode) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['workflowtransitionvalidationrule_' + rule_id],
             show: ['add_workflowtransition' + type + 'validationrule_' + mode],
@@ -4520,6 +4580,7 @@ TBG.Issues.updateFields = function (url)
             params: 'issuetype_id=' + $('issuetype_id').getValue(),
             success: {
                 callback: function (json) {
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     json.available_fields.each(function (fieldname, key)
                     {
                         if ($(fieldname + '_div')) {

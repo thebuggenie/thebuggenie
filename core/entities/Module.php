@@ -92,7 +92,7 @@
                 $module->install($scope_id);
                 $transaction->commitAndEnd();
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $transaction->rollback();
                 throw $e;

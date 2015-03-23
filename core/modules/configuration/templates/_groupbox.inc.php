@@ -33,7 +33,7 @@
                     </div>
                 </form>
                 <div style="text-align: right;">
-                    <?php echo javascript_link_tag(__('Clone this group'), array('onclick' => 'TBG.Config.Group.clone(\''.make_url('configure_users_clone_group', array('group_id' => $group->getID())).'\', '.$group->getID().');')); ?> :: <b><?php echo javascript_link_tag(__('Cancel'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?></b>
+                    <b><?php echo javascript_link_tag(__('Clone this group'), array('onclick' => 'TBG.Config.Group.clone(\''.make_url('configure_users_clone_group', array('group_id' => $group->getID())).'\', '.$group->getID().');')); ?></b> :: <?php echo javascript_link_tag(__('Cancel'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?>
                 </div>
                 <table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="clone_group_<?php echo $group->getID(); ?>_indicator">
                     <tr>

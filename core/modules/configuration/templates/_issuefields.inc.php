@@ -42,8 +42,9 @@
             <?php endif; ?>
         </ul>
         <div class="faded_out dark" id="no_<?php echo $type; ?>_items" style="<?php if (count($items) > 0): ?>display: none; <?php endif; ?>padding: 3px;"><?php echo __('There are no items'); ?></div>
-        <script>
-            Sortable.create('<?php echo $type; ?>_list', {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, '<?php echo $type; ?>', '<?php echo make_url('configure_issuefields_saveorder', array('type' => $type)); ?>'); }});
+        <script type="text/javascript">
+            sortable_options = {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, '<?php echo $type; ?>', '<?php echo make_url('configure_issuefields_saveorder', array('type' => $type)); ?>'); }};
+            Sortable.create('<?php echo $type; ?>_list', sortable_options);
         </script>
     <?php endif; ?>
 <?php endif; ?>

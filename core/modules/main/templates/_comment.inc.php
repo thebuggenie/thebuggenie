@@ -28,8 +28,9 @@
             </div>
         </div> */ ?>
         <div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
-            <?php echo $comment->getParsedContent($options); ?>
-            <br style="clear: both;">
+            <div class="commentcontent" id="comment_<?php echo $comment->getID(); ?>_content">
+                <?php echo $comment->getParsedContent($options); ?>
+            </div>
             <?php if ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext()) : ?>
                 <div class="commenttools">
                     <?php if (!$comment->isSystemComment() && $tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>

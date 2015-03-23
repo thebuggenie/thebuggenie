@@ -86,7 +86,7 @@
 
         public static function getTemplates()
         {
-            $templates = array('main/updateissueproperties' => 'Set issue properties or add comment');
+            $templates = array('' => 'No template used - transition happens instantly', 'main/updateissueproperties' => 'Set issue properties or add comment');
             $event = \thebuggenie\core\framework\Event::createNew('core', 'workflow_templates', null, array(), $templates)->trigger();
             
             return $event->getReturnList();
