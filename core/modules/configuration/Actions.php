@@ -3361,6 +3361,7 @@
                 }
             }
             $this->scope_deleted = framework\Context::getMessageAndClear('scope_deleted');
+            $this->scope_saved = framework\Context::getMessageAndClear('scope_saved');
             $this->scopes = entities\Scope::getAll();
         }
 
@@ -3370,7 +3371,6 @@
             $modules = tables\Modules::getTable()->getModulesForScope($this->scope->getID());
             $this->modules = $modules;
             $this->scope_save_error = framework\Context::getMessageAndClear('scope_save_error');
-            $this->scope_saved = framework\Context::getMessageAndClear('scope_saved');
 
             if ($request->isPost())
             {
@@ -3423,7 +3423,7 @@
                             }
                         }
                         framework\Context::setMessage('scope_saved', true);
-                        $this->forward(make_url('configure_scope', array('id' => $this->scope->getID())));
+                        $this->forward(make_url('configure_scopes'));
                     }
                 }
                 catch (\Exception $e)

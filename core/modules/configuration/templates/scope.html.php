@@ -10,10 +10,6 @@
                         <div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">
                             <?php echo $scope_save_error; ?>
                         </div>
-                    <?php elseif ($scope_saved): ?>
-                        <div class="greenbox" style="margin: 0 0 5px 0; font-size: 14px;">
-                            <?php echo __('The settings were saved successfully'); ?>
-                        </div>
                     <?php endif; ?>
                     <div class="greybox">
                         <div class="content">
