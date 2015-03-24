@@ -559,8 +559,14 @@ TBG.Main.Helpers.Message.error = function (title, content) {
     else {
         $('thebuggenie_failuremessage_title').hide();
     }
+    if (content && content.length) {
+        $('thebuggenie_failuremessage_content').show();
+        $('thebuggenie_failuremessage_content').update(content);
+    }
+    else {
+        $('thebuggenie_failuremessage_content').hide();
+    }
 
-    $('thebuggenie_failuremessage_content').update(content);
     if ($('thebuggenie_successmessage').visible()) {
         Effect.Queues.get(TBG.effect_queues.successmessage).each(function (effect) {
             effect.cancel();
