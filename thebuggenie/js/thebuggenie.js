@@ -1572,6 +1572,21 @@ TBG.Main.Profile.addFriend = function (url, user_id, rnd_no) {
     });
 }
 
+TBG.Main.Profile.addFriendFromUserDropdown = function (url, user_id, rnd_no) {
+    TBG.Main.Helpers.ajax(url, {
+        loading: {
+            indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
+            hide: 'add_friend_' + user_id + '_' + rnd_no
+        },
+        success: {
+            show: 'remove_friend_' + user_id + '_' + rnd_no
+        },
+        failure: {
+            show: 'add_friend_' + user_id + '_' + rnd_no
+        }
+    });
+}
+
 TBG.Main.Profile.removeFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
@@ -1583,6 +1598,21 @@ TBG.Main.Profile.removeFriend = function (url, user_id, rnd_no) {
         },
         failure: {
             show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
+        }
+    });
+}
+
+TBG.Main.Profile.removeFriendFromUserDropdown = function (url, user_id, rnd_no) {
+    TBG.Main.Helpers.ajax(url, {
+        loading: {
+            indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
+            hide: 'remove_friend_' + user_id + '_' + rnd_no
+        },
+        success: {
+            show: 'add_friend_' + user_id + '_' + rnd_no
+        },
+        failure: {
+            show: 'remove_friend_' + user_id + '_' + rnd_no
         }
     });
 }
