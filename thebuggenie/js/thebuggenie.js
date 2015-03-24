@@ -2049,7 +2049,7 @@ TBG.Project.remove = function (url, pid) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: ['dialog_backdrop', 'project_delete_controls_' + pid]
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content', 'project_delete_controls_' + pid],
         },
         success: {
             remove: 'project_box_' + pid,
