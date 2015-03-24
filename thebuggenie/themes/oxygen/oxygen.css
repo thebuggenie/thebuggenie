@@ -368,7 +368,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 .dismiss_me { position: absolute; top: 5px; right: 5px; color: rgb(200, 200, 200); text-align: right; font-size: 0.8em; line-height: 1; padding: 0; margin: 0; }
 .popup_message.failure { z-index: 200001; background-color: #FFF; }
 .popup_message.success { z-index: 200000; background-color: #FFF; }
-.popup_message .messagetitle { font-weight: normal; color: #555; }
+.popup_message .messagetitle { font-weight: normal; color: #555; display: block; }
 
 /* end slidedowns */
 

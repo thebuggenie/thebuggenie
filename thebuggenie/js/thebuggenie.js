@@ -552,7 +552,14 @@ TBG.Main.Helpers.Message.clear = function () {
  * @param content string Error details
  */
 TBG.Main.Helpers.Message.error = function (title, content) {
-    $('thebuggenie_failuremessage_title').update(title);
+    if (title && title.length) {
+        $('thebuggenie_failuremessage_title').show();
+        $('thebuggenie_failuremessage_title').update(title);
+    }
+    else {
+        $('thebuggenie_failuremessage_title').hide();
+    }
+
     $('thebuggenie_failuremessage_content').update(content);
     if ($('thebuggenie_successmessage').visible()) {
         Effect.Queues.get(TBG.effect_queues.successmessage).each(function (effect) {
