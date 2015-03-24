@@ -1156,7 +1156,7 @@
                         $crit->addWhere(Permissions::GID, $gid);
                 }
             }
-            if ($target_id != null)
+            if ($target_id !== null)
             {
                 $crit->addWhere(Permissions::TARGET_ID, $target_id);
             }

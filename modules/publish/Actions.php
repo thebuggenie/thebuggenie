@@ -101,7 +101,7 @@
                     }
                     elseif ($request->hasParameter('parent_article_name'))
                     {
-                        $this->article->setParentArticle(entities\tables\Articles::getTable()->getArticleByName($request['parent_article_name']));
+                        $this->article->setParentArticle(Articles::getTable()->getArticleByName($request['parent_article_name']));
                         $this->_getArticleNameDetails($request['parent_article_name']);
                         if ($this->article->getParentArticle() instanceof Article)
                         {
@@ -338,7 +338,7 @@
                 {
                     $this->article->setArticleType($request['article_type']);
                     $this->article->setName($request['new_article_name']);
-                    $this->article->setParentArticle(entities\tables\Articles::getTable()->getArticleByName($request['parent_article_name']));
+                    $this->article->setParentArticle(Articles::getTable()->getArticleByName($request['parent_article_name']));
                     $this->article->setManualName($request['manual_name']);
                     if ($this->article->getArticleType() == Article::TYPE_MANUAL && !$this->article->getName())
                     {
