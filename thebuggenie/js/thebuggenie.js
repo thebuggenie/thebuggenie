@@ -2072,6 +2072,8 @@ TBG.Project.remove = function (url, pid) {
 }
 
 TBG.Project.archive = function (url, pid) {
+    TBG.Main.Helpers.Dialog.dismiss();
+
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'project_' + pid + '_archive_indicator'
@@ -2083,7 +2085,6 @@ TBG.Project.archive = function (url, pid) {
                 if ($('project_table').childElements().size() == 0)
                     $('noprojects_tr').show();
                 $('project_table_archived').insert({top: json.box});
-                TBG.Main.Helpers.Dialog.dismiss();
             }
         }
     });
