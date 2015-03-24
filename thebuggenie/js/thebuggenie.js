@@ -3909,7 +3909,7 @@ TBG.Config.Issuefields.Options.remove = function (url, type, id) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: 'item_option_' + type + '_' + id,
@@ -3965,7 +3965,7 @@ TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
             indicator: 'fullpage_backdrop',
             clear: 'fullpage_backdrop_content',
             show: 'fullpage_backdrop_indicator',
-            hide: 'dialog_backdrop'
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
         },
         success: {
             remove: 'item_' + type + '_' + id,
