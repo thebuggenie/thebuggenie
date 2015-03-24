@@ -722,7 +722,7 @@
                         if (array_key_exists($request['type'], $types))
                         {
                             $classname = $types[$request['type']];
-                            $item = $classname::getB2DBTable()->selectByID($request['id']);
+                            $item = $classname::getB2DBTable()->doDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                         else
