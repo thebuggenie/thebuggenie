@@ -591,8 +591,21 @@ TBG.Main.Helpers.Message.error = function (title, content) {
  * @param content string Message details
  */
 TBG.Main.Helpers.Message.success = function (title, content) {
-    $('thebuggenie_successmessage_title').update(title);
-    $('thebuggenie_successmessage_content').update(content);
+    if (title && title.length) {
+        $('thebuggenie_successmessage_title').show();
+        $('thebuggenie_successmessage_title').update(title);
+    }
+    else {
+        $('thebuggenie_successmessage_title').hide();
+    }
+    if (content && content.length) {
+        $('thebuggenie_successmessage_content').show();
+        $('thebuggenie_successmessage_content').update(content);
+    }
+    else {
+        $('thebuggenie_successmessage_content').hide();
+    }
+
     if (title || content) {
         if ($('thebuggenie_failuremessage').visible()) {
             Effect.Queues.get(TBG.effect_queues.failedmessage).each(function (effect) {

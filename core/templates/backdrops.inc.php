@@ -18,7 +18,7 @@
 <div class="almost_not_transparent shadowed popup_message success" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_successmessage">
     <div style="padding: 10px 0 10px 0;">
         <div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
-        <span class="messagetitle" id="thebuggenie_successmessage_title"></span><br>
+        <span class="messagetitle" id="thebuggenie_successmessage_title"></span>
         <span id="thebuggenie_successmessage_content"></span>
     </div>
 </div>
