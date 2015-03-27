@@ -1409,12 +1409,6 @@ TBG.Main.Profile.confirmScopeMembership = function (url, sid) {
 }
 
 TBG.Main.Profile.clearPopupsAndButtons = function (event) {
-    if ($('account_info_container')) {
-        var pbuttons = $('account_info_container').down('.profile_buttons');
-        pbuttons.select('.button').each(function (element) {
-            $(element).removeClassName('button-pressed');
-        });
-    }
     $$('.popup_box').each(function (element) {
         var prev = $(element).previous();
         if (prev) {
