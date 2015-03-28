@@ -1,5 +1,5 @@
 <?php
-    $base_url = TBGContext::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
+    $base_url = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
 
     if (mb_strstr($commit->getRevision(), ':'))
     {

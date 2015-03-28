@@ -11,7 +11,7 @@
                 <?php echo __('Core module'); ?>
             <?php endif; ?>
         </div>
-        <?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> <?php echo $module->getVersion(); ?> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == TBGModule::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span>
+        <?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> <?php echo $module->getVersion(); ?> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == \thebuggenie\core\entities\Module::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span>
     </div>
     <div class="content"><?php echo __($module->getDescription()); ?></div>
     <div style="position: absolute; right: 12px; top: 12px;">
@@ -25,7 +25,7 @@
             <li>
                 <a href="javascript:void(0);" onclick="$('permissions_module_<?php echo($module->getID()); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Edit permissions'); ?></a>
             </li>
-            <?php if ($module->getType() !== TBGModule::MODULE_AUTH): ?>
+            <?php if ($module->getType() !== \thebuggenie\core\entities\Module::MODULE_AUTH): ?>
                 <li>
                     <?php if ($module->isEnabled()): ?>
                         <a href="javascript:void(0);" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Disable module'); ?></a>
@@ -34,7 +34,7 @@
                     <?php endif; ?>
                 </li>
             <?php endif; ?>
-            <?php if (!$module->isCore() && TBGContext::getScope()->isDefault()): ?>
+            <?php if (!$module->isCore() && \thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
                 <li><a href="javascript:void(0);" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Uninstall module'); ?></a></li>
             <?php endif; ?>
         </ul>
@@ -63,7 +63,7 @@
         <div class="permission_list" style="padding: 0 10px 5px 10px; text-align: left;">
             <div class="header_div" style="margin-top: 0;"><?php echo __('Available permissions'); ?></div>
             <ul id="module_permission_details_<?php echo $module->getName(); ?>">
-                <?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg_user->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PERMISSIONS) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ)))); ?>
+                <?php include_component('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg_user->canSaveConfiguration(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_PERMISSIONS) ? \thebuggenie\core\framework\Settings::ACCESS_FULL : \thebuggenie\core\framework\Settings::ACCESS_READ)))); ?>
             </ul>
         </div>
     </div>

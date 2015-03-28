@@ -278,6 +278,15 @@ TBG.Core._scrollWatcher = function () {
             $('bulk_action_form_top').removeClassName('fixed');
         }
     }
+    if ($('whiteboard')) {
+        var y = document.viewport.getScrollOffsets().top;
+        var co = $('whiteboard').cumulativeOffset();
+        if (y >= co.top) {
+            $('whiteboard').addClassName('fixedheader');
+        } else {
+            $('whiteboard').removeClassName('fixedheader');
+        }
+    }
     if ($('issues_paginator')) {
         var ip = $('issues_paginator');
         var ipl = ip.getLayout();
@@ -768,9 +777,10 @@ TBG.Main.Helpers.ajax = function (url, options) {
             if (TBG.debug) {
                 $('tbg___DEBUGINFO___indicator').hide();
                 var d = new Date(),
-                        d_id = response.getHeader('x-tbg-debugid');
+                    d_id = response.getHeader('x-tbg-debugid'),
+                    d_time = response.getHeader('x-tbg-loadtime');
 
-                TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id});
+                TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id, loadtime: d_time});
                 TBG.updateDebugInfo();
             }
             $(options.loading.indicator).hide();
@@ -795,7 +805,7 @@ TBG.updateDebugInfo = function () {
             return (time < 10) ? '0' + time : time;
         };
         TBG.Core.AjaxCalls.each(function (info) {
-            var content = '<li style="clear: both;"><span class="faded_out dark small">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '</span> ' + info.location + ' <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Show debug info</a></li>';
+            var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing">' + info.loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
             lai.insert(content, 'top');
         });
     }
@@ -811,6 +821,7 @@ TBG.Main.Helpers.formSubmit = function (url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function (url, callback) {
+    $('fullpage_backdrop_content').fade({duration: 0});
     $('fullpage_backdrop').appear({duration: 0.2});
     $$('body')[0].setStyle({'overflow': 'hidden'});
     $('fullpage_backdrop_indicator').show();
@@ -824,6 +835,7 @@ TBG.Main.Helpers.Backdrop.show = function (url, callback) {
                 callback: function () {
                     $('fullpage_backdrop_content').appear({duration: 0.2});
                     $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     setTimeout(TBG.Main.Helpers.initializeFancyFilters, 300);
                     if (callback)
                         setTimeout((callback)(), 300);
@@ -1021,6 +1033,10 @@ TBG.Main.updateAttachments = function (form) {
                     json.files.each(function (file_elm) {
                         base.insert(file_elm);
                     });
+                    if (json.files.length) {
+                        $('viewissue_uploaded_attachments_count').update(json.files.length);
+                        $('viewissue_no_uploaded_files').hide();
+                    }
                 }
                 TBG.Main.Helpers.Backdrop.reset();
             }
@@ -1393,12 +1409,6 @@ TBG.Main.Profile.confirmScopeMembership = function (url, sid) {
 }
 
 TBG.Main.Profile.clearPopupsAndButtons = function (event) {
-    if ($('account_info_container')) {
-        var pbuttons = $('account_info_container').down('.profile_buttons');
-        pbuttons.select('.button').each(function (element) {
-            $(element).removeClassName('button-pressed');
-        });
-    }
     $$('.popup_box').each(function (element) {
         var prev = $(element).previous();
         if (prev) {
@@ -1464,9 +1474,6 @@ TBG.Main.Dashboard.addView = function (element) {
         success: {
             callback: function (json) {
                 var column_container = dashboard_container.down('.dashboard_column.column_' + column);
-                console.log(column);
-                console.log(dashboard_container);
-                console.log(column_container);
                 column_container.insert({bottom: json.view_content});
                 TBG.Main.Dashboard.views.push(json.view_id);
                 TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, json.view_id);
@@ -1475,10 +1482,6 @@ TBG.Main.Dashboard.addView = function (element) {
             }
         }
     });
-//	console.log(dashboard_element.dataset.viewType);
-//	console.log(dashboard_element.dataset.viewSubtype);
-//	console.log(dashboard_container.dataset.dashboardId);
-//	console.log(dashboard_container.dataset.column);
 };
 
 TBG.Main.Dashboard.removeView = function (event, element) {
@@ -1539,13 +1542,13 @@ TBG.Main.Profile.addFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'add_friend_' + user_id + '_' + rnd_no
+            hide: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
@@ -1554,13 +1557,13 @@ TBG.Main.Profile.removeFriend = function (url, user_id, rnd_no) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
             indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
-            hide: 'remove_friend_' + user_id + '_' + rnd_no
+            hide: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         success: {
-            show: 'add_friend_' + user_id + '_' + rnd_no
+            show: ['add_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         },
         failure: {
-            show: 'remove_friend_' + user_id + '_' + rnd_no
+            show: ['remove_friend_' + user_id + '_' + rnd_no, 'user_' + user_id + '_more_actions']
         }
     });
 }
@@ -1616,7 +1619,7 @@ TBG.Main.Comment.update = function (url, cid) {
         success: {
             hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
             show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
-            update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+            update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
         },
         failure: {
             show: ['comment_edit_controls_' + cid]
@@ -1663,6 +1666,7 @@ TBG.Main.Comment.reply = function (url, reply_comment_id) {
             hide: ['comment_reply_' + reply_comment_id],
             clear: 'comment_reply_bodybox_' + reply_comment_id,
             update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+            show: 'comment_reply_controls_' + reply_comment_id,
             callback: function (json) {
                 $('comment_reply_visibility_' + reply_comment_id).setValue(1);
             }
@@ -2029,14 +2033,18 @@ TBG.Project.add = function (url) {
 TBG.Project.remove = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'project_delete_indicator_' + pid,
-            hide: 'project_delete_controls_' + pid
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'project_delete_controls_' + pid]
         },
         success: {
             remove: 'project_box_' + pid,
             callback: function (json) {
                 if ($('project_table').childElements().size() == 0)
                     $('noprojects_tr').show();
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 TBG.Project.updateLinks(json);
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2057,7 +2065,10 @@ TBG.Project.archive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr_archived',
             callback: function (json) {
+                if ($('project_table').childElements().size() == 0)
+                    $('noprojects_tr').show();
                 $('project_table_archived').insert({top: json.box});
                 TBG.Main.Helpers.Dialog.dismiss();
             }
@@ -2072,7 +2083,10 @@ TBG.Project.unarchive = function (url, pid) {
         },
         success: {
             remove: 'project_box_' + pid,
+            hide: 'noprojects_tr',
             callback: function (json) {
+                if ($('project_table_archived').childElements().size() == 0)
+                    $('noprojects_tr_archived').show();
                 if (json.parent_id != 0) {
                     $('project_' + json.parent_id + '_children').insert({bottom: json.box});
                 } else {
@@ -2087,10 +2101,14 @@ TBG.Project.unarchive = function (url, pid) {
 };
 
 TBG.Project.Planning.initializeMilestoneDragDropSorting = function (milestone) {
-    jQuery(milestone).find('.milestone_issues.jsortable').sortable({
+    var milestone_issues = jQuery(milestone).find('.milestone_issues.jsortable');
+    if (milestone_issues.hasClass('ui-sortable')) {
+        milestone_issues.sortable('destroy');
+    }
+    milestone_issues.sortable({
         handle: '.draggable',
         connectWith: '.jsortable.intersortable',
-        update: TBG.Project.Planning.sortMilestones,
+        update: TBG.Project.Planning.sortMilestoneIssues,
         receive: TBG.Project.Planning.moveIssue,
         sort: TBG.Project.Planning.calculateNewBacklogMilestoneDetails,
         tolerance: 'pointer'
@@ -2113,18 +2131,6 @@ TBG.Project.Planning.initializeEpicDroptargets = function () {
         tolerance: 'pointer',
         hoverClass: 'drop-hover'
     });
-};
-
-TBG.Project.Planning.initializeDragDropSorting = function () {
-    jQuery('.milestone_box').each(function () {
-        TBG.Project.Planning.initializeMilestoneDragDropSorting(this)
-    });
-    TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
-    if (!TBG.Core.Pollers.planningpoller)
-        TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.planningPoller, 6);
-
-    $('planning_indicator').hide();
-    $('planning_filter_title_input').enable();
 };
 
 TBG.Project.Planning.toggleReleaseFilter = function (release) {
@@ -2259,18 +2265,41 @@ TBG.Project.Planning.destroyMilestoneDropSorting = function (milestone) {
     }
 };
 
-TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callback) {
-    var milestone_id = milestone.dataset.milestoneId;
+TBG.Project.Planning.getMilestoneIssues = function (milestone) {
     if (!milestone.hasClassName('initialized')) {
+        var milestone_id = milestone.dataset.milestoneId;
         TBG.Main.Helpers.ajax(milestone.dataset.issuesUrl, {
             url_method: 'get',
             success: {
                 update: 'milestone_' + milestone_id + '_issues',
                 callback: function (json) {
-                    milestone.addClassName('initialized')
-                    if (initialize_callback !== undefined) {
-                        if ($$('.milestone_box.initialized').size() == $$('.milestone_box').size()) {
-                            (initialize_callback)();
+                    milestone.addClassName('initialized');
+
+                    var ti_button = milestone.down('.toggle-issues');
+                    if (ti_button) ti_button.enable();
+                    if (TBG.Project.Planning.options.dragdrop) {
+                        TBG.Project.Planning.initializeMilestoneDragDropSorting(milestone);
+                    }
+
+                    if (milestone.hasClassName('backlog_milestone')) {
+                        $('project_planning').removeClassName('left_toggled');
+                    }
+
+                    if (milestone.hasClassName('available')) {
+                        var completed_milestones = $$('.milestone_box.available.initialized');
+                        var multiplier = 100 / TBG.Project.Planning.options.milestone_count;
+                        var pct = Math.floor(completed_milestones.size() * multiplier);
+                        $('planning_percentage_filler').setStyle({width: pct + '%'});
+
+                        if (completed_milestones.size() == (TBG.Project.Planning.options.milestone_count - 1)) {
+                            $('planning_loading_progress_indicator').hide();
+                            if (!TBG.Core.Pollers.planningpoller)
+                                TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.planningPoller, 6);
+
+                            TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
+
+                            $('planning_indicator').hide();
+                            $('planning_filter_title_input').enable();
                         }
                     }
                 }
@@ -2283,6 +2312,127 @@ TBG.Project.Planning.getMilestoneIssues = function (milestone, initialize_callba
             }
         });
     }
+};
+
+TBG.Project.Planning.Whiteboard.addColumn = function(button) {
+    TBG.Main.Helpers.ajax(button.dataset.url, {
+        loading: { 
+            indicator: 'planning_indicator'
+        },
+        url_method: 'get',
+        success: {
+            update: { element: 'planning_whiteboard_columns_form_row', insertion: true },
+            callback: function() {
+                TBG.Main.Helpers.initializeFancyFilters();
+                TBG.Main.Helpers.recalculateFancyFilters();
+                TBG.Project.Planning.Whiteboard.setSortOrder();
+            }
+        }
+    });
+};
+
+TBG.Project.Planning.Whiteboard.toggleEditMode = function() {
+    $('project_planning').toggleClassName('edit-mode');
+    TBG.Main.Profile.clearPopupsAndButtons();
+};
+
+TBG.Project.Planning.Whiteboard.saveColumns = function(form) {
+    $('planning_indicator').show();
+    TBG.Main.Helpers.ajax(form.action, {
+        url_method: 'post',
+        form: form,
+        failure: {
+            hide: 'planning_indicator'
+        }
+    });
+};
+
+TBG.Project.Planning.Whiteboard.calculateColumnCounts = function() {
+    $$('#whiteboard-headers td').each(function (column, index) {
+        var counts = 0;
+        var status_counts = [];
+        column.select('.status_badge').each(function (status) {
+            status_counts[parseInt(status.dataset.statusId)] = 0;
+        });
+        $$('#whiteboard tbody tr').each(function (row) {
+            row.childElements().each(function (subcolumn, subindex) {
+                if (subindex == index) {
+                    var issues = subcolumn.select('.whiteboard-issue');
+                    issues.each(function (issue) {
+                        status_counts[parseInt(issue.dataset.statusId)]++;
+                    });
+                    counts += issues.size();
+                }
+            });
+        });
+        if (column.down('.column_count.primary')) column.down('.column_count.primary').update(counts);
+        if (column.down('.column_count .count')) column.down('.column_count .count').update(counts);
+        column.select('.status_badge').each(function (status) {
+            status.update(status_counts[parseInt(status.dataset.statusId)]);
+        });
+        if ($('project_planning').hasClassName('type-kanban')) {
+            var min_wi = parseInt(column.dataset.minWorkitems);
+            var max_wi = parseInt(column.dataset.maxWorkitems);
+            if (min_wi !== 0 && counts < min_wi) {
+                column.down('.under_count').update(counts);
+                column.removeClassName('over-workitems');
+                column.addClassName('under-workitems');
+                $$('#whiteboard tbody tr').each(function (row) {
+                    row.childElements().each(function (subcolumn, subindex) {
+                        if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
+                            subcolumn.removeClassName('over-workitems');
+                            subcolumn.addClassName('under-workitems');
+                        }
+                    });
+                });
+            }
+            if (max_wi !== 0 && counts > max_wi) {
+                column.down('.over_count').update(counts);
+                column.removeClassName('under-workitems');
+                column.addClassName('over-workitems');
+                $$('#whiteboard tbody tr').each(function (row) {
+                    row.childElements().each(function (subcolumn, subindex) {
+                        if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
+                            subcolumn.removeClassName('under-workitems');
+                            subcolumn.addClassName('over-workitems');
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
+
+TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
+    var wb = $('whiteboard');
+    wb.removeClassName('initialized');
+    var mi = $('selected_milestone_input');
+    var milestone_id = parseInt(mi.dataset.selectedValue);
+    
+    TBG.Main.Helpers.ajax(wb.dataset.whiteboardUrl, {
+        additional_params: '&milestone_id=' + milestone_id,
+        url_method: 'get',
+        loading: {
+            indicator: 'whiteboard_indicator',
+            callback: function() {
+                $('whiteboard').select('thead .column_count.primary').each(function (cc) {
+                    cc.update('-');
+                });
+                wb.dataset.milestoneId = milestone_id;
+            }
+        },
+        success: {
+            callback: function(json) {
+                wb.addClassName('initialized');
+                wb.select('tbody').each(Element.remove);
+                $('whiteboard-headers').insert({after: json.component});
+                setTimeout(function () {
+                    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                    TBG.Project.Planning.Whiteboard.initializeDragDrop();
+                }, 250);
+            }
+        }
+    });
 };
 
 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
@@ -2300,12 +2450,228 @@ TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) 
             show: 'selected_milestone_status_details'
         }
     });
+};
+
+TBG.Project.Planning.Whiteboard.setSortOrder = function() {
+    $('planning_whiteboard_columns_form_row').childElements().each(function(column, index) {
+        column.down('input.sortorder').setValue(index + 1);
+    });
+};
+
+TBG.Project.Planning.Whiteboard.setViewMode = function(button, mode) {
+    $(button).up('.button-group').childElements().each(function (elm) {
+        elm.removeClassName('button-pressed');
+    });
+    $(button).addClassName('button-pressed');
+    var wb = $('whiteboard');
+    ['simple', 'detailed'].each(function (viewmode) {
+        wb.removeClassName('viewmode-'+viewmode);
+    });
+    wb.addClassName('viewmode-'+mode);
+};
+
+TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
+    var issue = jQuery(ui.draggable);
+    var column = jQuery(event.target);
+
+    TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column)
+};
+
+TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
+
+    if (issue.parents('td').data('column-id') == column.data('column-id')) 
+        return;
+
+    var wb = jQuery('#whiteboard');
+    var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
+    if (transition_id) parameters += '&transition_id=' + transition_id;
+    
+    TBG.Main.Helpers.ajax(wb.data('whiteboard-url'), {
+        additional_params: parameters,
+        url_method: 'post',
+        success: {
+            callback: function(json) {
+                if (json.component) {
+                    $('fullpage_backdrop').appear({duration: 0.2});
+                    $('fullpage_backdrop_content').update(json.component);
+                    $('fullpage_backdrop_content').appear({duration: 0.2});
+                    $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                } else {
+                    $('fullpage_backdrop_content').update('');
+                    $('fullpage_backdrop').fade({duration: 0.2});
+                    if (issue) issue.remove();
+                    jQuery(json.issue).prependTo(column);
+                    setTimeout(function() {
+                        jQuery('.whiteboard-issue').not('ui-draggable').draggable({
+                            scope: column.parents('tbody').data('swimlane-identifier'),
+                            start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
+                            stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
+                            axis: 'x',
+                            revert: true
+                        });
+                        TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                    }, 350);
+                }                
+            }
+        },
+        failure: {
+            show: issue
+        }
+    });
+    
+};
+
+TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event, ui) {
+    var issue = $(event.target);
+    issue.up('tr').childElements().each(function (column) {
+        jQuery(column).droppable("enable");
+        column.removeClassName('drop-valid');
+    });
+};
+
+TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, ui) {
+    var issue = $(event.target);
+    var issue_statuses = issue.dataset.validStatusIds.split(',');
+    issue.up('tr').childElements().each(function (column) {
+        var column_statuses = column.dataset.statusIds.split(',');
+        var has_status = false;
+        issue_statuses.each(function (status) {
+            if (column_statuses.indexOf(status) != -1) {
+                has_status = true;
+            }
+        });
+        
+        if (!has_status) {
+            jQuery(column).droppable("disable");
+        } else {
+            column.addClassName('drop-valid');
+        }
+    });
+};
+
+TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
+    $('whiteboard').select('tbody td.column').each(function (column) {
+        var swimlane_identifier = column.up('tbody').dataset.swimlaneIdentifier;
+        jQuery(column).droppable({
+            drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
+            scope: swimlane_identifier,
+            accept: '.whiteboard-issue',
+            tolerance: 'intersect',
+            hoverClass: 'drop-hover'
+        });
+        jQuery(column).find('.whiteboard-issue').draggable({
+            scope: swimlane_identifier,
+            start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
+            stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
+            axis: 'x',
+            revert: true
+        });
+    });
+
+    if (!TBG.Core.Pollers.planningpoller)
+        TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller, 6);
+};
+
+TBG.Project.Planning.Whiteboard.retrieveIssue = function (issue_id, url, existing_element) {
+    TBG.Main.Helpers.ajax(url, {
+        params: 'issue_id=' + issue_id,
+        url_method: 'get',
+        loading: {indicator: (!existing_element) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
+        success: {
+            callback: function (json) {
+                if (!existing_element) {
+                    if (json.issue_details.milestone && json.issue_details.milestone.id) {
+                        if ($('milestone_'+json.issue_details.milestone.id).hasClassName('initialized')) {
+                            TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                        }
+                    } else {
+                        TBG.Project.Planning.insertIntoMilestone(0, json.component);
+                    }
+                } else {
+                    var json_milestone_id = (json.issue_details.milestone && json.issue_details.milestone.id != undefined) ? parseInt(json.issue_details.milestone.id) : 0;
+                    if (parseInt(existing_element.up('.milestone_box').dataset.milestoneId) == json_milestone_id) {
+                        existing_element.up('.milestone_issue').replace(json.component);
+                        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails($('milestone_' + json_milestone_id + '_issues'));
+                        TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
+                    } else {
+                        existing_element.up('.milestone_issue').remove();
+                        TBG.Project.Planning.insertIntoMilestone(json_milestone_id, json.component, 'all');
+                    }
+                }
+            }
+        }
+    });
+};
+
+TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller = function () {
+    if (!TBG.Core.Pollers.Locks.planningpoller && $('whiteboard').hasClassName('initialized')) {
+        TBG.Core.Pollers.Locks.planningpoller = true;
+        var pc = $('project_planning');
+        var wb = $('whiteboard');
+        var data_url = pc.dataset.pollUrl;
+        var retrieve_url = pc.dataset.retrieveIssueUrl;
+        var last_refreshed = pc.dataset.lastRefreshed;
+        TBG.Main.Helpers.ajax(data_url, {
+            url_method: 'get',
+            params: 'last_refreshed=' + last_refreshed + '&milestone_id=' + wb.dataset.milestoneId,
+            success: {
+                callback: function (json) {
+                    if (parseInt(json.milestone_id) == parseInt(wb.dataset.milestoneId)) {
+                        for (var i in json.ids) {
+                            if (json.ids.hasOwnProperty(i)) {
+                                var issue_details = json.ids[i];
+                                var issue_element = $('issue_' + issue_details.issue_id);
+                                if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
+                                    TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                }
+                            }
+                        }
+                    }
+
+                    pc.dataset.lastRefreshed = get_current_timestamp();
+                    TBG.Core.Pollers.Locks.planningpoller = false;
+                }
+            }
+        });
+    }
+};
+
+TBG.Project.Planning.Whiteboard.checkNav = function() {
+    if (window.location.hash) {
+        if (parseInt($('selected_milestone_input').dataset.selectedValue) != parseInt(window.location.hash)) {
+            var hasharray = window.location.hash.substr(1).split('/');
+            var milestone_id = parseInt(hasharray[0]);
+            $('selected_milestone_input').childElements().each(function(milestone_li) {
+                if (parseInt(milestone_li.dataset.inputValue) == milestone_id) {
+                    TBG.Main.setFancyDropdownValue(milestone_li);
+                    setTimeout(function () {
+                        TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+                        TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
+                    }, 150);
+                }
+            });
+        }
+    }
 }
 
 TBG.Project.Planning.Whiteboard.initialize = function (options) {
+    $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
+    Event.observe(window, 'hashchange', TBG.Project.Planning.Whiteboard.checkNav);
     TBG.Project.Planning._initializeFilterSearch();
-    TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
-    
+    if (window.location.hash) {
+        TBG.Project.Planning.Whiteboard.checkNav();
+    } else {
+        TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
+        TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
+    }
+    TBG.Main.Helpers.initializeFancyFilters();
+
+    jQuery('#planning_whiteboard_columns_form_row').sortable({
+        handle: '.draggable',
+        tolerance: 'intersect',
+        update: TBG.Project.Planning.Whiteboard.setSortOrder
+    });
+
     $('planning_indicator').hide();
     $('planning_filter_title_input').enable();
 };
@@ -2327,14 +2693,46 @@ TBG.Project.Planning._initializeFilterSearch = function() {
     });
 };
 
+TBG.Project.Planning.toggleMilestoneIssues = function(milestone_id) {
+    var mi_issues = $('milestone_'+milestone_id+'_issues');
+    var mi = $('milestone_'+milestone_id);
+    mi.down('.toggle-issues').toggleClassName('button-pressed');
+    if (!mi.hasClassName('initialized')) {
+        mi.down('.toggle-issues').disable();
+        mi_issues.removeClassName('collapsed');
+        TBG.Project.Planning.getMilestoneIssues(mi);
+    } else {
+        $('milestone_'+milestone_id+'_issues').toggleClassName('collapsed');
+    }
+};
+
+TBG.Project.Planning.toggleMilestoneSorting = function() {
+    if ($('project_planning').hasClassName('milestone-sort')) {
+        $('project_planning').removeClassName('milestone-sort left_toggled');
+        jQuery('#milestone_list').sortable("destroy");
+        jQuery('.milestone_issues.ui-sortable').sortable('enable');
+    } else {
+        $('project_planning').addClassName('milestone-sort left_toggled');
+
+        jQuery('.milestone_issues.ui-sortable').sortable('disable');
+
+        jQuery('#milestone_list').sortable({
+            update: TBG.Project.Planning.sortMilestones,
+            axis: 'y',
+            items: '> .milestone_box',
+            helper: 'original',
+            tolerance: 'intersect'
+        });
+    }
+};
+
 TBG.Project.Planning.initialize = function (options) {
-    $$('.milestone_box').each(function (milestone) {
-        if (options.dragdrop == true) {
-            TBG.Project.Planning.getMilestoneIssues(milestone, TBG.Project.Planning.initializeDragDropSorting);
-        } else {
-            TBG.Project.Planning.getMilestoneIssues(milestone);
-        }
-    });
+    TBG.Project.Planning.options = options;
+    
+    $$('.milestone_box.unavailable').each(TBG.Project.Planning.initializeMilestoneDragDropSorting);
+    var milestone_boxes = $$('.milestone_box.available');
+    TBG.Project.Planning.options.milestone_count = milestone_boxes.size() + 1;
+    milestone_boxes.each(TBG.Project.Planning.getMilestoneIssues);
     
     TBG.Project.Planning._initializeFilterSearch();
 
@@ -2344,6 +2742,12 @@ TBG.Project.Planning.initialize = function (options) {
             success: {
                 update: 'epics_list',
                 callback: function (json) {
+                    var completed_milestones = $$('.milestone_box.available.initialized');
+                    var multiplier = 100 / TBG.Project.Planning.options.milestone_count;
+                    var pct = Math.floor((completed_milestones.size() + 1) * multiplier);
+                    $('planning_percentage_filler').setStyle({width: pct + '%'});
+                    
+                    $('epics_toggler_button').enable();
                     TBG.Project.Planning.initializeEpicDroptargets();
                     jQuery('body').on('click', '.epic', function (e) {
                         TBG.Project.Planning.toggleEpicFilter(this);
@@ -2398,7 +2802,7 @@ TBG.Project.Planning.insertIntoMilestone = function (milestone_id, content, reca
         milestone_list.insert({bottom: content});
     } else {
         milestone_list.insert({top: content});
-        setTimeout(TBG.Project.Planning.sortMilestones({target: 'milestone_' + milestone_id + '_issues'}), 250);
+        setTimeout(TBG.Project.Planning.sortMilestoneIssues({target: 'milestone_' + milestone_id + '_issues'}), 250);
     }
     if (recalculate == 'all') {
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
@@ -2425,7 +2829,9 @@ TBG.Project.Planning.retrieveIssue = function (issue_id, url, existing_element) 
                 } else {
                     if (!existing_element) {
                         if (json.issue_details.milestone && json.issue_details.milestone.id) {
-                            TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                            if ($('milestone_'+json.issue_details.milestone.id).hasClassName('initialized')) {
+                                TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
+                            }
                         } else {
                             TBG.Project.Planning.insertIntoMilestone(0, json.component);
                         }
@@ -2541,8 +2947,11 @@ TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails = function (list) 
 };
 
 TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
-    jQuery('.milestone_issues').each(function (index) {
-        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(this)
+    jQuery('.milestone_box.initialized').find('.milestone_issues').each(function (index) {
+        var was_collapsed = $(this).hasClassName('collapsed');
+        $(this).removeClassName('collapsed');
+        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(this);
+        if (was_collapsed && parseInt($(this).up('.milestone_box').dataset.milestoneId) !== 0) $(this).addClassName('collapsed');
     });
 };
 
@@ -2577,7 +2986,23 @@ TBG.Project.Planning.calculateNewBacklogMilestoneDetails = function (event, ui) 
     }
 };
 
-TBG.Project.Planning.doSortMilestones = function (list) {
+TBG.Project.Planning.sortMilestones = function (event, ui) {
+    var list = $(event.target);
+    var url = list.dataset.sortUrl;
+    var items = '';
+    list.childElements().each(function (milestone, index) {
+        if (milestone.dataset.milestoneId !== undefined) {
+            items += '&milestone_ids['+index+']=' + milestone.dataset.milestoneId;
+        }
+    });
+    TBG.Main.Helpers.ajax(url, {
+        url_method: 'post',
+        additional_params: items,
+        loading: {indicator: 'planning_indicator'}
+    });
+};
+
+TBG.Project.Planning.doSortMilestoneIssues = function (list) {
     var url = list.up('.milestone_box').dataset.issuesUrl;
     var items = '';
     list.childElements().each(function (issue) {
@@ -2592,7 +3017,7 @@ TBG.Project.Planning.doSortMilestones = function (list) {
     });
 };
 
-TBG.Project.Planning.sortMilestones = function (event, ui) {
+TBG.Project.Planning.sortMilestoneIssues = function (event, ui) {
     var list = $(event.target);
     var issue = $(ui.item[0]);
     if (issue.dataset.sortCancel) {
@@ -2602,7 +3027,7 @@ TBG.Project.Planning.sortMilestones = function (event, ui) {
         if (ui !== undefined && ui.item.hasClass('new_milestone_marker')) {
             TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
         } else {
-            TBG.Project.Planning.doSortMilestones(list);
+            TBG.Project.Planning.doSortMilestoneIssues(list);
         }
     }
 };
@@ -2622,11 +3047,19 @@ TBG.Project.Planning.moveIssue = function (event, ui) {
                 loading: {indicator: list.up('.milestone_box').down('.planning_indicator')},
                 complete: {
                     callback: function (json) {
-                        issue.down('.issue_container').dataset.lastUpdated = get_current_timestamp();
-                        TBG.Project.Planning.doSortMilestones(list);
-                        TBG.Core.Pollers.Callbacks.planningPoller();
-                        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(list);
-                        TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(original_list);
+                        if (list.up('.milestone_box').hasClassName('initialized')) {
+                            issue.down('.issue_container').dataset.lastUpdated = get_current_timestamp();
+                            TBG.Project.Planning.doSortMilestoneIssues(list);
+                            TBG.Core.Pollers.Callbacks.planningPoller();
+                            TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(list);
+                            TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(original_list);
+                        } else {
+                            issue.remove();
+                            var milestone_id = list.up('.milestone_box').dataset.milestoneId;
+                            $('milestone_' + milestone_id + '_issues_count').update(json.issues);
+                            $('milestone_' + milestone_id + '_points_count').update(json.points);
+                            $('milestone_' + milestone_id + '_hours_count').update(json.hours);
+                        }
                     }
                 }
             });
@@ -2684,6 +3117,9 @@ TBG.Project.Planning.saveAgileBoard = function (item) {
                         container.insert({before: json.component});
                     }
                     TBG.Main.Helpers.Backdrop.reset();
+                } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id) && $('project_planning').hasClassName('whiteboard')) {
+                    TBG.Main.Helpers.Backdrop.reset();
+                    TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                 } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id)) {
                     var backlog = $('milestone_0');
                     TBG.Main.Helpers.Backdrop.reset();
@@ -2786,6 +3222,7 @@ TBG.Project.Milestone.save = function (form) {
 TBG.Project.Milestone.remove = function (url, milestone_id) {
     TBG.Main.Helpers.Dialog.dismiss();
     TBG.Main.Helpers.ajax(url, {
+        url_method: 'delete',
         loading: {
             indicator: 'dialog_indicator',
         },
@@ -3332,15 +3769,11 @@ TBG.Config.Issuetype.add = function (url) {
     TBG.Main.Helpers.ajax(url, {
         form: 'add_issuetype_form',
         loading: {
-            indicator: 'add_issuetype_indicator',
-            hide: 'add_issuetype_button'
+            reset: 'add_issuetype_form',
+            indicator: 'add_issuetype_indicator'
         },
         success: {
-            reset: 'add_issuetype_form',
             update: {element: 'issuetypes_list', insertion: true}
-        },
-        complete: {
-            show: 'add_issuetype_button'
         }
     });
 }
@@ -3351,18 +3784,18 @@ TBG.Config.Issuetype.toggleForScheme = function (url, issuetype_id, scheme_id, a
     var cb;
     if (action == 'enable') {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greybox");
         };
     } else {
         cb = function (json) {
-            $('issuetype_' + json.issuetype_id + '_box').removeClassName("green");
-            $('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");
+            $('issuetype_' + json.issuetype_id + '_box').removeClassName("greenbox");
+            $('issuetype_' + json.issuetype_id + '_box').addClassName("greybox");
         };
     }
     TBG.Main.Helpers.ajax(url, {
         loading: {
-            indicator: 'edit_issuetype_' + issuetype_id + '_indicator',
+            indicator: 'issuetype_' + issuetype_id + '_indicator',
             hide: hide_element
         },
         success: {
@@ -3427,7 +3860,13 @@ TBG.Config.Issuefields.Options.add = function (url, type) {
         success: {
             reset: 'add_' + type + '_form',
             hide: 'no_' + type + '_items',
-            update: {element: type + '_list', insertion: true}
+            update: {element: type + '_list', insertion: true},
+            callback: function () {
+                if (sortable_options != undefined) {
+                    Sortable.destroy(type + '_list');
+                    Sortable.create(type + '_list', sortable_options);
+                }
+            }
         }
     });
 }
@@ -3452,11 +3891,19 @@ TBG.Config.Issuefields.Options.update = function (url, type, id) {
 
 TBG.Config.Issuefields.Options.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_option_' + type + '_' + id,
             callback: function (json) {
                 TBG.Main.Helpers.Dialog.dismiss();
+                if ($(type + '_list').childElements().size() == 0) {
+                    $('no_' + type + '_items').show();
+                }
             }
         }
     });
@@ -3467,14 +3914,10 @@ TBG.Config.Issuefields.Custom.add = function (url) {
         form: 'add_custom_type_form',
         loading: {
             indicator: 'add_custom_type_indicator',
-            hide: 'add_custom_type_button'
+            reset: 'add_custom_type_form'
         },
         success: {
-            reset: 'add_custom_type_form',
             update: {element: 'custom_types_list', insertion: true}
-        },
-        complete: {
-            show: 'add_custom_type_button'
         }
     });
 }
@@ -3495,7 +3938,7 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
                     $('custom_type_' + type + '_instructions_div').hide();
                     $('custom_type_' + type + '_no_instructions_div').show();
                 }
-                $('custom_type_' + type + '_name_link').update(json.name);
+                $('custom_type_' + type + '_name').update(json.name);
             },
             show: 'custom_type_' + type + '_info'
         }
@@ -3504,7 +3947,12 @@ TBG.Config.Issuefields.Custom.update = function (url, type) {
 
 TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: 'item_' + type + '_' + id,
             callback: function (json) {
@@ -3516,7 +3964,14 @@ TBG.Config.Issuefields.Custom.remove = function (url, type, id) {
 
 TBG.Config.Permissions.set = function (url, field) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: field + '_indicator'},
+        loading: {
+            indicator: field + '_indicator',
+            callback: function (json) {
+                $$('#' + field + ' .image img').each(function (element) {
+                    $(element).hide();
+                });
+            }
+        },
         success: {update: field}
     });
 };
@@ -3596,18 +4051,21 @@ TBG.Config.Roles.add = function (url) {
         loading: {indicator: 'new_role_form_indicator'},
         success: {
             update: {element: 'global_roles_list', insertion: true},
-            hide: ['global_roles_no_roles', 'new_role']
+            hide: ['global_roles_no_roles'],
+            callback: function  () {
+                $('add_new_role_input').setValue('');
+            }
         }
     });
 };
 
-TBG.Project.Roles.add = function (url) {
+TBG.Project.Roles.add = function (url, pid) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'new_project_role_form',
-        loading: {indicator: 'new_project_role_form_indicator'},
+        form: 'new_project' + pid + '_role_form',
+        loading: {indicator: 'new_project' + pid + '_role_form_indicator'},
         success: {
-            update: {element: 'project_roles_list', insertion: true},
-            hide: ['project_roles_no_roles', 'new_project_role']
+            update: {element: 'project' + pid + '_roles_list', insertion: true},
+            hide: ['project' + pid + '_roles_no_roles', 'new_project' + pid + '_role']
         }
     });
 };
@@ -3624,18 +4082,19 @@ TBG.Config.User.add = function (url, callback_function_for_import, form) {
     f = (form !== undefined) ? form : 'createuser_form';
     TBG.Main.Helpers.ajax(url, {
         form: f,
-        loading: {indicator: 'find_users_indicator'},
         success: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             update: 'users_results',
             callback: function (json) {
+                $('adduser_div').hide();
                 TBG.Config.User._updateLinks(json);
                 f.reset();
-                $('adduser_div').hide();
             }
         },
         failure: {
+            hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
             callback: function (json) {
-                if (json.allow_import) {
+                if (json.allow_import || false) {
                     callback_function_for_import();
                 }
             }
@@ -3659,17 +4118,29 @@ TBG.Config.User.addToScope = function (url) {
 
 TBG.Config.User.getEditForm = function (url, uid) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'user_' + uid + '_edit_spinning'},
+        loading: {
+            indicator: 'user_' + uid + '_edit_spinning',
+            hide: 'users_results_user_' + uid
+        },
         success: {
+            // update: 'user_' + uid + '_edit_td',
             update: 'user_' + uid + '_edit_td',
-            show: 'user_' + uid + '_edit_tr'
+            show: ['user_' + uid + '_edit_tr', 'users_results_user_' + uid]
+        },
+        failure: {
+            show: 'users_results_user_' + uid
         }
     });
 };
 
 TBG.Config.User.remove = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_user_' + user_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+        },
         success: {
             remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
             callback: TBG.Config.User._updateLinks
@@ -3678,6 +4149,7 @@ TBG.Config.User.remove = function (url, user_id) {
 };
 
 TBG.Config.User._updateLinks = function (json) {
+    if (json == null) return;
     if ($('current_user_num_count'))
         $('current_user_num_count').update(json.total_count);
     (json.more_available) ? $('adduser_form_container').show() : $('adduser_form_container').hide();
@@ -3686,7 +4158,7 @@ TBG.Config.User._updateLinks = function (json) {
 
 TBG.Config.User.update = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_form',
+        form: 'edit_user_' + user_id + '_form',
         loading: {indicator: 'edit_user_' + user_id + '_indicator'},
         success: {
             update: 'users_results_user_' + user_id,
@@ -3704,7 +4176,7 @@ TBG.Config.User.update = function (url, user_id) {
 
 TBG.Config.User.updateScopes = function (url, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'edituser_' + user_id + '_scopes_form',
+        form: 'edit_user_' + user_id + '_scopes_form',
         loading: {indicator: 'edit_user_' + user_id + '_scopes_form_indicator'},
         success: {
             callback: TBG.Main.Helpers.Backdrop.reset
@@ -3740,11 +4212,15 @@ TBG.Config.Collection.add = function (url, type, callback_function) {
 
 TBG.Config.Collection.remove = function (url, type, cid, callback_function) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+        },
         success: {
             remove: type + 'box_' + cid,
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 if (callback_function)
                     callback_function(json);
             }
@@ -3777,10 +4253,12 @@ TBG.Config.Collection.showMembers = function (url, type, cid) {
 
 TBG.Config.Collection.removeMember = function (url, type, cid, user_id) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: type + '_members_' + cid + '_indicator'},
+        loading: {
+            indicator: type + '_members_' + cid + '_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             callback: function (json) {
-                TBG.Main.Helpers.Dialog.dismiss();
                 $(type + '_' + cid + '_' + user_id + '_item').remove();
                 TBG.Config.Collection.updateDetailsFromJSON(json, false);
                 var ul = $(type + '_members_' + cid + '_list').down('ul');
@@ -3869,11 +4347,11 @@ TBG.Config.Team.getPermissionsBlock = function (url, team_id) {
     if ($('team_' + team_id + '_permissions').innerHTML == '') {
         TBG.Main.Helpers.ajax(url, {
             loading: {
+                show: 'team_' + team_id + '_permissions_container',
                 indicator: 'team_' + team_id + '_permissions_indicator'
             },
             success: {
                 update: 'team_' + team_id + '_permissions',
-                show: 'team_' + team_id + '_permissions_container'
             }
         });
     }
@@ -3935,13 +4413,7 @@ TBG.Config.Client.update = function (url, client_id) {
 }
 
 TBG.Config.Workflows.Transition.remove = function (url, transition_id, direction) {
-    var trans_sib = $('transition_' + transition_id).next(1);
-    var parameters = "&direction=" + direction;
-    TBG.Main.Helpers.ajax(url, {
-        params: parameters,
-        loading: {indicator: 'delete_transition_' + transition_id + '_indicator'},
-        success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
-    });
+    $('transition_' + transition_id + '_delete_form').submit();
 }
 
 TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
@@ -3957,8 +4429,12 @@ TBG.Config.Workflows.Scheme.copy = function (url, scheme_id) {
 
 TBG.Config.Workflows.Scheme.remove = function (url, scheme_id) {
     TBG.Main.Helpers.ajax(url, {
-        form: 'delete_workflow_scheme_' + scheme_id + '_form',
-        loading: {indicator: 'delete_workflow_scheme_' + scheme_id + '_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id],
             update: {element: 'workflow_schemes_list', insertion: true}
@@ -4029,7 +4505,12 @@ TBG.Config.Workflows.Transition.Validations.update = function (url, rule_id) {
 
 TBG.Config.Workflows.Transition.Validations.remove = function (url, rule_id, type, mode) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: 'dialog_backdrop'
+        },
         success: {
             remove: ['workflowtransitionvalidationrule_' + rule_id],
             show: ['add_workflowtransition' + type + 'validationrule_' + mode],
@@ -4093,6 +4574,7 @@ TBG.Issues.updateFields = function (url)
             params: 'issuetype_id=' + $('issuetype_id').getValue(),
             success: {
                 callback: function (json) {
+                    TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
                     json.available_fields.each(function (fieldname, key)
                     {
                         if ($(fieldname + '_div')) {
@@ -5505,6 +5987,8 @@ TBG.Search.initializeFilters = function () {
         element.on('click', TBG.Search.pickTemplate);
     });
     document.observe('click', function (event, element) {
+        if (['INPUT'].indexOf(event.target.nodeName) != -1)
+            return;
         $$('.filter,.interactive_plus_button').each(function (element) {
             element.removeClassName('selected');
         });
@@ -5523,7 +6007,7 @@ TBG.Search.initializeFilters = function () {
         ift.on('keyup', function (event, element) {
             if (TBG.ift_observers[ift.id])
                 clearTimeout(TBG.ift_observers[ift.id]);
-            if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
+            if ((ift.getValue().length >= 3 || ift.getValue().length == 0 || (ift.dataset.maxlength && ift.getValue().length > parseInt(ift.dataset.maxlength))) && ift.getValue() != ift.dataset.lastValue) {
                 TBG.ift_observers[ift.id] = setTimeout(function () {
                     TBG.Search.liveUpdate(true);
                     ift.dataset.lastValue = ift.getValue();
@@ -5547,6 +6031,20 @@ TBG.Search.pickTemplate = function (event, element) {
             if (element == current_elm) {
                 current_elm.addClassName('selected');
                 $('filter_selected_template').setValue(current_elm.dataset.templateName);
+                if (current_elm.dataset.grouping == '1') {
+                    $('search_grouping_container').removeClassName('nogrouping');
+                    $('search_grouping_container').removeClassName('parameter');
+                    $('search_filter_parameter_input').disable();
+                } else {
+                    $('search_grouping_container').addClassName('nogrouping');
+                    if (current_elm.dataset.parameter == '1') {
+                        $('search_grouping_container').addClassName('parameter');
+                        $('search_filter_parameter_description').update(current_elm.dataset.parameterText)
+                        $('search_filter_parameter_input').enable();
+                    } else {
+                        $('search_grouping_container').removeClassName('parameter');
+                    }
+                }
             } else {
                 element.removeClassName('selected');
             }
@@ -6441,7 +6939,9 @@ TBG.Main.Helpers.toggleFancyFilterValue = function (event, element) {
     event.stopPropagation();
     event.stopImmediatePropagation();
     event.preventDefault();
-    TBG.Main.Helpers.toggleFancyFilterValueElement(this);
+    if (!$(this).hasClassName('disabled')) {
+        TBG.Main.Helpers.toggleFancyFilterValueElement(this);
+    }
 };
 
 TBG.Main.Helpers.setFancyFilterSelectionGroupSelections = function (element) {
@@ -6465,6 +6965,28 @@ TBG.Main.Helpers.setFancyFilterSelectionGroupSelections = function (element) {
             }
         });
     }
+    if (element.up('.fancyfilter').dataset.exclusivityGroup !== undefined) {
+        var egroup = element.up('.fancyfilter').dataset.exclusivityGroup;
+        $$('.interactive_menu_values').each(function (value_list) {
+            if (value_list.up('.fancyfilter').dataset.exclusivityGroup !== undefined && value_list.up('.fancyfilter').dataset.exclusivityGroup === egroup) {
+                value_list.childElements('.filtervalue').each(function (filtervalue) {
+                    if ($(filtervalue).dataset.value === element.dataset.value) {
+                        if ($(filtervalue) !== element) {
+                            if (element.hasClassName('selected')) {
+                                $(filtervalue).addClassName('disabled');
+                            } else {
+                                $(filtervalue).removeClassName('disabled');
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+};
+
+TBG.Main.Helpers.recalculateFancyFilters = function() {
+    $$('.filter').each(TBG.Main.Helpers.calculateFancyFilterDetails);
 };
 
 TBG.Main.Helpers.toggleFancyFilterValueElement = function (element, checked) {
@@ -6505,8 +7027,11 @@ TBG.Main.Helpers.calculateFancyFilterDetails = function (filter) {
 };
 
 TBG.Main.Helpers.updateFancyFilterVisibleValue = function (filter, value) {
-    if (value.length > 23) {
-        value = value.substr(0, 20) + '...';
+    var fl = filter.getLayout();
+    var width = fl.get('width') + fl.get('padding-left') + fl.get('padding-right');
+    var maxlength = Math.round(width / 8.5);
+    if (value.length > maxlength) {
+        value = value.substr(0, maxlength - 3) + '...';
     }
     filter.down('.value').update(value);
 };
@@ -6526,6 +7051,9 @@ jQuery(document).ready(function () {
                 e.stopPropagation();
                 e.preventDefault();
             }
+        });
+        $("body").on("click", "#topmenu-container .menu_dropdown", function (e) {
+            $('#topmenu-container').toggleClass('active');
         });
         $("body").on("click", ".fancydropdown", function (e) {
             $(this).toggleClass('selected');

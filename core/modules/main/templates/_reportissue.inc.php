@@ -9,7 +9,7 @@
                     <?php endforeach; ?>
                 <?php elseif (is_bool($error)): ?>
                     <li>
-                        <?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true)) || in_array($key, array('pain_bug_type', 'pain_likelihood', 'pain_effect'))): ?>
+                        <?php if ($key == 'title' || in_array($key, \thebuggenie\core\entities\Datatype::getAvailableFields(true)) || in_array($key, array('pain_bug_type', 'pain_likelihood', 'pain_effect'))): ?>
                             <?php
 
                                 switch ($key)
@@ -80,11 +80,11 @@
                                 }
 
                             ?>
-                        <?php elseif (TBGCustomDatatype::doesKeyExist($key)): ?>
-                            <?php echo __('Required field "%field_name" is missing or invalid', array('%field_name' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+                        <?php elseif (\thebuggenie\core\entities\CustomDatatype::doesKeyExist($key)): ?>
+                            <?php echo __('Required field "%field_name" is missing or invalid', array('%field_name' => \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription())); ?>
                         <?php else:
 
-                            $event = new TBGEvent('core', 'reportissue.validationerror', $key);
+                            $event = new \thebuggenie\core\framework\Event('core', 'reportissue.validationerror', $key);
                             $event->setReturnValue($key);
                             $event->triggerUntilProcessed();
                             echo __('A validation error occured: %error', array('%error' => $event->getReturnValue()));
@@ -103,7 +103,7 @@
                     <?php endforeach; ?>
                 <?php elseif (is_bool($p_error)): ?>
                     <li>
-                        <?php if (in_array($key, TBGDatatype::getAvailableFields(true))): ?>
+                        <?php if (in_array($key, \thebuggenie\core\entities\Datatype::getAvailableFields(true))): ?>
                             <?php
 
                                 switch ($key)
@@ -157,7 +157,7 @@
 
                             ?>
                         <?php else: ?>
-                            <?php echo __('You don\'t have access to enter "%field_name"', array('%field_name' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+                            <?php echo __('You don\'t have access to enter "%field_name"', array('%field_name' => \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription())); ?>
                         <?php endif; ?>
                     </li>
                 <?php else: ?>
@@ -167,7 +167,7 @@
         </ul>
         <?php echo __('Please try to fix the error described above, and then click the %file_issue button again', array('%file_issue' => '<b>'.__('File issue').'</b>')); ?>.
     </div>
-<?php elseif ($issue instanceof TBGIssue): ?>
+<?php elseif ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <div class="rounded_box report_issue_desc <?php if (!$tbg_request->isAjaxCall()): ?>green<?php endif; ?> borderless" style="margin-bottom: 10px;" id="report_issue_reported_issue_details">
         <div style="font-size: 1.1em;">
             <strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?>:</strong>
@@ -175,12 +175,12 @@
         </div>
         <span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
     </div>
-    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list')].each(Element.toggle);"><?php echo __('Report another issue'); ?></a>
+    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list'), $('report_issue_reported_issue_details')].each(function (el) { Element.toggle(el, 'block'); });"><?php echo __('Report another issue'); ?></a>
 <?php endif; ?>
 <?php if ($tbg_request->isAjaxCall()): ?>
-    <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Main.submitIssue('<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey(), 'return_format' => 'planning')); ?>');return false;" id="report_issue_form" style="<?php if (isset($issue) && $issue instanceof TBGIssue) echo 'display: none;'; ?>">
+    <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" onsubmit="TBG.Main.submitIssue('<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey(), 'return_format' => 'planning')); ?>');return false;" id="report_issue_form" style="<?php if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue) echo 'display: none;'; ?>">
 <?php else: ?>
-    <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+    <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
 <?php endif; ?>
     <input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
     <?php if (isset($selected_milestone) || isset($selected_build) || isset($parent_issue)): ?>
@@ -197,7 +197,7 @@
                     <li>
                         <?php echo __('Issues you create will be child issues of %related_issue_title', array('%related_issue_title' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
                         <input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
-                        <?php if ($issue instanceof TBGIssue): ?>
+                        <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
                         <script>
                             TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
                         </script>
@@ -214,7 +214,7 @@
         </div>
     <?php endif; ?>
     <?php if (count($issuetypes) > 0): ?>
-        <div class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
+        <div class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof \thebuggenie\core\entities\Issuetype): ?> style="display: none;"<?php endif; ?>>
             <?php if ($introarticle instanceof \thebuggenie\modules\publish\entities\Article): ?>
                 <?php include_component('publish/articledisplay', array('article' => $introarticle, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
             <?php endif; ?>
@@ -223,7 +223,7 @@
                 <?php if (isset($board) && $issuetype->getID() == $board->getEpicIssuetypeID()) continue; ?>
                 <a class="button button-silver" data-key="<?php echo $issuetype->getKey(); ?>" data-id="<?php echo $issuetype->getID(); ?>" href="javascript:void(0);">
                     <?php echo image_tag($issuetype->getIcon() . '.png'); ?>
-                    <?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?>
+                    <span><?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?></span>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -265,10 +265,10 @@
         <?php if (!isset($reproduction_steps)) : ?>
             <?php $reproduction_steps = ''; ?>
         <?php endif; ?>
-        <div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>>
+        <div id="report_more_here"<?php if ($selected_issuetype instanceof \thebuggenie\core\entities\Issuetype && $selected_project instanceof \thebuggenie\core\entities\Project): ?> style="display: none;"<?php endif; ?>>
             <span id="issuetype_description_help"><?php echo __("Hold your mouse over an issuetype to see what it's used for"); ?></span>
         </div>
-        <div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
+        <div class="report_form" id="report_form"<?php if (!$selected_project instanceof \thebuggenie\core\entities\Project || !$selected_issuetype instanceof \thebuggenie\core\entities\Issuetype): ?> style="display: none;"<?php endif; ?>>
             <?php if ($reporthelparticle instanceof \thebuggenie\modules\publish\entities\Article): ?>
                 <?php include_component('publish/articledisplay', array('article' => $reporthelparticle, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
             <?php endif; ?>
@@ -295,7 +295,7 @@
                             <option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
                             <?php foreach ($issuetypes as $issuetype): ?>
                                 <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-                                <option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
+                                <option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof \thebuggenie\core\entities\Issuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
@@ -312,7 +312,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="padding-top: 5px;">
-                        <?php include_template('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => ($tbg_request->isAjaxCall() ? '150px' : '250px'), 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
+                        <?php include_component('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => ($tbg_request->isAjaxCall() ? '150px' : '250px'), 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
                     </td>
                 </tr>
             </table>
@@ -323,7 +323,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="padding-top: 5px;">
-                        <?php include_template('textarea', array('area_name' => 'reproduction_steps', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => '250px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
+                        <?php include_component('textarea', array('area_name' => 'reproduction_steps', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => '250px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
                     </td>
                 </tr>
             </table>
@@ -339,8 +339,8 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="edition_id" id="edition_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_edition instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_edition instanceof TBGEdition): ?>
+                                <option value=""<?php if (!$selected_edition instanceof \thebuggenie\core\entities\Edition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_edition instanceof \thebuggenie\core\entities\Edition): ?>
                                     <option value="<?php echo $selected_edition->getID(); ?>"><?php echo $selected_edition->getName(); ?></option>
                                 <?php endif; ?>
                             </select>
@@ -355,8 +355,8 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="build_id" id="build_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_build instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_build instanceof TBGBuild): ?>
+                                <option value=""<?php if (!$selected_build instanceof \thebuggenie\core\entities\Build) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_build instanceof \thebuggenie\core\entities\Build): ?>
                                     <option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?> (<?php echo $selected_build->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
@@ -371,8 +371,8 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="component_id" id="component_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_component instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_component instanceof TBGComponent): ?>
+                                <option value=""<?php if (!$selected_component instanceof \thebuggenie\core\entities\Component) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_component instanceof \thebuggenie\core\entities\Component): ?>
                                     <option value="<?php echo $selected_component->getID(); ?>"><?php echo $selected_component->getName(); ?></option>
                                 <?php endif; ?>
                             </select>
@@ -411,9 +411,9 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="status_id" id="status_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_status instanceof TBGStatus) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_status instanceof \thebuggenie\core\entities\Status) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($statuses as $status): ?>
-                                    <option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGStatus && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+                                    <option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof \thebuggenie\core\entities\Status && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -427,9 +427,9 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="category_id" id="category_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_category instanceof TBGCategory) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_category instanceof \thebuggenie\core\entities\Category) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGCategory && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+                                    <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Category && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -442,9 +442,9 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="resolution_id" id="resolution_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_resolution instanceof TBGResolution) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_resolution instanceof \thebuggenie\core\entities\Resolution) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($resolutions as $resolution): ?>
-                                    <option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof TBGResolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+                                    <option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof \thebuggenie\core\entities\Resolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -457,9 +457,9 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="reproducability_id" id="reproducability_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_reproducability instanceof TBGReproducability) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_reproducability instanceof \thebuggenie\core\entities\Reproducability) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($reproducabilities as $reproducability): ?>
-                                    <option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGReproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+                                    <option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof \thebuggenie\core\entities\Reproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -472,9 +472,9 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="priority_id" id="priority_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_priority instanceof TBGPriority) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_priority instanceof \thebuggenie\core\entities\Priority) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($priorities as $priority): ?>
-                                    <option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof TBGPriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+                                    <option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof \thebuggenie\core\entities\Priority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -488,9 +488,9 @@
                         <tr>
                             <td colspan="2" style="padding-top: 5px;">
                                 <select name="milestone_id" id="milestone_id" style="width: 100%;">
-                                    <option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                    <option value=""<?php if (!$selected_milestone instanceof \thebuggenie\core\entities\Milestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                     <?php foreach ($milestones as $milestone): ?>
-                                        <option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
+                                        <option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </td>
@@ -505,7 +505,7 @@
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="pain_bug_type_id" id="pain_bug_type_id" style="width: 100%;">
                                 <option value=""<?php if (!$selected_pain_bug_type) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
+                                <?php foreach (\thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
                                     <option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_bug_type == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -520,7 +520,7 @@
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="pain_likelihood_id" id="pain_likelihood_id" style="width: 100%;">
                                 <option value=""<?php if (!$selected_pain_likelihood) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
+                                <?php foreach (\thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
                                     <option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_likelihood == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -535,7 +535,7 @@
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="pain_effect_id" id="pain_effect_id" style="width: 100%;">
                                 <option value=""<?php if (!$selected_pain_effect) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
+                                <?php foreach (\thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
                                     <option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_effect == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -549,15 +549,15 @@
                     <tr>
                         <td colspan="2" style="padding-top: 5px;">
                             <select name="severity_id" id="severity_id" style="width: 100%;">
-                                <option value=""<?php if (!$selected_severity instanceof TBGSeverity) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <option value=""<?php if (!$selected_severity instanceof \thebuggenie\core\entities\Severity) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($severities as $severity): ?>
-                                    <option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof TBGSeverity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
+                                    <option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof \thebuggenie\core\entities\Severity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
                     </tr>
                 </table>
-                <?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
+                <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $customdatatype): ?>
                     <table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;" class="additional_information<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> reportissue_error<?php endif; ?>">
                         <tr>
                             <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
@@ -567,19 +567,19 @@
                                 <?php
                                     switch ($customdatatype->getType())
                                     {
-                                        case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT: ?>
+                                        case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                                 <?php foreach ($customdatatype->getOptions() as $option): ?>
-                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::EDITIONS_CHOICE: ?>
+                                        case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Edition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getEditions() as $option): ?>
                                                     <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -587,19 +587,19 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::STATUS_CHOICE: ?>
+                                        case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGStatus) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                                <?php foreach (TBGStatus::getAll() as $option): ?>
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Status) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php foreach (\thebuggenie\core\entities\Status::getAll() as $option): ?>
                                                     <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::COMPONENTS_CHOICE: ?>
+                                        case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Component) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getComponents() as $option): ?>
                                                         <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -607,10 +607,10 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::RELEASES_CHOICE: ?>
+                                        case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Build) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getBuilds() as $option): ?>
                                                         <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -618,22 +618,22 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::RADIO_CHOICE: ?>
-                                            <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_0" value="" <?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_0"><?php echo __('Not specified'); ?></label><br>
+                                        case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE: ?>
+                                            <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_0" value="" <?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_0"><?php echo __('Not specified'); ?></label><br>
                                             <?php foreach ($customdatatype->getOptions() as $option): ?>
-                                                <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
+                                                <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
                                             <?php endforeach; ?>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::INPUT_TEXT:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
                                             ?>
                                             <input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value" /><br>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-                                        case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                             ?>
-                                            <?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
                                             <?php
                                             break;
                                     }
@@ -651,7 +651,7 @@
                     });
                 </script>
             <?php endif; ?>
-            <?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.prefile')->trigger(); ?>
             <div class="rounded_box report_issue_submit_container report_issue_desc green borderless" style="clear: both; vertical-align: middle; margin-top: 10px; padding: 5px; height: 25px;">
                 <div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
                 <input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
@@ -664,12 +664,12 @@
                 <ul id="reportissue_extrafields">
                     <li id="status_additional" style="display: none;">
                         <?php echo image_tag('icon_status.png'); ?>
-                        <div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
+                        <div id="status_link"<?php if ($selected_status instanceof \thebuggenie\core\entities\Status): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
                         <div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="status_id" id="status_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($statuses as $status): ?>
-                                    <option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGDatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+                                    <option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof \thebuggenie\core\entities\Datatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -677,11 +677,11 @@
                     </li>
                     <li id="edition_additional" style="display: none;">
                         <?php echo image_tag('icon_edition.png'); ?>
-                        <div id="edition_link"<?php if ($selected_edition instanceof TBGEdition): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('edition_link').hide();$('edition_additional_div').show();"><?php echo __('Specify edition'); ?></a></div>
+                        <div id="edition_link"<?php if ($selected_edition instanceof \thebuggenie\core\entities\Edition): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('edition_link').hide();$('edition_additional_div').show();"><?php echo __('Specify edition'); ?></a></div>
                         <div id="edition_additional_div"<?php if ($selected_edition === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="edition_id" id="edition_id_additional">
-                                <option value=""<?php if (!$selected_edition instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_edition instanceof TBGEdition): ?>
+                                <option value=""<?php if (!$selected_edition instanceof \thebuggenie\core\entities\Edition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_edition instanceof \thebuggenie\core\entities\Edition): ?>
                                     <option value="<?php echo $selected_edition->getID(); ?>"><?php echo $selected_edition->getName(); ?> (<?php echo $selected_edition->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
@@ -690,11 +690,11 @@
                     </li>
                     <li id="build_additional" style="display: none;">
                         <?php echo image_tag('icon_build.png'); ?>
-                        <div id="build_link"<?php if ($selected_build instanceof TBGBuild): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('build_link').hide();$('build_additional_div').show();"><?php echo __('Specify release'); ?></a></div>
+                        <div id="build_link"<?php if ($selected_build instanceof \thebuggenie\core\entities\Build): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('build_link').hide();$('build_additional_div').show();"><?php echo __('Specify release'); ?></a></div>
                         <div id="build_additional_div"<?php if ($selected_build === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="build_id" id="build_id_additional">
-                                <option value=""<?php if (!$selected_build instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_build instanceof TBGBuild): ?>
+                                <option value=""<?php if (!$selected_build instanceof \thebuggenie\core\entities\Build) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_build instanceof \thebuggenie\core\entities\Build): ?>
                                     <option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?> (<?php echo $selected_build->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
@@ -703,11 +703,11 @@
                     </li>
                     <li id="component_additional" style="display: none;">
                         <?php echo image_tag('icon_component.png'); ?>
-                        <div id="component_link"<?php if ($selected_component instanceof TBGComponent): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('component_link').hide();$('component_additional_div').show();"><?php echo __('Specify component'); ?></a></div>
+                        <div id="component_link"<?php if ($selected_component instanceof \thebuggenie\core\entities\Component): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('component_link').hide();$('component_additional_div').show();"><?php echo __('Specify component'); ?></a></div>
                         <div id="component_additional_div"<?php if ($selected_component === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="component_id" id="component_id_additional">
-                                <option value=""<?php if (!$selected_component instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                <?php if ($selected_component instanceof TBGComponent): ?>
+                                <option value=""<?php if (!$selected_component instanceof \thebuggenie\core\entities\Component) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                <?php if ($selected_component instanceof \thebuggenie\core\entities\Component): ?>
                                     <option value="<?php echo $selected_component->getID(); ?>"><?php echo $selected_component->getName(); ?> (<?php echo $selected_component->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
@@ -717,11 +717,11 @@
                     <?php if (!isset($selected_milestone)): ?>
                         <li id="milestone_additional" style="display: none;">
                             <?php echo image_tag('icon_milestone.png'); ?>
-                            <div id="milestone_link"<?php if ($selected_milestone instanceof TBGMilestone): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('milestone_link').hide();$('milestone_additional_div').show();"><?php echo __('Specify milestone'); ?></a></div>
+                            <div id="milestone_link"<?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('milestone_link').hide();$('milestone_additional_div').show();"><?php echo __('Specify milestone'); ?></a></div>
                             <div id="milestone_additional_div"<?php if ($selected_milestone === null): ?> style="display: none;"<?php endif; ?>>
                                 <select name="milestone_id" id="milestone_id_additional">
-                                    <option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-                                    <?php if ($selected_milestone instanceof TBGMilestone): ?>
+                                    <option value=""<?php if (!$selected_milestone instanceof \thebuggenie\core\entities\Milestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                    <?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone): ?>
                                         <option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?></option>
                                     <?php endif; ?>
                                 </select>
@@ -731,12 +731,12 @@
                     <?php endif; ?>
                     <li id="category_additional" style="display: none;">
                         <?php echo image_tag('icon_category.png'); ?>
-                        <div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
+                        <div id="category_link"<?php if ($selected_category instanceof \thebuggenie\core\entities\Category): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
                         <div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="category_id" id="category_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGDatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+                                    <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Datatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -768,7 +768,7 @@
                     </li>
                     <li id="priority_additional">
                         <?php echo image_tag('icon_priority.png'); ?>
-                        <div id="priority_link"<?php if ($selected_priority instanceof TBGPriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
+                        <div id="priority_link"<?php if ($selected_priority instanceof \thebuggenie\core\entities\Priority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
                         <div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="priority_id" id="priority_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
@@ -781,12 +781,12 @@
                     </li>
                     <li id="reproducability_additional" style="display: none;">
                         <?php echo image_tag('icon_reproducability.png'); ?>
-                        <div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
+                        <div id="reproducability_link"<?php if ($selected_reproducability instanceof \thebuggenie\core\entities\Reproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
                         <div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="reproducability_id" id="reproducability_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($reproducabilities as $reproducability): ?>
-                                    <option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGDatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+                                    <option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof \thebuggenie\core\entities\Datatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -794,7 +794,7 @@
                     </li>
                     <li id="resolution_additional" style="display: none;">
                         <?php echo image_tag('icon_resolution.png'); ?>
-                        <div id="resolution_link"<?php if ($selected_resolution instanceof TBGResolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
+                        <div id="resolution_link"<?php if ($selected_resolution instanceof \thebuggenie\core\entities\Resolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
                         <div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="resolution_id" id="resolution_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
@@ -807,7 +807,7 @@
                     </li>
                     <li id="severity_additional" style="display: none;">
                         <?php echo image_tag('icon_severity.png'); ?>
-                        <div id="severity_link"<?php if ($selected_severity instanceof TBGSeverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
+                        <div id="severity_link"<?php if ($selected_severity instanceof \thebuggenie\core\entities\Severity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
                         <div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
                             <select name="severity_id" id="severity_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
@@ -818,7 +818,7 @@
                             <a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
                         </div>
                     </li>
-                    <?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
+                    <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $customdatatype): ?>
                         <li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
                             <?php echo image_tag('icon_customdatatype.png'); ?>
                             <div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] !== null): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
@@ -826,19 +826,19 @@
                                 <?php
                                     switch ($customdatatype->getType())
                                     {
-                                        case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
+                                        case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
                                                 <?php foreach ($customdatatype->getOptions() as $option): ?>
-                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::EDITIONS_CHOICE:
+                                        case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getEditions() as $option): ?>
                                                     <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -846,19 +846,19 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::STATUS_CHOICE:
+                                        case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-                                                <?php foreach (TBGStatus::getAll() as $option): ?>
+                                                <?php foreach (\thebuggenie\core\entities\Status::getAll() as $option): ?>
                                                 <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::COMPONENTS_CHOICE:
+                                        case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getComponents() as $option): ?>
                                                     <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -866,10 +866,10 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::RELEASES_CHOICE:
+                                        case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-                                                <?php if ($selected_project instanceof TBGProject): ?>
+                                                <?php if ($selected_project instanceof \thebuggenie\core\entities\Project): ?>
                                                     <?php foreach ($selected_project->getBuilds() as $option): ?>
                                                     <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                     <?php endforeach; ?>
@@ -877,26 +877,26 @@
                                             </select>
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::RADIO_CHOICE:
+                                        case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:
                                             ?>
                                             <label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
                                             <br>
                                             <?php foreach ($customdatatype->getOptions() as $option): ?>
-                                                <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+                                                <input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\CustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
                                             <?php
                                             endforeach;
                                             break;
-                                        case TBGCustomDatatype::INPUT_TEXT:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
                                             ?>
                                             <input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
                                             <?php
                                             break;
-                                        case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-                                        case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                             ?>
                                             <label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
                                             <br>
-                                            <?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
                                             <?php
                                             break;
                                     }
@@ -916,7 +916,7 @@
                             </div>
                         </li>
                     <?php endforeach; ?>
-                    <?php TBGEvent::createNew('core', 'reportissue.listfields')->trigger(); ?>
+                    <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.listfields')->trigger(); ?>
                 </ul>
                 <div style="clear: both;"> </div>
             </div>

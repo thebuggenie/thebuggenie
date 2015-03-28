@@ -1,4 +1,4 @@
-<?php if ($article instanceof \thebuggenie\modules\publish\entities\Article && $comment instanceof TBGComment): ?>
+<?php if ($article instanceof \thebuggenie\modules\publish\entities\Article && $comment instanceof \thebuggenie\core\entities\Comment): ?>
     <h3><?php echo $article->getTitle(); ?></h3>
     <br>
     <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' ( ' . $comment->getPostedBy()->getUsername() . ')'; ?></h4>

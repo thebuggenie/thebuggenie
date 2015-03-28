@@ -7,8 +7,8 @@
                     <?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png'); ?>
                     <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedTitle(true, false), array('style' => 'text-overflow: ellipsis;')); ?>
                 </div>
-                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
-                    <span id="status_content"><?php echo ($issue->getStatus() instanceof TBGDatatype) ? __($issue->getStatus()->getName()) : __('Unknown'); ?></span>
+                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                    <span id="status_content"><?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? __($issue->getStatus()->getName()) : __('Unknown'); ?></span>
                 </div>
                 <span class="secondary">
                     <?php echo __('Last updated: %updated_at', array('%updated_at' => tbg_formatTime($issue->getLastUpdatedTime(), 12))); ?>
@@ -18,7 +18,7 @@
             </td>
             <td>
                 <?php if ($issue->isAssigned()): ?>
-                    <?php if ($issue->getAssignee() instanceof TBGUser): ?>
+                    <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
                         <?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee(), 'size' => 'large', 'userstate' => false, 'displayname' => '')); ?>
                     <?php else: ?>
                         <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee(), 'size' => 'large', 'displayname' => '')); ?>

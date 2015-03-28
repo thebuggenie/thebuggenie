@@ -1,5 +1,6 @@
-THE BUG GENIE VERSION 3
-=======================
+# The Bug Genie
+
+[![Build Status](https://travis-ci.org/thebuggenie/thebuggenie.png?branch=master)](https://travis-ci.org/thebuggenie/thebuggenie)
 
 The Bug Genie is an enterprise-grade issue-tracking, development and project
 management system. Main features includes:
@@ -23,8 +24,7 @@ For up-to-date installation and setup notes, visit the FAQ:
 http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 
-GENERAL INSTALLATION NOTES
---------------------------
+## Installation
 
 ### 1: Download and install Composer
 
@@ -60,9 +60,15 @@ To install:
 `./tbg_cli install`
 
 
-REPORTING ISSUES
-----------------
+## REPORTING ISSUES
 
-Thank you for downloading The Bug Genie
 If you find any issues, please report them in the issue tracker on our website:
 http://issues.thebuggenie.com
+
+
+## RUNNING PHPUNIT TESTS
+
+By executing `composer.phar install --dev` during the installation process, phpunit 4.2 will get installed. The phpunit test can be run by the following command:
+```
+vendor/bin/phpunit
+```

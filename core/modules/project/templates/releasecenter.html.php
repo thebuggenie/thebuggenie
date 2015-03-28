@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Release center'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" release center', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
 
 ?>
 <div id="project_release_center" class="project_info_container">
@@ -22,25 +22,25 @@
                 </div>
             <?php endif; ?>
             <h3><?php echo __('Project releases'); ?></h3>
-            <ul class="simple_list" id="builds_0">
-                <?php if (count($selected_project->getReleasedBuilds())): ?>
-                    <?php foreach ($selected_project->getReleasedBuilds() as $build): ?>
+            <ul class="simple_list" id="active_builds_0">
+                <?php if (count($selected_project->getNonEditionBuilds())): ?>
+                    <?php foreach ($selected_project->getNonEditionBuilds() as $build): ?>
                         <?php include_component('buildbox', array('build' => $build)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </ul>
-            <div class="faded_out" id="no_builds_0"<?php if (count($selected_project->getReleasedBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this project'); ?></div>
+            <div class="faded_out" id="no_active_builds_0"<?php if (count($selected_project->getNonEditionBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this project'); ?></div>
             <?php if ($selected_project->isEditionsEnabled()): ?>
                 <?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
                     <h3><?php echo __('%edition_name releases', array('%edition_name' => $edition->getName())); ?></h3>
                     <ul class="simple_list" id="active_builds_<?php echo $edition_id; ?>">
-                        <?php if (count($edition->getReleasedBuilds())): ?>
-                            <?php foreach ($edition->getReleasedBuilds() as $build): ?>
+                        <?php if (count($edition->getBuilds())): ?>
+                            <?php foreach ($edition->getBuilds() as $build): ?>
                                 <?php include_component('buildbox', array('build' => $build)); ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </ul>
-                    <div class="faded_out" id="no_builds_<?php echo $edition_id; ?>"<?php if (count($edition->getReleasedBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this edition'); ?></div>
+                    <div class="faded_out" id="no_active_builds_<?php echo $edition_id; ?>"<?php if (count($edition->getBuilds())): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no releases for this edition'); ?></div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

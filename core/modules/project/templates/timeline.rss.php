@@ -1,24 +1,24 @@
-<<?php ?>?xml version="1.0" encoding="<?php echo TBGContext::getI18n()->getCharset(); ?>" ?>
+<<?php ?>?xml version="1.0" encoding="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" ?>
 <rss version="2.0">
     <channel>
-        <title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name project timeline', array('%project_name' => TBGContext::getCurrentProject()->getName())); ?></title>
-        <link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
-        <description><?php echo strip_tags(TBGSettings::getTBGname()); ?></description>
-        <language><?php echo (mb_strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
+        <title><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName() . ' ~ '. __('%project_name project timeline', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())); ?></title>
+        <link><?php echo make_url('project_timeline', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey()), false); ?></link>
+        <description><?php echo strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName()); ?></description>
+        <language><?php echo (mb_strtolower(str_replace('_', '-', \thebuggenie\core\framework\Context::getI18n()->getCurrentLanguage()))); ?></language>
         <image>
-        <?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
-            <url><?php echo TBGSettings::getHeaderIconURL(); ?></url>
-        <?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
-            <url><?php echo TBGContext::getUrlHost().TBGContext::getTBGPath().'header.png'; ?></url>
+        <?php if (\thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon() == '2'): ?>
+            <url><?php echo \thebuggenie\core\framework\Settings::getHeaderIconURL(); ?></url>
+        <?php elseif (\thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon() == '1'): ?>
+            <url><?php echo \thebuggenie\core\framework\Context::getUrlHost().\thebuggenie\core\framework\Context::getWebroot().'header.png'; ?></url>
         <?php else: ?>
             <url><?php echo image_url('logo_24.png', false, null, false); ?></url>
         <?php endif; ?>
-            <title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name project timeline', array('%project_name' => TBGContext::getCurrentProject()->getName())); ?></title>
-            <link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
+            <title><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName() . ' ~ '. __('%project_name project timeline', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())); ?></title>
+            <link><?php echo make_url('project_timeline', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey()), false); ?></link>
         </image>
 <?php foreach ($recent_activities as $timestamp => $activities): ?>
 <?php foreach ($activities as $activity): ?>
-<?php if (array_key_exists('target_type', $activity) && $activity['target_type'] == 1 && ($issue = TBGContext::factory()->TBGIssue($activity['target'])) && $issue instanceof TBGIssue): ?>
+<?php if (array_key_exists('target_type', $activity) && $activity['target_type'] == 1 && ($issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($activity['target'])) && $issue instanceof \thebuggenie\core\entities\Issue): ?>
 <?php if ($issue->isDeleted()): continue; endif; ?>
         <item>
             <title><![CDATA[
@@ -26,61 +26,61 @@
                     $activity['text'] = str_replace("&rArr;", '->', html_entity_decode($activity['text']));
                     switch ($activity['change_type'])
                     {
-                        case TBGLogTable::LOG_ISSUE_CREATED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CREATED:
                             echo __('Issue created');
                             break;
-                        case TBGLogTable::LOG_ISSUE_CLOSE:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:
                             echo __('Issue closed %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_REOPEN:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REOPEN:
                             echo __('Issue reopened');
                             break;
-                        case TBGLogTable::LOG_ISSUE_UPDATE:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE:
                             echo $activity['text'];
                             break;
-                        case TBGLogTable::LOG_ISSUE_CATEGORY:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CATEGORY:
                             echo __('Category changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED:
                             echo __('Custom field changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_STATUS:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
                             echo __('Status changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_REPRODUCABILITY:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REPRODUCABILITY:
                             echo __('Reproducability changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_PRIORITY:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PRIORITY:
                             echo __('Priority changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_SEVERITY:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_SEVERITY:
                             echo __('Severity changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_RESOLUTION:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
                             echo __('Resolution changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_PERCENT:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PERCENT:
                             echo __('Percent completed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_MILESTONE:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_MILESTONE:
                             echo __('Target milestone changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_ISSUETYPE:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ISSUETYPE:
                             echo __('Issue type changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_TIME_ESTIMATED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
                             echo __('Estimation changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_TIME_SPENT:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
                             echo __('Time spent: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_ASSIGNED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
                             echo __('Assignee changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_OWNED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_OWNED:
                             echo __('Owner changed: %text', array('%text' => $activity['text']));
                             break;
-                        case TBGLogTable::LOG_ISSUE_POSTED:
+                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_POSTED:
                             echo __('Posted by changed: %text', array('%text' => $activity['text']));
                             break;
                         default:

@@ -24,4 +24,9 @@
         <?php endforeach; ?>
     </ul>
 </ul>
-<?php include_template('main/dashboardjavascript'); ?>
+<?php include_component('main/dashboardjavascript'); ?>
+<?php if (!$dashboard->countViews()): ?>
+    <script>
+        $$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});
+    </script>
+<?php endif; ?>

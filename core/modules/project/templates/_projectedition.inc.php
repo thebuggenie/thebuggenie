@@ -16,7 +16,7 @@
                     <tr class="hover_highlight">
                         <td style="padding: 2px; width: 100px;">
                             <b><?php echo __('Edition owner'); ?></b>
-                            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                                 <?php include_component('main/identifiableselector', array('html_id'        => 'owned_by_change',
                                                                                         'header'             => __('Change / set owner'),
                                                                                         'clear_link_text'    => __('Set owned by noone'),
@@ -28,9 +28,9 @@
                         </td>
                         <td style="<?php if (!$edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
                             <div style="width: 270px; display: <?php if ($edition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-                                <?php if ($edition->getOwner() instanceof TBGUser): ?>
+                                <?php if ($edition->getOwner() instanceof \thebuggenie\core\entities\User): ?>
                                     <?php echo include_component('main/userdropdown', array('user' => $edition->getOwner())); ?>
-                                <?php elseif ($edition->getOwner() instanceof TBGTeam): ?>
+                                <?php elseif ($edition->getOwner() instanceof \thebuggenie\core\entities\Team): ?>
                                     <?php echo include_component('main/teamdropdown', array('team' => $edition->getOwner())); ?>
                                 <?php endif; ?>
                             </div>
@@ -38,7 +38,7 @@
                         <td style="<?php if ($edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_owned_by">
                             <?php echo __('Noone'); ?>
                         </td>
-                        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                             <td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('owned_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
                         <?php endif; ?>
                     </tr>
@@ -46,7 +46,7 @@
                     <tr class="hover_highlight">
                         <td style="padding: 2px; width: 100px;">
                             <b><?php echo __('Lead by'); ?></b>
-                            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                             <?php include_component('main/identifiableselector', array('html_id'        => 'lead_by_change',
                                                                                     'header'             => __('Change / set leader'),
                                                                                     'clear_link_text'    => __('Set lead by noone'),
@@ -58,9 +58,9 @@
                         </td>
                         <td style="<?php if (!$edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
                             <div style="width: 270px; display: <?php if ($edition->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-                                <?php if ($edition->getLeader() instanceof TBGUser): ?>
+                                <?php if ($edition->getLeader() instanceof \thebuggenie\core\entities\User): ?>
                                     <?php echo include_component('main/userdropdown', array('user' => $edition->getLeader())); ?>
-                                <?php elseif ($edition->getLeader() instanceof TBGTeam): ?>
+                                <?php elseif ($edition->getLeader() instanceof \thebuggenie\core\entities\Team): ?>
                                     <?php echo include_component('main/teamdropdown', array('team' => $edition->getLeader())); ?>
                                 <?php endif; ?>
                             </div>
@@ -68,7 +68,7 @@
                         <td style="<?php if ($edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_lead_by">
                             <?php echo __('Noone'); ?>
                         </td>
-                        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                             <td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('lead_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
                         <?php endif; ?>
                     </tr>
@@ -76,7 +76,7 @@
                     <tr class="hover_highlight">
                         <td style="padding: 2px; width: 100px;">
                             <b><?php echo __('QA responsible'); ?></b>
-                            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                                 <?php include_component('main/identifiableselector', array('html_id'        => 'qa_by_change',
                                                                                         'header'             => __('Change / set QA resp.'),
                                                                                         'clear_link_text'    => __('Set QA resp. noone'),
@@ -88,9 +88,9 @@
                         </td>
                         <td style="<?php if (!$edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
                             <div style="width: 270px; display: <?php if ($edition->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-                                <?php if ($edition->getQaResponsible() instanceof TBGUser): ?>
+                                <?php if ($edition->getQaResponsible() instanceof \thebuggenie\core\entities\User): ?>
                                     <?php echo include_component('main/userdropdown', array('user' => $edition->getQaResponsible())); ?>
-                                <?php elseif ($edition->getQaResponsible() instanceof TBGTeam): ?>
+                                <?php elseif ($edition->getQaResponsible() instanceof \thebuggenie\core\entities\Team): ?>
                                     <?php echo include_component('main/teamdropdown', array('team' => $edition->getQaResponsible())); ?>
                                 <?php endif; ?>
                             </div>
@@ -98,15 +98,15 @@
                         <td style="<?php if ($edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_qa_by">
                             <?php echo __('Noone'); ?>
                         </td>
-                        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                             <td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('qa_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
                         <?php endif; ?>
                     </tr>
                 </table>
             </div>
             <div id="edition_settings_pane"<?php if ($selected_section != 'general'): ?> style="display: none;"<?php endif; ?>>
-                <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="TBG.Project.Edition.submitSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>', <?php echo $edition->getID(); ?>);return false;">
+                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="TBG.Project.Edition.submitSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>', <?php echo $edition->getID(); ?>);return false;">
                         <table style="clear: both; width: 785px;" class="padded_table" cellpadding=0 cellspacing=0>
                             <tr>
                                 <td style="width: 120px;"><label for="edition_name"><?php echo __('Name:') ?></label></td>
@@ -162,7 +162,7 @@
                                     </select>
                                 </td>
                             </tr>
-                        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                             <tr>
                                 <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
                                     <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
@@ -180,7 +180,7 @@
                 <input id="edition_component_count" type="hidden" value="<?php echo count($edition->getComponents()); ?>">
                 <table style="width: 785px;" cellpadding=0 cellspacing=0>
                     <tr>
-                        <td style="<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> width: 395px; padding-right: 10px;<?php endif; ?> vertical-align: top;">
+                        <td style="<?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> width: 395px; padding-right: 10px;<?php endif; ?> vertical-align: top;">
                             <div style="width: 385px; padding: 3px; font-size: 12px; background-color: #FFF; border-bottom: 1px solid #DDD;"><b><?php echo __('Components for this edition'); ?></b></div>
                             <div style="overflow: auto; height: 300px; overflow-x: hidden;">
                             <table cellpadding=0 cellspacing=0 style="width: 100%;" id="edition_components">
@@ -188,7 +188,7 @@
                                 <tr id="edition_component_<?php echo $aComponent->getID(); ?>"<?php if (!$edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
                                     <td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>
                                     <td style="width: auto; padding: 2px;"><?php print $aComponent->getName(); ?></td>
-                                <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                                     <td style="width: 70px; text-align: right;"><a href="javascript:void(0);" onclick="TBG.Project.Edition.Component.remove('<?php echo make_url('configure_edition_remove_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);"><?php echo __('Remove'); ?>&nbsp;&gt;&gt;</a></td>
                                 <?php endif; ?>
                                 </tr>
@@ -199,14 +199,14 @@
                             </table>
                             </div>
                         </td>
-                    <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                    <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                         <td style="width: 380px; vertical-align: top; padding-left: 10px;">
                             <div style="width: 370px; padding: 3px; font-size: 12px; background-color: #FFF; border-bottom: 1px solid #DDD;"><b><?php echo __('Add an existing component'); ?></b></div>
                             <div style="overflow: auto; height: 300px; overflow-x: hidden;">
                             <table cellpadding=0 cellspacing=0 style="width: 100%;" id="edition_components">
                             <?php foreach ($edition->getProject()->getComponents() as $aComponent): ?>
                                 <tr id="project_component_<?php echo $aComponent->getID(); ?>"<?php if ($edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
-                                <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+                                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                                     <td style="width: 50px; text-align: left;"><a href="javascript:void(0);" onclick="TBG.Project.Edition.Component.add('<?php echo make_url('configure_edition_add_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);">&lt;&lt;&nbsp;<?php echo __('Add'); ?></a></td>
                                 <?php endif; ?>
                                     <td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>

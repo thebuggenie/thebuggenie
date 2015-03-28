@@ -1,7 +1,7 @@
 <?php
 
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
-    TBGContext::loadLibrary('publish/publish');
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle($article_name);
 
 ?>

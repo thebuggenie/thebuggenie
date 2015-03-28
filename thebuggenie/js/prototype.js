@@ -1920,9 +1920,14 @@ Element.Methods = {
     return $(element).style.display != 'none';
   },
 
-  toggle: function(element) {
+  toggle: function(element, displayValue) {
     element = $(element);
-    Element[Element.visible(element) ? 'hide' : 'show'](element);
+    if (Element.visible(element)) {
+      Element.hide(element);
+    }
+    else {
+      Element.show(element, displayValue);
+    }
     return element;
   },
 
@@ -1932,9 +1937,9 @@ Element.Methods = {
     return element;
   },
 
-  show: function(element) {
+  show: function(element, displayValue) {
     element = $(element);
-    element.style.display = '';
+    element.style.display = displayValue || '';
     return element;
   },
 
@@ -5594,6 +5599,13 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         }
       } else {
         responder = function(event) {
+          if (event.target && typeof(event.target.hasAttribute) == 'function' && event.target.hasAttribute('onclick')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            }
+            event.cancelBubble = true;
+          }
+
           Event.extend(event, element);
           handler.call(element, event);
         };

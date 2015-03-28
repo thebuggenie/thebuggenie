@@ -2,12 +2,14 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Milestones table
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage tables
      */
@@ -21,7 +23,7 @@
      * @Table(name="milestones")
      * @Entity(class="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone")
      */
-    class TBGMilestonesTable extends \TBGB2DBTable
+    class TBGMilestonesTable extends ScopedTable
     {
 
     }

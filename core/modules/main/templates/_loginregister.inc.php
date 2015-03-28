@@ -1,9 +1,9 @@
 <div id="register" class="logindiv regular">
-    <?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
-        <?php echo tbg_parse_text(TBGSettings::get('register_message'), null, null, array('embedded' => true)); ?>
+    <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
+        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('register_message'), false, null, array('embedded' => true)); ?>
     <?php else: ?>
         <div id="register_container">
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register'); ?>" method="post" id="register_form" onsubmit="TBG.Main.Login.register('<?php echo make_url('register'); ?>'); return false;">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('register'); ?>" method="post" id="register_form" onsubmit="TBG.Main.Login.register('<?php echo make_url('register'); ?>'); return false;">
                 <h2 class="login_header"><?php echo __('Create an account'); ?></h2>
                 <?php if ($registrationintro instanceof \thebuggenie\modules\publish\entities\Article): ?>
                     <?php include_component('publish/articledisplay', array('article' => $registrationintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
@@ -30,7 +30,7 @@
                         <label for="email_confirm">*&nbsp;<?php echo __('Confirm e-mail'); ?></label>
                         <input type="email" class="required" id="email_confirm" name="email_confirm">
                     </li>
-                    <?php TBGActionComponent::includeComponent('main/captcha'); ?>
+                    <?php include_component('main/captcha'); ?>
                 </ul>
                 <div class="login_button_container">
                     <a style="float: left;" href="javascript:void(0);" onclick="TBG.Main.Login.showLogin('regular_login_container');">&laquo;&nbsp;<?php echo __('Back'); ?></a>
@@ -45,7 +45,7 @@
                 <span><?php echo __('Thank you for registering!'); ?></span>
                 <br>
                 <span id="register_message"></span>
-                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="register_auto_form" onsubmit="TBG.Main.Login.registerAutologin('<?php echo make_url('login'); ?>'); return false;">
+                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="register_auto_form" onsubmit="TBG.Main.Login.registerAutologin('<?php echo make_url('login'); ?>'); return false;">
                     <input id="register_username_hidden" name="tbg3_username" type="hidden" value="">
                     <input id="register_password_hidden" name="tbg3_password" type="hidden" value="">
                     <input type="hidden" name="return_to" value="<?php echo make_url('account'); ?>">

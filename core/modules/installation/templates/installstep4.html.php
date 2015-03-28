@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <?php if (isset($error)): ?>
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -8,78 +8,76 @@
     <?php else: ?>
         <?php if ($htaccess_error !== false): ?>
             <div class="error">
-                The installation routine could not setup your .htaccess file automatically.<br>
+                The installation routine could not setup your .htaccess and .user.ini files automatically.<br>
                 <?php if (!is_bool($htaccess_error)): ?>
                     <br>
                     <b><?php echo $htaccess_error; ?></b><br>
                 <?php endif; ?>
                 <br>
                 Either fix the problem above (if any details are mentioned), <b>click "Back"</b> and try again - or follow these simple steps:
-                <ul style="font-size: 11px;">
-                    <li>Rename or copy the <i>[main folder]/<?php echo THEBUGGENIE_CORE_PATH; ?>templates/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i></li>
+                <ul>
+                    <li>Rename or copy the <i><?php echo THEBUGGENIE_CORE_PATH; ?>templates/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i></li>
                     <li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u></li>
+                    <li>If you're using PHP-FPM, rename or copy the <i><?php echo THEBUGGENIE_CORE_PATH; ?>templates/user.ini.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.user.ini</i></li>
                 </ul>
             </div>
         <?php elseif ($htaccess_ok): ?>
             <div class="ok">
-                Apache .htaccess auto-setup completed successfully
+                Apache .htaccess and PHP-FPM .user.ini auto-setup completed successfully
             </div>
         <?php endif; ?>
         <div class="ok">
             All settings were stored. Default data and settings loaded successfully
         </div>
-        <h2 style="margin-top: 10px;">Enabling functionality</h2>
-        The Bug Genie consists of the Caspar framework, and a set of modules. These provide extra functionality such as VCS (version control system) integration and email communication.<br>
-        <br>
-        Please select which modules to enable here, before pressing "Continue":<br>
-        <i>(You can always enable / disable this functionality from the configuration center after the installation is completed)</i>
+        <h2 style="margin-top: 10px;">Default user information</h2>
+        To help you get started, please fill in some information about the default administrator user, here.
         <form accept-charset="utf-8" action="index.php" method="post" id="tbg_settings">
             <input type="hidden" name="step" value="5">
-            <fieldset>
-                <legend>The Bug Genie modules</legend>
-                <dl class="install_list">
-                    <dt>
-                        <strong>Enable email communication</strong><br>
-                        Enables functionality that sends and receives emails
-                    </dt>
-                    <dd>
-                        <input type="radio" name="modules[mailing]" value="1" id="modules_mailing_yes" checked="checked"><label for="modules_mailing_yes" style="margin-right: 5px;">Yes</label>
-                        <input type="radio" name="modules[mailing]" value="0" id="modules_mailing_no"><label for="modules_mailing_no">No</label>
-                    </dd>
-                    <dt>
-                        <strong>Enable VCS Integration</strong><br>
-                        Allows communication between VCS systems (such as svn) and The Bug Genie
-                    </dt>
-                    <dd>
-                        <input type="radio" name="modules[vcs_integration]" value="1" id="modules_vcs_integration_yes" checked="checked"><label for="modules_vcs_integration_yes" style="margin-right: 5px;">Yes</label>
-                        <input type="radio" name="modules[vcs_integration]" value="0" id="modules_vcs_integration_no"><label for="modules_vcs_integration_no">No</label>
-                    </dd>
-                    <?php /*
-                    <dt>
-                        <strong>Enable messaging</strong><br>
-                        Enables functionality that lets users send messages to eachother
-                    </dt>
-                    <dd>
-                        <input type="radio" name="modules[messages]" value="1" id="modules_messages_yes" checked="checked"><label for="modules_messages_yes" style="margin-right: 5px;">Yes</label>
-                        <input type="radio" name="modules[messages]" value="0" id="modules_messages_no"><label for="modules_messages_no">No</label>
-                    </dd>
-                    <dt>
-                        <strong>Enable calendar</strong><br>
-                        Enables calendar functionality
-                    </dt>
-                    <dd>
-                        <input type="radio" name="modules[calendar]" value="1" id="modules_calendar_yes" checked="checked"><label for="modules_calendar_yes" style="margin-right: 5px;">Yes</label>
-                        <input type="radio" name="modules[calendar]" value="0" id="modules_calendar_no"><label for="modules_calendar_no">No</label>
-                    </dd> */ ?>
-                </dl>
-            </fieldset>
+            <dl class="install_list">
+                <dt>
+                    <label id="admin_name">Name</label>
+                </dt>
+                <dd>
+                    <input type="text" id="admin_name" class="username" value="" name="name" placeholder="Enter your name here">
+                </dd>
+                <dt>
+                    <label for="admin_email">E-mail address</label>
+                </dt>
+                <dd>
+                    <input type="email" id="admin_email" class="email" value="" name="email" placeholder="Enter an email address here">
+                </dd>
+                <dt>
+                    <label for="admin_username">Username</label>
+                </dt>
+                <dd>
+                    <input type="text" id="admin_username" class="username" value="administrator" name="username">
+                </dd>
+                <dt>
+                    <label id="admin_password">Password</label>
+                </dt>
+                <dd>
+                    <input type="password" id="admin_password" class="password small" value="admin" name="password">
+                </dd>
+                <dt>
+                    <label for="admin_password_repeat">Repeat password</label>
+                </dt>
+                <dd>
+                    <input type="password" id="admin_password_repeat" class="password small" value="admin" name="password_repeat">
+                </dd>
+            </dl>
+        <br>
+        <h2 style="margin-top: 10px;">The Bug Genie modules</h2>
+        The Bug Genie is written using a flexible, module-based architecture, that lets you easily add extra functionality. Even core functionality such as version control integration, email communication and the agile sections are provided using modules, and can be enabled / disabled from the configuration panel.<br>
+        <br>
+        <div class="feature">
+            Find additional modules online, at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
+        </div>
             <div style="padding-top: 20px; clear: both; text-align: center;">
-                <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and enable the selected modules</label>
+                <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and set up the default user and default modules</label>
                 <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
-                <input type="hidden" name="modules[publish]" value="1" id="modules_publish_yes">
                 <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
             </div>
         </form>
     <?php endif; ?>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

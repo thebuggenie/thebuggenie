@@ -1,7 +1,7 @@
 <?php 
 
     $tbg_response->addBreadcrumb(__('Teams'), null, tbg_get_breadcrumblinks('main_links'));
-    if ($team instanceof TBGTeam)
+    if ($team instanceof \thebuggenie\core\entities\Team)
     {
         $tbg_response->setTitle(__('Team dashboard for %team_name', array('%team_name' => $team->getName())));
         $tbg_response->setPage('team');
@@ -38,7 +38,7 @@
                     <?php foreach ($projects as $project): ?>
                         <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
                             <?php if ($milestone->isScheduled() && $milestone->isOverdue()): ?>
-                                <?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
+                                <?php include_component('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
                                 <?php $milestone_cc++; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>

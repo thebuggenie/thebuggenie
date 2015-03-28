@@ -21,7 +21,7 @@
             <ul class="available_views_list" data-section="information">
                 <?php foreach ($views['info'] as $type => $details): ?>
                         <?php foreach ($details as $subtype => $detail): ?>
-                            <?php include_template('main/adddashboardview_view', array('icon_type' => 'info', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
+                            <?php include_component('main/adddashboardview_view', array('icon_type' => 'info', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
                         <?php endforeach; ?>
                 <?php endforeach; ?>
             </ul>
@@ -29,7 +29,7 @@
                     <ul class="available_views_list" data-section="statistics" style="display: none;">
                         <?php foreach ($views['statistics'] as $type => $details): ?>
                             <?php foreach ($details as $subtype => $detail): ?>
-                                <?php include_template('main/adddashboardview_view', array('icon_type' => 'statistics', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
+                                <?php include_component('main/adddashboardview_view', array('icon_type' => 'statistics', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
                             <?php endforeach; ?>
                     <?php endforeach; ?>
                     </ul>
@@ -37,14 +37,14 @@
             <ul class="available_views_list" data-section="predefined_searches" style="display: none;">
                 <?php foreach ($views['searches'] as $type => $details): ?>
                         <?php foreach ($details as $subtype => $detail): ?>
-                            <?php include_template('main/adddashboardview_view', array('icon_type' => 'searches', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
+                            <?php include_component('main/adddashboardview_view', array('icon_type' => 'searches', 'type' => $type, 'subtype' => $subtype, 'detail' => $detail)); ?>
                         <?php endforeach; ?>
     <?php endforeach; ?>
             </ul>
             <ul class="available_views_list" data-section="custom_searches" style="display: none;">
                 <?php foreach ($savedsearches as $type => $searches): ?>
                         <?php foreach ($searches as $index => $search): ?>
-                            <?php include_template('main/adddashboardview_view', array('icon_type' => 'searches', 'type' => DashboardView::VIEW_SAVED_SEARCH, 'subtype' => $search->getID(), 'detail' => array('title' => $search->getTitle(), 'description' => ($search->getDescription()) ? $search->getDescription() : __('Show a list of issues matching the saved search %searchname', array('%searchname' => $search->getTitle()))))); ?>
+                            <?php include_component('main/adddashboardview_view', array('icon_type' => 'searches', 'type' => DashboardView::VIEW_SAVED_SEARCH, 'subtype' => $search->getID(), 'detail' => array('title' => $search->getTitle(), 'description' => ($search->getDescription()) ? $search->getDescription() : __('Show a list of issues matching the saved search %searchname', array('%searchname' => $search->getTitle()))))); ?>
                         <?php endforeach; ?>
     <?php endforeach; ?>
             </ul>

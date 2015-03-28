@@ -7,7 +7,7 @@
         $can_remove = true;
 
 ?>
-<?php if ($file instanceof TBGFile): ?>
+<?php if ($file instanceof \thebuggenie\core\entities\File): ?>
     <li id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_item <?php if ($file->isImage()) echo 'file_image'; ?>">
         <?php if ($file->isImage()): ?>
             <a href="<?php echo make_url('showfile', array('id' => $file_id)); ?>" target="_new" class="imagepreview" title="<?php echo ($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename(); ?>"><?php echo image_tag(make_url('showfile', array('id' => $file_id)), array(), true); ?></a>
@@ -31,7 +31,7 @@
             </div>
         <?php endif; ?>
         <div class="upload_details">
-            <?php echo __('%filename uploaded %date by %username', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23), '%username' => (($file->getUploadedBy() instanceof TBGUser) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $article->getAuthor()->getID())) . '\');" class="faded_out">' . $file->getUploadedBy()->getNameWithUsername() . '</a>' : __('unknown user')))); ?>
+            <?php echo __('%filename uploaded %date by %username', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23), '%username' => (($file->getUploadedBy() instanceof \thebuggenie\core\entities\User) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $article->getAuthor()->getID())) . '\');" class="faded_out">' . $file->getUploadedBy()->getNameWithUsername() . '</a>' : __('unknown user')))); ?>
         </div>
     </li>
 <?php else: ?>

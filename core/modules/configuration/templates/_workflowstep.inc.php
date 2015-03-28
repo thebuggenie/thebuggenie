@@ -6,7 +6,7 @@
                 <div class="header"><?php echo __('Delete all outgoing transition from step "%step_name"', array('%step_name' => $step->getName())); ?></div>
                 <div class="content">
                     <?php echo __('Are you sure you want to delete ALL outgoing transitions from this step? This action cannot be reverted.'); ?>
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step_transitions', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step_transitions', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
                         <div style="text-align: right;">
                             <input type="submit" value="<?php echo __('Yes'); ?>" onclick="$('step_<?php echo $step->getID(); ?>_transition_delete_indicator').show();$(this).hide();"> ::
                             <b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('step_{$step->getID()}_transitions_delete').toggle();")); ?></b>
@@ -15,12 +15,12 @@
                     </form>
                 </div>
             </div>
-            <?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
+            <?php include_component('configuration/workflowaddtransition', array('step' => $step)); ?>
             <div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_delete" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
                 <div class="header"><?php echo __('Completely delete step "%step_name"', array('%step_name' => $step->getName())); ?></div>
                 <div class="content">
                     <?php echo __('Are you sure you want to completely delete this step? This action cannot be reverted.'); ?>
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
                         <div style="text-align: right;">
                             <input type="submit" value="<?php echo __('Yes'); ?>" onclick="$('step_<?php echo $step->getID(); ?>_delete_indicator').show();$(this).hide();"> ::
                             <b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('step_{$step->getID()}_delete').toggle();")); ?></b>
@@ -35,7 +35,7 @@
         <?php if ($step->hasLinkedStatus()): ?>
             <table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
                 <tr class="status">
-                    <td style="width: 16px; height: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($step->getLinkedStatus() instanceof TBGDatatype) ? $step->getLinkedStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 15px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
+                    <td style="width: 16px; height: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($step->getLinkedStatus() instanceof \thebuggenie\core\entities\Datatype) ? $step->getLinkedStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 15px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
                     <td style="padding-left: 0px;"><?php echo $step->getLinkedStatus()->getName(); ?></td>
                 </tr>
             </table>

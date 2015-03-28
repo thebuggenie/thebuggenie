@@ -1,4 +1,4 @@
-<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+<?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
     <div class="project_save_container">
         <div class="button button-silver" onclick="$('add_people_to_project_container').toggle();"><?php echo __('Add people'); ?></div>
         <button class="button button-silver dropper"><?php echo __('More actions'); ?></button>
@@ -9,7 +9,7 @@
         </ul>
     </div>
     <div class="rounded_box lightgrey" style="margin: 0 0 10px 0; width: 765px; padding: 5px 10px 5px 10px; display: none;" id="add_people_to_project_container">
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Project.findDevelopers('<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>');return false;" id="find_dev_form">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Project.findDevelopers('<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>');return false;" id="find_dev_form">
             <table style="width: 100%; margin-top: 3px;" cellpadding=0 cellspacing=0 id="find_user">
                 <tr>
                     <td style="width: 200px; padding: 2px; text-align: left;"><label for="find_by"><?php echo __('Find team or user'); ?></label></td>
@@ -32,7 +32,7 @@
     <tr class="hover_highlight">
         <td style="padding: 4px; width: 192px; position: relative;">
             <label><?php echo __('Project owner'); ?></label>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <?php include_component('main/identifiableselector', array(    'html_id'        => 'owned_by_change',
                                                                         'header'             => __('Change / set owner'),
                                                                         'clear_link_text'    => __('Set owned by noone'),
@@ -48,9 +48,9 @@
         </td>
         <td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px; width: 470px;" id="owned_by_name">
             <div style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-                <?php if ($project->getOwner() instanceof TBGUser): ?>
+                <?php if ($project->getOwner() instanceof \thebuggenie\core\entities\User): ?>
                     <?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
-                <?php elseif ($project->getOwner() instanceof TBGTeam): ?>
+                <?php elseif ($project->getOwner() instanceof \thebuggenie\core\entities\Team): ?>
                     <?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
                 <?php endif; ?>
             </div>
@@ -62,7 +62,7 @@
     <tr class="hover_highlight">
         <td style="padding: 4px; position: relative;">
             <label><?php echo __('Lead by'); ?></label>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <?php include_component('main/identifiableselector', array(    'html_id'        => 'lead_by_change',
                                                                         'header'             => __('Change / set leader'),
                                                                         'clear_link_text'    => __('Set lead by noone'),
@@ -78,9 +78,9 @@
         </td>
         <td style="<?php if (!$project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
             <div style="width: 270px; display: <?php if ($project->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-                <?php if ($project->getLeader() instanceof TBGUser): ?>
+                <?php if ($project->getLeader() instanceof \thebuggenie\core\entities\User): ?>
                     <?php echo include_component('main/userdropdown', array('user' => $project->getLeader())); ?>
-                <?php elseif ($project->getLeader() instanceof TBGTeam): ?>
+                <?php elseif ($project->getLeader() instanceof \thebuggenie\core\entities\Team): ?>
                     <?php echo include_component('main/teamdropdown', array('team' => $project->getLeader())); ?>
                 <?php endif; ?>
             </div>
@@ -92,7 +92,7 @@
     <tr class="hover_highlight">
         <td style="padding: 4px; position: relative;">
             <label><?php echo __('QA responsible'); ?></label>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <?php include_component('main/identifiableselector', array(    'html_id'        => 'qa_by_change',
                                                                         'header'             => __('Change / set QA responsible'),
                                                                         'clear_link_text'    => __('Set QA responsible to noone'),
@@ -108,9 +108,9 @@
         </td>
         <td style="<?php if (!$project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
             <div style="width: 270px; display: <?php if ($project->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-                <?php if ($project->getQaResponsible() instanceof TBGUser): ?>
+                <?php if ($project->getQaResponsible() instanceof \thebuggenie\core\entities\User): ?>
                     <?php echo include_component('main/userdropdown', array('user' => $project->getQaResponsible())); ?>
-                <?php elseif ($project->getQaResponsible() instanceof TBGTeam): ?>
+                <?php elseif ($project->getQaResponsible() instanceof \thebuggenie\core\entities\Team): ?>
                     <?php echo include_component('main/teamdropdown', array('team' => $project->getQaResponsible())); ?>
                 <?php endif; ?>
             </div>
@@ -122,5 +122,5 @@
 </table>
 <h4><?php echo __('Project team'); ?></h4>
 <div id="assignees_list">
-    <?php include_template('project/projects_assignees', array('project' => $project)); ?>
+    <?php include_component('project/projects_assignees', array('project' => $project)); ?>
 </div>

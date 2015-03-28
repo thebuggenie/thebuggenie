@@ -2,13 +2,13 @@
     <tr>
         <td style="width: 200px;"><label for="offline"><?php echo __('Enable maintenance mode'); ?></label></td>
         <td>
-        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <select name="offline" id="offline" style="width: 70px;">
-                <option value=1<?php if (TBGSettings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                <option value=0<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+                <option value=1<?php if (\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
             </select>
         <?php else: ?>
-            <?php echo (TBGSettings::isMaintenanceModeEnabled()) ? __('Yes') : __('No'); ?>
+            <?php echo (\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()) ? __('Yes') : __('No'); ?>
         <?php endif; ?>
         </td>
     <tr>
@@ -17,10 +17,10 @@
     <tr>
         <td><label for="offline_msg"><?php echo __('Maintenance mode message'); ?></label></td>
         <td>
-        <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-            <?php include_template('main/textarea', array('area_name' => 'offline_msg', 'area_id' => 'offline_msg', 'height' => '75px', 'width' => '100%', 'value' => TBGSettings::getMaintenanceMessage(), 'hide_hint' => true)); ?></td>
-        <?php elseif (TBGSettings::hasMaintenanceMessage()): ?>
-            <?php echo TBGSettings::getMaintenanceMessage(); ?>
+        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+            <?php include_component('main/textarea', array('area_name' => 'offline_msg', 'area_id' => 'offline_msg', 'height' => '75px', 'width' => '100%', 'value' => \thebuggenie\core\framework\Settings::getMaintenanceMessage(), 'hide_hint' => true)); ?></td>
+        <?php elseif (\thebuggenie\core\framework\Settings::hasMaintenanceMessage()): ?>
+            <?php echo \thebuggenie\core\framework\Settings::getMaintenanceMessage(); ?>
         <?php else: ?>
             <span class="faded_out"><?php echo __('No message set'); ?></span>
         <?php endif; ?>

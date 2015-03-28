@@ -1,6 +1,6 @@
 <?php
 
-    TBGContext::loadLibrary('ui');
+    \thebuggenie\core\framework\Context::loadLibrary('ui');
     $assigned_users = $project->getAssignedUsers();
     $assigned_teams = $project->getAssignedTeams();
 

@@ -1,6 +1,6 @@
 <?php
 
-    if ($step instanceof TBGWorkflowStep)
+    if ($step instanceof \thebuggenie\core\entities\WorkflowStep)
     {
         $tbg_response->setTitle(__('Configure workflow step "%step_name"', array('%step_name' => $step->getName())));
         $glue = '<div class="faded_out" style="clear: both;">'.__('%a_workflow_step_transition or %a_workflow_step_transition', array('%a_workflow_step_transition' => '')).'</div>';
@@ -13,11 +13,11 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
             <div class="content" style="width: 730px;" id="workflow_step_container">
-                <?php if ($step instanceof TBGWorkflowStep): ?>
+                <?php if ($step instanceof \thebuggenie\core\entities\WorkflowStep): ?>
                     <div class="workflow_step_intro">
                         <div class="header"><?php echo __('Workflow step "%step_name"', array('%step_name' => $step->getName())); ?></div>
                         <div class="content">
@@ -41,7 +41,7 @@
                                 $output = array();
                                 foreach ($step->getIncomingTransitions() as $transition)
                                 {
-                                    $output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
+                                    $output[] = get_component_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
                                 }
                                 echo join($glue, $output);
 
@@ -58,7 +58,7 @@
                                 $output = array();
                                 foreach ($step->getOutgoingTransitions() as $transition)
                                 {
-                                    $output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
+                                    $output[] = get_component_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
                                 }
                                 echo join($glue, $output);
 
@@ -66,7 +66,7 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    <?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
+                    <?php include_component('configuration/workflowaddtransition', array('step' => $step)); ?>
                     <div id="workflow_details_step">
                         <dl id="step_details_info">
                             <dt><?php echo __('Name'); ?></dt>
@@ -92,7 +92,7 @@
                             </dd>
                         </dl>
                         <?php if (!$step->isCore()): ?>
-                            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID(), 'mode' => 'edit')); ?>" id="step_details_form" style="display: none;" onsubmit="$('step_update_indicator').show();$('update_step_buttons').hide();">
+                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID(), 'mode' => 'edit')); ?>" id="step_details_form" style="display: none;" onsubmit="$('step_update_indicator').show();$('update_step_buttons').hide();">
                                 <dl>
                                     <dt><label for="step_name"><?php echo __('Name'); ?></label></dt>
                                     <dd><input type="text" name="name" id="step_name" value="<?php echo $step->getName(); ?>" style="width: 150px;"></dd>
@@ -101,8 +101,8 @@
                                     <dt><label for="step_state"><?php echo __('State'); ?></label></dt>
                                     <dd>
                                         <select name="state" id="step_state" style="width: 125px;">
-                                            <option value="<?php echo TBGIssue::STATE_OPEN; ?>"<?php if (!$step->isClosed()) echo " selected"; ?>><?php echo __('Open'); ?></option>
-                                            <option value="<?php echo TBGIssue::STATE_CLOSED; ?>"<?php if ($step->isClosed()) echo " selected"; ?>><?php echo __('Closed'); ?></option>
+                                            <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_OPEN; ?>"<?php if (!$step->isClosed()) echo " selected"; ?>><?php echo __('Open'); ?></option>
+                                            <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_CLOSED; ?>"<?php if ($step->isClosed()) echo " selected"; ?>><?php echo __('Closed'); ?></option>
                                         </select>
                                         <select name="is_editable" id="step_editable" style="width: 125px;">
                                             <option value="1"<?php if ($step->isEditable()) echo " selected"; ?>><?php echo __('Editable'); ?></option>
@@ -113,7 +113,7 @@
                                     <dd>
                                         <select name="status_id" id="step_status">
                                             <option value="0"<?php if (!$step->hasLinkedStatus()) echo " selected"; ?>><?php echo __('Not connected to a status'); ?></option>
-                                            <?php foreach (TBGStatus::getAll() as $status): ?>
+                                            <?php foreach (\thebuggenie\core\entities\Status::getAll() as $status): ?>
                                             <option value="<?php echo $status->getID(); ?>"<?php if ($step->hasLinkedStatus() && $step->getLinkedStatus()->getID() == $status->getID()) echo " selected"; ?>><?php echo $status->getName(); ?></option>
                                             <?php endforeach; ?>
                                         </select>

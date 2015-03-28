@@ -1,119 +1,226 @@
 <?php
 
-    $strings['Configure mail notification module'] = 'Configure mail notification module';
-    $strings['Set up the mail notification module here.'] = 'Set up the mail notification module here.';
-    $strings['Set up email- and user notifications from this section.'] = 'Set up email- and user notifications from this section.';
-    $strings['SMTP server address'] = 'SMTP server address';
-    $strings['The address BUGS 2 should use to send emails via'] = 'The address BUGS 2 should use to send emails via';
-    $strings['SMTP address port'] = 'SMTP address port';
-    $strings['The port used by the SMTP server (default is 25)'] = 'The port used by the SMTP server (default is 25)';
-    $strings['Server type'] = 'Server type';
-    $strings['Select whether the SMTP server is a MS Exchange server'] = 'Select whether the SMTP server is a MS Exchange server';
-    $strings['SMTP username'] = 'SMTP username';
-    $strings['The username used for sending emails'] = 'The username used for sending emails';
-    $strings['SMTP password'] = 'SMTP password';
-    $strings['The password used for sending emails'] = 'The password used for sending emails';
-    $strings['Email "from"-name'] = 'Email "from"-name';
-    $strings['The name people will see when receiving emails from BUGS 2'] = 'The name people will see when receiving emails from BUGS 2';
-    $strings['Email "from"-address'] = 'Email "from"-address';
-    $strings['The email-address people will see when receiving emails from BUGS 2'] = 'The email-address people will see when receiving emails from BUGS 2';
-    $strings['Email header charset'] = 'Email header charset';
-    $strings['The charset used in outgoing emails'] = 'The charset used in outgoing emails';
-    $strings['Notification settings'] = 'Notification settings';
-    $strings['Always notify'] = 'Always notify';
-    $strings['Send notification email on my own changes'] = 'Send notification email on my own changes';
-    $strings['Only notify me when others are committing changes'] = 'Only notify me when others are committing changes';
-    $strings['Enter an email address, and click "Send test email" to check if the email module is configured correctly'] = 'Enter an email address, and click "Send test email" to check if the email module is configured correctly';
-    $strings['The test output will appear below this form'] = 'The test output will appear below this form';
-    $strings['Send test email to'] = 'Send test email to';
-    $strings['Send test email'] = 'Send test email';
-    $strings['Test email output'] = 'Test email output';
-    $strings['Test configuration'] = 'Test configuration';
-    $strings['Mail notification'] = 'Mail notification';
-    $strings['Email when user registers'] = 'Email when user registers';
-    $strings['Email to reset password'] = 'Email to reset password';
-    $strings['Email on issue update'] = 'Email on issue update';
-    $strings['Email on new issues'] = 'Email on new issues';
-    $strings['Email when comments are posted'] = 'Email when comments are posted';
-    $strings['"My account" settings'] = '"My account" settings';
-    $strings['"My account" drop-down settings'] = '"My account" drop-down settings';
-    $strings['Email when password is reset'] = 'Email when password is reset';
-    $strings['SMTP server timeout'] = 'SMTP server timeout';
-    $strings['Timeout in seconds (default is 30)'] = 'Timeout in seconds (default is 30)';
-    $strings['This username does not exist'] = 'This username does not exist';
-    $strings['Please use the link in the email you received'] = 'Please use the link in the email you received';
-    $strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'] = 'If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username';
-    $strings['Notify me when someone adds me as their friend'] = 'Notify me when someone adds me as their friend';
-    $strings['Notify me when an issue I posted gets updated'] = 'Notify me when an issue I posted gets updated';
-    $strings['Send me a notification email when I update an issue'] = 'Send me a notification email when I update an issue';
-    $strings['Notify me when someone comments on an issue I posted'] = 'Notify me when someone comments on an issue I posted';
-    $strings['Outgoing settings'] = 'Outgoing settings';
-    $strings['Incoming settings'] = 'Incoming settings';
-    $strings['Outgoing emails'] = 'Outgoing emails';
-    $strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = 'These are the settings for outgoing emails, such as notification emails and registration emails.';
-    $strings['Enable outgoing email notifications'] = 'Enable outgoing email notifications';
-    $strings['Email "from"-name'] = 'Email "from"-name';
-    $strings['Email "from"-address'] = 'Email "from"-address';
-    $strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'This is the name and email address email notifications from The Bug Genie will be sent from';
-    $strings['Email header charset'] = 'Email header charset';
-    $strings['The character encoding used in outgoing emails'] = 'The character encoding used in outgoing emails';
-    $strings['Queue emails for batch processing'] = 'Queue emails for batch processing';
-    $strings['Send email notifications instantly'] = 'Send email notifications instantly';
-    $strings['Use email queueing'] = 'Use email queueing';
-    $strings["If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%"] = "If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%";
-    $strings['Mail configuration'] = 'Mail configuration';
-    $strings['Use php settings'] = 'Use php settings';
-    $strings['Use custom settings'] = 'Use custom settings';
-    $strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration';
-    $strings['SMTP server address'] = 'SMTP server address';
-    $strings['SMTP address port'] = 'SMTP address port';
-    $strings['SMTP server timeout'] = 'SMTP server timeout';
-    $strings['%number_of% seconds'] = '%number_of% seconds';
-    $strings['Connection information for the outgoing email server'] = 'Connection information for the outgoing email server';
-    $strings['Microsoft Exchange server'] = 'Microsoft Exchange server';
-    $strings['For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server'] = 'For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server';
-    $strings['SMTP username'] = 'SMTP username';
-    $strings['The username used for sending emails'] = 'The username used for sending emails';
-    $strings['SMTP password'] = 'SMTP password';
-    $strings['The password used for sending emails'] = 'The password used for sending emails';
-    $strings["This section doesn't have any settings yet"] = "This section doesn't have any settings yet";
-    $strings['Click "%save%" to save email notification settings'] = 'Click "%save%" to save email notification settings';
-    $strings['Send test email'] = 'Send test email';
-    $strings['Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly'] = 'Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly';
-    $strings['Yes'] = 'Yes';
-    $strings['No'] = 'No';
-    $strings['Save'] = 'Save';
-    $strings['Username'] = 'Username';
-    $strings['Password'] = 'Password';
-    $strings['Issues'] = 'Issues';
-    $strings['General'] = 'General';
-    $strings['Email communication'] = 'Email communication';
-    $strings['Enables in- and outgoing email functionality'] = 'Enables in- and outgoing email functionality';
-    $strings['Set up in- and outgoing email communication from this section'] = 'Set up in- and outgoing email communication from this section';
-    $strings['Notifications'] = 'Notifications';
-    $strings['Email when an issue is updated'] = 'Email when an issue is updated';
-    $strings['Javascript Mailing'] = 'Javascript Mailing';
-    $strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
-    $strings["If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%"] = "If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%";
-    $strings["This section doesn't have any settings yet"] = "This section doesn't have any settings yet";
-    $strings['Forgot password'] = 'Forgot password';
-    $strings['Forgot password?'] = 'Forgot password?';
-    $strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password';
-    $strings['Send email'] = 'Send email';
-    $strings['To register, please fill out the information below.'] = 'To register, please fill out the information below.';
-    $strings['Cannot find an email address for this user'] = 'Cannot find an email address for this user';
-    $strings['Forbidden for this username, please contact your administrator'] = 'Forbidden for this username, please contact your administrator';
-    $strings['Please enter an username'] = 'Please enter an username';
-    $strings['The email was successfully accepted for delivery'] = 'The email was successfully accepted for delivery';
-    $strings['The email was not sent'] = 'The email was not sent';
-    $strings['Please specify an email address'] = 'Please specify an email address';
-    $strings['You need to add at least one recipient'] = 'You need to add at least one recipient';
-    $strings['You need to add a sender name and address'] = 'You need to add a sender name and address';
-    $strings['Timed out during server conversation'] = 'Timed out during server conversation';
-    $strings['Could not open connection to server %server on port %port'] = 'Could not open connection to server %server on port %port';
-    $strings['Not ready to authenticate. (%rv%) Try changing server type'] = 'Not ready to authenticate. (%rv%) Try changing server type';
-    $strings['Username / password not accepted on server: %rv%'] = 'Username / password not accepted on server: %rv%';
-    $strings["You are not allowed to send emails through this server. \nThe error was: %rv%"] = "You are not allowed to send emails through this server. \nThe error was: %rv%";
-    $strings["Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%"] = "Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%";
-    $strings['You are not allowed to send emails through this server. The error was: %rv%']='You are not allowed to send emails through this server. The error was: %rv%';
-    $strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='Did not receive a confirmation message from the mail server.. However, we received: %rv%';
+// Please, do not edit this file !
+// If you would like to help translating TBG,
+// please visit https://www.transifex.com/projects/p/tbg
+
+// Number of Sections: 19
+// Number of Strings: 159
+// Keys extracted from sources on: 2014 Sep 30.
+// Translations extracted from Transifex on: 
+
+// First occurrence is in: Actions.php
+// ----------------------------------------------------------------------------
+  $strings['Please use the link in the email you received'] = 'Please use the link in the email you received';
+  $strings['Cannot find an email address for this user'] = 'Cannot find an email address for this user';
+  $strings['Forbidden for this username, please contact your administrator'] = 'Forbidden for this username, please contact your administrator';
+  $strings['This username does not exist'] = 'This username does not exist';
+  $strings['Please enter an username'] = 'Please enter an username';
+  $strings['The email was successfully accepted for delivery'] = 'The email was successfully accepted for delivery';
+  $strings['The email was not sent'] = 'The email was not sent';
+  $strings['Please specify an email address'] = 'Please specify an email address';
+  $strings['This is not a valid mailing account'] = 'This is not a valid mailing account';
+  $strings['This is not a valid project'] = 'This is not a valid project';
+  $strings['The php imap extension is not installed'] = 'The php imap extension is not installed';
+  $strings['Incoming email account deleted'] = 'Incoming email account deleted';
+  $strings['Please enter a valid email address'] = 'Please enter a valid email address';
+  $strings['Settings saved'] = 'Settings saved';
+
+// First occurrence is in: entities/IncomingEmailAccount.php
+// ----------------------------------------------------------------------------
+  $strings['No error message provided'] = 'No error message provided';
+  $strings['Could not connect to the specified email server(%connection_string): %error_message'] = 'Could not connect to the specified email server(%connection_string): %error_message';
+
+// First occurrence is in: Mailing.php
+// ----------------------------------------------------------------------------
+  $strings['Please provide a valid setting for SMTP server address'] = 'Please provide a valid setting for SMTP server address';
+  $strings['Please provide a valid setting for email "from"-address'] = 'Please provide a valid setting for email "from"-address';
+  $strings['Please provide a valid setting for SMTP server timeout'] = 'Please provide a valid setting for SMTP server timeout';
+  $strings['Please provide a valid setting for SMTP server port'] = 'Please provide a valid setting for SMTP server port';
+  $strings['Please provide a valid setting for email header charset'] = 'Please provide a valid setting for email header charset';
+  $strings['User account registered with The Bug Genie'] = 'User account registered with The Bug Genie';
+  $strings['Your account in The Bug Genie has been added to a new scope'] = 'Your account in The Bug Genie has been added to a new scope';
+  $strings['Password reset'] = 'Password reset';
+  $strings['Forgot your password?'] = 'Forgot your password?';
+  $strings['Test email'] = 'Test email';
+  $strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
+  $strings['Notify by email when there are updates to my subscribed issues'] = 'Notify by email when there are updates to my subscribed issues';
+  $strings['Notify by email when there are updates to my subscribed articles'] = 'Notify by email when there are updates to my subscribed articles';
+  $strings['Notify by email when new issues are created in my project(s)'] = 'Notify by email when new issues are created in my project(s)';
+  $strings['Notify by email when new articles are created in my project(s)'] = 'Notify by email when new articles are created in my project(s)';
+  $strings['Only send one email per issue or article until I view the issue or article in my browser'] = 'Only send one email per issue or article until I view the issue or article in my browser';
+  $strings['Notify by email also when I am the one making the changes'] = 'Notify by email also when I am the one making the changes';
+
+// First occurrence is in: templates/_accountsettings.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Email notifications'] = 'Email notifications';
+  $strings['In addition to being notified when logging in, you can choose to also be notified via email for issues or articles you subscribe to. The following settings control when you receive emails.'] = 'In addition to being notified when logging in, you can choose to also be notified via email for issues or articles you subscribe to. The following settings control when you receive emails.';
+
+// First occurrence is in: templates/_articlecomment.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Comment by %name'] = 'Comment by %name';
+  $strings['Show article:'] = 'Show article:';
+  $strings['Show comment:'] = 'Show comment:';
+  $strings['You were sent this notification email because you are related to the article mentioned in this email.'] = 'You were sent this notification email because you are related to the article mentioned in this email.';
+  $strings['To change when and how often we send these emails, update your account settings:'] = 'To change when and how often we send these emails, update your account settings:';
+
+// First occurrence is in: templates/_articlecomment.text.inc.php
+// ----------------------------------------------------------------------------
+  $strings['A comment has been posted:'] = 'A comment has been posted:';
+
+// First occurrence is in: templates/_articleupdate.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['%article updated'] = '%article updated';
+  $strings['The article has been updated by %name'] = 'The article has been updated by %name';
+  $strings['No change reason provided'] = 'No change reason provided';
+  $strings['Show changes:'] = 'Show changes:';
+
+// First occurrence is in: templates/_configcreateuseremail.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Send user information by email'] = 'Send user information by email';
+
+// First occurrence is in: templates/_editincomingemailaccount.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Edit incoming email account'] = 'Edit incoming email account';
+  $strings['Add new incoming email account'] = 'Add new incoming email account';
+  $strings['The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.'] = 'The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.';
+  $strings['online documentation'] = 'online documentation';
+  $strings['Account name:'] = 'Account name:';
+  $strings['Enter a short, descriptive name for this incoming email account'] = 'Enter a short, descriptive name for this incoming email account';
+  $strings['Server name:'] = 'Server name:';
+  $strings['Enter the name of the incoming email server'] = 'Enter the name of the incoming email server';
+  $strings['Port number:'] = 'Port number:';
+  $strings['Email folder name:'] = 'Email folder name:';
+  $strings['Enter folder name to read from. Leave blank for default (INBOX)'] = 'Enter folder name to read from. Leave blank for default (INBOX)';
+  $strings['Keep email:'] = 'Keep email:';
+  $strings['Yes'] = 'Yes';
+  $strings['No'] = 'No';
+  $strings['Select whether emails should be kept or removed from the account after being downloaded'] = 'Select whether emails should be kept or removed from the account after being downloaded';
+  $strings['Email username:'] = 'Email username:';
+  $strings['Email password:'] = 'Email password:';
+  $strings['Use plaintext authentication'] = 'Use plaintext authentication';
+  $strings['Account type'] = 'Account type';
+  $strings['Microsoft Exchange / IMAP'] = 'Microsoft Exchange / IMAP';
+  $strings['POP3'] = 'POP3';
+  $strings['Use secure connection (SSL)'] = 'Use secure connection (SSL)';
+  $strings['Ignore certificate errors'] = 'Ignore certificate errors';
+  $strings['Select this to ignore certificate validation error messages'] = 'Select this to ignore certificate validation error messages';
+  $strings['Issuetype'] = 'Issuetype';
+  $strings['Any issues created will be set to this issuetype, and its first workflow step will be applied'] = 'Any issues created will be set to this issuetype, and its first workflow step will be applied';
+  $strings['When you are done, click "%save_changes" to update the details for this account'] = 'When you are done, click "%save_changes" to update the details for this account';
+  $strings['Save changes'] = 'Save changes';
+  $strings['When you are done, click "%add_account" to add this account'] = 'When you are done, click "%add_account" to add this account';
+  $strings['Add account'] = 'Add account';
+  $strings['Close popup'] = 'Close popup';
+
+// First occurrence is in: templates/_forgotPasswordLink.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Forgot password'] = 'Forgot password';
+
+// First occurrence is in: templates/_forgotPasswordPane.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Username or email address'] = 'Username or email address';
+  $strings['Back'] = 'Back';
+  $strings['Send email'] = 'Send email';
+
+// First occurrence is in: templates/_incomingemailaccount.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Check now'] = 'Check now';
+  $strings['Edit'] = 'Edit';
+  $strings['Really delete this incoming email account?'] = 'Really delete this incoming email account?';
+  $strings['Deleting this incoming email account will stop emails being retrieved from this account. All existing issues are still kept.'] = 'Deleting this incoming email account will stop emails being retrieved from this account. All existing issues are still kept.';
+  $strings['Delete'] = 'Delete';
+  $strings['Last checked: %time'] = 'Last checked: %time';
+  $strings['%last_checked never'] = '%last_checked never';
+  $strings['Email(s) processed: %number'] = 'Email(s) processed: %number';
+
+// First occurrence is in: templates/_issuecomment.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Created by %name'] = 'Created by %name';
+  $strings['Show issue:'] = 'Show issue:';
+  $strings['Show %project project dashboard:'] = 'Show %project project dashboard:';
+  $strings['You were sent this notification email because you are related to the issue mentioned in this email.'] = 'You were sent this notification email because you are related to the issue mentioned in this email.';
+
+// First occurrence is in: templates/_issuecreate.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Description:'] = 'Description:';
+  $strings['Reproduction steps'] = 'Reproduction steps';
+
+// First occurrence is in: templates/_issuecreate.text.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Description'] = 'Description';
+
+// First occurrence is in: templates/_issueupdate.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Updated by %name'] = 'Updated by %name';
+  $strings['Changes'] = 'Changes';
+  $strings['Issue closed'] = 'Issue closed';
+  $strings['Issue reopened'] = 'Issue reopened';
+  $strings['Triaged bug type: %text'] = 'Triaged bug type: %text';
+  $strings['Triaged likelihood: %text'] = 'Triaged likelihood: %text';
+  $strings['Triaged effect: %text'] = 'Triaged effect: %text';
+  $strings['Calculated user pain: %text'] = 'Calculated user pain: %text';
+  $strings['Category changed: %text'] = 'Category changed: %text';
+  $strings['Custom field changed: %text'] = 'Custom field changed: %text';
+  $strings['Status changed: %text'] = 'Status changed: %text';
+  $strings['Reproducability changed: %text'] = 'Reproducability changed: %text';
+  $strings['Priority changed: %text'] = 'Priority changed: %text';
+  $strings['Severity changed: %text'] = 'Severity changed: %text';
+  $strings['Resolution changed: %text'] = 'Resolution changed: %text';
+  $strings['Percent completed: %text'] = 'Percent completed: %text';
+  $strings['Target milestone changed: %text'] = 'Target milestone changed: %text';
+  $strings['Issue type changed: %text'] = 'Issue type changed: %text';
+  $strings['Estimation changed: %text'] = 'Estimation changed: %text';
+  $strings['Time spent: %text'] = 'Time spent: %text';
+  $strings['Assignee changed: %text'] = 'Assignee changed: %text';
+  $strings['Owner changed: %text'] = 'Owner changed: %text';
+  $strings['Posted by changed: %text'] = 'Posted by changed: %text';
+  $strings['Issue updated'] = 'Issue updated';
+  $strings['You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.'] = 'You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.';
+  $strings['Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.'] = 'Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.';
+
+// First occurrence is in: templates/_projectconfig_panels.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Save outgoing email settings'] = 'Save outgoing email settings';
+  $strings['Project from-address'] = 'Project from-address';
+  $strings['Project from-name'] = 'Project from-name';
+  $strings['By specifying an email address here, users can hit the "Reply" button on email notifications, and replies will be sent to the specified address instead of the usual generic no-reply address.'] = 'By specifying an email address here, users can hit the "Reply" button on email notifications, and replies will be sent to the specified address instead of the usual generic no-reply address.';
+  $strings['Add new account'] = 'Add new account';
+  $strings['You do not have the relevant permissions to access email settings'] = 'You do not have the relevant permissions to access email settings';
+  $strings['Incoming email accounts'] = 'Incoming email accounts';
+
+// First occurrence is in: templates/_projectconfig_tab_settings.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Outgoing email settings'] = 'Outgoing email settings';
+
+// First occurrence is in: templates/_settings.inc.php
+// ----------------------------------------------------------------------------
+  $strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = 'These are the settings for outgoing emails, such as notification emails and registration emails.';
+  $strings['Enable outgoing email notifications'] = 'Enable outgoing email notifications';
+  $strings['Require email activation for new accounts'] = 'Require email activation for new accounts';
+  $strings["If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen"] = "If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen";
+  $strings['Email "from"-name'] = 'Email "from"-name';
+  $strings['Email "from"-address'] = 'Email "from"-address';
+  $strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'This is the name and email address email notifications from The Bug Genie will be sent from';
+  $strings['Issue tracker URL'] = 'Issue tracker URL';
+  $strings["This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature."] = "This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature.";
+  $strings['Email header charset'] = 'Email header charset';
+  $strings['The character encoding used in outgoing emails'] = 'The character encoding used in outgoing emails';
+  $strings['Queue emails for batch processing'] = 'Queue emails for batch processing';
+  $strings['Send email notifications instantly'] = 'Send email notifications instantly';
+  $strings['Use email queueing'] = 'Use email queueing';
+  $strings["If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing"] = "If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing";
+  $strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration';
+  $strings['SMTP server address'] = 'SMTP server address';
+  $strings['SMTP address port'] = 'SMTP address port';
+  $strings['SMTP server timeout'] = 'SMTP server timeout';
+  $strings['%number_of seconds'] = '%number_of seconds';
+  $strings['Connection information for the outgoing email server'] = 'Connection information for the outgoing email server';
+  $strings['SMTP username'] = 'SMTP username';
+  $strings['The username used for sending emails'] = 'The username used for sending emails';
+  $strings['SMTP password'] = 'SMTP password';
+  $strings['The password used for sending emails'] = 'The password used for sending emails';
+  $strings['Click "%save" to save email notification settings'] = 'Click "%save" to save email notification settings';
+  $strings['Save'] = 'Save';
+  $strings['Send test email'] = 'Send test email';
+  $strings['Enter an email address, and click "%send_test_email" to check if the email module is configured correctly'] = 'Enter an email address, and click "%send_test_email" to check if the email module is configured correctly';

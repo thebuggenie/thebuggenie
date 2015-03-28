@@ -1,4 +1,4 @@
-<?php if ($issue instanceof TBGIssue && $comment instanceof TBGComment): ?>
+<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $comment instanceof \thebuggenie\core\entities\Comment): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
         <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?></span>

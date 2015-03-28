@@ -1,23 +1,11 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <h2 style="margin-top: 0px;">Pre-installation checks</h2>
     <p style="margin-bottom: 10px;">
     Before we can start the installation, we need to check a few things.<br>
     Please look through the list of prerequisites below, and take the necessary steps to correct any errors that may have been highlighted.</p>
-    <div class="feature" id="upgrade_warning">
-        <h4 style="padding-top: 0; margin-top: 0;">ARE YOU UPGRADING FROM A PREVIOUS VERSION?</h4>
-        <h5>If you are upgrading from version 3.0</h5>
-        You should not see this page if you are upgrading from version 3.0. Please see the upgrade instructions included in the release notes, or the UPGRADE file included with your download for information on how to upgrade to version <?php echo TBGSettings::getVersion(false, false); ?>
-        <h5>If you are upgrading from version 2.x</h5>
-        Please see the instructions in the Import of the configuration center after installation is complete
-        <h5>If you are upgrading from version 1.x</h5>
-        Users of The Bug Genie 1.x will need to upgrade to the latest release of The Bug Genie 2.1 before attempting to upgrade to this version.
-        <div style="text-align: center;">
-            <button onclick="$('upgrade_warning').hide();$('installation_main_box').show();" style="font-size: 16px; font-weight: bold; padding: 10px !important; margin: 25px auto 10px auto;">I am not upgrading from a previous version</button>
-        </div>
-    </div>
-    <div id="installation_main_box" style="display: none;">
-        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 1.1 accepted ...</div>
+    <div id="installation_main_box">
+        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 2.0 accepted ...</div>
         <?php if ($php_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
         <?php else: ?>
@@ -54,23 +42,6 @@
             chmod a+w <?php echo THEBUGGENIE_PATH; /* str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); */ ?>
             </div>
         <?php endif; ?>
-        <?php if ($cache_folder_perm_ok): ?>
-            <div class="install_progress prereq_ok">
-                <?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can write to <?php echo THEBUGGENIE_CORE_PATH . 'cache'; ?> and <?php echo THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB'; ?>
-            </div>
-        <?php else: ?>
-            <div class="install_progress prereq_fail">
-            <b>Could not write to The Bug Genie cache directoies</b><br>
-            Either the cache folder, or its B2DB subfolder can not be accessed. These folders should exist and be writable during installation and normal operations, since we need to store cache files in them
-            </div>
-            <b>If you're installing this on a Linux server,</b> running these commands should fix it:<br>
-            <div class="command_box">
-            mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
-            chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br><br>
-            mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB<br>
-            chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB<br>
-            </div>
-        <?php endif; ?>
         <?php if ($thebuggenie_folder_perm_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie public directory ...</div>
         <?php else: ?>
@@ -84,12 +55,20 @@
             </div>
         <?php endif; ?>
         <?php if ($mb_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP extension mbstring is loaded</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP mbstring extension is loaded</div>
         <?php else: ?>
             <div class="install_progress prereq_warn">
-            <b>PHP extensions "mbstring" is not loaded</b><br>
+            <b>PHP extension "mbstring" is not loaded</b><br>
             The Bug Genie 3 requires the PHP extension "mbstring". This extension is used by the internationalization functionality in The Bug Genie and is required for The Bug Genie to operate.<br/>
             More information is available at <a href="http://php.net/manual/en/book.mbstring.php" target="_blank">php.net</a>
+            </div>
+        <?php endif; ?>
+        <?php if ($gd_ok): ?>
+            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
+        <?php else: ?>
+            <div class="install_progress prereq_warn">
+                <b>PHP GD library not enabled</b><br>
+                You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://php.net/manual/en/book.image.php" target="_blank">php.net</a>
             </div>
         <?php endif; ?>
         <?php if ($pdo_ok): ?>
@@ -118,7 +97,9 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-        <?php if (!$b2db_param_folder_ok): ?>
+        <?php if ($b2db_param_file_ok && $b2db_param_folder_ok): ?>
+            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
+        <?php elseif (!$b2db_param_file_ok): ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
             The folder that contains the SQL settings is not writable
@@ -128,9 +109,6 @@
             touch <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml<br>
             chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
-        <?php endif; ?>
-        <?php if ($b2db_param_file_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
@@ -141,14 +119,6 @@
             chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
         <?php endif; ?>
-        <?php if ($gd_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
-        <?php else: ?>
-            <div class="install_progress prereq_warn">
-            <b>PHP GD library not enabled</b><br>
-            You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://php.net/manual/en/book.image.php" target="_blank">php.net</a>
-            </div>
-        <?php endif; ?>
         <?php if (get_magic_quotes_gpc()): ?>
             <div class="install_progress prereq_warn">
             <b>Magic quotes are enabled</b><br>
@@ -157,22 +127,12 @@
         <?php endif; ?>
         <?php if ($all_well): ?>
             <br style="clear: both;">
-            <div style="margin-top: 10px; font-size: 13px; text-align: center; margin-left: 200px; text-align: left;">
-                Before continuing, please make sure that you have the following information available:
-                <ul class="outlined">
-                    <li>
-                        Database connection details<br>
-                        <span style="font-weight: normal;">(hostname, username, password, database name)</span>
-                    </li>
-                </ul>
-                <br>
-            </div>
-            <div style="clear: both; padding-top: 0; text-align: center;">
+            <div style="clear: both; padding: 15px 0; text-align: center;">
                 <form accept-charset="utf-8" action="index.php" method="post">
                     <input type="hidden" name="step" value="2">
-                    <label for="start_install" style="font-size: 13px;">Start the installation by pressing this button</label>
+                    <label for="start_install">Start the installation by pressing this button</label>
                     <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
-                    <input type="submit" onclick="$('start_install').hide();$('next_indicator').show();" id="start_install" value="Start installation" style="margin-left: 10px; margin-top: 10px;">
+                    <input type="submit" onclick="$('start_install').hide();$('next_indicator').show();" id="start_install" value="Start installation" style="margin-left: 10px;">
                 </form>
             </div>
         <?php else: ?>
@@ -187,4 +147,4 @@
         <?php endif; ?>
     </div>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

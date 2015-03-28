@@ -12,7 +12,7 @@
                     <?php endif; ?>
                 </li>
                 <li><?php echo javascript_link_tag(__('Clone this user group'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?></li>
-                <?php if (!in_array($group->getID(), TBGSettings::getDefaultGroupIDs()) && !$group->isDefaultUserGroup()): ?>
+                <?php if (!in_array($group->getID(), \thebuggenie\core\framework\Settings::getDefaultGroupIDs()) && !$group->isDefaultUserGroup()): ?>
                     <li><?php echo javascript_link_tag(__('Delete this user group'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this group?')."', '".__('If you delete this group, then all users in this group will be disabled until moved to a different group')."', {yes: {click: function() {TBG.Config.Group.remove('".make_url('configure_users_delete_group', array('group_id' => $group->getID()))."', {$group->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?></li>
                 <?php else: ?>
                     <li class="disabled" title="<?php echo __('The default group cannot be deleted'); ?>"><a href="javascript:void(0);"><?php echo __('Delete this user group'); ?></a></li>
@@ -24,7 +24,7 @@
         <div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_group_<?php echo $group->getID(); ?>">
             <div class="dropdown_header"><?php echo __('Please specify what parts of this group you want to clone'); ?></div>
             <div class="dropdown_content">
-                <form id="clone_group_<?php echo $group->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Group.clone('<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>');return false;">
+                <form id="clone_group_<?php echo $group->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Group.clone('<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>');return false;">
                     <div id="add_group">
                         <label for="clone_group_<?php echo $group->getID(); ?>_new_name"><?php echo __('New group name'); ?></label>
                         <input type="text" id="clone_group_<?php echo $group->getID(); ?>_new_name" name="group_name"><br />
@@ -33,7 +33,7 @@
                     </div>
                 </form>
                 <div style="text-align: right;">
-                    <?php echo javascript_link_tag(__('Clone this group'), array('onclick' => 'TBG.Config.Group.clone(\''.make_url('configure_users_clone_group', array('group_id' => $group->getID())).'\', '.$group->getID().');')); ?> :: <b><?php echo javascript_link_tag(__('Cancel'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?></b>
+                    <b><?php echo javascript_link_tag(__('Clone this group'), array('onclick' => 'TBG.Config.Group.clone(\''.make_url('configure_users_clone_group', array('group_id' => $group->getID())).'\', '.$group->getID().');')); ?></b> :: <?php echo javascript_link_tag(__('Cancel'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?>
                 </div>
                 <table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="clone_group_<?php echo $group->getID(); ?>_indicator">
                     <tr>

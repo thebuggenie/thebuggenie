@@ -1,9 +1,9 @@
 <?php
 
-	TBGContext::getI18n()->setCharset('utf-8');
+	\thebuggenie\core\framework\Context::getI18n()->setCharset('utf-8');
 	setlocale(LC_ALL, array('fr_FR@euro', 'fr_FR', 'fr'));
-	// see TBGi18n::getDateTimeFormat for the list of all available formats
-	TBGContext::getI18n()->setDateTimeFormats( array( 1 => '%H:%M - %a %d %b %Y'
+	// see \thebuggenie\core\entities\i18n::getDateTimeFormat for the list of all available formats
+	\thebuggenie\core\framework\Context::getI18n()->setDateTimeFormats( array( 1 => '%H:%M - %a %d %b %Y'
 													, 2 => '%H:%M - %a %d.m %Y'
 													, 3 => '%a %d %b %H:%M'
 													, 4 => '%d %b %H:%M'

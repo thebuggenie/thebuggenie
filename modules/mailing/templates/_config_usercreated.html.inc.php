@@ -1,4 +1,4 @@
-<?php if ($user instanceof TBGUser): ?>
+<?php if ($user instanceof \thebuggenie\core\entities\User): ?>
     <h3>
         You have been registered by an administrator<br>
     </h3>

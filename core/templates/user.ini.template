@@ -1,0 +1,2 @@
+magic_quotes_gpc=0
+register_globals=0

@@ -8,7 +8,7 @@
             </div>
             <label for="move_issue_project"><?php echo __('Move issue to'); ?></label><br>
             <select name="project_id">
-                <?php foreach (TBGProject::getAll() as $project): ?>
+                <?php foreach (\thebuggenie\core\entities\Project::getAll() as $project): ?>
                     <?php if (!$project->hasAccess() || $project->isDeleted() || $project->isArchived() || !$tbg_user->canReportIssues($project) || $project->getID() == $issue->getProject()->getID()) continue; ?>
                     <option value="<?php echo $project->getID(); ?>"<?php if ($project->getID() == $issue->getProject()->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
                 <?php endforeach; ?>

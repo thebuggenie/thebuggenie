@@ -4,7 +4,7 @@
         <?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
             <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
                 <?php if ($milestone->isScheduled()): ?>
-                    <?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
+                    <?php include_component('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
                     <?php $milestone_cc++; ?>
                 <?php endif; ?>
             <?php endforeach; ?>

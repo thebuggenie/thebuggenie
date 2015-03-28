@@ -1,75 +1,63 @@
 <?php
 
-	/**
-	 * module_description
-	 *
-	 * @author
-	 * @version 0.1
-	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
-	 * @package module_key
-	 * @subpackage core
-	 */
+    namespace thebuggenie\modules\module_key;
 
-	/**
-	 * module_description
-	 *
-	 * @package module_key
-	 * @subpackage core
-	 */
-	class module_name extends TBGModule
-	{
+    use thebuggenie\core\framework;
 
-		protected $_module_version = '0.1';
+    /**
+     * module_description
+     *
+     * @author
+     * @version 0.1
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
+     * @package module_key
+     * @subpackage core
+     */
 
-		/**
-		 * Return an instance of this module
-		 *
-		 * @return module_name
-		 */
-		public static function getModule()
-		{
-			return TBGContext::getModule('module_key');
-		}
+    /**
+     * module_description
+     *
+     * @package module_key
+     * @subpackage core
+     */
+    class module_name extends \thebuggenie\core\entities\Module
+    {
 
-		protected function _initialize(TBGI18n $i18n)
-		{
-			$this->setLongName($i18n->__('module_name'));
-			$this->setMenuTitle($i18n->__('module_name'));
-			$this->setConfigTitle($i18n->__('module_name'));
-			$this->showInMenu();
-			$this->setDescription($i18n->__('module_description'));
-			$this->setConfigDescription($i18n->__('Set up the module_name module from this section'));
-		}
+        const VERSION = '0.1';
 
-		protected function _addAvailablePermissions()
-		{
-		}
+        protected $_longname = 'module_name';
+        protected $_description = 'module_name description here';
+        protected $_module_config_title = 'module_name';
+        protected $_module_config_description = 'Set up the module_name module from this section';
 
-		protected function _addAvailableListeners()
-		{
-		}
+        /**
+         * Return an instance of this module
+         *
+         * @return module_name
+         */
+        public static function getModule()
+        {
+            return framework\Context::getModule('module_key');
+        }
 
-		protected function _addAvailableRoutes()
-		{
-			$this->addRoute('module_key_index', '/module_key', 'index');
-		}
+        protected function _initialize()
+        {
+        }
 
-		protected function _install($scope)
-		{
-		}
+        protected function _addAvailableListeners()
+        {
+        }
 
-		protected function _loadFixtures($scope)
-		{
-		}
+        protected function _install($scope)
+        {
+        }
 
-		protected function _uninstall()
-		{
-		}
+        protected function _loadFixtures($scope)
+        {
+        }
 
-		public function getRoute()
-		{
-			return TBGContext::getRouting()->generate('module_key_index');
-		}
+        protected function _uninstall()
+        {
+        }
 
-	}
-
+    }

@@ -1,7 +1,7 @@
 <div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transition_add" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none; z-index: 100;">
     <div class="header"><?php echo __('Add outgoing transition from step "%step_name"', array('%step_name' => $step->getName())); ?></div>
     <div class="content">
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_add_transition', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_add_transition', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
             <ul class="simple_list">
                 <li>
                     <input type="radio" name="add_transition_type" value="existing" id="step_<?php echo $step->getID(); ?>_add_existing_transition">
@@ -37,8 +37,7 @@
                         <dt><label for="add_transition_step_<?php echo $step->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
                         <dd>
                             <select id="add_transition_step_<?php echo $step->getID(); ?>_template" name="template">
-                                <option value="" selected><?php echo __('No template used - transition happens instantly'); ?></option>
-                                <?php foreach (TBGWorkflowTransition::getTemplates() as $template_key => $template_name): ?>
+                                <?php foreach (\thebuggenie\core\entities\WorkflowTransition::getTemplates() as $template_key => $template_name): ?>
                                     <option value="<?php echo $template_key; ?>"><?php echo $template_name; ?></option>
                                 <?php endforeach; ?>
                             </select>

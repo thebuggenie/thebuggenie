@@ -2,10 +2,8 @@
 
     namespace thebuggenie\modules\vcs_integration;
 
-    use TBGContext,
-        TBGRequest,
-        TBGSettings,
-        TBGProject,
+    use thebuggenie\core\framework,
+        thebuggenie\core\entities\Project,
         thebuggenie\modules\vcs_integration\entities\Commit;
 
     /**
@@ -13,7 +11,7 @@
      *
      * @author Philip Kent <kentphilip@gmail.com>
      * @version 3.2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage vcs_integration
      */
@@ -24,15 +22,15 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class Actions extends \TBGAction
+    class Actions extends framework\Action
     {
 
-        public function runProjectCommits(TBGRequest $request)
+        public function runProjectCommits(framework\Request $request)
         {
-            $this->selected_project = TBGProject::getByKey($request['project_key']);
-            TBGContext::setCurrentProject($this->selected_project);
+            $this->selected_project = Project::getByKey($request['project_key']);
+            framework\Context::setCurrentProject($this->selected_project);
 
-            if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED): return $this->return404(TBGContext::getI18n()->__('VCS Integration has been disabled for this project'));
+            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED): return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
                 ;
             endif;
 
@@ -42,33 +40,33 @@
 
             if ($offset)
             {
-                return $this->renderJSON(array('content' => $this->getTemplateHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
             }
         }
 
-        public function runAddCommit(TBGRequest $request)
+        public function runAddCommit(framework\Request $request)
         {
-            TBGContext::getResponse()->setContentType('text/plain');
-            TBGContext::getResponse()->renderHeaders();
+            framework\Context::getResponse()->setContentType('text/plain');
+            framework\Context::getResponse()->renderHeaders();
 
             /* Prepare variables */
-            $passkey = TBGContext::getRequest()->getParameter('passkey');
-            $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
-            $author = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('author')), ENT_QUOTES), '"');
-            $new_rev = TBGContext::getRequest()->getParameter('rev');
-            $commit_msg = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
-            $changed = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('changed')), ENT_QUOTES), '"');
+            $passkey = framework\Context::getRequest()->getParameter('passkey');
+            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
+            $author = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('author')), ENT_QUOTES), '"');
+            $new_rev = framework\Context::getRequest()->getParameter('rev');
+            $commit_msg = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
+            $changed = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('changed')), ENT_QUOTES), '"');
 
-            if (TBGContext::getRequest()->hasParameter('branch'))
+            if (framework\Context::getRequest()->hasParameter('branch'))
             {
-                $branch = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('branch')), ENT_QUOTES), '"');
+                $branch = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('branch')), ENT_QUOTES), '"');
             }
             else
             {
                 $branch = null;
             }
 
-            $project = TBGContext::factory()->TBGProject($project_id);
+            $project = Project::getB2DBTable()->selectByID($project_id);
 
             if (!$project)
             {
@@ -76,41 +74,41 @@
                 exit;
             }
 
-            if (TBGSettings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
+            if (framework\Settings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
             {
                 echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
                 exit;
             }
 
-            if (TBGSettings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
+            if (framework\Settings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
             {
                 echo 'Error: The passkey specified does not match the passkey specified for this project';
                 exit;
             }
 
             // Obtain previous revision
-            if (!TBGContext::getRequest()->hasParameter('oldrev') && !is_integer($new_rev))
+            if (!framework\Context::getRequest()->hasParameter('oldrev') && !is_integer($new_rev))
             {
                 echo 'Error: If only the new revision is specified, it must be a number so that old revision can be calculated from it (by substracting 1 from new revision number).';
                 exit;
             }
-            else if (!TBGContext::getRequest()->hasParameter('oldrev'))
+            else if (!framework\Context::getRequest()->hasParameter('oldrev'))
             {
                 $old_rev = $new_rev - 1;
             }
             else
             {
-                $old_rev = TBGContext::getRequest()->getParameter('oldrev'); // for git, etc. which use hashes
+                $old_rev = framework\Context::getRequest()->getParameter('oldrev'); // for git, etc. which use hashes
             }
 
             // Obtain date timestamp
-            if (!TBGContext::getRequest()->hasParameter('date'))
+            if (!framework\Context::getRequest()->hasParameter('date'))
             {
                 $date = null;
             }
             else
             {
-                $date = TBGContext::getRequest()->getParameter('date'); // posix timestamp of commit
+                $date = framework\Context::getRequest()->getParameter('date'); // posix timestamp of commit
             }
 
             // Validate fields
@@ -125,19 +123,19 @@
             exit;
         }
 
-        public function runAddCommitGithub(TBGRequest $request)
+        public function runAddCommitGithub(framework\Request $request)
         {
-            TBGContext::getResponse()->setContentType('text/plain');
-            TBGContext::getResponse()->renderHeaders();
+            framework\Context::getResponse()->setContentType('text/plain');
+            framework\Context::getResponse()->renderHeaders();
 
-            $passkey = TBGContext::getRequest()->getParameter('passkey');
-            $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+            $passkey = framework\Context::getRequest()->getParameter('passkey');
+            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
 
             try
             {
-                $project = TBGContext::factory()->TBGProject($project_id);
+                $project = Project::getB2DBTable()->selectByID($project_id);
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $project = false;
             }
@@ -149,20 +147,20 @@
                 exit;
             }
 
-            if (TBGSettings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
+            if (framework\Settings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
             {
                 echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
                 exit;
             }
 
-            if (TBGSettings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
+            if (framework\Settings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
             {
                 echo 'Error: The passkey specified does not match the passkey specified for this project';
                 exit;
             }
 
             // Validate data
-            $data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
+            $data = html_entity_decode(framework\Context::getRequest()->getParameter('payload'));
             if (empty($data) || $data == null)
             {
                 //Need to check if payload is in unwrapped form from GitLab (until support is added)
@@ -263,21 +261,21 @@
          * @see http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
          * @author AlmogBaku <almog.baku@gmail.com>
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runAddCommitBitbucket(TBGRequest $request)
+        public function runAddCommitBitbucket(framework\Request $request)
         {
-            TBGContext::getResponse()->setContentType('text/plain');
-            TBGContext::getResponse()->renderHeaders();
+            framework\Context::getResponse()->setContentType('text/plain');
+            framework\Context::getResponse()->renderHeaders();
 
-            $passkey = TBGContext::getRequest()->getParameter('passkey');
-            $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+            $passkey = framework\Context::getRequest()->getParameter('passkey');
+            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
 
             try
             {
-                $project = TBGContext::factory()->TBGProject($project_id);
+                $project = Project::getB2DBTable()->selectByID($project_id);
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $project = false;
             }
@@ -289,20 +287,20 @@
                 exit;
             }
 
-            if (TBGSettings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
+            if (framework\Settings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
             {
                 echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
                 exit;
             }
 
-            if (TBGSettings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
+            if (framework\Settings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
             {
                 echo 'Error: The passkey specified does not match the passkey specified for this project';
                 exit;
             }
 
             // Validate data
-            $data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
+            $data = html_entity_decode(framework\Context::getRequest()->getParameter('payload'));
             if (empty($data) || $data == null)
             {
                 die('Error: No payload was provided');
@@ -339,14 +337,14 @@
             exit();
         }
 
-        public function runAddCommitGitorious(TBGRequest $request)
+        public function runAddCommitGitorious(framework\Request $request)
         {
-            TBGContext::getResponse()->setContentType('text/plain');
-            TBGContext::getResponse()->renderHeaders();
+            framework\Context::getResponse()->setContentType('text/plain');
+            framework\Context::getResponse()->renderHeaders();
 
-            $passkey = TBGContext::getRequest()->getParameter('passkey');
-            $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
-            $project = TBGContext::factory()->TBGProject($project_id);
+            $passkey = framework\Context::getRequest()->getParameter('passkey');
+            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
+            $project = Project::getB2DBTable()->selectByID($project_id);
 
             // Validate access
             if (!$project)
@@ -355,20 +353,20 @@
                 exit;
             }
 
-            if (TBGSettings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
+            if (framework\Settings::get('access_method_' . $project->getID(), 'vcs_integration') == Vcs_integration::ACCESS_DIRECT)
             {
                 echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
                 exit;
             }
 
-            if (TBGSettings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
+            if (framework\Settings::get('access_passkey_' . $project->getID(), 'vcs_integration') != $passkey)
             {
                 echo 'Error: The passkey specified does not match the passkey specified for this project';
                 exit;
             }
 
             // Validate data
-            $data = html_entity_decode(TBGContext::getRequest()->getParameter('payload', null, false));
+            $data = html_entity_decode(framework\Context::getRequest()->getParameter('payload', null, false));
             if (empty($data) || $data == null)
             {
                 die('Error: No payload was provided');
@@ -414,11 +412,11 @@
             }
         }
 
-        public function runConfigureProjectSettings(TBGRequest $request)
+        public function runConfigureProjectSettings(framework\Request $request)
         {
             $this->forward403unless($request->isPost());
 
-            if ($this->access_level != TBGSettings::ACCESS_FULL)
+            if ($this->access_level != framework\Settings::ACCESS_FULL)
             {
                 $project_id = $request['project_id'];
 
@@ -427,7 +425,7 @@
 
                 foreach ($fields as $field)
                 {
-                    TBGContext::getModule('vcs_integration')->saveSetting($field . '_' . $project_id, $request->getParameter($field));
+                    framework\Context::getModule('vcs_integration')->saveSetting($field . '_' . $project_id, $request->getParameter($field));
                 }
 
                 switch ($request['browser_type'])
@@ -527,14 +525,14 @@
 
                 if ($request['browser_type'] != 'other')
                 {
-                    TBGContext::getModule('vcs_integration')->saveSetting('browser_url_' . $project_id, $base_url);
-                    TBGContext::getModule('vcs_integration')->saveSetting('log_url_' . $project_id, $link_file);
-                    TBGContext::getModule('vcs_integration')->saveSetting('blob_url_' . $project_id, $link_view);
-                    TBGContext::getModule('vcs_integration')->saveSetting('diff_url_' . $project_id, $link_diff);
-                    TBGContext::getModule('vcs_integration')->saveSetting('commit_url_' . $project_id, $link_rev);
+                    framework\Context::getModule('vcs_integration')->saveSetting('browser_url_' . $project_id, $base_url);
+                    framework\Context::getModule('vcs_integration')->saveSetting('log_url_' . $project_id, $link_file);
+                    framework\Context::getModule('vcs_integration')->saveSetting('blob_url_' . $project_id, $link_view);
+                    framework\Context::getModule('vcs_integration')->saveSetting('diff_url_' . $project_id, $link_diff);
+                    framework\Context::getModule('vcs_integration')->saveSetting('commit_url_' . $project_id, $link_rev);
                 }
 
-                return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Settings saved')));
+                return $this->renderJSON(array('failed' => false, 'message' => framework\Context::getI18n()->__('Settings saved')));
             }
             else
             {

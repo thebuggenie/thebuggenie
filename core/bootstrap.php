@@ -14,12 +14,14 @@
 
     defined('THEBUGGENIE_VENDOR_PATH') || define('THEBUGGENIE_VENDOR_PATH', THEBUGGENIE_PATH . 'vendor' . DS);
     if (!file_exists(THEBUGGENIE_VENDOR_PATH . 'autoload.php')) {
-        die('You must initialize vendor libraries by running `composer.phar install` via cli');
+        include THEBUGGENIE_CORE_PATH . 'templates' . DS . 'composer.error.php';
+        die();
     }
     require THEBUGGENIE_VENDOR_PATH . 'autoload.php';
 
+    defined('THEBUGGENIE_CACHE_PATH') || define('THEBUGGENIE_CACHE_PATH', THEBUGGENIE_PATH . 'cache' . DS);
     defined('THEBUGGENIE_CONFIGURATION_PATH') || define('THEBUGGENIE_CONFIGURATION_PATH', THEBUGGENIE_CORE_PATH . 'config' . DS);
     defined('THEBUGGENIE_INTERNAL_MODULES_PATH') || define('THEBUGGENIE_INTERNAL_MODULES_PATH', THEBUGGENIE_CORE_PATH . 'modules' . DS);
     defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
 
-    TBGContext::initialize();
+    \thebuggenie\core\framework\Context::initialize();

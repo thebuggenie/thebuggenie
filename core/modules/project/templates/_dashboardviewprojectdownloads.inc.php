@@ -8,10 +8,10 @@
         {
             $found = true;
             
-            if ($releases[0]->getEdition() instanceof TBGEdition)
+            if ($releases[0]->getEdition() instanceof \thebuggenie\core\entities\Edition)
                 echo '<div class="tab_header">'.$releases[0]->getEdition()->getName().'</div>';
 
-            echo '<ul class="simple_list">'.get_template_html('project/release', array('build' => $releases[0])).'</ul>';
+            echo '<ul class="simple_list">'.get_component_html('project/release', array('build' => $releases[0])).'</ul>';
         }
     }
     

@@ -9,7 +9,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGIssuetypeScheme::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\IssuetypeScheme::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -25,7 +25,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGWorkflowScheme::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\WorkflowScheme::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -42,7 +42,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGProject::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Project::getAll() as $item): ?>
                                             <tr><th colspan="2"><?php echo $item->getName(); ?>: <?php echo __('ID'); ?> <?php echo $item->getID(); ?></th></tr>
                                             <?php foreach ($item->getMilestones() as $item2): ?>
                                                 <tr><td><?php echo $item2->getName(); ?></td><td><?php echo $item2->getID(); ?></td></tr>
@@ -61,7 +61,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGIssuetype::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Issuetype::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -77,7 +77,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGStatus::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Status::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -94,7 +94,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGReproducability::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Reproducability::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -110,7 +110,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGSeverity::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Severity::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -126,7 +126,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGCategory::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Category::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -143,7 +143,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGPriority::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Priority::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -159,7 +159,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach (TBGResolution::getAll() as $item): ?>
+                                        <?php foreach (\thebuggenie\core\entities\Resolution::getAll() as $item): ?>
                                             <tr><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
                                         <?php endforeach; ?>
                                         </tbody>

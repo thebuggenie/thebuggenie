@@ -2,7 +2,7 @@
 
     $tbg_response->addBreadcrumb(__('Statistics'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" project team', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Statistics')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Statistics')));
 
 ?>
 <div id="project_statistics" class="project_info_container">
@@ -24,7 +24,7 @@
                 <input type="hidden" id="statistics_mini_1_main" value="">
                 <input type="hidden" id="statistics_mini_2_main" value="">
                 <input type="hidden" id="statistics_mini_3_main" value="">
-                <?php TBGEvent::createNew('core', 'projectstatistics_image', $selected_project)->trigger(); ?>
+                <?php \thebuggenie\core\framework\Event::createNew('core', 'projectstatistics_image', $selected_project)->trigger(); ?>
             </div>
             <div class="rounded_box verylightgrey borderless" style="width: 690px; text-align: center; padding: 150px 5px 150px 5px; color: #AAA; font-size: 19px;" id="statistics_help">
                 <?php echo __('Select an item in the left menu to show more details'); ?>
@@ -43,7 +43,7 @@
                 <li id="statistics_per_reproducability_selector"><a href="javascript:void(0);" onclick="TBG.Project.Statistics.get('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_reproducability')); ?>', 'reproducability');"><?php echo __('%number_of_issues_per Reproducability', array('%number_of_issues_per' => '')); ?></a></li>
                 <li id="statistics_per_status_selector"><a href="javascript:void(0);" onclick="TBG.Project.Statistics.get('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_status')); ?>', 'status');"><?php echo __('%number_of_issues_per Status type', array('%number_of_issues_per' => '')); ?></a></li>
             </ul>
-            <?php TBGEvent::createNew('core', 'projectstatistics_links', $selected_project)->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'projectstatistics_links', $selected_project)->trigger(); ?>
         </div>
     </div>
     <br style="clear: both;">

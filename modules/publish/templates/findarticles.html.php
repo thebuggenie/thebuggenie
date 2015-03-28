@@ -1,7 +1,7 @@
 <?php
 
-    include_template('publish/wikibreadcrumbs');
-    TBGContext::loadLibrary('publish/publish');
+    include_component('publish/wikibreadcrumbs');
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle($article_name);
 
 ?>
@@ -23,7 +23,7 @@
                 </div>
             <?php endif; ?>
             <h2><?php echo __('Find articles'); ?></h2>
-            <form action="<?php echo (TBGContext::isProjectContext()) ? make_url('publish_find_project_articles', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('publish_find_articles'); ?>" method="get" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+            <form action="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('publish_find_project_articles', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('publish_find_articles'); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                 <label for="find_article_name" style="font-size: 1.1em; float: left;"><?php echo __('Find articles by name'); ?></label><input type="text" name="articlename" id="find_article_name" value="<?php echo $articlename; ?>" style="width: 400px; float: left; margin-left: 5px; padding: 2px; font-size: 1.3em;">
                 <input type="submit" value="<?php echo __('Find'); ?>" style="float: left; margin-left: 5px; font-size: 1.2em; padding: 3px 5px !important;">
             </form>
@@ -37,7 +37,7 @@
                             <?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), $article->getName(), array('style' => 'font-size: 1.1em;')); ?><br>
                             <div class="faded_out"><?php echo __('Last updated %updated_at', array('%updated_at' => tbg_formatTime($article->getLastUpdatedDate(), 6))); ?></div>
                             <div class="article_preview">
-                                <?php echo tbg_truncateText($article->getContent(), 300); ?>
+                                <?php echo tbg_truncateText($article->getContent()); ?>
                             </div>
                         </li>
                         <?php endforeach; ?>

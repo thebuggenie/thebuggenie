@@ -1,0 +1,277 @@
+search_paginated:
+    route: '/issues/paginated/*'
+    module: search
+    action: findIssuesPaginated
+    parameters: [ ]
+    csrf_enabled: false
+
+search_filter_findusers:
+    route: /issues/filter/:filterkey/findusers
+    module: search
+    action: filterFindUsers
+    parameters: [ ]
+    csrf_enabled: false
+
+search_filter_findteams:
+    route: /issues/filter/:filterkey/findteams
+    module: search
+    action: filterFindTeams
+    parameters: [ ]
+    csrf_enabled: false
+
+search_filter_findclients:
+    route: /issues/filter/:filterkey/findclients
+    module: search
+    action: filterFindClients
+    parameters: [ ]
+    csrf_enabled: false
+
+search_filter_getdynamicchoices:
+    route: /issues/filters/getdynamicchoices
+    module: search
+    action: filterGetDynamicChoices
+    parameters: [ ]
+    csrf_enabled: false
+
+search_add_filter:
+    route: '/issues/add/filter/*'
+    module: search
+    action: addFilter
+    parameters: [ ]
+    csrf_enabled: false
+
+search_save:
+    route: /issues/save/search
+    module: search
+    action: saveSearch
+    parameters: [ ]
+    csrf_enabled: false
+
+search_save_column_settings:
+    route: /search/save/columnsettings
+    module: search
+    action: saveColumnSettings
+    parameters: [ ]
+    csrf_enabled: false
+
+my_teams_assigned_issues:
+    route: '/issues/my/assigned/teams/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 4
+      search: true
+    csrf_enabled: false
+
+my_assigned_issues:
+    route: '/issues/my/assigned/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 3
+      search: true
+    csrf_enabled: false
+
+my_owned_issues:
+    route: '/issues/my/owned/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 11
+      search: true
+    csrf_enabled: false
+
+my_reported_issues:
+    route: '/issues/my/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 5
+      search: true
+    csrf_enabled: false
+
+issues_bulk_update:
+    route: /issues/bulk
+    module: search
+    action: bulkUpdateIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+search:
+    route: '/issues/*'
+    module: search
+    action: findIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+quicksearch:
+    route: '/quicksearch/*'
+    module: search
+    action: findIssues
+    parameters:
+      quicksearch: true
+      issues_per_page: 6
+    csrf_enabled: false
+
+opensearch:
+    route: /opensearch.xml
+    module: search
+    action: opensearch
+    parameters:
+      format: xml
+    csrf_enabled: false
+
+project_open_issues:
+    route: '/:project_key/issues/open/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 1
+      search: true
+    csrf_enabled: false
+
+project_allopen_issues:
+    route: '/:project_key/issues/allopen/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 12
+      search: true
+    csrf_enabled: false
+
+project_closed_issues:
+    route: '/:project_key/issues/closed/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 2
+      search: true
+    csrf_enabled: false
+
+project_allclosed_issues:
+    route: '/:project_key/issues/allclosed/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 13
+      search: true
+    csrf_enabled: false
+
+project_wishlist_issues:
+    route: '/:project_key/issues/wishlist/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 10
+      search: true
+    csrf_enabled: false
+
+project_milestone_todo_list:
+    route: '/:project_key/issues/todo/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 6
+      search: true
+    csrf_enabled: false
+
+project_most_voted_issues:
+    route: '/:project_key/issues/mostvoted/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 7
+      search: true
+    csrf_enabled: false
+
+project_month_issues:
+    route: '/:project_key/issues/this/month/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 8
+      search: true
+    csrf_enabled: false
+
+project_last_issues:
+    route: '/:project_key/issues/last/:units/:time_unit/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 9
+      search: true
+    csrf_enabled: false
+
+project_my_teams_assigned_issues:
+    route: /:project_key/issues/my/assigned/teams
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 4
+      search: true
+    csrf_enabled: false
+
+project_my_assigned_issues:
+    route: '/:project_key/issues/my/assigned/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 3
+      search: true
+    csrf_enabled: false
+
+project_my_owned_issues:
+    route: '/:project_key/issues/my/owned/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 11
+      search: true
+    csrf_enabled: false
+
+project_my_reported_issues:
+    route: '/:project_key/issues/my/*'
+    module: search
+    action: findIssues
+    parameters:
+      predefined_search: 5
+      search: true
+    csrf_enabled: false
+
+project_search_paginated:
+    route: '/:project_key/issues/paginated/*'
+    module: search
+    action: findIssuesPaginated
+    parameters: [ ]
+    csrf_enabled: false
+
+project_search_add_filter:
+    route: '/:project_key/issues/add/filter/*'
+    module: search
+    action: addFilter
+    parameters: [ ]
+    csrf_enabled: false
+
+project_issues:
+    route: '/:project_key/issues/find/*'
+    module: search
+    action: findIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+project_quicksearch:
+    route: '/:project_key/quicksearch/*'
+    module: search
+    action: findIssues
+    parameters:
+      quicksearch: true
+      issues_per_page: 6
+    csrf_enabled: false
+
+project_opensearch:
+    route: /:project_key/opensearch.xml
+    module: search
+    action: opensearch
+    parameters:
+      format: xml
+    csrf_enabled: false

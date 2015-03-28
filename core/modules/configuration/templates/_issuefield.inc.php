@@ -19,7 +19,7 @@
         <?php echo image_tag('spinning_16.gif', array('id' => 'delete_' . $type . '_' . $item->getID() . '_indicator', 'style' => 'display: none; float: right; margin: 2px 5px 0 0;')); ?>
     </div>
     <div id="edit_item_option_<?php echo $item->getID(); ?>" style="display: none;">
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="TBG.Config.Issuefields.Options.update('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="TBG.Config.Issuefields.Options.update('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
             <table style="width: 100%;" cellpadding="0" cellspacing="0">
                 <tr>
                     <?php if ($type == 'status'): ?>
@@ -27,7 +27,7 @@
                             <input type="text" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" style="width: 45px;" value="<?php echo $item->getColor(); ?>">
                         </td>
                     <?php endif; ?>
-                    <?php if (!array_key_exists($type, TBGDatatype::getTypes())): ?>
+                    <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>
                         <td style="font-size: 14px; width: 70px;">
                             <input type="text" name="value" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_value_input" style="width: 45px;" value="<?php echo $item->getValue(); ?>">
                         </td>

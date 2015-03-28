@@ -2,9 +2,9 @@
 
     namespace thebuggenie\modules\publish;
 
-    use TBGContext, TBGRequest, TBGProject, TBGProjectsTable, TBGActionComponent,
+    use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\Article,
-        thebuggenie\modules\publish\entities\b2db\Articles;
+        thebuggenie\modules\publish\entities\tables\Articles;
 
     /**
      * actions for the publish module
@@ -12,7 +12,7 @@
      * @property Article $article
      *
      */
-    class Actions extends \TBGAction
+    class Actions extends framework\Action
     {
 
         protected function _getArticleNameDetails($original_article_name)
@@ -26,7 +26,7 @@
                 $namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
                 if ($namespace)
                 {
-                    $this->selected_project = TBGProject::getByKey($namespace);
+                    $this->selected_project = \thebuggenie\core\entities\Project::getByKey($namespace);
                     $article_name = mb_substr($article_name, mb_strpos($article_name, $namespace) + strlen($namespace) + 1);
                 }
                 $article_name = mb_strtolower(mb_substr($article_name, mb_strpos($article_name, ':')));
@@ -40,7 +40,7 @@
             if ($namespace != '')
             {
                 $key = mb_strtolower($namespace);
-                $this->selected_project = TBGProject::getByKey($key);
+                $this->selected_project = \thebuggenie\core\entities\Project::getByKey($key);
             }
 
             return ($namespace == 'Category' || $this->special) ? $article_name : $original_article_name;
@@ -49,9 +49,9 @@
         /**
          * Pre-execute function
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function preExecute(TBGRequest $request, $action)
+        public function preExecute(framework\Request $request, $action)
         {
             $this->article = null;
             $this->article_name = $request['article_name'];
@@ -68,14 +68,14 @@
                 {
                     if ($project_key = $request['project_key'])
                     {
-                        $this->selected_project = TBGProject::getByKey($project_key);
+                        $this->selected_project = \thebuggenie\core\entities\Project::getByKey($project_key);
                     }
                     elseif ($project_id = (int) $request['project_id'])
                     {
-                        $this->selected_project = TBGProjectsTable::getTable()->selectById($project_id);
+                        $this->selected_project = \thebuggenie\core\entities\tables\Projects::getTable()->selectById($project_id);
                     }
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
 
                 }
@@ -116,7 +116,7 @@
                 }
             }
 
-            if ($this->selected_project instanceof TBGProject)
+            if ($this->selected_project instanceof \thebuggenie\core\entities\Project)
             {
                 if (!$this->selected_project->hasAccess())
                 {
@@ -124,40 +124,40 @@
                 }
                 else
                 {
-                    TBGContext::setCurrentProject($this->selected_project);
+                    framework\Context::setCurrentProject($this->selected_project);
                 }
             }
         }
 
-        public function runSpecialArticle(TBGRequest $request)
+        public function runSpecialArticle(framework\Request $request)
         {
             $this->component = null;
-            if (TBGActionComponent::doesComponentExist("publish/special{$this->article_name}", false))
+            if (framework\ActionComponent::doesComponentExist("publish/special{$this->article_name}", false))
             {
                 $this->component = $this->article_name;
-                $this->projectnamespace = ($this->selected_project instanceof TBGProject) ? ucfirst($this->selected_project->getKey()) . ':' : '';
+                $this->projectnamespace = ($this->selected_project instanceof \thebuggenie\core\entities\Project) ? ucfirst($this->selected_project->getKey()) . ':' : '';
             }
         }
 
         /**
          * Show an article
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runShowArticle(TBGRequest $request)
+        public function runShowArticle(framework\Request $request)
         {
             if ($this->special)
                 $this->redirect('specialArticle');
 
-            $this->message = TBGContext::getMessageAndClear('publish_article_message');
-            $this->error = TBGContext::getMessageAndClear('publish_article_error');
-            $this->redirected_from = TBGContext::getMessageAndClear('publish_redirected_article');
+            $this->message = framework\Context::getMessageAndClear('publish_article_message');
+            $this->error = framework\Context::getMessageAndClear('publish_article_error');
+            $this->redirected_from = framework\Context::getMessageAndClear('publish_redirected_article');
 
             if ($this->article instanceof Article)
             {
                 if (!$this->article->hasAccess())
                 {
-                    $this->error = TBGContext::getI18n()->__("You don't have access to read this article");
+                    $this->error = framework\Context::getI18n()->__("You don't have access to read this article");
                     $this->article = null;
                 }
                 else
@@ -168,8 +168,8 @@
                     {
                         if ($redirect_article = $this->article->getRedirectArticleName())
                         {
-                            TBGContext::setMessage('publish_redirected_article', $this->article->getName());
-                            $this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $redirect_article)));
+                            framework\Context::setMessage('publish_redirected_article', $this->article->getName());
+                            $this->forward(framework\Context::getRouting()->generate('publish_article', array('article_name' => $redirect_article)));
                         }
                     }
                     try
@@ -180,20 +180,20 @@
                             $this->article->setRevision($this->revision);
                         }
                     }
-                    catch (Exception $e)
+                    catch (\Exception $e)
                     {
-                        $this->error = TBGContext::getI18n()->__('There was an error trying to show this revision');
+                        $this->error = framework\Context::getI18n()->__('There was an error trying to show this revision');
                     }
                 }
             }
         }
 
-        public function runArticleAttachments(TBGRequest $request)
+        public function runArticleAttachments(framework\Request $request)
         {
 
         }
 
-        public function runArticlePermissions(TBGRequest $request)
+        public function runArticlePermissions(framework\Request $request)
         {
             if ($this->article instanceof Article)
             {
@@ -205,7 +205,7 @@
             }
         }
 
-        public function runArticleHistory(TBGRequest $request)
+        public function runArticleHistory(framework\Request $request)
         {
             $this->history_action = $request['history_action'];
             if ($this->article instanceof Article)
@@ -223,7 +223,7 @@
 
                         if (!$from_revision || !$to_revision)
                         {
-                            $this->error = TBGContext::getI18n()->__('Please specify a from- and to-revision to compare');
+                            $this->error = framework\Context::getI18n()->__('Please specify a from- and to-revision to compare');
                         }
                         else
                         {
@@ -241,20 +241,20 @@
                         break;
                     case 'revert':
                         $article_name = $this->article->getName();
-                        if (!TBGContext::getModule('publish')->canUserEditArticle($article_name))
+                        if (!framework\Context::getModule('publish')->canUserEditArticle($article_name))
                         {
-                            TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
-                            $this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
+                            framework\Context::setMessage('publish_article_error', framework\Context::getI18n()->__('You do not have permission to edit this article'));
+                            $this->forward(framework\Context::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
                         }
                         $revision = $request['revision'];
                         if ($revision)
                         {
                             $this->article->restoreRevision($revision);
-                            $this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
+                            $this->forward(framework\Context::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
                         }
                         else
                         {
-                            $this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
+                            $this->forward(framework\Context::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
                         }
                 }
             }
@@ -263,9 +263,9 @@
         /**
          * Delete an article
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runDeleteArticle(TBGRequest $request)
+        public function runDeleteArticle(framework\Request $request)
         {
             try
             {
@@ -273,7 +273,7 @@
                 {
                     throw new \Exception($this->getI18n()->__('This article does not exist'));
                 }
-                if (!TBGContext::getModule('publish')->canUserDeleteArticle($this->article->getName()))
+                if (!framework\Context::getModule('publish')->canUserDeleteArticle($this->article->getName()))
                 {
                     throw new \Exception($this->getI18n()->__('You do not have permission to delete this article'));
                 }
@@ -286,7 +286,7 @@
                     Article::deleteByName($request['article_name']);
                 }
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('title' => $this->getI18n()->__('An error occured'), 'error' => $e->getMessage()));
@@ -297,11 +297,11 @@
         /**
          * Get avilable parent articles for an article
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runGetAvailableParents(TBGRequest $request)
+        public function runGetAvailableParents(framework\Request $request)
         {
-            $articles = Articles::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject(), $request['find_article']);
+            $articles = Articles::getTable()->getManualSidebarArticles(framework\Context::getCurrentProject(), $request['find_article']);
 
             $parent_articles = array();
             foreach ($articles as $article)
@@ -311,20 +311,20 @@
                 $parent_articles[$article->getName()] = $article->getManualName();
             }
 
-            return $this->renderJSON(array('list' => $this->getTemplateHTML('publish/getavailableparents', compact('parent_articles'))));
+            return $this->renderJSON(array('list' => $this->getComponentHTML('publish/getavailableparents', compact('parent_articles'))));
         }
 
         /**
          * Show an article
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runEditArticle(TBGRequest $request)
+        public function runEditArticle(framework\Request $request)
         {
             if (!$this->article->canEdit())
             {
-                TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
-                $this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article_name)));
+                framework\Context::setMessage('publish_article_error', framework\Context::getI18n()->__('You do not have permission to edit this article'));
+                $this->forward(framework\Context::getRouting()->generate('publish_article', array('article_name' => $this->article_name)));
             }
 
             $this->article_route = ($this->article->getID()) ? 'publish_article_edit' : 'publish_article_new';
@@ -349,59 +349,59 @@
                     $this->article->setContent($request->getRawParameter('article_content'));
 
                     if (!$this->article->getName() || trim($this->article->getName()) == '' || !preg_match('/[\w:]+/i', $this->article->getName()))
-                        throw new \Exception(TBGContext::getI18n()->__('You need to specify a valid article name'));
+                        throw new \Exception(framework\Context::getI18n()->__('You need to specify a valid article name'));
 
                     if ($request['article_type'] == Article::TYPE_MANUAL && (!$this->article->getManualName() || trim($this->article->getManualName()) == '' || !preg_match('/[\w:]+/i', $this->article->getManualName())))
-                        throw new \Exception(TBGContext::getI18n()->__('You need to specify a valid article name'));
+                        throw new \Exception(framework\Context::getI18n()->__('You need to specify a valid article name'));
 
-                    if (TBGContext::getModule('publish')->getSetting('require_change_reason') == 1 && (!$this->change_reason || trim($this->change_reason) == ''))
-                        throw new \Exception(TBGContext::getI18n()->__('You have to provide a reason for the changes'));
+                    if (framework\Context::getModule('publish')->getSetting('require_change_reason') == 1 && (!$this->change_reason || trim($this->change_reason) == ''))
+                        throw new \Exception(framework\Context::getI18n()->__('You have to provide a reason for the changes'));
 
                     if ($this->article->getLastUpdatedDate() != $request['last_modified'])
-                        throw new \Exception(TBGContext::getI18n()->__('The file has been modified since you last opened it'));
+                        throw new \Exception(framework\Context::getI18n()->__('The file has been modified since you last opened it'));
 
                     if (($article = Article::getByName($request['new_new_article_name'])) && $article instanceof Article && $article->getID() != $request['article_id'])
-                        throw new \Exception(TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name'));
+                        throw new \Exception(framework\Context::getI18n()->__('An article with that name already exists. Please choose a different article name'));
 
                     if (!$this->preview)
                     {
                         $this->article->doSave(array(), $request['change_reason']);
-                        TBGContext::setMessage('publish_article_message', TBGContext::getI18n()->__('The article was saved'));
-                        $this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
+                        framework\Context::setMessage('publish_article_message', framework\Context::getI18n()->__('The article was saved'));
+                        $this->forward(framework\Context::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
                     }
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     $this->error = $e->getMessage();
                 }
             }
         }
 
-        public function runFindArticles(TBGRequest $request)
+        public function runFindArticles(framework\Request $request)
         {
             $this->articlename = $request['articlename'];
 
             if ($this->articlename)
             {
-                list ($this->resultcount, $this->articles) = Article::findArticlesByContentAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
+                list ($this->resultcount, $this->articles) = Article::findArticlesByContentAndProject($this->articlename, framework\Context::getCurrentProject(), 10);
             }
         }
 
         /**
          * Toggle favourite article (starring)
          *
-         * @param TBGRequest $request
+         * @param \thebuggenie\core\framework\Request $request
          */
-        public function runToggleFavouriteArticle(TBGRequest $request)
+        public function runToggleFavouriteArticle(framework\Request $request)
         {
             if ($article_id = $request['article_id'])
             {
                 try
                 {
                     $article = Articles::getTable()->selectById($article_id);
-                    $user = TBGContext::factory()->TBGUser($request['user_id']);
+                    $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['user_id']);
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     return $this->renderText('fail');
                 }
@@ -420,11 +420,11 @@
                 $retval = $user->addStarredArticle($article_id);
                 if ($user->getID() != $this->getUser()->getID())
                 {
-                    TBGEvent::createNew('core', 'article_subscribe_user', $article, compact('user'))->trigger();
+                    framework\Event::createNew('core', 'article_subscribe_user', $article, compact('user'))->trigger();
                 }
             }
 
-            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('publish/articlesubscriber', array('user' => $user, 'article' => $article)))));
+            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('publish/articlesubscriber', array('user' => $user, 'article' => $article)))));
         }
 
     }

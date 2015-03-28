@@ -2,12 +2,15 @@
 
     namespace thebuggenie\core\modules\configuration;
 
-    class Components extends \TBGActionComponent
+    use thebuggenie\core\framework,
+        thebuggenie\core\entities;
+
+    class Components extends framework\ActionComponent
     {
 
         public function componentGeneral()
         {
-            $files = scandir(THEBUGGENIE_CORE_PATH . 'lib' . DS . 'easybook' . DS . 'geshi' . DS);
+            $files = scandir(THEBUGGENIE_PATH . 'vendor' . DS . 'easybook' . DS . 'geshi' . DS);
             $geshi_languages = array();
             foreach ($files as $file)
             {
@@ -21,21 +24,21 @@
 
         public function componentUser()
         {
-            $this->userstates = \TBGUserstate::getAll();
-            $this->onlinestate = \TBGSettings::getOnlineState();
-            $this->awaystate = \TBGSettings::getAwayState();
-            $this->offlinestate = \TBGSettings::getOfflineState();
+            $this->userstates = entities\Userstate::getAll();
+            $this->onlinestate = framework\Settings::getOnlineState();
+            $this->awaystate = framework\Settings::getAwayState();
+            $this->offlinestate = framework\Settings::getOfflineState();
         }
 
         public function componentAppearance()
         {
-            $this->themes = \TBGContext::getThemes();
-            $this->icons = \TBGContext::getIconSets();
+            $this->themes = framework\Context::getThemes();
+            $this->icons = framework\Context::getIconSets();
         }
 
         public function componentReglang()
         {
-            $this->languages = \TBGI18n::getLanguages();
+            $this->languages = framework\I18n::getLanguages();
             $this->timezones = tbg_get_timezones();
         }
 
@@ -46,13 +49,13 @@
 
         public function componentLeftmenu()
         {
-            $config_sections = \TBGSettings::getConfigSections(\TBGContext::getI18n());
+            $config_sections = framework\Settings::getConfigSections(framework\Context::getI18n());
             $breadcrumblinks = array();
             foreach ($config_sections as $key => $sections)
             {
                 foreach ($sections as $section)
                 {
-                    if ($key == \TBGSettings::CONFIGURATION_SECTION_MODULES)
+                    if ($key == framework\Settings::CONFIGURATION_SECTION_MODULES)
                     {
                         $url = (is_array($section['route'])) ? make_url($section['route'][0], $section['route'][1]) : make_url($section['route']);
                         $breadcrumblinks[] = array('url' => $url, 'title' => $section['description']);
@@ -66,15 +69,15 @@
             $this->breadcrumblinks = $breadcrumblinks;
 
             $this->config_sections = $config_sections;
-            if ($this->selected_section == \TBGSettings::CONFIGURATION_SECTION_MODULES)
+            if ($this->selected_section == framework\Settings::CONFIGURATION_SECTION_MODULES)
             {
-                if (\TBGContext::getRouting()->getCurrentRouteName() == 'configure_modules')
+                if (framework\Context::getRouting()->getCurrentRouteName() == 'configure_modules')
                 {
                     $this->selected_subsection = 'core';
                 }
                 else
                 {
-                    $this->selected_subsection = \TBGContext::getRequest()->getParameter('config_module');
+                    $this->selected_subsection = framework\Context::getRequest()->getParameter('config_module');
                 }
             }
         }
@@ -84,7 +87,7 @@
             $this->items = array();
             $this->showitems = true;
             $this->iscustom = false;
-            $types = \TBGDatatype::getTypes();
+            $types = entities\Datatype::getTypes();
 
             if (array_key_exists($this->type, $types))
             {
@@ -92,7 +95,7 @@
             }
             else
             {
-                $customtype = \TBGCustomDatatype::getByKey($this->type);
+                $customtype = entities\CustomDatatype::getByKey($this->type);
                 $this->showitems = $customtype->hasCustomOptions();
                 $this->iscustom = true;
                 if ($this->showitems)
@@ -115,16 +118,16 @@
 
         public function componentIssueTypeSchemeOptions()
         {
-            $this->issuetype = \TBGIssuetype::getB2DBTable()->selectById($this->id);
-            $this->scheme = \TBGContext::factory()->TBGIssuetypeScheme($this->scheme_id);
-            $this->builtinfields = \TBGDatatype::getAvailableFields(true);
-            $this->customtypes = \TBGCustomDatatype::getAll();
+            $this->issuetype = entities\Issuetype::getB2DBTable()->selectById($this->id);
+            $this->scheme = entities\IssuetypeScheme::getB2DBTable()->selectById($this->scheme_id);
+            $this->builtinfields = entities\Datatype::getAvailableFields(true);
+            $this->customtypes = entities\CustomDatatype::getAll();
             $this->visiblefields = $this->scheme->getVisibleFieldsForIssuetype($this->issuetype);
         }
 
         public function componentIssueType()
         {
-            $this->icons = \TBGIssuetype::getIcons();
+            $this->icons = entities\Issuetype::getIcons();
         }
 
         public function componentIssuetypescheme()
@@ -156,7 +159,7 @@
         {
             if ($permissions === null)
             {
-                $permissions = \TBGContext::getAvailablePermissions();
+                $permissions = framework\Context::getAvailablePermissions();
             }
             foreach ($permissions as $pkey => $permission)
             {
@@ -191,24 +194,24 @@
         public function componentWorkflowtransitionaction()
         {
             $available_assignees_users = array();
-            foreach (\TBGContext::getUser()->getTeams() as $team)
+            foreach (framework\Context::getUser()->getTeams() as $team)
             {
                 foreach ($team->getMembers() as $user)
                 {
                     $available_assignees_users[$user->getID()] = $user;
                 }
             }
-            foreach (\TBGContext::getUser()->getFriends() as $user)
+            foreach (framework\Context::getUser()->getFriends() as $user)
             {
                 $available_assignees_users[$user->getID()] = $user;
             }
-            $this->available_assignees_teams = \TBGTeam::getAll();
+            $this->available_assignees_teams = entities\Team::getAll();
             $this->available_assignees_users = $available_assignees_users;
         }
 
         public function componentUserscopes()
         {
-            $this->scopes = \TBGScope::getAll();
+            $this->scopes = entities\Scope::getAll();
         }
 
         public function componentSiteicons()

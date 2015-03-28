@@ -1,0 +1,698 @@
+home:
+    route: /
+    module: main
+    action: index
+    parameters: [ ]
+    csrf_enabled: false
+
+save_menu_order:
+    route: /menu/:target_type/:target_id
+    module: main
+    action: saveMenuOrder
+    parameters: [ ]
+    csrf_enabled: false
+
+attach_link:
+    route: /attach/link/to/:target_type/:target_id
+    module: main
+    action: attachLink
+    parameters: [ ]
+    csrf_enabled: false
+
+remove_link:
+    route: /upload/remove/link/:link_id/from/other/:target_type/:target_id
+    module: main
+    action: removeLink
+    parameters: [ ]
+    csrf_enabled: false
+
+client_dashboard:
+    route: /clients/:client_id
+    module: main
+    action: clientdashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+client_dashboard_specific:
+    route: /clients/:client_id/:dashboard_id
+    module: main
+    action: clientdashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+team_dashboard:
+    route: /teams/:team_id
+    module: main
+    action: teamdashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+team_dashboard_specific:
+    route: /teams/:team_id/:dashboard_id
+    module: main
+    action: teamdashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+dashboard:
+    route: /dashboard
+    module: main
+    action: dashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+dashboard_specific:
+    route: /dashboard/:dashboard_id
+    module: main
+    action: dashboard
+    parameters: [ ]
+    csrf_enabled: false
+
+dashboard_sort:
+    route: '/dashboard/sort/:dashboard_id/*'
+    module: main
+    action: dashboardSort
+    parameters: [ ]
+    csrf_enabled: false
+
+dashboard_view:
+    route: /dashboard/views/:view_id
+    module: main
+    action: dashboardView
+    parameters: [ ]
+    csrf_enabled: false
+
+get_javascript:
+    route: /js/:js_file
+    module: main
+    action: index
+    parameters: [ ]
+    csrf_enabled: false
+
+switch_to_user:
+    route: /switch/to/user/:user_id
+    module: main
+    action: switchUser
+    parameters: [ ]
+    csrf_enabled: false
+
+disable_tutorial:
+    route: /disable/tutorial
+    module: main
+    action: disableTutorial
+    parameters: [ ]
+    csrf_enabled: false
+
+add_scope:
+    route: /add/scope
+    module: main
+    action: addScope
+    parameters: [ ]
+    csrf_enabled: false
+
+switch_back_user:
+    route: /switch/back
+    module: main
+    action: switchUser
+    parameters: [ ]
+    csrf_enabled: false
+
+login:
+    route: /do/login
+    module: main
+    action: doLogin
+    parameters: [ ]
+    csrf_enabled: false
+
+login_page:
+    route: /login
+    module: main
+    action: login
+    parameters: [ ]
+    csrf_enabled: false
+
+elevated_login:
+    route: /do/relogin
+    module: main
+    action: doElevatedLogin
+    parameters: [ ]
+    csrf_enabled: false
+
+elevated_login_page:
+    route: /relogin
+    module: main
+    action: elevatedLogin
+    parameters: [ ]
+    csrf_enabled: false
+
+login_section:
+    route: '/login/section/:section/*'
+    module: main
+    action: login
+    parameters: [ ]
+    csrf_enabled: false
+
+register:
+    route: /do/register
+    module: main
+    action: register
+    parameters: [ ]
+    csrf_enabled: false
+
+register_check_username:
+    route: /check/username
+    module: main
+    action: registerCheckUsernameAvailability
+    parameters: [ ]
+    csrf_enabled: false
+
+activate:
+    route: /activate/:user/:key
+    module: main
+    action: activate
+    parameters: [ ]
+    csrf_enabled: false
+
+reset_password:
+    route: /reset/password/:user/:reset_hash
+    module: main
+    action: reset
+    parameters: [ ]
+    csrf_enabled: false
+
+set_state:
+    route: /set/state/:state_id
+    module: main
+    action: setState
+    parameters: [ ]
+    csrf_enabled: false
+
+logout:
+    route: /logout
+    module: main
+    action: logout
+    parameters: [ ]
+    csrf_enabled: false
+
+userdata:
+    route: /userdata
+    module: main
+    action: userdata
+    parameters: [ ]
+    csrf_enabled: false
+
+hide_infobox:
+    route: /hide/infobox/:key
+    module: main
+    action: hideInfobox
+    parameters: [ ]
+    csrf_enabled: false
+
+set_toggle_state:
+    route: /toggle/:key/:state
+    module: main
+    action: setToggle
+    parameters: [ ]
+    csrf_enabled: false
+
+getreportissuefields:
+    route: /reportissue/get/fields/for/project/:project_key
+    module: main
+    action: reportIssueGetFields
+    parameters: [ ]
+    csrf_enabled: false
+
+get_temp_identifiable:
+    route: /get/temp/identifiable
+    module: main
+    action: getTempIdentifiable
+    parameters: [ ]
+    csrf_enabled: false
+
+about:
+    route: /about
+    module: main
+    action: about
+    parameters: [ ]
+    csrf_enabled: false
+
+get_partial_for_backdrop:
+    route: '/get/partials/:key/*'
+    module: main
+    action: getBackdropPartial
+    parameters: [ ]
+    csrf_enabled: false
+
+update_attachments:
+    route: /attachments/for/:target/:target_id
+    module: main
+    action: updateAttachments
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_upload:
+    route: /upload/to/issue/:issue_id
+    module: main
+    action: upload
+    parameters:
+      mode: issue
+    csrf_enabled: false
+
+article_upload:
+    route: /upload/to/article/:article_name
+    module: main
+    action: upload
+    parameters:
+      mode: article
+    csrf_enabled: false
+
+showfile:
+    route: /files/show/:id
+    module: main
+    action: getFile
+    parameters:
+      mode: show
+    csrf_enabled: false
+
+downloadfile:
+    route: /files/download/:id
+    module: main
+    action: getFile
+    parameters:
+      mode: download
+    csrf_enabled: false
+
+issue_upload_status:
+    route: /upload/get/status/for/issue/:issue_id
+    module: main
+    action: getUploadStatus
+    parameters:
+      mode: issue
+    csrf_enabled: false
+
+article_upload_status:
+    route: /upload/get/status/for/article/:article_name
+    module: main
+    action: getUploadStatus
+    parameters:
+      mode: article
+    csrf_enabled: false
+
+issue_detach_file:
+    route: /upload/detach/file/:file_id/from/issue/:issue_id
+    module: main
+    action: detachFile
+    parameters:
+      mode: issue
+    csrf_enabled: false
+
+article_detach_file:
+    route: /upload/detach/file/:file_id/from/article/:article_name
+    module: main
+    action: detachFile
+    parameters:
+      mode: article
+    csrf_enabled: false
+
+issue_attach_link:
+    route: '/update/attach/link/to/issue/:issue_id/*'
+    module: main
+    action: attachLinkToIssue
+    parameters: [ ]
+    csrf_enabled: true
+
+issue_vote:
+    route: /vote/for/issue/:issue_id/:vote
+    module: main
+    action: voteForIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_remove_link:
+    route: /upload/remove/link/:link_id/from/issue/:issue_id
+    module: main
+    action: removeLinkFromIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+upload_status:
+    route: /upload/get/status/for/:mode
+    module: main
+    action: getUploadStatus
+    parameters: [ ]
+    csrf_enabled: false
+
+upload:
+    route: /upload/:mode
+    module: main
+    action: upload
+    parameters: [ ]
+    csrf_enabled: false
+
+upload_file:
+    route: /uploadfile
+    module: main
+    action: uploadFile
+    parameters: [ ]
+    csrf_enabled: false
+
+account_add_application_password:
+    route: '/account/add/password/*'
+    module: main
+    action: accountAddPassword
+    parameters: [ ]
+    csrf_enabled: true
+
+account_remove_application_password:
+    route: /account/remove/password/:id/:csrf_token
+    module: main
+    action: accountRemovePassword
+    parameters: [ ]
+    csrf_enabled: true
+
+account_regenerate_rss_key:
+    route: /account/regenerate/rsskey/:csrf_token
+    module: main
+    action: accountRegenerateRssKey
+    parameters: [ ]
+    csrf_enabled: true
+
+account_change_password:
+    route: '/account/change/password/*'
+    module: main
+    action: accountChangePassword
+    parameters: [ ]
+    csrf_enabled: true
+
+account_check_username:
+    route: /account/check/username
+    module: main
+    action: accountCheckUsername
+    parameters: [ ]
+    csrf_enabled: true
+
+account_pick_username:
+    route: /account/pick/username/:selected_username
+    module: main
+    action: accountPickUsername
+    parameters: [ ]
+    csrf_enabled: true
+
+account_remove_openid:
+    route: /account/remove/openid/:openid/:csrf_token
+    module: main
+    action: removeOpenIDIdentity
+    parameters: [ ]
+    csrf_enabled: true
+
+account_confirm_scope:
+    route: /account/confirm/scope/:scope_id/:csrf_token
+    module: main
+    action: confirmScope
+    parameters: [ ]
+    csrf_enabled: true
+
+account_remove_scope:
+    route: /account/remove/scope/:scope_id/:csrf_token
+    module: main
+    action: removeScope
+    parameters: [ ]
+    csrf_enabled: true
+
+account_save_information:
+    route: '/account/save/information/*'
+    module: main
+    action: myAccount
+    parameters:
+      mode: information
+    csrf_enabled: true
+
+account_save_settings:
+    route: '/account/save/settings/*'
+    module: main
+    action: myAccount
+    parameters:
+      mode: settings
+    csrf_enabled: true
+
+account_save_module_settings:
+    route: '/account/save/module/:target_module/settings/*'
+    module: main
+    action: myAccount
+    parameters:
+      mode: module
+    csrf_enabled: true
+
+account:
+    route: '/account/*'
+    module: main
+    action: myAccount
+    parameters: [ ]
+    csrf_enabled: false
+
+toggle_friend:
+    route: /friends/:mode/:user_id
+    module: main
+    action: toggleFriend
+    parameters: [ ]
+    csrf_enabled: false
+
+comment_delete:
+    route: /comment/delete/:comment_id
+    module: main
+    action: deleteComment
+    parameters: [ ]
+    csrf_enabled: false
+
+comment_update:
+    route: /comment/update/:comment_id
+    module: main
+    action: updateComment
+    parameters: [ ]
+    csrf_enabled: false
+
+comment_add:
+    route: /comment/add/for/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id
+    module: main
+    action: addComment
+    parameters: [ ]
+    csrf_enabled: false
+
+confirm_affected:
+    route: /issue/:issue_id/confirm/:affected_type/:affected_id
+    module: main
+    action: toggleaffectedconfirmed
+    parameters: [ ]
+    csrf_enabled: false
+
+remove_affected:
+    route: /issue/:issue_id/remove/:affected_type/:affected_id
+    module: main
+    action: removeaffected
+    parameters: [ ]
+    csrf_enabled: false
+
+status_affected:
+    route: /issue/:issue_id/set/:affected_type/:affected_id/status/:status_id
+    module: main
+    action: statusaffected
+    parameters: [ ]
+    csrf_enabled: false
+
+add_affected:
+    route: /project/:project_key/issue/:issue_id/add/affected
+    module: main
+    action: addaffected
+    parameters: [ ]
+    csrf_enabled: false
+
+move_issue:
+    route: /issue/:issue_id/move
+    module: main
+    action: moveIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+captcha:
+    route: '/captcha/*'
+    module: main
+    action: captcha
+    parameters: [ ]
+    csrf_enabled: false
+
+viewissue_find_issue:
+    route: /:project_key/findissues/:issue_id/:type
+    module: main
+    action: findIssue
+    parameters:
+      format: json
+    csrf_enabled: false
+
+viewissue_relate_issues:
+    route: /:project_key/issues/:issue_id/relate
+    module: main
+    action: relateIssues
+    parameters:
+      format: json
+    csrf_enabled: false
+
+viewissue_remove_related_issue:
+    route: /:project_key/issues/:issue_id/remove/related/issue/:related_issue_id
+    module: main
+    action: removeRelatedIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+viewissue_related_issues:
+    route: /:project_key/issues/:issue_id/related
+    module: main
+    action: relatedIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+deleteissue:
+    route: /:project_key/issues/:issue_id/delete
+    module: main
+    action: deleteIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+lock_issue:
+    route: /lock/issue/:issue_id
+    module: main
+    action: lockIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+unlock_issue:
+    route: /unlock/issue/:issue_id
+    module: main
+    action: unlockIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+block:
+    route: /:project_key/issues/:issue_id/block
+    module: main
+    action: markAsBlocker
+    parameters: [ ]
+    csrf_enabled: false
+
+unblock:
+    route: /:project_key/issues/:issue_id/unblock
+    module: main
+    action: markAsNotBlocker
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_gettempfieldvalue:
+    route: '/get/temp/value/for/:field/*'
+    module: main
+    action: issueGetTempFieldValue
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_setfield:
+    route: '/:project_key/issues/:issue_id/set/:field/*'
+    module: main
+    action: issueSetField
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_edittimespent:
+    route: /:project_key/issues/:issue_id/timespent/:entry_id
+    module: main
+    action: issueEditTimeSpent
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_deletetimespent:
+    route: /:project_key/issues/:issue_id/timespent/:entry_id/remove
+    module: main
+    action: issueDeleteTimeSpent
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_revertfield:
+    route: /:project_key/issues/:issue_id/revert/:field
+    module: main
+    action: issueRevertField
+    parameters: [ ]
+    csrf_enabled: false
+
+getacl_formentry:
+    route: /get/acl/formentry/for/:identifiable_type/:identifiable_value
+    module: main
+    action: getACLFormEntry
+    parameters: [ ]
+    csrf_enabled: false
+
+main_find_identifiable:
+    route: '/find/identifiable/by/*'
+    module: main
+    action: findIdentifiable
+    parameters: [ ]
+    csrf_enabled: false
+
+toggle_favourite_issue:
+    route: /toggle_favourite_issue/:issue_id/:user_id
+    module: main
+    action: toggleFavouriteIssue
+    parameters:
+      format: json
+    csrf_enabled: false
+
+project_reportissue:
+    route: '/:project_key/issues/new/*'
+    module: main
+    action: reportIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+nextopenissue:
+    route: /:project_key/issues/:issue_no/next/open
+    module: main
+    action: navigateIssue
+    parameters:
+      direction: next
+      mode: open
+    csrf_enabled: false
+
+nextissue:
+    route: /:project_key/issues/:issue_no/next
+    module: main
+    action: navigateIssue
+    parameters:
+      direction: next
+    csrf_enabled: false
+
+previousopenissue:
+    route: /:project_key/issues/:issue_no/previous/open
+    module: main
+    action: navigateIssue
+    parameters:
+      direction: previous
+      mode: open
+    csrf_enabled: false
+
+previousissue:
+    route: /:project_key/issues/:issue_no/previous
+    module: main
+    action: navigateIssue
+    parameters:
+      direction: previous
+    csrf_enabled: false
+
+issue_log:
+    route: /:project_key/issuelog/:issue_id
+    module: main
+    action: issueLog
+    parameters: [ ]
+    csrf_enabled: false
+
+issue_moreactions:
+    route: /:project_key/actions/:issue_id/*
+    module: main
+    action: issueMoreactions
+    parameters: [ ]
+    csrf_enabled: false

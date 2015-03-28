@@ -50,7 +50,7 @@
         <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
         <div class="interactive_values_container">
             <ul class="interactive_menu_values">
-                <?php include_template('search/interactivefilterdynamicchoicelist', array('filter' => $filter, 'items' => $filter->getAvailableValues())); ?>
+                <?php include_component('search/interactivefilterdynamicchoicelist', array('filter' => $filter, 'items' => $filter->getAvailableValues())); ?>
             </ul>
         </div>
     </div>

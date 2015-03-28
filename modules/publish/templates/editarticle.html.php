@@ -1,8 +1,7 @@
 <?php
 
-    use thebuggenie\modules\publish\entities\Article as TBGWikiArticle;
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
-    TBGContext::loadLibrary('publish/publish');
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('Editing %article_name', array('%article_name' => $article_name)));
 
 ?>
@@ -11,7 +10,7 @@
         <td class="side_bar">
             <?php include_component('leftmenu', array('article' => $article)); ?>
         </td>
-        <td class="main_area article edit at-<?php echo ($article->getArticleType() == TBGWikiArticle::TYPE_WIKI) ? 'wiki' : 'manual'; ?>" id="article-editor-main-container">
+        <td class="main_area article edit at-<?php echo ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_WIKI) ? 'wiki' : 'manual'; ?>" id="article-editor-main-container">
             <a name="top"></a>
             <?php if (isset($error)): ?>
                 <div class="redbox" style="margin: 0 5px 5px 5px; font-size: 14px;">
@@ -19,8 +18,8 @@
                 </div>
             <?php endif; ?>
             <a name="edit_article"></a>
-            <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url($article_route, $article_route_params); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');var isvisible = $('change_reason_container').visible() || $('article_preview').value == 1;$('change_reason_container').show();$('change_reason').focus();return isvisible;">
-                <?php include_template('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url($article_route, $article_route_params); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');var isvisible = $('change_reason_container').visible() || $('article_preview').value == 1;$('change_reason_container').show();$('change_reason').focus();return isvisible;">
+                <?php include_component('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
                 <?php if (isset($preview) && $preview): ?>
                     <div class="rounded_box yellow borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
                         <?php echo __('This is a preview of the article'); ?><br>
@@ -29,24 +28,24 @@
                     <?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
                 <?php endif; ?>
                 <input type="hidden" name="preview" value="0" id="article_preview">
-                <input type="hidden" name="article_id" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getID() : 0; ?>">
-                <input type="hidden" name="last_modified" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getPostedDate() : 0; ?>">
+                <input type="hidden" name="article_id" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? $article->getID() : 0; ?>">
+                <input type="hidden" name="last_modified" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? $article->getPostedDate() : 0; ?>">
                 <div class="editor_header">
                     <table style="border: 0;" class="padded_table" cellpadding=0 cellspacing=0>
                         <tr>
                             <td><label for="article-type-selector" id="article-type-label"><?php echo __('Article type'); ?></label></td>
                             <td style="position: relative;">
-                                <span id="article-type-name" class="fancydropdown <?php if (!$article->getParentArticle() instanceof TBGWikiArticle) echo ' changeable'; ?>"><?php echo ($article->getArticleType() == TBGWikiArticle::TYPE_WIKI) ? __('Classic wiki page') : __('Page in a handbook'); ?></span>
-                                <?php if (!$article->getParentArticle() instanceof TBGWikiArticle): ?>
+                                <span id="article-type-name" class="fancydropdown <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article) echo ' changeable'; ?>"><?php echo ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_WIKI) ? __('Classic wiki page') : __('Page in a handbook'); ?></span>
+                                <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article): ?>
                                     <ul class="article-type-selector" id="article-type-selector">
-                                        <li data-article-type="<?php echo TBGWikiArticle::TYPE_WIKI; ?>" data-class-name="at-wiki" class="article-type <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_WIKI) echo 'selected'; ?>">
+                                        <li data-article-type="<?php echo \thebuggenie\modules\publish\entities\Article::TYPE_WIKI; ?>" data-class-name="at-wiki" class="article-type <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_WIKI) echo 'selected'; ?>">
                                             <h1><?php echo __('Classic wiki page'); ?></h1>
                                             <?php echo image_tag('icon-article-type-wiki.png'); ?>
                                             <p>
                                                 <?php echo __('Choose this article type for pages that are organised like a traditional wiki. These pages will have be loosely coupled by links, and have a classic wiki sidebar.'); ?>
                                             </p>
                                         </li>
-                                        <li data-article-type="<?php echo TBGWikiArticle::TYPE_MANUAL; ?>" data-class-name="at-manual" class="article-type <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_MANUAL) echo 'selected'; ?>">
+                                        <li data-article-type="<?php echo \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL; ?>" data-class-name="at-manual" class="article-type <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL) echo 'selected'; ?>">
                                             <h1><?php echo __('Page in a handbook'); ?></h1>
                                             <?php echo image_tag('icon-article-type-manual.png'); ?>
                                             <p>
@@ -58,7 +57,7 @@
                                 <input id="article-type-input" type="hidden" name="article_type" value="<?php echo $article->getArticleType(); ?>">
                             </td>
                         </tr>
-                        <tbody id="article_parent_container" style="<?php if ($article->getArticleType() != TBGWikiArticle::TYPE_MANUAL) echo 'display: none;'; ?>">
+                        <tbody id="article_parent_container" style="<?php if ($article->getArticleType() != \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL) echo 'display: none;'; ?>">
                             <?php /*<tr>
                                 <td style="padding: 5px;"><label for="manual_name"><?php echo __('Manual entry name'); ?></label></td>
                                 <td>
@@ -70,14 +69,14 @@
                 </div>
                 <br style="clear: both;">
                 <div class="editor_container">
-                    <?php include_template('main/textarea', array('area_name' => 'article_content', 'target_type' => 'article', 'target_id' => $article->getID(), 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
+                    <?php include_component('main/textarea', array('area_name' => 'article_content', 'target_type' => 'article', 'target_id' => $article->getID(), 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
                 </div>
                 <div id="change_reason_container" class="fullpage_backdrop" style="display: none;">
                     <div class="backdrop_box large">
                         <div class="backdrop_detail_header"><?php echo __('Saving article'); ?></div>
                         <div class="backdrop_detail_content">
                             <label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?>
-                                <?php if (TBGContext::getModule('publish')->getSetting('require_change_reason') == 0) : ?>
+                                <?php if (\thebuggenie\core\framework\Context::getModule('publish')->getSetting('require_change_reason') == 0) : ?>
                                     &nbsp;&nbsp;<span class="faded_out" style="font-weight: normal; font-size: 0.9em;"><?php echo __('Optional'); ?></span>
                                 <?php endif; ?>
                             </label><br>
@@ -87,17 +86,17 @@
                             <div class="faded_out dark" style="padding: 5px 5px 15px 5px; font-size: 13px;"><?php echo __('Enter a short reason summarizing your changes (max. 255 characters)'); ?></div>
                             <div class="change_reason_actions">
                                 <a href="javascript:void(0);" onclick="$('change_reason_container').hide();"><?php echo __('Cancel'); ?></a>
-                                <input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Save changes') : __('Create article'); ?>">
+                                <input class="button button-green" type="submit" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Save changes') : __('Create article'); ?>">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="publish_article_actions">
                     <?php if ($article->getID()): ?>
-                        <?php echo link_tag((($article instanceof TBGWikiArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel')); ?>
+                        <?php echo link_tag((($article instanceof \thebuggenie\modules\publish\entities\Article) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel')); ?>
                     <?php endif; ?>
-                    <input class="button button-silver" type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Preview changes') : __('Preview article'); ?>">
-                    <input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Save changes') : __('Create article'); ?>">
+                    <input class="button button-silver" type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Preview changes') : __('Preview article'); ?>">
+                    <input class="button button-green" type="submit" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Save changes') : __('Create article'); ?>">
                 </div>
             </form>
             <form id="parent_selector_container" class="fullpage_backdrop" style="display: none;" onsubmit="TBG.Main.loadParentArticles(this);return false;" action="<?php echo make_url('publish_article_parents', array('article_name' => $article->getName())); ?>">

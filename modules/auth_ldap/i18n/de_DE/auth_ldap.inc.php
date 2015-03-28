@@ -1,7 +1,7 @@
 <?php
   
 // ----------------------------------------------------------------------------
-// modules/auth_ldap/classes/TBGLDAPAuthentication.class.php
+// modules/auth_ldap/classes/\thebuggenie\core\entities\LDAPAuthentication.class.php
   $strings['LDAP Authentication'] = 'LDAP Authentifizierung';
   $strings['Allows authentication against a LDAP or Active Directory server'] = 'Erlaubt Authentifizierung per LDAP oder Active Directory Server';
   $strings['Configure server connection settings'] = 'Serververbindungseinstellungen konfigurieren';

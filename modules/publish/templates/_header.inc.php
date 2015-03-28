@@ -1,5 +1,4 @@
 <?php
-    use thebuggenie\modules\publish\entities\Article as TBGWikiArticle;
     $article_name = $article->getName();
 ?>
 <div class="header <?php echo $mode; ?>">
@@ -26,7 +25,7 @@
                 <?php if ($article->getID() && $mode != 'view'): ?>
                     <?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show'), array('class' => 'button button-silver')); ?>
                 <?php endif; ?>
-                <?php if ((isset($article) && $article->canEdit()) || (!isset($article) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name))))): ?>
+                <?php if ((isset($article) && $article->canEdit()) || (!isset($article) && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || (!\thebuggenie\core\framework\Context::isProjectContext() && \thebuggenie\core\framework\Context::getModule('publish')->canUserEditArticle($article_name))))): ?>
                     <?php if ($mode == 'edit'): ?>
                         <?php echo javascript_link_tag(($article->getID()) ? __('Edit') : __('Create new article'), array('class' => 'button button-silver button-pressed')); ?>
                     <?php else: ?>
@@ -43,15 +42,15 @@
                         <?php endif; ?>
                         <?php if ($article->getID()): ?>
                             <li<?php if ($mode == 'history'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article_name)), __('History')); ?></li>
-                            <?php if (in_array($mode, array('show', 'edit')) && TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
+                            <?php if (in_array($mode, array('show', 'edit')) && \thebuggenie\core\framework\Settings::isUploadsEnabled() && $article->canEdit()): ?>
                                 <li><a href="javascript:void(0);" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'article', 'article_name' => $article->getName())); ?>');"><?php echo __('Attach a file'); ?></a></li>
                             <?php endif; ?>
                             <?php if (isset($article) && $article->canEdit()): ?>
                                 <li<?php if ($mode == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article_name)), __('Permissions')); ?></li>
                                 <li class="separator"></li>
                                 <li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => $article_name)), __('Create new article here')); ?></li>
-                                <?php if (TBGContext::isProjectContext()): ?>
-                                    <li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => TBGContext::getCurrentProject()->getKey().':')), __('Create new article')); ?></li>
+                                <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                                    <li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey().':')), __('Create new article')); ?></li>
                                 <?php else: ?>
                                     <li><?php echo link_tag(make_url('publish_article_new'), __('Create new article')); ?></li>
                                 <?php endif; ?>
@@ -69,10 +68,10 @@
     <?php if ($mode == 'edit'): ?>
         <div id="article_edit_header_information">
             <div id="article_parent_container">
-                <input type="hidden" name="parent_article_name" id="parent_article_name" value="<?php echo ($article->getParentArticleName()) ? $article->getParentArticleName() : htmlentities($tbg_request['parent_article_name'], ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" style="width: 400px;">
-                <span class="parent_article_name <?php if (!$article->getParentArticle() instanceof TBGWikiArticle) echo ' faded_out'; ?>">
+                <input type="hidden" name="parent_article_name" id="parent_article_name" value="<?php echo ($article->getParentArticleName()) ? $article->getParentArticleName() : htmlentities($tbg_request['parent_article_name'], ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" style="width: 400px;">
+                <span class="parent_article_name <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article) echo ' faded_out'; ?>">
                     <span id="parent_article_name_span">
-                        <?php if ($article->getParentArticle() instanceof TBGWikiArticle): ?>
+                        <?php if ($article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article): ?>
                             <?php echo ($article->getParentArticle()->getManualName()) ? $article->getParentArticle()->getManualName() : $article->getParentArticle()->getName(); ?>
                         <?php else: ?>
                             <?php echo __('No parent article'); ?>
@@ -84,13 +83,13 @@
             <input type="text" name="manual_name" id="manual_name" value="<?php echo $article->getManualName(); ?>">
         </div>
     <?php else: ?>
-        <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_MANUAL): ?>
+        <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL): ?>
             <?php echo $article->getManualName(); ?>
         <?php else: ?>
-            <?php if (TBGContext::isProjectContext()): ?>
-                <?php if ((mb_strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article instanceof TBGWikiArticle && $article->isCategory() && mb_strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
-                    <?php $project_article_name = mb_substr($article_name, (($article instanceof TBGWikiArticle && $article->isCategory()) * 9) + mb_strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-                    <?php if ($article->getID() && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                <?php if ((mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getKey())) == 0) || ($article instanceof \thebuggenie\modules\publish\entities\Article && $article->isCategory() && mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getKey())) == 9)): ?>
+                    <?php $project_article_name = mb_substr($article_name, (($article instanceof \thebuggenie\modules\publish\entities\Article && $article->isCategory()) * 9) + mb_strlen(\thebuggenie\core\framework\Context::getCurrentProject()->getKey())+1); ?>
+                    <?php if ($article->getID() && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
                 <?php endif; ?>
             <?php elseif (mb_substr($article_name, 0, 9) == 'Category:'): ?>
                 <span class="faded_out blue">Category:</span><?php echo get_spaced_name(mb_substr($article_name, 9)); ?>

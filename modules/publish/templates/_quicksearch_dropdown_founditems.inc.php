@@ -10,7 +10,7 @@
     <?php if (true || $resultcount - $cc > 0): ?>
         <li class="find_more_issues last">
             <span class="informal"><?php echo __('See %num more articles ...', array('%num' => $resultcount - $cc)); ?></span>
-            <div class="hidden url"><?php echo (TBGContext::isProjectContext()) ? make_url('publish_find_project_articles', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('publish_find_articles'); ?>?articlename=<?php echo $searchterm; ?></div>
+            <div class="hidden url"><?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('publish_find_project_articles', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('publish_find_articles'); ?>?articlename=<?php echo $searchterm; ?></div>
         </li>
     <?php endif; ?>
 <?php else: ?>

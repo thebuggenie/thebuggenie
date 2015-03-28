@@ -2,15 +2,14 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
-    use b2db\Core,
-        b2db\Table;
+    use b2db\Table;
 
     /**
      * Users table
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage tables
      */
@@ -23,7 +22,7 @@
      *
      * @Table(name="users_32")
      */
-    class TBGUsersTable extends \TBGB2DBTable
+    class TBGUsersTable extends Table
     {
 
         const B2DBNAME = 'users';
@@ -57,7 +56,6 @@
             parent::_addVarchar(self::PASSWORD, 100);
             parent::_addVarchar(self::BUDDYNAME, 50);
             parent::_addVarchar(self::REALNAME, 100);
-            parent::_addVarchar(self::SALT, 100);
             parent::_addVarchar(self::EMAIL, 200);
             parent::_addInteger(self::USERSTATE, 10);
             parent::_addBoolean(self::CUSTOMSTATE);

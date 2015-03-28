@@ -2,7 +2,9 @@
 
     namespace thebuggenie\core\modules\installation;
 
-    class Actions extends \TBGAction
+    use thebuggenie\core\framework;
+
+    class Actions extends framework\Action
     {
 
         /**
@@ -10,28 +12,28 @@
          */
         protected $_sampleproperty;
 
-        public function preExecute(\TBGRequest $request, $action)
+        public function preExecute(framework\Request $request, $action)
         {
-            $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
+            $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
         }
 
         /**
          * Runs the installation action
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallIntro(\TBGRequest $request)
+        public function runInstallIntro(framework\Request $request)
         {
-            $this->getResponse()->setDecoration(\TBGResponse::DECORATE_NONE);
+            $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
 
             if (($step = $request['step']) && $step >= 1 && $step <= 6)
             {
                 if ($step >= 5)
                 {
-                    $scope = new \TBGScope(1);
-                    \TBGContext::setScope($scope);
+                    $scope = new \thebuggenie\core\entities\Scope(1);
+                    framework\Context::setScope($scope);
                 }
                 return $this->redirect('installStep' . $step);
             }
@@ -40,11 +42,11 @@
         /**
          * Runs the action for the first step of the installation
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep1(\TBGRequest $request)
+        public function runInstallStep1(framework\Request $request)
         {
             $this->all_well = true;
             $this->base_folder_perm_ok = true;
@@ -78,9 +80,10 @@
                 $this->b2db_param_file_ok = false;
                 $this->all_well = false;
             }
-            if (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
+            elseif (!file_exists(THEBUGGENIE_CONFIGURATION_PATH . 'b2db.yml') && !is_writable(THEBUGGENIE_CONFIGURATION_PATH))
             {
                 $this->b2db_param_folder_ok = false;
+                $this->b2db_param_file_ok = false;
                 $this->all_well = false;
             }
             if (!is_writable(THEBUGGENIE_PATH))
@@ -95,16 +98,6 @@
                 $this->all_well = false;
             }
 
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') && is_writable(THEBUGGENIE_CORE_PATH))
-                mkdir(THEBUGGENIE_CORE_PATH . 'cache');
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') && is_writable(THEBUGGENIE_CORE_PATH . 'cache'))
-                mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
-
-            if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') || !file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS))
-            {
-                $this->cache_folder_perm_ok = false;
-                $this->all_well = false;
-            }
             if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS))
             {
                 $this->thebuggenie_folder_perm_ok = false;
@@ -154,11 +147,11 @@
          * Runs the action for the second step of the installation
          * where you enter database information
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep2(\TBGRequest $request)
+        public function runInstallStep2(framework\Request $request)
         {
             $this->preloaded = false;
             $this->selected_connection_detail = 'custom';
@@ -170,7 +163,7 @@
                     $b2db_filename = \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml";
                     if (file_exists($b2db_filename))
                     {
-                        $b2db_config = \Spyc::YAMLLoad($b2db_filename, true);
+                        $b2db_config = \Spyc::YAMLLoad($b2db_filename);
                         \b2db\Core::initialize($b2db_config);
                     }
                 }
@@ -196,11 +189,11 @@
          * Runs the action for the third step of the installation
          * where it tests the connection, sets up the database and the initial scope
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep3(\TBGRequest $request)
+        public function runInstallStep3(framework\Request $request)
         {
             $this->selected_connection_detail = $request['connection_type'];
             try
@@ -262,23 +255,9 @@
                     throw new \Exception('You must provide a database username');
                 }
 
-                // Create legacy tables
-                $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
-                foreach (scandir($tables_path) as $tablefile)
-                {
-                    if (in_array($tablefile, array('.', '..')))
-                        continue;
-
-                    if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
-                    {
-                        \b2db\Core::getTable($tablename)->create();
-                        \b2db\Core::getTable($tablename)->createIndexes();
-                        $tables_created[] = $tablename;
-                    }
-                }
-
                 // Create v4 tables
-                $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'b2db' . DS;
+                $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'tables' . DS;
+                $tables_created = array();
                 foreach (scandir($b2db_entities_path) as $tablefile)
                 {
                     if (in_array($tablefile, array('.', '..')))
@@ -286,10 +265,16 @@
 
                     if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
                     {
-                        $tablename = "\\thebuggenie\\core\\entities\\b2db\\{$tablename}";
-                        \b2db\Core::getTable($tablename)->create();
-                        \b2db\Core::getTable($tablename)->createIndexes();
-                        $tables_created[] = $tablename;
+                        $tablename = "\\thebuggenie\\core\\entities\\tables\\{$tablename}";
+                        $reflection = new \ReflectionClass($tablename);
+                        $docblock = $reflection->getDocComment();
+                        $annotationset = new \b2db\AnnotationSet($docblock);
+                        if ($annotationset->hasAnnotation('Table'))
+                        {
+                            \b2db\Core::getTable($tablename)->create();
+                            \b2db\Core::getTable($tablename)->createIndexes();
+                            $tables_created[] = $tablename;
+                        }
                     }
                 }
                 sort($tables_created);
@@ -299,33 +284,59 @@
             {
                 $this->error = $e->getMessage();
             }
+            $server_type = strtolower(trim($_SERVER['SERVER_SOFTWARE']));
+            switch (true)
+            {
+                case (stripos($server_type, 'apache') !== false):
+                    $this->server_type = 'apache';
+                    break;
+                case (stripos($server_type, 'nginx') !== false):
+                    $this->server_type = 'nginx';
+                    break;
+                case (stripos($server_type, 'iis') !== false):
+                    $this->server_type = 'iis';
+                    break;
+                default:
+                    $this->server_type = 'unknown';
+            }
+            $dirname = dirname($_SERVER['PHP_SELF']);
+            if (mb_stristr(PHP_OS, 'WIN'))
+            {
+                $dirname = str_replace("\\", "/", $dirname); /* Windows adds a \ to the URL which we don't want */
+            }
+
+            $this->dirname = ($dirname != '/') ? $dirname . '/' : $dirname;
         }
 
         /**
          * Runs the action for the fourth step of the installation
          * where it loads fixtures and saves settings for url
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep4(\TBGRequest $request)
+        public function runInstallStep4(framework\Request $request)
         {
             try
             {
-                \TBGLogging::log('Initializing language support');
-                \TBGContext::reinitializeI18n('en_US');
+                framework\Logging::log('Initializing language support');
+                framework\Context::reinitializeI18n('en_US');
 
-                \TBGLogging::log('Loading fixtures for default scope');
-                $scope = new \TBGScope();
+                framework\Logging::log('Loading fixtures for default scope');
+                $scope = new \thebuggenie\core\entities\Scope();
                 $scope->addHostname('*');
                 $scope->setName('The default scope');
                 $scope->setEnabled(true);
-                \TBGContext::setScope($scope);
+                framework\Context::setScope($scope);
                 $scope->save();
 
-                \TBGLogging::log('Setting up default users and groups');
-                \TBGSettings::saveSetting('language', 'en_US', 'core', 1);
+                framework\Settings::saveSetting('language', 'en_US', 'core', 1);
+
+                \thebuggenie\core\entities\Module::installModule('publish');
+                \thebuggenie\core\entities\Module::installModule('agile');
+                \thebuggenie\core\entities\Module::installModule('mailing');
+                \thebuggenie\core\entities\Module::installModule('vcs_integration');
 
                 $this->htaccess_error = false;
                 $this->htaccess_ok = (bool) $request['apache_autosetup'];
@@ -345,6 +356,19 @@
                             $this->htaccess_error = true;
                         }
                     }
+                    if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini')))
+                    {
+                            $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini';
+                    }
+                    else
+                    {
+                        $content = file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/user.ini.template');
+                        file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini', $content);
+                        if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') != $content)
+                        {
+                            $this->htaccess_error = true;
+                        }
+                    }
                 }
             }
             catch (\Exception $e)
@@ -358,34 +382,31 @@
          * Runs the action for the fifth step of the installation
          * where it enables modules on demand
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep5(\TBGRequest $request)
+        public function runInstallStep5(framework\Request $request)
         {
-            $this->sample_data = false;
             try
             {
-                \TBGModule::installModule('publish');
-                if ($request->hasParameter('modules'))
-                {
-                    foreach ($request->getParameter('modules', array()) as $module => $install)
-                    {
-                        if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module))
-                        {
-                            \TBGModule::installModule($module);
-                        }
-                    }
-                }
-                elseif ($request->hasParameter('sample_data'))
-                {
-                    $this->sample_data = true;
-                }
+                $password = trim($request['password']);
+                if ($password !== trim($request['password_repeat']))
+                    throw new \Exception("Passwords don't match");
+
+                $this->password = $password;
+                $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername('administrator');
+                $username = trim(strtolower($request['username']));
+                if ($username) $user->setUsername($username);
+                $user->setRealname($request['name']);
+                $user->setPassword($request['password']);
+                $user->setEmail($request['email']);
+                $user->save();
+
+                $this->user = $user;
             }
             catch (\Exception $e)
             {
-                throw $e;
                 $this->error = $e->getMessage();
             }
         }
@@ -394,13 +415,13 @@
          * Runs the action for the sixth step of the installation
          * where it finalizes the installation
          *
-         * @param \TBGRequest $request The request object
+         * @param framework\Request $request The request object
          *
          * @return null
          */
-        public function runInstallStep6(\TBGRequest $request)
+        public function runInstallStep6(framework\Request $request)
         {
-            $installed_string = \TBGSettings::getMajorVer() . '.' . \TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+            $installed_string = framework\Settings::getMajorVer() . '.' . framework\Settings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
 
             if (file_put_contents(THEBUGGENIE_PATH . 'installed', $installed_string) === false)
             {
@@ -410,91 +431,29 @@
             {
                 $this->error = "Couldn't remove the file " . THEBUGGENIE_PATH . "upgrade. Please remove this file manually.";
             }
-            \TBGContext::clearRoutingCache();
+            framework\Context::clearRoutingCache();
         }
 
-        protected function _upgradeFrom3dot0()
-        {
-            // Add new tables
-            \TBGScopeHostnamesTable::getTable()->create();
-
-            // Add classpath for existing old tables used for upgrade
-            \TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
-
-            // Upgrade old tables
-            \TBGScopesTable::getTable()->upgrade(\TBGScopesTable3dot0::getTable());
-            \TBGIssueFieldsTable::getTable()->upgrade(\TBGIssueFieldsTable3dot0::getTable());
-
-            // Upgrade all modules
-            foreach (\TBGContext::getModules() as $module)
-            {
-                if (method_exists($module, 'upgradeFrom3dot0'))
-                {
-                    $module->upgradeFrom3dot0();
-                }
-            }
-
-            // Start a transaction to preserve the upgrade path
-            $transaction = \b2db\Core::startTransaction();
-
-            // Add votes to feature requests for default issue type scheme
-            $its = new \TBGIssuetypeScheme(1);
-            foreach (\TBGIssuetype::getAll() as $fr)
-            {
-                if ($fr instanceof \TBGIssuetype)
-                {
-                    if (in_array($fr->getKey(), array('featurerequest', 'bugreport', 'enhancement')))
-                    {
-                        $its->setFieldAvailableForIssuetype($fr, 'votes');
-                    }
-                }
-            }
-
-            $ut = \TBGUsersTable::getTable();
-            $crit = $ut->getCriteria();
-            $crit->addUpdate(\TBGUsersTable::PRIVATE_EMAIL, true);
-            $ut->doUpdate($crit);
-
-            // Add default gravatar setting
-            \TBGSettings::saveSetting(\TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
-
-            $trans_crit = \TBGWorkflowTransitionsTable::getTable()->getCriteria();
-            $trans_crit->addWhere(\TBGWorkflowTransitionsTable::NAME, 'Request more information');
-            $trans_crit->addWhere(\TBGWorkflowTransitionsTable::WORKFLOW_ID, 1);
-            $trans_row = \TBGWorkflowTransitionsTable::getTable()->doSelectOne($trans_crit);
-            if ($trans_row)
-            {
-                $transition = new \TBGWorkflowTransition($trans_row->get(\TBGWorkflowTransitionsTable::ID), $trans_row);
-                $transition->setTemplate('main/updateissueproperties');
-                $transition->save();
-            }
-
-            // End transaction and finalize upgrade
-            $transaction->commitAndEnd();
-            $this->upgrade_complete = true;
-        }
-
-        protected function _upgradeFrom3dot2(\TBGRequest $request)
+        protected function _upgradeFrom3dot2(framework\Request $request)
         {
             set_time_limit(0);
 
-            \TBGMilestonesTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone::getB2DBTable());
-            \TBGProjectsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGProjectsTable::getTable());
-            \TBGLogTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGLogTable::getTable());
-            \TBGUsersTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable());
-            \TBGIssuesTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssuesTable::getTable());
-            \TBGWorkflowsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGWorkflowsTable::getTable());
-            \TBGIssueSpentTimesTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssueSpentTimesTable::getTable());
-            \TBGCommentsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGCommentsTable::getTable());
-            \TBGSavedSearchesTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSavedSearchesTable::getTable());
-            \TBGSettingsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSettingsTable::getTable());
-            \TBGNotificationsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGNotificationsTable::getTable());
-            \TBGPermissionsTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGPermissionsTable::getTable());
+            \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone::getB2DBTable());
+            \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGProjectsTable::getTable());
+            \thebuggenie\core\entities\tables\Log::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGLogTable::getTable());
+            \thebuggenie\core\entities\tables\Users::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable());
+            \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssuesTable::getTable());
+            \thebuggenie\core\entities\tables\Workflows::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGWorkflowsTable::getTable());
+            \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssueSpentTimesTable::getTable());
+            \thebuggenie\core\entities\tables\Comments::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGCommentsTable::getTable());
+            \thebuggenie\core\entities\tables\SavedSearches::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSavedSearchesTable::getTable());
+            \thebuggenie\core\entities\tables\Settings::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSettingsTable::getTable());
+            \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGNotificationsTable::getTable());
+            \thebuggenie\core\entities\tables\Permissions::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGPermissionsTable::getTable());
             \thebuggenie\core\entities\Dashboard::getB2DBTable()->create();
             \thebuggenie\core\entities\DashboardView::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGDashboardViewsTable::getTable());
             \thebuggenie\core\entities\ApplicationPassword::getB2DBTable()->create();
             \thebuggenie\core\entities\NotificationSetting::getB2DBTable()->create();
-            \thebuggenie\core\entities\AgileBoard::getB2DBTable()->create();
 
             $transaction = \b2db\Core::startTransaction();
 
@@ -502,8 +461,8 @@
             switch ($request['upgrade_passwords'])
             {
                 case 'manual':
-                    $password = $request['manul_password'];
-                    foreach (\TBGUsersTable::getTable()->selectAll() as $user)
+                    $password = $request['manual_password'];
+                    foreach (\thebuggenie\core\entities\tables\Users::getTable()->selectAll() as $user)
                     {
                         $user->setPassword($password);
                         $user->save();
@@ -511,7 +470,7 @@
                     break;
                 case 'auto':
                     $field = ($request['upgrade_passwords_pick'] == 'username') ? 'username' : 'email';
-                    foreach (\TBGUsersTable::getTable()->selectAll() as $user)
+                    foreach (\thebuggenie\core\entities\tables\Users::getTable()->selectAll() as $user)
                     {
                         if ($field == 'username' && trim($user->getUsername()))
                         {
@@ -527,29 +486,29 @@
                     break;
             }
 
-            $adminuser = \TBGContext::factory()->TBGUser(1);
+            $adminuser = \thebuggenie\core\entities\User::getB2DBTable()->selectById(1);
             $adminuser->setPassword($request['admin_password']);
             $adminuser->save();
 
             // Add new settings
-            \TBGSettings::saveSetting(\TBGSettings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
+            framework\Settings::saveSetting(framework\Settings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
 
             foreach ($request->getParameter('status') as $scope_id => $status_id)
             {
-                $scope = \TBGScopesTable::getTable()->selectById((int) $scope_id);
-                if ($scope instanceof \TBGScope)
+                $scope = \thebuggenie\core\entities\tables\Scopes::getTable()->selectById((int) $scope_id);
+                if ($scope instanceof \thebuggenie\core\entities\Scope)
                 {
-                    $epic = new \TBGIssuetype();
+                    $epic = new \thebuggenie\core\entities\Issuetype();
                     $epic->setName('Epic');
                     $epic->setIcon('epic');
                     $epic->setDescription('Issue type suited for entering epics');
                     $epic->setScope($scope_id);
                     $epic->save();
-                    \TBGSettings::saveSetting('issuetype_epic', $epic->getID(), 'core', $scope_id);
+                    framework\Settings::saveSetting('issuetype_epic', $epic->getID(), 'core', $scope_id);
 
-                    foreach (\TBGWorkflowsTable::getTable()->getAll((int) $scope_id) as $workflow)
+                    foreach (\thebuggenie\core\entities\tables\Workflows::getTable()->getAll((int) $scope_id) as $workflow)
                     {
-                        $transition = new \TBGWorkflowTransition();
+                        $transition = new \thebuggenie\core\entities\WorkflowTransition();
                         $steps = $workflow->getSteps();
                         $step = array_shift($steps);
                         $step->setLinkedStatusID((int) $status_id);
@@ -563,13 +522,13 @@
                         $workflow->setInitialTransition($transition);
                         $workflow->save();
                     }
-                    \TBGActivityType::loadFixtures($scope);
+                    \thebuggenie\core\entities\ActivityType::loadFixtures($scope);
                 }
             }
             $transaction->commitAndEnd();
 
-            \TBGContext::finishUpgrading();
-            foreach (\TBGContext::getModules() as $module)
+            framework\Context::finishUpgrading();
+            foreach (framework\Context::getModules() as $module)
             {
                 $module->upgrade();
             }
@@ -577,7 +536,7 @@
             $this->upgrade_complete = true;
         }
 
-        public function runUpgrade(\TBGRequest $request)
+        public function runUpgrade(framework\Request $request)
         {
             $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
             $this->current_version = $version_info[0];
@@ -585,12 +544,12 @@
 
             if ($this->upgrade_available)
             {
-                $scope = new \TBGScope();
+                $scope = new \thebuggenie\core\entities\Scope();
                 $scope->setID(1);
                 $scope->setEnabled();
-                \TBGContext::setScope($scope);
+                framework\Context::setScope($scope);
 
-                $this->statuses = \TBGListTypesTable::getTable()->getStatusListForUpgrade();
+                $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
                 $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
             }
             $this->upgrade_complete = false;
@@ -603,13 +562,8 @@
                 if ($this->upgrade_complete)
                 {
                     $existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
-                    file_put_contents(THEBUGGENIE_PATH . 'installed', \TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
-                    $prev_error_reportiong_level = error_reporting(0);
-                    unlink(THEBUGGENIE_PATH . 'upgrade');
-                    error_reporting($prev_error_reportiong_level);
-                    if (file_exists(THEBUGGENIE_PATH . 'upgrade'))
-                        $this->upgrade_file_failed = true;
-                    $this->current_version = \TBGSettings::getVersion(false, false);
+                    file_put_contents(THEBUGGENIE_PATH . 'installed', framework\Settings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
+                    $this->current_version = framework\Settings::getVersion(false, false);
                     $this->upgrade_available = false;
                 }
             }
@@ -623,7 +577,7 @@
             }
             elseif ($this->upgrade_complete)
             {
-                $this->forward(\TBGContext::getRouting()->generate('home'));
+                $this->forward(framework\Context::getRouting()->generate('home'));
             }
         }
 

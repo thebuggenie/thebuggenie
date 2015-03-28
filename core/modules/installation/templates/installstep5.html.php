@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <?php if (isset($error)): ?>
     <div class="installation_box">
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -7,20 +7,19 @@
         If you think this is a bug, please report it in our <a href="http://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
     </div>
 <?php else: ?>
+    <h2>Administrator account set up</h2>
+    The administrator account has been set up successfully. To use this account, log in with the following information:
     <div class="installation_box">
-        <h2>Please read the following information:</h2>
-        <fieldset>
-            <legend>Administrator account</legend>
-            <div style="font-size: 12px; margin: 10px 0 10px 0;">
-                An administrator account has been created. To use this account, log in with the following information:<br>
-                <b>Username: </b>administrator<br>
-                <b>Password: </b>admin<br>
-                <br>
-                You should change this password immediately after finalizing the installation.<br>
-                This can be done from the "Account" page, available from the dropdown-menu in the top-right corner.
-            </div>
-        </fieldset>
+        <dl class="install_list">
+            <dt><label>Username</label></dt>
+            <dd><span class="command_box"><?php echo $user->getUsername(); ?></span></dd>
+            <dt><label>Password</label></dt>
+            <dd><span class="command_box"><?php echo $password; ?></span></dd>
+        </dl>
     </div>
+    <br>
+    Don't worry, that password is securely stored in your database with full encryption. The password displayed is the input you typed on the previous page.<br>
+    You can change all these details from the "Account" page, after logging in.
     <div class="installation_box">
         <form accept-charset="utf-8" action="index.php" method="post" id="finalize_settings">
             <input type="hidden" name="step" value="6">
@@ -31,4 +30,4 @@
         </form>
     </div>
 <?php endif; ?>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

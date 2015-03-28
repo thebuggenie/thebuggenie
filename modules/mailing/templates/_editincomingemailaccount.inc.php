@@ -20,7 +20,7 @@
         <div class="content" style="padding: 4px;">
             <?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
         </div>
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
             <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
@@ -80,8 +80,8 @@
                 <tr>
                     <td><label for="account_type_imap"><?php echo __('Account type'); ?></label></td>
                     <td>
-                        <input type="radio" name="account_type" id="account_type_imap" value="<?php echo TBGIncomingEmailAccount::SERVER_IMAP; ?>"<?php if ($account->isImap()) echo ' checked'; ?>><label for="account_type_imap" style="font-weight: normal;"><?php echo __('Microsoft Exchange / IMAP'); ?></label>
-                        <input type="radio" name="account_type" id="account_type_pop3" value="<?php echo TBGIncomingEmailAccount::SERVER_POP3; ?>"<?php if ($account->isPop3()) echo ' checked'; ?>><label for="account_type_pop3" style="font-weight: normal;"><?php echo __('POP3'); ?></label>
+                        <input type="radio" name="account_type" id="account_type_imap" value="<?php echo \thebuggenie\modules\mailing\entities\IncomingEmailAccount::SERVER_IMAP; ?>"<?php if ($account->isImap()) echo ' checked'; ?>><label for="account_type_imap" style="font-weight: normal;"><?php echo __('Microsoft Exchange / IMAP'); ?></label>
+                        <input type="radio" name="account_type" id="account_type_pop3" value="<?php echo \thebuggenie\modules\mailing\entities\IncomingEmailAccount::SERVER_POP3; ?>"<?php if ($account->isPop3()) echo ' checked'; ?>><label for="account_type_pop3" style="font-weight: normal;"><?php echo __('POP3'); ?></label>
                     </td>
                 </tr>
                 <tr>

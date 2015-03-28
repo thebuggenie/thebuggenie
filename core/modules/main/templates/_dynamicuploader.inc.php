@@ -7,7 +7,7 @@
             <span class="single" style="display: none;"><?php echo __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
         </div>
         <div class="upload_file_listing">
-            <ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>">
+            <ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>">
                 <?php if (isset($existing_files)): ?>
                     <?php foreach ($existing_files as $file): ?>
                         <li>

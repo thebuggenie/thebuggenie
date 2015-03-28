@@ -1,14 +1,14 @@
-<?php $apc_enabled = TBGRequest::CanGetUploadStatus(); ?>
+<?php $apc_enabled = \thebuggenie\core\framework\Request::CanGetUploadStatus(); ?>
 <div id="backdrop_detail_content" class="backdrop_detail_content">
     <div id="upload_forms">
         <form method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px;<?php if ($apc_enabled): ?> display: none;<?php endif; ?>">
-            <input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo TBGSettings::getUploadsEffectiveMaxSize(true); ?>">
+            <input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo \thebuggenie\core\framework\Settings::getUploadsEffectiveMaxSize(true); ?>">
             <input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
             <div>
                 <dl>
                     <dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
                     <dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
-                    <?php $max_filesize = TBGSettings::getUploadsEffectiveMaxSize();
+                    <?php $max_filesize = \thebuggenie\core\framework\Settings::getUploadsEffectiveMaxSize();
                     if($max_filesize != 0):?>
                     <dt style="width: 100%;"><?php echo __('Files bigger than %max_filesize can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize' => '<b>'.$max_filesize.'MB</b>')); ?></dt>
                     <?php endif; ?>
@@ -40,11 +40,11 @@
             <tbody id="uploaded_files">
                 <?php if ($mode == 'issue'): ?>
                     <?php foreach ($existing_files as $file_id => $file): ?>
-                        <?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+                        <?php include_component('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
                     <?php endforeach; ?>
                 <?php elseif ($mode == 'article'): ?>
                     <?php foreach ($existing_files as $file_id => $file): ?>
-                        <?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'article', 'article' => $article, 'file' => $file, 'file_id' => $file_id)); ?>
+                        <?php include_component('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'article', 'article' => $article, 'file' => $file, 'file_id' => $file_id)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>

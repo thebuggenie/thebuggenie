@@ -1,17 +1,14 @@
-<?php if ($issue instanceof TBGIssue): ?>
+<?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <?php
 
-        $tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
+        $tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
         $tbg_response->addBreadcrumb($issue->getFormattedIssueNo(true, true), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
         $tbg_response->setTitle('['.(($issue->isClosed()) ? mb_strtoupper(__('Closed')) : mb_strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . tbg_decodeUTF8($issue->getTitle()));
 
     ?>
-    <?php TBGEvent::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
-    <?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-        <?php // include_component('main/uploader', array('issue' => $issue, 'mode' => 'issue')); ?>
-    <?php endif; ?>
+    <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
     <?php if ($issue->canAttachLinks()): ?>
-        <?php include_template('main/attachlink', array('issue' => $issue)); ?>
+        <?php include_component('main/attachlink', array('issue' => $issue)); ?>
     <?php endif; ?>
     <div id="issuetype_indicator_fullpage" style="display: none;" class="fullpage_backdrop">
         <div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
@@ -58,7 +55,7 @@
                     <td id="title_field">
                         <div class="viewissue_title hoverable">
                             <span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
-                                <?php include_template('issueparent_crumbs', array('issue' => $issue)); ?>
+                                <?php include_component('issueparent_crumbs', array('issue' => $issue)); ?>
                             </span>
                             <span id="issue_title">
                                 <?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
@@ -111,7 +108,7 @@
                         </div>
                     </td>
                     <td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
-                        <div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
+                        <div title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging">
                             <div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
                             <div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
                         </div>
@@ -156,42 +153,42 @@
                             <div class="content" style="text-align: left;">
                                 <?php echo __('The following actions could not be performed because of missing or invalid values: %list', array('%list' => '')); ?><br>
                                 <ul>
-                                    <?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
+                                    <?php foreach (\thebuggenie\core\framework\Context::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
                                         <li><?php
 
                                             switch ($error_field)
                                             {
-                                                case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+                                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
                                                     echo __('Could not assign issue to the selected user because this users assigned issues limit is reached');
                                                     break;
-                                                case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+                                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
                                                     echo __('Could not set priority');
                                                     break;
-                                                case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+                                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
                                                     echo __('Could not set reproducability');
                                                     break;
-                                                case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+                                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
                                                     echo __('Could not set resolution');
                                                     break;
-                                                case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
+                                                case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
                                                     echo __('Could not set status');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
                                                     echo __('Could not assign issue to the any user or team because none were provided');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_MILESTONE:
                                                     echo __('Could not assign the issue to a milestone because none was provided');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY:
                                                     echo __('Could not set issue priority because none was provided');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
                                                     echo __('Could not set issue reproducability because none was provided');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION:
                                                     echo __('Could not set issue resolution because none was provided');
                                                     break;
-                                                case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
+                                                case \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS:
                                                     echo __('Could not set issue status because none was provided');
                                                     break;
                                                 default:
@@ -243,7 +240,7 @@
                     <div class="issue_info information" id="viewissue_being_worked_on">
                         <?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
                             <?php echo __('You have been working on this issue since %time', array('%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
-                        <?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
+                        <?php elseif ($issue->getAssignee() instanceof \thebuggenie\core\entities\Team): ?>
                             <?php echo __('%teamname has been working on this issue since %time', array('%teamname' => $issue->getAssignee()->getName(), '%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
                         <?php else: ?>
                             <?php echo __('%user has been working on this issue since %time', array('%user' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
@@ -265,7 +262,7 @@
                 <?php if ($issue->isClosed()): ?>
                     <div class="issue_info information" id="viewissue_closed">
                         <?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-                        <?php echo __('This issue has been closed with status "%status_name" and resolution "%resolution".', array('%status_name' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
+                        <?php echo __('This issue has been closed with status "%status_name" and resolution "%resolution".', array('%status_name' => (($issue->getStatus() instanceof \thebuggenie\core\entities\Status) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution' => (($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
                     </div>
                 <?php endif; ?>
                 <?php if ($issue->getProject()->isArchived()): ?>
@@ -298,7 +295,7 @@
                 <?php endif; ?>
                 <li class="more_actions">
                     <input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
-                    <?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
+                    <?php include_component('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
                 </li>
             </ul>
         </div>
@@ -306,7 +303,7 @@
             <div id="issue_view">
                 <div id="issue_main_container">
                     <div class="issue_main" id="issue_main">
-                        <?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
+                        <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
                         <fieldset id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?> hoverable">
                             <legend id="description_header">
                                 <?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
@@ -326,7 +323,7 @@
                             <?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
                                 <div id="description_change" style="display: none;">
                                     <form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
-                                        <?php include_template('main/textarea', array('area_name' => 'value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'description_form_value', 'syntax' => (($issue->getDescriptionSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getDescription(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
+                                        <?php include_component('main/textarea', array('area_name' => 'value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'description_form_value', 'syntax' => (($issue->getDescriptionSyntax() == \thebuggenie\core\framework\Settings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getDescription(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()))); ?>
                                         <br>
                                         <input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save or %cancel', array('%save' => '', '%cancel' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
                                     </form>
@@ -354,7 +351,7 @@
                             <?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
                                 <div id="reproduction_steps_change" style="display: none;">
                                     <form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
-                                        <?php include_template('main/textarea', array('area_name' => 'value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'reproduction_steps_form_value', 'syntax' => (($issue->getReproductionStepsSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getReproductionSteps(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
+                                        <?php include_component('main/textarea', array('area_name' => 'value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'reproduction_steps_form_value', 'syntax' => (($issue->getReproductionStepsSyntax() == \thebuggenie\core\framework\Settings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getReproductionSteps(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()))); ?>
                                         <br>
                                         <input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save or %cancel', array('%save' => '', '%cancel' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
                                     </form>
@@ -364,7 +361,7 @@
                             <?php endif; ?>
                         </fieldset>
                         <?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
-                        <?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
+                        <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
                         <fieldset class="comments">
                             <legend class="viewissue_comments_header">
                                 <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count">'.$issue->countUserComments().'</span>')); ?>
@@ -379,7 +376,7 @@
                                 </ul>
                             </legend>
                             <div id="viewissue_comments">
-                                <?php include_template('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => TBGComment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
+                                <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
                             </div>
                         </fieldset>
                         <fieldset class="viewissue_history">
@@ -392,9 +389,9 @@
                             </legend>
                             <div id="viewissue_log_items"></div>
                         </fieldset>
-                        <?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
+                        <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
                         <div id="viewissue_panes">
-                            <?php TBGEvent::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
+                            <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
                         </div>
                     </div>
                 </div>
@@ -416,7 +413,7 @@
     <div id="workflow_transition_container" style="display: none;">
         <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
             <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-                <?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
+                <?php if ($transition instanceof \thebuggenie\core\entities\WorkflowTransition && $transition->hasTemplate()): ?>
                     <?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -424,7 +421,7 @@
     </div>
     <div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>
     <?php if ($tbg_user->isViewissueTutorialEnabled()): ?>
-        <?php include_template('main/tutorial_viewissue', compact('issue')); ?>
+        <?php include_component('main/tutorial_viewissue', compact('issue')); ?>
     <?php endif; ?>
 <?php elseif (isset($issue_deleted)): ?>
     <div class="greenbox" id="issue_deleted_message">

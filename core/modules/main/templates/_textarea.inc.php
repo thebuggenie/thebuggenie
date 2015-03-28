@@ -3,12 +3,12 @@
 
     if ($markuppable)
     {
-        $syntax = (isset($syntax)) ? $syntax : TBGSettings::SYNTAX_MW;
-        if (is_numeric($syntax)) $syntax = TBGSettings::getSyntaxClass($syntax);
+        $syntax = (isset($syntax)) ? $syntax : \thebuggenie\core\framework\Settings::SYNTAX_MW;
+        if (is_numeric($syntax)) $syntax = \thebuggenie\core\framework\Settings::getSyntaxClass($syntax);
     }
     else
     {
-        $syntax = TBGSettings::getSyntaxClass(TBGSettings::SYNTAX_MD);
+        $syntax = \thebuggenie\core\framework\Settings::getSyntaxClass(\thebuggenie\core\framework\Settings::SYNTAX_MD);
     }
 
     switch ($syntax)
@@ -29,7 +29,7 @@
 ?>
 <div class="textarea_container syntax_<?php echo $syntax; ?>">
     <div class="syntax_picker_container">
-        <input type="hidden" id="<?php echo $base_id; ?>_syntax" name="<?php echo $area_name; ?>_syntax" value="<?php echo TBGsettings::getSyntaxValue($syntax); ?>">
+        <input type="hidden" id="<?php echo $base_id; ?>_syntax" name="<?php echo $area_name; ?>_syntax" value="<?php echo \thebuggenie\core\framework\Settings::getSyntaxValue($syntax); ?>">
         <a id="<?php echo $base_id; ?>_toggle_syntax_button" onclick="return false;" class="button button-silver syntax_picker dropper"><?php echo __('Selected syntax: %selected_syntax', array('%selected_syntax' => '<span id="'.$base_id.'_selected_syntax">'.$syntaxname.'</span>')); ?>&nbsp;&nbsp;<span style="font-size: 0.8em; float: right;">&#x25BC;</span></a>
         <ul id="<?php echo $base_id; ?>_syntax_picker" class="simple_list rounded_box white shadowed more_actions_dropdown popup_box" onclick="$(this).previous().toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();" style="display: none;">
             <li class="mw <?php if ($syntax == 'mw') echo 'selected'; ?>" data-syntax-name="<?php echo __('Mediawiki'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'mw');"><?php echo __('Mediawiki syntax'); ?></a></li>

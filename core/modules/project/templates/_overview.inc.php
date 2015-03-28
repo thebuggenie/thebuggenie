@@ -24,8 +24,8 @@
 <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
 <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
     <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver button-issues righthugging')); ?>
-    <input type="button" class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" style="font-size: 0.9em;" value="&#x25BC;">
-    <ul id="goto_issue_<?php echo $project->getID(); ?>" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box no_direction" style="position: absolute; margin-top: 25px; display: none;">
+    <a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>
+    <ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
         <li class="finduser_container">
             <label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
             <form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
@@ -35,11 +35,11 @@
         </li>
     </ul>
 <?php endif; ?>
-<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+<?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 <?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
     <?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green button-report-issue righthugging')); ?>
-    <input type="button" class="dropper button button-green last lefthugging reportissue_dropdown_button" value="&#x25BC;" style="font-size: 0.9em;">
-    <ul id="create_issue_<?php echo $project->getID(); ?>" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box no_direction" style="position: absolute; right: 0; margin-top: 25px; display: none;">
+    <a class="dropper button button-green last lefthugging reportissue_dropdown_button" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>
+    <ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
         <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
             <li><?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?></li>
         <?php endforeach;?>
@@ -61,7 +61,7 @@
                 <td style="padding-bottom: 2px; width: 200px; padding-right: 10px;"><b><?php echo $issuetype->getName(); ?>:</b></td>
                 <td style="padding-bottom: 2px; width: auto; position: relative;">
                     <div style="color: #222; position: absolute; right: 20px; text-align: right;"><?php echo __('%closed closed of %issues reported', array('%closed' => '<b>'.$project->countClosedIssuesByType($issuetype->getID()).'</b>', '%issues' => '<b>'.$project->countIssuesByType($issuetype->getID()).'</b>')); ?></div>
-                    <?php include_template('main/percentbar', array('percent' => $project->getClosedPercentageByType($issuetype->getID()), 'height' => 20)); ?>
+                    <?php include_component('main/percentbar', array('percent' => $project->getClosedPercentageByType($issuetype->getID()), 'height' => 20)); ?>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -77,7 +77,7 @@
                 <td style="padding-bottom: 2px; width: 200px; padding-right: 10px;"><b><?php echo $milestone->getName(); ?>:</b></td>
                 <td style="padding-bottom: 2px; width: auto; position: relative;">
                     <div style="color: #222; position: absolute; right: 20px; text-align: right;"><?php echo __('%closed closed of %issues assigned', array('%closed' => '<b>'.$project->countClosedIssuesByMilestone($milestone->getID()).'</b>', '%issues' => '<b>'.$project->countIssuesByMilestone($milestone->getID()).'</b>')); ?></div>
-                    <?php include_template('main/percentbar', array('percent' => $project->getClosedPercentageByMilestone($milestone->getID()), 'height' => 20)); ?>
+                    <?php include_component('main/percentbar', array('percent' => $project->getClosedPercentageByMilestone($milestone->getID()), 'height' => 20)); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -7,5 +7,5 @@
 <?php else: ?>
     <div class="faded_out" style="font-weight: normal;"><?php echo __('This project has no subprojects'); ?></div>
 <?php endif; ?>
-<a href="javascript:void(0);" class="button button-silver dash" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_archived_projects', 'pid' => TBGContext::getCurrentProject()->getID())); ?>');"><?php echo __('View archived subprojects'); ?></a>
+<a href="javascript:void(0);" class="button button-silver dash" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_archived_projects', 'pid' => \thebuggenie\core\framework\Context::getCurrentProject()->getID())); ?>');"><?php echo __('View archived subprojects'); ?></a>
 <br style="clear: both;">

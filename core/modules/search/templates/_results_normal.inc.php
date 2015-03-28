@@ -1,5 +1,5 @@
 <?php
-if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top'));
+if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 $current_spent_time = $current_estimated_time;
@@ -7,7 +7,7 @@ foreach ($search_object->getIssues() as $issue):
     list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\Actions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
     if (($showtablestart || $showheader) && $cc > 1):
                 echo '</tbody></table>';
-                include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
+                include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
                 $current_count = 0;
                 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
                 $current_spent_time = $current_estimated_time;
@@ -33,26 +33,26 @@ foreach ($search_object->getIssues() as $issue):
                     <?php if (!$tbg_user->isGuest()): ?>
                         <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" /></th>
                     <?php endif; ?>
-                    <?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
+                    <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
                         <th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
                     <?php endif; ?>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::ISSUE_TYPE); ?>" data-sort-field="<?php echo TBGIssuesTable::ISSUE_TYPE; ?>" class="sc_issuetype <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::ISSUE_TYPE)) echo "sort_{$dir}"; ?>" <?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::TITLE); ?>" data-sort-field="<?php echo TBGIssuesTable::TITLE; ?>" class="sc_title_container <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::TITLE)) echo "sort_{$dir}"; ?>"><span data-sort-direction="asc" class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::ASSIGNEE_USER); ?>" data-sort-field="<?php echo TBGIssuesTable::ASSIGNEE_USER; ?>" class="sc_assigned_to <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::ASSIGNEE_USER)) echo "sort_{$dir}"; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::STATUS); ?>" data-sort-field="<?php echo TBGIssuesTable::STATUS; ?>" class="sc_status <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::STATUS)) echo "sort_{$dir}"; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Status'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::RESOLUTION); ?>" data-sort-field="<?php echo TBGIssuesTable::RESOLUTION; ?>" class="sc_resolution <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::RESOLUTION)) echo "sort_{$dir}"; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Resolution'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::CATEGORY); ?>" data-sort-field="<?php echo TBGIssuesTable::CATEGORY; ?>" class="sc_category <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::CATEGORY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Category'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::SEVERITY); ?>" data-sort-field="<?php echo TBGIssuesTable::SEVERITY; ?>" class="sc_severity <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::SEVERITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Severity'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::PERCENT_COMPLETE); ?>" data-sort-field="<?php echo TBGIssuesTable::PERCENT_COMPLETE; ?>" class="sc_percent_complete <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::PERCENT_COMPLETE)) echo "sort_{$dir}"; ?>" style="width: 150px;<?php if (!in_array('percent_complete', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo __('% completed'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::REPRODUCABILITY); ?>" data-sort-field="<?php echo TBGIssuesTable::REPRODUCABILITY; ?>" class="sc_reproducability <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::REPRODUCABILITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Reproducability'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::PRIORITY); ?>" data-sort-field="<?php echo TBGIssuesTable::PRIORITY; ?>" class="sc_priority <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::PRIORITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Priority'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::ISSUE_TYPE); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::ISSUE_TYPE; ?>" class="sc_issuetype <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::ISSUE_TYPE)) echo "sort_{$dir}"; ?>" <?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::TITLE); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::TITLE; ?>" class="sc_title_container <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::TITLE)) echo "sort_{$dir}"; ?>"><span data-sort-direction="asc" class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::ASSIGNEE_USER); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::ASSIGNEE_USER; ?>" class="sc_assigned_to <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::ASSIGNEE_USER)) echo "sort_{$dir}"; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::STATUS); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::STATUS; ?>" class="sc_status <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::STATUS)) echo "sort_{$dir}"; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Status'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::RESOLUTION); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::RESOLUTION; ?>" class="sc_resolution <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::RESOLUTION)) echo "sort_{$dir}"; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Resolution'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::CATEGORY); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::CATEGORY; ?>" class="sc_category <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::CATEGORY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Category'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::SEVERITY); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::SEVERITY; ?>" class="sc_severity <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::SEVERITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Severity'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::PERCENT_COMPLETE); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::PERCENT_COMPLETE; ?>" class="sc_percent_complete <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::PERCENT_COMPLETE)) echo "sort_{$dir}"; ?>" style="width: 150px;<?php if (!in_array('percent_complete', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo __('% completed'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::REPRODUCABILITY); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::REPRODUCABILITY; ?>" class="sc_reproducability <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::REPRODUCABILITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Reproducability'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::PRIORITY); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::PRIORITY; ?>" class="sc_priority <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::PRIORITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Priority'); ?></th>
                     <th class="sc_components nosort"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Component(s)'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::MILESTONE); ?>" data-sort-field="<?php echo TBGIssuesTable::MILESTONE; ?>" class="sc_milestone <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::MILESTONE)) echo "sort_{$dir}"; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::MILESTONE); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::MILESTONE; ?>" class="sc_milestone <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::MILESTONE)) echo "sort_{$dir}"; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
                     <th class="sc_estimated_time nosort sc_datetime"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Estimate'); ?></th>
                     <th class="sc_spent_time nosort sc_datetime"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent'); ?></th>
-                    <th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::LAST_UPDATED); ?>" data-sort-field="<?php echo TBGIssuesTable::LAST_UPDATED; ?>" class="sc_last_updated <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::LAST_UPDATED)) echo "sort_{$dir}"; ?> numeric sc_datetime"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::LAST_UPDATED); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::LAST_UPDATED; ?>" class="sc_last_updated <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::LAST_UPDATED)) echo "sort_{$dir}"; ?> numeric sc_datetime"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
                     <?php foreach ($custom_columns as $column): ?>
-                        <th data-sort-direction="<?php echo $search_object->getSortDirection($column->getKey()); ?>" data-sort-field="<?php echo $column->getKey(); ?>" class="sc_<?php echo $column->getKey(); ?> <?php if ($dir = $search_object->getSortDirection($column->getKey())) echo "sort_{$dir}"; ?> <?php if ($column->getType() == TBGCustomDatatype::DATE_PICKER) echo 'numeric sc_datetime'; ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __($column->getName()); ?></th>
+                        <th data-sort-direction="<?php echo $search_object->getSortDirection($column->getKey()); ?>" data-sort-field="<?php echo $column->getKey(); ?>" class="sc_<?php echo $column->getKey(); ?> <?php if ($dir = $search_object->getSortDirection($column->getKey())) echo "sort_{$dir}"; ?> <?php if ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) echo 'numeric sc_datetime'; ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __($column->getName()); ?></th>
                     <?php endforeach; ?>
                     <th class="sc_comments nosort" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
                     <th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
@@ -60,7 +60,7 @@ foreach ($search_object->getIssues() as $issue):
             </thead>
             <tbody>
     <?php endif; ?>
-                <tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
+                <tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
                     <?php if (!$tbg_user->isGuest()): ?>
                         <td class="sca_actions">
                             <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
@@ -68,7 +68,7 @@ foreach ($search_object->getIssues() as $issue):
                             <?php endif; ?>
                         </td>
                     <?php endif; ?>
-                <?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
+                <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
                     <td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
                 <?php endif; ?>
                     <td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
@@ -90,7 +90,7 @@ foreach ($search_object->getIssues() as $issue):
                     </td>
                     <td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
                         <?php if ($issue->isAssigned()): ?>
-                            <?php if ($issue->getAssignee() instanceof TBGUser): ?>
+                            <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
                                 <?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
                             <?php else: ?>
                                 <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
@@ -99,47 +99,47 @@ foreach ($search_object->getIssues() as $issue):
                             -
                         <?php endif; ?>
                     </td>
-                    <td class="sc_status<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                    <td class="sc_status<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
                         <?php else: ?>
                             -
                         <?php endif; ?>
                     </td>
-                    <td class="sc_resolution<?php if (!$issue->getResolution() instanceof TBGResolution): ?> faded_out<?php endif; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getResolution() instanceof TBGResolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
+                    <td class="sc_resolution<?php if (!$issue->getResolution() instanceof \thebuggenie\core\entities\Resolution): ?> faded_out<?php endif; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
                     </td>
-                    <td class="sc_category<?php if (!$issue->getCategory() instanceof TBGCategory): ?> faded_out<?php endif; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getCategory() instanceof TBGCategory) ? $issue->getCategory()->getName() : '-'; ?>
+                    <td class="sc_category<?php if (!$issue->getCategory() instanceof \thebuggenie\core\entities\Category): ?> faded_out<?php endif; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getCategory() instanceof \thebuggenie\core\entities\Category) ? $issue->getCategory()->getName() : '-'; ?>
                     </td>
-                    <td class="sc_severity<?php if (!$issue->getSeverity() instanceof TBGSeverity): ?> faded_out<?php endif; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getSeverity() instanceof TBGSeverity) ? $issue->getSeverity()->getName() : '-'; ?>
+                    <td class="sc_severity<?php if (!$issue->getSeverity() instanceof \thebuggenie\core\entities\Severity): ?> faded_out<?php endif; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getSeverity() instanceof \thebuggenie\core\entities\Severity) ? $issue->getSeverity()->getName() : '-'; ?>
                     </td>
                     <td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
+                        <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
                     </td>
-                    <td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof TBGReproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getReproducability() instanceof TBGReproducability) ? $issue->getReproducability()->getName() : '-'; ?>
+                    <td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability) ? $issue->getReproducability()->getName() : '-'; ?>
                     </td>
-                    <td class="sc_priority<?php if (!$issue->getPriority() instanceof TBGPriority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getName() : '-'; ?>
+                    <td class="sc_priority<?php if (!$issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : '-'; ?>
                     </td>
                     <?php $component_names = $issue->getComponentNames(); ?>
                     <td class="sc_components<?php if (!count($component_names)): ?> faded_out<?php endif; ?>"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
                         <?php echo (count($component_names)) ? join(', ', $component_names) : '-'; ?>
                     </td>
-                    <td class="sc_milestone<?php if (!$issue->getMilestone() instanceof TBGMilestone): ?> faded_out<?php endif; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getMilestone() instanceof TBGMilestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
+                    <td class="sc_milestone<?php if (!$issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone): ?> faded_out<?php endif; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                        <?php echo ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
                     </td>
                     <td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasEstimatedTime()) ? '-' : TBGIssue::getFormattedTime($issue->getEstimatedTime()); ?>
+                        <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime()); ?>
                     </td>
                     <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasSpentTime()) ? '-' : TBGIssue::getFormattedTime($issue->getSpentTime()); ?>
+                        <?php echo (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()); ?>
                     </td>
                     <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getLastUpdatedTime(); ?></span><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
                     <?php foreach ($custom_columns as $column): ?>
-                        <td class="smaller sc_<?php echo $column->getKey(); ?>" title="<?php echo ($column->getType() == TBGCustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 21) : $issue->getCustomField($column->getKey()); ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getCustomField($column->getKey()); ?></span><?php echo ($column->getType() == TBGCustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 20) : $issue->getCustomField($column->getKey()); ?></td>
+                        <td class="smaller sc_<?php echo $column->getKey(); ?>" title="<?php echo ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 21) : $issue->getCustomField($column->getKey()); ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getCustomField($column->getKey()); ?></span><?php echo ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 20) : $issue->getCustomField($column->getKey()); ?></td>
                     <?php endforeach; ?>
                     <td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
                         <?php echo $issue->countUserComments(); ?>
@@ -147,18 +147,18 @@ foreach ($search_object->getIssues() as $issue):
                     <td class="sc_actions">
                         <div style="position: relative;">
                             <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
-                            <?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
+                            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
                         </div>
                     </td>
                 </tr>
     <?php if ($cc == $search_object->getNumberOfIssues()): ?>
             </tbody>
         </table>
-        <?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
+        <?php include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
     <?php endif; ?>
     <?php $cc++; ?>
 <?php endforeach; ?>
-<?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'bottom')); ?>
+<?php if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'bottom')); ?>
 <style type="text/css">
 .sc_actions .image { background-image:url(<?php echo image_url('action_dropdown_small.png'); ?>); }
 </style>

@@ -1,7 +1,7 @@
 <?php $tbg_response->setTitle(__('Configure modules')); ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_MODULES)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_MODULES)); ?>
         <td valign="top" style="padding-left: 15px;">
             <div style="width: 730px;" id="config_modules">
                 <h3><?php echo __('Configure modules'); ?></h3>
@@ -36,7 +36,7 @@
                     <div id="tab_installed_pane" style="padding-top: 0;">
                         <?php foreach ($modules as $module_key => $module): ?>
                             <?php if (!$module->isOutdated()): ?>
-                                <?php include_template('modulebox', array('module' => $module)); ?>
+                                <?php include_component('modulebox', array('module' => $module)); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
@@ -51,25 +51,13 @@
                                     <?php echo __('To install a module, select it from the dropdown list and press the %install-button', array('%install' => '<b>' . __('Install') . '</b>')); ?>
                                 </p>
                             </div>
-                            <form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+                            <form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                                 <select name="module_key" style="margin-top: 5px; width: 100%;">
-                                <?php foreach ($uninstalled_modules as $module_key => $description): ?>
-                                    <option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
+                                <?php foreach ($uninstalled_modules as $module_key => $module): ?>
+                                    <option value="<?php echo $module_key; ?>"><?php echo $module->getLongName() . ' (' . $module->getDescription() . ')'; ?></option>
                                 <?php endforeach; ?>
                                 </select><br>
                                 <input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
-                            </form>
-                        <?php endif; ?>
-                        <?php if (TBGContext::getScope()->isDefault()): ?>
-                            <h5 style="margin-bottom: 0; padding-bottom: 0; margin-top: 10px;"><?php echo __('Upload and install'); ?></h5>
-                            <div class="content faded_out">
-                                <p>
-                                    <?php echo __('To add a new module in The Bug Genie, download it then select it from the %browse-button and press the %upload-button', array('%upload' => '<b>' . __('Upload') . '</b>', '%browse' => '<b>' . __('Browse') . '</b>')); ?>
-                                </p>
-                            </div>
-                            <form action="<?php echo make_url('configure_upload_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" enctype="multipart/form-data">
-                                <input type="file" name="archive" style="margin-top: 5px; background-color: #fff;"><br>
-                                <input type="submit" value="<?php echo __('Upload'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
                             </form>
                         <?php endif; ?>
                     </div>
@@ -83,7 +71,7 @@
                                     <?php echo __('To upgrade a module, select it from the dropdown list and press the %upgrade-button. This will likely involve changes to the database, so you may want to back up your database first', array('%upgrade' => '<b>' . __('Upgrade') . '</b>')); ?>
                                 </p>
                             </div>
-                            <form action="<?php echo make_url('configure_update_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+                            <form action="<?php echo make_url('configure_update_module'); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                                 <div class="rounded_box mediumgrey borderless" style="margin: 5px 0px 5px 0px; text-align: right; width: 783px;">
                                     <select name="module_key" style="margin-top: 5px; width: 100%;">
                                     <?php foreach ($outdated_modules as $module): ?>

@@ -1,7 +1,7 @@
 <div class="almost_not_transparent shadowed popup_message failure" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_failuremessage">
     <div style="padding: 10px 0 10px 0;">
         <div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
-        <span style="color: #000; font-weight: bold;" id="thebuggenie_failuremessage_title"></span><br>
+        <span class="messagetitle" id="thebuggenie_failuremessage_title"></span><br>
         <span id="thebuggenie_failuremessage_content"></span>
     </div>
 </div>
@@ -18,25 +18,25 @@
 <div class="almost_not_transparent shadowed popup_message success" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_successmessage">
     <div style="padding: 10px 0 10px 0;">
         <div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
-        <span style="color: #000; font-weight: bold;" id="thebuggenie_successmessage_title"></span><br>
+        <span class="messagetitle" id="thebuggenie_successmessage_title"></span><br>
         <span id="thebuggenie_successmessage_content"></span>
     </div>
 </div>
 <div id="fullpage_backdrop" class="fullpage_backdrop" style="display: none;">
-    <div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;" id="fullpage_backdrop_indicator">
+    <div id="fullpage_backdrop_indicator">
         <?php echo image_tag('spinning_32.gif'); ?><br>
         <?php echo __('Please wait ...'); ?>
     </div>
     <div id="fullpage_backdrop_content" class="fullpage_backdrop_content"> </div>
 </div>
-<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page' && $tbg_user->isGuest()): ?>
+<?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page' && $tbg_user->isGuest()): ?>
     <div id="login_backdrop" class="fullpage_backdrop" style="display: none;">
         <div id="login_content" class="fullpage_backdrop_content">
             <?php include_component('main/loginpopup', array('content' => get_component_html('main/login'), 'mandatory' => false)); ?>
         </div>
     </div>
 <?php endif; ?>
-<?php if (TBGSettings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
+<?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
     <script src="https://login.persona.org/include.js"></script>
     <script type="text/javascript">
         document.observe('dom:loaded', function() {
@@ -50,7 +50,7 @@
                 // 2. Update your UI.
                 TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
                     url_method: 'post',
-                    additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo TBGContext::getRouting()->getCurrentRouteName(); ?>',
+                    additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
                     loading: {
                         indicator: 'fullpage_backdrop',
                         clear: 'fullpage_backdrop_content',

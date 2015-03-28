@@ -1,34 +1,54 @@
 {
-	"name" : "thebuggenie/thebuggenie",
-	"description" : "The Bug Genie is a friendly project management and issue tracking tool",
-	"authors" : [{
-			"name" : "Daniel Andre Eikeland",
-			"email" : "zegenie@gmail.com"
-		}
-	],
-	"license" : [
-		"MPL 1.1"
-	],
-	"require" : {
-		"thebuggenie/b2db" : "dev-master",
-		"mrclay/minify" : "dev-master",
-		"easybook/geshi" : "dev-master",
-		"michelf/php-markdown" : "1.3",
-		"swiftmailer/swiftmailer" : "4.2.*",
-                "webit/eval-math" : "dev-master",
-                "lightopenid/lightopenid": "dev-master",
-                "mustangostang/spyc": "0.5.*",
-                "realityking/pchart": "dev-master"
-	},
-	"require-dev" : {
-		"symfony/finder" : "dev-master"
-	},
-        "autoload": {
-            "psr-4" : {
-                "thebuggenie\\modules\\" : "modules/",
-                "thebuggenie\\core\\" : "core/"
-            },
-            "classmap" : [ "core/classes/", "core/classes/B2DB/" ]
-        },
-	"minimum-stability" : "stable"
+    "name" : "thebuggenie/thebuggenie",
+    "description" : "The Bug Genie is a friendly project management and issue tracking tool",
+    "authors" : [{
+            "name" : "Daniel Andre Eikeland",
+            "email" : "zegenie@gmail.com"
+        }
+    ],
+    "support" : {
+        "email" : "support@thebuggenie.com",
+        "forum" : "http://forum.thebuggenie.org",
+        "issues" : "http://issues.thebuggenie.com",
+        "irc" : "irc://irc.freenode.org/thebuggenie"
+    },
+    "license" : [
+        "MPL 1.1"
+    ],
+    "require" : {
+        "thebuggenie/b2db" : "dev-master",
+        "mrclay/minify" : "dev-master",
+        "easybook/geshi" : "dev-master",
+        "michelf/php-markdown" : "1.3",
+        "swiftmailer/swiftmailer" : "4.2.*",
+        "webit/eval-math" : "dev-master",
+        "lightopenid/lightopenid": "dev-master",
+        "mustangostang/spyc": "0.5.*",
+        "realityking/pchart": "dev-master",
+        "ext-gd" : "*",
+        "ext-curl" : "*",
+        "ext-PDO" : "*",
+        "ext-iconv" : "*",
+        "ext-json" : "*",
+        "ext-mbstring" : "*",
+        "ext-pcre" : "*",
+        "ext-Reflection" : "*",
+        "lib-pcre" : "8.*"
+    },
+    "require-dev" : {
+        "symfony/finder" : "~2.7",
+        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit-skeleton-generator": "*"
+    },
+    "suggest" : {
+        "ext-apc" : "Enables APC caching of configuration files and table class definitions"
+    },
+    "autoload": {
+        "psr-4" : {
+            "thebuggenie\\modules\\" : "modules/",
+            "thebuggenie\\core\\" : "core/"
+        }
+    },
+    "minimum-stability" : "dev",
+        "prefer-stable" : true
 }

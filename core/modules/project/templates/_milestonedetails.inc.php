@@ -1,4 +1,4 @@
-<?php if ($milestone instanceof TBGMilestone): ?>
+<?php if ($milestone instanceof \thebuggenie\core\entities\Milestone): ?>
     <div class="milestone_details" id="milestone_details_<?php echo $milestone->getID(); ?>">
         <h3>
             <span id="milestone_name" class="milestone_name"><?php echo $milestone->getName(); ?></span>&nbsp;
@@ -28,7 +28,7 @@
             <tbody>
                 <?php foreach ($milestone->getIssues() as $issue): ?>
                     <?php if ($issue->isChildIssue()) continue; ?>
-                    <?php include_template('project/milestonedetailsissue', array('issue' => $issue, 'milestone' => $milestone)); ?>
+                    <?php include_component('project/milestonedetailsissue', array('issue' => $issue, 'milestone' => $milestone)); ?>
                 <?php endforeach; ?>
                 <tr>
                     <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;"><?php echo __('Total estimated effort'); ?></td>

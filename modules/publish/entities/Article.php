@@ -2,25 +2,21 @@
 
     namespace thebuggenie\modules\publish\entities;
 
-    use TBGContext,
-        TBGSettings,
-        TBGTextParser,
-        TBGTextParserMarkdown,
-        TBGProject,
-        TBGUser,
-        TBGFile,
-        TBGEvent,
-        thebuggenie\modules\publish\entities\b2db\UserArticles,
-        thebuggenie\modules\publish\entities\b2db\Articles,
-        thebuggenie\modules\publish\entities\b2db\ArticleCategories,
-        thebuggenie\modules\publish\entities\b2db\ArticleFiles,
-        thebuggenie\modules\publish\entities\b2db\ArticleHistory,
-        thebuggenie\modules\publish\entities\b2db\ArticleLinks;
+    use \thebuggenie\core\framework,
+        \thebuggenie\core\entities\File,
+        \thebuggenie\core\entities\Project,
+        \thebuggenie\core\entities\User,
+        thebuggenie\modules\publish\entities\tables\UserArticles,
+        thebuggenie\modules\publish\entities\tables\Articles,
+        thebuggenie\modules\publish\entities\tables\ArticleCategories,
+        thebuggenie\modules\publish\entities\tables\ArticleFiles,
+        thebuggenie\modules\publish\entities\tables\ArticleHistory,
+        thebuggenie\modules\publish\entities\tables\ArticleLinks;
 
     /**
-     * @Table(name="\thebuggenie\modules\publish\entities\b2db\Articles")
+     * @Table(name="\thebuggenie\modules\publish\entities\tables\Articles")
      */
-    class Article extends \TBGIdentifiableScopedClass
+    class Article extends \thebuggenie\core\entities\common\IdentifiableScoped implements \thebuggenie\core\helpers\Attachable
     {
 
         const TYPE_WIKI = 1;
@@ -29,9 +25,9 @@
         /**
          * The article author
          *
-         * @var \TBGUser
+         * @var \thebuggenie\core\entities\User
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGUser")
+         * @Relates(class="\thebuggenie\core\entities\User")
          */
         protected $_author = null;
 
@@ -82,7 +78,7 @@
          * @var integer
          * @Column(type="integer", length=3, default=1)
          */
-        protected $_content_syntax = TBGSettings::SYNTAX_MW;
+        protected $_content_syntax = framework\Settings::SYNTAX_MW;
 
         /**
          * Whether the article is published or not
@@ -159,7 +155,7 @@
          * Array of users that are subscribed to this issue
          *
          * @var array
-         * @Relates(class="\TBGUser", collection=true, manytomany=true, joinclass="\thebuggenie\modules\publish\entities\b2db\UserArticles")
+         * @Relates(class="\thebuggenie\core\entities\User", collection=true, manytomany=true, joinclass="\thebuggenie\modules\publish\entities\tables\UserArticles")
          */
         protected $_subscribers = null;
 
@@ -178,33 +174,28 @@
         {
             parent::_preSave($is_new);
             $this->_date = NOW;
-            $this->_author = TBGContext::getUser();
+            $this->_author = framework\Context::getUser();
         }
 
         protected function _postDelete()
         {
-            ArticleLinks::getTable()->deleteLinksByArticle($this->getName());
+            tables\ArticleLinks::getTable()->deleteLinksByArticle($this->getName());
             ArticleCategories::getTable()->deleteCategoriesByArticle($this->getName());
-            ArticleHistory::getTable()->deleteHistoryByArticle($this->getName());
-            ArticleFiles::getTable()->deleteFilesByArticleID($this->getID());
+            tables\ArticleHistory::getTable()->deleteHistoryByArticle($this->getName());
+            tables\ArticleFiles::getTable()->deleteFilesByArticleID($this->getID());
         }
 
         public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
         {
-            $articles = array();
-            list ($resultcount, $res) = Articles::getTable()->findArticlesContaining($content, $project, $limit, $offset);
+            list ($resultcount, $articles) = tables\Articles::getTable()->findArticlesContaining($content, $project, $limit, $offset);
 
-            if ($res)
+            if ($resultcount)
             {
-                while ($row = $res->getNextRow())
+                foreach ($articles as $key => $article)
                 {
-                    $article = self::getByName($row->get(Articles::NAME), $row);
-                    if ($article->hasAccess())
+                    if (!$article->hasAccess())
                     {
-                        $articles[$row->get(Articles::ID)] = $article;
-                    }
-                    else
-                    {
+                        unset($articles[$key]);
                         $resultcount--;
                     }
                 }
@@ -213,25 +204,25 @@
             return array($resultcount, $articles);
         }
 
-        public static function getByName($article_name, $row = null)
+        public static function getByName($article_name)
         {
-            return Articles::getTable()->getArticleByName($article_name);
+            return tables\Articles::getTable()->getArticleByName($article_name);
         }
 
         public static function doesArticleExist($article_name)
         {
-            return Articles::getTable()->doesArticleExist($article_name);
+            return tables\Articles::getTable()->doesArticleExist($article_name);
         }
 
         public static function deleteByName($article_name)
         {
-            Articles::getTable()->deleteArticleByName($article_name);
-            ArticleLinks::getTable()->deleteLinksByArticle($article_name);
+            tables\Articles::getTable()->deleteArticleByName($article_name);
+            tables\ArticleLinks::getTable()->deleteLinksByArticle($article_name);
         }
 
-        public static function createNew($name, $content, $published, $scope = null, $options = array())
+        public static function createNew($name, $content, $scope = null, $options = array())
         {
-            $user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
+            $user_id = (framework\Context::getUser() instanceof User) ? framework\Context::getUser()->getID() : 0;
 
             $article = new Article();
             $article->setName($name);
@@ -269,15 +260,15 @@
         {
             switch ($this->_content_syntax)
             {
-                case TBGSettings::SYNTAX_MD:
-                    $parser = new TBGTextParserMarkdown();
+                case framework\Settings::SYNTAX_MD:
+                    $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
                     $text = $parser->transform($this->_content);
                     break;
-                case TBGSettings::SYNTAX_PT:
+                case framework\Settings::SYNTAX_PT:
                     $options = array('plain' => true);
-                case TBGSettings::SYNTAX_MW:
+                case framework\Settings::SYNTAX_MW:
                 default:
-                    $wiki_parser = new TBGTextParser($this->_content, true, $this->getID());
+                    $wiki_parser = new \thebuggenie\core\helpers\TextParser($this->_content, true, $this->getID());
                     foreach ($options as $option => $value)
                     {
                         $wiki_parser->setOption($option, $value);
@@ -292,7 +283,7 @@
         public function setContentSyntax($syntax)
         {
             if (!is_numeric($syntax))
-                $syntax = TBGSettings::getSyntaxValue($syntax);
+                $syntax = framework\Settings::getSyntaxValue($syntax);
 
             $this->_content_syntax = $syntax;
         }
@@ -305,9 +296,9 @@
         public function setContent($content)
         {
             $this->_content = str_replace("\r\n", "\n", $content);
-            if ($this->_content_syntax == TBGSettings::SYNTAX_MW)
+            if ($this->_content_syntax == framework\Settings::SYNTAX_MW)
             {
-                $parser = new TBGTextParser($content);
+                $parser = new \thebuggenie\core\helpers\TextParser($content);
                 $parser->doParse();
                 $this->_populateCategories($parser->getCategories());
             }
@@ -327,7 +318,7 @@
         {
             if ($this->_linking_articles === null)
             {
-                $this->_linking_articles = Articles::getTable()->getAllByLinksToArticleName($this->_name);
+                $this->_linking_articles = tables\Articles::getTable()->getAllByLinksToArticleName($this->_name);
                 foreach ($this->_linking_articles as $k => $article)
                     if (!$article->hasAccess())
                         unset($this->_linking_articles[$k]);
@@ -351,11 +342,15 @@
                     {
                         try
                         {
-                            $this->_subcategories[$row->get(ArticleCategories::ARTICLE_NAME)] = Articles::getTable()->getArticleByName($row->get(ArticleCategories::ARTICLE_NAME));
+                            $article = tables\Articles::getTable()->getArticleByName($row->get(ArticleCategories::ARTICLE_NAME));
+                            if ($article instanceof Article)
+                            {
+                                $this->_subcategories[$row->get(ArticleCategories::ARTICLE_NAME)] = $article;
+                            }
                         }
-                        catch (Exception $e)
+                        catch (\Exception $e)
                         {
-
+                            throw $e;
                         }
                     }
                 }
@@ -379,11 +374,15 @@
                     {
                         try
                         {
-                            $this->_category_articles[$row->get(ArticleCategories::ARTICLE_NAME)] = Articles::getTable()->getArticleByName($row->get(ArticleCategories::ARTICLE_NAME));
+                            $article = tables\Articles::getTable()->getArticleByName($row->get(ArticleCategories::ARTICLE_NAME));
+                            if ($article instanceof Article)
+                            {
+                                $this->_category_articles[$row->get(ArticleCategories::ARTICLE_NAME)] = $article;
+                            }
                         }
-                        catch (Exception $e)
+                        catch (\Exception $e)
                         {
-
+                            throw $e;
                         }
                     }
                 }
@@ -429,7 +428,7 @@
 
         protected function _retrieveLinksAndCategoriesFromContent($options = array())
         {
-            $parser = new TBGTextParser(html_entity_decode($this->_content));
+            $parser = new \thebuggenie\core\helpers\TextParser(html_entity_decode($this->_content));
             $options['no_code_highlighting'] = true;
             $parser->doParse($options);
             return array($parser->getInternalLinks(), $parser->getCategories());
@@ -471,13 +470,13 @@
             if ($this->_history === null)
             {
                 $this->_history = array();
-                $history = ArticleHistory::getTable()->getHistoryByArticleName($this->getName());
+                $history = tables\ArticleHistory::getTable()->getHistoryByArticleName($this->getName());
 
                 if ($history)
                 {
                     while ($row = $history->getNextRow())
                     {
-                        $author = ($row->get(ArticleHistory::AUTHOR)) ? TBGContext::factory()->TBGUser($row->get(ArticleHistory::AUTHOR)) : null;
+                        $author = ($row->get(ArticleHistory::AUTHOR)) ? new \thebuggenie\core\entities\User($row->get(ArticleHistory::AUTHOR)) : null;
                         $this->_history[$row->get(ArticleHistory::REVISION)] = array('old_content' => $row->get(ArticleHistory::OLD_CONTENT), 'new_content' => $row->get(ArticleHistory::NEW_CONTENT), 'change_reason' => $row->get(ArticleHistory::REASON), 'updated' => $row->get(ArticleHistory::DATE), 'author' => $author);
                     }
                 }
@@ -513,7 +512,7 @@
 
             if (!$this->_redirect_article instanceof Article)
             {
-                $article = Articles::getTable()->getArticleByName($this->_redirect_article);
+                $article = tables\Articles::getTable()->getArticleByName($this->_redirect_article);
                 if ($article instanceof Article)
                     $this->_redirect_article = $article;
             }
@@ -528,25 +527,25 @@
 
         public function doSave($options = array(), $reason = null)
         {
-            if (Articles::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
+            if (tables\Articles::getTable()->doesNameConflictExist($this->_name, $this->_id, framework\Context::getScope()->getID()))
             {
                 if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
                 {
-                    throw new \Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
+                    throw new \Exception(framework\Context::getI18n()->__('Another article with this name already exists'));
                 }
             }
-            $user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
+            $user_id = (framework\Context::getUser() instanceof User) ? framework\Context::getUser()->getID() : 0;
 
             if (!isset($options['revert']) || !$options['revert'])
             {
-                $revision = ArticleHistory::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+                $revision = tables\ArticleHistory::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
             }
             else
             {
                 $revision = null;
             }
 
-            ArticleLinks::getTable()->deleteLinksByArticle($this->_name);
+            tables\ArticleLinks::getTable()->deleteLinksByArticle($this->_name);
             ArticleCategories::getTable()->deleteCategoriesByArticle($this->_name);
 
             $this->save();
@@ -566,7 +565,7 @@
 
             foreach ($links as $link => $occurrences)
             {
-                ArticleLinks::getTable()->addArticleLink($this->_name, $link);
+                tables\ArticleLinks::getTable()->addArticleLink($this->_name, $link);
             }
 
             foreach ($categories as $category => $occurrences)
@@ -576,7 +575,7 @@
 
             $this->_history = null;
 
-            TBGEvent::createNew('core', '\thebuggenie\modules\publish\entities\Article::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
+            \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\modules\publish\entities\Article::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
 
             return true;
         }
@@ -589,22 +588,11 @@
         /**
          * Returns the author
          *
-         * @return TBGUser
+         * @return \thebuggenie\core\entities\User
          */
         public function getAuthor()
         {
-            if (is_numeric($this->_author))
-            {
-                try
-                {
-                    $this->_author = TBGUser::getB2DBTable()->selectById($this->_author);
-                }
-                catch (Exception $e)
-                {
-                    $this->_author = null;
-                }
-            }
-            return $this->_author;
+            return $this->_b2dbLazyload('_author');
         }
 
         public function setAuthor($author)
@@ -626,11 +614,11 @@
          */
         public function compareRevisions($from_revision, $to_revision)
         {
-            $content = ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $from_revision, $to_revision);
+            $content = tables\ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $from_revision, $to_revision);
             $old_content = htmlspecialchars($content[$from_revision]['new_content']);
             $new_content = htmlspecialchars($content[$to_revision]['new_content']);
 
-            $diff = new TBGTextDiff();
+            $diff = new \thebuggenie\core\helpers\TextDiff();
             $result = $diff->stringDiff($old_content, $new_content);
             $changes = $diff->sequentialChanges($result);
             return array($content, $diff->renderDiff($result));
@@ -638,15 +626,15 @@
 
         public function restoreRevision($revision)
         {
-            ArticleHistory::getTable()->removeArticleRevisionsSince($this->getName(), $revision);
-            $content = ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
+            tables\ArticleHistory::getTable()->removeArticleRevisionsSince($this->getName(), $revision);
+            $content = tables\ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
             $this->setContent($content['new_content']);
             $this->doSave(array('revert' => true));
         }
 
         public function setRevision($revision = null)
         {
-            $content = ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
+            $content = tables\ArticleHistory::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
             if (array_key_exists('new_content', $content))
             {
                 $this->setContent($content['new_content']);
@@ -701,7 +689,7 @@
         {
             if ($this->_files === null)
             {
-                $this->_files = TBGFile::getByArticleID($this->getID());
+                $this->_files = File::getByArticleID($this->getID());
             }
         }
 
@@ -731,7 +719,7 @@
          *
          * @param string $filename The original filename to match against
          *
-         * @return TBGFile
+         * @return \thebuggenie\core\entities\File
          */
         public function getFileByFilename($filename)
         {
@@ -748,11 +736,11 @@
         /**
          * Attach a file to the issue
          *
-         * @param TBGFile $file The file to attach
+         * @param \thebuggenie\core\entities\File $file The file to attach
          */
-        public function attachFile(TBGFile $file)
+        public function attachFile(File $file, $file_comment = '', $file_description = '')
         {
-            ArticleFiles::getTable()->addByArticleIDandFileID($this->getID(), $file->getID());
+            tables\ArticleFiles::getTable()->addByArticleIDandFileID($this->getID(), $file->getID());
             if ($this->_files !== null)
             {
                 $this->_files[$file->getID()] = $file;
@@ -762,13 +750,13 @@
         /**
          * Remove a file
          *
-         * @param TBGFile $file The file to be removed
+         * @param \thebuggenie\core\entities\File $file The file to be removed
          *
          * @return boolean
          */
-        public function removeFile(TBGFile $file)
+        public function detachFile(File $file)
         {
-            ArticleFiles::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
+            tables\ArticleFiles::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
             if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))
             {
                 unset($this->_files[$file->getID()]);
@@ -783,15 +771,15 @@
             if (count($namespaces) > 0)
             {
                 $key = $namespaces[0];
-                $project = TBGProject::getByKey($key);
-                if ($project instanceof TBGProject)
+                $project = Project::getByKey($key);
+                if ($project instanceof Project)
                 {
                     if ($project->isArchived())
                         return false;
                 }
             }
 
-            return TBGContext::getModule('publish')->canUserDeleteArticle($this->getName());
+            return framework\Context::getModule('publish')->canUserDeleteArticle($this->getName());
         }
 
         public function canEdit()
@@ -801,20 +789,20 @@
             if (count($namespaces) > 0)
             {
                 $key = $namespaces[0];
-                $project = TBGProject::getByKey($key);
-                if ($project instanceof TBGProject)
+                $project = Project::getByKey($key);
+                if ($project instanceof Project)
                 {
                     if ($project->isArchived())
                         return false;
                 }
             }
 
-            return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
+            return framework\Context::getModule('publish')->canUserEditArticle($this->getName());
         }
 
         public function canRead()
         {
-            return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
+            return framework\Context::getModule('publish')->canUserReadArticle($this->getName());
         }
 
         public function getProject()
@@ -824,7 +812,7 @@
             if (count($namespaces) > 0)
             {
                 $key = $namespaces[0];
-                $project = TBGProject::getByKey($key);
+                $project = Project::getByKey($key);
                 return $project;
             }
         }
@@ -833,7 +821,7 @@
         {
             $project = $this->getProject();
 
-            if ($project instanceof TBGProject && $project->isArchived())
+            if ($project instanceof Project && $project->isArchived())
                 return false;
 
             return $this->canRead();
@@ -919,7 +907,7 @@
         {
             static $uids = null;
             if ($uids === null)
-                $uids = ArticleHistory::getTable()->getUserIDsByArticleName($this->getName());
+                $uids = tables\ArticleHistory::getTable()->getUserIDsByArticleName($this->getName());
 
             return $uids;
         }
@@ -932,7 +920,7 @@
 
         public function addSubscriber($user_id)
         {
-            UserArticles::getTable()->addStarredArticle($user_id, $this->getID());
+            tables\UserArticles::getTable()->addStarredArticle($user_id, $this->getID());
         }
 
     }

@@ -1,0 +1,6 @@
+upgrade:
+    route: /upgrade
+    module: installation
+    action: upgrade
+    parameters: [ ]
+    csrf_enabled: false

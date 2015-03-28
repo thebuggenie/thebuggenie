@@ -2,12 +2,14 @@
 
     namespace thebuggenie\core\modules\installation\upgrade_32;
 
+    use thebuggenie\core\entities\tables\ScopedTable;
+
     /**
      * Log table
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage tables
      */
@@ -20,7 +22,7 @@
      *
      * @Table(name="log_32")
      */
-    class TBGLogTable extends \TBGB2DBTable
+    class TBGLogTable extends ScopedTable
     {
 
         const B2DBNAME = 'log';

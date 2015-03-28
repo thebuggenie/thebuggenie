@@ -1,5 +1,5 @@
-<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" id="project_info" onsubmit="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;">
+<?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" id="project_info" onsubmit="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;">
         <div class="project_save_container">
             <span id="project_info_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
             <input class="button button-silver" type="submit" id="project_submit_settings_button" value="<?php echo __('Save project settings'); ?>">
@@ -9,7 +9,7 @@
     <tr>
         <td><label for="project_name_input"><?php echo __('Project name'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <input type="text" name="project_name" id="project_name_input" onblur="TBG.Project.updatePrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
             <?php else: ?>
                 <?php echo $project->getName(); ?>
@@ -19,7 +19,7 @@
     <tr>
         <td><label for="project_key_input"><?php echo __('Project key'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <div id="project_key_indicator" class="semi_transparent" style="position: absolute; height: 23px; background-color: #FFF; width: 210px; text-align: center; display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
                 <input type="text" name="project_key" id="project_key_input" value="<?php print $project->getKey(); ?>" style="width: 200px;">
             <?php else: ?>
@@ -44,7 +44,7 @@
     <tr>
         <td><label for="subproject_id"><?php echo __('Subproject of'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <select name="subproject_id" id="subproject_id" style="width: 100%">
                     <option value="0"<?php if (!($project->hasParent())): ?> selected<?php endif; ?>><?php echo __('Not a subproject'); ?></option>
                     <?php foreach ($valid_subproject_targets as $aproject): ?>
@@ -59,11 +59,11 @@
     <tr>
         <td><label for="client"><?php echo __('Client'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <select name="client" id="client" style="width: 100%">
                     <option value="0"<?php if ($project->getClient() == null): ?> selected<?php endif; ?>><?php echo __('No client'); ?></option>
-                    <?php foreach (TBGClient::getAll() as $client): ?>
-                        <option value=<?php echo $client->getID(); ?><?php if (($project->getClient() instanceof TBGClient) && $project->getClient()->getID() == $client->getID()): ?> selected<?php endif; ?>><?php echo $client->getName(); ?></option>
+                    <?php foreach (\thebuggenie\core\entities\Client::getAll() as $client): ?>
+                        <option value=<?php echo $client->getID(); ?><?php if (($project->getClient() instanceof \thebuggenie\core\entities\Client) && $project->getClient()->getID() == $client->getID()): ?> selected<?php endif; ?>><?php echo $client->getName(); ?></option>
                     <?php endforeach; ?>
                 </select>
             <?php else: ?>
@@ -74,7 +74,7 @@
     <tr>
         <td><label for="use_prefix"><?php echo __('Use prefix'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <select name="use_prefix" id="use_prefix" style="width: 70px;" onchange="if ($('use_prefix').getValue() == 1) { $('prefix').enable(); } else { $('prefix').disable(); }">
                     <option value=1<?php if ($project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
                     <option value=0<?php if (!$project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
@@ -87,7 +87,7 @@
     <tr>
         <td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <input type="text" name="prefix" id="prefix" maxlength="5" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
             <?php elseif ($project->hasPrefix()): ?>
                 <?php echo $project->getPrefix(); ?>
@@ -100,8 +100,8 @@
     <tr>
         <td><label for="description"><?php echo __('Project description'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-                <?php include_template('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                <?php include_component('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
             <?php elseif ($project->hasDescription()): ?>
                 <?php echo $project->getDescription(); ?>
             <?php else: ?>
@@ -112,7 +112,7 @@
     <tr>
         <td><label for="homepage"><?php echo __('Homepage'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <input type="text" name="homepage" id="homepage" value="<?php echo $project->getHomepage(); ?>" style="width: 100%;">
             <?php elseif ($project->hasHomepage()): ?>
                 <a href="<?php echo $project->getHomepage(); ?>"><?php echo $project->getHomepage(); ?></a>
@@ -124,7 +124,7 @@
     <tr>
         <td><label for="doc_url"><?php echo __('Documentation URL'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <input type="text" name="doc_url" id="doc_url" value="<?php echo $project->getDocumentationURL(); ?>" style="width: 100%;">
             <?php elseif ($project->hasDocumentationURL()): ?>
                 <a href="<?php echo $project->getDocumentationURL(); ?>"><?php echo $project->getDocumentationURL(); ?></a>
@@ -136,7 +136,7 @@
     <tr>
         <td><label for="wiki_url"><?php echo __('Wiki URL'); ?></label></td>
         <td>
-            <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                 <input type="text" name="wiki_url" id="wiki_url" value="<?php echo $project->getWikiURL(); ?>" style="width: 100%;">
             <?php elseif ($project->hasWikiURL()): ?>
                 <a href="<?php echo $project->getWikiURL(); ?>"><?php echo $project->getWikiURL(); ?></a>
@@ -145,8 +145,8 @@
             <?php endif; ?>
         </td>
     </tr>
-    <?php TBGEvent::createNew('core', 'project/projectinfo', $project)->trigger(); ?>
+    <?php \thebuggenie\core\framework\Event::createNew('core', 'project/projectinfo', $project)->trigger(); ?>
 </table>
-<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+<?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 </form>
 <?php endif; ?>
