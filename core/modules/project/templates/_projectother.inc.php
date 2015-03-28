@@ -1,7 +1,7 @@
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
     <form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" id="project_other" onsubmit="TBG.Project.submitDisplaySettings('<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>'); return false;">
         <div class="project_save_container">
-            <span id="settings_save_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+            <span id="project_other_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
             <input class="button button-silver" type="submit" id="project_submit_settings_button" value="<?php echo __('Save display settings'); ?>">
         </div>
 <?php endif; ?>
