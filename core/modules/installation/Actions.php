@@ -12,6 +12,17 @@
          */
         protected $_sampleproperty;
 
+        /**
+         * Check or cache folder exists, otherwise create one with proper rights
+         **/
+        public static function createCacheFolder()
+        {
+            $dir = __DIR__ . '/../../../cache';
+            if (!file_exists($dir)) {
+                mkdir($dir);
+            }
+        }
+
         public function preExecute(framework\Request $request, $action)
         {
             $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
