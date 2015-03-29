@@ -16,7 +16,7 @@
             <b><?php echo __('There was an error importing your data:'); ?></b>
             <div id="csv_import_error_detail"></div>
         </div>
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" id="import_csv_form" onsubmit="TBG.Config.Import.importCSV('<?php echo make_url('configure_do_import_csv', array('type' => $type)); ?>');return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" id="import_csv_form" onsubmit="TBG.Config.Import.importCSV('<?php echo make_url('import_do_import_csv', array('type' => $type)); ?>');return false;">
             <textarea name="csv_data" class="csv_import_data_box"></textarea>
             <div class="rounded_box lightgrey" id="csv_import_control" style="padding: 5px; margin: 5px;">
                 <div class="csv_import_dry"><input type="checkbox" name="csv_dry_run" id="csv_dry_run" checked="checked"> <label for="csv_dry_run"><?php echo __('Test the import (dry-run)'); ?></label></div>

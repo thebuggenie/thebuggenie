@@ -1512,7 +1512,7 @@
   $strings['Actv.'] = 'Actv.';
   $strings['Configure advanced permissions for %username'] = 'Configure advanced permissions for %username';
 
-// First occurrence is in: core/modules/configuration/templates/import.html.php
+// First occurrence is in: core/modules/configuration/templates/index.html.php
 // ----------------------------------------------------------------------------
   $strings['CSV'] = 'CSV';
   $strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2';

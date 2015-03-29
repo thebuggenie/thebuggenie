@@ -411,15 +411,6 @@ permissions_set_unset:
       mode: unset
     csrf_enabled: false
 
-configure_import:
-    route: /configure/import
-    module: configuration
-    action: import
-    parameters:
-      config_module: core
-      section: 16
-    csrf_enabled: false
-
 configure_issuetypes:
     route: /configure/issuetypes
     module: configuration
@@ -664,16 +655,6 @@ configure_users_add_user:
     action: addUser
     parameters:
       config_module: core
-      section: 2
-    csrf_enabled: false
-
-configure_users_import_user:
-    route: /configure/users/import/user
-    module: configuration
-    action: addUser
-    parameters:
-      config_module: core
-      mode: import
       section: 2
     csrf_enabled: false
 
@@ -965,31 +946,14 @@ configure_get_permissions:
       section: 5
     csrf_enabled: false
 
-configure_import_csv:
-    route: /configure/import/:type/from/csv
+configure_users_import_user:
+    route: /configure/users/import/user
     module: configuration
-    action: importCSV
+    action: addUser
     parameters:
       config_module: core
-      section: 16
-    csrf_enabled: false
-
-configure_import_csv_get_ids:
-    route: /configure/import/csv/get/ids
-    module: configuration
-    action: getIDsForImportCSV
-    parameters:
-      config_module: core
-      section: 16
-    csrf_enabled: false
-
-configure_do_import_csv:
-    route: /configure/do/import/:type/from/csv
-    module: configuration
-    action: doImportCSV
-    parameters:
-      config_module: core
-      section: 16
+      mode: import
+      section: 2
     csrf_enabled: false
 
 configure_site_icons:

@@ -1,0 +1,35 @@
+import_home:
+    route: /configure/import
+    module: import
+    action: index
+    parameters:
+      config_module: core
+      section: 16
+    csrf_enabled: false
+
+import_csv:
+    route: /configure/import/:type/from/csv
+    module: import
+    action: importCSV
+    parameters:
+      config_module: core
+      section: 16
+    csrf_enabled: false
+
+import_csv_get_ids:
+    route: /configure/import/csv/get/ids
+    module: import
+    action: getIDsForImportCSV
+    parameters:
+      config_module: core
+      section: 16
+    csrf_enabled: false
+
+import_do_import_csv:
+    route: /configure/do/import/:type/from/csv
+    module: import
+    action: doImportCSV
+    parameters:
+      config_module: core
+      section: 16
+    csrf_enabled: false
