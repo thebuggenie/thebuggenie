@@ -158,6 +158,7 @@
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
             $settings[\thebuggenie\core\framework\Settings::SETTING_ICONSET] = 'oxygen';
+            $settings[\thebuggenie\core\framework\Settings::SETTING_GUEST_CAPTCHA] = 0;
             $settings[\thebuggenie\core\framework\Settings::SETTING_SERVER_TIMEZONE] = date_default_timezone_get();
             if ($scope->isDefault())
             {

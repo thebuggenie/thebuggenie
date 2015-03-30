@@ -54,6 +54,21 @@
         </td>
     </tr>
     <tr>
+        <td><label for="guestcaptcha"><?php echo __('Use captcha for guest actions'); ?></label></td>
+        <td>
+            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_GUEST_CAPTCHA; ?>" id="guestcaptcha" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+                <option value=1<?php if (\thebuggenie\core\framework\Settings::isGuestCaptchaEnabled()): ?> selected<?php endif; ?>><?php echo __('Guests must enter a captcha when reporting issues or posting commments.'); ?></option>
+                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isGuestCaptchaEnabled()): ?> selected<?php endif; ?>><?php echo __('Guests can report issues or post comments without captcha.'); ?></option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="config_explanation" colspan="2">
+            <?php echo __("If you allow guests to report issues and post comments (without logging in), you can request that a captcha has to be filled-in every time a user performs these actions. This can help in reducing the amount of spam coming from bots on public issue trackers."); ?><br>
+            <?php echo __("This setting does not affect the captcha on registration form, nor any other guest action. The captcha on registration form is mandatory."); ?><br>
+        </td>
+    </tr>
+    <tr>
         <td><label for="allowreg"><?php echo __('Gravatar user icons'); ?></label></td>
         <td>
             <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS; ?>" id="allowreg" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>

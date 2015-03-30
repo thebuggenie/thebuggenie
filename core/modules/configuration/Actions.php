@@ -110,7 +110,7 @@
                     framework\Settings::SETTING_TBG_NAME, framework\Settings::SETTING_TBG_NAME_HTML, framework\Settings::SETTING_DEFAULT_CHARSET, framework\Settings::SETTING_DEFAULT_LANGUAGE,
                     framework\Settings::SETTING_SERVER_TIMEZONE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
                     framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES, framework\Settings::SETTING_HEADER_LINK,
-                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ICONSET, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED);
+                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ICONSET, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED, framework\Settings::SETTING_GUEST_CAPTCHA);
 
                 foreach ($settings as $setting)
                 {

@@ -4,8 +4,8 @@
     
     if (function_exists('imagecreatetruecolor'))
     {
-            // use of timestamped paramter in the captcha route for preventing image cache
-            echo image_tag(\thebuggenie\core\framework\Context::getRouting()->generate('captcha', array(time())), array(), true, 'core', true);
+        // use of timestamped paramter in the captcha route for preventing image cache
+        echo image_tag(\thebuggenie\core\framework\Context::getRouting()->generate('captcha', array(time())), array("class" => "captcha_image"), true, 'core', true);
     }
     else 
     {
@@ -17,7 +17,3 @@
     }
     
 ?>
-<li class="security_check">
-    <label for="verification_no"><?php echo __('Enter the number you see above'); ?></label>
-    <input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" value="" autocomplete="off" style="width: 100px;"><br><br>
-</li>

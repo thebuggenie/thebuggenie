@@ -119,6 +119,7 @@
         const SETTING_MAINTENANCE_MODE = 'offline';
         const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
         const SETTING_ICONSET = 'iconset';
+        const SETTING_GUEST_CAPTCHA = 'guestcaptcha';
 
         const USER_RSS_KEY = 'rsskey';
 
@@ -979,4 +980,15 @@
             return $config_sections;
         }
 
+        /**
+         * Checks if the captcha for guest posting is enabled or not.
+         *
+         *
+         * @return True, if the guest captcha is enabled, False if the guest captcha
+         * is not enabled.
+         */
+        public static function isGuestCaptchaEnabled()
+        {
+          return (bool) self::get(self::SETTING_GUEST_CAPTCHA);
+        }
     }

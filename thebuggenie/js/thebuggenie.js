@@ -795,6 +795,29 @@ TBG.Main.Helpers.ajax = function (url, options) {
     });
 };
 
+/**
+ * Small helper function for updating captcha images and clearing captcha input
+ * fields. The function will read a new captcha image location from passed-in
+ * JSON structure, from property called 'captcha'. If the property is not
+ * available, nothing happens.
+ *
+ * @param json JSON response with a new captcha image link.
+ *
+ */
+TBG.Main.Helpers.updateCaptcha = function(json) {
+    // Update captcha images and clear captcha entry fields only if new
+    // captcha was returned (commonly only when a guest is posting
+    // comment). This means one HTTP request less when possible.
+    if (json.captcha != null) {
+        $$(".captcha_image").each(function(element) {
+            element.setAttribute("src", json.captcha);
+        });
+        $$(".verification_no_input").each(function(element) {
+            element.clear();
+        });
+    }
+};
+
 TBG.updateDebugInfo = function () {
     var lai = $('log_ajax_items');
     if (lai) {
@@ -1155,8 +1178,9 @@ TBG.Main.submitIssue = function (url) {
             update: 'fullpage_backdrop_content'
         },
         complete: {
-            callback: function () {
+            callback: function (json) {
                 $('report_issue_submit_button').removeClassName('disabled');
+                TBG.Main.Helpers.updateCaptcha(json);
             }
         }
     });
@@ -1650,7 +1674,10 @@ TBG.Main.Comment.add = function (url, commentcount_span) {
             }
         },
         failure: {
-            show: 'comment_add_controls'
+            show: 'comment_add_controls',
+        },
+        complete: {
+            callback: TBG.Main.Helpers.updateCaptcha
         }
     });
 };
@@ -1673,6 +1700,9 @@ TBG.Main.Comment.reply = function (url, reply_comment_id) {
         },
         failure: {
             show: 'comment_reply_controls_' + reply_comment_id
+        },
+        complete: {
+            callback: TBG.Main.Helpers.updateCaptcha
         }
     });
 };

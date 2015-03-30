@@ -31,6 +31,10 @@
                         <input type="email" class="required" id="email_confirm" name="email_confirm">
                     </li>
                     <?php include_component('main/captcha'); ?>
+                    <li class="security_check">
+                        <label for="verification_no">*&nbsp;<?php echo __('Enter the number you see above'); ?></label>
+                        <input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" value="" autocomplete="off" style="width: 100px;"><br><br>
+                    </li>
                 </ul>
                 <div class="login_button_container">
                     <a style="float: left;" href="javascript:void(0);" onclick="TBG.Main.Login.showLogin('regular_login_container');">&laquo;&nbsp;<?php echo __('Back'); ?></a>
