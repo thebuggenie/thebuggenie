@@ -50,5 +50,10 @@
         }
     },
     "minimum-stability" : "dev",
-        "prefer-stable" : true
+    "prefer-stable" : true,
+	"scripts": {
+        "post-install-cmd": [
+            "thebuggenie\\core\\modules\\installation\\Actions::createCacheFolder"
+		]
+	}
 }
