@@ -7,20 +7,20 @@
                 <option value="<?php echo $lang_code; ?>" <?php if (\thebuggenie\core\framework\Settings::getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?></option>
             <?php endforeach; ?>
             </select>
+            <?php echo config_explanation(
+                __('This is the language that will be used in The Bug Genie. Depending on other settings, users may change the language displayed to them.')
+            ); ?>
         </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2"><?php echo __('This is the language that will be used in The Bug Genie. Depending on other settings, users may change the language displayed to them.'); ?></td>
     </tr>
     <tr>
         <td><label for="charset"><?php echo __('Charset'); ?></label></td>
         <td>
             <input type="text" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_DEFAULT_CHARSET; ?>" id="charset" value="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" style="width: 150px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
             <span class="config_explanation"><?php echo __('Current character set is %charset', array('%charset' => '<b>' . \thebuggenie\core\framework\Context::getI18n()->getLangCharset() . '</b>')); ?></span>
+            <?php echo config_explanation(
+                __('What charset to use for the selected language - leave blank to use the charset specified in the language file')
+            ); ?>
         </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2"><?php echo __('What charset to use for the selected language - leave blank to use the charset specified in the language file'); ?></td>
     </tr>
     <tr>
         <td><label for="server_timezone"><?php echo __('Server timezone'); ?></label></td>
@@ -31,12 +31,11 @@
                     <option value="<?php echo $timezone; ?>"<?php if (\thebuggenie\core\framework\Settings::getServerTimezoneIdentifier() == $timezone): ?> selected<?php endif; ?>><?php echo $description; ?></option>
                 <?php endforeach; ?>
             </select>
-        </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2">
-            <?php echo __('The timezone for the server hosting The Bug Genie. Make sure this is the same as the timezone the server is running in - this is not necessarily the same as your own timezone!'); ?><br>
-            <?php echo __('The time is now: %time', array('%time' => tbg_formatTime(time(), 1, true))); ?>
+            <?php echo config_explanation(
+                __('The timezone for the server hosting The Bug Genie. Make sure this is the same as the timezone the server is running in - this is not necessarily the same as your own timezone!') .
+                "<br>" .
+                __('The time is now: %time', array('%time' => tbg_formatTime(time(), 1, true)))
+            ); ?>
         </td>
     </tr>
 </table>
