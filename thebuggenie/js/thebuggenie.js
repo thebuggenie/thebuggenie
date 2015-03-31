@@ -3403,7 +3403,12 @@ TBG.Project.Edition.edit = function (url, edition_id)
 
 TBG.Project.Edition.remove = function (url, eid) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'edition_' + eid + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content'],
+        },
         success: {
             remove: ['edition_' + eid + '_box', 'edition_' + eid + '_permissions'],
             callback: function (json) {
@@ -3513,7 +3518,12 @@ TBG.Project.Component.add = function (url) {
 
 TBG.Project.Component.remove = function (url, cid) {
     TBG.Main.Helpers.ajax(url, {
-        loading: {indicator: 'component_' + cid + '_delete_indicator'},
+        loading: {
+            indicator: 'fullpage_backdrop',
+            clear: 'fullpage_backdrop_content',
+            show: 'fullpage_backdrop_indicator',
+            hide: ['dialog_backdrop', 'fullpage_backdrop_content'],
+        },
         success: {
             remove: ['show_component_' + cid, 'edit_component_' + cid, 'component_' + cid + '_permissions'],
             callback: function (json) {
