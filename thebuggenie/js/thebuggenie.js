@@ -3490,6 +3490,11 @@ TBG.Project.Edition.Component.remove = function (url, cid) {
     });
 }
 
+TBG.Project.Component.edit = function (url, cid)
+{
+    TBG.Main.Helpers.Backdrop.show(url);
+}
+
 TBG.Project.Component.update = function (url, cid) {
     TBG.Main.Helpers.ajax(url, {
         form: 'edit_component_' + cid + '_form',

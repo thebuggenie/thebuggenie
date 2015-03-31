@@ -1627,7 +1627,12 @@
                 try
                 {
                     $component = entities\Component::getB2DBTable()->selectById($request['component_id']);
-                    if ($request['mode'] == 'update')
+                    if (is_null($request['mode']))
+                    {
+                        $content = $this->getComponentHTML('project/projectcomponent', array('component' => $component, 'access_level' => $this->access_level));
+                        return $this->renderJSON(array('content' => $content));
+                    }
+                    else if ($request['mode'] == 'update')
                     {
                         if (($c_name = $request['c_name']) && trim($c_name) != '')
                         {
