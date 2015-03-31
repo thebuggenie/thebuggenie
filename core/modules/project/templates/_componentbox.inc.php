@@ -1,5 +1,8 @@
 <li id="show_component_<?php print $component->getID(); ?>" class="hover_highlight">
-    <span class="component_name" id="component_<?php echo $component->getID(); ?>_name"><?php echo image_tag('icon_components.png') . $component->getName(); ?></span>
+    <div class="component_name">
+        <?php echo image_tag('icon_components.png'); ?>
+        <span id="component_<?php echo $component->getID(); ?>_name"><?php echo $component->getName(); ?></span>
+    </div>
     <div class="component_actions">
         <a href="javascript:void(0);" class="button button-silver dropper"><?php echo __('Actions'); ?></a>
         <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">

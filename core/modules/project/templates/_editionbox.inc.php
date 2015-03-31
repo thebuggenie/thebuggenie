@@ -1,5 +1,8 @@
 <li id="edition_<?php echo $edition->getID(); ?>_box" class="rounded_box invisible borderless">
-    <span class="edition_name" id="edition_<?php echo $edition->getID(); ?>_name"><?php echo image_tag('icon_edition.png') . $edition->getName(); ?></span>
+    <div class="edition_name">
+        <?php echo image_tag('icon_edition.png'); ?>
+        <span id="edition_<?php echo $edition->getID(); ?>_name"><?php echo $edition->getName(); ?></span>
+    </div>
     <div class="edition_actions">
         <a href="javascript:void(0);" class="button button-silver dropper"><?php echo __('Actions'); ?></a>
         <ul class="simple_list rounded_box white shadowed more_actions_dropdown popup_box">
