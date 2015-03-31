@@ -3440,7 +3440,10 @@ TBG.Project.Edition.submitSettings = function (url, edition_id) {
         form: 'edition_settings_form',
         loading: {indicator: 'edition_save_indicator'},
         success: {
-            update: {element: 'edition_' + edition_id + '_name', from: 'edition_name'}
+            update: {element: 'edition_' + edition_id + '_name', from: 'edition_name'},
+            callback: function () {
+                TBG.Main.Helpers.Backdrop.reset();
+            }
         }
     });
 }
@@ -3504,7 +3507,10 @@ TBG.Project.Component.update = function (url, cid) {
         success: {
             update: {element: 'component_' + cid + '_name', from: 'newname'},
             hide: 'edit_component_' + cid,
-            show: 'show_component_' + cid
+            show: 'show_component_' + cid,
+            callback: function () {
+                TBG.Main.Helpers.Backdrop.reset();
+            }
         }
     });
 }
