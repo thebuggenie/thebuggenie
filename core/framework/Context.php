@@ -2138,6 +2138,26 @@
             return isset(self::$_internal_modules[$module]);
         }
 
+        protected static function setupLayoutProperties($content)
+        {
+            $basepath = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS;
+            $theme = \thebuggenie\core\framework\Settings::getThemeName();
+            foreach (self::getModules() as $module)
+            {
+                if (file_exists($basepath . 'themes' . DS . $theme . DS . "{$module->getName()}.css"))
+                    self::getResponse()->addStylesheet("{$module->getName()}.css");
+
+                if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js"))
+                    self::getResponse()->addJavascript($module->getName());
+            }
+
+            list ($localjs, $externaljs) = self::getResponse()->getJavascripts();
+            $webroot = self::getWebroot();
+
+            $values = compact('content', 'localjs', 'externaljs', 'webroot');
+            return $values;
+        }
+        
         /**
          * Performs an action
          *
@@ -2311,7 +2331,8 @@
                 {
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/layout.php', array('content' => $content));
+                    $layoutproperties = self::setupLayoutProperties($content);
+                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/layout.php', $layoutproperties);
                     ob_flush();
                 }
                 else

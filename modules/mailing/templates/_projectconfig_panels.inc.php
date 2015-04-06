@@ -1,26 +1,33 @@
 <script type="text/javascript">
-    TBG.Modules.mailing = {};
-    TBG.Modules.mailing.checkIncomingAccount = function(url, account_id) {
-        TBG.Main.Helpers.ajax(url, {
-            loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
-            success: {
-                callback: function(json) {
-                    $('mailing_account_' + account_id + '_time').update(json.time);
-                    $('mailing_account_' + account_id + '_count').update(json.count);
-                }
-            }
-        });
-    };
+    var TBG;
 
-    TBG.Modules.mailing.deleteIncomingAccount = function(url, account_id) {
-        TBG.Main.Helpers.ajax(url, {
-            loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
-            success: {
-                remove: 'incoming_email_account_' + account_id,
-                callback: TBG.Main.Helpers.Dialog.dismiss
-            }
+    require(['domReady', 'thebuggenie/tbg'], function (domReady, tbgjs) {
+        domReady(function () {
+            TBG = tbgjs;
+            TBG.Modules.mailing = {};
+            TBG.Modules.mailing.checkIncomingAccount = function(url, account_id) {
+                TBG.Main.Helpers.ajax(url, {
+                    loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
+                    success: {
+                        callback: function(json) {
+                            $('mailing_account_' + account_id + '_time').update(json.time);
+                            $('mailing_account_' + account_id + '_count').update(json.count);
+                        }
+                    }
+                });
+            };
+
+            TBG.Modules.mailing.deleteIncomingAccount = function(url, account_id) {
+                TBG.Main.Helpers.ajax(url, {
+                    loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
+                    success: {
+                        remove: 'incoming_email_account_' + account_id,
+                        callback: TBG.Main.Helpers.Dialog.dismiss
+                    }
+                });
+            };
         });
-    };
+    });
 </script>
 <div id="tab_mailing_settings_pane"<?php if ($selected_tab != 'mailing_settings'): ?> style="display: none;"<?php endif; ?>>
     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_configure_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('mailing_configure_settings', array('project_id' => $project->getID())); ?>', 'mailing'); return false;" id="mailing">

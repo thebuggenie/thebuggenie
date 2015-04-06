@@ -617,7 +617,7 @@
                                     ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><div class="status_badge" style="background-color: <?php echo $color; ?>;"><span><?php echo __($value); ?></span></div></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                    $tbg_response->addJavascript('calendarview.js');
+                                    $tbg_response->addJavascript('calendarview');
                                     $value = ($info['name']) ? date('Y-m-d', $info['name']) : __('Not set');
                                     ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
                                     break;

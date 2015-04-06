@@ -10,7 +10,7 @@
     <br>
     <div class="tutorial-buttons">
         <button class="button button-standard button-next" id="tutorial-next-button"></button>
-        <a class="button-disable" href="javascript:void(0);" onclick="TBG.Tutorial.disable();"><?php echo __('Skip this tutorial'); ?></a>
+        <a class="button-disable" id="disable-tutorial-button" href="javascript:void(0);"><?php echo __('Skip this tutorial'); ?></a>
     </div>
     <br style="clear: both;">
     <div class="tutorial-status"><span id="tutorial-current-step"></span> of <span id="tutorial-total-steps"></span></div>

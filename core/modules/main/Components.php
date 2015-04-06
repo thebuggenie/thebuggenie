@@ -537,10 +537,8 @@
         {
             if ($this->view->hasJS())
             {
-                $js = $this->view->getJS();
-                $jss = (is_array($js)) ? $js : array($js);
-                foreach ($jss as $js)
-                    $this->getResponse()->addJavascript($js, false);
+                foreach ($this->view->getJS() as $js)
+                    $this->getResponse()->addJavascript($js);
             }
         }
 

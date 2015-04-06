@@ -1,14 +1,15 @@
 <?php /* <div style="text-align: center;"><?php echo image_tag(make_url('project_statistics_last_15', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), array('style' => 'margin-top: 10px;'), true); ?></div> */ ?>
 <div id="dashboard_<?php echo $view->getID(); ?>_graph" class="graph_view" style="margin: 5px; width: 100%; height: 250px;"></div>
 <script type="text/javascript">
-        jQuery(function () {
+    require(['jquery', 'jquery.flot'],
+        function (jQuery) {
             var d_open = [];
             <?php for ($i = 0; $i < count($issues['open']); $i++): ?>
-                d_open.push([<?php echo $i; ?>, <?php echo $issues['open'][$i]; ?>]);
+            d_open.push([<?php echo $i; ?>, <?php echo $issues['open'][$i]; ?>]);
             <?php endfor; ?>
             var d_closed = [];
             <?php for ($i = 0; $i < count($issues['closed']); $i++): ?>
-                d_closed.push([<?php echo $i; ?>, <?php echo $issues['closed'][$i]; ?>]);
+            d_closed.push([<?php echo $i; ?>, <?php echo $issues['closed'][$i]; ?>]);
             <?php endfor; ?>
             jQuery.plot(jQuery("#dashboard_<?php echo $view->getID(); ?>_graph"), [
                 {
@@ -26,23 +27,24 @@
                     label: '<?php echo __('Issues opened'); ?>'
                 }
             ], {
-            xaxis: {
-                color: '#AAA',
-                tickDecimals: 0,
-                ticks: 15
-            },
-            yaxis: {
-                color: '#AAA',
-                min: 0,
-                tickDecimals: 0
-            },
-            grid: {
-                color: '#CCC',
-                borderWidth: 1,
-                backgroundColor: { colors: ["#FFF", "#EEE"] },
-                hoverable: true,
-                autoHighlight: true
-            }
+                xaxis: {
+                    color: '#AAA',
+                    tickDecimals: 0,
+                    ticks: 15
+                },
+                yaxis: {
+                    color: '#AAA',
+                    min: 0,
+                    tickDecimals: 0
+                },
+                grid: {
+                    color: '#CCC',
+                    borderWidth: 1,
+                    backgroundColor: { colors: ["#FFF", "#EEE"] },
+                    hoverable: true,
+                    autoHighlight: true
+                }
             });
-        });
+
+    });
 </script>

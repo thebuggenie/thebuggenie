@@ -163,17 +163,19 @@ foreach ($search_object->getIssues() as $issue):
 .sc_actions .image { background-image:url(<?php echo image_url('action_dropdown_small.png'); ?>); }
 </style>
 <script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        setTimeout(function() {
-            TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
-        }, 250);
-        (function($) {
-            // sort headers
-            $("#search_results").on("click", "th:not(.nosort)", TBG.Search.sortResults);
-            // issue checkboxes
-            $(".sca_actions").on("click", "input[type='checkbox']", TBG.Search.toggleCheckbox);
-            // issue checkboxes select all
-            $(".sca_action_selector").on("click", "input[type='checkbox']", TBG.Search.toggleCheckboxes);
-        })(jQuery);
+    require(['jquery', 'domReady', 'thebuggenie/tbg'], function (jQuery, domReady, tbgjs) {
+        domReady(function () {
+            setTimeout(function() {
+                tbgjs.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
+            }, 250);
+            (function($) {
+                // sort headers
+                $("#search_results").on("click", "th:not(.nosort)", tbgjs.Search.sortResults);
+                // issue checkboxes
+                $(".sca_actions").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckbox);
+                // issue checkboxes select all
+                $(".sca_action_selector").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckboxes);
+            })(jQuery);
+        });
     });
 </script>

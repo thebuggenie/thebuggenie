@@ -248,7 +248,7 @@
 
         public function getJS()
         {
-            return array(framework\Context::getRouting()->generate('home') . 'js/excanvas.js', framework\Context::getRouting()->generate('home') . 'js/jquery.flot.min.js', framework\Context::getRouting()->generate('home') . 'js/jquery.flot.resize.min.js');
+            return array('excanvas', 'jquery.flot.min', 'jquery.flot.resize.min');
         }
 
         public function getRSSUrl()

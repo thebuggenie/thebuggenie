@@ -110,7 +110,9 @@
     <br style="clear: both;">
 </div>
 <script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        TBG.Project.Planning.Whiteboard.initialize({dragdrop: <?php echo ($tbg_user->canAssignScrumUserStories($selected_project)) ? 'true' : 'false'; ?>});
+    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+        domReady(function () {
+            TBG.Project.Planning.Whiteboard.initialize({dragdrop: <?php echo ($tbg_user->canAssignScrumUserStories($selected_project)) ? 'true' : 'false'; ?>});
+        });
     });
 </script>

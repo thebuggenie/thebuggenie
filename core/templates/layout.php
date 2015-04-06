@@ -13,36 +13,36 @@
               font-family: 'Droid Sans Mono';
               font-style: normal;
               font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.eot');
-              src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.ttf') format('truetype');
+              src: url('<?php echo $webroot; ?>fonts/droid_sans_mono.eot');
+              src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo $webroot; ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo $webroot; ?>fonts/droid_sans_mono.ttf') format('truetype');
             }
             @font-face {
               font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.eot');
-              src: local('Open Sans'), local('OpenSans'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.ttf') format('truetype');
+              src: url('<?php echo $webroot; ?>fonts/open_sans.eot');
+              src: local('Open Sans'), local('OpenSans'), url('<?php echo $webroot; ?>fonts/open_sans.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans.ttf') format('truetype');
             }
             @font-face {
               font-family: 'Open Sans';
               font-style: italic;
               font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.eot');
-              src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.ttf') format('truetype');
+              src: url('<?php echo $webroot; ?>fonts/open_sans_italic.eot');
+              src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo $webroot; ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_italic.ttf') format('truetype');
             }
             @font-face {
               font-family: 'Open Sans';
               font-style: normal;
               font-weight: bold;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.eot');
-              src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.ttf') format('truetype');
+              src: url('<?php echo $webroot; ?>fonts/open_sans_bold.eot');
+              src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo $webroot; ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_bold.ttf') format('truetype');
             }
             @font-face {
               font-family: 'Open Sans';
               font-style: italic;
               font-weight: bold;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.eot');
-              src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.ttf') format('truetype');
+              src: url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.eot');
+              src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.ttf') format('truetype');
             }
         </style>
         <link rel="shortcut icon" href="<?php if (\thebuggenie\core\framework\Settings::isUsingCustomFavicon()): echo \thebuggenie\core\framework\Settings::getFaviconURL(); else: echo image_url('favicon.png'); endif; ?>">
@@ -50,31 +50,57 @@
         <?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
             <link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
         <?php endforeach; ?>
-        <?php include THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
-        <?php if (count(\thebuggenie\core\framework\Context::getModules())): ?>
-            <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module): ?>
-                <?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . "{$module->getName()}.css")): ?>
-                    <?php $tbg_response->addStylesheet("{$module->getName()}.css"); ?>
-                <?php endif; ?>
-                <?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'js' . DS . "{$module->getName()}.js")): ?>
-                    <?php $tbg_response->addJavascript("{$module->getName()}.js"); ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
+        <?php include THEBUGGENIE_PATH . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
 
-        <?php list ($cssstring, $sepcss) = tbg_get_stylesheets(); ?>
-        <?php foreach (explode(',', $cssstring) as $css): ?>
-            <link rel="stylesheet" href="<?php print make_url('home').$css; ?>">
+        <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
+        <?php foreach ($localcss as $css): ?>
+            <link rel="stylesheet" href="<?php print make_url('home').'css/'.$css; ?>">
         <?php endforeach; ?>
-        <?php foreach ($sepcss as $css): ?>
+        <?php foreach ($externalcss as $css): ?>
             <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php endforeach; ?>
 
-        <?php list ($jsstring, $sepjs) = tbg_get_javascripts(); ?>
-        <?php foreach (explode(',', $jsstring) as $js): ?>
-            <script type="text/javascript" src="<?php print make_url('home').$js; ?>"></script>
-        <?php endforeach; ?>
-        <?php foreach ($sepjs as $js): ?>
+        <script>
+            var require = {
+                baseUrl: '<?php echo make_url('home'); ?>js',
+                paths: {
+                    jquery: 'jquery-2.1.3.min',
+                    'jquery-ui': 'jquery-ui.min'
+                },
+                map: {
+                    '*': { 'jquery': 'jquery-private' },
+                    'jquery-private': { 'jquery': 'jquery' }
+                },
+                shim: {
+                    'prototype': {
+                        // Don't actually need to use this object as
+                        // Prototype affects native objects and creates global ones too
+                        // but it's the most sensible object to return
+                        exports: 'Prototype'
+                    },
+                    'jquery.markitup': {
+                        deps: ['jquery']
+                    },
+                    'calendarview': {
+                        deps: ['prototype'],
+                        exports: 'Calendar'
+                    },
+                    'jquery.flot': {
+                        deps: ['jquery']
+                    },
+                    'jquery.flot.selection': {
+                        deps: ['jquery.flot']
+                    },
+                    'scriptaculous': {
+                        deps: ['prototype', 'effects', 'controls'],
+                        exports: 'Scriptaculous'
+                    },
+                    deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
+                }
+            };
+        </script>
+        <script data-main="thebuggenie" src="<?php echo make_url('home'); ?>js/require.js"></script>
+        <?php foreach ($externaljs as $js): ?>
             <script type="text/javascript" src="<?php echo $js; ?>"></script>
         <?php endforeach; ?>
           <!--[if lt IE 9]>
@@ -100,20 +126,26 @@
         </div>
         <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
-            document.observe('dom:loaded', function() {
-                var f_init = function() {TBG.initialize({ basepath: '<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>', data_url: '<?php echo make_url('userdata'); ?>', autocompleter_url: '<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
-                <?php if (\thebuggenie\core\framework\Context::isDebugMode()): ?>
-                    TBG.debug = true;
-                    TBG.debugUrl = '<?php echo make_url('debugger', array('debug_id' => '___debugid___')); ?>';
-                    <?php
-                        $load_time = \thebuggenie\core\framework\Context::getLoadTime();
-                        $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
-                    ?>
-                    TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', loadtime: '<?php echo $load_time; ?>'});
-                    TBG.loadDebugInfo('<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', f_init);
-                <?php else: ?>
-                    f_init();
-                <?php endif; ?>
+            var TBG, jQuery;
+            require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
+                domReady(function () {
+                    TBG = tbgjs;
+                    jQuery = jquery;
+                    require(['scriptaculous']);
+                    var f_init = function() {TBG.initialize({ basepath: '<?php echo $webroot; ?>', data_url: '<?php echo make_url('userdata'); ?>', autocompleter_url: '<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
+                    <?php if (\thebuggenie\core\framework\Context::isDebugMode()): ?>
+                        TBG.debug = true;
+                        TBG.debugUrl = '<?php echo make_url('debugger', array('debug_id' => '___debugid___')); ?>';
+                        <?php
+                            $load_time = \thebuggenie\core\framework\Context::getLoadTime();
+                            $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+                        ?>
+                        TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', loadtime: '<?php echo $load_time; ?>'});
+                        TBG.loadDebugInfo('<?php echo \thebuggenie\core\framework\Context::getDebugID(); ?>', f_init);
+                    <?php else: ?>
+                        f_init();
+                    <?php endif; ?>
+                });
             });
         </script>
     </body>

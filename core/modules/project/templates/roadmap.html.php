@@ -2,11 +2,11 @@
 
     $tbg_response->addBreadcrumb(__('Roadmap'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" roadmap', array('%project_name' => $selected_project->getName())));
-    $tbg_response->addJavascript(make_url('home').'js/excanvas.js', false);
-    $tbg_response->addJavascript(make_url('home').'js/jquery.flot.min.js', false);
-    $tbg_response->addJavascript(make_url('home').'js/jquery.flot.resize.min.js', false);
-    $tbg_response->addJavascript(make_url('home').'js/jquery.flot.dashes.js', false);
-    $tbg_response->addJavascript(make_url('home').'js/jquery.flot.time.min.js', false);
+    $tbg_response->addJavascript('excanvas');
+    $tbg_response->addJavascript('jquery.flot.min');
+    $tbg_response->addJavascript('jquery.flot.resize.min');
+    $tbg_response->addJavascript('jquery.flot.dashes');
+    $tbg_response->addJavascript('jquery.flot.time.min');
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Roadmap')));
 
 ?>

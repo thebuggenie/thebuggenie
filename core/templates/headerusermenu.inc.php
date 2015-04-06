@@ -9,7 +9,7 @@
     </div>
     <ul>
         <?php if (!$tbg_user->isGuest()): ?>
-            <li class="user_notifications_container nohover" onclick="TBG.Main.Profile.toggleNotifications();" id="user_notifications_container">
+            <li class="user_notifications_container nohover" id="user_notifications_container">
                 <div id="user_notifications_count" data-callback-url=""><?php echo image_tag('spinning_16.gif'); ?></div>
                 <?php echo image_tag('emblem-generic.png'); ?>
             </li>

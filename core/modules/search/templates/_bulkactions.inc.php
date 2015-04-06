@@ -81,9 +81,11 @@
     </form>
     <?php if ($mode == 'bottom'): ?>
         <script type="text/javascript">
-            document.observe('dom:loaded', function() {
-                TBG.Search.checkToggledCheckboxes();
-            })
+            require(['domReady', 'thebuggenie/tbg'], function (domReady, tbgjs) {
+                domReady(function () {
+                    tbgjs.Search.checkToggledCheckboxes();
+                });
+            });
         </script>
     <?php endif; ?>
 </div>

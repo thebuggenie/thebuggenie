@@ -118,7 +118,9 @@
     <?php include_component('main/tutorial_planning', compact('board')); ?>
 <?php endif; ?>
 <script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        TBG.Project.Planning.initialize({dragdrop: <?php echo ($tbg_user->canAssignScrumUserStories($selected_project)) ? 'true' : 'false'; ?>});
+    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+        domReady(function () {
+            TBG.Project.Planning.initialize({dragdrop: <?php echo ($tbg_user->canAssignScrumUserStories($selected_project)) ? 'true' : 'false'; ?>});
+        });
     });
 </script>

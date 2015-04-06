@@ -362,7 +362,7 @@
                         </fieldset>
                         <?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
-                        <fieldset class="comments">
+                        <fieldset class="comments" id="viewissue_comments_container">
                             <legend class="viewissue_comments_header">
                                 <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count">'.$issue->countUserComments().'</span>')); ?>
                                 <div class="dropper_container">
