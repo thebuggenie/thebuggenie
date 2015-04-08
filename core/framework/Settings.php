@@ -111,6 +111,7 @@
         const SETTING_USER_KEYBOARD_NAVIGATION = 'keyboard_navigation';
         const SETTING_USER_LANGUAGE = 'language';
         const SETTING_USER_ACTIVATION_KEY = 'activation_key';
+        const SETTING_USER_NOTIFICATION_TIMEOUT = 'notifications_timeout';
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES = 'subscribe_posted_updated_commented_issues';
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES = 'subscribe_created_updated_commented_articles';
         const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS = 'subscribe_new_issues_project';
@@ -650,12 +651,6 @@
             }
         }
 
-        public static function getPasswordSalt()
-        {
-            $salt = self::get(self::SETTING_SALT, 'core', self::getDefaultScopeID());
-            return $salt;
-        }
-
         /**
          * Return the "away" userstate object
          * @return \thebuggenie\core\entities\Userstate
@@ -957,7 +952,7 @@
 
             $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general_small', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
 //            $config_sections['general'][self::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => $i18n->__('Permissions'), 'icon' => 'permissions', 'details' => $i18n->__('Configure permissions in this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'icon' => 'roles', 'details' => $i18n->__('Configure roles (permission templates) in this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'icon' => 'roles', 'details' => $i18n->__('Configure roles in this section'));
             $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'details' => $i18n->__('Configure the authentication method in this section'));
 
             if (Context::getScope()->isUploadsEnabled())
