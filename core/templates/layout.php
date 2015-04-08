@@ -2,7 +2,7 @@
 <html lang="<?php echo \thebuggenie\core\framework\Settings::getHTMLLanguage(); ?>" style="cursor: progress;">
     <head>
         <meta charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
-        <?php \thebuggenie\core\framework\Event::createNew('core', 'header_begins')->trigger(); ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'layout.php::header-begins')->trigger(); ?>
         <meta name="description" content="The bug genie, friendly issue tracking">
         <meta name="keywords" content="thebuggenie friendly issue tracking">
         <meta name="author" content="thebuggenie.com">
@@ -106,10 +106,10 @@
           <!--[if lt IE 9]>
               <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
           <![endif]-->
-        <?php \thebuggenie\core\framework\Event::createNew('core', 'header_ends')->trigger(); ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'layout.php::header-ends')->trigger(); ?>
     </head>
     <body id="body">
-        <div id="main_container">
+        <div id="main_container" class="page-<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>">
             <?php if (!in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), array('login_page', 'elevated_login_page', 'reset_password'))): ?>
                 <?php \thebuggenie\core\framework\Logging::log('Rendering header'); ?>
                 <?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
@@ -120,9 +120,9 @@
                 <?php echo $content; ?>
                 <?php \thebuggenie\core\framework\Logging::log('done (rendering content)'); ?>
             </div>
-            <?php \thebuggenie\core\framework\Event::createNew('core', 'footer_begin')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'layout.php::footer-begins')->trigger(); ?>
             <?php require THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'; ?>
-            <?php \thebuggenie\core\framework\Event::createNew('core', 'footer_end')->trigger(); ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'layout.php::footer-ends')->trigger(); ?>
         </div>
         <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
