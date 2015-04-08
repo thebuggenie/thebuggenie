@@ -4,7 +4,6 @@
      * Configuration for theme
      */
 
-//    $tbg_response->addStylesheet('reset.css');
     $tbg_response->addStylesheet('oxygen/oxygen.css');
 
 ?>

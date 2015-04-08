@@ -848,12 +848,12 @@
          */
         public static function getThemes()
         {
-            $theme_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
+            $theme_path_handle = opendir(THEBUGGENIE_PATH . 'themes' . DS);
             $themes = array();
 
             while ($theme = readdir($theme_path_handle))
             {
-                if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php'))
+                if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'theme.php'))
                 {
                     $themes[] = $theme;
                 }
@@ -2144,8 +2144,8 @@
             $theme = \thebuggenie\core\framework\Settings::getThemeName();
             foreach (self::getModules() as $module)
             {
-                if (file_exists($basepath . 'themes' . DS . $theme . DS . "{$module->getName()}.css"))
-                    self::getResponse()->addStylesheet("{$module->getName()}.css");
+                if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css"))
+                    self::getResponse()->addStylesheet("{$theme}/{$module->getName()}.css");
 
                 if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js"))
                     self::getResponse()->addJavascript($module->getName());
