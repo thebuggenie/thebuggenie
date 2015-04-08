@@ -635,7 +635,7 @@
 
                     if (Context::getUser()->canAccessConfigurationPage())
                     {
-                        $links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure The Bug Genie'));
+                        $links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     }
                     $links[] = array('url' => Context::getRouting()->generate('about'), 'title' => $i18n->__('About %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     $links[] = array('url' => Context::getRouting()->generate('account'), 'title' => $i18n->__('Account details'));
