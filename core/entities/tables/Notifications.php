@@ -78,6 +78,13 @@
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->addUpdate(self::IS_READ, true);
             $this->doUpdate($crit);
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::USER_ID, $user_id);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addWhere(self::IS_READ, true);
+            $crit->addWhere('notifications.created_at', NOW - (86400 * 30), Criteria::DB_LESS_THAN_EQUAL);
+            $this->doDelete($crit);
         }
         
     }

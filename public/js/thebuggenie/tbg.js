@@ -439,6 +439,13 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Core.Pollers.datapoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, 10);
             TBG.Core.Pollers.Callbacks.dataPoller();
             TBG.OpenID.init();
+            jQuery(function($) {
+                $('#user_notifications_list').bind('scroll', function() {
+                    if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                        TBG.Main.Notifications.loadMore();
+                    }
+                })
+            });
         };
 
         TBG.Core.Pollers.Callbacks.dataPoller = function () {
@@ -6836,6 +6843,27 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 }
             });
         };
+        
+        TBG.Main.Notifications.loadMore = function () {
+            if (TBG.Main.Notifications.loadingLocked !== true) {
+                TBG.Main.Notifications.loadingLocked = true;
+                var unl = $('user_notifications_list'),
+                    unl_data = unl.dataset;
+                TBG.Main.Helpers.ajax(unl_data.notificationsUrl+'&offset='+unl_data.offset, {
+                    url_method: 'get',
+                    loading: {
+                        indicator: 'user_notifications_loading_indicator'
+                    },
+                    success: {
+                        update: { element: 'user_notifications_list', insertion: true },
+                        callback: function () {
+                            unl_data.offset = parseInt(unl_data.offset) + 25;
+                            TBG.Main.Notifications.loadingLocked = false;
+                        }
+                    }
+                });
+            }
+        }
 
         TBG.Main.initializeMentionable = function (textarea) {
             if ($(textarea).hasClassName('mentionable') && !$(textarea).hasClassName('mentionable-initialized')) {

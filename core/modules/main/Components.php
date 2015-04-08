@@ -387,7 +387,9 @@
 
         public function componentNotifications()
         {
-            $this->notifications = $this->getUser()->getNotifications();
+            $offset = $this->offset ?: 0;
+            $notifications = $this->getUser()->getNotifications();
+            $this->notifications = ($offset < count($notifications)) ? array_slice($notifications, $offset, 25) : array();
             $this->num_unread = $this->getUser()->getNumberOfUnreadNotifications();
             $this->num_read = $this->getUser()->getNumberOfReadNotifications();
         }

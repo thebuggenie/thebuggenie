@@ -1,4 +1,3 @@
-<ul>
     <?php if ($num_unread + $num_read == 0): ?>
         <li class="faded_out"><?php echo __('You have no notifications'); ?></li>
     <?php else: ?>
@@ -84,4 +83,3 @@
         </li>
         <?php endforeach; ?>
     <?php endif; ?>
-</ul>

@@ -317,11 +317,12 @@
                     {
                         case 'notificationstatus':
                             $notification = tables\Notifications::getTable()->selectById($request['notification_id']);
+                            $data['notification_id'] = $request['notification_id'];
+                            $data['is_read'] = 1;
                             if ($notification instanceof entities\Notification)
                             {
                                 $notification->setIsRead(!$notification->isRead());
                                 $notification->save();
-                                $data['notification_id'] = $notification->getID();
                                 $data['is_read'] = (int) $notification->isRead();
                             }
                             break;
@@ -3377,6 +3378,7 @@
                         break;
                     case 'notifications':
                         $template_name = 'main/notifications';
+                        $options['offset'] = $request['offset'];
                         break;
                     case 'workflow_transition':
                         $transition = entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);

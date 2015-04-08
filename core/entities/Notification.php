@@ -95,6 +95,17 @@
             }
         }
 
+        protected function _postSave($is_new)
+        {
+            if (!$is_new)
+            {
+                if ($this->isRead() && $this->getCreatedAt() < NOW - (86400 * 30))
+                {
+                    $this->delete();
+                }
+            }
+        }
+
         /**
          * Returns the object which the notification is for
          *
