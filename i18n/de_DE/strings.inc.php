@@ -302,7 +302,7 @@
 	$strings['%milestone_name% (starts %start_date% - ended %end_date%)'] = '%milestone_name% (beginnt %start_date% - endet %end_date%)';
 	$strings['%milestone_name% (started %start_date%)'] = '%milestone_name% (begonnen %start_date%)';
 	$strings['%milestone_name% (starts %start_date%)'] = '%milestone_name% (beginnt %start_date%)';
-	$strings['%milestone_name% (released: %date%)'] = '%milestone_name% (veröffentlicht %start_date%)';
+	$strings['%milestone_name% (released: %date%)'] = '%milestone_name% (veröffentlicht: %date%)';
 	$strings['%milestone_name% (will be released: %date%)'] = '%milestone_name% (wird veröffentlicht: %date%)';
 	//$strings['%milestone_name% (reached: %date%)'] = '';
 	$strings['Not scheduled'] = 'Nicht geplant';
