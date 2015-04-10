@@ -10,6 +10,7 @@
         Swift_Mailer,
         Swift_MailTransport,
         Swift_SmtpTransport,
+        Swift_SendmailTransport,
         thebuggenie\core\framework,
         thebuggenie\core\entities\Comment,
         thebuggenie\core\entities\User,
@@ -27,7 +28,8 @@
 
         const VERSION = '2.0';
         const MAIL_TYPE_PHP = 1;
-        const MAIL_TYPE_CUSTOM = 2;
+        const MAIL_TYPE_SMTP = 2;
+        const MAIL_TYPE_SENDMAIL = 3;
 
         /**
          * Notify the user when a new issue is posted in his/her project(s)
@@ -72,6 +74,8 @@
         protected $_account_settings_logo = 'notification_settings.png';
         protected $_has_account_settings = false;
         protected $_has_config_settings = true;
+        protected $_ssl_encryption_available;
+        protected $_tls_encryption_available;
         protected $mailer = null;
 
         /**
@@ -86,7 +90,9 @@
 
         protected function _initialize()
         {
-
+            $transports = stream_get_transports();
+            $this->_ssl_encryption_available = in_array('ssl', $transports);
+            $this->_tls_encryption_available = in_array('tls', $transports);
         }
 
         protected function _addListeners()
@@ -133,8 +139,8 @@
         public function postConfigSettings(framework\Request $request)
         {
             framework\Context::loadLibrary('common');
-            $settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications', 'cli_mailing_url',
-                'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f', 'activation_needed');
+            $settings = array('smtp_host', 'smtp_port', 'smtp_user', 'smtp_pwd', 'smtp_encryption', 'timeout', 'mail_type', 'enable_outgoing_notifications', 'cli_mailing_url',
+                'headcharset', 'from_name', 'from_addr', 'use_queue', 'activation_needed', 'sendmail_command');
             foreach ($settings as $setting)
             {
                 if ($request->getParameter($setting) !== null || $setting == 'no_dash_f' || $setting == 'activation_needed')
@@ -143,7 +149,7 @@
                     switch ($setting)
                     {
                         case 'smtp_host':
-                            if ($request['mail_type'] == self::MAIL_TYPE_CUSTOM && !tbg_check_syntax($value, "MAILSERVER"))
+                            if ($request['mail_type'] == self::MAIL_TYPE_SMTP && !tbg_check_syntax($value, "MAILSERVER"))
                             {
                                 throw new \Exception(framework\Context::getI18n()->__('Please provide a valid setting for SMTP server address'));
                             }
@@ -155,13 +161,13 @@
                             }
                             break;
                         case 'timeout':
-                            if ($request['mail_type'] == self::MAIL_TYPE_CUSTOM && !is_numeric($value) || $value < 0)
+                            if ($request['mail_type'] == self::MAIL_TYPE_SMTP && !is_numeric($value) || $value < 0)
                             {
                                 throw new \Exception(framework\Context::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
                             }
                             break;
                         case 'smtp_port':
-                            if ($request['mail_type'] == self::MAIL_TYPE_CUSTOM && !is_numeric($value) || $value < 1)
+                            if ($request['mail_type'] == self::MAIL_TYPE_SMTP && !is_numeric($value) || $value < 1)
                             {
                                 throw new \Exception(framework\Context::getI18n()->__('Please provide a valid setting for SMTP server port'));
                             }
@@ -172,9 +178,6 @@
                             {
                                 throw new \Exception(framework\Context::getI18n()->__('Please provide a valid setting for email header charset'));
                             }
-                            break;
-                        case 'no_dash_f':
-                            $value = (int) $request->getParameter($setting, 0);
                             break;
                         case 'activation_needed':
                             $value = (int) $request->getParameter($setting, 0);
@@ -205,6 +208,16 @@
         public function listen_createUser(framework\Event $event)
         {
 
+        }
+
+        public function isSSLEncryptionAvailable()
+        {
+            return $this->_ssl_encryption_available;
+        }
+
+        public function isTLSEncryptionAvailable()
+        {
+            return $this->_tls_encryption_available;
         }
 
         public function generateURL($route, $parameters = array())
@@ -767,7 +780,8 @@ EOT;
 
         public function getMailerType()
         {
-            return $this->getSetting('mail_type');
+            $setting = $this->getSetting('mail_type');
+            return ($setting) ? $setting : self::MAIL_TYPE_PHP;
         }
 
         public function getSmtpHost()
@@ -790,9 +804,19 @@ EOT;
             return $this->getSetting('smtp_pwd');
         }
 
-        public function getEhlo()
+        public function getSmtpTimeout()
         {
-            return $this->getSetting('ehlo');
+            return $this->getSetting('timeout');
+        }
+
+        public function getSmtpEncryption()
+        {
+            return $this->getSetting('smtp_encryption');
+        }
+
+        public function getSendmailCommand()
+        {
+            return $this->getSetting('sendmail_command');
         }
 
         /**
@@ -804,16 +828,25 @@ EOT;
         {
             if ($this->mailer === null)
             {
-                if ($this->getMailerType() == self::MAIL_TYPE_CUSTOM)
-                {
-                    $transport = Swift_SmtpTransport::newInstance($this->getSmtpHost(), $this->getSmtpPort());
-                    $transport->setUsername($this->getSmtpUsername());
-                    $transport->setPassword($this->getSmtpPassword());
-                    $transport->setTimeout($this->getSetting('timeout'));
-                }
-                else
-                {
-                    $transport = Swift_MailTransport::newInstance();
+                switch ($this->getMailerType()) {
+                    case self::MAIL_TYPE_SENDMAIL:
+                        $command = $this->getSendmailCommand();
+                        $transport = ($command) ? Swift_SendmailTransport::newInstance($command) : Swift_SendmailTransport::newInstance();
+                        break;
+                    case self::MAIL_TYPE_SMTP:
+                        $transport = Swift_SmtpTransport::newInstance($this->getSmtpHost(), $this->getSmtpPort());
+                        if ($this->getSmtpUsername())
+                        {
+                            $transport->setUsername($this->getSmtpUsername());
+                            $transport->setPassword($this->getSmtpPassword());
+                        }
+                        if ($this->getSmtpTimeout()) $transport->setTimeout($this->getSmtpTimeout());
+                        if (in_array($this->getSmtpEncryption(), array('ssl', 'tls'))) $transport->setEncryption($this->getSmtpEncryption());
+                        break;
+                    case self::MAIL_TYPE_PHP:
+                    default:
+                        $transport = Swift_MailTransport::newInstance();
+                        break;
                 }
                 $mailer = Swift_Mailer::newInstance($transport);
                 $this->mailer = $mailer;
