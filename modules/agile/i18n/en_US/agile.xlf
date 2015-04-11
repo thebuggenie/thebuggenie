@@ -6,15 +6,18 @@
 
 <!-- Number of Sections: 24 -->
 <!-- Number of Strings: 206 -->
-<!-- Keys extracted from sources on: 2015 Feb 22. -->
+<!-- Keys extracted from sources on: 2015 Mar 09. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
     <file source-language="en" datatype="php" original="Actions.php">
         <body>
-            <trans-unit id="42ba653a0f5f30fe515e62ba76ac856d">
-                <source>An error occured when trying to save the milestone order</source>
+            <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
+                <source>You don't have access to modify milestones</source>
+            </trans-unit>
+            <trans-unit id="9fd74b6ad3c69b699e316d01899d1354">
+                <source>An error occurred when trying to save the milestone order</source>
             </trans-unit>
             <trans-unit id="8d484b1a1a4c80e279c610bdfd455cf1">
                 <source>The board has been deleted</source>
@@ -34,17 +37,14 @@
             <trans-unit id="41cfbf2d1ffadde035a02128b0cdfda5">
                 <source>You must provide a valid milestone name</source>
             </trans-unit>
-            <trans-unit id="27df8a600ca9e0c82839a616b3522091">
-                <source>This is not a valid issues</source>
+            <trans-unit id="11bc7c75d7a87dc4829431281e4066a5">
+                <source>This is not a valid issue</source>
             </trans-unit>
             <trans-unit id="65fb64192cef876931e0b74b76806298">
                 <source>An error occured when trying to assign the issue to the release</source>
             </trans-unit>
             <trans-unit id="f5bc3ca84b166ad42a008a4d171ea0d1">
                 <source>An error occured when trying to assign the issue to the epic</source>
-            </trans-unit>
-            <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
-                <source>You don't have access to modify milestones</source>
             </trans-unit>
             <trans-unit id="0b0bb4cf1efaa6c3d5212f52e4af2190">
                 <source>Milestone saved</source>

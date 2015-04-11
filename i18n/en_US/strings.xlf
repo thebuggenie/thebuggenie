@@ -6,7 +6,7 @@
 
 <!-- Number of Sections: 263 -->
 <!-- Number of Strings: 2993 -->
-<!-- Keys extracted from sources on: 2015 Feb 22. -->
+<!-- Keys extracted from sources on: 2015 Mar 09. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -1427,8 +1427,8 @@
             <trans-unit id="7e05220fc956117cd5c47ccbd3e8a2ef">
                 <source>The module "%module_name" is not configurable</source>
             </trans-unit>
-            <trans-unit id="92f6311143a630cadc437c0ea1cf4f0f">
-                <source>The upload path isn't wri</source>
+            <trans-unit id="7087812af19fb130017bb722359bec17">
+                <source>The upload path isn't writable</source>
             </trans-unit>
             <trans-unit id="f9e47a76fefc16619c6e143ab9a174bc">
                 <source>The maximum file size must be a number</source>
