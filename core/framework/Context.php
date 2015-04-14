@@ -2312,15 +2312,21 @@
 
                 Logging::log('rendering final content');
 
+                // Set core layout path
+                self::getResponse()->setLayoutPath(THEBUGGENIE_CORE_PATH . 'templates');
+
+                // Trigger event for rendering (so layout path can be overwritten)
+                \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\framework\Context::renderBegins')->trigger();
+
                 if (Settings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
                 {
-                    if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
+                    if (!file_exists(self::getResponse()->getLayoutPath() . DS . 'offline.inc.php'))
                     {
                         throw new exceptions\TemplateNotFoundException('Can not find offline mode template');
                     }
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php');
+                    ActionComponent::presentTemplate(self::getResponse()->getLayoutPath() . DS . 'offline.inc.php');
                     $content = ob_get_clean();
                 }
 
@@ -2329,10 +2335,14 @@
 
                 if (self::getResponse()->getDecoration() == Response::DECORATE_DEFAULT && !self::getRequest()->isAjaxCall())
                 {
+                    if (!file_exists(self::getResponse()->getLayoutPath() . DS . 'layout.php'))
+                    {
+                        throw new exceptions\TemplateNotFoundException('Can not find layout template');
+                    }
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
                     $layoutproperties = self::setupLayoutProperties($content);
-                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/layout.php', $layoutproperties);
+                    ActionComponent::presentTemplate(self::getResponse()->getLayoutPath() . DS . 'layout.php', $layoutproperties);
                     ob_flush();
                 }
                 else
@@ -2349,6 +2359,9 @@
                     }
 
                     echo $content;
+
+                    // Trigger event for ending the rendering
+                    \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\framework\Context::renderEnds')->trigger();
 
                     Logging::log('...done (rendering content)');
 

@@ -109,6 +109,13 @@
         protected $_template = '';
 
         /**
+         * Current layout path
+         *
+         * @var string
+         */
+        protected $_layout_path = '';
+
+        /**
          * What decoration to use (default normal)
          *
          * @var integer
@@ -198,6 +205,26 @@
         public function getTemplate()
         {
             return $this->_template;
+        }
+
+        /**
+         * Set the layout path
+         *
+         * @param string $layout_path The layout path
+         */
+        public function setLayoutPath($layout_path)
+        {
+            $this->_layout_path = $layout_path;
+        }
+
+        /**
+         * Return current layout path
+         *
+         * @return string
+         */
+        public function getLayoutPath()
+        {
+            return $this->_layout_path;
         }
 
         /**
