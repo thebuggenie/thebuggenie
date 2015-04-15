@@ -66,14 +66,18 @@
                 </div>
             </div>
             <script>
-                Event.observe(document, 'dom:loaded', function() {
-                    TBG.Search.initializeFilters();
-                    <?php if ($tbg_user->isKeyboardNavigationEnabled()): ?>
-                        TBG.Search.initializeKeyboardNavigation();
-                    <?php endif; ?>
-                    <?php if ($show_results): ?>
-                        setTimeout(function() { TBG.Search.liveUpdate(true); }, 250);
-                    <?php endif; ?>
+                var TBG;
+                require(['domReady', 'thebuggenie/tbg'], function (domReady, tbgjs) {
+                    domReady(function () {
+                        TBG = tbgjs;
+                        TBG.Search.initializeFilters();
+                        <?php if ($tbg_user->isKeyboardNavigationEnabled()): ?>
+                            TBG.Search.initializeKeyboardNavigation();
+                        <?php endif; ?>
+                        <?php if ($show_results): ?>
+                            setTimeout(function() { TBG.Search.liveUpdate(true); }, 250);
+                        <?php endif; ?>
+                    });
                 });
             </script>
         </td>

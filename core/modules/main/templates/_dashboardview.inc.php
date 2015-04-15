@@ -21,9 +21,4 @@
             </div>
         <?php endif; ?>
     </div>
-    <?php if (!$view->shouldBePreloaded()): ?>
-        <script type="text/javascript">
-            TBG.Main.Dashboard.views.push(<?php echo $view->getID(); ?>);
-        </script>
-    <?php endif; ?>
 </li>

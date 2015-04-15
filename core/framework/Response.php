@@ -60,7 +60,18 @@
          *
          * @var array
          */
-        protected $_javascripts = array();
+        protected $_javascripts = array(
+            'prototype',
+            'builder',
+            'effects',
+            'dragdrop',
+            'controls',
+            'bootstrap-typeahead',
+            'mention',
+            'scriptaculous',
+            'slider',
+            'tablekit'
+        );
 
         /**
          * List of stylesheets
@@ -96,6 +107,13 @@
          * @var string
          */
         protected $_template = '';
+
+        /**
+         * Current layout path
+         *
+         * @var string
+         */
+        protected $_layout_path = '';
 
         /**
          * What decoration to use (default normal)
@@ -187,6 +205,26 @@
         public function getTemplate()
         {
             return $this->_template;
+        }
+
+        /**
+         * Set the layout path
+         *
+         * @param string $layout_path The layout path
+         */
+        public function setLayoutPath($layout_path)
+        {
+            $this->_layout_path = $layout_path;
+        }
+
+        /**
+         * Return current layout path
+         *
+         * @return string
+         */
+        public function getLayoutPath()
+        {
+            return $this->_layout_path;
         }
 
         /**
@@ -298,19 +336,14 @@
          *
          * @param string $javascript javascript name
          * @param bool $minify Run through minify/content server
-         * @param bool $important Mark this script for being loaded before others
+         * @param bool $override Mark this script for being loaded before others
          */
-        public function addJavascript($javascript, $minify = true, $important = false)
+        public function addJavascript($javascript, $priority = false)
         {
-            if ($important)
-            {
-                $temp = array();
-                $temp[$javascript] = $minify;
-                $this->_javascripts = array_merge($temp, $this->_javascripts);
-            }
-            else
-            {
-                $this->_javascripts[$javascript] = $minify;
+            if (!$priority) {
+                $this->_javascripts[$javascript] = $javascript;
+            } else {
+                $this->_javascripts = array_merge(array($javascript => $javascript), $this->_javascripts);
             }
         }
 
@@ -319,19 +352,14 @@
          *
          * @param string $stylesheet stylesheet name
          * @param bool $minify Run through minify/content server
-         * @param bool $important Mark this stylesheet for being loaded before others
+         * @param bool $override Mark this stylesheet for being loaded before others
          */
-        public function addStylesheet($stylesheet, $minify = true, $important = false)
+        public function addStylesheet($stylesheet, $priority = false)
         {
-            if ($important)
-            {
-                $temp = array();
-                $temp[$stylesheet] = $minify;
-                $this->_stylesheets = array_merge($temp, $this->_stylesheets);
-            }
-            else
-            {
-                $this->_stylesheets[$stylesheet] = $minify;
+            if (!$priority) {
+                $this->_stylesheets[$stylesheet] = $stylesheet;
+            } else {
+                $this->_stylesheets = array_merge(array($stylesheet => $stylesheet), $this->_stylesheets);
             }
         }
 
@@ -562,6 +590,23 @@
             return $this->_content_type;
         }
 
+        protected function _splitLocalAndExternalResources($resources)
+        {
+            $external = array();
+            $local = array();
+
+            foreach ($resources as $resource)
+            {
+                if (strpos($resource, '://') !== false) {
+                    $external[] = $resource;
+                } else {
+                    $local[] = $resource;
+                }
+            }
+
+            return array($local, $external);
+        }
+
         /**
          * Return all active javascripts
          *
@@ -569,7 +614,7 @@
          */
         public function getJavascripts()
         {
-            return $this->_javascripts;
+            return $this->_splitLocalAndExternalResources($this->_javascripts);
         }
 
         /**
@@ -579,7 +624,7 @@
          */
         public function getStylesheets()
         {
-            return $this->_stylesheets;
+            return $this->_splitLocalAndExternalResources($this->_stylesheets);
         }
 
         /**
@@ -617,7 +662,7 @@
 
                     if (Context::getUser()->canAccessConfigurationPage())
                     {
-                        $links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure The Bug Genie'));
+                        $links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     }
                     $links[] = array('url' => Context::getRouting()->generate('about'), 'title' => $i18n->__('About %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     $links[] = array('url' => Context::getRouting()->generate('account'), 'title' => $i18n->__('Account details'));

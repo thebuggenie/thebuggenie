@@ -1528,7 +1528,7 @@
   $strings['E-mail'] = 'Correo';
   $strings['Actv.'] = 'Actv.';
 
-// First occurrence is in: .\modules\configuration\templates\import.html.php
+// First occurrence is in: .\modules\configuration\templates\index.html.php
 // ----------------------------------------------------------------------------
   $strings['CSV'] = 'CSV';
   $strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2';

@@ -289,12 +289,17 @@
 
                 $this->_issues_per_page = $request->getParameter('issues_per_page', 50);
                 $this->_offset = $request->getParameter('offset', 0);
+
+                if ($request['quicksearch'])
+                {
+                    $this->setSortFields(array(tables\Issues::LAST_UPDATED => 'asc'));
+                    $request->setParameter('fs', array('text' => array('v' => $request['term'], 'o' => '=')));
+                }
+
                 $this->_filters = SearchFilter::getFromRequest($request, $this);
                 $this->_applies_to_project = framework\Context::getCurrentProject();
                 $this->_columns = $request->getParameter('columns');
                 $this->_sortfields = $request->getParameter('sortfields');
-
-                if ($request['quicksearch']) $this->setSortFields(array(tables\Issues::LAST_UPDATED => 'asc'));
 
                 $this->_groupby = $request['groupby'];
                 $this->_grouporder = $request->getParameter('grouporder', 'asc');

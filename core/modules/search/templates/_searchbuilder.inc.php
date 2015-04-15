@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addJavascript('calendarview.js');
+    $tbg_response->addJavascript('calendarview');
 
 ?>
 <div class="interactive_searchbuilder" id="search_builder">

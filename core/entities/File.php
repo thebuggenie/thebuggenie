@@ -226,7 +226,7 @@
                     return true;
             }
 
-            $event = \thebuggenie\core\framework\Event::createNew('core', 'File::hasAccess', $this);
+            $event = \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\File::hasAccess', $this);
             $event->setReturnValue(false);
             $event->triggerUntilProcessed();
 

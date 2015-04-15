@@ -59,6 +59,25 @@
         }
         return "<img " . parseHTMLoptions($params) . '>';
     }
+
+    /**
+     * UI function to build an image icon with hover tooltip text.
+     * Used in the config module initially.
+     *
+     * @param $tooltipText
+     * @param string $image
+     * @return string
+     */
+    function config_explanation($tooltipText, $image = 'icon_info.png')
+    {
+        return sprintf('<span class="config_explanation" style="position: relative;">
+                %s
+                <span class="tooltip from-above leftie">%s</span>
+            </span>',
+            image_tag($image, array('style' => 'margin: 0 5px; vertical-align: middle; cursor: pointer;')),
+            $tooltipText
+        );
+    }
     
     /**
      * Returns the URL to a specified image

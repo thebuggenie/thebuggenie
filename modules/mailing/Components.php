@@ -20,7 +20,6 @@
 
         public function componentSettings()
         {
-
         }
 
         public function componentAccountSettings()

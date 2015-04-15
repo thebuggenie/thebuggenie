@@ -30,10 +30,10 @@
                 <option value=1<?php if (\thebuggenie\core\framework\Settings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('No, the default user is a guest account'); ?></option>
                 <option value=0<?php if (!\thebuggenie\core\framework\Settings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('Yes, the default user is a normal account'); ?></option>
             </select>
+            <?php echo config_explanation(
+                __('Select if the default user is a guest user or a normal user')
+            ); ?>
         </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2"><?php echo __('Select if the default user is a guest user or a normal user'); ?></td>
     </tr>
     <tr>
         <td><label for="permissive"><?php echo __('Security policy'); ?></label></td>
@@ -42,15 +42,17 @@
                 <option value=1<?php if (\thebuggenie\core\framework\Settings::isPermissive()): ?> selected<?php endif; ?>><?php echo __('Permissive'); ?></option>
                 <option value=0<?php if (!\thebuggenie\core\framework\Settings::isPermissive()): ?> selected<?php endif; ?>><?php echo __('Restrictive'); ?></option>
             </select>
-        </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2">
-            <?php echo __("%restrictive: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.", array('%restrictive' => '<b>'.__('Restrictive').'</b>')); ?><br>
-            <?php echo __("%permissive: This security policy assume you have access to things like projects, pages, etc.", array('%permissive' => '<b>'.__('Permissive').'</b>')); ?><br>
-            <br>
-            <?php echo __("If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient."); ?><br>
-            <i><?php echo __("Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined"); ?></i>
+
+            <?php echo config_explanation(
+                __("%restrictive: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.", array('%restrictive' => '<b>'.__('Restrictive').'</b>')) .
+                "<br>" .
+                __("%permissive: This security policy assume you have access to things like projects, pages, etc.", array('%permissive' => '<b>'.__('Permissive').'</b>')) .
+                "<br><br>" .
+                 __("If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient.") .
+                "<br><br><i>" .
+                __("Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined").
+                "</i>"
+            ); ?>
         </td>
     </tr>
     <tr>
@@ -60,11 +62,9 @@
                 <option value=1<?php if (\thebuggenie\core\framework\Settings::isGravatarsEnabled()): ?> selected<?php endif; ?>><?php echo __('Users icons will use the gravatar.com service'); ?></option>
                 <option value=0<?php if (!\thebuggenie\core\framework\Settings::isGravatarsEnabled()): ?> selected<?php endif; ?>><?php echo __('Users will use default user icons'); ?></option>
             </select>
-        </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2">
-            <?php echo __('Select whether to use the %gravatar.com user icon service for user avatars, or just use the default ones', array('%gravatar.com' => link_tag('http://www.gravatar.com', 'gravatar.com'))); ?>
+            <?php echo config_explanation(
+                __('Select whether to use the %gravatar.com user icon service for user avatars, or just use the default ones', array('%gravatar.com' => link_tag('http://www.gravatar.com', 'gravatar.com')))
+            ); ?>
         </td>
     </tr>
     <tr>
@@ -105,23 +105,28 @@
     </tr>
     <tr>
         <td><label for="limit_registration"><?php echo __('Registration domain whitelist'); ?></label></td>
-        <td><input type="text" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST; ?>" id="limit_registration"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> value="<?php echo \thebuggenie\core\framework\Settings::getRegistrationDomainWhitelist(); ?>" style="width: 400px;"></td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2"><?php echo __('Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.', array('%example' => 'thebuggenie.com, zegeniestudios.net')); ?></td>
+        <td>
+            <input type="text" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST; ?>"
+                   id="limit_registration"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>
+                   value="<?php echo \thebuggenie\core\framework\Settings::getRegistrationDomainWhitelist(); ?>" style="width: 394px;"
+            >
+            <?php echo config_explanation(
+                __('Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.', array('%example' => 'thebuggenie.com, zegeniestudios.net'))
+            ); ?>
+        </td>
     </tr>
     <tr>
         <td><label for="defaultgroup"><?php echo __('Default user group'); ?></label></td>
         <td>
             <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_USER_GROUP; ?>" id="defaultgroup" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-            <?php foreach (\thebuggenie\core\entities\Group::getAll() as $aGroup): ?>
-                <option value="<?php print $aGroup->getID(); ?>"<?php if (($default_group = \thebuggenie\core\framework\Settings::getDefaultGroup()) instanceof \thebuggenie\core\entities\Group && $default_group->getID() == $aGroup->getID()): ?> selected<?php endif; ?>><?php print $aGroup->getName(); ?></option>
-            <?php endforeach; ?>
+                <?php foreach (\thebuggenie\core\entities\Group::getAll() as $aGroup): ?>
+                    <option value="<?php print $aGroup->getID(); ?>"<?php if (($default_group = \thebuggenie\core\framework\Settings::getDefaultGroup()) instanceof \thebuggenie\core\entities\Group && $default_group->getID() == $aGroup->getID()): ?> selected<?php endif; ?>><?php print $aGroup->getName(); ?></option>
+                <?php endforeach; ?>
             </select>
+            <?php echo config_explanation(
+                __('New users will automatically be added to this group')
+            ); ?>
         </td>
-    </tr>
-    <tr>
-        <td class="config_explanation" colspan="2"><?php echo __('New users will automatically be added to this group'); ?></td>
     </tr>
     <tr>
         <td><label for="returnfromlogin"><?php echo __('Redirect after login'); ?></label></td>

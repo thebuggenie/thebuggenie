@@ -635,7 +635,7 @@
         {
             Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Project::listen_thebuggenie_core_entities_File_hasAccess');
             Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Build::listen_thebuggenie_core_entities_File_hasAccess');
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Settings::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\framework\Settings::listen_thebuggenie_core_entities_File_hasAccess');
         }
 
         public static function clearRoutingCache()
@@ -848,12 +848,12 @@
          */
         public static function getThemes()
         {
-            $theme_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
+            $theme_path_handle = opendir(THEBUGGENIE_PATH . 'themes' . DS);
             $themes = array();
 
             while ($theme = readdir($theme_path_handle))
             {
-                if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php'))
+                if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'theme.php'))
                 {
                     $themes[] = $theme;
                 }
@@ -2138,6 +2138,26 @@
             return isset(self::$_internal_modules[$module]);
         }
 
+        protected static function setupLayoutProperties($content)
+        {
+            $basepath = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS;
+            $theme = \thebuggenie\core\framework\Settings::getThemeName();
+            foreach (self::getModules() as $module)
+            {
+                if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css"))
+                    self::getResponse()->addStylesheet("{$theme}/{$module->getName()}.css");
+
+                if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js"))
+                    self::getResponse()->addJavascript($module->getName());
+            }
+
+            list ($localjs, $externaljs) = self::getResponse()->getJavascripts();
+            $webroot = self::getWebroot();
+
+            $values = compact('content', 'localjs', 'externaljs', 'webroot');
+            return $values;
+        }
+        
         /**
          * Performs an action
          *
@@ -2292,15 +2312,21 @@
 
                 Logging::log('rendering final content');
 
+                // Set core layout path
+                self::getResponse()->setLayoutPath(THEBUGGENIE_CORE_PATH . 'templates');
+
+                // Trigger event for rendering (so layout path can be overwritten)
+                \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\framework\Context::renderBegins')->trigger();
+
                 if (Settings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
                 {
-                    if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
+                    if (!file_exists(self::getResponse()->getLayoutPath() . DS . 'offline.inc.php'))
                     {
                         throw new exceptions\TemplateNotFoundException('Can not find offline mode template');
                     }
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php');
+                    ActionComponent::presentTemplate(self::getResponse()->getLayoutPath() . DS . 'offline.inc.php');
                     $content = ob_get_clean();
                 }
 
@@ -2309,9 +2335,14 @@
 
                 if (self::getResponse()->getDecoration() == Response::DECORATE_DEFAULT && !self::getRequest()->isAjaxCall())
                 {
+                    if (!file_exists(self::getResponse()->getLayoutPath() . DS . 'layout.php'))
+                    {
+                        throw new exceptions\TemplateNotFoundException('Can not find layout template');
+                    }
                     ob_start('mb_output_handler');
                     ob_implicit_flush(0);
-                    ActionComponent::presentTemplate(THEBUGGENIE_CORE_PATH . 'templates/layout.php', array('content' => $content));
+                    $layoutproperties = self::setupLayoutProperties($content);
+                    ActionComponent::presentTemplate(self::getResponse()->getLayoutPath() . DS . 'layout.php', $layoutproperties);
                     ob_flush();
                 }
                 else
@@ -2328,6 +2359,9 @@
                     }
 
                     echo $content;
+
+                    // Trigger event for ending the rendering
+                    \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\framework\Context::renderEnds')->trigger();
 
                     Logging::log('...done (rendering content)');
 

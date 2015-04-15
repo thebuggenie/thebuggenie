@@ -323,7 +323,7 @@
                 <h3 style="position: relative;">
                     <?php echo __('Passwords and keys'); ?>
                     <a class="button button-silver dropper" id="password_actions" href="javascript:void(0);"><?php echo __('Actions'); ?></a>
-                    <ul id="password_more_actions" style="width: 300px; font-size: 0.8em; text-align: right; top: 23px; margin-top: 0; right: 3px; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="jQuery(this).prev().toggleClass('button-pressed');$(this).toggle();">
+                    <ul id="password_more_actions" style="width: 300px; font-size: 0.8em; text-align: right; top: 23px; margin-top: 0; right: 3px; z-index: 1000;" class="more_actions_dropdown popup_box dropper">
                         <?php if ($tbg_user->canChangePassword() && !$tbg_user->isOpenIdLocked()): ?>
                             <li><a href="javascript:void(0);" onclick="$('change_password_div').toggle();"><?php echo __('Change my password'); ?></a></li>
                         <?php elseif ($tbg_user->isOpenIdLocked()): ?>

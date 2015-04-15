@@ -434,63 +434,16 @@
 
     function tbg_get_javascripts()
     {
-        $tbg_response = \thebuggenie\core\framework\Context::getResponse();
-        $tbg_response->addJavascript('prototype.js', true, true);
-        $tbg_response->addJavascript('jquery-1.8.3.min.js', true, true);
-        $tbg_response->addJavascript('builder.js');
-        $tbg_response->addJavascript('effects.js');
-        $tbg_response->addJavascript('dragdrop.js');
-        $tbg_response->addJavascript('controls.js');
-        $tbg_response->addJavascript('jquery.markitup.js');
-        $tbg_response->addJavascript('bootstrap-typeahead.js');
-        $tbg_response->addJavascript('mention.js');
-        $tbg_response->addJavascript('scriptaculous.js');
-        $tbg_response->addJavascript('slider.js');
-        $tbg_response->addJavascript('thebuggenie.js');
-        $tbg_response->addJavascript('tablekit.js');
-        $tbg_response->addJavascript('jquery-ui.min.js');
-
-        $jsstrings = array();
-        $sepjs = array();
-
-        // Add scripts to minify and non-minify lists
-        foreach ($tbg_response->getJavascripts() as $script => $minify)
-        {
-            if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
-                $jsstrings[] = 'js/'.$script;
-            else
-                $sepjs[] = $script;
-        }
-
-        $jsstrings = join(',', $jsstrings);
-
-        return array($jsstrings, $sepjs);
+        return \thebuggenie\core\framework\Context::getResponse()->getJavascripts();
     }
 
     function tbg_get_stylesheets()
     {
-        $tbg_response = \thebuggenie\core\framework\Context::getResponse();
-        $cssstrings = array();
-        $sepcss = array();
-
-        // Add stylesheets to minify and non-minify lists
-        foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
-        {
-            if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . \thebuggenie\core\framework\Settings::getThemeName() . DIRECTORY_SEPARATOR .$stylesheet))
-                $cssstrings[] = 'themes/'.\thebuggenie\core\framework\Settings::getThemeName().'/'.$stylesheet;
-            else
-                $sepcss[] = $stylesheet;
-        }
-
-        $cssstrings = join(',', $cssstrings);
-
-        return array($cssstrings, $sepcss);
+        return \thebuggenie\core\framework\Context::getResponse()->getStylesheets();
     }
 
     function tbg_get_timezone_offset($skipusertimestamp = false)
     {
-        $tstamp = 0;
-
         // offset the timestamp properly
         if (!$skipusertimestamp)
         {

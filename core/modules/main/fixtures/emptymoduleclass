@@ -19,6 +19,8 @@
      *
      * @package module_key
      * @subpackage core
+     *
+     * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
     class module_name extends \thebuggenie\core\entities\Module
     {
