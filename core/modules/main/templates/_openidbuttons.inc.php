@@ -105,11 +105,13 @@
         }
     };
 
-    TBG.OpenID.signin_text = '<?php echo htmlspecialchars(__('Sign in'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>';
-    TBG.OpenID.image_title = '<?php echo htmlspecialchars(__('Log in with %openid_provider_name'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>';
-    TBG.OpenID.providers_small = providers_small;
-    TBG.OpenID.providers_large = providers_large;
-    <?php if ($tbg_request->isAjaxCall()): ?>
-        TBG.OpenID.init();
-    <?php endif; ?>
+    require(['thebuggenie/tbg'], function (TBG) {
+        TBG.OpenID.signin_text = '<?php echo htmlspecialchars(__('Sign in'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>';
+        TBG.OpenID.image_title = '<?php echo htmlspecialchars(__('Log in with %openid_provider_name'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>';
+        TBG.OpenID.providers_small = providers_small;
+        TBG.OpenID.providers_large = providers_large;
+        <?php if ($tbg_request->isAjaxCall()): ?>
+            TBG.OpenID.init();
+        <?php endif; ?>
+    });
 </script>
