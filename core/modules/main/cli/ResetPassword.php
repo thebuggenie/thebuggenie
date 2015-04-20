@@ -26,7 +26,7 @@
             $this->_command_name = 'reset_password';
             $this->_description = "Reset user password";
             $this->addRequiredArgument('user_name', "The user to reset password for");
-            $this->addRequiredArgument('user_pass', "The new password");
+            //            $this->addRequiredArgument('user_pass', "The new password");
         }
 
         public function do_execute()
@@ -35,10 +35,12 @@
             $password = $this->getProvidedArgument('user_pass');
 
             $user = \thebuggenie\core\entities\User::getByUsername($username);
-
-            var_dump($user);
+            $newpass = $user->createPassword();
+            $this->cliEcho($newpass."\n", 'green');
+            $user->setPassword($newpass);
+            $user->save();
             
-            $this->cliEcho("The module was created successfully!\n", 'green');        
+            $this->cliEcho("The password was reseted successfully!\n", 'green');        
         }
         
     }
