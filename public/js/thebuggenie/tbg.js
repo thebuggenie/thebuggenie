@@ -104,40 +104,46 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
          * Initializes the autocompleter
          */
         TBG.Core._initializeAutocompleter = function () {
-            if (jQuery('#searchfor')) {
-                jQuery('#searchfor').autocomplete({
-                    source: TBG.autocompleter_url,
-                    minLength: 2,
-                    select: function( event, ui ) {
-                        log( ui.item ?
-                        "Selected: " + ui.item.value + " aka " + ui.item.id :
-                        "Nothing selected, input was " + this.value );
+//            if (jQuery('#searchfor')) {
+//                jQuery('#searchfor').autocomplete({
+//                    source: TBG.autocompleter_url,
+//                    minLength: 2,
+//                    select: function( event, ui ) {
+//                        log( ui.item ?
+//                        "Selected: " + ui.item.value + " aka " + ui.item.id :
+//                        "Nothing selected, input was " + this.value );
+//                    }
+//                })
+//                .data('autocomplete')
+//                ._renderItem = function (ul, item) {
+//                    
+//                };
+            require(['effects', 'controls', 'scriptaculous'], function () {
+                new Ajax.Autocompleter(
+                    "searchfor",
+                    "searchfor_autocomplete_choices",
+                    TBG.autocompleter_url,
+                    {
+                        paramName: "fs[text][v]",
+                        parameters: "fs[text][o]==",
+                        minChars: 2,
+                        indicator: 'quicksearch_indicator',
+                        callback: function (element, entry) {
+                            $('quicksearch_submit').disable();
+                            $('quicksearch_submit').removeClassName('button-blue');
+                            $('quicksearch_submit').addClassName('button-silver');
+                            return entry;
+                        },
+                        afterUpdateChoices: function () {
+                            $('quicksearch_submit').enable();
+                            $('quicksearch_submit').removeClassName('button-silver');
+                            $('quicksearch_submit').addClassName('button-blue');
+                        },
+                        afterUpdateElement: TBG.Core._extractAutocompleteValue
                     }
-                });
-                //new Ajax.Autocompleter(
-                //    "searchfor",
-                //    "searchfor_autocomplete_choices",
-                //    TBG.autocompleter_url,
-                //    {
-                //        paramName: "fs[text][v]",
-                //        parameters: "fs[text][o]==",
-                //        minChars: 2,
-                //        indicator: 'quicksearch_indicator',
-                //        callback: function (element, entry) {
-                //            $('quicksearch_submit').disable();
-                //            $('quicksearch_submit').removeClassName('button-blue');
-                //            $('quicksearch_submit').addClassName('button-silver');
-                //            return entry;
-                //        },
-                //        afterUpdateChoices: function () {
-                //            $('quicksearch_submit').enable();
-                //            $('quicksearch_submit').removeClassName('button-silver');
-                //            $('quicksearch_submit').addClassName('button-blue');
-                //        },
-                //        afterUpdateElement: TBG.Core._extractAutocompleteValue
-                //    }
-                //);
-            }
+                );
+            });
+//            }
         };
 
         /**

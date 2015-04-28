@@ -39,57 +39,60 @@
 <?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
     <script src="https://login.persona.org/include.js"></script>
     <script type="text/javascript">
-        document.observe('dom:loaded', function() {
-            var currentUser = <?php echo (!$tbg_user->isGuest()) ? "'{$tbg_user->getEmail()}'" : 'null'; ?>;
+        require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
+            domReady(function () {
+                TBG = tbgjs;
+                var currentUser = <?php echo (!$tbg_user->isGuest()) ? "'{$tbg_user->getEmail()}'" : 'null'; ?>;
 
-            navigator.id.watch({
-              loggedInUser: currentUser,
-              onlogin: function(assertion) {
-                // A user has logged in! Here you need to:
-                // 1. Send the assertion to your backend for verification and to create a session.
-                // 2. Update your UI.
-                TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
-                    url_method: 'post',
-                    additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
-                    loading: {
-                        indicator: 'fullpage_backdrop',
-                        clear: 'fullpage_backdrop_content',
-                        hide: 'login_backdrop',
-                        show: 'fullpage_backdrop_indicator'
-                    },
-                    success: {
-                        callback: function(json) {
-                            window.location.reload();
+                navigator.id.watch({
+                  loggedInUser: currentUser,
+                  onlogin: function(assertion) {
+                    // A user has logged in! Here you need to:
+                    // 1. Send the assertion to your backend for verification and to create a session.
+                    // 2. Update your UI.
+                    TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
+                        url_method: 'post',
+                        additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
+                        loading: {
+                            indicator: 'fullpage_backdrop',
+                            clear: 'fullpage_backdrop_content',
+                            hide: 'login_backdrop',
+                            show: 'fullpage_backdrop_indicator'
+                        },
+                        success: {
+                            callback: function(json) {
+                                window.location.reload();
+                            }
+                        },
+                        failure: {
+                            callback: function(json) {
+                                navigator.id.logout();
+                            }
                         }
-                    },
-                    failure: {
-                        callback: function(json) {
-                            navigator.id.logout();
+                    });
+                  },
+                  onlogout: function() {
+                    // A user has logged out! Here you need to:
+                    // Tear down the user's session by redirecting the user or making a call to your backend.
+                    // Also, make sure loggedInUser will get set to null on the next page load.
+                    // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+                    TBG.Main.Helpers.ajax('<?php echo make_url('logout'); ?>', {
+                        url_method: 'post',
+                        loading: {
+                            indicator: 'fullpage_backdrop',
+                            clear: 'fullpage_backdrop_content',
+                            show: 'fullpage_backdrop_indicator'
+                        },
+                        success: {
+                            callback: function(json) {
+                                window.location = json.url;
+                            }
                         }
-                    }
+                    });
+                  }
                 });
-              },
-              onlogout: function() {
-                // A user has logged out! Here you need to:
-                // Tear down the user's session by redirecting the user or making a call to your backend.
-                // Also, make sure loggedInUser will get set to null on the next page load.
-                // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
-                TBG.Main.Helpers.ajax('<?php echo make_url('logout'); ?>', {
-                    url_method: 'post',
-                    loading: {
-                        indicator: 'fullpage_backdrop',
-                        clear: 'fullpage_backdrop_content',
-                        show: 'fullpage_backdrop_indicator'
-                    },
-                    success: {
-                        callback: function(json) {
-                            window.location = json.url;
-                        }
-                    }
-                });
-              }
+                if ($('persona-signin-button')) $('persona-signin-button').observe('click', function() { navigator.id.request(); } );
             });
-            if ($('persona-signin-button')) $('persona-signin-button').observe('click', function() { navigator.id.request(); } );
         });
     </script>
 <?php endif; ?>
