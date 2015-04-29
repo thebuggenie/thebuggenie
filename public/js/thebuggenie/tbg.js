@@ -3464,6 +3464,11 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             });
         }
 
+        TBG.Project.Component.edit = function (url, component_id)
+        {
+            TBG.Main.Helpers.Backdrop.show(url);
+        }
+
         TBG.Project.submitAdvancedSettings = function (url) {
             TBG.Project._submitDetails(url, 'project_settings');
         }
