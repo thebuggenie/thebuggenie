@@ -33,8 +33,8 @@
                 <li class="<?php if (!$important) echo 'selected'; ?>"><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('icon_timeline.png') . __('All timeline items')); ?></li>
             </ul>
             <ul class="simple_list">
-                <li><?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Subscribe to updates via RSS')); ?></li>
-                <li><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Subscribe to updates via RSS')); ?></li>
+                <li><?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Only important items')); ?></li>
+                <li><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('All timeline items')); ?></li>
             </ul>
         </div>
     </div>
