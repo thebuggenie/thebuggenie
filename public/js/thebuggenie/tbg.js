@@ -3648,8 +3648,9 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             if (!$('milestone_details_' + milestone_id)) {
                 TBG.Main.Helpers.ajax(url, {
                     loading: {
-                        indicator: 'milestone_details_loading_indicator',
-                        clear: 'milestone_details_overview',
+                        indicator: 'fullpage_backdrop',
+                        clear: 'fullpage_backdrop_content',
+                        show: 'fullpage_backdrop_indicator',
                         hide: 'project_roadmap'
                     },
                     success: {
