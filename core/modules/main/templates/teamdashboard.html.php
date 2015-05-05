@@ -37,7 +37,7 @@
                     <?php $milestone_cc = 0; ?>
                     <?php foreach ($projects as $project): ?>
                         <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
-                            <?php if ($milestone->isScheduled() && $milestone->isOverdue()): ?>
+                            <?php if ($milestone->isScheduled() || $milestone->isOverdue()): ?>
                                 <?php include_component('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
                                 <?php $milestone_cc++; ?>
                             <?php endif; ?>
