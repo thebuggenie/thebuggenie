@@ -85,7 +85,7 @@
                             </optgroup>
                         </select>
                         <script type="text/javascript">
-                            require(['domReady', 'jquery'], function (domReady, jquery) {
+                            require(['domReady', 'jquery', 'prototype'], function (domReady, jquery, prototype) {
                                 domReady(function () {
                                     var browser_type_value = "<?php echo \thebuggenie\core\framework\Settings::get('browser_type_'.$project->getID(), 'vcs_integration'); ?>";
 
