@@ -139,6 +139,25 @@
                                         <option value=1<?php if ($edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
                                         <option value=0<?php if (!$edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
                                     </select>
+                                    <script type="text/javascript">
+                                        require(['domReady', 'jquery'], function (domReady, jQuery) {
+                                            domReady(function () {
+                                                jQuery('#edition_has_release_date').on('change', function (ev) {
+                                                    if (this.value == 0) return false;
+
+                                                    if (jQuery('#edition_<?php echo $edition->getID(); ?>_release_month').val() == 1
+                                                        && jQuery('#edition_<?php echo $edition->getID(); ?>_release_day').val() == 1
+                                                        && jQuery('#edition_<?php echo $edition->getID(); ?>_release_year').val() == 1990) {
+                                                        var d = new Date();
+
+                                                        jQuery('#edition_<?php echo $edition->getID(); ?>_release_month').val(d.getMonth() + 1);
+                                                        jQuery('#edition_<?php echo $edition->getID(); ?>_release_day').val(d.getDate());
+                                                        jQuery('#edition_<?php echo $edition->getID(); ?>_release_year').val(d.getFullYear());
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
                                     <select style="width: 85px;" name="release_month" id="edition_<?php echo $edition->getID(); ?>_release_month"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
                                     <?php for($cc = 1;$cc <= 12;$cc++): ?>
                                         <option value=<?php print $cc; ?><?php print (($edition->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>

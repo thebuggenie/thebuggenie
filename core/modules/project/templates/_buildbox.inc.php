@@ -11,7 +11,7 @@
     <span class="release_version" id="build_<?php echo $b_id; ?>_version"><?php print $build->getVersion(); ?></span>
     <div class="release_date <?php if ($build->isReleased()) echo 'released'; ?>">
         <?php if ($build->isReleased()): ?>
-            <?php echo __('Released %release_date', array('%release_date' => '<span id="build_'.$b_id.'_release_date">'.tbg_formatTime($build->getReleaseDate(), 7, true, true).'</span>')); ?>
+            <?php echo __('Released%release_date', array('%release_date' => $build->hasReleaseDate() ? '<span id="build_'.$b_id.'_release_date">'.tbg_formatTime($build->getReleaseDate(), 7, true, true).'</span>' : '')); ?>
         <?php else: ?>
             <span id="build_<?php echo $b_id; ?>_not_released"><?php echo __('Not released yet'); ?></span>
         <?php endif; ?>

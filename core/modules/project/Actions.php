@@ -1235,11 +1235,12 @@
             {
                 $this->forward403unless($this->getUser()->canEditProjectDetails($this->selected_project), framework\Context::getI18n()->__('You do not have access to update these settings'));
 
-                if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+                $release_date = null;
+                if ($request['has_release_date'])
                 {
                     $release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
-                    $this->selected_project->setReleaseDate($release_date);
                 }
+                $this->selected_project->setReleaseDate($release_date);
 
                 $old_key = $this->selected_project->getKey();
 
@@ -1703,11 +1704,12 @@
                         $edition = entities\Edition::getB2DBTable()->selectById($edition_id);
                         if ($request->isPost())
                         {
-                            if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+                            $release_date = null;
+                            if ($request['has_release_date'])
                             {
                                 $release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
-                                $edition->setReleaseDate($release_date);
                             }
+                            $edition->setReleaseDate($release_date);
 
                             if (($e_name = $request['edition_name']) && trim($e_name) != '')
                             {
