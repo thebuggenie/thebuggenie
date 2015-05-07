@@ -36,11 +36,7 @@
          * @Column(type="integer", length=10)
          */
         protected $_release_date = 0;
-
-        protected function _preInitialize() {
-            $this->_release_date = (new \DateTime)->format('U');
-        }
-
+        
         /**
          * Is the item released?
          * 
@@ -123,7 +119,7 @@
          */
         public function getReleaseDateHour()
         {
-            return date("H", $this->_release_date);
+            return date("h", $this->_release_date);
         }
         
         /**
