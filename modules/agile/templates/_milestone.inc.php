@@ -2,23 +2,33 @@
 
     use thebuggenie\modules\agile\entities\AgileBoard;
 
-    switch ($board->getType())
+    if (isset($board))
     {
-        case AgileBoard::TYPE_SCRUM:
-        case AgileBoard::TYPE_KANBAN:
-            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
-            $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
-            break;
-        case AgileBoard::TYPE_GENERIC:
-        default:
-            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
-            $milestoneplaceholder = __e('Enter a milestone name');
-            break;
+        switch ($board->getType())
+        {
+            case AgileBoard::TYPE_SCRUM:
+            case AgileBoard::TYPE_KANBAN:
+                if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
+                $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
+                break;
+            case AgileBoard::TYPE_GENERIC:
+            default:
+                if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
+                $milestoneplaceholder = __e('Enter a milestone name');
+                break;
+        }
+    }
+    else
+    {
+        if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
+        $milestoneplaceholder = __e('Enter a milestone name');
     }
 
 ?>
 <div class="backdrop_box large sectioned" id="edit_milestone_container" style="<?php if (isset($starthidden) && $starthidden) echo 'display: none;'; ?>">
     <div class="backdrop_detail_header"><?php
+        if (isset($board))
+        {
             switch ($board->getType())
             {
                 case AgileBoard::TYPE_SCRUM:
@@ -30,12 +40,19 @@
                     echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
                     break;
             }
+        }
+        else
+        {
+            echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
+        }
         ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php if (!isset($includeform) || $includeform): ?>
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID(), 'milestone_id' => (int) $milestone->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => isset($board) ? $board->getID() : '', 'milestone_id' => (int) $milestone->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
             <?php endif; ?>
             <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php
+                        if (isset($board))
+                        {
                             switch ($board->getType())
                             {
                                 case AgileBoard::TYPE_SCRUM:
@@ -47,6 +64,11 @@
                                     echo __('Milestone name');
                                     break;
                             }
+                        }
+                        else
+                        {
+                            echo __('Milestone name');
+                        }
                         ?></label>
             <input type="text" class="milestone_input_name primary" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>" placeholder="<?php echo $milestoneplaceholder; ?>">
             <label for="milestone_description_<?php echo $milestone->getID(); ?>"><?php echo __('Description'); ?></label>
@@ -115,6 +137,8 @@
             </table>
             <div id="milestone_include_issues" class="milestone_include_issues" style="display: none;">
                 <?php
+                                if (isset($board))
+                                {
                                     switch ($board->getType())
                                     {
                                         case AgileBoard::TYPE_SCRUM:
@@ -126,6 +150,11 @@
                                             echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
                                             break;
                                     }
+                                }
+                                else
+                                {
+                                    echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                                }
                                 ?>
                 <input id="include_selected_issues" value="0" name="include_selected_issues" type="hidden">
             </div>
