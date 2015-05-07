@@ -3633,6 +3633,33 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             });
         };
 
+        TBG.Project.checkAndToggleNoBuildsMessage = function () {
+            $$('.simple_list').each(function (elem) {
+                // If this list does not contain builds continue.
+                if (elem.id.indexOf('active_builds_') !== 0) return;
+
+                // We assume no build is visible.
+                var one_build_visible = false;
+
+                $(elem).childElements().each(function (elem) {
+                    // If this child - build is not visible continue.
+                    if (! jQuery('#' + elem.id).is(':visible')) return;
+
+                    // Once we find visible build set flag and break this loop.
+                    one_build_visible = true;
+                    return false;
+                });
+
+                // Hide or show no builds message based on one build visible flag.
+                if (one_build_visible) {
+                    $('no_' + elem.id).hide();
+                }
+                else {
+                    $('no_' + elem.id).show();
+                }
+            });
+        };
+
         TBG.Project.clearRoadmapFilters = function () {
             var prp = $('project_roadmap_page');
             ['upcoming', 'past'].each(function (cn) {
