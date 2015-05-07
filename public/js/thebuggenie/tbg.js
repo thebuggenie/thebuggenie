@@ -1866,6 +1866,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 success: {
                     callback: function (json) {
                         $('statistics_main_image').src = json.images.main;
+                        ecc = 1;
                         for (var cc = 1; cc <= 3; cc++) {
                             var small_name = 'mini_' + cc + '_small';
                             var large_name = 'mini_' + cc + '_large';
@@ -1876,7 +1877,16 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                             } else {
                                 $('statistics_mini_image_' + cc).hide();
                                 $('statistics_mini_' + cc + '_main').setValue('');
+                                ecc++;
                             }
+                        }
+                        if (ecc == cc) {
+                            $('statistics_main_image_div').next().hide();
+                            $('statistics_main_image_div').next().next().hide();
+                        }
+                        else {
+                            $('statistics_main_image_div').next().show();
+                            $('statistics_main_image_div').next().next().show();
                         }
                     }
                 },
