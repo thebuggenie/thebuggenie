@@ -3288,8 +3288,9 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
         TBG.Project.Build.remove = function (url, bid, b_type, edition_id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: 'build_' + bid + '_indicator',
-                    hide: 'build_' + bid + '_info',
+                    show: 'fullpage_backdrop_indicator',
+                    indicator: 'fullpage_backdrop',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop', 'build_' + bid + '_info'],
                     callback: function () {
                         $('build_' + bid + '_indicator').addClassName('selected_red');
                     }
