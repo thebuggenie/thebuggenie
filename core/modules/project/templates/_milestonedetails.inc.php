@@ -53,7 +53,7 @@
         <script type="text/javascript">
             require(['domReady', 'jquery', 'jquery.flot'], function (domReady, jquery) {
                 domReady(function () {
-                    jQuery(function () {
+                    jquery(function () {
 
                         var d_e_points = [];
                         var d_e_hours = [];
