@@ -27,6 +27,7 @@
 
         const VERSION = '2.0';
 
+        protected $_name = 'auth_ldap';
         protected $_longname = 'LDAP Authentication';
         protected $_description = 'Allows authentication against a LDAP or Active Directory server';
         protected $_module_config_title = 'LDAP Authentication';

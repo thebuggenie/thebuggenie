@@ -37,10 +37,6 @@
             </a>
         </li>
     <?php endforeach; ?>
-    </ul>
-    <br style="clear: both;">
-    <h1><?php echo __('Modules / addons'); ?></h1>
-    <ul class="config_badges">
     <?php foreach ($config_sections[\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_MODULES] as $section => $info): ?>
         <?php if ($info['module'] != 'core' && !\thebuggenie\core\framework\Context::getModule($info['module'])->hasConfigSettings()) continue; ?>
         <li class="rounded_box">

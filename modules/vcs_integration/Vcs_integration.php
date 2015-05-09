@@ -41,6 +41,7 @@
         const ACCESS_HTTP = 1;
         const NOTIFICATION_COMMIT_MENTIONED = 'commit_mentioned';
 
+        protected $_name = 'vcs_integration';
         protected $_longname = 'VCS Integration';
         protected $_description = 'Allows details from source code checkins to be displayed in The Bug Genie. Configure in each project\'s settings.';
         protected $_module_config_title = 'VCS Integration';

@@ -33,7 +33,8 @@
         "ext-mbstring" : "*",
         "ext-pcre" : "*",
         "ext-Reflection" : "*",
-        "lib-pcre" : "8.*"
+        "lib-pcre" : "8.*",
+        "net/http" : "dev-master"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",

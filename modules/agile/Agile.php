@@ -27,6 +27,7 @@
 
         const VERSION = '1.0';
 
+        protected $_name = 'agile';
         protected $_longname = 'Agile';
         protected $_module_config_title = 'Agile';
         protected $_module_config_description = 'Agile - planning and whiteboard for agile teams';

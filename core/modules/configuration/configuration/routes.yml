@@ -909,7 +909,7 @@ configure_uninstall_module:
     csrf_enabled: false
 
 configure_install_module:
-    route: /configure/modules/install
+    route: /configure/modules/install/:module_key
     module: configuration
     action: moduleAction
     parameters:
