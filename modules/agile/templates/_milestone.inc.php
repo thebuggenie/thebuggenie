@@ -1,6 +1,7 @@
 <?php
 
     use thebuggenie\modules\agile\entities\AgileBoard;
+    use thebuggenie\core\entities\Milestone;
 
     if (isset($board))
     {
@@ -20,8 +21,18 @@
     }
     else
     {
-        if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
-        $milestoneplaceholder = __e('Enter a milestone name');
+        switch ($milestone->getType())
+        {
+            case Milestone::TYPE_SCRUMSPRINT:
+                if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
+                $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
+                break;
+            case Milestone::TYPE_REGULAR:
+            default:
+                if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
+                $milestoneplaceholder = __e('Enter a milestone name');
+                break;
+        }
     }
 
 ?>
@@ -43,12 +54,21 @@
         }
         else
         {
-            echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
+            switch ($milestone->getType())
+            {
+                case Milestone::TYPE_SCRUMSPRINT:
+                    echo ($milestone->getId()) ? __('Edit sprint details') : __('Add new sprint');
+                    break;
+                case Milestone::TYPE_REGULAR:
+                default:
+                    echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
+                    break;
+            }
         }
         ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php if (!isset($includeform) || $includeform): ?>
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => isset($board) ? $board->getID() : '', 'milestone_id' => (int) $milestone->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => isset($board) ? $board->getID() : '0', 'milestone_id' => (int) $milestone->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
             <?php endif; ?>
             <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php
                         if (isset($board))
@@ -67,7 +87,16 @@
                         }
                         else
                         {
-                            echo __('Milestone name');
+                            switch ($milestone->getType())
+                            {
+                                case Milestone::TYPE_SCRUMSPRINT:
+                                    echo __('Sprint name');
+                                    break;
+                                case Milestone::TYPE_REGULAR:
+                                default:
+                                    echo __('Milestone name');
+                                    break;
+                            }
                         }
                         ?></label>
             <input type="text" class="milestone_input_name primary" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>" placeholder="<?php echo $milestoneplaceholder; ?>">
@@ -153,7 +182,16 @@
                                 }
                                 else
                                 {
-                                    echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                                    switch ($milestone->getType())
+                                    {
+                                        case Milestone::TYPE_SCRUMSPRINT:
+                                            echo __('The %number selected issue(s) will be automatically added to the new sprint', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                                            break;
+                                        case Milestone::TYPE_REGULAR:
+                                        default:
+                                            echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                                            break;
+                                    }
                                 }
                                 ?>
                 <input id="include_selected_issues" value="0" name="include_selected_issues" type="hidden">

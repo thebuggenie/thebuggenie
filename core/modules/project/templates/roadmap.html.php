@@ -3,10 +3,10 @@
     $tbg_response->addBreadcrumb(__('Roadmap'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
     $tbg_response->setTitle(__('"%project_name" roadmap', array('%project_name' => $selected_project->getName())));
     $tbg_response->addJavascript('excanvas');
-    $tbg_response->addJavascript('jquery.flot.min');
-    $tbg_response->addJavascript('jquery.flot.resize.min');
+    $tbg_response->addJavascript('jquery.flot');
+    $tbg_response->addJavascript('jquery.flot.resize');
     $tbg_response->addJavascript('jquery.flot.dashes');
-    $tbg_response->addJavascript('jquery.flot.time.min');
+    $tbg_response->addJavascript('jquery.flot.time');
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Roadmap')));
 
 ?>
@@ -38,7 +38,7 @@
                 <li class="<?php if ($mode == 'all') echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Project.clearRoadmapFilters(); TBG.Project.toggleLeftSelection(this);TBG.Project.showRoadmap();"><?php echo __('Include past milestones'); ?></a></li>
                 <li><h3><?php echo __('Milestone details'); ?></h3></li>
                 <?php foreach ($milestones as $milestone): ?>
-                    <li class="milestone_details_link <?php if ($milestone->isReached()) echo 'closed'; ?> <?php if ($mode == 'milestone' && isset($selected_milestone) && $selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Project.showMilestoneDetails('<?php echo make_url('project_roadmap_milestone_details', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>); TBG.Project.toggleLeftSelection(this);"><?php echo $milestone->getName(); ?></a></li>
+                    <li class="milestone_details_link <?php if ($milestone->isReached()) echo 'closed'; ?> <?php if ($mode == 'milestone' && isset($selected_milestone) && $selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Project.showMilestoneDetails('<?php echo make_url('project_roadmap_milestone_details', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>, true); TBG.Project.toggleLeftSelection(this);"><?php echo $milestone->getName(); ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>

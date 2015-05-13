@@ -2037,9 +2037,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: ['dialog_backdrop', 'project_delete_controls_' + pid]
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop', 'project_delete_controls_' + pid]
                 },
                 success: {
                     remove: 'project_box_' + pid,
@@ -3196,6 +3195,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             var url = form.action;
             var issues = "";
             var include_selected_issues = $('include_selected_issues').getValue() == 1;
+            var on_board = $('project_roadmap_page') == null;
             if (include_selected_issues) {
                 $$('.milestone_issue.included').each(function (issue) {
                     issues += '&issues[]=' + issue.dataset.issueId;
@@ -3210,18 +3210,24 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                     hide: 'no_milestones',
                     callback: function (json) {
                         TBG.Main.Helpers.Backdrop.reset();
-                        if ($('milestone_' + json.milestone_id)) {
-                            $('milestone_' + json.milestone_id).replace(json.component);
-                        } else {
-                            $('milestone_list').insert(json.component);
+                        if (on_board) {
+                            if ($('milestone_' + json.milestone_id)) {
+                                $('milestone_' + json.milestone_id).replace(json.component);
+                            } else {
+                                $('milestone_list').insert(json.component);
+                            }
+                            if (!include_selected_issues) {
+                                // console.log('asdf', $('milestone_' + json.milestone_id), json);
+                                setTimeout(function () {
+                                    TBG.Project.Planning.getMilestoneIssues($('milestone_' + json.milestone_id), TBG.Project.Planning.initializeDragDropSorting);
+                                }, 250);
+                            } else {
+                                TBG.Project.Planning.initializeDragDropSorting();
+                                TBG.Core.Pollers.Callbacks.planningPoller();
+                            }
                         }
-                        if (!include_selected_issues) {
-                            setTimeout(function () {
-                                TBG.Project.Planning.getMilestoneIssues($('milestone_' + json.milestone_id), TBG.Project.Planning.initializeDragDropSorting);
-                            }, 250);
-                        } else {
-                            TBG.Project.Planning.initializeDragDropSorting();
-                            TBG.Core.Pollers.Callbacks.planningPoller();
+                        else if (jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').length) {
+                            jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').trigger('click');
                         }
                     }
                 }
@@ -3682,7 +3688,13 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             $('project_roadmap').show();
         }
 
-        TBG.Project.showMilestoneDetails = function (url, milestone_id) {
+        TBG.Project.showMilestoneDetails = function (url, milestone_id, force) {
+            var force = force || false;
+
+            if (force && $('milestone_details_' + milestone_id)) {
+                $('milestone_details_' + milestone_id).remove();
+            }
+
             if (!$('milestone_details_' + milestone_id)) {
                 TBG.Main.Helpers.ajax(url, {
                     loading: {
@@ -3789,8 +3801,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
-                    show: 'fullpage_backdrop_indicator'
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: 'issuetype_' + id + '_box',
@@ -3935,9 +3947,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: 'dialog_backdrop'
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: 'item_option_' + type + '_' + id,
@@ -3991,9 +4002,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: 'dialog_backdrop'
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: 'item_' + type + '_' + id,
@@ -4071,9 +4081,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 url_method: 'post',
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: 'dialog_backdrop'
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     callback: function () {
@@ -4179,9 +4188,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: ['users_results_user_' + user_id, 'user_' + user_id + '_edit_spinning', 'user_' + user_id + '_edit_tr', 'users_results_user_' + user_id + '_permissions_row'],
@@ -4256,9 +4264,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: ['dialog_backdrop', 'fullpage_backdrop_content']
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: type + 'box_' + cid,
@@ -4473,9 +4480,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: 'dialog_backdrop'
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id],
@@ -4549,9 +4555,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
                     show: 'fullpage_backdrop_indicator',
-                    hide: 'dialog_backdrop'
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     remove: ['workflowtransitionvalidationrule_' + rule_id],
@@ -4916,8 +4921,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'fullpage_backdrop',
-                    clear: 'fullpage_backdrop_content',
-                    show: 'fullpage_backdrop_indicator'
+                    show: 'fullpage_backdrop_indicator',
+                    hide: 'fullpage_backdrop_content'
                 },
                 success: {
                     callback: function (json) {
@@ -5379,13 +5384,13 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 },
                 success: {
                     callback: function (json) {
-                        $('viewissue_affects_count').update(json.itemcount);
-                        if (json.itemcount != 0)
+                        if ($('viewissue_affects_count'))
+                            $('viewissue_affects_count').update(json.itemcount);
+                        if (json.itemcount != 0 && $('no_affected'))
                             $('no_affected').hide();
                         TBG.Main.Helpers.Backdrop.reset();
                     },
                     update: {element: 'affected_list', insertion: true},
-                    hide: 'add_affected_spinning'
                 }
             });
         }
@@ -5720,8 +5725,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                     additional_params: issues,
                     loading: {
                         indicator: 'fullpage_backdrop',
-                        clear: 'fullpage_backdrop_content',
-                        show: 'fullpage_backdrop_indicator'
+                        show: 'fullpage_backdrop_indicator',
+                        hide: 'fullpage_backdrop_content'
                     },
                     success: {
                         callback: TBG.Search.bulkPostProcess

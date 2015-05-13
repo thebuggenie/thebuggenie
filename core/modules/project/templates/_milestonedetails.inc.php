@@ -51,9 +51,9 @@
             </tbody>
         </table>
         <script type="text/javascript">
-            require(['domReady', 'jquery', 'jquery.flot'], function (domReady, jquery) {
+            require(['domReady', 'jquery', 'jquery.flot', 'jquery.flot.time'], function (domReady, jQuery) {
                 domReady(function () {
-                    jquery(function () {
+                    jQuery(function () {
 
                         var d_e_points = [];
                         var d_e_hours = [];
@@ -97,8 +97,6 @@
                             }
                             var d_e_velocity_hours = [[eh_keys.min() * 1000, eh_values.max()], [eh_keys.max() * 1000, 0]];
                             var d_e_velocity_points = [[ep_keys.min() * 1000, ep_values.max()], [ep_keys.max() * 1000, 0]];
-                            console.log(d_e_velocity_points);
-                            console.log(d_b_hours);
                                 var x_config = TBG.Chart.config.x_config;
                                 x_config.mode = 'time';
                                 var grid_config = TBG.Chart.config.grid_config;

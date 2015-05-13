@@ -39,7 +39,7 @@
             <?php endif; ?>
             <?php if ($issue->isUpdateable() && \thebuggenie\core\framework\Settings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
                 <?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-                    <li><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
+                    <li><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
                 <?php else: ?>
                     <li class="disabled"><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>', '<?php echo __('Before you can upload attachments, file uploads needs to be activated'); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
                 <?php endif; ?>
@@ -58,12 +58,12 @@
                 <?php if ($issue->canAddRelatedIssues() && $tbg_user->canReportIssues($issue->getProject())): ?>
                     <?php if (isset($board)): ?>
                         <?php if (!$board->getTaskIssuetypeID()): ?>
-                            <li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new child issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new child issue'))); ?></li>
+                            <li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new child issue'), array('onclick' => "TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new child issue'))); ?></li>
                         <?php elseif ($issue->getIssuetype()->getID() != $board->getTaskIssuetypeID()): ?>
                             <li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Add a new task'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID(), 'issuetype_id' => $board->getTaskIssuetypeID(), 'lock_issuetype' => 1))."');", 'title' => __('Add a new task'))); ?></li>
                         <?php endif; ?>
                     <?php else: ?>
-                        <li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new related issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new child issue'))); ?></li>
+                        <li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new related issue'), array('onclick' => "TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new child issue'))); ?></li>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
@@ -81,7 +81,7 @@
                 <li class="separator"></li>
                 <?php if ($issue->canEditEstimatedTime()): ?>
                     <?php if ($issue->isUpdateable()): ?>
-                        <li><a href="javascript:void(0);" onclick="$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo image_tag('icon_estimated_time.png').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="TBG.Main.Profile.clearPopupsAndButtons();$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo image_tag('icon_estimated_time.png').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
                     <?php else: ?>
                         <li class="disabled"><a href="javascript:void(0);"><?php echo image_tag('icon_estimated_time.png').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                     <?php endif; ?>
@@ -100,7 +100,7 @@
             <?php endif; ?>
             <?php if ($issue->canDeleteIssue()): ?>
                 <li class="separator"></li>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
             <?php endif; ?>
         <?php else: ?>
             <li class="disabled"><a href="#"><?php echo __('No additional actions available'); ?></a></li>
