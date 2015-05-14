@@ -3696,6 +3696,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             }
 
             if (!$('milestone_details_' + milestone_id)) {
+                window.location.hash = 'roadmap_milestone_' + milestone_id;
+
                 TBG.Main.Helpers.ajax(url, {
                     loading: {
                         indicator: 'fullpage_backdrop',
