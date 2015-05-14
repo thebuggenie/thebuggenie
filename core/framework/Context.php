@@ -618,8 +618,17 @@
             catch (\Exception $e)
             {
                 Logging::log("Something happened while setting up user: " . $e->getMessage(), 'main', Logging::LEVEL_WARNING);
-                $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
-                if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
+
+                $is_anonymous_route = self::isCLI() || self::getRouting()->isCurrentRouteAnonymousRoute();
+
+                // Handle old static anoymous route configuration
+                if (!$is_anonymous_route)
+                {
+                    $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
+                    $is_anonymous_route = (in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) && in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes));
+                }
+
+                if (!$is_anonymous_route)
                 {
                     self::setMessage('login_message_err', $e->getMessage());
                     self::$_redirect_login = 'login';

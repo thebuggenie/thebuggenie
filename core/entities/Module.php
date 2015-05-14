@@ -342,10 +342,10 @@
             return false;
         }
 
-        public function addRoute($key, $url, $function, $params = array(), $csrf_enabled = false, $module_name = null)
+        public function addRoute($key, $url, $function, $params = array(), $options = array(), $module_name = null)
         {
             $module_name = ($module_name !== null) ? $module_name : $this->getName();
-            $this->_routes[] = array($key, $url, $module_name, $function, $params, $csrf_enabled);
+            $this->_routes[] = array($key, $url, $module_name, $function, $params, $options);
         }
 
         final public function initialize()
