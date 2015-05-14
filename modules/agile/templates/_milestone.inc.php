@@ -195,6 +195,39 @@
                                 }
                                 ?>
                 <input id="include_selected_issues" value="0" name="include_selected_issues" type="hidden">
+                <?php
+                    if (isset($board))
+                    {
+                        switch ($board->getType())
+                        {
+                            case AgileBoard::TYPE_SCRUM:
+                            case AgileBoard::TYPE_KANBAN:
+                                $milestone_type = \thebuggenie\core\entities\Milestone::TYPE_SCRUMSPRINT;
+                                break;
+                            case AgileBoard::TYPE_GENERIC:
+                            default:
+                                $milestone_type = \thebuggenie\core\entities\Milestone::TYPE_REGULAR;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch ($milestone->getType())
+                        {
+                            case Milestone::TYPE_SCRUMSPRINT:
+                                $milestone_type = \thebuggenie\core\entities\Milestone::TYPE_SCRUMSPRINT;
+                                break;
+                            case Milestone::TYPE_REGULAR:
+                            default:
+                                $milestone_type = \thebuggenie\core\entities\Milestone::TYPE_REGULAR;
+                                break;
+                        }
+                    }
+
+                ?>
+                <?php if (isset($milestone_type)): ?>
+                    <input id="milestone_type" value="<?php echo $milestone_type; ?>" name="milestone_type" type="hidden">
+                <?php endif; ?>
             </div>
             <div class="backdrop_details_submit">
                             <?php if ($milestone->getID()): ?>
