@@ -3209,8 +3209,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                     reset: 'edit_milestone_form',
                     hide: 'no_milestones',
                     callback: function (json) {
-                        TBG.Main.Helpers.Backdrop.reset();
                         if (on_board) {
+                            TBG.Main.Helpers.Backdrop.reset();
                             if ($('milestone_' + json.milestone_id)) {
                                 $('milestone_' + json.milestone_id).replace(json.component);
                             } else {
