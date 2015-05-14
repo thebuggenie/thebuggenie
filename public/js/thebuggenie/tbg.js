@@ -4834,7 +4834,10 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 loading: {indicator: 'relate_issues_indicator'},
                 success: {
                     update: {element: 'related_child_issues_inline', insertion: true},
-                    hide: 'no_child_issues'
+                    hide: 'no_child_issues',
+                    callback: function () {
+                        TBG.Main.Helpers.Backdrop.reset();
+                    }
                 }
             });
             return false;
