@@ -166,6 +166,15 @@
                     }
                 }
             }
+            elseif (! framework\Context::hasMessage('issue_deleted'))
+            {
+                $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
+                if (! $issue instanceof entities\Issue || $issue->isDeleted())
+                {
+                    return $this->forward($request_referer);
+                }
+            }
             elseif (framework\Context::hasMessage('issue_deleted'))
             {
                 $this->issue_deleted = framework\Context::getMessageAndClear('issue_deleted');
@@ -2668,6 +2677,8 @@
          */
         public function runDeleteIssue(framework\Request $request)
         {
+            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
             if ($issue_id = $request['issue_id'])
             {
                 try
@@ -2676,12 +2687,27 @@
                 }
                 catch (\Exception $e)
                 {
+                    if ($request_referer)
+                    {
+                        return $this->forward($request_referer);
+                    }
+
                     return $this->return404(framework\Context::getI18n()->__('This issue does not exist'));
                 }
             }
             else
             {
+                if ($request_referer)
+                {
+                    return $this->forward($request_referer);
+                }
+
                 return $this->return404(framework\Context::getI18n()->__('This issue does not exist'));
+            }
+
+            if ($issue->isDeleted())
+            {
+                return $this->forward($request_referer);
             }
 
             $this->forward403unless($issue->canDeleteIssue());
@@ -2689,7 +2715,7 @@
             $issue->save();
 
             framework\Context::setMessage('issue_deleted', true);
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
         }
 
         /**
