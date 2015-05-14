@@ -1015,6 +1015,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 },
                 success: {
                     callback: function (json) {
+                        TBG.Main.Helpers.Backdrop.reset();
                         var base = $(json.container_id);
                         if (base !== undefined) {
                             base.update('');
@@ -1026,7 +1027,6 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                                 $('viewissue_no_uploaded_files').hide();
                             }
                         }
-                        TBG.Main.Helpers.Backdrop.reset();
                     }
                 },
                 complete: {
