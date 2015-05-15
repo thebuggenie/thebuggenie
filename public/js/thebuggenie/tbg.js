@@ -3689,6 +3689,8 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
         }
 
         TBG.Project.showMilestoneDetails = function (url, milestone_id, force) {
+            $$('body')[0].setStyle({'overflow': 'auto'});
+
             var force = force || false;
 
             if (force && $('milestone_details_' + milestone_id)) {
