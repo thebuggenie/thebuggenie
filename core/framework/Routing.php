@@ -32,7 +32,7 @@
         protected $current_route_name = null;
         protected $current_route_module = null;
         protected $current_route_action = null;
-        protected $current_route_csrf_enabled = null;
+        protected $current_route_options = null;
 
         public function __construct($current_module = null, $current_action = null, $current_name = null)
         {
@@ -317,11 +317,13 @@
                     {
                         throw new exceptions\InvalidRouteException('A @Route annotation can only be used on methods prefixed with "run"');
                     }
+                    $options = array();
                     $route_annotation = $annotationset->getAnnotation('Route');
                     $action = substr($method->name, 3);
                     $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($action));
                     $route = $route_url_prefix . $route_annotation->getProperty('url');
-                    $csrf_enabled = $annotationset->hasAnnotation('CsrfProtected');
+                    $options['csrf_enabled'] = $annotationset->hasAnnotation('CsrfProtected');
+                    $options['anonymous_route'] = $annotationset->hasAnnotation('AnonymousRoute');
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 
@@ -336,7 +338,7 @@
                     }
                     else
                     {
-                        $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $http_methods);
+                        $this->addRoute($name, $route, $module, $action, $params, $options, $http_methods);
                     }
                 }
             }
@@ -353,12 +355,14 @@
             }
             else
             {
+                $options = array();
                 $route = $details['route'];
                 $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
-                $csrf_enabled = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+                $options['csrf_enabled'] = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
+                $options['anonymous_route'] = (array_key_exists('anonymous_route', $details)) ? $details['anonymous_route'] : array();
                 $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
-                $this->addRoute($name, $route, $module, $action, $params, $csrf_enabled, $methods);
+                $this->addRoute($name, $route, $module, $action, $params, $options, $methods);
             }
         }
 
@@ -369,7 +373,7 @@
             $this->routes[$name][9] = true;
         }
 
-        public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false, $allowed_methods = array(), $overridden = false)
+        public function addRoute($name, $route, $module, $action, $params = array(), $options = array(), $allowed_methods = array(), $overridden = false)
         {
             if ($this->hasRoute($name))
             {
@@ -388,7 +392,7 @@
             if (($route == '') || ($route == '/'))
             {
                 $regexp = '/^[\/]*$/';
-                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled, $methods, $overridden);
+                $this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $options, $methods, $overridden);
             }
             else
             {
@@ -458,7 +462,7 @@
                 }
                 $regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
 
-                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $methods, $overridden);
+                $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $options, $methods, $overridden);
             }
         }
 
@@ -498,11 +502,9 @@
             {
                 $out = array();
                 $r = null;
-
-                list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled, $allowed_methods, ) = $route;
+                list($route, $regexp, $names, $names_hash, $module, $action, $params, $options, $allowed_methods, ) = $route;
 
                 $break = false;
-
                 if (preg_match($regexp, $url, $r))
                 {
                     $break = true;
@@ -581,7 +583,7 @@
                     if ($break)
                     {
                         // we store route name
-                        $this->_setCurrentRouteDetails($route_name, $out['module'], $out['action'], $csrf_enabled);
+                        $this->_setCurrentRouteDetails($route_name, $out['module'], $out['action'], $options);
 
                         Logging::log('match route ['.$route_name.'] "'.$route.'"', 'routing');
 
@@ -612,13 +614,44 @@
          * @param string $name Current route name
          * @param string $module Current route module
          * @param string $action Current route action
+         * @param array $options Current route options
          */
-        protected function _setCurrentRouteDetails($name, $module, $action, $csrf_enabled)
+        protected function _setCurrentRouteDetails($name, $module, $action, $options)
         {
             $this->current_route_name = $name;
             $this->current_route_module = $module;
             $this->current_route_action = $action;
-            $this->current_route_csrf_enabled = $csrf_enabled;
+            $this->current_route_options = $options;
+        }
+
+        /**
+         * Set current route's option to value
+         *
+         * @param string $option_name Option name
+         * @param mixed $value Value for option
+         */
+        protected function _setCurrentRouteOption($option_name, $value)
+        {
+            if (!is_array($this->current_route_options))
+            {
+                $this->current_route_options = array();
+            }
+            $this->current_route_options[$option_name] = $value;
+        }
+
+        /**
+         * Get value of current route's option
+         *
+         * @param string $option_name Option name
+         * @return mixed Value for option. If option is not set return null.
+         */
+        protected function _getCurrentRouteOption($option_name)
+        {
+            if (!is_array($this->current_route_options) || !array_key_exists($option_name, $this->current_route_options))
+            {
+                return null;
+            }
+            return $this->current_route_options[$option_name];
         }
 
         /**
@@ -676,7 +709,7 @@
          */
         public function setCurrentRouteCSRFenabled($csrf_enabled = true)
         {
-            $this->current_route_csrf_enabled = $csrf_enabled;
+            _setCurrentRouteOption('csrf_enabled', $csrf_enabled);
         }
 
         /**
@@ -686,11 +719,35 @@
          */
         public function isCurrentRouteCSRFenabled()
         {
-            if ($this->current_route_csrf_enabled === null)
+            if ($this->_getCurrentRouteOption('csrf_enabled') === null)
             {
                 $this->getRouteFromUrl(Context::getRequest()->getParameter('url', null, false));
             }
-            return $this->current_route_csrf_enabled;
+            return (bool)$this->_getCurrentRouteOption('csrf_enabled');
+        }
+
+        /**
+         * Set the current route as anonymous route
+         *
+         * @param boolean $anonymous_route
+         */
+        public function setCurrentRouteAnonymousRoute($anonymous_route = true)
+        {
+            _setCurrentRouteOption('anonymous_route', $anonymous_route);
+        }
+
+        /**
+         * Returns whether the current route has anonymous route enabled
+         *
+         * @return boolean
+         */
+        public function isCurrentRouteAnonymousRoute()
+        {
+            if ($this->_getCurrentRouteOption('anonymous_route') === null)
+            {
+                $this->getRouteFromUrl(Context::getRequest()->getParameter('url', null, false));
+            }
+            return (bool)$this->_getCurrentRouteOption('anonymous_route');
         }
 
         /**
@@ -751,12 +808,12 @@
                 throw new \Exception("The route '$name' does not exist");
             }
 
-            list($url, , $names, $names_hash, $action, $module, , $csrf_enabled, , ) = $this->routes[$name];
+            list($url, , $names, $names_hash, $action, $module, , $options, , ) = $this->routes[$name];
 
             $defaults = array('action' => $action, 'module' => $module);
 
             $params = self::arrayDeepMerge($defaults, $params);
-            if ($csrf_enabled)
+            if (array_key_exists('csrf_enabled', $options) && $options['csrf_enabled'])
             {
                 $params['csrf_token'] = Context::generateCSRFtoken();
             }
