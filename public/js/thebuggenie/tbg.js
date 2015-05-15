@@ -4842,7 +4842,12 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                     update: {element: 'related_child_issues_inline', insertion: true},
                     hide: 'no_child_issues',
                     callback: function () {
-                        TBG.Main.Helpers.Backdrop.reset();
+                        if (jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').length) {
+                            jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').trigger('click');
+                        }
+                        else {
+                            TBG.Main.Helpers.Backdrop.reset();
+                        }
                     }
                 }
             });
