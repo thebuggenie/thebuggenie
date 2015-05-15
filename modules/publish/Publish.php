@@ -65,10 +65,10 @@
             }
             framework\Event::listen('core', '\thebuggenie\core\entities\Project::_postSave', array($this, 'listen_createNewProject'));
             framework\Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', array($this, 'listen_fileHasAccess'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__getStarredArticles', array($this, '\thebuggenie\core\entities\User__getStarredArticles'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__isArticleStarred', array($this, '\thebuggenie\core\entities\User__isArticleStarred'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__addStarredArticle', array($this, '\thebuggenie\core\entities\User__addStarredArticle'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__removeStarredArticle', array($this, '\thebuggenie\core\entities\User__removeStarredArticle'));
+            framework\Event::listen('core', '\thebuggenie\core\entities\User::__getStarredArticles', array($this, 'TBGUser__getStarredArticles'));
+            framework\Event::listen('core', '\thebuggenie\core\entities\User::__isArticleStarred', array($this, 'TBGUser__isArticleStarred'));
+            framework\Event::listen('core', '\thebuggenie\core\entities\User::__addStarredArticle', array($this, 'TBGUser__addStarredArticle'));
+            framework\Event::listen('core', '\thebuggenie\core\entities\User::__removeStarredArticle', array($this, 'TBGUser__removeStarredArticle'));
             framework\Event::listen('core', 'upload', array($this, 'listen_upload'));
             framework\Event::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
             framework\Event::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
@@ -472,7 +472,7 @@
         {
             if ($user->_isset('publish', 'starredarticles') === null)
             {
-                $articles = tables\UserArticles::getTable()->getUserStarredArticles($user->getID());
+                $articles = UserArticles::getTable()->getUserStarredArticles($user->getID());
                 $user->_store('publish', 'starredarticles', $articles);
             }
         }
@@ -511,7 +511,7 @@
             else
             {
                 $event->setProcessed();
-                $event->setReturnValue(tables\UserArticles::getTable()->hasStarredArticle($user->getID(), $article_id));
+                $event->setReturnValue(UserArticles::getTable()->hasStarredArticle($user->getID(), $article_id));
                 return;
             }
         }
@@ -528,14 +528,14 @@
             $article_id = $arguments[0];
             if ($user->isLoggedIn() && !$user->isGuest())
             {
-                if (tables\UserArticles::getTable()->hasStarredArticle($user->getID(), $article_id))
+                if (UserArticles::getTable()->hasStarredArticle($user->getID(), $article_id))
                 {
                     $event->setProcessed();
                     $event->setReturnValue(true);
                     return;
                 }
 
-                tables\UserArticles::getTable()->addStarredArticle($user->getID(), $article_id);
+                UserArticles::getTable()->addStarredArticle($user->getID(), $article_id);
                 if ($user->_isset('publish', 'starredarticles'))
                 {
                     $article = Articles::getTable()->selectById($article_id);
@@ -563,7 +563,7 @@
             $user = $event->getSubject();
             $arguments = $event->getParameters();
             $article_id = $arguments[0];
-            tables\UserArticles::getTable()->removeStarredArticle($user->getID(), $article_id);
+            UserArticles::getTable()->removeStarredArticle($user->getID(), $article_id);
             if (isset($user->_starredarticles))
             {
                 $articles = $user->_retrieve('publish', 'starredarticles');
