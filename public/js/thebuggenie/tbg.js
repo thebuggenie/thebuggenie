@@ -4898,24 +4898,43 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Issues._addVote(url, 'down');
         };
 
-        TBG.Issues.toggleFavourite = function (url, issue_id)
+        TBG.Issues.toggleFavourite = function (url, issue_id_user_id)
         {
+            var issue_id = issue_id_user_id.substr(0, issue_id_user_id.indexOf('_'));
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: 'issue_favourite_indicator_' + issue_id,
-                    hide: ['issue_favourite_normal_' + issue_id, 'issue_favourite_faded_' + issue_id]
+                    callback: function () {
+                        if ($('popup_find_subscriber_20').visible() && $('popup_find_subscriber_' + issue_id + '_spinning')) {
+                            $('popup_find_subscriber_' + issue_id + '_spinning').show();
+                        }
+                        else {
+                            TBG.Core._processCommonAjaxPostEvents({
+                                show: 'issue_favourite_indicator_' + issue_id_user_id,
+                                hide: ['issue_favourite_normal_' + issue_id_user_id, 'issue_favourite_faded_' + issue_id_user_id]
+                            });
+                        }
+                    }
                 },
                 success: {
+                    hide: 'popup_find_subscriber_' + issue_id,
                     callback: function (json) {
-                        if ($('issue_favourite_faded_' + issue_id)) {
+                        if ($('popup_find_subscriber_' + issue_id + '_spinning')) {
+                            $('popup_find_subscriber_' + issue_id + '_spinning').hide();
+                        }
+                        else {
+                            TBG.Core._processCommonAjaxPostEvents({
+                                hide: 'issue_favourite_indicator_' + issue_id_user_id,
+                            });
+                        }
+                        if ($('issue_favourite_faded_' + issue_id_user_id)) {
                             if (json.starred) {
-                                $('issue_favourite_faded_' + issue_id).hide();
-                                $('issue_favourite_indicator_' + issue_id).hide();
-                                $('issue_favourite_normal_' + issue_id).show();
+                                $('issue_favourite_faded_' + issue_id_user_id).hide();
+                                $('issue_favourite_indicator_' + issue_id_user_id).hide();
+                                $('issue_favourite_normal_' + issue_id_user_id).show();
                             } else {
-                                $('issue_favourite_normal_' + issue_id).hide();
-                                $('issue_favourite_indicator_' + issue_id).hide();
-                                $('issue_favourite_faded_' + issue_id).show();
+                                $('issue_favourite_normal_' + issue_id_user_id).hide();
+                                $('issue_favourite_indicator_' + issue_id_user_id).hide();
+                                $('issue_favourite_faded_' + issue_id_user_id).show();
                             }
                         } else if (json.subscriber != '') {
                             $('subscribers_list').insert(json.subscriber);
