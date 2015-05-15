@@ -5297,7 +5297,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
         TBG.Issues.ACL.addTarget = function (url, issue_id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: 'acl_indicator_' + issue_id
+                    indicator: 'popup_find_acl_' + issue_id + '_spinning'
                 },
                 success: {
                     update: {element: 'issue_' + issue_id + '_access_list', insertion: true},
@@ -5310,7 +5310,9 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             TBG.Main.Helpers.ajax(url, {
                 form: 'acl_' + issue_id + '_' + mode + 'form',
                 loading: {
-                    indicator: 'acl_indicator_' + issue_id
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     callback: TBG.Main.Helpers.Backdrop.reset

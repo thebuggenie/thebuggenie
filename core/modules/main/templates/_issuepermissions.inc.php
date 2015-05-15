@@ -13,7 +13,7 @@
         </div>
         <div id="acl_<?php echo $issue->getID(); ?>_restricted" style="<?php if($issue->isUnlocked()): ?> display: none;<?php endif; ?>">
             <h4 style="margin-top: 10px;">
-                <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_{$issue->getID()}').toggle();", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
+                <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_{$issue->getID()}').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
                 <?php echo __('Users or teams who can see this issue'); ?>
             </h4>
             <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_{$issue->getID()}",
