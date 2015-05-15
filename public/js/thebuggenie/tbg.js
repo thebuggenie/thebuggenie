@@ -4790,10 +4790,14 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             var url = form.action;
             TBG.Main.Helpers.ajax(url, {
                 form: form,
-                loading: {indicator: form.id + '_indicator'},
+                loading: {
+                    indicator: 'fullpage_backdrop_indicator',
+                    hide: 'fullpage_backdrop_content'
+                },
                 success: {
                     callback: function (json) {
                         $('fullpage_backdrop_content').update(json.timeentries);
+                        $('fullpage_backdrop_content').show();
                         if (json.timesum == 0) {
                             $('no_spent_time_' + json.issue_id).show();
                             $('spent_time_' + json.issue_id + '_name').hide();
@@ -4811,6 +4815,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                 loading: {indicator: 'dialog_indicator'},
                 success: {
                     callback: function (json) {
+                        TBG.Main.Helpers.Dialog.dismiss();
                         $('issue_spenttime_' + entry_id).remove();
                         if ($('issue_spenttime_' + entry_id + '_comment'))
                             $('issue_spenttime_' + entry_id + '_comment').remove();
@@ -4821,7 +4826,6 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                             $('no_spent_time_' + json.issue_id).hide();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
                         }
-                        TBG.Main.Helpers.Dialog.dismiss();
                     }
                 }
             });
