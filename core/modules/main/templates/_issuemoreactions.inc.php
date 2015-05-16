@@ -100,7 +100,7 @@
             <?php endif; ?>
             <?php if ($issue->canDeleteIssue()): ?>
                 <li class="separator"></li>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?><?php if (isset($_SERVER['HTTP_REFERER'])): ?>?referrer=<?php echo $_SERVER['HTTP_REFERER']; ?>#roadmap_milestone_<?php echo $issue->getMilestone()->getID(); endif; ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
             <?php endif; ?>
         <?php else: ?>
             <li class="disabled"><a href="#"><?php echo __('No additional actions available'); ?></a></li>
