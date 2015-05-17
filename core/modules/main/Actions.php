@@ -439,7 +439,7 @@
                                     $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
                                     break;
                                 case 'article':
-                                    $target = tables\Articles::getTable()->selectById($request['target_id']);
+                                    $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
                                     break;
                                 case 'project':
                                     $target = tables\Projects::getTable()->selectById($request['target_id']);
