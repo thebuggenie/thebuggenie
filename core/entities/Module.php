@@ -308,7 +308,7 @@
             return framework\Settings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
         }
 
-        public function deleteSetting($setting, $uid = null, $scope = null)
+        public function deleteSetting($setting, $uid = 0, $scope = null)
         {
             return framework\Settings::deleteSetting($setting, $this->getName(), $scope, $uid);
         }

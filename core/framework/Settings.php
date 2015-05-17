@@ -333,7 +333,7 @@
             $crit->addWhere(tables\Settings::UID, $uid);
 
             tables\Settings::getTable()->doDelete($crit);
-            unset(self::$_settings[$name][$uid]);
+            unset(self::$_settings[$module][$name][$uid]);
         }
 
         private static function _loadSetting($name, $module = 'core', $scope = 0)
