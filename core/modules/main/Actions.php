@@ -3290,7 +3290,7 @@
                     }
                     else
                     {
-                        \thebuggenie\core\framework\Event::createNew('core', 'entities\Comment::createNew', $comment, compact('issue'))->trigger();
+                        \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
                     }
                 }
                 elseif ($comment_applies_type == entities\Comment::TYPE_ARTICLE)

@@ -17,8 +17,7 @@
         thebuggenie\core\entities\Issue,
         thebuggenie\core\entities\Project,
         thebuggenie\core\entities\Status,
-        thebuggenie\core\entities\Resolution,
-        thebuggenie\core\entities\tables\Settings as SettingsTable;
+        thebuggenie\core\entities\Resolution;
 
     /**
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
@@ -458,8 +457,8 @@ EOT;
         {
             if ($project instanceof Project)
             {
-                $address = SettingsTable::get(self::SETTING_PROJECT_FROM_ADDRESS . $project->getID(), 'mailing');
-                $name = SettingsTable::get(self::SETTING_PROJECT_FROM_NAME . $project->getID(), 'mailing');
+                $address = $this->getSetting(self::SETTING_PROJECT_FROM_ADDRESS . $project->getID());
+                $name = $this->getSetting(self::SETTING_PROJECT_FROM_NAME . $project->getID());
                 if ($address != '')
                 {
                     $message->setFrom($address, $name);

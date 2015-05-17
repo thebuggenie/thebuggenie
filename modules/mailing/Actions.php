@@ -249,7 +249,7 @@
             {
                 $project_id = $request['project_id'];
 
-                if ($request['mailing_from_address'] != '')
+                if (trim($request['mailing_from_address']) != '')
                 {
                     if (filter_var(trim($request['mailing_from_address']), FILTER_VALIDATE_EMAIL) !== false)
                     {
@@ -269,7 +269,7 @@
                         return $this->renderJSON(array('message' => framework\Context::getI18n()->__('Please enter a valid email address')));
                     }
                 }
-                elseif ($request->getParameter('mailing_reply_address') == '')
+                elseif (trim($request['mailing_from_address']) == '')
                 {
                     framework\Context::getModule('mailing')->deleteSetting(Mailing::SETTING_PROJECT_FROM_ADDRESS . $project_id);
                     framework\Context::getModule('mailing')->deleteSetting(Mailing::SETTING_PROJECT_FROM_NAME . $project_id);
