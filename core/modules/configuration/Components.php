@@ -10,7 +10,7 @@
 
         public function componentGeneral()
         {
-            $files = scandir(THEBUGGENIE_PATH . 'vendor' . DS . 'easybook' . DS . 'geshi' . DS);
+            $files = scandir(THEBUGGENIE_PATH . 'vendor' . DS . 'easybook' . DS . 'geshi' . DS . 'geshi' . DS);
             $geshi_languages = array();
             foreach ($files as $file)
             {
@@ -30,10 +30,52 @@
             $this->offlinestate = framework\Settings::getOfflineState();
         }
 
-        public function componentAppearance()
+        public function componentOnlineModules()
         {
-            $this->themes = framework\Context::getThemes();
-            $this->icons = framework\Context::getIconSets();
+            try
+            {
+                $client = new \Net_Http_Client();
+                $client->get('http://www.thebuggenie.com/addons.json');
+                $json_modules = json_decode($client->getBody());
+            }
+            catch (\Exception $e) {}
+
+            $modules = array();
+            if (isset($json_modules) && isset($json_modules->featured)) {
+                foreach ($json_modules->featured as $key => $module) {
+                    if (!framework\Context::isModuleLoaded($module->key))
+                        $modules[] = $module;
+                }
+            }
+
+            $this->modules = $modules;
+        }
+
+        public function componentOnlineThemes()
+        {
+            try
+            {
+                $client = new \Net_Http_Client();
+                $client->get('http://www.thebuggenie.com/themes.json');
+                $json_themes = json_decode($client->getBody());
+            }
+            catch (\Exception $e) {}
+
+            $themes = array();
+            $existing_themes = framework\Context::getThemes();
+            if (isset($json_themes) && isset($json_themes->featured)) {
+                foreach ($json_themes->featured as $key => $theme) {
+                    if (!array_key_exists($theme->key, $existing_themes))
+                        $themes[] = $theme;
+                }
+            }
+
+            $this->themes = $themes;
+        }
+
+        public function componentTheme()
+        {
+            $this->enabled = (\thebuggenie\core\framework\Settings::getThemeName() == $this->theme['key']);
         }
 
         public function componentReglang()

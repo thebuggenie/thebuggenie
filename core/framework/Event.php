@@ -55,14 +55,21 @@
         }
 
         /**
-         * Remove all listeners from a module/identifier
+         * Remove all listeners from a module+identifier
          *
          * @param string $module The module for which the trigger is active
          * @param string $identifier The trigger identifier
          */
-        public static function clearListeners($module, $identifier)
+        public static function clearListeners($module, $identifier = null)
         {
-            self::$_registeredlisteners[$module][$identifier] = array();
+            if ($identifier !== null)
+            {
+                self::$_registeredlisteners[$module][$identifier] = array();
+            }
+            elseif (isset(self::$_registeredlisteners[$module]))
+            {
+                unset(self::$_registeredlisteners[$module]);
+            }
         }
 
         /**

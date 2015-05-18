@@ -9,6 +9,7 @@
         thebuggenie\core\entities\Scope,
         thebuggenie\core\entities\User,
         thebuggenie\core\entities\tables\Permissions;
+    use thebuggenie\core\helpers\TextParserMarkdown;
 
     /**
      * The core class of the framework powering thebuggenie
@@ -617,8 +618,17 @@
             catch (\Exception $e)
             {
                 Logging::log("Something happened while setting up user: " . $e->getMessage(), 'main', Logging::LEVEL_WARNING);
-                $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
-                if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
+
+                $is_anonymous_route = self::isCLI() || self::getRouting()->isCurrentRouteAnonymousRoute();
+
+                // Handle old static anoymous route configuration
+                if (!$is_anonymous_route)
+                {
+                    $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
+                    $is_anonymous_route = (in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) && in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes));
+                }
+
+                if (!$is_anonymous_route)
                 {
                     self::setMessage('login_message_err', $e->getMessage());
                     self::$_redirect_login = 'login';
@@ -831,7 +841,6 @@
             {
                 Logging::log('Cannot access the translation object until the i18n system has been initialized!', 'i18n', Logging::LEVEL_WARNING);
                 throw new \Exception('Cannot access the translation object until the i18n system has been initialized!');
-                //self::reinitializeI18n(self::getUser()->getLanguage());
             }
             return self::$_i18n;
         }
@@ -855,27 +864,17 @@
             {
                 if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'theme.php'))
                 {
-                    $themes[] = $theme;
+                    $themes[$theme] = array(
+                        'key' => $theme,
+                        'name' => ucfirst($theme),
+                        'version' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'VERSION'),
+                        'author' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'AUTHOR'),
+                        'description' => TextParserMarkdown::defaultTransform(file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'README.md'))
+                    );
                 }
             }
 
             return $themes;
-        }
-
-        public static function getIconSets()
-        {
-            $icon_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS);
-            $icons = array();
-
-            while ($icon = readdir($icon_path_handle))
-            {
-                if ($icon != '.' && $icon != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . $icon))
-                {
-                    $icons[] = $icon;
-                }
-            }
-
-            return $icons;
         }
 
         /**
@@ -1030,6 +1029,20 @@
                 self::$_modules = array();
             }
             self::$_modules[$module_name] = $module;
+        }
+
+        /**
+         * Unloads a loaded module
+         *
+         * @param string $module_name The name of the module to unload
+         */
+        public static function unloadModule($module_name)
+        {
+            if (isset(self::$_modules[$module_name]))
+            {
+                unset(self::$_modules[$module_name]);
+                Event::clearListeners($module_name);
+            }
         }
 
         /**

@@ -5,6 +5,7 @@
      */
 
     $tbg_response->addStylesheet('oxygen/oxygen.css');
+    \thebuggenie\core\framework\Settings::setIconsetName('oxygen');
 
 ?>
 <style>
@@ -20,6 +21,9 @@
 
     table.results_normal th.sort_asc { background-image: url('<?php echo $webroot; ?>iconsets/oxygen/sort_down.png') !important; padding-left: 25px !important; }
     table.results_normal th.sort_desc { background-image: url('<?php echo $webroot; ?>iconsets/oxygen/sort_up.png') !important; padding-left: 25px !important; }
+
+    .module .rating { background-image:url('<?php echo $webroot; ?>iconsets/oxygen/star_faded_small.png'); }
+    .module .rating .score { background-image:url('<?php echo $webroot; ?>iconsets/oxygen/star_small.png'); }
 
     .markItUp .markItUpButton1 a { background-image:url('<?php echo $webroot; ?>iconsets/oxygen/markitup/h1.png'); }
     .markItUp .markItUpButton2 a { background-image:url('<?php echo $webroot; ?>iconsets/oxygen/markitup/h2.png'); }

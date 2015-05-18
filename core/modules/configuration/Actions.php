@@ -102,15 +102,14 @@
             if (framework\Context::getRequest()->isPost())
             {
                 $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
-                $settings = array(framework\Settings::SETTING_THEME_NAME, framework\Settings::SETTING_ALLOW_USER_THEMES, framework\Settings::SETTING_ONLINESTATE, framework\Settings::SETTING_ENABLE_GRAVATARS,
-                    framework\Settings::SETTING_OFFLINESTATE, framework\Settings::SETTING_AWAYSTATE, framework\Settings::SETTING_AWAYSTATE, framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER,
+                $settings = array(framework\Settings::SETTING_ENABLE_GRAVATARS, framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER,
                     framework\Settings::SETTING_REQUIRE_LOGIN, framework\Settings::SETTING_ALLOW_REGISTRATION, framework\Settings::SETTING_ALLOW_OPENID, framework\Settings::SETTING_USER_GROUP,
                     framework\Settings::SETTING_RETURN_FROM_LOGIN, framework\Settings::SETTING_RETURN_FROM_LOGOUT, framework\Settings::SETTING_IS_PERMISSIVE_MODE, framework\Settings::SETTING_ALLOW_PERSONA,
                     framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST, framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW, framework\Settings::SETTING_KEEP_COMMENT_TRAIL_CLEAN,
                     framework\Settings::SETTING_TBG_NAME, framework\Settings::SETTING_TBG_NAME_HTML, framework\Settings::SETTING_DEFAULT_CHARSET, framework\Settings::SETTING_DEFAULT_LANGUAGE,
                     framework\Settings::SETTING_SERVER_TIMEZONE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
                     framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES, framework\Settings::SETTING_HEADER_LINK,
-                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ICONSET, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED);
+                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED);
 
                 foreach ($settings as $setting)
                 {
@@ -510,6 +509,7 @@
             $this->module_message = framework\Context::getMessageAndClear('module_message');
             $this->module_error = framework\Context::getMessageAndClear('module_error');
             $this->modules = framework\Context::getModules();
+            $this->writable = is_writable(THEBUGGENIE_MODULES_PATH);
             $this->uninstalled_modules = framework\Context::getUninstalledModules();
             $this->outdated_modules = framework\Context::getOutdatedModules();
         }
@@ -717,6 +717,130 @@
                 throw $e;
             }
             $this->forward(framework\Context::getRouting()->generate('configure_modules'));
+        }
+
+        /**
+         * Configure the selected theme
+         *
+         * @param framework\Request $request
+         * @Route(name="configuration_themes", url="/configure/themes")
+         */
+        public function runConfigureThemes(framework\Request $request)
+        {
+            $this->themes = framework\Context::getThemes();
+            $this->writable = is_writable(THEBUGGENIE_PATH . 'themes');
+            $this->writable_link = is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes');
+            $this->theme_message = framework\Context::getMessageAndClear('theme_message');
+            $this->theme_error = framework\Context::getMessageAndClear('theme_error');
+        }
+
+        /**
+         * Perform the module update for a specific module
+         *
+         * @param framework\Request $request
+         * @Route(name="configuration_module_update", url="/configure/modules/:module_key/update")
+         */
+        public function runUpdateModule(framework\Request $request)
+        {
+            $module = framework\Context::getModule($request['module_key']);
+            $module->upgrade();
+            $module->enable();
+            framework\Context::setMessage('module_message', $this->getI18n()->__('The module was updated'));
+            $this->forward($this->getRouting()->generate('configure_modules'));
+        }
+
+        /**
+         * Enable a theme
+         *
+         * @param framework\Request $request
+         * @Route(name="configuration_enable_theme", url="/configure/themes/:theme_key/enable/:csrf_token")
+         * @CsrfProtected
+         */
+        public function runEnableTheme(framework\Request $request)
+        {
+            $themes = framework\Context::getThemes();
+            if (array_key_exists($request['theme_key'], $themes)) {
+                $theme_link_path = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'css' . DS . $request['theme_key'];
+                $theme_path = '..' . DS . '..' . DS . 'themes' . DS . $request['theme_key'] . DS . 'css';
+                if (file_exists($theme_link_path)) {
+                    unlink($theme_link_path);
+                }
+                symlink($theme_path, $theme_link_path);
+                framework\Settings::saveSetting(framework\Settings::SETTING_THEME_NAME, $request['theme_key']);
+                framework\Context::setMessage('theme_message', $this->getI18n()->__('The theme has been enabled'));
+            } else {
+                framework\Context::setMessage('theme_error', $this->getI18n()->__('This theme does not exist'));
+            }
+            return $this->forward($this->getRouting()->generate('configuration_themes'));
+        }
+
+        /**
+         * Download the update file for a specific theme
+         *
+         * @param framework\Request $request
+         * @Route(name="configuration_download_theme_update", url="/configure/themes/:theme_key/update/download")
+         */
+        public function runDownloadThemeUpdate(framework\Request $request)
+        {
+            try
+            {
+                entities\Module::downloadTheme($request['theme_key']);
+                framework\Context::setMessage('theme_message', $this->getI18n()->__('The theme was updated'));
+                $url = $this->getRouting()->generate('configuration_themes');
+            }
+            catch (framework\exceptions\ModuleDownloadException $e)
+            {
+                $url = $this->getRouting()->generate('configuration_themes');
+                switch ($e->getCode())
+                {
+                    case framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND:
+                        framework\Context::setMessage('theme_error', $this->getI18n()->__('An error occured when trying to retrieve the theme update data'));
+                        break;
+                    case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
+                        framework\Context::setMessage('theme_error', $this->getI18n()->__('The theme update could not be downloaded'));
+                        break;
+                }
+            }
+            catch (\Exception $e)
+            {
+                framework\Context::setMessage('module_error', $this->getI18n()->__('An error occured when trying to retrieve the theme'));
+                $url = $this->getRouting()->generate('configuration_themes');
+            }
+            return $this->forward($url);
+        }
+
+        /**
+         * Download the update file for a specific module
+         *
+         * @param framework\Request $request
+         * @Route(name="configuration_download_module_update", url="/configure/modules/:module_key/update/download")
+         */
+        public function runDownloadModuleUpdate(framework\Request $request)
+        {
+            try
+            {
+                entities\Module::downloadModule($request['module_key']);
+                $url = $this->getRouting()->generate('configuration_module_update', array('module_key' => $request['module_key']));
+            }
+            catch (framework\exceptions\ModuleDownloadException $e)
+            {
+                $url = $this->getRouting()->generate('configure_modules');
+                switch ($e->getCode())
+                {
+                    case framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND:
+                        framework\Context::setMessage('module_error', $this->getI18n()->__('An error occured when trying to retrieve the module data'));
+                        break;
+                    case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
+                        framework\Context::setMessage('module_error', $this->getI18n()->__('The module could not be downloaded'));
+                        break;
+                }
+            }
+            catch (\Exception $e)
+            {
+                framework\Context::setMessage('module_error', $this->getI18n()->__('An error occured when trying to retrieve the module'));
+                $url = $this->getRouting()->generate('configure_modules');
+            }
+            return $this->forward($url);
         }
 
         /**

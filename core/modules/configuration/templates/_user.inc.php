@@ -152,34 +152,4 @@
             </select>
         </td>
     </tr>
-    <tr>
-        <td><label for="onlinestate"><?php echo __('User state when online'); ?></label></td>
-        <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ONLINESTATE; ?>" id="onlinestate" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-            <?php foreach ($userstates as $userstate): ?>
-                <option value="<?php print $userstate->getID(); ?>"<?php if ($onlinestate instanceof \thebuggenie\core\entities\Userstate && $onlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
-            <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td><label for="awaystate"><?php echo __('User state when inactive'); ?></label></td>
-        <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_AWAYSTATE; ?>" id="awaystate" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-            <?php foreach ($userstates as $userstate): ?>
-                <option value="<?php print $userstate->getID(); ?>"<?php if ($awaystate instanceof \thebuggenie\core\entities\Userstate && $awaystate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
-            <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td><label for="offlinestate"><?php echo __('User state when offline'); ?></label></td>
-        <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_OFFLINESTATE; ?>" id="offlinestate" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-            <?php foreach ($userstates as $userstate): ?>
-                <option value="<?php print $userstate->getID(); ?>"<?php if ($offlinestate instanceof \thebuggenie\core\entities\Userstate && $offlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
-            <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
 </table>

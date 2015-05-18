@@ -1,5 +1,5 @@
-define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
-    function (p, jQuery) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-ui', 'jquery.markitup'],
+    function (prototype, effects, controls, scriptaculous, jQuery) {
 
         var TBG = {
             Core: {
@@ -32,6 +32,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
             },
             Chart: {},
             Modules: {},
+            Themes: {},
             Project: {
                 Statistics: {},
                 Milestone: {},
@@ -118,31 +119,29 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
 //                ._renderItem = function (ul, item) {
 //                    
 //                };
-            require(['effects', 'controls', 'scriptaculous'], function () {
-                new Ajax.Autocompleter(
-                    "searchfor",
-                    "searchfor_autocomplete_choices",
-                    TBG.autocompleter_url,
-                    {
-                        paramName: "fs[text][v]",
-                        parameters: "fs[text][o]==",
-                        minChars: 2,
-                        indicator: 'quicksearch_indicator',
-                        callback: function (element, entry) {
-                            $('quicksearch_submit').disable();
-                            $('quicksearch_submit').removeClassName('button-blue');
-                            $('quicksearch_submit').addClassName('button-silver');
-                            return entry;
-                        },
-                        afterUpdateChoices: function () {
-                            $('quicksearch_submit').enable();
-                            $('quicksearch_submit').removeClassName('button-silver');
-                            $('quicksearch_submit').addClassName('button-blue');
-                        },
-                        afterUpdateElement: TBG.Core._extractAutocompleteValue
-                    }
-                );
-            });
+            new Ajax.Autocompleter(
+                "searchfor",
+                "searchfor_autocomplete_choices",
+                TBG.autocompleter_url,
+                {
+                    paramName: "fs[text][v]",
+                    parameters: "fs[text][o]==",
+                    minChars: 2,
+                    indicator: 'quicksearch_indicator',
+                    callback: function (element, entry) {
+                        $('quicksearch_submit').disable();
+                        $('quicksearch_submit').removeClassName('button-blue');
+                        $('quicksearch_submit').addClassName('button-silver');
+                        return entry;
+                    },
+                    afterUpdateChoices: function () {
+                        $('quicksearch_submit').enable();
+                        $('quicksearch_submit').removeClassName('button-silver');
+                        $('quicksearch_submit').addClassName('button-blue');
+                    },
+                    afterUpdateElement: TBG.Core._extractAutocompleteValue
+                }
+            );
 //            }
         };
 
@@ -450,7 +449,7 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
                     if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
                         TBG.Main.Notifications.loadMore();
                     }
-                })
+                });
             });
         };
 
@@ -7143,6 +7142,141 @@ define(['prototype', 'jquery', 'jquery-ui', 'jquery.markitup'],
 
         TBG.Main.Helpers.initializeFancyFilters = function() {
             $$('.fancyfilter').each(TBG.Main.Helpers.initializeFancyFilterField);
+        };
+
+        TBG.Core.getPluginUpdates = function (type) {
+            var params = '',
+                plugins = $('installed-'+type+'s-list').childElements();
+            plugins.each(function (plugin) {
+                if (type == 'theme' || !plugin.hasClassName('disabled')) {
+                    params += '&addons[]=' + plugin.dataset[type+'Key'];
+                }
+            });
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'get',
+                params: 'say=get_'+type+'_updates' + params,
+                loading: {
+                    indicator: 'installed_'+type+'s_indicator'
+                },
+                success: {
+                    update: 'installed_'+type+'s_indicator',
+                    callback: function (json) {
+                        plugins.each(function (plugin) {
+                            if (json[plugin.dataset[type+'Key']] !== undefined) {
+                                if (plugin.dataset.version != json[plugin.dataset[type+'Key']].version) {
+                                    plugin.addClassName('can-update');
+                                    var link = $(type + '_'+plugin.dataset[type+'Key']+'_download_location');
+                                    link.setAttribute('href', json[plugin.dataset[type+'Key']].download);
+                                    jQuery('body').on('click', '.update-'+type+'-menu-item', function (e) {
+                                        var pluginbox = jQuery(this).parents('li.'+type);
+                                        $('update_'+type+'_help_' + pluginbox.data('id')).show();
+                                        if (!TBG.Core.Pollers.pluginupdatepoller)
+                                            TBG.Core.Pollers.pluginupdatepoller = new PeriodicalExecuter(TBG.Core.validatePluginUpdateUploadedPoller(type, pluginbox.data('module-key')), 5);
+                                    });
+                                }
+                            }
+                        })
+                    }
+                },
+                failure: {
+                    callback: function (response) {
+                        console.log(response);
+                    }
+                }
+            });
+        };
+
+        TBG.Core.cancelManualUpdatePoller = function () {
+            TBG.Core.Pollers.Locks.pluginupdatepoller = false;
+            if (TBG.Core.Pollers.pluginupdatepoller) {
+                TBG.Core.Pollers.pluginupdatepoller.stop();
+                TBG.Core.Pollers.pluginupdatepoller = undefined;
+            }
+        };
+
+        TBG.Core.validatePluginUpdateUploadedPoller = function (type, pluginkey) {
+            return function () {
+                if (!TBG.Core.Pollers.Locks.pluginupdatepoller) {
+                    TBG.Core.Pollers.Locks.pluginupdatepoller = true;
+                    TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                        url_method: 'get',
+                        params: '&say=verify_'+type+'_update_file&'+type+'_key='+pluginkey,
+                        success: {
+                            callback: function (json) {
+                                if (json.verified == '1') {
+                                    jQuery('#'+type+'_'+pluginkey+'_perform_update').children('input[type=submit]').prop('disabled', false);
+                                    TBG.Core.cancelManualUpdatePoller();
+                                }
+                                TBG.Core.Pollers.Locks.pluginupdatepoller = false;
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        TBG.Core.getAvailablePlugins = function (type, callback) {
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'get',
+                params: '&say=get_'+type,
+                loading: {
+                    indicator: 'available_'+type+'_loading_indicator'
+                },
+                success: {
+                    update: 'available_'+type+'_container',
+                    callback: function () {
+                        jQuery('body').on('click', '.install-button', callback);
+                    }
+                }
+            });
+        };
+
+        TBG.Core.installPlugin = function (button, type) {
+            button = jQuery(button);
+            button.addClass('installing');
+            button.prop('disabled', true);
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'post',
+                params: '&say=install-'+type+'&'+type+'_key='+button.data('key'),
+                success: {
+                    callback: function (json) {
+                        if (json.installed) {
+                            $('online-'+type+'-' + json[type+'_key']).addClassName('installed');
+                            $('installed-'+type+'s-list').insert(json[type], 'after');
+                        }
+                    }
+                },
+                failure: {
+                    callback: function () {
+                        button.removeClass('installing');
+                        button.prop('disabled', false);
+                    }
+                }
+            });
+        };
+
+        TBG.Modules.getModuleUpdates = function () {
+            TBG.Core.getPluginUpdates('module');
+        };
+
+        TBG.Modules.getAvailableOnline = function () {
+            TBG.Core.getAvailablePlugins('modules', TBG.Modules.install);
+        };
+
+        TBG.Modules.install = function (event) {
+            TBG.Core.installPlugin(this, 'module');
+        };
+
+        TBG.Themes.getThemeUpdates = function () {
+            TBG.Core.getPluginUpdates('theme');
+        };
+
+        TBG.Themes.getAvailableOnline = function () {
+            TBG.Core.getAvailablePlugins('themes', TBG.Themes.install);
+        };
+
+        TBG.Themes.install = function (event) {
+            TBG.Core.installPlugin(this, 'theme');
         };
 
         return TBG;

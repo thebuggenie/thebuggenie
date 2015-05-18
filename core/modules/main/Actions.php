@@ -5,7 +5,8 @@
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables,
-        thebuggenie\modules\agile;
+        thebuggenie\modules\agile,
+        Alchemy\Zippy\Zippy;
 
     /**
      * actions for the main module
@@ -324,6 +325,62 @@
                 {
                     switch ($request['say'])
                     {
+                        case 'install-module':
+                            try
+                            {
+                                entities\Module::downloadModule($request['module_key']);
+                                $module = entities\Module::installModule($request['module_key']);
+                                $data['installed'] = true;
+                                $data['module_key'] = $request['module_key'];
+                                $data['module'] = $this->getComponentHTML('configuration/modulebox', array('module' => $module));
+                            }
+                            catch (framework\exceptions\ModuleDownloadException $e)
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                switch ($e->getCode())
+                                {
+                                    case framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND:
+                                        return $this->renderJSON(array('message' => $this->getI18n()->__('An error occured when trying to retrieve the module data')));
+                                        break;
+                                    case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
+                                        return $this->renderJSON(array('message' => $this->getI18n()->__('The module could not be downloaded')));
+                                        break;
+                                }
+                            }
+                            catch (\Exception $e)
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                return $this->renderJSON(array('message' => $this->getI18n()->__('An error occured when trying to install the module')));
+                            }
+                            break;
+                        case 'install-theme':
+                            try
+                            {
+                                entities\Module::downloadTheme($request['theme_key']);
+                                $data['installed'] = true;
+                                $data['theme_key'] = $request['theme_key'];
+                                $themes = framework\Context::getThemes();
+                                $data['theme'] = $this->getComponentHTML('configuration/theme', array('theme' => $themes[$request['theme_key']]));
+                            }
+                            catch (framework\exceptions\ModuleDownloadException $e)
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                switch ($e->getCode())
+                                {
+                                    case framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND:
+                                        return $this->renderJSON(array('message' => $this->getI18n()->__('An error occured when trying to retrieve the module data')));
+                                        break;
+                                    case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
+                                        return $this->renderJSON(array('message' => $this->getI18n()->__('The module could not be downloaded')));
+                                        break;
+                                }
+                            }
+                            catch (\Exception $e)
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                return $this->renderJSON(array('message' => $this->getI18n()->__('An error occured when trying to install the module')));
+                            }
+                            break;
                         case 'notificationstatus':
                             $notification = tables\Notifications::getTable()->selectById($request['notification_id']);
                             $data['notification_id'] = $request['notification_id'];
@@ -345,6 +402,45 @@
                 {
                     switch ($request['say'])
                     {
+                        case 'get_module_updates':
+                            $addons_param = [];
+                            foreach ($request['addons'] as $addon) {
+                                $addons_param[] = 'addons[]='.$addon;
+                            }
+                            try
+                            {
+                                $client = new \Net_Http_Client();
+                                $client->get('http://www.thebuggenie.com/addons.json?'.join('&', $addons_param));
+                                $addons_json = json_decode($client->getBody(), true);
+                            }
+                            catch (\Exception $e) {}
+                            return $this->renderJSON($addons_json);
+                            break;
+                        case 'get_theme_updates':
+                            $addons_param = [];
+                            foreach ($request['addons'] as $addon) {
+                                $addons_param[] = 'themes[]='.$addon;
+                            }
+                            try
+                            {
+                                $client = new \Net_Http_Client();
+                                $client->get('http://www.thebuggenie.com/themes.json?'.join('&', $addons_param));
+                                $addons_json = json_decode($client->getBody(), true);
+                            }
+                            catch (\Exception $e) {}
+                            return $this->renderJSON($addons_json);
+                            break;
+                        case 'verify_module_update_file':
+                            $filename = THEBUGGENIE_CACHE_PATH . $request['module_key'] . '.zip';
+                            $exists = file_exists($filename) && dirname($filename) . DS == THEBUGGENIE_CACHE_PATH;
+                            return $this->renderJSON(array('verified' => (int) $exists));
+                            break;
+                        case 'get_modules':
+                            return $this->renderComponent('configuration/onlinemodules');
+                            break;
+                        case 'get_themes':
+                            return $this->renderComponent('configuration/onlinethemes');
+                            break;
                         case 'get_mentionables':
                             switch ($request['target_type'])
                             {
@@ -352,7 +448,7 @@
                                     $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
                                     break;
                                 case 'article':
-                                    $target = tables\Articles::getTable()->selectById($request['target_id']);
+                                    $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
                                     break;
                                 case 'project':
                                     $target = tables\Projects::getTable()->selectById($request['target_id']);
@@ -3220,7 +3316,7 @@
                     }
                     else
                     {
-                        \thebuggenie\core\framework\Event::createNew('core', 'entities\Comment::createNew', $comment, compact('issue'))->trigger();
+                        \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
                     }
                 }
                 elseif ($comment_applies_type == entities\Comment::TYPE_ARTICLE)
