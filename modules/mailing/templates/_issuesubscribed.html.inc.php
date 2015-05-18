@@ -1,7 +1,7 @@
 <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
-        <span style="font-size: 0.8em; font-weight: normal;">Created by <?php echo $issue->getPostedBy()->getBuddyname(); ?> (<?php echo $issue->getPostedBy()->getUsername(); ?>)</span>
+        <span style="font-size: 0.8em; font-weight: normal;">Created by <?php echo $issue->getPostedBy()->getNameWithUsername(); ?></span>
     </h3>
     You have been subscribed to this issue and will be notified if and when it changes in the future.<br>
     To unsubscribe from this issue, open the issue in your web browser and click the "star" icon in the top left corner, next to the issue title.

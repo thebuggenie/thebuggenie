@@ -1,10 +1,10 @@
 * <?php echo $issue->getFormattedTitle(true); ?> *
-<?php echo __('Updated by %name', array('%name' => $updated_by->getBuddyname())) . ' (' . $updated_by->getUsername() . ')';?>
+<?php echo __('Updated by %name', array('%name' => $updated_by->getNameWithUsername()));?>
 
-<?php echo '(' . __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' / ' . $issue->getPostedBy()->getUsername() . ')'; ?>
+<?php echo '(' . __('Created by %name', array('%name' => $issue->getPostedBy()->getNameWithUsername())); ?>
 
 <?php if (isset($comment) && $comment instanceof \thebuggenie\core\entities\Comment): ?>
-* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')';?> *
+* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername()));?> *
 <?php echo $comment->getContent(); ?>
 <?php endif; ?>
 
