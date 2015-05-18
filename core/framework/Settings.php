@@ -107,6 +107,7 @@
         const SETTING_UPLOAD_MAX_FILE_SIZE = 'upload_max_file_size';
         const SETTING_UPLOAD_RESTRICTION_MODE = 'upload_restriction_mode';
         const SETTING_UPLOAD_STORAGE = 'upload_storage';
+        const SETTING_USER_DISPLAYNAME_FORMAT = 'user_displayname_format';
         const SETTING_USER_GROUP = 'defaultgroup';
         const SETTING_USER_TIMEZONE = 'timezone';
         const SETTING_USER_KEYBOARD_NAVIGATION = 'keyboard_navigation';
@@ -123,6 +124,9 @@
         const SETTING_ICONSET = 'iconset';
 
         const USER_RSS_KEY = 'rsskey';
+
+        const USER_DISPLAYNAME_FORMAT_REALNAME = 1;
+        const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 0;
@@ -410,6 +414,14 @@
                 return false; // No openID when using external auth
             }
             return (bool) self::isPersonaEnabled();
+        }
+
+        public static function getUserDisplaynameFormat()
+        {
+            $format = self::get(self::SETTING_USER_DISPLAYNAME_FORMAT);
+            if (!is_numeric($format))
+                $format = 0;
+            return (int) $format;
         }
 
         public static function isGravatarsEnabled()

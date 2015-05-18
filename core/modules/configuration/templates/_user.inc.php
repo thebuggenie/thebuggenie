@@ -56,6 +56,18 @@
         </td>
     </tr>
     <tr>
+        <td><label for="displayname_format"><?php echo __('User\'s display name format'); ?></label></td>
+        <td>
+            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_USER_DISPLAYNAME_FORMAT; ?>" id="displayname_format" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+                <option value=1<?php if (\thebuggenie\core\framework\Settings::getUserDisplaynameFormat() == 1): ?> selected<?php endif; ?>><?php echo __('Use user\'s real name instead of buddy name'); ?></option>
+                <option value=0<?php if (\thebuggenie\core\framework\Settings::getUserDisplaynameFormat() == 0): ?> selected<?php endif; ?>><?php echo __('Prefer buddy name instead of real name.'); ?></option>
+            </select>
+            <?php echo config_explanation(
+                __('Change here how user\'s name is displayed.')
+            ); ?>
+        </td>
+    </tr>
+    <tr>
         <td><label for="allowreg"><?php echo __('Gravatar user icons'); ?></label></td>
         <td>
             <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS; ?>" id="allowreg" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
