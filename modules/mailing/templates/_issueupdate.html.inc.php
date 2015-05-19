@@ -1,11 +1,11 @@
 <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
-        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Updated by %name', array('%name' => $updated_by->getBuddyname())) . ' (' . $updated_by->getUsername() . ')'; ?></span><br>
-        <span style="font-size: 0.8em; color: #AAA; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?></span>
+        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Updated by %name', array('%name' => $updated_by->getNameWithUsername())); ?></span><br>
+        <span style="font-size: 0.8em; color: #AAA; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getNameWithUsername())); ?></span>
     </h3>
     <?php if (isset($comment) && $comment instanceof \thebuggenie\core\entities\Comment): ?>
-        <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')'; ?></h4>
+        <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername())); ?></h4>
         <p><?php echo $comment->getParsedContent(); ?></p>
         <br>
     <?php endif; ?>

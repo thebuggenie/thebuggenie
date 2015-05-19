@@ -3,7 +3,7 @@
 <?php echo __('A comment has been posted:'); ?>
 
 
-* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) .' (' . $comment->getPostedBy()->getUsername() . ')'; ?> *
+* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername())); ?> *
 <?php echo $comment->getContent(); ?>
 
 

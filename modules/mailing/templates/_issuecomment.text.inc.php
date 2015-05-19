@@ -1,8 +1,8 @@
 * <?php echo $issue->getFormattedTitle(true); ?> *
-<?php echo __('Created by %name', array('%name' =>  $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?>
+<?php echo __('Created by %name', array('%name' =>  $issue->getPostedBy()->getNameWithUsername())); ?>
 
 
-* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')'; ?> *
+* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername())); ?> *
 <?php echo $comment->getContent(); ?>
 
 

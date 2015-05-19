@@ -307,7 +307,7 @@ EOT;
                     $message = $this->getSwiftMessage($translated_subject, $body_parts[0], $body_parts[1]);
                     foreach ($users as $user)
                     {
-                        $message->addTo($user->getEmail(), $user->getBuddyname());
+                        $message->addTo($user->getEmail(), $user->getName());
                     }
                     $messages[] = $message;
                     framework\Context::getI18n()->setLanguage($current_language);
