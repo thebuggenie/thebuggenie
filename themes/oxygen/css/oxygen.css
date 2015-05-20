@@ -13,7 +13,7 @@ h5 { font-size: 1.1em; }
 h6 { font-size: 1.05em; }
 h1, h2, h3, h4, h5, h6 { font-weight: 600; padding: 3px 3px 3px 0; margin: 5px 0 5px 0; }
 
-table, img, a img { border: 0; }
+table, img, a img, a:hover img, a img:hover, a.dropper:hover { border: 0; }
 
 a { color: #00a400; text-decoration: none; }
 a.image:hover { border: 0px; }
@@ -1722,7 +1722,8 @@ reportissue_additional_information_container .markItUp { display: none; }
 .button-group .button.lefthugging { border-left: none; }
 .button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
-#workflow_actions .more_actions_dropdown { margin-top: 2px; border-radius: 2px; font-size: 1.1em; }
+#workflow_actions .more_actions_dropdown { margin: 24px  0 0 -250px; width: 250px; border-radius: 2px; font-size: 1.1em; }
+#workflow_actions .more_actions_dropdown li a { white-space: normal; }
 .workflow_actions li.workflow { position: relative; }
 .workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 30px; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
@@ -1763,7 +1764,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 
 #project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
 #project_planning.milestone-sort #milestone-sort-actions { display: block; }
-.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, a.button-pressed, a.button-pressed:hover { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; text-decoration: none; border: none; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown { 
     width: 360px; 

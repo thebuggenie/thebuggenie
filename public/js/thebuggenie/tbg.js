@@ -1397,9 +1397,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Main.Profile.clearPopupsAndButtons = function (event) {
             $$('.popup_box').each(function (element) {
-                var prev = $(element).previous();
+                var prev = $(element).previous('.button-pressed');
                 if (prev) {
                     prev.removeClassName('button-pressed');
+                } else if (element.id != '' && jQuery('.dropper[data-target='+element.id+']')) {
+                    jQuery('.dropper[data-target='+element.id+']').removeClass('button-pressed');
                 }
                 $(element).hide();
             });
@@ -6789,7 +6791,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Main.Helpers.toggler = function (elm) {
             elm.toggleClass("button-pressed");
-            elm.next().toggle();
+            if (jQuery(elm).data('target')) {
+                jQuery('#'+jQuery(elm).data('target')).toggle();
+            } else {
+                elm.next().toggle();
+            }
         };
 
         TBG.Main.loadParentArticles = function (form) {

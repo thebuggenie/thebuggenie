@@ -296,7 +296,7 @@
             <dl class="viewissue_list">
                 <dt id="assigned_to_header"><?php echo __('Assigned to'); ?></dt>
                 <dd id="assigned_to_content" class="<?php if ($issue->isAssigneeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-                    <?php if ($issue->canEditAssignee() && $issue->isEditable()): ?>
+                    <?php if ($issue->canEditAssignee() && $issue->isUpdateable()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
