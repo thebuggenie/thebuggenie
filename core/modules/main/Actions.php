@@ -703,6 +703,10 @@
 
         /**
          * Static login page
+         *
+         * @Route(name="login_page", url="/login")
+         * @AnonymousRoute
+         *
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runLogin(framework\Request $request)
@@ -789,6 +793,9 @@
 
         /**
          * Do login (AJAX call)
+         *
+         * @Route(name="login", url="/do/login")
+         * @AnonymousRoute
          *
          * @param \thebuggenie\core\framework\Request $request
          */
@@ -999,6 +1006,9 @@
         /**
          * Registration logic
          *
+         * @Route(name="register_check_username", url="/check/username")
+         * @AnonymousRoute
+         *
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runRegisterCheckUsernameAvailability(framework\Request $request)
@@ -1011,6 +1021,9 @@
 
         /**
          * Registration logic
+         *
+         * @Route(name="register", url="/do/register")
+         * @AnonymousRoute
          *
          * @param \thebuggenie\core\framework\Request $request
          */
@@ -1115,6 +1128,9 @@
 
         /**
          * Activate newly registered account
+         *
+         * @Route(name="activate", url="/activate/:user/:key")
+         * @AnonymousRoute
          *
          * @param \thebuggenie\core\framework\Request $request
          */
@@ -3430,6 +3446,14 @@
             $this->field_info = $return_array;
         }
 
+        /**
+         * Partial backdrop loader
+         *
+         * @Route(name="get_partial_for_backdrop", url="/get/partials/:key/*")
+         * @AnonymousRoute
+         *
+         * @param framework\Request $request
+         */
         public function runGetBackdropPartial(framework\Request $request)
         {
             if (!$request->isAjaxCall())
@@ -4346,10 +4370,12 @@
         /**
          * Reset user password
          *
-         * @param \thebuggenie\core\framework\Request $request The request object
+         * @Route(name="reset_password", url="/reset/password/:user/:reset_hash")
+         * @AnonymousRoute
          *
+         * @param \thebuggenie\core\framework\Request $request The request object
          */
-        public function runReset(framework\Request $request)
+        public function runResetPassword(framework\Request $request)
         {
             $i18n = framework\Context::getI18n();
 
@@ -4412,6 +4438,9 @@
 
         /**
          * Generate captcha picture
+         *
+         * @Route(name="captcha", url="/captcha/*")
+         * @AnonymousRoute
          *
          * @param \thebuggenie\core\framework\Request $request The request object
          * @global array $_SESSION['activation_number'] The session captcha activation number
