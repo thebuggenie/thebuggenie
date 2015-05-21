@@ -4910,7 +4910,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     callback: function () {
-                        if ($('popup_find_subscriber_20').visible() && $('popup_find_subscriber_' + issue_id + '_spinning')) {
+                        if ($('popup_find_subscriber_' + issue_id) != null && $('popup_find_subscriber_' + issue_id).visible() && $('popup_find_subscriber_' + issue_id + '_spinning')) {
                             $('popup_find_subscriber_' + issue_id + '_spinning').show();
                         }
                         else {
