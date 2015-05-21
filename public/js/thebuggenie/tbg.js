@@ -1483,7 +1483,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var url = dashboard_container.dataset.postUrl;
             TBG.Main.Helpers.ajax(url, {
                 params: '&mode=remove_view&view_id=' + view_id,
-                loading: {indicator: column.down('.dashboard_indicator')},
+                loading: {indicator: element.up('.dashboard_view_container').down('.dashboard_indicator')},
                 success: {
                     remove: 'dashboard_container_' + view_id
                 }
