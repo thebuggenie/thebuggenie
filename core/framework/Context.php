@@ -636,9 +636,9 @@
 
         protected static function setupCoreListeners()
         {
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Project::listen_thebuggenie_core_entities_File_hasAccess');
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Build::listen_thebuggenie_core_entities_File_hasAccess');
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\framework\Settings::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Project::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Build::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\framework\Settings::listen_thebuggenie_core_entities_File_hasAccess');
         }
 
         public static function clearRoutingCache()

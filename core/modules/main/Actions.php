@@ -3306,13 +3306,13 @@
                     }
                     else
                     {
-                        \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
+                        \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
                     }
                 }
                 elseif ($comment_applies_type == entities\Comment::TYPE_ARTICLE)
                 {
                     $article = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById((int) $request['comment_applies_id']);
-                    \thebuggenie\core\framework\Event::createNew('core', 'entities\Comment::createNew', $comment, compact('article'))->trigger();
+                    \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('article'))->trigger();
                 }
 
                 switch ($comment_applies_type)

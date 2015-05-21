@@ -97,16 +97,16 @@
 
         protected function _addListeners()
         {
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::_postSave', array($this, 'listen_registerUser'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::_postSave', array($this, 'listen_registerUser'));
             framework\Event::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
             framework\Event::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
             framework\Event::listen('core', 'login_button_container', array($this, 'listen_loginButtonContainer'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::addScope', array($this, 'listen_addScope'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\Issue::createNew', array($this, 'listen_issueCreate'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::_postSave', array($this, 'listen_createUser'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\Issue::save', array($this, 'listen_issueSave'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\Comment::createNew', array($this, 'listen_thebuggenie_core_entities_Comment_createNew'));
-            framework\Event::listen('core', '\thebuggenie\modules\publish\entities\Article::doSave', array($this, 'listen_Article_doSave'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::addScope', array($this, 'listen_addScope'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::createNew', array($this, 'listen_issueCreate'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::_postSave', array($this, 'listen_createUser'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save', array($this, 'listen_issueSave'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Comment::createNew', array($this, 'listen_thebuggenie_core_entities_Comment_createNew'));
+            framework\Event::listen('core', 'thebuggenie\modules\publish\entities\Article::doSave', array($this, 'listen_Article_doSave'));
             framework\Event::listen('core', 'viewissue', array($this, 'listen_viewissue'));
             framework\Event::listen('core', 'issue_subscribe_user', array($this, 'listen_issueSubscribeUser'));
             framework\Event::listen('core', 'user_dropdown_anon', array($this, 'listen_userDropdownAnon'));

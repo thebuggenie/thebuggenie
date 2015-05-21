@@ -575,7 +575,7 @@
 
             $this->_history = null;
 
-            \thebuggenie\core\framework\Event::createNew('core', '\thebuggenie\modules\publish\entities\Article::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
+            \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\modules\publish\entities\Article::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
 
             return true;
         }

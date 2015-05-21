@@ -137,7 +137,7 @@
                 }
                 else
                 {
-                    $event = new \thebuggenie\core\framework\Event('core', 'Notification::getTarget', $this);
+                    $event = new \thebuggenie\core\framework\Event('core', 'thebuggenie\core\entities\Notification::getTarget', $this);
                     $event->triggerUntilProcessed();
                     $this->_target = $event->getReturnValue();
                 }
