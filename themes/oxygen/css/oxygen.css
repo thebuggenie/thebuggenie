@@ -2419,6 +2419,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard .dashboard_view_content ul li { float: none; width: auto; }
 .dashboard.layout_standard .dashboard_view_content .button.dash { float: right; margin-left: 5px; overflow: visible; font-size: 0.9em; }
 .dashboard.layout_standard .dashboard_view_content .project_list { font-size: 0.8em; }
+.dashboard.layout_standard .dashboard_view_content .project_team_assignee { display: inline-block; padding: 0 10px 5px 0; }
 .dashboard.layout_standard .dashboard_view_header img { margin-right: 2px; }
 .dashboard.layout_standard .latest_action_dates{ font-weight: 600; padding: 10px 0 0 0; }
 .dashboard.layout_standard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
