@@ -512,6 +512,7 @@
             $this->writable = is_writable(THEBUGGENIE_MODULES_PATH);
             $this->uninstalled_modules = framework\Context::getUninstalledModules();
             $this->outdated_modules = framework\Context::getOutdatedModules();
+            $this->is_default_scope = framework\Context::getScope()->isDefault();
         }
 
         /**

@@ -34,7 +34,9 @@
                     <ul id="modules_menu">
                         <li id="tab_installed" class="selected"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('id' => 'installed_modules_indicator')).__('Installed modules (%count)', array('%count' => count($modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'modules_menu');")); ?></li>
                         <li id="tab_uninstalled"><?php echo javascript_link_tag(__('Installable local modules (%count)', array('%count' => count($uninstalled_modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_uninstalled', 'modules_menu');")); ?></li>
-                        <li id="tab_install"><?php echo javascript_link_tag(__('Discover new modules'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_install', 'modules_menu');")); ?></li>
+                        <?php if ($is_default_scope): ?>
+                            <li id="tab_install"><?php echo javascript_link_tag(__('Discover new modules'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_install', 'modules_menu');")); ?></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <div id="modules_menu_panes">
@@ -70,11 +72,13 @@
         </td>
     </tr>
 </table>
-<script>
-    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
-        domReady(function () {
-            TBG.Modules.getAvailableOnline();
-            TBG.Modules.getModuleUpdates();
+<?php if ($is_default_scope): ?>
+    <script>
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Modules.getAvailableOnline();
+                TBG.Modules.getModuleUpdates();
+            });
         });
-    });
-</script>
+    </script>
+<?php endif; ?>
