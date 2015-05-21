@@ -19,7 +19,7 @@
         <meta name="author" content="zegenie">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="shortcut icon" href="iconsets/oxygen/favicon.png">
-        <link rel="stylesheet" type="text/css" href="themes/oxygen/oxygen.css">
+        <link rel="stylesheet" type="text/css" href="css/oxygen/oxygen.css">
         <script type="text/javascript" src="js/prototype.js"></script>
         <script type="text/javascript" src="js/scriptaculous.js"></script>
         <script type="text/javascript" src="js/install.js"></script>
