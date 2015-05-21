@@ -551,6 +551,8 @@
                         $view->setSortOrder($sort_order);
                         $view->save();
 
+                        framework\Context::setCurrentProject($view->getProject());
+
                         return $this->renderJSON(array('view_content' => $this->getComponentHTML('main/dashboardview', array('view' => $view, 'show' => false)), 'view_id' => $view->getID()));
                     case 'remove_view':
                         $deleted = 0;
