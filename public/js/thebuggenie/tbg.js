@@ -177,42 +177,42 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
          */
         TBG.Core._resizeWatcher = function () {
             return;
-            TBG.Core._vp_width = document.viewport.getWidth();
-            TBG.Core._vp_height = document.viewport.getHeight();
-            if (($('attach_file') && $('attach_file').visible())) {
-                var backdropheight = $('backdrop_detail_content').getHeight();
-                if (backdropheight > (TBG.Core._vp_height - 100)) {
-                    $('backdrop_detail_content').setStyle({height: TBG.Core._vp_height - 100 + 'px', overflow: 'scroll'});
-                } else {
-                    $('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
-                }
-            }
-            TBG.Core.popupVisiblizer();
+            // TBG.Core._vp_width = document.viewport.getWidth();
+            // TBG.Core._vp_height = document.viewport.getHeight();
+            // if (($('attach_file') && $('attach_file').visible())) {
+            //     var backdropheight = $('backdrop_detail_content').getHeight();
+            //     if (backdropheight > (TBG.Core._vp_height - 100)) {
+            //         $('backdrop_detail_content').setStyle({height: TBG.Core._vp_height - 100 + 'px', overflow: 'scroll'});
+            //     } else {
+            //         $('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
+            //     }
+            // }
+            // TBG.Core.popupVisiblizer();
         };
 
         TBG.Core.popupVisiblizer = function () {
             return;
-            var visible_popups = $$('.dropdown_box').findAll(function (el) {
-                return el.visible();
-            });
-            if (visible_popups.size()) {
-                visible_popups.each(function (element) {
-                    if ($(element).hasClassName("user_popup"))
-                        return;
-                    var max_bottom = document.viewport.getHeight();
-                    var element_height = $(element).getHeight();
-                    var parent_offset = $(element).up().cumulativeOffset().top;
-                    var element_min_bottom = parent_offset + element_height + 35;
-                    if (max_bottom < element_min_bottom) {
-                        if ($(element).getStyle('position') != 'fixed') {
-                            jQuery(element).data({'top': $(element).getStyle('top')});
-                        }
-                        $(element).setStyle({'position': 'fixed', 'bottom': '5px', 'top': 'auto'});
-                    } else {
-                        $(element).setStyle({'position': 'absolute', 'bottom': 'auto', 'top': jQuery(element).data('top')});
-                    }
-                });
-            }
+            // var visible_popups = $$('.dropdown_box').findAll(function (el) {
+            //     return el.visible();
+            // });
+            // if (visible_popups.size()) {
+            //     visible_popups.each(function (element) {
+            //         if ($(element).hasClassName("user_popup"))
+            //             return;
+            //         var max_bottom = document.viewport.getHeight();
+            //         var element_height = $(element).getHeight();
+            //         var parent_offset = $(element).up().cumulativeOffset().top;
+            //         var element_min_bottom = parent_offset + element_height + 35;
+            //         if (max_bottom < element_min_bottom) {
+            //             if ($(element).getStyle('position') != 'fixed') {
+            //                 jQuery(element).data({'top': $(element).getStyle('top')});
+            //             }
+            //             $(element).setStyle({'position': 'fixed', 'bottom': '5px', 'top': 'auto'});
+            //         } else {
+            //             $(element).setStyle({'position': 'absolute', 'bottom': 'auto', 'top': jQuery(element).data('top')});
+            //         }
+            //     });
+            // }
         };
 
         /**
