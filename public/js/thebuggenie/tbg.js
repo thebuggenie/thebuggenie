@@ -4459,7 +4459,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 loading: {indicator: 'edit_client_' + client_id + '_indicator'},
                 success: {
                     hide: 'edit_client_' + client_id,
-                    update: 'clientbox_' + client_id
+                    update: 'client_' + client_id + '_item'
                 }
             });
         }
