@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\mailing;
 
+    use thebuggenie\core\entities\tables\Settings;
     use thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\mailing\entities\IncomingEmailAccount,
         thebuggenie\modules\mailing\entities\tables\MailQueueTable,
@@ -906,7 +907,7 @@ EOT;
             {
                 case '1.0':
                     IncomingEmailAccount::getB2DBTable()->upgrade(\thebuggenie\modules\mailing\upgrade_32\TBGIncomingEmailAccountTable::getTable());
-                    SettingsTable::getTable()->deleteAllUserModuleSettings('mailing');
+                    Settings::getTable()->deleteAllUserModuleSettings('mailing');
                     break;
             }
         }
