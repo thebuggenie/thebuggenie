@@ -4617,7 +4617,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
             if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0) {
                 $('report_more_here').hide();
-                $('report_form').show();
+                $('report_form').show('block');
 
                 TBG.Main.Helpers.ajax(url, {
                     loading: {indicator: 'report_issue_more_options_indicator'},
@@ -4638,16 +4638,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                             }
                                         }
                                         if (json.fields[fieldname].additional && $(fieldname + '_additional')) {
-                                            $(fieldname + '_additional').show();
+                                            $(fieldname + '_additional').show('block');
                                             $(fieldname + '_div').hide();
-                                            if ($(fieldname + '_id_additional'))
+                                            if ($(fieldname + '_id_additional')) {
                                                 $(fieldname + '_id_additional').enable();
-                                            if ($(fieldname + '_value_additional'))
+                                            }
+                                            if ($(fieldname + '_value_additional')) {
                                                 $(fieldname + '_value_additional').enable();
-                                            if ($(fieldname + '_id'))
+                                            }
+                                            if ($(fieldname + '_id')) {
                                                 $(fieldname + '_id').disable();
-                                            if ($(fieldname + '_value'))
+                                            }
+                                            if ($(fieldname + '_value')) {
                                                 $(fieldname + '_value').disable();
+                                            }
                                             if (json.fields[fieldname].values) {
                                                 $(fieldname + '_id_additional').update('');
                                                 for (var opt in json.fields[fieldname].values) {
@@ -4656,18 +4660,24 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                                 $(fieldname + '_id_additional').setValue(prev_val);
                                             }
                                         } else {
-                                            if ($(fieldname + '_div'))
-                                                $(fieldname + '_div').show();
-                                            if ($(fieldname + '_id'))
+                                            if ($(fieldname + '_div')) {
+                                                $(fieldname + '_div').show('block');
+                                            }
+                                            if ($(fieldname + '_id')) {
                                                 $(fieldname + '_id').enable();
-                                            if ($(fieldname + '_value'))
+                                            }
+                                            if ($(fieldname + '_value')) {
                                                 $(fieldname + '_value').enable();
-                                            if ($(fieldname + '_id_additional'))
+                                            }
+                                            if ($(fieldname + '_id_additional')) {
                                                 $(fieldname + '_id_additional').disable();
-                                            if ($(fieldname + '_value_additional'))
+                                            }
+                                            if ($(fieldname + '_value_additional')) {
                                                 $(fieldname + '_value_additional').disable();
-                                            if ($(fieldname + '_additional'))
+                                            }
+                                            if ($(fieldname + '_additional')) {
                                                 $(fieldname + '_additional').hide();
+                                            }
                                             if (json.fields[fieldname].values) {
                                                 if ($(fieldname + '_id')) {
                                                     $(fieldname + '_id').update('');
@@ -4680,18 +4690,24 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         }
                                         (json.fields[fieldname].required) ? $(fieldname + '_label').addClassName('required') : $(fieldname + '_label').removeClassName('required');
                                     } else {
-                                        if ($(fieldname + '_div'))
+                                        if ($(fieldname + '_div')) {
                                             $(fieldname + '_div').hide();
-                                        if ($(fieldname + '_id'))
+                                        }
+                                        if ($(fieldname + '_id')) {
                                             $(fieldname + '_id').disable();
-                                        if ($(fieldname + '_value'))
+                                        }
+                                        if ($(fieldname + '_value')) {
                                             $(fieldname + '_value').disable();
-                                        if ($(fieldname + '_additional'))
+                                        }
+                                        if ($(fieldname + '_additional')) {
                                             $(fieldname + '_additional').hide();
-                                        if ($(fieldname + '_id_additional'))
+                                        }
+                                        if ($(fieldname + '_id_additional')) {
                                             $(fieldname + '_id_additional').disable();
-                                        if ($(fieldname + '_value_additional'))
+                                        }
+                                        if ($(fieldname + '_value_additional')) {
                                             $(fieldname + '_value_additional').disable();
+                                        }
                                     }
                                 }
                             });
@@ -4703,7 +4719,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (visible_fields) {
                                 $('reportissue_extrafields_none').hide();
                             } else {
-                                $('reportissue_extrafields_none').show();
+                                $('reportissue_extrafields_none').show('block');
                             }
                             $('title').focus();
                             $('report_issue_more_options_indicator').hide();
@@ -4712,8 +4728,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 });
             } else {
                 $('report_form').hide();
-                $('report_more_here').show();
-                $('issuetype_list').show();
+                $('report_more_here').show('block');
+                $('issuetype_list').show('block');
             }
 
         }
