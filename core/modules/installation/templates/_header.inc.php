@@ -86,7 +86,7 @@
             .installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 1.3em; }
             .donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 0; }
             .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-            .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 928px; margin-top: 5px; margin-bottom: 15px; }
+            .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; margin-top: 5px; margin-bottom: 15px; }
             .features { width: 400px; float: right; margin-left: 10px; }
             .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
             .feature .description { background-color: #FFF; padding: 10px; }
