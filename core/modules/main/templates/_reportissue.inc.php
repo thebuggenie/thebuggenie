@@ -756,7 +756,7 @@
                     </li>
                     <li id="spent_time_additional" style="display: none;">
                         <?php echo image_tag('icon_time.png'); ?>
-                        <div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+                        <div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Time spent on fix'); ?></a></div>
                         <div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
                             <a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
