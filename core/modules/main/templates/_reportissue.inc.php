@@ -228,33 +228,37 @@
             <?php endforeach; ?>
         </div>
         <script type="text/javascript">
-        (function($) {
-            var issueDescriptions = {
-            <?php foreach ($issuetypes as $issuetype): ?>
-                <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-                "<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
-            <?php endforeach; ?>
-            };
+            require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, TBG, jQuery) {
+                domReady(function () {
+                    (function($) {
+                        var issueDescriptions = {
+                        <?php foreach ($issuetypes as $issuetype): ?>
+                            <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
+                            "<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
+                        <?php endforeach; ?>
+                        };
 
-            var cachedHelp = $("#issuetype_description_help").text();
+                        var cachedHelp = $("#issuetype_description_help").text();
 
-            $(".issuetype_list a").each(function() {
-                var issueType = $(this);
-                var issueKey = issueType.attr("data-key");
+                        $(".issuetype_list a").each(function() {
+                            var issueType = $(this);
+                            var issueKey = issueType.attr("data-key");
 
-                issueType
-                .click(function() {
-                    $('#issuetype_id').val(issueType.attr("data-id") * 1);
-                    TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
-                })
-                .mouseover(function() {
-                    $('#issuetype_description_help').text(issueDescriptions[issueKey]);
-                })
-                .mouseout(function() {
-                    $('#issuetype_description_help').text(cachedHelp);
+                            issueType
+                            .click(function() {
+                                $('#issuetype_id').val(issueType.attr("data-id") * 1);
+                                TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+                            })
+                            .mouseover(function() {
+                                $('#issuetype_description_help').text(issueDescriptions[issueKey]);
+                            })
+                            .mouseout(function() {
+                                $('#issuetype_description_help').text(cachedHelp);
+                            });
+                        });
+                    })(jQuery);
                 });
             });
-        })(jQuery);
         </script>
     <?php endif; ?>
     <div style="clear: both;"></div>
