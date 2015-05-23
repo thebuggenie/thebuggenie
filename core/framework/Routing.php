@@ -709,7 +709,7 @@
          */
         public function setCurrentRouteCSRFenabled($csrf_enabled = true)
         {
-            _setCurrentRouteOption('csrf_enabled', $csrf_enabled);
+            $this->_setCurrentRouteOption('csrf_enabled', $csrf_enabled);
         }
 
         /**
@@ -733,7 +733,7 @@
          */
         public function setCurrentRouteAnonymousRoute($anonymous_route = true)
         {
-            _setCurrentRouteOption('anonymous_route', $anonymous_route);
+            $this->_setCurrentRouteOption('anonymous_route', $anonymous_route);
         }
 
         /**
