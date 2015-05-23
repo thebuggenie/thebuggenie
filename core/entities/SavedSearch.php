@@ -212,8 +212,6 @@
         {
             foreach ($this->getFilters() as $filter)
             {
-                if ($is_new) $filter->clearID();
-
                 $filter->setSearchId($this);
                 $filter->save();
             }
