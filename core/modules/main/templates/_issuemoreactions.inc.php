@@ -1,6 +1,6 @@
 <?php if (isset($dynamic) && $dynamic == true): ?>
     <ul class="more_actions_dropdown popup_box dynamic_menu" data-menu-url="<?php echo (isset($board)) ? make_url('issue_moreactions', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'board_id' => $board->getID())) : make_url('issue_moreactions', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>">
-        <li class="spinning"><?php echo image_tag('spinning_16.gif'); ?></li>
+        <li class="spinning"><?php echo image_tag('spinning_32.gif'); ?></li>
     </ul>
 <?php else: ?>
     <ul class="more_actions_dropdown popup_box">
