@@ -1265,7 +1265,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Main.Profile.updateSettings = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'profile_settings_form',
-                loading: {indicator: 'profile_settings_save_indicator'},
+                loading: {indicator: 'profile_notificationsettings_save_indicator'},
                 success: {callback: function () {
                     ($('profile_use_gravatar_yes').checked) ? $('gravatar_change').show() : $('gravatar_change').hide();
                 }}
