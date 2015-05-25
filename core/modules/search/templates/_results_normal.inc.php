@@ -168,14 +168,16 @@ foreach ($search_object->getIssues() as $issue):
             setTimeout(function() {
                 tbgjs.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
             }, 250);
-            (function($) {
+            if (! results_events_binded) {
                 // sort headers
-                $("#search_results").on("click", "th:not(.nosort)", tbgjs.Search.sortResults);
+                jQuery("#search_results").on("click", "th:not(.nosort)", tbgjs.Search.sortResults);
                 // issue checkboxes
-                $(".sca_actions").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckbox);
+                jQuery(".sca_actions").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckbox);
                 // issue checkboxes select all
-                $(".sca_action_selector").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckboxes);
-            })(jQuery);
+                jQuery(".sca_action_selector").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckboxes);
+
+                results_events_binded = true;
+            }
         });
     });
 </script>
