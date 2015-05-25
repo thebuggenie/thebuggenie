@@ -199,7 +199,13 @@
                         <input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
                         <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
                         <script>
-                            TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
+                            require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                                domReady(function () {
+                                    document.observe('dom:loaded', function() {
+                                        TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
+                                    });
+                                });
+                            });
                         </script>
                         <?php endif; ?>
                     </li>
@@ -650,8 +656,12 @@
             </div>
             <?php if ($selected_issuetype != null && $selected_project != null): ?>
                 <script type="text/javascript">
-                    document.observe('dom:loaded', function() {
-                        TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+                    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                        domReady(function () {
+                            document.observe('dom:loaded', function() {
+                                TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+                            });
+                        });
                     });
                 </script>
             <?php endif; ?>
