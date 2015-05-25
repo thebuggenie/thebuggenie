@@ -5002,7 +5002,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     hide: ['attach_link', 'viewissue_no_uploaded_files'],
                     update: {element: 'viewissue_uploaded_links', insertion: true},
                     callback: function (json) {
-                        $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+                        if ($('viewissue_uploaded_attachments_count'))
+                            $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+                        TBG.Main.Helpers.Backdrop.reset();
                     }
                 },
                 complete: {

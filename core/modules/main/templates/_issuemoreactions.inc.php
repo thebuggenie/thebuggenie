@@ -34,7 +34,7 @@
             <?php endif; ?>
             <?php if ((!isset($multi) || !$multi) && $issue->isUpdateable() && $issue->canAttachLinks()): ?>
                 <?php if ($issue->canAttachLinks()): ?>
-                    <li><a href="javascript:void(0);" id="attach_link_button" onclick="$('attach_link').toggle();"><?php echo image_tag('action_add_link.png').__('Attach a link'); ?></a></li>
+                    <li><a href="javascript:void(0);" id="attach_link_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'attachlink', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_link.png').__('Attach a link'); ?></a></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($issue->isUpdateable() && \thebuggenie\core\framework\Settings::isUploadsEnabled() && $issue->canAttachFiles()): ?>

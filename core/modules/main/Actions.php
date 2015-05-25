@@ -3497,6 +3497,9 @@
                         $options = $request->getParameters();
                         $options['uploader'] = ($request['uploader'] == 'dynamic') ? 'dynamic' : 'standard';
                         break;
+                    case 'attachlink':
+                        $template_name = 'main/attachlink';
+                        break;
                     case 'openid':
                         $template_name = 'main/openid';
                         break;
