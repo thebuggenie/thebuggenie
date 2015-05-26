@@ -12,7 +12,7 @@
             </dl>
             <br style="clear: both;">
             <div style="font-size: 12px; clear: both; padding: 15px 2px 10px 2px;"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link" to attach it to the issue.', array('%attach_link' => __('Attach link'))); ?></div>
-            <div style="text-align: center; padding: 10px; display: none;" id="attach_link_indicator"><?php echo image_tag('spinning_26.gif'); ?></div>
+            <div style="text-align: center; padding: 10px; display: none;" id="attach_link_indicator"><?php echo image_tag('spinning_16.gif'); ?></div>
             <div style="text-align: center;"><input type="submit" value="<?php echo __('Attach link'); ?>" style="font-weight: bold;" id="attach_link_submit"><?php echo __('%attach_link or %cancel', array('%attach_link' => '', '%cancel' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "TBG.Main.Helpers.Backdrop.reset();")).'</b>')); ?></div>
         </form>
     </div>

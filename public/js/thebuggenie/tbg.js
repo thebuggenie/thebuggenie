@@ -5009,7 +5009,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 form: 'attach_link_form',
                 loading: {
                     indicator: 'attach_link_indicator',
-                    hide: 'attach_link_submit'
+                    callback: function () {
+                        $('attach_link_submit').disable();
+                    }
                 },
                 success: {
                     reset: 'attach_link_form',
@@ -5022,7 +5024,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     }
                 },
                 complete: {
-                    show: 'attach_link_submit'
+                    callback: function () {
+                        $('attach_link_submit').enable();
+                    }
                 }
             });
         }
