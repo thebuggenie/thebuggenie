@@ -137,7 +137,7 @@
                 $this->search_object->setName($request['name']);
                 $this->search_object->setDescription($request['description']);
                 $this->search_object->setIsPublic((bool) $request['is_public']);
-                $this->search_object->setUser($this->getUser());
+                $this->search_object->setUser((bool) $request['is_public'] ? 0 : $this->getUser());
                 $this->search_object->setValuesFromRequest($request);
                 if ($request['project_id'])
                     $this->search_object->setAppliesToProject((int) $request['project_id']);
