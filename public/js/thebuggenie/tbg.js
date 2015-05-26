@@ -5741,6 +5741,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function (json) {
                         TBG.Core.Pollers.Callbacks.planningPoller();
                         TBG.Main.Helpers.Backdrop.reset();
+                        TBG.Search.liveUpdate(true);
                     }
                 },
                 complete: {
