@@ -6333,8 +6333,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     complete: {
                         callback: function (json) {
                             $('findissues_num_results_span').update(json.num_issues);
-                            $('findissues_search_title').hide();
-                            $('findissues_search_generictitle').show();
+                            if (! $('findissues_search_title').visible() && ! $('findissues_search_generictitle').visible()) {
+                                $('findissues_search_generictitle').show();
+                            }
                             $('findissues_num_results').show();
                             $('interactive_save_button').show();
                             fif.dataset.resultsLoaded = true;
