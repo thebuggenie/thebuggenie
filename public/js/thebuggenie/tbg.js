@@ -4712,11 +4712,25 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 }
                             });
                             var visible_fields = false;
-                            $('reportissue_extrafields').childElements().each(function (elm) {
-                                if (elm.visible())
+                            $$('.additional_information').each(function (elm) {
+                                if (elm.visible()) {
                                     visible_fields = true;
+                                    return;
+                                }
                             })
                             if (visible_fields) {
+                                $$('.additional_information')[0].up('.reportissue_additional_information_container').show('block');
+                            } else {
+                                $$('.additional_information')[0].up('.reportissue_additional_information_container').hide();
+                            }
+                            var visible_extrafields = false;
+                            $('reportissue_extrafields').childElements().each(function (elm) {
+                                if (elm.visible()) {
+                                    visible_extrafields = true;
+                                    return;
+                                }
+                            })
+                            if (visible_extrafields) {
                                 $('reportissue_extrafields_none').hide();
                             } else {
                                 $('reportissue_extrafields_none').show('block');
