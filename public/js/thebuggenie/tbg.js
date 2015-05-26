@@ -1031,7 +1031,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 complete: {
                     callback: function () {
                         $('dynamic_uploader_submit').addClassName('disabled');
-                        $('dynamic_uploader_submit').disable();
+                        $('dynamic_uploader_submit').enable();
                     }
                 }
             });

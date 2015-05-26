@@ -2916,7 +2916,7 @@
             }
             $saved_file_ids = $request['files'];
             $files = array();
-            foreach ($request['file_description'] as $file_id => $description)
+            foreach ($request['file_description'] ?: array() as $file_id => $description)
             {
                 $file = entities\File::getB2DBTable()->selectById($file_id);
                 $file->setDescription($description);
