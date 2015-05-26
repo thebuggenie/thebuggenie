@@ -78,6 +78,12 @@
                         <?php if ($show_results): ?>
                             setTimeout(function() { TBG.Search.liveUpdate(true); }, 250);
                         <?php endif; ?>
+
+                        var hash = window.location.hash;
+
+                        if (hash != undefined && hash.indexOf('edit_modal') == 1) {
+                            $('saved_search_details').toggle('block');
+                        }
                     });
                 });
             </script>
