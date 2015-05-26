@@ -75,7 +75,7 @@
             framework\Event::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
             framework\Event::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
             framework\Event::listen('core', '_notification_view', array($this, 'listen_notificationview'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\Notification::getTarget', array($this, 'listen_thebuggenie_core_entities_Notification_getTarget'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Notification::getTarget', array($this, 'listen_thebuggenie_core_entities_Notification_getTarget'));
         }
 
         protected function _uninstall()

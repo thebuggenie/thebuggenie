@@ -5256,7 +5256,7 @@
                 }
             }
             $this->_addUpdateNotifications($updated_by);
-            $event = \thebuggenie\core\framework\Event::createNew('core', 'Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
+            $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
             $event->trigger();
         }
 
@@ -5284,7 +5284,7 @@
             {
                 $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
                 $this->_addCreateNotifications($this->getPostedBy());
-                \thebuggenie\core\framework\Event::createNew('core', 'Issue::createNew', $this)->trigger();
+                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
             }
 
             if (in_array(\thebuggenie\core\framework\Settings::getUserSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, framework\Context::getUser()->getID()), array(null, true)))

@@ -743,7 +743,7 @@
                 framework\Context::setPermission("canaddextrainformationtoissues", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canpostseeandeditallcomments", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
 
-                framework\Event::createNew('core', 'Project::_postSave', $this)->trigger();
+                framework\Event::createNew('core', 'thebuggenie\core\entities\Project::_postSave', $this)->trigger();
             }
             if ($this->_dodelete)
             {

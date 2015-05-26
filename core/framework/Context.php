@@ -621,13 +621,6 @@
 
                 $is_anonymous_route = self::isCLI() || self::getRouting()->isCurrentRouteAnonymousRoute();
 
-                // Handle old static anoymous route configuration
-                if (!$is_anonymous_route)
-                {
-                    $allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'doLogin');
-                    $is_anonymous_route = (in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) && in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes));
-                }
-
                 if (!$is_anonymous_route)
                 {
                     self::setMessage('login_message_err', $e->getMessage());
@@ -643,9 +636,9 @@
 
         protected static function setupCoreListeners()
         {
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Project::listen_thebuggenie_core_entities_File_hasAccess');
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Build::listen_thebuggenie_core_entities_File_hasAccess');
-            Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\framework\Settings::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Project::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\entities\Build::listen_thebuggenie_core_entities_File_hasAccess');
+            Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', '\thebuggenie\core\framework\Settings::listen_thebuggenie_core_entities_File_hasAccess');
         }
 
         public static function clearRoutingCache()

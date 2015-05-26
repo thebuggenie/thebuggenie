@@ -118,33 +118,37 @@
     </tr>
 </table>
 <script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        $('article_serialized').value = $('article_content').serialize();
-    });
+    require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
+        domReady(function () {
+            document.observe('dom:loaded', function() {
+                $('article_serialized').value = $('article_content').serialize();
+            });
 
-    $("article-type-label").on("click", function(e) {
-        $("article-type-name").toggleClassName('selected');
-    });
+            $("article-type-label").on("click", function(e) {
+                $("article-type-name").toggleClassName('selected');
+            });
 
-    if ($("article-type-selector") != undefined) {
-        $("article-type-selector").select('li').each(function (el) {
-            el.on("click", function(e) {
-                var article_type = $(this).dataset.articleType;
-                $(this).up('ul').select('li').each(function(elm) { elm.removeClassName('selected'); $('article-editor-main-container').removeClassName(elm.dataset.className); });
-                $(this).addClassName('selected');
-                $('article-editor-main-container').addClassName($(this).dataset.className);
-                $('article-type-input').setValue(article_type);
-                $('article-type-name').update($(this).down('h1').innerHTML);
-                $('article-type-name').toggleClassName('selected');
+            if ($("article-type-selector") != undefined) {
+                $("article-type-selector").select('li').each(function (el) {
+                    el.on("click", function(e) {
+                        var article_type = $(this).dataset.articleType;
+                        $(this).up('ul').select('li').each(function(elm) { elm.removeClassName('selected'); $('article-editor-main-container').removeClassName(elm.dataset.className); });
+                        $(this).addClassName('selected');
+                        $('article-editor-main-container').addClassName($(this).dataset.className);
+                        $('article-type-input').setValue(article_type);
+                        $('article-type-name').update($(this).down('h1').innerHTML);
+                        $('article-type-name').toggleClassName('selected');
+                    });
+                });
+            }
+
+            Event.observe(window, 'beforeunload', function(event) {
+                if ($('article_content').serialize() != $F('article_serialized'))
+                {
+                    event.stop();
+                }
             });
         });
-    }
-
-Event.observe(window, 'beforeunload', function(event) {
-    if ($('article_content').serialize() != $F('article_serialized'))
-    {
-        event.stop();
-    }
-});
+    });
 
 </script>

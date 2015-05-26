@@ -63,12 +63,12 @@
                 framework\Event::listen('core', 'breadcrumb_main_links', array($this, 'listen_BreadcrumbMainLinks'));
                 framework\Event::listen('core', 'breadcrumb_project_links', array($this, 'listen_BreadcrumbProjectLinks'));
             }
-            framework\Event::listen('core', '\thebuggenie\core\entities\Project::_postSave', array($this, 'listen_createNewProject'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\File::hasAccess', array($this, 'listen_fileHasAccess'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__getStarredArticles', array($this, 'TBGUser__getStarredArticles'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__isArticleStarred', array($this, 'TBGUser__isArticleStarred'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__addStarredArticle', array($this, 'TBGUser__addStarredArticle'));
-            framework\Event::listen('core', '\thebuggenie\core\entities\User::__removeStarredArticle', array($this, 'TBGUser__removeStarredArticle'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Project::_postSave', array($this, 'listen_createNewProject'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\File::hasAccess', array($this, 'listen_fileHasAccess'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::__getStarredArticles', array($this, 'User__getStarredArticles'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::__isArticleStarred', array($this, 'User__isArticleStarred'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::__addStarredArticle', array($this, 'User__addStarredArticle'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\User::__removeStarredArticle', array($this, 'User__removeStarredArticle'));
             framework\Event::listen('core', 'upload', array($this, 'listen_upload'));
             framework\Event::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
             framework\Event::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
@@ -184,7 +184,6 @@
             if (framework\Context::getScope()->getID() == 1)
             {
                 Articles::getTable()->drop();
-                tables\BillboardPosts::getTable()->drop();
             }
             Links::getTable()->removeByTargetTypeTargetIDandLinkID('wiki', 0);
             parent::_uninstall();
@@ -468,7 +467,7 @@
         /**
          * Populate the array of starred articles
          */
-        protected function TBGUser__populateStarredArticles(User $user)
+        protected function User__populateStarredArticles(User $user)
         {
             if ($user->_isset('publish', 'starredarticles') === null)
             {
@@ -482,10 +481,10 @@
          *
          * @return array
          */
-        public function TBGUser__getStarredArticles(framework\Event $event)
+        public function User__getStarredArticles(framework\Event $event)
         {
             $user = $event->getSubject();
-            $this->TBGUser__populateStarredArticles($user);
+            $this->User__populateStarredArticles($user);
             $event->setProcessed();
             $event->setReturnValue($user->_retrieve('publish', 'starredarticles'));
             return;
@@ -496,7 +495,7 @@
          *
          * @return boolean
          */
-        public function TBGUser__isArticleStarred(framework\Event $event)
+        public function User__isArticleStarred(framework\Event $event)
         {
             $user = $event->getSubject();
             $arguments = $event->getParameters();
@@ -521,7 +520,7 @@
          *
          * @return boolean
          */
-        public function TBGUser__addStarredArticle(framework\Event $event)
+        public function User__addStarredArticle(framework\Event $event)
         {
             $user = $event->getSubject();
             $arguments = $event->getParameters();
@@ -558,7 +557,7 @@
          *
          * @param framework\Event $event
          */
-        public function TBGUser__removeStarredArticle(framework\Event $event)
+        public function User__removeStarredArticle(framework\Event $event)
         {
             $user = $event->getSubject();
             $arguments = $event->getParameters();

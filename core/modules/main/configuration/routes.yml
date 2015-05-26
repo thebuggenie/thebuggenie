@@ -117,20 +117,6 @@ switch_back_user:
     parameters: [ ]
     csrf_enabled: false
 
-login:
-    route: /do/login
-    module: main
-    action: doLogin
-    parameters: [ ]
-    csrf_enabled: false
-
-login_page:
-    route: /login
-    module: main
-    action: login
-    parameters: [ ]
-    csrf_enabled: false
-
 elevated_login:
     route: /do/relogin
     module: main
@@ -149,34 +135,6 @@ login_section:
     route: '/login/section/:section/*'
     module: main
     action: login
-    parameters: [ ]
-    csrf_enabled: false
-
-register:
-    route: /do/register
-    module: main
-    action: register
-    parameters: [ ]
-    csrf_enabled: false
-
-register_check_username:
-    route: /check/username
-    module: main
-    action: registerCheckUsernameAvailability
-    parameters: [ ]
-    csrf_enabled: false
-
-activate:
-    route: /activate/:user/:key
-    module: main
-    action: activate
-    parameters: [ ]
-    csrf_enabled: false
-
-reset_password:
-    route: /reset/password/:user/:reset_hash
-    module: main
-    action: reset
     parameters: [ ]
     csrf_enabled: false
 
@@ -233,13 +191,6 @@ about:
     route: /about
     module: main
     action: about
-    parameters: [ ]
-    csrf_enabled: false
-
-get_partial_for_backdrop:
-    route: '/get/partials/:key/*'
-    module: main
-    action: getBackdropPartial
     parameters: [ ]
     csrf_enabled: false
 
@@ -510,13 +461,6 @@ move_issue:
     route: /issue/:issue_id/move
     module: main
     action: moveIssue
-    parameters: [ ]
-    csrf_enabled: false
-
-captcha:
-    route: '/captcha/*'
-    module: main
-    action: captcha
     parameters: [ ]
     csrf_enabled: false
 

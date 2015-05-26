@@ -13,7 +13,7 @@ h5 { font-size: 1.1em; }
 h6 { font-size: 1.05em; }
 h1, h2, h3, h4, h5, h6 { font-weight: 600; padding: 3px 3px 3px 0; margin: 5px 0 5px 0; }
 
-table, img, a img { border: 0; }
+table, img, a img, a:hover img, a img:hover { border: 0; }
 
 a { color: #00a400; text-decoration: none; }
 a.image:hover { border: 0px; }
@@ -696,7 +696,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commenttitle { font-weight: 600; display: inline-block; }
 .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
 .dropper_container .dropper, .dropper_container .dropper:hover { cursor: pointer; margin-left: 5px; opacity: 1; }
-.project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
+.project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin: 24px 0 0 0; right: auto; font-size: 0.9em; text-transform: none; }
 .commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
 #issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
@@ -1722,7 +1722,8 @@ reportissue_additional_information_container .markItUp { display: none; }
 .button-group .button.lefthugging { border-left: none; }
 .button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
-#workflow_actions .more_actions_dropdown { margin-top: 2px; border-radius: 2px; font-size: 1.1em; }
+#workflow_actions .more_actions_dropdown { margin: 24px  0 0 -250px; width: 250px; border-radius: 2px; font-size: 1.1em; }
+#workflow_actions .more_actions_dropdown li a { white-space: normal; }
 .workflow_actions li.workflow { position: relative; }
 .workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 30px; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
@@ -1763,7 +1764,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 
 #project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
 #project_planning.milestone-sort #milestone-sort-actions { display: block; }
-.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, a.button-pressed, a.button-pressed:hover { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; text-decoration: none; border: none; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown {
     width: 360px;
@@ -3901,7 +3902,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .menu_links .header { font-size: 1em; border-bottom: 0; font-weight: 600; margin-bottom: 5px; }
 .menu_links .dropper { opacity: 0.4; float: right; }
 .menu_links .dropper:hover { opacity: 1; float: right; }
-.menu_links .more_actions_dropdown { margin-top: 25px; font-size: 0.9em; }
+.menu_links .more_actions_dropdown { margin: 24px 0 0 0; font-size: 0.9em; right: 0; }
 .menu_links .content li { font-size: 1.0em; padding: 1px; min-height: 20px; }
 .menu_links .content a { font-weight: 600; }
 .menu_links .content a.selected { font-weight: 600; color: #006700; }
@@ -4922,7 +4923,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 .button-icon img, .button-icon:hover img { margin: 1px; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; }
 
-.button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover, button, input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit], input[type=submit]:hover, .button-green.disabled, .button-green.disabled:hover, input[type=submit].button-green[disabled], input[type=submit].button-green[disabled]:hover, input[type=submit].button-green[disabled]:active, .button-green[disabled], .button-green[disabled]:hover {
+.button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover, button, input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit], input[type=submit]:hover, a.button.dropper:hover .button-green.disabled, .button-green.disabled:hover, input[type=submit].button-green[disabled], input[type=submit].button-green[disabled]:hover, input[type=submit].button-green[disabled]:active, .button-green[disabled], .button-green[disabled]:hover {
     background: #c5c5c5;
     background: -moz-linear-gradient(top, #F5F5F5 0%, #E5E5E5 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#F5F5F5), color-stop(100%,#E5E5E5)); /* Chrome,Safari4+ */
@@ -4941,6 +4942,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 
 .button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, input[type=submit].button-pressed:hover, button.button-pressed, button.button-pressed:hover, .button.button-pressed, .button.button-pressed:hover {
     box-shadow: 0 0 4px rgba(100, 100, 100, 0.3) inset;
+    border: 1px solid rgba(100, 100, 100, 0.3);
 }
 .button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; box-shadow: none; }
 input[type=button][disabled], input[type=button].disabled, input[type=submit][disabled], input[type=submit].disabled, button[disabled], button.disabled, .button.disabled, .button.button-silver.disabled { color: #AAA !important; text-shadow: 1px 1px 0px #FFF !important; }

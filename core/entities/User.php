@@ -910,7 +910,15 @@
             {
                 return framework\Context::getI18n()->__('No such user');
             }
-            return ($this->_buddyname) ? $this->_buddyname : (($this->_realname) ? $this->_realname : $this->_username);
+            switch (framework\Settings::getUserDisplaynameFormat())
+            {
+                case framework\Settings::USER_DISPLAYNAME_FORMAT_REALNAME:
+                    return ($this->_realname) ? $this->_realname : $this->_username;
+
+                case framework\Settings::USER_DISPLAYNAME_FORMAT_BUDDY:
+                default:
+                    return ($this->_buddyname) ? $this->_buddyname : (($this->_realname) ? $this->_realname : $this->_username);
+            }
         }
 
         /**
@@ -938,7 +946,15 @@
             {
                 return $this->_buddyname;
             }
-            return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : $this->_username;
+            switch (framework\Settings::getUserDisplaynameFormat())
+            {
+                case framework\Settings::USER_DISPLAYNAME_FORMAT_REALNAME:
+                    return ($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username;
+
+                case framework\Settings::USER_DISPLAYNAME_FORMAT_BUDDY:
+                default:
+                    return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username);
+            }
         }
 
         public function __toString()
