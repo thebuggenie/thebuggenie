@@ -2860,9 +2860,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Core.Pollers.Callbacks.planningPoller = function () {
-            if (!TBG.Core.Pollers.Locks.planningpoller) {
+            var pc = $('project_planning');
+            if (!TBG.Core.Pollers.Locks.planningpoller && pc) {
                 TBG.Core.Pollers.Locks.planningpoller = true;
-                var pc = $('project_planning');
                 var data_url = pc.dataset.pollUrl;
                 var retrieve_url = pc.dataset.retrieveIssueUrl;
                 var last_refreshed = pc.dataset.lastRefreshed;
