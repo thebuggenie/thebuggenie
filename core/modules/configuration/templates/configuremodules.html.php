@@ -15,7 +15,7 @@
                         <div class="header"><?php echo $module_error; ?></div>
                     </div>
                 <?php endif; ?>
-                <?php if (!$writable): ?>
+                <?php if (!$writable && $is_default_scope): ?>
                     <div class="lightyellowbox" style="margin: 5px 0px" id="module_message_writable_failure">
                         <div class="header"><?php echo __('The modules folder (%modules_path) seems to not be writable. You may not be able to install new modules.', array('%modules_path' => THEBUGGENIE_MODULES_PATH)); ?></div>
                     </div>
@@ -27,12 +27,18 @@
                 <?php endif; ?>
                 <?php if (count($outdated_modules) > 0): ?>
                     <div class="lightyellowbox" style="margin: 5px 0px;" id="outdated_module_message">
-                        <div class="header"><?php echo __('You have %count outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.', array('%count' => count($outdated_modules))); ?></div>
+                        <div class="header">
+                            <?php if ($is_default_scope): ?>
+                                <?php echo __('You have %count outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.', array('%count' => count($outdated_modules))); ?>
+                            <?php else: ?>
+                                <?php echo __('You have %count outdated modules. They have been disabled until they are updated by an administrator.', array('%count' => count($outdated_modules))); ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 <?php endif; ?>
                 <div style="margin-top: 15px; clear: both;" class="tab_menu inset">
                     <ul id="modules_menu">
-                        <li id="tab_installed" class="selected"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('id' => 'installed_modules_indicator')).__('Installed modules (%count)', array('%count' => count($modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'modules_menu');")); ?></li>
+                        <li id="tab_installed" class="selected"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('id' => 'installed_modules_indicator', 'style' => 'display: none;')).__('Installed modules (%count)', array('%count' => count($modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'modules_menu');")); ?></li>
                         <li id="tab_uninstalled"><?php echo javascript_link_tag(__('Installable local modules (%count)', array('%count' => count($uninstalled_modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_uninstalled', 'modules_menu');")); ?></li>
                         <?php if ($is_default_scope): ?>
                             <li id="tab_install"><?php echo javascript_link_tag(__('Discover new modules'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_install', 'modules_menu');")); ?></li>
@@ -43,7 +49,7 @@
                     <div id="tab_installed_pane" style="padding-top: 0;">
                         <ul class="modules-list plugins-list installed" id="installed-modules-list">
                             <?php foreach ($modules as $module_key => $module): ?>
-                                <?php include_component('modulebox', array('module' => $module)); ?>
+                                <?php include_component('modulebox', array('module' => $module, 'is_default_scope' => $is_default_scope)); ?>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -56,7 +62,7 @@
                             </div>
                             <ul class="modules-list plugins-list installed" id="uninstalled-modules-list">
                                 <?php foreach ($uninstalled_modules as $module_key => $module): ?>
-                                    <?php include_component('modulebox', array('module' => $module)); ?>
+                                    <?php include_component('modulebox', array('module' => $module, 'is_default_scope' => $is_default_scope)); ?>
                                 <?php endforeach; ?>
                             </ul>
                         <?php endif; ?>
