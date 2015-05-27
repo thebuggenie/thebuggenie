@@ -225,8 +225,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 var y = document.viewport.getScrollOffsets().top;
                 var vihc = $('viewissue_header_container');
                 var vihcl = vihc.getLayout();
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihcl.get('padding-top') + vihcl.get('margin-top') + iv.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihc.offsetTop;
                 if (y >= compare_coord) {
+                    $('issue_main_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
+                    $('issue_details_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
                     vhc.addClassName('fixed');
                     $('workflow_actions').addClassName('fixed');
                     var vhc_layout = vhc.getLayout();
@@ -241,6 +243,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         $('add_comment_button_container').update(button);
                     }
                 } else {
+                    $('issue_main_container').setStyle({marginTop: 0});
+                    $('issue_details_container').setStyle({marginTop: 0});
                     vhc.removeClassName('fixed');
                     $('workflow_actions').removeClassName('fixed');
                     if ($('comment_add_button') != undefined) {
