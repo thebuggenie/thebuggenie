@@ -36,6 +36,8 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
                         return;
                     else if (e.target.up('.popup_box') != undefined)
                         return;
+                    else if (e.target && typeof(e.target.hasAttribute) == 'function' && e.target.hasAttribute('onclick'))
+                        return;
                     TBG.Main.Profile.clearPopupsAndButtons();
                     e.stopPropagation();
                 });

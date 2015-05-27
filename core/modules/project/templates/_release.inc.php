@@ -18,10 +18,15 @@
     </div>
     <?php echo image_tag('icon_build_large.png', array('class' => 'release_icon')); ?><span class="release_name"><?php echo $build->getName(); ?></span><span class="release_version"><?php echo $build->getVersion(); ?></span>
     <span class="release_date" id="build_<?php echo $build->getID(); ?>_release_date">
-    <?php if ($build->isReleased()): ?>
-        <?php echo __('Released %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))); ?>
-    <?php else: ?>
-        <?php echo __('Not released yet'); ?>
-    <?php endif; ?>
+        <?php if ($build->isReleased()): ?>
+            <?php $release_date_text = $build->hasReleaseDate() ? __('Released %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))) : __('Released'); ?>
+        <?php else: ?>
+            <?php $release_date_text = __('Not released yet'); ?>
+        <?php endif; ?>
+        <?php if (! $build->isReleased()): ?>
+            <div id="build_<?php echo $build->getID(); ?>_not_released"><?php echo $release_date_text; ?></div>
+        <?php else: ?>
+            <?php echo $release_date_text; ?>
+        <?php endif; ?>
     </span>
 </li>

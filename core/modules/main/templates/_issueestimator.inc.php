@@ -100,6 +100,7 @@
 <?php if (!isset($save) || $save == true): ?>
     </form>
     </li>
+    <li id="<?php echo $field ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
     <li id="<?php echo $field . '_' . $issue_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
     <li id="<?php echo $field . '_' . $issue_id; ?>_change_error" class="error_message" style="display: none;"></li>
 <?php endif; ?>

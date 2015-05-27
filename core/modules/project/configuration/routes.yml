@@ -210,6 +210,16 @@ configure_project_edition:
       format: json
     csrf_enabled: false
 
+configure_project_component:
+    route: /configure/project/:project_id/component/:component_id
+    module: project
+    action: editComponent
+    parameters:
+      config_module: core
+      section: 10
+      format: json
+    csrf_enabled: false
+
 configure_project:
     route: /configure/project/:project_id/hierarchy
     module: project

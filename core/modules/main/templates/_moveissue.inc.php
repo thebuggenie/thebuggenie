@@ -14,7 +14,7 @@
                 <?php endforeach; ?>
             </select>
             <div style="text-align: right; padding-top: 5px;">
-                <input type="submit" value="<?php echo __('Move issue'); ?>" onclick="$(this).hide();$('move_issue_indicator').show();">
+                <input type="submit" value="<?php echo __('Move issue'); ?>" onclick="$('move_issue_indicator').show();">
                 <?php echo image_tag('spinning_16.gif', array('id' => 'move_issue_indicator', 'style' => 'display: none; margin-right: 5px;')); ?>
                 <?php echo __('%move_issue or %cancel', array('%move_issue' => '', '%cancel' => '')); ?>
                 <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('cancel'); ?></a>

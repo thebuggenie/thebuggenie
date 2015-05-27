@@ -1,8 +1,8 @@
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Project.submitAdvancedSettings('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_settings">
     <div class="project_save_container">
-        <div class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_workflow', 'project_id' => $project->getId())); ?>');"><span><?php echo __('Change workflow scheme'); ?></span></div>
         <span id="project_settings_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+        <div class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_workflow', 'project_id' => $project->getId())); ?>');"><span><?php echo __('Change workflow scheme'); ?></span></div>
         <input class="button button-silver" type="submit" id="project_submit_settings_button" value="<?php echo __('Save advanced settings'); ?>">
     </div>
 <?php endif; ?>
@@ -23,10 +23,29 @@
         <tr>
             <td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
             <td>
-                <select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+                <select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val == '1') ? $('release_'+item).enable() : $('release_'+item).disable(); });">
                     <option value=1<?php if ($project->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
                     <option value=0<?php if (!$project->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
                 </select>
+                <script type="text/javascript">
+                    require(['domReady', 'jquery'], function (domReady, jQuery) {
+                        domReady(function () {
+                            jQuery('#has_release_date').on('change', function (ev) {
+                                if (this.value == 0) return false;
+
+                                if (jQuery('#release_month').val() == 1
+                                    && jQuery('#release_day').val() == 1
+                                    && jQuery('#release_year').val() == 1990) {
+                                    var d = new Date();
+
+                                    jQuery('#release_month').val(d.getMonth() + 1);
+                                    jQuery('#release_day').val(d.getDate());
+                                    jQuery('#release_year').val(d.getFullYear());
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <select style="width: 85px;" name="release_month" id="release_month"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>
                 <?php for($cc = 1;$cc <= 12;$cc++): ?>
                     <option value=<?php print $cc; ?><?php print (($project->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>

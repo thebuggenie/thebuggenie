@@ -26,6 +26,11 @@
                         <?php echo __('The scope name must be unique and cannot be blank'); ?>
                     </div>
                 <?php endif; ?>
+                <?php if (isset($scope_saved)): ?>
+                    <div class="greenbox" style="margin: 0 0 5px 0; font-size: 14px;">
+                        <?php echo __('The settings were saved successfully'); ?>
+                    </div>
+                <?php endif; ?>
                 <h5 style="margin-top: 10px;">
                     <button class="button button-green" onclick="$('new_scope_hostname').toggle();if ($('new_scope_hostname').visible()) { $('new_scope_name_input').focus(); }" style="float: right;"><?php echo __('Create a new scope'); ?></button>
                     <?php echo __('Scopes available on this installation'); ?>

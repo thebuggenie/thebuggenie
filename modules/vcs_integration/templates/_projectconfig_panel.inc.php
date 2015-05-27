@@ -84,6 +84,18 @@
                                 <option value='loggerhead'>Loggerhead</option>
                             </optgroup>
                         </select>
+                        <script type="text/javascript">
+                            require(['domReady', 'jquery', 'prototype'], function (domReady, jquery, prototype) {
+                                domReady(function () {
+                                    var browser_type_value = "<?php echo \thebuggenie\core\framework\Settings::get('browser_type_'.$project->getID(), 'vcs_integration'); ?>";
+
+                                    if (browser_type_value != '') {
+                                        $('browser_type').value = browser_type_value;
+                                        jquery('#browser_type').trigger('change');
+                                    }
+                                });
+                            });
+                        </script>
                     </td>
                 </tr>
                 <tr>

@@ -7,9 +7,6 @@
 
     ?>
     <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
-    <?php if ($issue->canAttachLinks()): ?>
-        <?php include_component('main/attachlink', array('issue' => $issue)); ?>
-    <?php endif; ?>
     <div id="issuetype_indicator_fullpage" style="display: none;" class="fullpage_backdrop">
         <div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
             <?php echo image_tag('spinning_32.gif'); ?><br>

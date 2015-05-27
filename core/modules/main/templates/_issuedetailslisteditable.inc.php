@@ -443,7 +443,7 @@
                             <?php else: ?>
                                 <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
                                     <li class="dropdown_header"><?php echo $info['change_header']; ?></li>
-                                    <?php if (array_key_exists('choices', $info)): ?>
+                                    <?php if (array_key_exists('choices', $info) && is_array($info['choices'])): ?>
                                         <li>
                                             <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
                                         </li>

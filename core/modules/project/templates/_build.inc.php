@@ -34,6 +34,25 @@
                             <option value=1<?php if ($build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
                             <option value=0<?php if (!$build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
                         </select>
+                        <script type="text/javascript">
+                            require(['domReady', 'jquery'], function (domReady, jQuery) {
+                                domReady(function () {
+                                    jQuery('#has_release_date').on('change', function (ev) {
+                                        if (this.value == 0) return false;
+
+                                        if (jQuery('#release_month').val() == 1
+                                            && jQuery('#release_day').val() == 1
+                                            && jQuery('#release_year').val() == 1990) {
+                                            var d = new Date();
+
+                                            jQuery('#release_month').val(d.getMonth() + 1);
+                                            jQuery('#release_day').val(d.getDate());
+                                            jQuery('#release_year').val(d.getFullYear());
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                         <select style="width: 85px;" name="release_month" id="release_month"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
                         <?php for($cc = 1;$cc <= 12;$cc++): ?>
                             <option value=<?php print $cc; ?><?php print (($build->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>

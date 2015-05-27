@@ -150,7 +150,7 @@
                                     <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
                                     <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_validation_rule">
                                         <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePostValidationRules() as $key => $description): ?>
-                                            <li <?php if ($transition->hasPostValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post', 'rule' => $key)); ?>', 'post', '<?php echo $key; ?>');"><?php echo $description; ?></a></li>
+                                            <li <?php if ($transition->hasPostValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionpostvalidationrule_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post', 'rule' => $key)); ?>', 'post', '<?php echo $key; ?>');"><?php echo $description; ?></a></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 <?php endif; ?>
@@ -212,14 +212,14 @@
                             </div>
                             <table cellpadding="0" cellspacing="0" style="width: 100%;">
                                 <tbody class="hover_highlight" id="workflowtransitionactions_list">
-                                <?php foreach ($transition->getActions() as $action): ?>
-                                    <?php include_component('configuration/workflowtransitionaction', array('action' => $action)); ?>
-                                <?php endforeach; ?>
                                 <?php if ($transition->hasTemplate()): ?>
                                     <tr>
                                         <td colspan="2"><?php echo __('Add a comment if one is specified'); ?></td>
                                     </tr>
                                 <?php endif; ?>
+                                <?php foreach ($transition->getActions() as $action): ?>
+                                    <?php include_component('configuration/workflowtransitionaction', array('action' => $action)); ?>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                             <span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions() || $transition->hasTemplate()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>

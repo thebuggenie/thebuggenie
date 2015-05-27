@@ -248,7 +248,7 @@
 
         public function getJS()
         {
-            return array('excanvas', 'jquery.flot.min', 'jquery.flot.resize.min');
+            return array('excanvas', 'jquery.flot', 'jquery.flot.resize', 'jquery.flot.time');
         }
 
         public function getRSSUrl()

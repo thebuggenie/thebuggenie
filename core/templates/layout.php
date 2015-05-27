@@ -97,6 +97,9 @@
                     'jquery.flot.selection': {
                         deps: ['jquery.flot']
                     },
+                    'jquery.flot.time': {
+                        deps: ['jquery.flot']
+                    },
                     'scriptaculous': {
                         deps: ['prototype', 'controls'],
                         exports: 'Scriptaculous'
