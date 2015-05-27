@@ -173,7 +173,7 @@
                                 <?php if ($tbg_user->canCreatePublicSearches()): ?>
                                     <div class="action_icons">
                                         <?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-                                        <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search')).'#edit_modal'); ?>
+                                        <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
                                     </div>
                                 <?php endif; ?>
                                 <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
