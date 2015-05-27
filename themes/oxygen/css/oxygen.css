@@ -1657,7 +1657,7 @@ a.friend { color: #0000a4; }
 .textarea_save_container { display: block; margin: 0; padding: 7px; box-sizing: border-box; background-color: rgb(245, 245, 245); border: 1px solid rgba(100, 100, 100, 0.5); border-top: 0; text-align: right; }
 .textarea_save_container .button, .textarea_save_container .button:hover { padding: 7px 10px; font-weight: normal; font-size: 1.1em; }
 #issue_view { position: relative; z-index: 100; overflow: auto; }
-#issue_main_container { float: left; overflow: hidden; width: 100%; margin-top: 104px; }
+#issue_main_container { float: left; overflow: hidden; width: 100%; }
 #issue_main {
     margin: 0 10px 0 380px;
     overflow: auto;
@@ -1672,7 +1672,6 @@ a.friend { color: #0000a4; }
     float: left;
     width: 360px;
     margin-left: -100%;
-    margin-top: 104px;
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
     -ms-transition: width 0.3s ease;
@@ -1842,7 +1841,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 #issue_timetracking_log_time { position: absolute; top: -26px; right: 0; }
 
 /* workflow actions */
-#workflow_actions { position: absolute; margin-top: 107px; right: 10px; height: 25px; z-index: 102; }
+#workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 102; }
 ul.workflow_actions { margin-top: 0; }
 ul.workflow_actions > li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; padding: 0; line-height: 1; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
@@ -1922,7 +1921,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */
-#viewissue_header_container { margin: 10px; position: absolute; z-index: 110; }
+#viewissue_header_container { margin: 10px; z-index: 110; }
 #viewissue_header_container.fixed { width: 100%; position: fixed; top: 0; left: 0; margin: 0; z-index: 1000; }
 #viewissue_header_container.fixed #issue_info_container .issue_info_backdrop { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
 #viewissue_header_container table.title_area {
