@@ -4938,7 +4938,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Issues.toggleFavourite = function (url, issue_id_user_id)
         {
-            var issue_id = issue_id_user_id.substr(0, issue_id_user_id.indexOf('_'));
+            var issue_id = new String(issue_id_user_id).indexOf('_') !== -1
+                ? issue_id_user_id.substr(0, issue_id_user_id.indexOf('_'))
+                : issue_id_user_id;
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     callback: function () {
