@@ -3,6 +3,7 @@
     namespace thebuggenie\core\helpers;
 
     use thebuggenie\core\framework,
+        thebuggenie\modules\publish\entities\tables\Articles,
         thebuggenie\modules\publish\entities\Article;
 
     /**
@@ -789,7 +790,7 @@
                     $template_name = array_shift($details);
                     if (substr($template_name, 0, 1) == ':') $template_name = substr($template_name, 1);
                     $template_name = (Article::doesArticleExist($template_name)) ? $template_name : 'Template:'.$template_name;
-                    $template_article = tables\Articles::getTable()->getArticleByName($template_name);
+                    $template_article = Articles::getTable()->getArticleByName($template_name);
                     $parameters = array();
                     if (count($details))
                     {
