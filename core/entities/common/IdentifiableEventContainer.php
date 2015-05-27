@@ -52,7 +52,7 @@
 
         public function __call($name, $arguments)
         {
-            $event = \thebuggenie\core\framework\Event::createNew('core', '\\' . get_called_class().'::__'.$name, $this, $arguments);
+            $event = \thebuggenie\core\framework\Event::createNew('core', get_called_class().'::__'.$name, $this, $arguments);
             $event->triggerUntilProcessed();
 
             return $event->getReturnValue();
