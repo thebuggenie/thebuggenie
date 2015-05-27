@@ -180,7 +180,7 @@
                         </div>
                         <div id="clientconfig_list">
                             <?php foreach ($clients as $client): ?>
-                                <?php include_component('configuration/clientbox', array('client' => $client)); ?>
+                                <div id="client_<?php echo $client->getID(); ?>_item"><?php include_component('configuration/clientbox', array('client' => $client)); ?></div>
                             <?php endforeach; ?>
                         </div>
                     </div>

@@ -37,7 +37,7 @@
                     <?php if ($spent_time->getComment()): ?>
                         <tr id="issue_spenttime_<?php echo $spent_time->getID(); ?>_comment">
                             <td>&nbsp;</td>
-                            <td colspan="4" class="faded_out" style="font-size: 0.9em; font-style: italic;">
+                            <td colspan="3" class="faded_out" style="font-size: 0.9em; font-style: italic;">
                                 <?php echo htmlentities($spent_time->getComment(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>
                             </td>
                         </tr>

@@ -19,7 +19,12 @@
 
             TBG.Modules.mailing.deleteIncomingAccount = function(url, account_id) {
                 TBG.Main.Helpers.ajax(url, {
-                    loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
+                    loading: {
+                        indicator: 'fullpage_backdrop',
+                        clear: 'fullpage_backdrop_content',
+                        show: 'fullpage_backdrop_indicator',
+                        hide: 'dialog_backdrop'
+                    },
                     success: {
                         remove: 'incoming_email_account_' + account_id,
                         callback: TBG.Main.Helpers.Dialog.dismiss

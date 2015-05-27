@@ -199,7 +199,13 @@
                         <input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
                         <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
                         <script>
-                            TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
+                            require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                                domReady(function () {
+                                    document.observe('dom:loaded', function() {
+                                        TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
+                                    });
+                                });
+                            });
                         </script>
                         <?php endif; ?>
                     </li>
@@ -332,7 +338,7 @@
             <?php if ($canupload): ?>
                 <?php include_component('main/dynamicuploader', array('mode' => 'issue')); ?>
             <?php endif; ?>
-            <div class="reportissue_additional_information_container">
+            <div class="reportissue_additional_information_container" style="display: none;">
                 <table cellpadding="0" cellspacing="0" id="edition_div" style="display: none;" class="additional_information<?php if (array_key_exists('edition', $errors)): ?> reportissue_error<?php endif; ?>">
                     <tr>
                         <td style="width: 180px;"><label for="edition_id" id="edition_label"><span>* </span><?php echo __('Edition'); ?></label></td>
@@ -648,8 +654,12 @@
             </div>
             <?php if ($selected_issuetype != null && $selected_project != null): ?>
                 <script type="text/javascript">
-                    document.observe('dom:loaded', function() {
-                        TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+                    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                        domReady(function () {
+                            document.observe('dom:loaded', function() {
+                                TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+                            });
+                        });
                     });
                 </script>
             <?php endif; ?>
@@ -662,7 +672,7 @@
             <div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px;">
                 <strong><?php echo __('Add more information to your issue'); ?></strong><br>
                 <p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
-                <p id="reportissue_extrafields_none" style="display: none;"><?php echo __('No additional actions available'); ?></p>
+                <p id="reportissue_extrafields_none"><?php echo __('No additional actions available'); ?></p>
                 <ul id="reportissue_extrafields">
                     <li id="status_additional" style="display: none;">
                         <?php echo image_tag('icon_status.png'); ?>
@@ -754,7 +764,7 @@
                     </li>
                     <li id="spent_time_additional" style="display: none;">
                         <?php echo image_tag('icon_time.png'); ?>
-                        <div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+                        <div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Time spent on fix'); ?></a></div>
                         <div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
                             <a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -768,7 +778,7 @@
                             <a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
                         </div>
                     </li>
-                    <li id="priority_additional">
+                    <li id="priority_additional" style="display: none;">
                         <?php echo image_tag('icon_priority.png'); ?>
                         <div id="priority_link"<?php if ($selected_priority instanceof \thebuggenie\core\entities\Priority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
                         <div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>

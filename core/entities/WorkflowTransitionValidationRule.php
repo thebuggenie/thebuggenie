@@ -33,7 +33,7 @@
         const RULE_PRIORITY_VALID = 'valid_priority';
         const RULE_TEAM_MEMBERSHIP_VALID = 'valid_team';
 
-        const CUSTOMFIELD_VALIDATE_PREFIX = 'customfield.validate_';
+        const CUSTOMFIELD_VALIDATE_PREFIX = 'customfield_validate_';
 
         /**
          * @Column(type="string", length=100, name="rule")

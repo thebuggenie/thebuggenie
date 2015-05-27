@@ -24,16 +24,20 @@
                 <?php endif; ?></ul>
         </div>
         <script>
-            var upload_container = $('upload_drop_zone');
-            if ('ondrop' in document.createElement('span')) {
-                upload_container.addEventListener('dragover', TBG.Main.dragOverFiles, false);
-                upload_container.addEventListener('dragleave', TBG.Main.dragOverFiles, false);
-                upload_container.addEventListener('drop', TBG.Main.dropFiles, false);
-                upload_container.addEventListener('click', function () {$('file_upload_dummy').click();}, false);
-            } else {
-                upload_container.down('.double').hide();
-                upload_container.down('.single').show();
-            }
+            require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                domReady(function () {
+                    var upload_container = $('upload_drop_zone');
+                    if ('ondrop' in document.createElement('span')) {
+                        upload_container.addEventListener('dragover', TBG.Main.dragOverFiles, false);
+                        upload_container.addEventListener('dragleave', TBG.Main.dragOverFiles, false);
+                        upload_container.addEventListener('drop', TBG.Main.dropFiles, false);
+                        upload_container.addEventListener('click', function () {$('file_upload_dummy').click();}, false);
+                    } else {
+                        upload_container.down('.double').hide();
+                        upload_container.down('.single').show();
+                    }
+                });
+            });
         </script>
 <?php if (isset($target)): ?>
     </div>

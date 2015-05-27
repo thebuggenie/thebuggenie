@@ -167,6 +167,15 @@
                     }
                 }
             }
+            elseif (! framework\Context::hasMessage('issue_deleted'))
+            {
+                $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
+                if (! $issue instanceof entities\Issue || $issue->isDeleted())
+                {
+                    return $this->forward($request_referer);
+                }
+            }
             elseif (framework\Context::hasMessage('issue_deleted'))
             {
                 $this->issue_deleted = framework\Context::getMessageAndClear('issue_deleted');
@@ -541,6 +550,8 @@
                         $view->setColumn($request['column']);
                         $view->setSortOrder($sort_order);
                         $view->save();
+
+                        framework\Context::setCurrentProject($view->getProject());
 
                         return $this->renderJSON(array('view_content' => $this->getComponentHTML('main/dashboardview', array('view' => $view, 'show' => false)), 'view_id' => $view->getID()));
                     case 'remove_view':
@@ -2780,6 +2791,8 @@
          */
         public function runDeleteIssue(framework\Request $request)
         {
+            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
             if ($issue_id = $request['issue_id'])
             {
                 try
@@ -2788,12 +2801,27 @@
                 }
                 catch (\Exception $e)
                 {
+                    if ($request_referer)
+                    {
+                        return $this->forward($request_referer);
+                    }
+
                     return $this->return404(framework\Context::getI18n()->__('This issue does not exist'));
                 }
             }
             else
             {
+                if ($request_referer)
+                {
+                    return $this->forward($request_referer);
+                }
+
                 return $this->return404(framework\Context::getI18n()->__('This issue does not exist'));
+            }
+
+            if ($issue->isDeleted())
+            {
+                return $this->forward($request_referer);
             }
 
             $this->forward403unless($issue->canDeleteIssue());
@@ -2801,7 +2829,7 @@
             $issue->save();
 
             framework\Context::setMessage('issue_deleted', true);
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
         }
 
         /**
@@ -2904,7 +2932,7 @@
             }
             $saved_file_ids = $request['files'];
             $files = array();
-            foreach ($request['file_description'] as $file_id => $description)
+            foreach ($request['file_description'] ?: array() as $file_id => $description)
             {
                 $file = entities\File::getB2DBTable()->selectById($file_id);
                 $file->setDescription($description);
@@ -3492,6 +3520,9 @@
                         $template_name = 'main/uploader';
                         $options = $request->getParameters();
                         $options['uploader'] = ($request['uploader'] == 'dynamic') ? 'dynamic' : 'standard';
+                        break;
+                    case 'attachlink':
+                        $template_name = 'main/attachlink';
                         break;
                     case 'openid':
                         $template_name = 'main/openid';

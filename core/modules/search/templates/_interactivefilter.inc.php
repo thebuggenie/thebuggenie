@@ -165,6 +165,7 @@
                             break;
                         case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:
                         case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                            include_component('search/interactivefilter_choice', compact('filter'));
                             break;
                         case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
                         case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:

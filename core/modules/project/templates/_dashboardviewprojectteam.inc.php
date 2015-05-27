@@ -1,6 +1,6 @@
 <?php if (count($assignees) > 0): ?>
     <?php foreach ($assignees as $assignee): ?>
-        <div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+        <div class="project_team_assignee">
             <?php if ($assignee instanceof \thebuggenie\core\entities\User): ?>
                 <?php echo include_component('main/userdropdown', array('user' => $assignee)); ?>
             <?php else: ?>

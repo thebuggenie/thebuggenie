@@ -5599,13 +5599,6 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         }
       } else {
         responder = function(event) {
-          if (event.target && typeof(event.target.hasAttribute) == 'function' && event.target.hasAttribute('onclick')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            }
-            event.cancelBubble = true;
-          }
-
           Event.extend(event, element);
           handler.call(element, event);
         };

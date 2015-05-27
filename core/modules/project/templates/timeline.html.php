@@ -18,7 +18,7 @@
             </div>
             <?php if (count($recent_activities) > 0): ?>
                 <div class="project_timeline_more_button_container">
-                    <?php echo image_tag('spinning_16.gif', array('id' => 'timeline_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')); ?>
+                    <?php echo image_tag('spinning_32.gif', array('id' => 'timeline_indicator', 'style' => 'display: none;')); ?>
                     <?php echo javascript_link_tag(__('Show more'), array('class' => 'button button-silver', 'onclick' => "TBG.Project.Timeline.update('".make_url(($important) ? 'project_timeline_important' : 'project_timeline', array('project_key' => $selected_project->getKey()))."');", 'id' => 'timeline_more_link')); ?>
                 </div>
             <?php endif; ?>
@@ -33,8 +33,8 @@
                 <li class="<?php if (!$important) echo 'selected'; ?>"><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('icon_timeline.png') . __('All timeline items')); ?></li>
             </ul>
             <ul class="simple_list">
-                <li><?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Subscribe to updates via RSS')); ?></li>
-                <li><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Subscribe to updates via RSS')); ?></li>
+                <li><?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('Only important items')); ?></li>
+                <li><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png') . __('All timeline items')); ?></li>
             </ul>
         </div>
     </div>

@@ -356,10 +356,9 @@
          */
         public function getVersion()
         {
-            $versions = array();
-            if ($this->_version_major) $versions[] = $this->_version_major;
-            if ($this->_version_major || $this->_version_minor) $versions[] = $this->_version_minor;
-            if ($this->_version_minor && $this->_version_revision) $versions[] = $this->_version_revision;
+            $versions = array($this->_version_major, $this->_version_minor);
+
+            if ($this->_version_revision != 0) $versions[] = $this->_version_revision;
 
             return join('.', $versions);
         }
