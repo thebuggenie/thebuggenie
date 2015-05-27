@@ -668,7 +668,15 @@
 
         public function componentDashboardViewUserProjects()
         {
-
+            $routing = $this->getRouting();
+            $i18n = $this->getI18n();
+            $links = array(
+                array('url' => $routing->generate('project_open_issues', array('project_key' => '%project_key%')), 'text' => $i18n->__('Issues')),
+                array('url' => $routing->generate('project_roadmap', array('project_key' => '%project_key%')), 'text' => $i18n->__('Roadmap')),
+            );
+            $event = \thebuggenie\core\framework\Event::createNew('core', 'main\Components::DashboardViewUserProjects::links', null, array(), $links);
+            $event->trigger();
+            $this->links = $event->getReturnList();
         }
 
         public function componentDashboardViewUserMilestones()

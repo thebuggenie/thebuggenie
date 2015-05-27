@@ -8,9 +8,9 @@
                         <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName(), array('style' => 'font-weight: normal; font-size: 1.2em;')); ?>
                     </div>
                     <div style="float: right;" class="button-group">
-                        <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
-                        <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), __('Planning'), array('class' => 'button button-silver')); ?>
-                        <?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Roadmap'), array('class' => 'button button-silver')); ?>
+                        <?php foreach ($links as $link): ?>
+                            <?php echo link_tag(str_replace('%25project_key%25', $project->getKey(), $link['url']), $link['text'], array('class' => 'button button-silver')); ?>
+                        <?php endforeach; ?>
                     </div>
                     <br style="clear: both;">
                 </div>
