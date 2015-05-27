@@ -422,7 +422,7 @@ EOT;
             }
         }
 
-        protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user)
+        protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user = null)
         {
             $u_id = ($triggered_by_user instanceof User) ? $triggered_by_user->getID() : $triggered_by_user;
             $users = $article->getSubscribers();
@@ -438,7 +438,7 @@ EOT;
             return $users;
         }
 
-        protected function _getIssueRelatedUsers(Issue $issue, $postedby)
+        protected function _getIssueRelatedUsers(Issue $issue, $postedby = null)
         {
             $u_id = ($postedby instanceof User) ? $postedby->getID() : $postedby;
             $users = $issue->getSubscribers();
