@@ -64,6 +64,20 @@
         }
 
         /**
+         * User dashboard project list buttons listener
+         *
+         * @Listener(module="core", identifier="main\Components::DashboardViewUserProjects::links")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
+        public function userDashboardProjectButtonLinks(framework\Event $event)
+        {
+            $routing = framework\Context::getRouting();
+            $i18n = framework\Context::getI18n();
+            $event->addToReturnList(array('url' => $routing->generate('agile_index', array('project_key' => '%project_key%')), 'text' => $i18n->__('Planning')));
+        }
+
+        /**
          * Header "Agile" menu and board list
          *
          * @Listener(module="core", identifier="project/templates/projectheader")
