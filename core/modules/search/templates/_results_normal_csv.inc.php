@@ -1,6 +1,6 @@
 "<?php echo __("Project"); ?>","<?php echo __("Issue number"); ?>","<?php echo __("Issue title"); ?>","<?php echo __("Assigned to"); ?>","<?php echo __("Status"); ?>","<?php echo __('Category'); ?>","<?php echo __('Priority'); ?>","<?php echo __('Reproducability'); ?>","<?php echo __('Severity'); ?>","<?php echo __("Resolution"); ?>","<?php echo __('Targetted for'); ?>","<?php echo __("Last updated"); ?>","<?php echo __("Percentage complete"); ?>","<?php echo __("Time estimated");?>","<?php echo __("Time spent"); ?>","<?php echo __("User pain"); ?>","<?php echo __("Votes"); ?>","<?php echo __("Description"); ?>","<?php echo __("Reproduction Steps"); ?>","<?php echo __("Comments"); ?>"
-<?php if ($issues != false): ?>
-<?php foreach ($issues as $issue): ?>
+<?php if ($search_object->getNumberOfIssues()): ?>
+<?php foreach ($search_object->getIssues() as $issue): ?>
 <?php 
 /* Deal with issue assignee */
 $temp = $issue->getAssignee();
