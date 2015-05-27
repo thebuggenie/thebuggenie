@@ -27,7 +27,7 @@
             <?php echo __('Core module'); ?>
         </div>
     <?php endif; ?>
-    <?php if ($module->getID()): ?>
+    <?php if ($module->getID() && $is_default_scope): ?>
         <div id="update_module_help_<?php echo $module->getID(); ?>" class="fullpage_backdrop" style="display: none;">
             <div class="backdrop_box medium">
                 <h1><?php echo __('Install downloaded module update file'); ?></h1>
@@ -49,18 +49,20 @@
     <?php endif; ?>
     <div class="module-actions plugin-actions">
         <?php if ($module->getID()): ?>
-            <button class="button button-lightblue update-button dropper" id="module_<?php echo $module->getID(); ?>_update" data-key="<?php echo $module->getName(); ?>"><?php echo __('Update'); ?></button>
-            <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
-                <?php if ($module->isOutdated()): ?>
+            <?php if ($is_default_scope): ?>
+                <button class="button button-lightblue update-button dropper" id="module_<?php echo $module->getID(); ?>_update" data-key="<?php echo $module->getName(); ?>"><?php echo __('Update'); ?></button>
+                <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+                    <?php if ($module->isOutdated()): ?>
+                        <li>
+                            <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                        </li>
+                    <?php endif; ?>
                     <li>
-                        <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                        <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
                     </li>
-                <?php endif; ?>
-                <li>
-                    <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
-                </li>
-                <li><a href="javascript:void(0);" class="update-module-menu-item"><?php echo __('Manual update'); ?></a></li>
-            </ul>
+                    <li><a href="javascript:void(0);" class="update-module-menu-item"><?php echo __('Manual update'); ?></a></li>
+                </ul>
+            <?php endif; ?>
             <button class="button button-silver dropper" id="module_<?php echo $module->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
             <ul id="module_<?php echo $module->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
                 <?php if ($module->hasConfigSettings()): ?>
@@ -77,7 +79,7 @@
                         <?php endif; ?>
                     </li>
                 <?php endif; ?>
-                <?php if (!$module->isCore() && \thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
+                <?php if (!$module->isCore()): ?>
                     <li><a href="javascript:void(0);" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Uninstall module'); ?></a></li>
                 <?php endif; ?>
             </ul>

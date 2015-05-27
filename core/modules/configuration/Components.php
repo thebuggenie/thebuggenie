@@ -30,6 +30,11 @@
             $this->offlinestate = framework\Settings::getOfflineState();
         }
 
+        public function componentModulebox()
+        {
+            $this->is_default_scope = (isset($this->is_default_scope)) ? $this->is_default_scope : framework\Context::getScope()->isDefault();
+        }
+
         public function componentOnlineModules()
         {
             try
@@ -76,6 +81,7 @@
         public function componentTheme()
         {
             $this->enabled = (\thebuggenie\core\framework\Settings::getThemeName() == $this->theme['key']);
+            $this->is_default_scope = framework\Context::getScope()->isDefault();
         }
 
         public function componentReglang()

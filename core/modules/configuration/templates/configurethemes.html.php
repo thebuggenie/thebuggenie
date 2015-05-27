@@ -15,12 +15,12 @@
                         <div class="header"><?php echo $theme_error; ?></div>
                     </div>
                 <?php endif; ?>
-                <?php if (!$writable): ?>
+                <?php if (!$writable && $is_default_scope): ?>
                     <div class="lightyellowbox" style="margin: 5px 0px" id="theme_message_writable_failure">
                         <div class="header"><?php echo __('The themes folder (%themes_path) seems to not be writable. You may not be able to install new themes.', array('%themes_path' => THEBUGGENIE_PATH . 'themes')); ?></div>
                     </div>
                 <?php endif; ?>
-                <?php if (!$writable_link): ?>
+                <?php if (!$writable_link && $is_default_scope): ?>
                     <div class="lightyellowbox" style="margin: 5px 0px" id="theme_message_writable_link_failure">
                         <div class="header"><?php echo __('The themes public folder (%themes_public_path) seems to not be writable. You may not be able to install new themes.', array('%themes_public_path' => THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes')); ?></div>
                     </div>
@@ -32,7 +32,7 @@
                 <?php endif; ?>
                 <div style="margin-top: 15px; clear: both;" class="tab_menu inset">
                     <ul id="themes_menu">
-                        <li id="tab_installed" class="selected"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('id' => 'installed_themes_indicator')).__('Installed themes (%count)', array('%count' => count($themes))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'themes_menu');")); ?></li>
+                        <li id="tab_installed" class="selected"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('id' => 'installed_themes_indicator', 'style' => 'display: none;')).__('Installed themes (%count)', array('%count' => count($themes))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'themes_menu');")); ?></li>
                         <li id="tab_install"><?php echo javascript_link_tag(__('Discover new themes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_install', 'themes_menu');")); ?></li>
                     </ul>
                 </div>
@@ -55,11 +55,13 @@
         </td>
     </tr>
 </table>
-<script>
-    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
-        domReady(function () {
-            TBG.Themes.getAvailableOnline();
-            TBG.Themes.getThemeUpdates();
+<?php if ($is_default_scope): ?>
+    <script>
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Themes.getAvailableOnline();
+                TBG.Themes.getThemeUpdates();
+            });
         });
-    });
-</script>
+    </script>
+<?php endif; ?>
