@@ -416,6 +416,21 @@
                             catch (\Exception $e) {}
                             return $this->renderJSON($addons_json);
                             break;
+                        case 'getsearchcounts':
+                            $counts_json = array();
+                            foreach ($request['search_ids'] as $search_id) {
+                                if (is_numeric($search_id)) {
+                                    $search = tables\SavedSearches::getTable()->selectById($search_id);
+                                } else {
+                                    $predefined_id = str_replace('predefined_', '', $search_id);
+                                    $search = \thebuggenie\core\entities\SavedSearch::getPredefinedSearchObject($predefined_id);
+                                }
+                                if ($search instanceof entities\SavedSearch) {
+                                    $counts_json[$search_id] = $search->getTotalNumberOfIssues();
+                                }
+                            }
+                            return $this->renderJSON($counts_json);
+                            break;
                         case 'get_theme_updates':
                             $addons_param = [];
                             foreach ($request['addons'] as $addon) {
