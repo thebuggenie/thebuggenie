@@ -6315,6 +6315,30 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             window.location = fif.dataset.historyUrl + '?' + parameters + '&format=' + format;
         };
 
+        TBG.Search.updateSavedSearchCounts = function () {
+            var search_ids = '',
+                searchitems = $$('.savedsearch-item'),
+                project_id = $('search_sidebar').dataset.projectId;
+
+            searchitems.each(function (searchitem) {
+                search_ids += '&search_ids[]='+$(searchitem).dataset.searchId;
+            });
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'get',
+                params: '&say=getsearchcounts&project_id='+project_id+search_ids,
+                success: {
+                    callback: function (json) {
+                        searchitems.each(function (searchitem) {
+                            var badge = $(searchitem).down('.num_results_badge');
+                            if (badge !== undefined) {
+                                badge.update(json[$(searchitem).dataset.searchId]);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
         TBG.Search.liveUpdate = function (force) {
             var fif = $('find_issues_form');
             var url = fif.action;
@@ -6337,6 +6361,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {update: 'search_results'},
                     complete: {
                         callback: function (json) {
+                            if (!results_loaded) {
+                                console.log('updating search counts');
+                                TBG.Search.updateSavedSearchCounts();
+                            }
                             $('findissues_num_results_span').update(json.num_issues);
                             if (! $('findissues_search_title').visible() && ! $('findissues_search_generictitle').visible()) {
                                 $('findissues_search_generictitle').show();
@@ -6349,7 +6377,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 if (!header_elm.hasClassName('nosort')) {
                                     header_elm.on('click', TBG.Search.sortResults);
                                 }
-                            })
+                            });
                             if (TBG.Search.isDirty()) {
                                 TBG.Search.loadDynamicChoices();
                                 TBG.Search.clearDirty();
