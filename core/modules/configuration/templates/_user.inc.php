@@ -6,7 +6,7 @@
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
     <tr>
-        <td><label for="requirelogin"><?php echo __('Require re-authentication'); ?></label></td>
+        <td><label for="disableelevatedlogin"><?php echo __('Require re-authentication'); ?></label></td>
         <td>
             <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED; ?>" id="disableelevatedlogin" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
                 <option value=0<?php if (\thebuggenie\core\framework\Settings::isElevatedLoginRequired()): ?> selected<?php endif; ?>><?php echo __('You need to re-enter your password to access the configuration section'); ?></option>
