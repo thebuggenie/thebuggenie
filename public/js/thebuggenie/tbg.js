@@ -6344,7 +6344,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var url = fif.action;
             var parameters = fif.serialize();
 
-            var results_loaded = fif.dataset.resultsLoaded != undefined;
+            var results_loaded = (fif.dataset.resultsLoaded != undefined && fif.dataset.resultsLoaded != '');
 
             if (force == true || results_loaded) {
                 $('search_sidebar').addClassName('collapsed');
@@ -6362,7 +6362,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     complete: {
                         callback: function (json) {
                             if (!results_loaded) {
-                                console.log('updating search counts');
                                 TBG.Search.updateSavedSearchCounts();
                             }
                             $('findissues_num_results_span').update(json.num_issues);
