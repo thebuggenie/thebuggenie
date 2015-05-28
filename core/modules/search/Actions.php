@@ -195,7 +195,8 @@
                 }
                 else
                 {
-                    $issues = $this->issues;
+                    $this->doSearch($request);
+                    $issues = $this->foundissues;
                     $issue = is_array($issues) ? array_shift($issues) : null;
                     if ($issue instanceof entities\Issue)
                     {
