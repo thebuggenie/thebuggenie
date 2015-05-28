@@ -5,8 +5,7 @@
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables,
-        thebuggenie\modules\agile,
-        Alchemy\Zippy\Zippy;
+        thebuggenie\modules\agile;
 
     /**
      * actions for the main module
