@@ -91,44 +91,6 @@
             $this->num_projects = count($projects);
         }
 
-        protected function doSearch(framework\Request $request)
-        {
-            $i18n = framework\Context::getI18n();
-            if ($this->searchterm)
-            {
-                preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
-
-                if (!count($this->foundissues))
-                {
-                    $issue = entities\Issue::getIssueFromLink($this->searchterm);
-                    if ($issue instanceof entities\Issue)
-                    {
-                        $this->foundissues = array($issue);
-                        $this->resultcount = 1;
-                    }
-                }
-            }
-
-            if (count($this->foundissues) == 0)
-            {
-                $this->foundissues = $this->search_object->getIssues();
-                $this->resultcount = $this->search_object->getTotalNumberOfIssues();
-            }
-            elseif (count($this->foundissues) == 1 && !$request['quicksearch'])
-            {
-                $issue = array_shift($this->foundissues);
-                $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-            }
-            else
-            {
-                $this->resultcount = count($this->foundissues);
-                if ($this->templatename == 'results_userpain_singlepainthreshold')
-                {
-                    usort($this->foundissues, array('searchActions', 'userPainSort'));
-                }
-            }
-        }
-
         public function runSaveSearch(framework\Request $request)
         {
             $name = trim($request['name']);
@@ -229,7 +191,7 @@
             {
                 if ($request->isAjaxCall())
                 {
-                    $this->redirect('quicksearch');
+                    return $this->redirect('quicksearch');
                 }
                 else
                 {
@@ -239,6 +201,14 @@
                     {
                         return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     }
+                }
+            }
+            if ($this->search_object->hasQuickfoundIssues()) {
+                $issues = $this->search_object->getQuickfoundIssues();
+                $issue = array_shift($issues);
+                if ($issue instanceof entities\Issue)
+                {
+                    return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                 }
             }
             $this->search_error = framework\Context::getMessageAndClear('search_error');

@@ -1,5 +1,7 @@
 <ul class="rounded_box white shadowed cut_top">
-    <li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Press "Enter" twice to find issues matching your query'); ?></span></li>
+    <?php if (!$search_object->hasQuickfoundIssues()): ?>
+        <li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Press "Enter" twice to find issues matching your query'); ?></span></li>
+    <?php endif; ?>
     <?php \thebuggenie\core\framework\Event::createNew('core', 'quicksearch_dropdown_firstitems', $searchterm)->trigger(); ?>
     <?php if ($tbg_user->canAccessConfigurationPage(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)): ?>
         <li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Select this to search for this user'); ?></span><span class="url informal"><?php echo make_url('configure_users').'?finduser='.$searchterm; ?></span></li>
@@ -70,18 +72,17 @@
             <?php if ($cc == 10) break; ?>
         <?php endforeach; ?>
     <?php endif; ?>
-    <li class="header disabled"><?php echo __('%num issue(s) found', array('%num' => $resultcount)); ?></li>
+    <li class="header disabled"><?php echo __('%num issue(s) found', array('%num' => $search_object->getTotalNumberOfIssues())); ?></li>
     <?php $cc = 0; ?>
-    <?php if ($resultcount > 0): ?>
-        <?php foreach ($issues as $issue): ?>
-            <?php $cc++; ?>
+    <?php if ($search_object->getTotalNumberOfIssues() > 0): ?>
+        <?php foreach ($search_object->getIssues() as $issue): ?>
             <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
-    <li class="issue_<?php echo ($issue->isOpen()) ? 'open' : 'closed'; ?><?php if ($cc == count($issues) && $resultcount == count($issues)): ?> last<?php endif; ?>"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('class' => 'informal')); ?><div><?php echo __('Issue %issue_no - %title', array('%issue_no' => $issue->getFormattedIssueNo(true), '%title' => (mb_strlen($issue->getTitle()) <= 32) ? $issue->getTitle() : str_pad(mb_substr($issue->getTitle(), 0, 32), 35, '...'))); ?></div><span class="informal"><?php if ($issue->isClosed()): ?>[<?php echo mb_strtoupper(__('Closed')); ?>] <?php endif; ?><?php echo __('Last updated %updated_at', array('%updated_at' => tbg_formatTime($issue->getLastUpdatedTime(), 6))); ?></span><span class="informal url"><?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?></span><div class="informal extra"><?php echo __('Status: %status', array('%status' => '<span>'.$issue->getStatus()->getName().'</span>')); ?></div><?php if ($issue->isResolutionVisible()): ?><div class="informal extra"><?php echo __('Resolution: %resolution', array('%resolution' => '<span>'.(($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? $issue->getResolution()->getName() : '<span class="faded_out">'.__('Not determined').'</span>').'</span>')); ?></div><?php endif; ?><div class="informal extra attached"><?php echo image_tag('icon_comments.png'); ?><span class="num_attachments"><?php echo $issue->countComments(); ?></span><?php echo image_tag('icon_attached_information.png'); ?><span class="num_attachments"><?php echo $issue->countFiles(); ?></span></div></li>
+                <li class="issue_<?php echo ($issue->isOpen()) ? 'open' : 'closed'; ?>"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('class' => 'informal')); ?><div><?php echo __('Issue %issue_no - %title', array('%issue_no' => $issue->getFormattedIssueNo(true), '%title' => (mb_strlen($issue->getTitle()) <= 32) ? $issue->getTitle() : str_pad(mb_substr($issue->getTitle(), 0, 32), 35, '...'))); ?></div><span class="informal"><?php if ($issue->isClosed()): ?>[<?php echo mb_strtoupper(__('Closed')); ?>] <?php endif; ?><?php echo __('Last updated %updated_at', array('%updated_at' => tbg_formatTime($issue->getLastUpdatedTime(), 6))); ?></span><span class="informal url"><?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?></span><div class="informal extra"><?php echo __('Status: %status', array('%status' => '<span>'.$issue->getStatus()->getName().'</span>')); ?></div><?php if ($issue->isResolutionVisible()): ?><div class="informal extra"><?php echo __('Resolution: %resolution', array('%resolution' => '<span>'.(($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? $issue->getResolution()->getName() : '<span class="faded_out">'.__('Not determined').'</span>').'</span>')); ?></div><?php endif; ?><div class="informal extra attached"><?php echo image_tag('icon_comments.png'); ?><span class="num_attachments"><?php echo $issue->countComments(); ?></span><?php echo image_tag('icon_attached_information.png'); ?><span class="num_attachments"><?php echo $issue->countFiles(); ?></span></div></li>
             <?php endif; ?>
         <?php endforeach; ?>
-        <?php if ($resultcount - $cc > 0): ?>
+        <?php if (!$search_object->hasQuickfoundIssues() && $search_object->getTotalNumberOfIssues() > $search_object->getNumberOfIssues()): ?>
             <li class="find_more_issues last">
-                <span class="informal"><?php echo __('See %num more issues ...', array('%num' => $resultcount - $cc)); ?></span>
+                <span class="informal"><?php echo __('See %num more issues ...', array('%num' => $search_object->getTotalNumberOfIssues() - $search_object->getNumberOfIssues())); ?></span>
                 <div class="hidden url"><?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search'); ?>?fs[text][v]=<?php echo $searchterm; ?>&fs[text][o]=<?php echo urlencode('='); ?></div>
             </li>
         <?php endif; ?>
