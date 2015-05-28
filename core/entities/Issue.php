@@ -1106,7 +1106,7 @@
             {
                 foreach ($rows as $row)
                 {
-                    $datatype = new CustomDatatype($row->get(tables\IssueCustomFields::CUSTOMFIELDS_ID));
+                    $datatype = CustomDatatype::getB2DBTable()->selectById($row->get(tables\IssueCustomFields::CUSTOMFIELDS_ID));
                     $var_name = "_customfield".$datatype->getKey();
 
                     if ($datatype->hasCustomOptions())
