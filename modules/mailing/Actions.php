@@ -11,6 +11,7 @@
          * Forgotten password logic (AJAX call)
          *
          * @Route(url="/mailing/forgot")
+         * @AnonymousRoute
          * @param \thebuggenie\core\framework\Request $request
          */
         public function runForgot(framework\Request $request)
