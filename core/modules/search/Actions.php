@@ -224,6 +224,10 @@
          */
         public function runFindIssues(framework\Request $request)
         {
+            if ($request['delete_saved_search']) {
+                return $this->runEditSavedSearch($request);
+            }
+
             $this->resultcount = 0;
             if ($request['quicksearch'] == true)
             {
