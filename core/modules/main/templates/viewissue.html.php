@@ -78,7 +78,7 @@
                             <?php endif; ?>
                         </div>
                     </td>
-                    <td style="width: 100px; text-align: right;<?php if (!$issue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
+                    <td style="width: 100px; text-align: right;<?php if (!$issue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional"<?php if ($issue->isVotesVisible()): ?> class="visible"<?php endif; ?>>
                         <div id="viewissue_votes">
                             <table align="right">
                                 <tr>
@@ -104,7 +104,7 @@
                             </table>
                         </div>
                     </td>
-                    <td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
+                    <td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional"<?php if ($issue->isVotesVisible()): ?> class="visible"<?php endif; ?>>
                         <div title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging">
                             <div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
                             <div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
