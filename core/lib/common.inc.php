@@ -300,7 +300,7 @@
             default:
                 return $tstamp;
         }
-        return htmlentities($tstring, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        return $tstring;
     }
 
     /**
