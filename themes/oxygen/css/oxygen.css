@@ -321,9 +321,6 @@ header nav > ul { position: relative !important; display: inline-block; margin-r
     background-color: #FAF3B8;
     color: #333;
     clear: both;
-    /*box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); */
     background: -moz-linear-gradient(top, #FAF3B8 0%, #FFFFFF 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#FAF3B8), color-stop(100%,#FFFFFF)); /* Chrome,Safari4+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAF3B8), color-stop(100%,#FFFFFF)); /* Chrome,Safari4+ */
@@ -717,7 +714,6 @@ footer img { margin: 4px 3px -6px 0; }
 .commenttools a:hover { border-bottom-color: #AAA; }
 .comment_controls { margin-top: 10px; font-size: 1em; }
 .comment_controls .button, .comment_controls .button:hover { font-size: 1.1em; padding: 4px 8px; }
-/*.comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }*/
 .comment_editsave, .comment_addsave { font-weight: 600; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
@@ -770,7 +766,7 @@ div.autocomplete .extra.attached img { margin-left: 3px; margin-right: 15px; }
 div.autocomplete .extra span { font-weight: 300; font-size: 1em; }
 div.autocomplete li.selected .extra { display: block; }
 div.autocomplete ul li.no_issues_found { color: #AAA; padding: 10px; }
-div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 0.9em; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px 2px 2px 5px; /*height: 32px;*/ cursor: pointer; font-weight: 300; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
+div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 0.9em; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px 2px 2px 5px; cursor: pointer; font-weight: 300; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
 div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected { border-top: 0; }
 div.autocomplete ul li.searchterm:first-line { font-style: italic; }
 div.autocomplete ul li .hidden { display: none; }
@@ -887,8 +883,6 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     vertical-align: middle;
 }
 .tab_menu.inset li a img {
-    /*float: left;*/
-    /*margin: 1px 5px 0 2px;*/
     height: 22px;
     width: 22px;
     vertical-align: middle;
@@ -966,11 +960,6 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_stuff a.button-pressed, .project_stuff a.button-pressed:hover { background-color: #FFF; }
 .project_stuff .more_actions_dropdown, .project_stuff .more_actions_dropdown:last-of-type { right: auto; left: 18px; top: 0; margin-top: 0; font-size: 1.1em; margin-left: 0; }
 .project_stuff .more_actions_dropdown li a, .project_stuff .more_actions_dropdown li a:hover { padding: 5px 20px 5px 5px; }
-/*.project_stuff li div.popoutmenu { display: none; white-space: nowrap; }
-.project_stuff li.popped_out div.popoutmenu { background-color: #FFF; z-index: 1000; padding: 2px; position: absolute; border: 1px solid #FFF; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; margin-top: -4px; margin-left: -4px; display: block; box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); }
-.project_stuff li.popped_out div.popoutmenu a { border: 0; padding: 3px 5px; display: block; color: #333; }
-.project_stuff li.popped_out div.popoutmenu a.selected { font-weight: 300; color: #AAA; }
-.project_stuff li.popped_out div.popoutmenu a:hover { font-weight: 300; background-color: #F5F5F5; }*/
 .project_stuff > li { height: 23px; float: none; display: inline-block; position: relative; margin: 0; padding-bottom: 0; }
 .project_stuff li.project_name { font-size: 1em; font-weight: 600; padding-top: 1px; }
 .project_stuff li.no_project_name { font-size: 0.9em; font-weight: 300; padding-top: 2px; color: #888; }
@@ -2478,8 +2467,6 @@ table.issue_affects td img { vertical-align: bottom; }
 #add_dashboard_views .project_left { width: 200px; display: inline-block; vertical-align: top; }
 #add_dashboard_views .available_views_container { width: 570px; margin-left: 10px; display: inline-block; vertical-align: top; height: 500px; overflow-x: auto; }
 #add_dashboard_views .available_views_list li {
-    /*    display: inline-block;
-            width: 47%;*/
     display: block;
     float: none;
     padding: 10px;
@@ -3008,12 +2995,6 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     -webkit-transition: background-color 0.3s ease, border-color 0.3s ease;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-/*.milestone_box .milestone_issues li.milestone_issue + li.milestone_issue .issue_container, .milestone_box .milestone_issues li.milestone_issue.issue_closed.has_child_issues + li.milestone_issue .issue_container {
-        border-top-width: 0;
-}
-.milestone_box .milestone_issues li.milestone_issue.ui-sortable-placeholder + li.milestone_issue .issue_container, .milestone_box .milestone_issues li.milestone_issue.has_child_issues + li.milestone_issue .issue_container {
-        border-top-width: 1px;
-}*/
 .milestone_box .milestone_issues li.milestone_issue .issue_container.blocking {
     border: 1px solid rgba(200, 50, 50, 0.6) !important;
 }
@@ -4317,9 +4298,6 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* search boxes */
 #find_issues { width: auto; padding: 5px; vertical-align: top; }
 #find_issues .results_header { font-weight: 300; font-size: 1.4em; padding: 0 0 5px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; position: relative; }
-/*.searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }*/
-/*.searchbox_container label { font-size: 0.9em; }
-.searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
 .searchbuilder_filterstrip { background-color: rgba(200, 200, 200, 0.2); border-bottom: 1px solid rgba(200, 200, 200, 0.6); padding: 5px; }
 .searchbuilder_filterstrip input[type=image] { vertical-align: middle; margin: 0 5px; }
 .interactive_dropdown, .interactive_plus_button {
@@ -4637,8 +4615,6 @@ li.filtervalue .hidden { display: none; }
     opacity: 1;
 }
 .interactive_menu li input[type=checkbox], .interactive_menu li input[type=radio] {
-    /*display: inline-block;*/
-    /*margin: 0 5px 0 0;*/
     display: none;
 }
 .interactive_menu li span {
@@ -5309,7 +5285,6 @@ table.sortable tr th.nosort {
     text-decoration:none;
 }
 .markItUp  {
-    /*                width:700px;*/
     margin:5px 0 5px 0;
 }
 .markItUpContainer  {
