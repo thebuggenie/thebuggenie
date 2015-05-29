@@ -215,9 +215,14 @@
             }
         }
 
+        public function __e($text)
+        {
+            return htmlentities($text, ENT_QUOTES, $this->getCharset());
+        }
+
         public function addString($key, $translation)
         {
-            $this->_strings[$key] = $translation;
+            $this->_strings[$key] = $this->__e($translation);
         }
 
         public function addStrings($strings)
@@ -226,7 +231,7 @@
             {
                 foreach ($strings as $key => $translation)
                 {
-                    $this->_strings[$key] = $translation;
+                    $this->addString($key, $translation);
                 }
             }
         }
@@ -278,13 +283,14 @@
             }
             else
             {
-                $retstring = $text;
+                $retstring = $this->__e($text);
                 if (Context::isDebugMode())
                 {
                     Logging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
                     $this->_missing_strings[$text] = true;
                 }
             }
+
             if (!empty($replacements))
             {
                 $retstring = str_replace(array_keys($replacements), array_values($replacements), $retstring);
@@ -292,6 +298,7 @@
             if ($html_decode) {
                 $retstring = html_entity_decode($retstring);
             }
+
             return $retstring;
         }
 
