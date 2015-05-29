@@ -27,7 +27,7 @@
      */
     function __e($text, $replacements = array())
     {
-        return htmlspecialchars(\thebuggenie\core\framework\Context::getI18n()->__($text, $replacements), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        return htmlentities(\thebuggenie\core\framework\Context::getI18n()->__($text, $replacements), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset());
     }
 
     /**
@@ -39,7 +39,7 @@
      */
     function tbg_template_escape($text)
     {
-        return htmlspecialchars($text, ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        return htmlentities($text, ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset());
     }
 
     /**
