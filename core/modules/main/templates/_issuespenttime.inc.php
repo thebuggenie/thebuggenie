@@ -24,7 +24,7 @@
                 </li>
                 <li>
                     <label for="issue_timespent_<?php echo $entry->getID(); ?>_activitytype"><?php echo __('Activity'); ?></label>
-                    <select id="issue_timespent_<?php echo $entry->getID(); ?>_activitytype" name="activitytype">
+                    <select id="issue_timespent_<?php echo $entry->getID(); ?>_activitytype" name="timespent_activitytype">
                         <?php foreach (\thebuggenie\core\entities\ActivityType::getAll() as $activitytype): ?>
                             <option value="<?php echo $activitytype->getID(); ?>" <?php if ($activitytype->getID() == $entry->getActivityTypeID()) echo 'selected'; ?>><?php echo $activitytype->getName(); ?></option>
                         <?php endforeach; ?>
@@ -52,7 +52,7 @@
                 </li>
                 <li>
                     <label for="issue_timespent_<?php echo $entry->getID(); ?>_comment" class="optional"><?php echo __('Comment (optional)'); ?></label>
-                    <input id="issue_timespent_<?php echo $entry->getID(); ?>_comment" name="comment" type="text" style="width: 500px;" value="<?php echo htmlentities($entry->getComment(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>">
+                    <input id="issue_timespent_<?php echo $entry->getID(); ?>_comment" name="timespent_comment" type="text" style="width: 500px;" value="<?php echo htmlentities($entry->getComment(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>">
                 </li>
                 <li style="text-align: right;">
                     <input type="submit" class="button button-silver" value="<?php echo __('Update entry'); ?>">
