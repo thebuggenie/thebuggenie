@@ -13,7 +13,7 @@
                     </select>
                     <select id="issue_timespent_<?php echo $entry->getID(); ?>_month" name="edited_at[month]">
                         <?php for($cc = 1; $cc <= 12; $cc++): ?>
-                            <option value="<?php echo $cc-1; ?>"<?php if ($cc == date('m', $entry->getEditedAt())): ?> selected<?php endif; ?>><?php echo date('F', mktime(12, 0, 1, $cc, 1)); ?></option>
+                            <option value="<?php echo $cc; ?>"<?php if ($cc == date('m', $entry->getEditedAt())): ?> selected<?php endif; ?>><?php echo date('F', mktime(12, 0, 1, $cc, 1)); ?></option>
                         <?php endfor; ?>
                     </select>
                     <select id="issue_timespent_<?php echo $entry->getID(); ?>_year" name="edited_at[year]">
