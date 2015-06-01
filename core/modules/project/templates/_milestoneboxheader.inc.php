@@ -36,24 +36,20 @@
         </table>
     </div>
     <?php if ($include_buttons): ?>
-        <div class="settings_container">
-            <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link')); ?>
-            <ul class="popup_box milestone_moreactions more_actions_dropdown" id="milestone_<?php echo $milestone->getID(); ?>_moreactions" style="display: none;">
-                <li><?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Show overview')); ?></li>
-                <?php if ($tbg_user->canEditProjectDetails(\thebuggenie\core\framework\Context::getCurrentProject())): ?>
+        <?php if ($tbg_user->canEditProjectDetails(\thebuggenie\core\framework\Context::getCurrentProject())): ?>
+            <div class="settings_container">
+                <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link')); ?>
+                <ul class="popup_box milestone_moreactions more_actions_dropdown" id="milestone_<?php echo $milestone->getID(); ?>_moreactions" style="display: none;">
+                    <li><?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID()))."');")); ?></li>
                     <li class="separator"></li>
-                    <li><?php echo javascript_link_tag(__('Mark as finished'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone_finish', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
-                    <li class="separator"></li>
-                    <li><?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
-                <?php endif; ?>
-            </ul>
-        </div>
+                    <li><?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this milestone?')."', '".__('Removing this milestone will unassign all issues from this milestone and remove it from all available lists. This action cannot be undone.')."', {yes: {click: function() { TBG.Project.Milestone.remove('".make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID()."); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss} });")); ?></li>
+                </ul>
+            </div>
+        <?php endif; ?>
         <div class="button-group" style="float: right;">
             <?php if ($milestone->getID()): ?>
-                <button class="button button-silver toggle-issues" onclick="TBG.Project.Planning.toggleMilestoneIssues(<?php echo $milestone->getID(); ?>);"><?php echo image_tag('spinning_16.gif').__('Show issues'); ?></button>
+                <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'search' => true, 'fs[milestone]' => array('o' => '=', 'v' => $milestone->getId())))."?sortfields=issues.last_updated=asc", __('Show issues'), array('class' => 'button button-silver', 'title' => __('Show issues'))); ?>
             <?php endif; ?>
-            <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : '')); ?>');"><?php echo __('Add issue'); ?></button>
         </div>
     <?php endif; ?>
-    <?php echo image_tag('spinning_20.gif', array('id' => 'milestone_'.$milestone->getID().'_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
 </div>

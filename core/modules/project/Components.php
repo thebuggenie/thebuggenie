@@ -40,6 +40,21 @@
             $this->prev_issue = null;
         }
 
+        public function componentMilestone()
+        {
+            if (!isset($this->milestone))
+            {
+                $this->milestone = new \thebuggenie\core\entities\Milestone();
+                $this->milestone->setProject($this->project);
+            }
+        }
+
+        public function componentMilestoneBox()
+        {
+            $this->include_counts = (isset($this->include_counts)) ? $this->include_counts : false;
+            $this->include_buttons = (isset($this->include_buttons)) ? $this->include_buttons : true;
+        }
+
         public function componentMilestoneDetails()
         {
             $this->total_estimated_points = 0;

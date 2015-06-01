@@ -41,9 +41,6 @@
             $this->statuses = \thebuggenie\core\entities\Status::getAll();
         }
 
-        /**
-         * @Overrides(name="project/milestonebox")
-         */
         public function componentMilestoneBox()
         {
             $this->include_counts = (isset($this->include_counts)) ? $this->include_counts : false;

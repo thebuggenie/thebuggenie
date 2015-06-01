@@ -3705,6 +3705,12 @@
                         $template_name = 'configuration/userscopes';
                         $options['user'] = new entities\User((int) $request['user_id']);
                         break;
+                    case 'milestone':
+                        $template_name = 'project/milestone';
+                        $options['project'] = \thebuggenie\core\entities\tables\Projects::getTable()->selectById($request['project_id']);
+                        if ($request->hasParameter('milestone_id'))
+                            $options['milestone'] = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
+                        break;
                     default:
                         $event = new \thebuggenie\core\framework\Event('core', 'get_backdrop_partial', $request['key']);
                         $event->triggerUntilProcessed();
@@ -4678,6 +4684,91 @@
             catch (\Exception $e)
             {
                 throw $e;
+            }
+        }
+
+        protected function _saveMilestoneDetails(framework\Request $request, $milestone = null)
+        {
+            if (!$request['name'])
+                throw new \Exception($this->getI18n()->__('You must provide a valid milestone name'));
+
+            if ($milestone === null) $milestone = new \thebuggenie\core\entities\Milestone();
+            $milestone->setName($request['name']);
+            $milestone->setProject($this->selected_project);
+            $milestone->setStarting((bool) $request['is_starting']);
+            $milestone->setScheduled((bool) $request['is_scheduled']);
+            $milestone->setDescription($request['description']);
+            $milestone->setVisibleRoadmap($request['visibility_roadmap']);
+            $milestone->setVisibleIssues($request['visibility_issues']);
+            $milestone->setType($request->getParameter('milestone_type', \thebuggenie\core\entities\Milestone::TYPE_REGULAR));
+            if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+            {
+                $scheduled_date = mktime(23, 59, 59, framework\Context::getRequest()->getParameter('sch_month'), framework\Context::getRequest()->getParameter('sch_day'), framework\Context::getRequest()->getParameter('sch_year'));
+                $milestone->setScheduledDate($scheduled_date);
+            }
+            else
+                $milestone->setScheduledDate(0);
+
+            if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+            {
+                $starting_date = mktime(0, 0, 1, framework\Context::getRequest()->getParameter('starting_month'), framework\Context::getRequest()->getParameter('starting_day'), framework\Context::getRequest()->getParameter('starting_year'));
+                $milestone->setStartingDate($starting_date);
+            }
+            else
+                $milestone->setStartingDate(0);
+
+            $milestone->save();
+        }
+
+        /**
+         * Milestone actions
+         *
+         * @Route(url="/:project_key/milestone/:milestone_id/*", name='project_milestone')
+         *
+         * @param \thebuggenie\core\framework\Request $request
+         */
+        public function runMilestone(framework\Request $request)
+        {
+            $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
+            $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
+
+            try
+            {
+                if (!$this->getUser()->canManageProject($this->selected_project) || !$this->getUser()->canManageProjectReleases($this->selected_project))
+                    throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
+
+                switch (true)
+                {
+                    case $request->isDelete():
+                        $milestone->delete();
+
+                        $no_milestone = new \thebuggenie\core\entities\Milestone(0);
+                        $no_milestone->setProject($milestone->getProject());
+                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+                    case $request->isPost():
+                        $this->_saveMilestoneDetails($request, $milestone);
+
+                        if ($request->hasParameter('issues') && $request['include_selected_issues'])
+                            \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
+
+                        $event = \thebuggenie\core\framework\Event::createNew('project', 'runMilestone::post', $milestone);
+                        $event->triggerUntilProcessed();
+                        
+                        if ($event->isProcessed()) {
+                            $component = $event->getReturnValue();
+                        } else {
+                            $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone));
+                        }
+                        $message = framework\Context::getI18n()->__('Milestone saved');
+                        return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
+                    default:
+                        return $this->forward($this->getRouting()->generate('project_roadmap', array('project_key' => $this->selected_project->getKey())));
+                }
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $e->getMessage()));
             }
         }
 

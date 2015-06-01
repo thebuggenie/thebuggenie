@@ -108,6 +108,44 @@
         }
 
         /**
+         * Sorting milestones
+         *
+         * @Route(url="/:project_key/milestones/sort/:csrf_token", name="project_sort_milestones")
+         * @CsrfProtected
+         * 
+         * @param framework\Request $request
+         */
+        public function runSortMilestones(framework\Request $request)
+        {
+            $this->forward403unless($this->getUser()->canManageProjectReleases($this->selected_project));
+            $milestones = $request->getParameter('milestone_ids', array());
+
+            try
+            {
+                if (is_array($milestones))
+                {
+                    foreach ($milestones as $order => $milestone_id)
+                    {
+                        $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectByID($milestone_id);
+
+                        if ($milestone->getProject()->getID() != $this->selected_project->getID())
+                            continue;
+
+                        $milestone->setOrder($order);
+                        $milestone->save();
+                    }
+                }
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occurred when trying to save the milestone order')));
+            }
+
+            return $this->renderJSON(array('sorted' => 'ok'));
+        }
+
+        /**
          * The project scrum page
          *
          * @param framework\Request $request
