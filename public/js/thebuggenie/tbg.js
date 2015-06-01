@@ -1828,7 +1828,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 elm.removeClassName('active');
             });
             $(section).addClassName('active');
-            if (section != 'register') {
+            if (section != 'register' && $('registration-button-container')) {
                 $('registration-button-container').addClassName('active');
             }
             $('login_backdrop').show();
