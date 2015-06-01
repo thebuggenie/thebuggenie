@@ -23,10 +23,10 @@ at http://issues.thebuggenie.com/wiki/Category:TheBugGenie:HowTo
 For Apache, it is enough that the rewrite module (mod_rewrite) is installed
 and enabled, and that the virtual host setup has set `AllowOverride All`
 for the folder The Bug Genie is located. With this setup, Apache should use
-the `.htaccess` file located inside the `thebuggenie/` folder.
+the `.htaccess` file located inside the `public/` folder.
 
 If you for any reason cannot turn on `AllowOverride All` for that folder, look at
-the `.htaccess` file The Bug Genie bundles (located inside the `thebuggenie/`
+the `.htaccess` file The Bug Genie bundles (located inside the `public/`
 folder), and copy the necessary lines to your virtual host definition.
 
 
@@ -41,10 +41,13 @@ set up a virtual host for The Bug Genie.
 #### Apache setup
 
 Set up the virtual host as usual, but point the `DocumentRoot`
-for The Bug Genie to the `thebuggenie/` subfolder inside the main folder.
+for The Bug Genie to the `public/` subfolder inside the main folder.
 Make sure the apache virtual host setup has `AllowOverride All` for the folder
 where The Bug Genie is located, and make sure the `.htaccess` file inside
-the `thebuggenie/` folder is accessible to Apache.
+the `public/` folder is accessible to Apache.
+
+If this is a permanent setup, you may also want to copy the .htaccess directives
+into the virtual host setup after verifying the installation works as expected.
 
 #### The Bug Genie setup 
 
@@ -62,15 +65,15 @@ access it as a subfolder of the DocumentRoot, which is `/var/www`
 
 Make sure the apache host setup has `AllowOverride All` for the
 folder thebuggenie is located, and make sure the .htaccess file inside the
-`thebuggenie/` folder is accessible to Apache. You may want to copy the main
+`public/` folder is accessible to Apache. You may want to copy the main
 folder content to a folder one level up (extract the main content of
 the top `thebuggenie/` folder directly to `/var/www`), so that
-the `thebuggenie/` folder inside the main folder is accessible
-as `/var/www/thebuggenie`.
+the `public/` folder inside the main folder is accessible
+as `/var/www/public`.
 
 #### The Bug Genie setup
 
 Set the hostname to the public hostname where you plan to
 access The Bug Genie. With this setup, The Bug Genie will be located at either
-__http://hostname/thebuggenie/thebuggenie/__ or __http://hostname/thebuggenie/__
+__http://hostname/thebuggenie/public/__ or __http://hostname/public/__
 (see above), so set the URL subdirectory to `/`, which means "top level".
