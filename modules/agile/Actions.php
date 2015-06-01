@@ -634,7 +634,10 @@
             $last_refreshed = $request['last_refreshed'];
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
-            $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
+            {
+                $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+            }
 
             if ($request['mode'] == 'whiteboard')
             {
@@ -647,9 +650,12 @@
                 $epic_ids = ($board->getEpicIssuetypeID()) ? \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
             }
             $backlog_ids = array();
-            foreach ($search_object->getIssues() as $backlog_issue)
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {
-                $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
+                foreach ($search_object->getIssues() as $backlog_issue)
+                {
+                    $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
+                }
             }
 
             return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id'));
