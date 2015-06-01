@@ -1589,8 +1589,8 @@
                 <target>Configurez et modifiez les flux de travaux depuis cette rubrique</target>
             </trans-unit>
             <trans-unit id="72c386a0048531d2f16e2954daefa4a5">
-                <source>Users, teams &amp;amp; clients</source>
-                <target>Utilisateurs, équipes & clients</target>
+                <source>Users, teams &amp; clients</source>
+                <target>Utilisateurs, équipes &amp; clients</target>
             </trans-unit>
             <trans-unit id="95ee89550c10c7c18c70e45e0e40b094">
                 <source>Manage users, user teams and clients from this section.</source>
