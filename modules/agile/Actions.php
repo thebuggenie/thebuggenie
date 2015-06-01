@@ -140,6 +140,11 @@
         {
             $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
+            
+            if (!$this->board instanceof entities\AgileBoard) {
+                return $this->return404();
+            }
+
             if ($request->isDelete())
             {
                 $board_id = $this->board->getID();
