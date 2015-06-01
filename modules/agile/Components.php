@@ -41,6 +41,9 @@
             $this->statuses = \thebuggenie\core\entities\Status::getAll();
         }
 
+        /**
+         * @Overrides(name="project/milestonebox")
+         */
         public function componentMilestoneBox()
         {
             $this->include_counts = (isset($this->include_counts)) ? $this->include_counts : false;
@@ -67,13 +70,6 @@
                     break;
                 }
             }
-        }
-
-        public function componentMilestoneWhiteboardStatusDetails()
-        {
-            $this->statuses = \thebuggenie\core\entities\Status::getAll();
-            if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
-                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
         }
 
         public function componentColorpicker()

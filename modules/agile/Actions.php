@@ -284,7 +284,7 @@
         public function runWhiteboardMilestoneStatus(framework\Request $request)
         {
             $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-            return $this->renderJSON(array('content' => $this->getComponentHTML('agile/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
+            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', array('milestone' => $milestone))));
         }
 
         /**

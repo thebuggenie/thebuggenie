@@ -21,6 +21,13 @@
         {
         }
 
+        public function componentMilestoneVirtualStatusDetails()
+        {
+            $this->statuses = \thebuggenie\core\entities\Status::getAll();
+            if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
+                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
+        }
+
         public function componentRecentActivities()
         {
             $this->default_displayed = isset($this->default_displayed) ? $this->default_displayed : false;
