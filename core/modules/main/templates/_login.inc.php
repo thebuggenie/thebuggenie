@@ -68,6 +68,10 @@
 <?php endif; ?>
 <?php if (isset($error)): ?>
     <script type="text/javascript">
-        TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
+            });
+        });
     </script>
 <?php endif; ?>

@@ -11,13 +11,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    <?php if (\thebuggenie\core\framework\Context::hasMessage('login_message')): ?>
-        TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message'); ?>');
-    <?php elseif (\thebuggenie\core\framework\Context::hasMessage('login_message_err')): ?>
-        TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message_err'); ?>');
-    <?php endif; ?>
-    require(['domReady', 'jquery'], function (domReady, jquery) {
+    require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, TBG, jquery) {
         domReady(function () {
+        <?php if (\thebuggenie\core\framework\Context::hasMessage('login_message')): ?>
+            TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message'); ?>');
+        <?php elseif (\thebuggenie\core\framework\Context::hasMessage('login_message_err')): ?>
+            TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message_err'); ?>');
+        <?php endif; ?>
             jquery('#tbg3_username').focus();
         });
     });
