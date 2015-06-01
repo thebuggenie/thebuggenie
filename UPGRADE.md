@@ -18,6 +18,10 @@ from the main directory of The Bug Genie. Composer will download and install
 all necessary components for The Bug Genie, and you can continue to the actual
 upgrade as soon as it is completed.
 
+The document root folder has been renamed from thebuggenie/ to public/ - if you
+are using a virtual host setup, remember to update the configuration to point
+the document root to the public/ subfolder, instead of thebuggenie/
+
 
 upgrade via web
 ---------------
@@ -33,6 +37,7 @@ Also, when upgrading from 3.2, make sure you follow these steps before starting 
 * Copy the file core/config/b2db.sample.yml -> core/config/b2db.yml, and use the values from core/b2db_bootstrap.inc.php to populate the file you copied
 * Create a file called "upgrade" in the directory where "installed" is located
 * Make both "installed" and "upgrade" writable by the web-server
+* Update any links in your web server configuration from pointing to the thebuggenie/ subfolder, to point to the public/ subfolder
 
 Then, visit the location <thebuggenie.url>/upgrade in your web-browser and the
 upgrade wizard will start, and guide you through the upgrade process.
