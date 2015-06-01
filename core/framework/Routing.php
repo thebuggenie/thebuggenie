@@ -253,7 +253,7 @@
                 if ($annotationset->hasAnnotation('Overrides'))
                 {
                     $overridden_component = $annotationset->getAnnotation('Overrides')->getProperty('name');
-                    $component = array('module' => $module, 'method' => $method->name);
+                    $component = array('module' => $module, 'method' => substr($method->name, 9));
                     $this->component_override_map[$overridden_component] = $component;
                 }
             }

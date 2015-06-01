@@ -1,11 +1,6 @@
-<?php use thebuggenie\modules\agile\entities\AgileBoard; ?>
 <div class="header <?php if (!$milestone->getID()) echo 'backlog'; ?>" id="milestone_<?php echo $milestone->getID(); ?>_header">
     <div class="milestone_basic_container">
-        <?php if (isset($board)): ?>
-        <a href="<?php echo make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>#<?php echo $milestone->getID(); ?>"><span class="milestone_name"><?php echo $milestone->getName(); ?></span></a>
-        <?php else: ?>
-            <span class="milestone_name milestone_virtual_status"><?php include_component('project/milestonevirtualstatusdetails', array('milestone' => $milestone)); ?></span>
-        <?php endif; ?>
+        <span class="milestone_name milestone_virtual_status"><?php include_component('project/milestonevirtualstatusdetails', array('milestone' => $milestone)); ?></span>
         <dl class="info">
             <?php if ($milestone->getID()): ?>
                 <dt><?php echo __('Start date'); ?></dt>
@@ -50,21 +45,6 @@
                     <li><?php echo javascript_link_tag(__('Mark as finished'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone_finish', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
                     <li class="separator"></li>
                     <li><?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
-                    <li><?php
-                        if (isset($board))
-                        {
-                            switch ($board->getType())
-                            {
-                                case AgileBoard::TYPE_GENERIC:
-                                    echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this milestone?')."', '".__('Removing this milestone will unassign all issues from this milestone and remove it from all available lists. This action cannot be undone.')."', {yes: {click: function() { TBG.Project.Milestone.remove('".make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID()."); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss} });"));
-                                    break;
-                                case AgileBoard::TYPE_SCRUM:
-                                case AgileBoard::TYPE_KANBAN:
-                                    echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this sprint?')."', '".__('Deleting this sprint will remove all issues in this sprint and put them in the backlog. This action cannot be undone.')."', {yes: {click: function() { TBG.Project.Milestone.remove('".make_url('agile_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID()."); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss} });"));
-                                    break;
-                            }
-                        }
-                    ?></li>
                 <?php endif; ?>
             </ul>
         </div>
