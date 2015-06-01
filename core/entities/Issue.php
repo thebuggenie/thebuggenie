@@ -1107,23 +1107,26 @@
                 foreach ($rows as $row)
                 {
                     $datatype = CustomDatatype::getB2DBTable()->selectById($row->get(tables\IssueCustomFields::CUSTOMFIELDS_ID));
-                    $var_name = "_customfield".$datatype->getKey();
+                    if ($datatype instanceof CustomDatatype)
+                    {
+                        $var_name = "_customfield".$datatype->getKey();
 
-                    if ($datatype->hasCustomOptions())
-                    {
-                        $option = tables\CustomFieldOptions::getTable()->selectById((int) $row->get(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID));
-                        if ($option instanceof \thebuggenie\core\entities\CustomDatatypeOption)
+                        if ($datatype->hasCustomOptions())
                         {
-                            $this->$var_name = $option;
+                            $option = tables\CustomFieldOptions::getTable()->selectById((int) $row->get(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID));
+                            if ($option instanceof \thebuggenie\core\entities\CustomDatatypeOption)
+                            {
+                                $this->$var_name = $option;
+                            }
                         }
-                    }
-                    else if($datatype->hasPredefinedOptions())
-                    {
-                        $this->$var_name = $row->get(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID);
-                    }
-                    else
-                    {
-                        $this->$var_name = $row->get(tables\IssueCustomFields::OPTION_VALUE);
+                        else if($datatype->hasPredefinedOptions())
+                        {
+                            $this->$var_name = $row->get(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID);
+                        }
+                        else
+                        {
+                            $this->$var_name = $row->get(tables\IssueCustomFields::OPTION_VALUE);
+                        }
                     }
                 }
             }
