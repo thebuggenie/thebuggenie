@@ -869,7 +869,7 @@ EOT;
             {
                 if ($this->usesEmailQueue())
                 {
-                    tables\MailQueueTable::getTable()->addMailToQueue($email);
+                    MailQueueTable::getTable()->addMailToQueue($email);
                     return true;
                 }
                 else
