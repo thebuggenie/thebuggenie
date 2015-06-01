@@ -94,6 +94,24 @@
         }
 
         /**
+         * Listen to milestone save event and return correct agile component
+         *
+         * @Listener(module="project", identifier="runMilestone::post")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
+        public function milestoneSave(framework\Event $event)
+        {
+            $board = entities\AgileBoard::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('board_id'));
+            if ($board instanceof entities\AgileBoard)
+            {
+                $component = framework\Action::returnComponentHTML('agile/milestonebox', array('milestone' => $event->getSubject(), 'board' => $board));
+                $event->setReturnValue($component);
+                $event->setProcessed();
+            }
+        }
+
+        /**
          * Header "Agile" menu and board list
          *
          * @Listener(module="core", identifier="templates/headermainmenu::projectmenulinks")
@@ -140,7 +158,7 @@
                     $options['milestone'] = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
                     if (!$options['milestone']->hasReachedDate()) $options['milestone']->setReachedDate(time());
                     break;
-                case 'milestone':
+                case 'agilemilestone':
                     $template_name = 'agile/milestone';
                     $options['project'] = \thebuggenie\core\entities\tables\Projects::getTable()->selectById($request['project_id']);
                     $options['board'] = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);

@@ -3210,13 +3210,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     reset: 'edit_milestone_form',
                     hide: 'no_milestones',
                     callback: function (json) {
+                        TBG.Main.Helpers.Backdrop.reset();
+                        if ($('milestone_' + json.milestone_id)) {
+                            $('milestone_' + json.milestone_id).replace(json.component);
+                        } else {
+                            $('milestone_list').insert(json.component);
+                        }
                         if (on_board) {
-                            TBG.Main.Helpers.Backdrop.reset();
-                            if ($('milestone_' + json.milestone_id)) {
-                                $('milestone_' + json.milestone_id).replace(json.component);
-                            } else {
-                                $('milestone_list').insert(json.component);
-                            }
                             if (!include_selected_issues) {
                                 // console.log('asdf', $('milestone_' + json.milestone_id), json);
                                 setTimeout(function () {
@@ -3226,9 +3226,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 TBG.Project.Planning.initializeDragDropSorting();
                                 TBG.Core.Pollers.Callbacks.planningPoller();
                             }
-                        }
-                        else if (jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').length) {
-                            jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').trigger('click');
                         }
                     }
                 }
