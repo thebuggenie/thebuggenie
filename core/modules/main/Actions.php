@@ -1625,7 +1625,7 @@
                     {
                         if (in_array($field, entities\Datatype::getAvailableFields(true)))
                         {
-                            if (!$this->selected_project->fieldPermissionCheck($field, true))
+                            if (!$this->selected_project->fieldPermissionCheck($field))
                             {
                                 $permission_errors[$field] = true;
                             }
@@ -1867,6 +1867,10 @@
                 foreach ($errors as $field => $value)
                 {
                     $err_msg[] = $i18n->__('Please provide a value for the %field_name field', array('%field_name' => $field));
+                }
+                foreach ($permission_errors as $field => $value)
+                {
+                    $err_msg[] = $i18n->__("The %field_name field is marked as required, but you don't have permission to set it", array('%field_name' => $field));
                 }
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg)));
