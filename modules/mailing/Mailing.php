@@ -26,7 +26,7 @@
     class Mailing extends \thebuggenie\core\entities\Module
     {
 
-        const VERSION = '2.0';
+        const VERSION = '2.0.1';
         const MAIL_TYPE_PHP = 1;
         const MAIL_TYPE_SMTP = 2;
         const MAIL_TYPE_SENDMAIL = 3;
@@ -829,6 +829,7 @@ EOT;
         {
             if ($this->mailer === null)
             {
+                require_once THEBUGGENIE_VENDOR_PATH . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
                 switch ($this->getMailerType()) {
                     case self::MAIL_TYPE_SENDMAIL:
                         $command = $this->getSendmailCommand();
@@ -858,7 +859,6 @@ EOT;
 
         public function mail(Swift_Message $message)
         {
-            require_once THEBUGGENIE_VENDOR_PATH . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
             $mailer = $this->getMailer();
             return $mailer->send($message);
         }
