@@ -402,7 +402,7 @@
                     switch ($request['say'])
                     {
                         case 'get_module_updates':
-                            $addons_param = [];
+                            $addons_param = array();
                             foreach ($request['addons'] as $addon) {
                                 $addons_param[] = 'addons[]='.$addon;
                             }
@@ -431,7 +431,7 @@
                             return $this->renderJSON($counts_json);
                             break;
                         case 'get_theme_updates':
-                            $addons_param = [];
+                            $addons_param = array();
                             foreach ($request['addons'] as $addon) {
                                 $addons_param[] = 'themes[]='.$addon;
                             }
