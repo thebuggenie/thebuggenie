@@ -1652,14 +1652,14 @@
             $issue->setProject($this->selected_project);
             if (isset($fields_array['shortname']))
                 $issue->setShortname($this->selected_shortname);
-            if (isset($fields_array['description']))
+            if (isset($fields_array['description'])) {
                 $issue->setDescription($this->selected_description);
-            if (isset($fields_array['description_syntax']))
                 $issue->setDescriptionSyntax($this->selected_description_syntax);
-            if (isset($fields_array['reproduction_steps']))
+            }
+            if (isset($fields_array['reproduction_steps'])) {
                 $issue->setReproductionSteps($this->selected_reproduction_steps);
-            if (isset($fields_array['reproduction_steps_syntax']))
                 $issue->setReproductionStepsSyntax($this->selected_reproduction_steps_syntax);
+            }
             if (isset($fields_array['category']) && $this->selected_category instanceof entities\Datatype)
                 $issue->setCategory($this->selected_category->getID());
             if (isset($fields_array['status']) && $this->selected_status instanceof entities\Datatype)
