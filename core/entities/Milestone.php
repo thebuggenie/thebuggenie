@@ -375,6 +375,11 @@
             return $this->_description;
         }
 
+        public function hasDescription()
+        {
+            return (bool) ($this->getDescription() != '');
+        }
+
         /**
          * Set the milestone description
          *

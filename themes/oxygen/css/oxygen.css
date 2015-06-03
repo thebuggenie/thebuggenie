@@ -3464,6 +3464,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 #milestone_details_overview td.milestone_issue_actions div { position: relative; }
 #milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
+.milestone_box .milestone_description { padding: 10px; font-size: 1.1em; color: #555; }
 
 .whiteboard .project_save_container .button-group {
     float: none;
