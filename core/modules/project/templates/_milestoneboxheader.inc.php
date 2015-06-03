@@ -52,4 +52,7 @@
             <?php endif; ?>
         </div>
     <?php endif; ?>
+    <div class="milestone_description">
+        <?php echo $milestone->getDescription(); ?>
+    </div>
 </div>
