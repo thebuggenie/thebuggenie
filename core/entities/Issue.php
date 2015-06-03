@@ -2468,6 +2468,7 @@
         {
             switch ($syntax)
             {
+                default:
                 case \thebuggenie\core\framework\Settings::SYNTAX_PT:
                     $options = array('plain' => true);
                 case \thebuggenie\core\framework\Settings::SYNTAX_MW:
