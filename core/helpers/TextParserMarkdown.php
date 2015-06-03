@@ -3,6 +3,7 @@
     namespace thebuggenie\core\helpers;
 
     use \Michelf\MarkdownExtra;
+    use thebuggenie\core\framework;
 
     /**
      * Text parser class, markdown syntax
@@ -34,7 +35,7 @@
 
         public function transform($text)
         {
-            $text = parent::transform($text);
+            $text = parent::transform(htmlspecialchars($text, ENT_NOQUOTES, framework\Context::getI18n()->getCharset()));
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
