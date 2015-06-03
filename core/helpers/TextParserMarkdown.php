@@ -35,7 +35,9 @@
 
         public function transform($text)
         {
-            $text = parent::transform(htmlspecialchars($text, ENT_NOQUOTES, framework\Context::getI18n()->getCharset()));
+            $this->no_markup = true;
+            $this->no_entities = true;
+            $text = parent::transform($text);
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
