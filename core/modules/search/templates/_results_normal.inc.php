@@ -1,5 +1,5 @@
 <?php
-if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'top'));
+if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 $current_spent_time = $current_estimated_time;
@@ -30,7 +30,7 @@ foreach ($search_object->getIssues() as $issue):
         <table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container results_normal">
             <thead>
                 <tr>
-                    <?php if (!$tbg_user->isGuest()): ?>
+                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
                         <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" /></th>
                     <?php endif; ?>
                     <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
@@ -61,7 +61,7 @@ foreach ($search_object->getIssues() as $issue):
             <tbody>
     <?php endif; ?>
                 <tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
-                    <?php if (!$tbg_user->isGuest()): ?>
+                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
                         <td class="sca_actions">
                             <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
                                 <input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
