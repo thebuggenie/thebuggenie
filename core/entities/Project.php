@@ -2093,36 +2093,42 @@
             return ($this->getFrontpageSummaryType() == 'issuelist') ? true : false;
         }
 
-        public function getOpenIssuesForFrontpageSummary($merged = false)
+        public function getOpenIssuesSearchForFrontpageSummary()
         {
-            $res = tables\Issues::getTable()->getOpenIssuesByProjectIDAndIssueTypes($this->getID(), array_keys($this->getVisibleIssuetypes()), tables\Issues::ISSUE_TYPE);
-
-            $retval = array();
-            if (!$merged)
-            {
-                foreach ($this->getVisibleIssuetypes() as $issuetype_id => $issuetype)
-                {
-                    $retval[$issuetype_id] = array('issuetype' => $issuetype, 'issues' => array());
-                }
-            }
-            if ($res)
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $issue = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID));
-                    if (!$issue->hasAccess()) continue;
-                    if (!$merged)
-                    {
-                        $retval[$row->get(tables\Issues::ISSUE_TYPE)]['issues'][] = $issue;
-                    }
-                    else
-                    {
-                        $retval[] = $issue;
-                    }
-                }
-            }
-
-            return $retval;
+            $search_object = new SavedSearch();
+            $search_object->setAppliesToProject($this);
+            $issue_type_filter = SearchFilter::createFilter('issuetype', array('value' => array_keys($this->getVisibleIssuetypes())), $search_object);
+            $search_object->setFilter('issuetype', $issue_type_filter);
+            $search_object->setGroupby('issuetype');
+            return $search_object;
+//            $res = tables\Issues::getTable()->getOpenIssuesByProjectIDAndIssueTypes($this->getID(), array_keys($this->getVisibleIssuetypes()), tables\Issues::ISSUE_TYPE);
+//
+//            $retval = array();
+//            if (!$merged)
+//            {
+//                foreach ($this->getVisibleIssuetypes() as $issuetype_id => $issuetype)
+//                {
+//                    $retval[$issuetype_id] = array('issuetype' => $issuetype, 'issues' => array());
+//                }
+//            }
+//            if ($res)
+//            {
+//                while ($row = $res->getNextRow())
+//                {
+//                    $issue = new \thebuggenie\core\entities\Issue($row->get(tables\Issues::ID));
+//                    if (!$issue->hasAccess()) continue;
+//                    if (!$merged)
+//                    {
+//                        $retval[$row->get(tables\Issues::ISSUE_TYPE)]['issues'][] = $issue;
+//                    }
+//                    else
+//                    {
+//                        $retval[] = $issue;
+//                    }
+//                }
+//            }
+//
+//            return $retval;
         }
 
         /**
