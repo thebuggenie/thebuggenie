@@ -310,10 +310,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Core._detachFile = function (url, file_id, base_id) {
+        TBG.Core._detachFile = function (url, file_id, base_id, loading_indicator) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: base_id + file_id + '_remove_indicator',
+                    indicator: typeof(loading_indicator) != 'undefined' ? loading_indicator : base_id + file_id + '_remove_indicator',
                     hide: [base_id + file_id + '_remove_link', 'uploaded_files_' + file_id + '_remove_link'],
                     show: 'uploaded_files_' + file_id + '_remove_indicator'
                 },
@@ -5062,7 +5062,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         }
 
         TBG.Issues.File.remove = function (url, file_id) {
-            TBG.Core._detachFile(url, file_id, 'viewissue_files_');
+            TBG.Core._detachFile(url, file_id, 'viewissue_files_', 'dialog_indicator');
         }
 
         TBG.Issues.Field.setPercent = function (url, mode) {
