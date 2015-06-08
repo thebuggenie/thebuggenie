@@ -797,7 +797,7 @@
          */
         public static function getIssuesFromTextByRegex($text)
         {
-            $issue_match_regexes = TextParser::getIssueRegex();
+            $issue_match_regexes = \thebuggenie\core\helpers\TextParser::getIssueRegex();
             $issue_numbers = array(); // Issue numbers
             $issues = array(); // Issue objects
             $transitions = array(); // Transition information
