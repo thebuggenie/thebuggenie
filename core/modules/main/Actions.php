@@ -4735,6 +4735,7 @@
         {
             $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
             $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
+            $action_option = str_replace($this->selected_project->getKey().'/milestone/'.$request['milestone_id'].'/', '', $request['url']);
 
             try
             {
@@ -4765,6 +4766,13 @@
                         }
                         $message = framework\Context::getI18n()->__('Milestone saved');
                         return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
+                    case $action_option == 'details':
+                        \thebuggenie\core\framework\Context::performAction(
+                            new \thebuggenie\core\modules\project\Actions,
+                            'project',
+                            'MilestoneDetails'
+                        );
+                        return true;
                     default:
                         return $this->forward($this->getRouting()->generate('project_roadmap', array('project_key' => $this->selected_project->getKey())));
                 }
