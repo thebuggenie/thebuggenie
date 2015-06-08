@@ -3710,6 +3710,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 window.location.hash = 'roadmap_milestone_' + milestone_id;
 
                 TBG.Main.Helpers.ajax(url, {
+                    url_method: 'get',
                     loading: {
                         indicator: 'fullpage_backdrop',
                         show: 'fullpage_backdrop_indicator',
