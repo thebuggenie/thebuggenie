@@ -660,12 +660,7 @@
         {
             $project = framework\Context::getCurrentProject();
             $found_issue = null;
-            $issue_no = mb_strtolower(trim($issue_number));
-            if (mb_strpos($issue_no, ' ') !== false)
-            {
-                $issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
-            }
-            if (mb_substr($issue_no, 0, 1) == '#') $issue_no = mb_substr($issue_no, 1);
+            $issue_no = self::extractIssueNoFromNumber($issue_number);
             if (is_numeric($issue_no))
             {
                 try
@@ -691,6 +686,25 @@
             }
 
             return ($found_issue instanceof \thebuggenie\core\entities\Issue) ? $found_issue : null;
+        }
+
+        /**
+         * Extract issue no from issue integer or string with prefix '#'.
+         *
+         * @param string $issue_number An integer or issue number
+         *
+         * @return string
+         */
+        public static function extractIssueNoFromNumber($issue_number)
+        {
+            $issue_no = mb_strtolower(trim($issue_number));
+            if (mb_strpos($issue_no, ' ') !== false)
+            {
+                $issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
+            }
+            if (mb_substr($issue_no, 0, 1) == '#') $issue_no = mb_substr($issue_no, 1);
+
+            return $issue_no;
         }
 
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'asc'))

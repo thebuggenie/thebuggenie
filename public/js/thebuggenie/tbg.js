@@ -225,13 +225,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 var y = document.viewport.getScrollOffsets().top;
                 var vihc = $('viewissue_header_container');
                 var vihcl = vihc.getLayout();
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihcl.get('padding-top') + vihcl.get('margin-top') + iv.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihc.offsetTop;
                 if (y >= compare_coord) {
+                    $('issue_main_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
+                    $('issue_details_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
                     vhc.addClassName('fixed');
                     $('workflow_actions').addClassName('fixed');
+                    if ($('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').hide();
+                    if ($('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').hide();
                     var vhc_layout = vhc.getLayout();
                     var vhc_height = vhc_layout.get('height') + vhc_layout.get('padding-top') + vhc_layout.get('padding-bottom');
-                    if (y >= $('viewissue_comments_container').offsetTop - vhc_height) {
+                    if (y >= $('viewissue_comment_count').offsetTop) {
                         if ($('comment_add_button') != undefined) {
                             var button = $('comment_add_button').remove();
                             $('workflow_actions').down('ul').insert(button);
@@ -241,8 +245,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         $('add_comment_button_container').update(button);
                     }
                 } else {
+                    $('issue_main_container').setStyle({marginTop: 0});
+                    $('issue_details_container').setStyle({marginTop: 0});
                     vhc.removeClassName('fixed');
                     $('workflow_actions').removeClassName('fixed');
+                    if (! $('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').show();
+                    if (! $('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').show();
                     if ($('comment_add_button') != undefined) {
                         var button = $('comment_add_button').remove();
                         $('add_comment_button_container').update(button);
