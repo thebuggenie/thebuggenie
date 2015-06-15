@@ -60,7 +60,7 @@
             $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matches[1]);
             if ($user instanceof \thebuggenie\core\entities\User)
             {
-                $output = \thebuggenie\core\entities\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
+                $output = framework\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
                 $this->mentions[$user->getID()] = $user;
             }
             else
