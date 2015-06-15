@@ -666,11 +666,12 @@
          */
         public function updateStatus()
         {
-            if (!$this->hasReachedDate() && $this->countClosedIssues() == $this->countIssues())
+            $all_issues_closed = (bool) ($this->countClosedIssues() == $this->countIssues());
+            if (!$this->hasReachedDate() && $all_issues_closed)
             {
                 $this->_reacheddate = NOW;
             }
-            elseif ($this->hasReachedDate())
+            elseif ($this->hasReachedDate() && !$all_issues_closed)
             {
                 $this->_reacheddate = null;
             }
