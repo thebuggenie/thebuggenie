@@ -4969,7 +4969,7 @@
                                     $old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
                                                         'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
                                                         'days' => $this->getChangedPropertyOriginal('_spent_days'),
-                                                        'hours' => $this->getChangedPropertyOriginal('_spent_hours'),
+                                                        'hours' => round($this->getChangedPropertyOriginal('_spent_hours') / 100, 2),
                                                         'points' => $this->getChangedPropertyOriginal('_spent_points'));
 
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('No time spent');
