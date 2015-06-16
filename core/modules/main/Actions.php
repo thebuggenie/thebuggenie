@@ -2285,9 +2285,6 @@
                                 }
                                 else
                                 {
-                                    if (!$issue->$is_changed_function_name())
-                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
-
                                     if (isset($parameter))
                                     {
                                         $name = $parameter->getName();
@@ -2298,6 +2295,10 @@
                                     }
 
                                     $field = array('id' => $parameter_id, 'name' => $name);
+
+                                    if (!$issue->$is_changed_function_name())
+                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'field' => $field));
+
                                     if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                     {
                                         framework\Context::loadLibrary('ui');
