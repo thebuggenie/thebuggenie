@@ -56,7 +56,7 @@
                             </span>
                             <span id="issue_title">
                                 <?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
-                                    <?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?>
+                                    <?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_edit').show('inline');$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?>
                                     <a class="undo" href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                                     <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?>
                                 <?php endif; ?>
@@ -70,7 +70,7 @@
                             <?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
                             <span id="title_change" style="display: none;">
                                 <form id="title_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')) ?>', 'title'); return false;">
-                                    <input type="text" name="value" value="<?php echo $issue->getTitle(); ?>" /><?php echo __('%save or %cancel', array('%save' => '<input type="submit" style="font-size: 1em; margin: -3px 5px 2px 0; padding: 2px 10px !important;" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\'title_change\').hide(); $(\'title_name\').show(); return false;">'.__('cancel').'</a>')); ?>
+                                    <input type="text" name="value" value="<?php echo $issue->getTitle(); ?>" /><?php echo __('%save or %cancel', array('%save' => '<input type="submit" style="font-size: 1em; margin: -3px 5px 2px 0; padding: 2px 10px !important;" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\'title_edit\').style.display = \'\'; $(\'title_change\').hide(); $(\'title_name\').show(); return false;">'.__('cancel').'</a>')); ?>
                                 </form>
                                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_spinning')); ?>
                                 <span id="title_change_error" class="error_message" style="display: none;"></span>
