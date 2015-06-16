@@ -5289,8 +5289,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: field + '_undo_spinning',
-                    show: loading_show
+                    indicator: loading_show != undefined ? loading_show : field + '_undo_spinning'
                 },
                 success: {
                     callback: function (json) {
@@ -5315,9 +5314,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         }
 
                     }
-                },
-                complete: {
-                    hide: loading_show
                 }
             });
         }
