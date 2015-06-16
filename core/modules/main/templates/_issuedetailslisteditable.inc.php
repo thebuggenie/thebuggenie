@@ -10,7 +10,7 @@
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditIssuetype()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-                        <?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
+                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul id="issuetype_change" class="popup_box more_actions_dropdown">
                             <li class="header"><?php echo __('Set issue type'); ?></li>
@@ -39,7 +39,7 @@
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditShortname()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>', 'shortname');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-                        <?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
+                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to edit issue label'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul id="shortname_change" class="popup_box more_actions_dropdown">
                             <li class="header"><?php echo __('Set issue label'); ?></li>
