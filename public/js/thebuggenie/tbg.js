@@ -5287,6 +5287,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         {
             var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
 
+            TBG.Issues.markAsUnchanged(field);
+
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: loading_show != undefined ? loading_show : field + '_undo_spinning'
@@ -5309,10 +5311,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 $(field + '_form_value').update(json.form_value);
                             else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
                                 $('issue_user_pain').update(json.field.user_pain);
-
-                            TBG.Issues.markAsUnchanged(field);
                         }
 
+                    }
+                },
+                failure: {
+                    callback: function () {
+                        TBG.Issues.markAsChanged(field);
                     }
                 }
             });
