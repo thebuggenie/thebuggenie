@@ -5182,10 +5182,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 form: post_form,
                 loading: {
-                    indicator: field + '_spinning',
+                    indicator: loading_show != undefined ? loading_show : field + '_spinning',
                     clear: field + '_change_error',
-                    hide: field + '_change_error',
-                    show: loading_show
+                    hide: field + '_change_error'
                 },
                 success: {
                     callback: function (json) {
@@ -5217,7 +5216,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         }
                         (json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
                     },
-                    hide: [field + '_change', loading_show]
+                    hide: field + '_change'
                 },
                 failure: {
                     update: field + '_change_error',
