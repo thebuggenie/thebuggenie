@@ -562,8 +562,6 @@
                                     if ($user instanceof User && !$user->hasPasswordHash($password)) $user = null;
                                 }
 
-                                $raw = false;
-
                                 if (!$user instanceof User)
                                 {
                                     framework\Context::logout();
