@@ -64,13 +64,15 @@
                             <?php endforeach; ?>
                         </tr>
                     </thead>
-                    <thead id="whiteboard-headers">
-                        <tr>
-                            <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_component('agile/boardcolumnheader', compact('column')); ?>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
+                    <?php if (count($board->getColumns())): ?>
+                        <thead id="whiteboard-headers">
+                            <tr>
+                                <?php foreach ($board->getColumns() as $column): ?>
+                                    <?php include_component('agile/boardcolumnheader', compact('column')); ?>
+                                <?php endforeach; ?>
+                            </tr>
+                        </thead>
+                    <?php endif; ?>
                 </table>
             </div>
         </div>
