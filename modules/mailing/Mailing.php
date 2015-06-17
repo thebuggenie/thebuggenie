@@ -254,7 +254,9 @@ EOT;
         /**
          * Gets a configured Swift_Message object
          *
-         * @param Swift_Message $subject
+         * @param string $subject
+         * @param string $message_plain
+         * @param string $message_html
          */
         public function getSwiftMessage($subject, $message_plain, $message_html)
         {
@@ -302,10 +304,11 @@ EOT;
                 $current_language = framework\Context::getI18n()->getCurrentLanguage();
                 try
                 {
-                    framework\Context::getI18n()->setLanguage($language);
+                    $i18n = framework\Context::getI18n();
+                    $i18n->setLanguage($language);
                     $body_parts = $this->getEmailTemplates($template, $parameters);
-                    $translated_subject = framework\Context::getI18n()->__($subject, $subject_parameters);
-                    $message = $this->getSwiftMessage($translated_subject, $body_parts[0], $body_parts[1]);
+                    $translated_subject = $i18n->__($subject, $subject_parameters);
+                    $message = $this->getSwiftMessage(html_entity_decode($translated_subject, ENT_NOQUOTES, $i18n->getCharset()), $body_parts[0], $body_parts[1]);
                     foreach ($users as $user)
                     {
                         $message->addTo($user->getEmail(), $user->getName());
