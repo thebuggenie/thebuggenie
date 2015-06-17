@@ -354,7 +354,7 @@
                     if ($request['article_type'] == Article::TYPE_MANUAL && (!$this->article->getManualName() || trim($this->article->getManualName()) == '' || !preg_match('/[\w:]+/i', $this->article->getManualName())))
                         throw new \Exception(framework\Context::getI18n()->__('You need to specify a valid article name'));
 
-                    if (framework\Context::getModule('publish')->getSetting('require_change_reason') == 1 && (!$this->change_reason || trim($this->change_reason) == ''))
+                    if (!$this->preview && framework\Context::getModule('publish')->getSetting('require_change_reason') == 1 && (!$this->change_reason || trim($this->change_reason) == ''))
                         throw new \Exception(framework\Context::getI18n()->__('You have to provide a reason for the changes'));
 
                     if ($this->article->getLastUpdatedDate() != $request['last_modified'])
