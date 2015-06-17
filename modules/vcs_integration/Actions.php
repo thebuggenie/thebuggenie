@@ -25,14 +25,19 @@
     class Actions extends framework\Action
     {
 
+        public function getAuthenticationMethodForAction($action)
+        {
+            return framework\Action::AUTHENTICATION_METHOD_DUMMY;
+        }
+
         public function runProjectCommits(framework\Request $request)
         {
             $this->selected_project = Project::getByKey($request['project_key']);
             framework\Context::setCurrentProject($this->selected_project);
 
-            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED): return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
-                ;
-            endif;
+            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED) {
+                return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
+            }
 
             $offset = $request->getParameter('offset', 0);
 
