@@ -220,11 +220,14 @@
              * e) and if we STILL havent found one, we use the guest user
              */
 
-            if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
+            // a)
+            $user = \thebuggenie\core\entities\tables\Users::getTable()->getByEmail($author);
+
+            if (!$user instanceof \thebuggenie\core\entities\User && preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
             {
                 $email = $matches[0];
 
-                // a)
+                // a2)
                 $user = \thebuggenie\core\entities\tables\Users::getTable()->getByEmail($email);
 
                 if (!$user instanceof \thebuggenie\core\entities\User)
