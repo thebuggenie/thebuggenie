@@ -27,7 +27,15 @@
 
         public function getAuthenticationMethodForAction($action)
         {
-            return framework\Action::AUTHENTICATION_METHOD_DUMMY;
+            switch ($action) {
+                case 'addCommit':
+                case 'addCommitGithub':
+                case 'addCommitBitbucket':
+                case 'addCommitGitorious':
+                    return framework\Action::AUTHENTICATION_METHOD_DUMMY;
+                default:
+                    return framework\Action::AUTHENTICATION_METHOD_CORE;
+            }
         }
 
         public function runProjectCommits(framework\Request $request)
