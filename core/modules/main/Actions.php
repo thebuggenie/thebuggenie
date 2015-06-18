@@ -166,11 +166,11 @@
                     }
                 }
             }
-            elseif (! framework\Context::hasMessage('issue_deleted'))
+            elseif (!framework\Context::hasMessage('issue_deleted'))
             {
                 $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-                if (! $issue instanceof entities\Issue || $issue->isDeleted())
+                if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
                 {
                     return $this->forward($request_referer);
                 }
