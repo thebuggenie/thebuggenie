@@ -41,11 +41,11 @@
 
     if ($branchname !== null)
     {
-        $link_base = str_replace('%branch%', $branchname, $link_base);
+        $link_base = str_replace('%branch', $branchname, $link_base);
     }
 
-    $link_rev = $base_url.str_replace('%revno%', $revision, $link_base);
-    $link_old = $base_url.str_replace('%revno%', $oldrevision, $link_base);
+    $link_rev = $base_url.str_replace('%revno', $revision, $link_base);
+    $link_old = $base_url.str_replace('%revno', $oldrevision, $link_base);
 
 
 ?>
@@ -87,35 +87,35 @@
 
                             echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', array(), false, 'vcs_integration') . '</td>';
 
-                            $link_file = str_replace('%revno%', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
-                            $link_file = str_replace('%oldrev%', $oldrevision, $link_file);
+                            $link_file = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
+                            $link_file = str_replace('%oldrev', $oldrevision, $link_file);
 
                             if ($branchname !== null)
                             {
-                                $link_file = str_replace('%branch%', $branchname, $link_file);
+                                $link_file = str_replace('%branch', $branchname, $link_file);
                             }
 
-                            $link_file = $base_url.str_replace('%file%', $file->getFile(), $link_file);
+                            $link_file = $base_url.str_replace('%file', $file->getFile(), $link_file);
 
-                            $link_diff = str_replace('%revno%', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
-                            $link_diff = str_replace('%oldrev%', $oldrevision, $link_diff);
+                            $link_diff = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
+                            $link_diff = str_replace('%oldrev', $oldrevision, $link_diff);
 
                             if ($branchname !== null)
                             {
-                                $link_diff = str_replace('%branch%', $branchname, $link_diff);
+                                $link_diff = str_replace('%branch', $branchname, $link_diff);
                             }
 
-                            $link_diff = $base_url.str_replace('%file%', $file->getFile(), $link_diff);
+                            $link_diff = $base_url.str_replace('%file', $file->getFile(), $link_diff);
 
-                            $link_view = str_replace('%revno%', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
-                            $link_view = str_replace('%oldrev%', $oldrevision, $link_view);
+                            $link_view = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
+                            $link_view = str_replace('%oldrev', $oldrevision, $link_view);
 
                             if ($branchname !== null)
                             {
-                                $link_view = str_replace('%branch%', $branchname, $link_view);
+                                $link_view = str_replace('%branch', $branchname, $link_view);
                             }
 
-                            $link_view = $base_url.str_replace('%file%', $file->getFile(), $link_view);
+                            $link_view = $base_url.str_replace('%file', $file->getFile(), $link_view);
 
                             echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
                             if ($action == "U" || $action == "M")
