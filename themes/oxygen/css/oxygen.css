@@ -1615,15 +1615,15 @@ a.friend { color: #0000a4; }
 .backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
 .backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
 .backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 3px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
-.backdrop_detail_content .additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
+#report_form table.additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
 .backdrop_detail_content .additional_information .report_issue_help { display: none; }
 #report_form table.additional_information { margin-top: 10px; }
-reportissue_additional_information_container .markItUp { display: none; }
-.report_issue_submit_container { font-size: 1.1em; }
-.report_issue_submit_container .button, .report_issue_submit_container .button:hover { float: right; font-size: 1.1em; padding: 0 5px !important; }
+#reportissue_additional_information_container .markItUp { display: none; }
+.report_issue_submit_container { font-size: 1.1em; clear: both; vertical-align: middle; margin-top: 10px; padding: 10px; text-align: right; }
+.report_issue_submit_container > div { padding: 7px; vertical-align: middle; display: inline-block; float: left; }
+.report_issue_submit_container .button, .report_issue_submit_container .button:hover { font-size: 1.1em; padding: 7px 10px; vertical-align: middle; }
 .report_issue_submit_container img { float: right; margin-right: 5px; }
-#report_issue_add_extra { margin-top: 15px; color: #333; }
-#report_form .textarea_hint { color: #AAA; font-weight: 300; padding: 5px 0 0 0; }
+#report_issue_add_extra { margin-top: 15px; color: #333; font-size: 1.1em; }
 .upload_container {
     padding: 35px 0;
     margin: 20px 10px;
@@ -1712,7 +1712,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
 .reportissue_error label { color: #955; }
 .reportissue_error .faded_out dark { color: #aa8D8D; }
-#reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; }
+#reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; font-size: 1em; }
 #reportissue_extrafields li { font-weight: 300; clear: none; margin: 5px; min-height: 26px; width: 310px; text-align: left; float: left; }
 #reportissue_extrafields li img { margin: 2px 5px 0 0; float: left; }
 #reportissue_extrafields li div { clear: none; margin-top: 2px; }
