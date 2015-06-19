@@ -96,27 +96,29 @@
                                 <?php echo '<b>' . __('Ex: "%example_1" or "%example_2" or "%example_3"', array('%example_1' => '</b><i>txt doc jpg png</i>', '%example_2' => '<i>txt,doc,jpg,png</i>', '%example_3' => '<i>txt;doc;jpg;png</i>')); ?>
                             </td>
                         </tr>
-                        <tr>
-                            <td><label for="upload_storage"><?php echo __('File storage'); ?></label></td>
-                            <td>
-                                <select name="upload_storage" id="upload_storage"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> disabled<?php endif; ?> onchange="(this.value == 'files') ? $('upload_localpath').enable() : $('upload_localpath').disable();">
-                                    <option value="files"<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() == 'files'): ?> selected<?php endif; ?>><?php echo __('Store it in the folder specified below'); ?></option>
-                                    <option value="database"<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() == 'database'): ?> selected<?php endif; ?>><?php echo __('Use the database to store files'); ?></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="config_explanation" colspan="2"><?php echo __('Specify whether you want to use the filesystem or database to store uploaded files. Using the database will make it easier to move your installation to another server.'); ?></td>
-                        </tr>
-                        <tr>
-                            <td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
-                            <td>
-                                <input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (\thebuggenie\core\framework\Settings::getUploadsLocalpath() != "") ? \thebuggenie\core\framework\Settings::getUploadsLocalpath() : THEBUGGENIE_PATH . 'files/'; ?>"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled() || \thebuggenie\core\framework\Settings::getUploadStorage() == 'database'): ?> disabled<?php endif; ?>>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files folder in the main folder (not the public folder)", array('%files' => '<b>files/</b>')); ?></td>
-                        </tr>
+                        <?php if (\thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
+                            <tr>
+                                <td><label for="upload_storage"><?php echo __('File storage'); ?></label></td>
+                                <td>
+                                    <select name="upload_storage" id="upload_storage"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> disabled<?php endif; ?> onchange="(this.value == 'files') ? $('upload_localpath').enable() : $('upload_localpath').disable();">
+                                        <option value="files"<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() == 'files'): ?> selected<?php endif; ?>><?php echo __('Store it in the folder specified below'); ?></option>
+                                        <option value="database"<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() == 'database'): ?> selected<?php endif; ?>><?php echo __('Use the database to store files'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config_explanation" colspan="2"><?php echo __('Specify whether you want to use the filesystem or database to store uploaded files. Using the database will make it easier to move your installation to another server.'); ?></td>
+                            </tr>
+                            <tr>
+                                <td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
+                                <td>
+                                    <input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (\thebuggenie\core\framework\Settings::getUploadsLocalpath() != "") ? \thebuggenie\core\framework\Settings::getUploadsLocalpath() : THEBUGGENIE_PATH . 'files/'; ?>"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled() || \thebuggenie\core\framework\Settings::getUploadStorage() == 'database'): ?> disabled<?php endif; ?>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files folder in the main folder (not the public folder)", array('%files' => '<b>files/</b>')); ?></td>
+                            </tr>
+                        <?php endif; ?>
                     </table>
                 <?php else: ?>
                     <div class="content faded_out dark" style="width: 730px;">
