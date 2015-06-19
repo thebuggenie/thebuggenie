@@ -188,34 +188,6 @@
     overflow: visible;
     position: relative;
 }
-.article.edit .editor_container.focussed .textarea_hint { opacity: 0; bottom: 0; }
-.article.edit .editor_container.focussed .textarea_hint:hover { opacity: 0.9; bottom: 20px; }
-.article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
-.article .textarea_hint { 
-    color: #999; 
-    font-size: 1.1em; 
-    padding: 15px;
-    margin: 0;
-    width: auto;
-    left: 30px;
-    right: 30px;
-    color: #555;
-    bottom: 20px;
-    box-shadow: 0 0 3px rgba(100, 100, 100, 0.3);
-    box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    position: absolute;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(200, 200, 200, 0.4);
-    -webkit-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -moz-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -ms-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -o-transition: opacity 0.3s ease, bottom 0.3s ease;
-    transition: opacity 0.3s ease, bottom 0.3s ease;
-}
 .article .categories { margin: 30px 5px 20px 5px; font-size: 1.1em; }
 .article .content { padding-bottom: 5px; clear: both; }
 .frontpage .article .content .toc { margin-top: 0; }
