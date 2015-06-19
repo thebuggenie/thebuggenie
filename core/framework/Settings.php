@@ -223,6 +223,12 @@
             }
         }
 
+        public static function copyDefaultScopeSetting($name, $module = 'core')
+        {
+            $setting = self::_loadSetting($name, $module, self::getDefaultScopeID());
+            self::saveSetting($name, $setting[0], $module, Context::getScope()->getID());
+        }
+
         public static function get($name, $module = 'core', $scope = null, $uid = 0)
         {
             if (Context::isInstallmode() && !Context::getScope() instanceof Scope)

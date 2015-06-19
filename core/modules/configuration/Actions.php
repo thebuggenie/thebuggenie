@@ -972,17 +972,24 @@
                 $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
                 if ($request['enable_uploads'])
                 {
-                    if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
-                    {
-                        if (!is_dir($request['upload_localpath']))
+                    if (framework\Context::getScope()->isDefault()) {
+                        $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
+
+                        if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
                         {
-                            mkdir($request['upload_localpath'], 0744, true);
+                            if (!is_dir($request['upload_localpath']))
+                            {
+                                mkdir($request['upload_localpath'], 0744, true);
+                            }
+                            if (!is_writable($request['upload_localpath']))
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't writable")));
+                            }
                         }
-                        if (!is_writable($request['upload_localpath']))
-                        {
-                            $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't writable")));
-                        }
+                    } else {
+                        $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size');
+                        framework\Settings::copyDefaultScopeSetting('upload_localpath');
                     }
 
                     if (!is_numeric($request['upload_max_file_size']))
@@ -990,8 +997,6 @@
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The maximum file size must be a number")));
                     }
-
-                    $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
                     foreach ($settings as $setting)
                     {
