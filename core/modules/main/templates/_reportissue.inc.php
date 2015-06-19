@@ -319,8 +319,8 @@
                     <td class="report_issue_help faded_out dark"><?php echo __('Describe the issue in as much detail as possible. More is better.'); ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding-top: 5px;">
-                        <?php include_component('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => ($tbg_request->isAjaxCall() ? '150px' : '250px'), 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
+                    <td colspan="2" style="padding-top: 5px;" class="editor_container">
+                        <?php include_component('main/textarea', array('area_name' => 'description', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => '300px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
                     </td>
                 </tr>
             </table>
@@ -330,8 +330,8 @@
                     <td class="report_issue_help faded_out dark"><?php echo __('Enter the steps necessary to reproduce the issue, as detailed as possible.'); ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding-top: 5px;">
-                        <?php include_component('textarea', array('area_name' => 'reproduction_steps', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => '250px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
+                    <td colspan="2" style="padding-top: 5px;" class="editor_container">
+                        <?php include_component('textarea', array('area_name' => 'reproduction_steps', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'height' => '300px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
                     </td>
                 </tr>
             </table>
@@ -571,7 +571,7 @@
                             <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
                             <td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
                         <tr>
-                            <td colspan="2" style="padding-top: 5px;">
+                            <td colspan="2" style="padding-top: 5px;" class="editor_container">
                                 <?php
                                     switch ($customdatatype->getType())
                                     {
@@ -641,7 +641,7 @@
                                         case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                         case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                             ?>
-                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'hide_hint' => true, 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
                                             <?php
                                             break;
                                     }
@@ -664,8 +664,8 @@
                 </script>
             <?php endif; ?>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.prefile')->trigger(); ?>
-            <div class="rounded_box report_issue_submit_container report_issue_desc green borderless" style="clear: both; vertical-align: middle; margin-top: 10px; padding: 5px; height: 25px;">
-                <div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
+            <div class="rounded_box report_issue_submit_container report_issue_desc green borderless">
+                <div><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
                 <input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
                 <?php echo image_tag('spinning_20.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
             </div>
@@ -834,7 +834,7 @@
                         <li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
                             <?php echo image_tag('icon_customdatatype.png'); ?>
                             <div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] !== null): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
-                            <div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
+                            <div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?> class="editor_container">
                                 <?php
                                     switch ($customdatatype->getType())
                                     {
@@ -908,7 +908,7 @@
                                             ?>
                                             <label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
                                             <br>
-                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+                                            <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'hide_hint' => true, 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
                                             <?php
                                             break;
                                     }
