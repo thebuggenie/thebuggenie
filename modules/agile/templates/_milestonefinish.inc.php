@@ -115,6 +115,6 @@
         </div>
     </div>
     <?php if ($milestone->countOpenIssues()): ?>
-        <?php include_component('agile/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone(), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
+        <?php include_component('agile/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone($milestone->getID()), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
     <?php endif; ?>
 </form>
