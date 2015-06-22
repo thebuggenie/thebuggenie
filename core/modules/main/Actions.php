@@ -2296,14 +2296,15 @@
 
                                     $field = array('id' => $parameter_id, 'name' => $name);
 
-                                    if (!$issue->$is_changed_function_name())
-                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'field' => $field));
-
                                     if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                     {
                                         framework\Context::loadLibrary('ui');
                                         $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
                                     }
+
+                                    if (!$issue->$is_changed_function_name())
+                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'field' => $field));
+
                                     if ($parameter_id == 0)
                                     {
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0)));
