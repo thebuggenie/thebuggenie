@@ -83,6 +83,14 @@
             return $this->doUpdateById($crit, $module_id);
         }
 
+        public function setModuleVersion($module_key, $version)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::MODULE_NAME, $module_key);
+            $crit->addUpdate(self::VERSION, $version);
+            return $this->doUpdate($crit);
+        }
+
         public function removeModuleByID($module_id)
         {
             return $this->doDeleteById($module_id);
