@@ -4147,7 +4147,7 @@
 
                         $issue->removeAffectedEdition($edition['edition']);
 
-                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is no longer affected by this issue', array('%edition' => $edition['edition']->getName()));
+                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is no longer affected by this issue', array('%edition' => $edition['edition']->getName()), true);
 
                         break;
                     case 'component':
@@ -4162,7 +4162,7 @@
 
                         $issue->removeAffectedComponent($component['component']);
 
-                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is no longer affected by this issue', array('%component' => $component['component']->getName()));
+                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is no longer affected by this issue', array('%component' => $component['component']->getName()), true);
 
                         break;
                     case 'build':
@@ -4178,7 +4178,7 @@
                             $build = $builds[$request['affected_id']];
 
                             $issue->removeAffectedBuild($build['build']);
-                            $message = framework\Context::getI18n()->__('Release <b>%build</b> is no longer affected by this issue', array('%build' => $build['build']->getName()));
+                            $message = framework\Context::getI18n()->__('Release <b>%build</b> is no longer affected by this issue', array('%build' => $build['build']->getName()), true);
                         }
                         else
                         {
