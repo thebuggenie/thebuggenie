@@ -5215,6 +5215,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             }
                         }
                         (json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
+                        if ((field == 'title' || field == 'description') && $(field + '_edit')) {
+                            $(field + '_edit').style.display = '';
+                        }
                     },
                     hide: field + '_change'
                 },
