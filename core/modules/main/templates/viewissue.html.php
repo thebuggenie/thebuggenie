@@ -309,7 +309,7 @@
                                 <?php endif; ?>
                                 <?php echo __('Description'); ?>
                             </legend>
-                            <div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                            <div id="description_content">
                                 <div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
                                 <div id="description_name" class="issue_inline_description">
                                     <?php if ($issue->getDescription()): ?>
