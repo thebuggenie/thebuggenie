@@ -5311,7 +5311,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (field == 'issuetype')
                                 TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
                             else if (field == 'description' || field == 'reproduction_steps')
-                                $(field + '_form_value').update(json.form_value);
+                                $(field + '_form_value').update(json.field.form_value);
                             else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
                                 $('issue_user_pain').update(json.field.user_pain);
                         }
