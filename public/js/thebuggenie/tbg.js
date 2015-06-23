@@ -5067,7 +5067,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Issues.Field.setPercent = function (url, mode) {
             TBG.Main.Helpers.ajax(url, {
-                loading: {indicator: 'percent_spinning'},
+                loading: {indicator: 'percent_complete_spinning'},
                 success: {
                     callback: function (json) {
                         TBG.Main.updatePercentageLayout(json.percent);
