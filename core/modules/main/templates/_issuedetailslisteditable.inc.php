@@ -119,12 +119,11 @@
                                     <input type="submit" value="<?php echo __('Set'); ?>">
                                 </form>
                             </li>
-                            <li class="separator"></li>
+                            <li id="percent_complete_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                         </ul>
                     <?php endif; ?>
                     <div id="issue_percent_complete">
                         <?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 16)); ?>
-                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_spinning')); ?>
                     </div>
                 </dd>
             </dl>
