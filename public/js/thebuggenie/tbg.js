@@ -5219,7 +5219,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('description_edit').style.display = '';
                         }
                         else if (field == 'title') {
-                            console.log('asdf');
                             $('title_field').toggleClassName('editing');
                         }
                     },
