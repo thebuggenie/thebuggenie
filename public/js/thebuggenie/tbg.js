@@ -5427,7 +5427,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: 'affected_' + affected + '_delete_spinner'
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
                 },
                 success: {
                     update: {element: 'viewissue_affects_count', from: 'itemcount'},
