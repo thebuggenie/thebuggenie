@@ -5075,7 +5075,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function (json) {
                         TBG.Main.updatePercentageLayout(json.percent);
                         (mode == 'set') ? TBG.Issues.markAsChanged('percent_complete') : TBG.Issues.markAsUnchanged('percent_complete');
-                    }
+                    },
+                    hide: 'percent_complete_change'
                 }
             });
         }
