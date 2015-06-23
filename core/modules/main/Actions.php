@@ -1938,7 +1938,7 @@
             }
 
 
-            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
+            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)), 'count' => count($issue->getSubscribers()))));
         }
 
         public function runIssueDeleteTimeSpent(framework\Request $request)

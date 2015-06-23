@@ -4985,6 +4985,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         } else if (json.subscriber != '') {
                             $('subscribers_list').insert(json.subscriber);
                         }
+                        if (json.count != undefined && $('subscribers_field_count')) {
+                            $('subscribers_field_count').update(json.count);
+                        }
                     }
                 }
             });
