@@ -49,9 +49,9 @@
                     <td class="title_left_images">
                         <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('id' => 'issuetype_image')); ?>
                     </td>
-                    <td id="title_field">
-                        <div class="viewissue_title hoverable">
-                            <span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
+                    <td id="title_field" class="<?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?> hoverable">
+                        <div class="viewissue_title">
+                            <span class="faded_out" id="title_header">
                                 <?php include_component('issueparent_crumbs', array('issue' => $issue)); ?>
                             </span>
                             <span id="issue_title">
