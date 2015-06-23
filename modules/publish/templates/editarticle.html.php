@@ -120,9 +120,7 @@
 <script type="text/javascript">
     require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
         domReady(function () {
-            document.observe('dom:loaded', function() {
-                $('article_serialized').value = $('article_content').serialize();
-            });
+            $('article_serialized').value = $('article_content').serialize();
 
             $("article-type-label").on("click", function(e) {
                 $("article-type-name").toggleClassName('selected');

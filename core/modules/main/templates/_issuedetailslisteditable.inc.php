@@ -460,14 +460,16 @@
                                         <li class="separator"></li>
                                         <li id="customfield_<?php echo $field; ?>_calendar_container"></li>
                                         <script type="text/javascript">
-                                            document.observe('dom:loaded', function () {
-                                                Calendar.setup({
-                                                    dateField: '<?php echo $field; ?>_name',
-                                                    parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
-                                                    valueCallback: function(element, date) {
-                                                        var value = Math.floor(date.getTime() / 1000);
-                                                        TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
-                                                    }
+                                            require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                                                domReady(function () {
+                                                    Calendar.setup({
+                                                        dateField: '<?php echo $field; ?>_name',
+                                                        parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
+                                                        valueCallback: function(element, date) {
+                                                            var value = Math.floor(date.getTime() / 1000);
+                                                            TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+                                                        }
+                                                    });
                                                 });
                                             });
                                         </script>

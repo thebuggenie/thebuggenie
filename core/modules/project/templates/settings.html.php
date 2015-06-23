@@ -30,8 +30,10 @@
             </ul>
             <?php if ($settings_saved): ?>
                 <script type="text/javascript">
-                    document.observe('dom:loaded', function() {
-                        TBG.Main.Helpers.Message.success('<?php echo __('Settings saved'); ?>', '<?php echo __('Project settings have been saved successfully'); ?>');
+                    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                        domReady(function () {
+                            TBG.Main.Helpers.Message.success('<?php echo __('Settings saved'); ?>', '<?php echo __('Project settings have been saved successfully'); ?>');
+                        });
                     });
                 </script>
             <?php endif; ?>

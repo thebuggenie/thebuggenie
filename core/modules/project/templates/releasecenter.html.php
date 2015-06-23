@@ -60,8 +60,10 @@
 </div>
 <?php if ($build_error): ?>
     <script type="text/javascript">
-        document.observe('dom:loaded', function() {
-            TBG.Main.Helpers.Message.error(__('An error occured when adding or updating the release'), $build_error);
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Main.Helpers.Message.error(__('An error occured when adding or updating the release'), $build_error);
+            });
         });
     </script>
 <?php endif; ?>
