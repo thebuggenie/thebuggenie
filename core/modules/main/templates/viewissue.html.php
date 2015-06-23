@@ -60,7 +60,7 @@
                                     <a class="undo" href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                                     <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?>
                                 <?php endif; ?>
-                                <span id="title_content" class="<?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                                <span id="title_content">
                                     <span class="faded_out" id="no_title" <?php if ($issue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
                                     <span id="title_name" title="<?php echo tbg_decodeUTF8($issue->getTitle()); ?>">
                                         <?php echo tbg_decodeUTF8($issue->getTitle()); ?>
@@ -338,7 +338,7 @@
                                 <?php endif; ?>
                                 <?php echo __('Steps to reproduce this issue'); ?>
                             </legend>
-                            <div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                            <div id="reproduction_steps_content">
                                 <div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
                                 <div id="reproduction_steps_name" class="issue_inline_description">
                                     <?php if ($issue->getReproductionSteps()): ?>
