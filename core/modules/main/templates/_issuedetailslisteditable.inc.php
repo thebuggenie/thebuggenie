@@ -52,7 +52,7 @@
                             <li id="shortname_change_error" class="error_message" style="display: none;"></li>
                         </ul>
                     <?php endif; ?>
-                    <span id="shortname_name"><?php if ($issue->hasShortname()) echo __e($issue->getShortname()); ?></span>
+                    <span id="shortname_name"><?php if ($issue->hasShortname()) echo $issue->getShortname(); ?></span>
                     <span class="faded_out" id="no_shortname"<?php if ($issue->hasShortname()): ?> style="display: none;"<?php endif; ?>><?php echo __('No label set'); ?></span>
                 </dd>
             </dl>
