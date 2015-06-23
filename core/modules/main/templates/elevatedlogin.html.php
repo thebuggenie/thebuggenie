@@ -44,7 +44,9 @@
     <?php elseif (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message_err')): ?>
         TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message_err'); ?>');
     <?php endif; ?>
-    document.observe('dom:loaded', function() {
-        $('tbg3_password').focus();
+    require(['domReady', 'prototype'], function (domReady, prototype) {
+        domReady(function () {
+            $('tbg3_password').focus();
+        });
     });
 </script>

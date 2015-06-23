@@ -201,9 +201,7 @@
                         <script>
                             require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
                                 domReady(function () {
-                                    document.observe('dom:loaded', function() {
-                                        TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
-                                    });
+                                    TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
                                 });
                             });
                         </script>
@@ -656,9 +654,7 @@
                 <script type="text/javascript">
                     require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
                         domReady(function () {
-                            document.observe('dom:loaded', function() {
-                                TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
-                            });
+                            TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
                         });
                     });
                 </script>
