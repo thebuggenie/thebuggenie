@@ -5215,8 +5215,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             }
                         }
                         (json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
-                        if ((field == 'title' || field == 'description') && $(field + '_edit')) {
-                            $(field + '_edit').style.display = '';
+                        if (field == 'description' && $('description_edit')) {
+                            $('description_edit').style.display = '';
+                        }
+                        else if (field == 'title') {
+                            console.log('asdf');
+                            $('title_field').toggleClassName('editing');
                         }
                     },
                     hide: field + '_change'
