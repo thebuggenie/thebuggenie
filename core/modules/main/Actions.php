@@ -4321,7 +4321,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition->getName()));
+                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition->getName()), true);
 
                         break;
                     case 'component':
@@ -4354,7 +4354,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component->getName()));
+                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component->getName()), true);
 
                         break;
                     case 'build':
@@ -4387,7 +4387,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build->getName()));
+                        $message = framework\Context::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build->getName()), true);
 
                         break;
                     default:
