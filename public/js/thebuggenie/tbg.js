@@ -4850,7 +4850,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('spent_time_' + json.issue_id + '_name').hide();
                         } else {
                             $('no_spent_time_' + json.issue_id).hide();
+                            $('spent_time_' + json.issue_id + '_name').show();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
+                        }
+                        $('estimated_percentbar').update(json.percentbar);
+                        if ($('no_estimated_time_' + json.issue_id).visible()) {
+                            $('estimated_percentbar').hide();
+                        }
+                        else {
+                            $('estimated_percentbar').show();
                         }
                     }
                 }
@@ -4871,7 +4879,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('spent_time_' + json.issue_id + '_name').hide();
                         } else {
                             $('no_spent_time_' + json.issue_id).hide();
+                            $('spent_time_' + json.issue_id + '_name').show();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
+                        }
+                        $('estimated_percentbar').update(json.percentbar);
+                        if ($('no_estimated_time_' + json.issue_id).visible()) {
+                            $('estimated_percentbar').hide();
+                        }
+                        else {
+                            $('estimated_percentbar').show();
                         }
                     }
                 }
