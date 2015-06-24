@@ -459,6 +459,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     }
                 });
             });
+            // Mimick browser scroll to element with id as hash once header get 'fixed' class
+            // from _scrollWatcher method.
+            setTimeout(function () {
+                var hash = window.location.hash;
+                if (hash != undefined && hash.indexOf('comment_') == 1 && typeof(window.location.href) == 'string') {
+                    window.location.href = window.location.href;
+                }
+            }, 1000);
         };
 
         TBG.Core.Pollers.Callbacks.dataPoller = function () {

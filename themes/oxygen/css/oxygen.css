@@ -684,7 +684,7 @@ footer img { margin: 4px 3px -6px 0; }
 }
 
 /* comments and commits styling */
-.comment { padding-bottom: 10px; clear: both; }
+.comment { padding-bottom: 10px; clear: both; border-top: 70px solid transparent; margin-top: -70px; }
 .comment_main { position: relative; overflow: visible; padding: 5px; }
 .comment:target .comment_main { border: 1px solid rgba(100, 100, 100, 0.2); background-color: rgba(240, 247, 255, 0.6); border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; box-shadow: 0 0 3px rgba(100, 100, 100, 0.2); }
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code { margin: 0 0 16px; }
@@ -705,7 +705,7 @@ footer img { margin: 4px 3px -6px 0; }
 #issue_details .commentdate, .comment.commit .commentdate { display: block; margin-left: 0; }
 .commentheader { padding: 0 0 1px 40px; border: none; position: relative; }
 .comment_add_title { font-size: 1.2em; font-weight: 300; padding: 5px 0; margin-top: 0; color: #888; border-bottom: 1px dotted #CCC; }
-.commentbody { padding: 1px 5px 5px 40px; font-size: 1em; }
+.commentbody { padding: 1px 5px 5px 40px; font-size: 1em; overflow: hidden; }
 #issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
 .commenttools { display: block; padding: 10px 0; font-size: 0.9em; text-align: left; }
