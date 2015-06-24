@@ -5053,6 +5053,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         if (json.attachmentcount == 0)
                             $('viewissue_no_uploaded_files').show();
                         $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+                        TBG.Main.Helpers.Dialog.dismiss();
                     }
                 },
                 complete: {
