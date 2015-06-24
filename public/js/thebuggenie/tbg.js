@@ -4902,13 +4902,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     update: {element: 'related_child_issues_inline', insertion: true},
                     hide: 'no_child_issues',
-                    callback: function () {
+                    callback: function (json) {
                         if (jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').length) {
                             jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').trigger('click');
                         }
                         else {
                             TBG.Main.Helpers.Backdrop.reset();
                         }
+                        if ($('viewissue_related_issues_count')) $('viewissue_related_issues_count').update(json.count);
+                        if (json.count > 0 && $('no_related_issues').visible()) $('no_related_issues').hide();
                     }
                 }
             });
@@ -4922,9 +4924,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     remove: 'related_issue_' + issue_id,
                     callback: function () {
                         var childcount = $('related_child_issues_inline').childElements().size();
-                        if (childcount == 0)
-                            $('no_child_issues').show();
                         $('viewissue_related_issues_count').update(childcount);
+                        if (childcount == 0) {
+                            $('no_related_issues').show();
+                        }
                     }
                 }
             });

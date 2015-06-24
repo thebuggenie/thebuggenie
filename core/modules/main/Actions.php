@@ -3931,7 +3931,7 @@
 
             if ($cc > 0)
             {
-                return $this->renderJSON(array('content' => $content, 'message' => framework\Context::getI18n()->__('The related issue was added')));
+                return $this->renderJSON(array('content' => $content, 'message' => framework\Context::getI18n()->__('The related issue was added'), 'count' => count($issue->getChildIssues())));
             }
             else
             {
