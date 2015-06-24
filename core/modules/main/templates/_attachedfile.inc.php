@@ -31,7 +31,7 @@
             </div>
         <?php endif; ?>
         <div class="upload_details">
-            <?php echo __('%filename uploaded %date by %username', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23), '%username' => (($file->getUploadedBy() instanceof \thebuggenie\core\entities\User) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $article->getAuthor()->getID())) . '\');" class="faded_out">' . $file->getUploadedBy()->getNameWithUsername() . '</a>' : __('unknown user')))); ?>
+            <?php echo __('%filename uploaded %date by %username', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23), '%username' => (($file->getUploadedBy() instanceof \thebuggenie\core\entities\User) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $file->getUploadedBy()->getID())) . '\');" class="faded_out">' . $file->getUploadedBy()->getNameWithUsername() . '</a>' : __('unknown user')))); ?>
         </div>
     </li>
 <?php else: ?>

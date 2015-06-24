@@ -3003,18 +3003,14 @@
                 {
                     framework\Logging::log('Upload complete and ok, storing upload status and returning filename ' . $new_filename);
                     $content_type = entities\File::getMimeType($filename);
-                    $file_object = new entities\File();
-                    $file_object->setRealFilename($new_filename);
-                    $file_object->setOriginalFilename(basename($file['name']));
-                    $file_object->setContentType($content_type);
-                    $file_object->setDescription('');
-                    $file_object->setUploadedBy(framework\Context::getUser());
                     if (framework\Settings::getUploadStorage() == 'database')
                     {
-                        $file_object->setContent(file_get_contents($filename));
+                        $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
                     }
-                    $file_object->save();
-                    return $this->renderJSON(array('file_id' => $file_object->getID()));
+                    else {
+                        $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type);
+                    }
+                    return $this->renderJSON(array('file_id' => $file_object_id));
                 }
             }
 
