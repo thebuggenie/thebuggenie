@@ -716,8 +716,8 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editsave, .comment_addsave { font-weight: 600; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
-.system_comment { background-color: #EBEBEB; border: 1px solid #DDD; }
-.private_comment { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
+.system_comment .comment_main { background-color: #EBEBEB; border: 1px solid #DDD; }
+.private_comment .comment_main { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-weight: 600; font-size: larger; }
