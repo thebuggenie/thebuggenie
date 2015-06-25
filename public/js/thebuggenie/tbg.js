@@ -1046,7 +1046,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         };
 
-        TBG.Main.uploadFile = function (url, file) {
+        TBG.Main.uploadFile = function (url, file, is_last) {
+            var is_last = is_last != undefined ? is_last : true;
             var fileSize = 0;
             if (file.size > 1024 * 1024) {
                 fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -1085,6 +1086,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     inserted_elm.remove();
                     TBG.Main.Helpers.Message.error(json.error);
                 }
+                if (is_last && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
             };
 
             xhr.upload.onprogress = function (e) {
@@ -1097,6 +1099,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 }
             };
 
+            if (!$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
             xhr.send(formData);
         };
 
@@ -1105,7 +1108,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var url = elm.dataset.uploadUrl;
             if (files.length > 0) {
                 for (var i = 0, file; file = files[i]; i++) {
-                    TBG.Main.uploadFile(url, file);
+                    TBG.Main.uploadFile(url, file, i == files.length - 1);
                 }
             }
         };
@@ -1128,7 +1131,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.dragOverFiles(evt);
             if (files.length > 0) {
                 for (var i = 0, file; file = files[i]; i++) {
-                    TBG.Main.uploadFile(url, file);
+                    TBG.Main.uploadFile(url, file, i == files.length - 1);
                 }
             }
         };
