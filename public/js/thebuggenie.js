@@ -41,20 +41,6 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
                     TBG.Main.Profile.clearPopupsAndButtons();
                     e.stopPropagation();
                 });
-                $$("textarea").each(function (ta) {
-                    ta.on('focus', function (e) {
-                        var ec = this.up('.editor_container');
-                        if (ec != undefined)
-                            ec.addClassName('focussed');
-                    });
-                });
-                $$("textarea").each(function (ta) {
-                    ta.on('blur', function (e) {
-                        var ec = this.up('.editor_container');
-                        if (ec != undefined)
-                            ec.removeClassName('focussed');
-                    });
-                });
                 TBG.Main.Dashboard.initializeSorting($);
             })(jQuery);
         });
