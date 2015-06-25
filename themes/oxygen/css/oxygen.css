@@ -1510,7 +1510,7 @@ table.cleantable th { text-align: center; }
 
 #workflow_transition_actions_validations { margin-bottom: 100px;}
 #workflow_transition_actions_validations h3 { margin-top: 25px; position: relative; }
-#workflow_transition_actions_validations h3 ul { margin: 25px 3px 0 0; font-size: 0.8em; }
+#workflow_transition_actions_validations h3 ul { margin: 25px 3px 0 0; font-size: 0.8em; right: 0; }
 #workflow_transition_actions_validations h3 ul#add_post_action { top: auto; bottom: 0; margin-bottom: 30px; }
 #workflow_details_transition, #workflow_details_step { margin-top: 0; float: left; width: 420px; }
 #workflow_details_transition label, #workflow_details_step label { font-size: 0.9em; }
@@ -1520,7 +1520,7 @@ table.cleantable th { text-align: center; }
 #workflow_details_transition dd, #workflow_details_step dd { width: 290px; }
 #workflow_details_transition dd.description, #workflow_details_step dd.description { font-style: italic; }
 #workflow_details_step dd div.workflow_step_status { line-height: 0; height: 14px; width: 14px; font-size: 1px; float: left; margin-right: 5px; border: 1px solid #AAA; }
-#add_post_action.more_actions_dropdown { width: 710px; padding: 0 5px; bottom: 0; margin-bottom: 30px; }
+#add_post_action.more_actions_dropdown { width: 710px; padding: 0 5px; bottom: 0; margin-bottom: 30px; margin-right: 3px; }
 #add_post_action.more_actions_dropdown .column { width: 230px; margin: 0; padding: 0; display: inline-block; vertical-align: top; }
 #add_post_action.more_actions_dropdown .column .simple_list { margin-top: 0; }
 #add_post_action.more_actions_dropdown .column .simple_list li a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
