@@ -1055,7 +1055,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
             }
             var ful = $('file_upload_list');
-            var elm = '<li><span class="imagepreview"><img src=""></span>';
+            var elm = '<li><span class="imagepreview"><img src="' + ful.dataset.previewSrc + '"></span>';
             var isimage = false;
             if (file.type.indexOf("image") == 0) {
                 isimage = true;
