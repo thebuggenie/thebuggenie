@@ -1,4 +1,4 @@
-<li class="hover_highlight<?php if ($issue->isClosed()): ?> closed<?php endif; ?> relatedissue" id="related_issue_<?php echo $issue->getID(); ?>" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+<li class="hover_highlight<?php if ($issue->isClosed()): ?> closed<?php endif; ?> relatedissue" id="related_issue_<?php echo $issue->getID(); ?>">
     <?php if ($related_issue->canAddRelatedIssues()): ?>
         <?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'removelink', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Remove relation to issue %itemname?', array('%itemname' => $issue->getFormattedIssueNo(true)))."', '".__('Please confirm that you want to remove this item from the list of issues related to this issue')."', {yes: {click: function() {TBG.Issues.removeRelated('".make_url('viewissue_remove_related_issue', array('project_key' => $related_issue->getProject()->getKey(), 'issue_id' => $related_issue->getID(), 'related_issue_id' => $issue->getID()))."', ".$issue->getID().");TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?>
     <?php endif; ?>
