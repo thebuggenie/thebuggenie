@@ -11,7 +11,12 @@
 
         public function getAuthenticationMethodForAction($action)
         {
-            return (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
+            $value = (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
+            $event = framework\Event::createNew('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', $action);
+            $event->setReturnValue($value);
+            $event->trigger();
+
+            return $event->getReturnValue();
         }
 
         /**

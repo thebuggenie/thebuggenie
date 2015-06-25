@@ -54,6 +54,11 @@
             return parent::MODULE_AUTH;
         }
 
+        protected function _addListeners()
+        {
+            framework\Event::listen('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
+        }
+
         public function postConfigSettings(framework\Request $request)
         {
             $settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth', 'integrated_auth_header');
@@ -458,6 +463,13 @@
             else
             {
                 return true;
+            }
+        }
+
+        public function listen_configurationAuthenticationMethod(framework\Event $event)
+        {
+            if (framework\Settings::getAuthenticationBackend() == $this->getName()) {
+                $event->setReturnValue(framework\Action::AUTHENTICATION_METHOD_CORE);
             }
         }
 
