@@ -2951,7 +2951,7 @@
                     break;
             }
             $saved_file_ids = $request['files'];
-            $files = array();
+            $files = $image_files = array();
             foreach ($request['file_description'] ?: array() as $file_id => $description)
             {
                 $file = entities\File::getB2DBTable()->selectById($file_id);
@@ -2965,11 +2965,16 @@
                 {
                     $target->detachFile($file);
                 }
-                $files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                if ($file->isImage()) {
+                    $image_files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                }
+                else {
+                    $files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                }
             }
             $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-            return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => $files, 'attachmentcount' => $attachmentcount));
+            return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount));
         }
 
         public function runUploadFile(framework\Request $request)
