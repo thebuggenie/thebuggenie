@@ -487,6 +487,13 @@ viewissue_remove_related_issue:
     parameters: [ ]
     csrf_enabled: false
 
+viewissue_remove_duplicated_issue:
+    route: /:project_key/issues/:issue_id/remove/duplicated/issue/:duplicated_issue_id
+    module: main
+    action: removeDuplicatedIssue
+    parameters: [ ]
+    csrf_enabled: false
+
 viewissue_related_issues:
     route: /:project_key/issues/:issue_id/related
     module: main

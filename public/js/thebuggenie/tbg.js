@@ -4909,6 +4909,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         };
 
+        TBG.Issues.removeDuplicated = function (url, issue_id) {
+            TBG.Main.Helpers.ajax(url, {
+                loading: {indicator: 'duplicate_issues_indicator'},
+                success: {
+                    remove: 'duplicated_issue_' + issue_id,
+                    callback: function () {
+                        var childcount = $('related_duplicate_issues_inline').childElements().size();
+                        $('viewissue_duplicate_issues_count').update(childcount);
+                        if (childcount == 0) {
+                            $('no_duplicated_issues').show();
+                        }
+                    }
+                }
+            });
+        };
+
         TBG.Issues.move = function (form, issue_id) {
             TBG.Main.Helpers.ajax(form.action, {
                 form: form,

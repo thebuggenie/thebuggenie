@@ -3858,6 +3858,40 @@
             }
         }
 
+        public function runRemoveDuplicatedIssue(framework\Request $request)
+        {
+            try
+            {
+                try
+                {
+                    $issue_id = (int) $request['issue_id'];
+                    $duplicated_issue_id = (int) $request['duplicated_issue_id'];
+                    $issue = null;
+                    $duplicated_issue = null;
+                    if ($issue_id && $duplicated_issue_id)
+                    {
+                        $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                        $duplicated_issue = entities\Issue::getB2DBTable()->selectById($duplicated_issue_id);
+                    }
+                    if (!$issue instanceof entities\Issue || !$duplicated_issue instanceof entities\Issue || !$duplicated_issue->isDuplicate() || $duplicated_issue->getDuplicateOf()->getID() != $issue_id)
+                    {
+                        throw new \Exception('');
+                    }
+                    $duplicated_issue->clearDuplicate();
+                }
+                catch (\Exception $e)
+                {
+                    throw new \Exception($this->getI18n()->__('Please provide a valid issue number and a valid duplicated issue number'));
+                }
+                return $this->renderJSON(array('message' => $this->getI18n()->__('The issues are no longer duplications')));
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $e->getMessage()));
+            }
+        }
+
         public function runRelateIssues(framework\Request $request)
         {
             $status = 200;

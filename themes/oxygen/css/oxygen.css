@@ -2247,10 +2247,10 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 .attached_item a.downloadlink, .attached_item a.downloadlink:hover { display: inline-block; font-size: 1em; width: 305px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; padding: 0 5px 0 0; text-decoration: none; border: none; }
 .attached_item a.downloadlink img, .affected_item img { display: inline-block; vertical-align: middle; margin-right: 5px; }
-.affected_item .removelink, .attached_item .removelink, .relatedissue .removelink, .attached_item .removelink:hover, .relatedissue .removelink:hover { display: inline-block; vertical-align: middle; margin-right: 5px; width: 17px; opacity: 0.3; transition: opacity 0.3s ease; }
-.relatedissue .removelink, .affected_item .removelink { float: right; }
-.attached_item:hover .removelink, .affected_item:hover .removelink, .relatedissue:hover .removelink, .attached_item:hover .removelink:hover, .relatedissue:hover .removelink:hover { opacity: 1; }
-.attached_item:hover .removelink a:hover, .affected_item:hover .removelink a:hover, .relatedissue a.removelink:hover { text-decoration: none; border: none; }
+.affected_item .removelink, .attached_item .removelink, .relatedissue .removelink, .duplicatedissue .removelink, .attached_item .removelink:hover, .relatedissue .removelink:hover, .duplicatedissue .removelink:hover { display: inline-block; vertical-align: middle; margin-right: 5px; width: 17px; opacity: 0.3; transition: opacity 0.3s ease; }
+.relatedissue .removelink, .affected_item .removelink, .duplicatedissue .removelink { float: right; }
+.attached_item:hover .removelink, .affected_item:hover .removelink, .relatedissue:hover .removelink, .duplicatedissue:hover .removelink, .attached_item:hover .removelink:hover, .relatedissue:hover .removelink:hover, .duplicatedissue:hover .removelink:hover { opacity: 1; }
+.attached_item:hover .removelink a:hover, .affected_item:hover .removelink a:hover, .relatedissue a.removelink:hover, .duplicatedissue a.removelink:hover { text-decoration: none; border: none; }
 .attached_item .upload_details { display: block; padding: 5px 0; font-size: 0.9em; color: #AAA; font-style: italic; }
 #viewissue_attached_information .attached_item.file_image, #article_attachments .attached_item.file_image { display: inline-block; width: 160px; margin-top: 10px; position: relative; vertical-align: top; }
 #viewissue_attached_information .attached_item.file_image:nth-child(odd), #article_attachments .attached_item.file_image:nth-child(odd) { margin-right: 5px; }
