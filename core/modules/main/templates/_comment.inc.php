@@ -18,15 +18,6 @@
                 <?php endif; ?>
             </div>
         </div>
-        <?php /* <div class="rounded_box lightyellow borderless shadowed comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none; width: 300px; position: absolute; right: 0; top: 0; padding: 5px; z-index: 20;">
-            <h5><?php echo __('Really delete this comment?'); ?></h5>
-            <div id="comment_delete_controls_<?php echo $comment->getID(); ?>" style="text-align: right; font-size: 12px;">
-                <a href="javascript:void(0)" onclick="TBG.Main.Comment.remove('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink"><?php echo __('Yes');?></a> :: <a href="javascript:void(0)" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
-            </div>
-            <div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
-                <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
-            </div>
-        </div> */ ?>
         <div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
             <div class="commentcontent" id="comment_<?php echo $comment->getID(); ?>_content">
                 <?php echo $comment->getParsedContent($options); ?>

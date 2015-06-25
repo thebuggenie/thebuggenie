@@ -1605,19 +1605,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Main.Comment.remove = function (url, comment_id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
-                    indicator: 'comment_delete_indicator_' + comment_id,
-                    hide: 'comment_delete_controls_' + comment_id
+                    indicator: 'dialog_indicator'
                 },
                 success: {
-                    remove: ['comment_delete_indicator_' + comment_id, 'comment_delete_confirm_' + comment_id, 'comment_' + comment_id],
+                    remove: 'comment_' + comment_id,
                     callback: function () {
                         TBG.Main.Helpers.Dialog.dismiss();
-                        if ($('comments_box').childElements().size() == 0)
-                            $('comments_none').show();
+                        if ($('comments_box').childElements().size() == 0) $('comments_none').show();
                     }
-                },
-                failure: {
-                    show: 'comment_delete_controls_' + comment_id
                 }
             });
         };
