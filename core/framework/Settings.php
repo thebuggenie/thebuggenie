@@ -130,7 +130,7 @@
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 0;
-        protected static $_ver_rev = '1';
+        protected static $_ver_rev = '2';
         protected static $_ver_name = "Cotton";
         protected static $_defaultscope = null;
         protected static $_settings = null;
