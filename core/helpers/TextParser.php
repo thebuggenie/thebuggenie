@@ -546,7 +546,12 @@
                     }
                     else
                     {
-                        $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                        if ($file_link == $filename) {
+                            $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
+                        }
+                        else {
+                            $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                        }
                     }
                 }
                 return $retval;
