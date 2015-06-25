@@ -5094,19 +5094,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'viewissue_links_' + link_id + '_remove_indicator',
-                    hide: 'viewissue_links_' + link_id + '_remove_link'
+                    hide: link_id + '_remove_link',
+                    callback: TBG.Main.Helpers.Dialog.dismiss
                 },
                 success: {
                     remove: ['viewissue_links_' + link_id, 'viewissue_links_' + link_id + '_remove_confirm'],
                     callback: function (json) {
-                        if (json.attachmentcount == 0)
-                            $('viewissue_no_uploaded_files').show();
-                        $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
-                        TBG.Main.Helpers.Dialog.dismiss();
+                        if (json.attachmentcount == 0 && $('viewissue_no_uploaded_files')) $('viewissue_no_uploaded_files').show();
+                        if ($('viewissue_uploaded_attachments_count')) $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
                     }
                 },
-                complete: {
-                    show: 'viewissue_links_' + link_id + '_remove_link'
+                failure: {
+                    show: link_id + '_remove_link'
                 }
             });
         }
