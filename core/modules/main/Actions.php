@@ -4727,7 +4727,7 @@
         /**
          * Milestone actions
          *
-         * @Route(url="/:project_key/milestone/:milestone_id/*", name='project_milestone')
+         * @Route(url="/:project_key/milestone/:milestone_id/actions/*", name='project_milestone')
          *
          * @param \thebuggenie\core\framework\Request $request
          */
