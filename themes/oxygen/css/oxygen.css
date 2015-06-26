@@ -2046,7 +2046,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 img.dropdown { float: left; margin-right: 5px; display: none; cursor: pointer; }
 img.spinning { float: right; margin-right: 5px; }
 dd:hover img.dropdown, .hoverable:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
-.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
+.issue_detail_changed img.undo, .issue_detail_unmerged img.undo { float: left; margin-right: 5px; display: inline; }
 img.undo { display: none; }
 #viewissue_left_box_issuetype img.undo, #viewissue_left_box_issuetype img.dropdown { margin-top: 7px; }
 /* end edit and undo styling */
