@@ -701,7 +701,7 @@
             }
             else
             {
-                $output = $matches[1];
+                $output = $matches[0];
             }
             return $output;
         }
