@@ -546,7 +546,7 @@
                     }
                     else
                     {
-                        if ($file_link == $filename) {
+                        if (strpos($file_link, 'http') !== 0 && $file_link == $filename) {
                             $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
                         }
                         else {
