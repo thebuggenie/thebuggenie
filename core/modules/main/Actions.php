@@ -3367,7 +3367,11 @@
                 switch ($comment_applies_type)
                 {
                     case entities\Comment::TYPE_ISSUE:
-                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => entities\Issue::getB2DBTable()->selectById($request['comment_applies_id'])));
+                        $issue = entities\Issue::getB2DBTable()->selectById($request['comment_applies_id']);
+
+                        framework\Context::setCurrentProject($issue->getProject());
+
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue));
                         break;
                     case entities\Comment::TYPE_ARTICLE:
                         $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
