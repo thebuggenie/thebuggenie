@@ -879,7 +879,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         {name: 'Numeric list', openWith: '(!(# |!|#)!)'},
                         {separator: '---------------'},
                         {name: 'Picture', key: "P", replaceWith: '[[Image:[![Url:!:http://]!]|[![name]!]]]'},
-                        {name: 'Link', key: "L", openWith: "[[[![Link]!]|", closeWith: ']]', placeHolder: 'Your text to link here...'},
+                        {name: 'Link', key: "L", openWith: "[[[![Url:!:http://]!]|", closeWith: ']]', placeHolder: 'Your text to link here...'},
                         {name: 'Url', openWith: "[[![Url:!:http://]!] ", closeWith: ']', placeHolder: 'Your text to link here...'},
                         {separator: '---------------'},
                         {name: 'Quotes', openWith: '(!(> |!|>)!)', placeHolder: ''},
@@ -897,9 +897,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         {name: 'Heading 4', key: '4', openWith: '#### ', placeHolder: 'Your title here...'},
                         {name: 'Heading 5', key: '5', openWith: '##### ', placeHolder: 'Your title here...'},
                         {separator: '---------------'},
-                        {name: 'Bold', key: 'B', openWith: '*', closeWith: '*'},
+                        {name: 'Bold', key: 'B', openWith: '**', closeWith: '**'},
                         {name: 'Italic', key: 'I', openWith: '_', closeWith: '_'},
-                        {name: 'Stroke through', key: 'S', openWith: '-', closeWith: '-'},
+                        {name: 'Stroke through', key: 'S', openWith: '~~', closeWith: '~~'},
                         {separator: '---------------'},
                         {name: 'Bulleted List', openWith: '- '},
                         {name: 'Numeric List', openWith: function (markItUp) {
@@ -931,7 +931,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 for (i = 0; i < n; i++) {
                     heading += char;
                 }
-                return '\n' + heading;
+                return '\n' + heading + '\n';
             }
         };
 
