@@ -2729,7 +2729,7 @@
                 }
                 elseif ($this->$var_name && $customtype->hasCustomOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\CustomDatatypeOption)
                 {
-                    $this->$var_name = new \thebuggenie\core\entities\CustomDatatypeOption($this->$var_name);
+                    $this->$var_name = tables\CustomFieldOptions::getTable()->selectById($this->$var_name);
                 }
                 elseif ($this->$var_name && $customtype->hasPredefinedOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\common\Identifiable)
                 {
@@ -2751,6 +2751,15 @@
                                 break;
                             case CustomDatatype::CLIENT_CHOICE:
                                 $this->$var_name = tables\Clients::getTable()->selectById($this->$var_name);
+                                break;
+                            case CustomDatatype::USER_CHOICE:
+                                $this->$var_name = tables\Users::getTable()->selectById($this->$var_name);
+                                break;
+                            case CustomDatatype::TEAM_CHOICE:
+                                $this->$var_name = tables\Teams::getTable()->selectById($this->$var_name);
+                                break;
+                            case CustomDatatype::STATUS_CHOICE:
+                                $this->$var_name = Status::getB2DBTable()->selectById($this->$var_name);
                                 break;
                         }
                     }
@@ -4651,28 +4660,14 @@
                             switch ($customdatatype->getType())
                             {
                                 case CustomDatatype::EDITIONS_CHOICE:
-                                    $option_object = tables\Editions::getTable()->selectById($this->getCustomField($key));
-                                    break;
                                 case CustomDatatype::COMPONENTS_CHOICE:
-                                    $option_object = tables\Components::getTable()->selectById($this->getCustomField($key));
-                                    break;
                                 case CustomDatatype::RELEASES_CHOICE:
-                                    $option_object = tables\Builds::getTable()->selectById($this->getCustomField($key));
-                                    break;
                                 case CustomDatatype::MILESTONE_CHOICE:
-                                    $option_object = tables\Milestones::getTable()->selectById($this->getCustomField($key));
-                                    break;
-                                case CustomDatatype::STATUS_CHOICE:
-                                    $option_object = tables\ListTypes::getTable()->selectById($this->getCustomField($key));
-                                    break;
-                                case CustomDatatype::USER_CHOICE:
-                                    $option_object = \thebuggenie\core\entities\User::getB2DBTable()->selectById($this->getCustomField($key));
-                                    break;
-                                case CustomDatatype::TEAM_CHOICE:
-                                    $option_object = \thebuggenie\core\entities\Team::getB2DBTable()->selectById($this->getCustomField($key));
-                                    break;
                                 case CustomDatatype::CLIENT_CHOICE:
-                                    $option_object = tables\Clients::getTable()->selectById($this->getCustomField($key));
+                                case CustomDatatype::STATUS_CHOICE:
+                                case CustomDatatype::USER_CHOICE:
+                                case CustomDatatype::TEAM_CHOICE:
+                                    $option_object = $this->getCustomField($key);
                                     break;
                             }
                         }
@@ -5044,7 +5039,11 @@
                                         case CustomDatatype::EDITIONS_CHOICE:
                                         case CustomDatatype::COMPONENTS_CHOICE:
                                         case CustomDatatype::RELEASES_CHOICE:
+                                        case CustomDatatype::MILESTONE_CHOICE:
                                         case CustomDatatype::STATUS_CHOICE:
+                                        case CustomDatatype::TEAM_CHOICE:
+                                        case CustomDatatype::USER_CHOICE:
+                                        case CustomDatatype::CLIENT_CHOICE:
                                             $old_object = null;
                                             $new_object = null;
                                             try
@@ -5052,16 +5051,28 @@
                                                 switch ($customdatatype->getType())
                                                 {
                                                     case CustomDatatype::EDITIONS_CHOICE:
-                                                        $old_object = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($original_value);
+                                                        $old_object = Edition::getB2DBTable()->selectById($original_value);
                                                         break;
                                                     case CustomDatatype::COMPONENTS_CHOICE:
-                                                        $old_object = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($original_value);
+                                                        $old_object = Component::getB2DBTable()->selectById($original_value);
                                                         break;
                                                     case CustomDatatype::RELEASES_CHOICE:
-                                                        $old_object = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($original_value);
+                                                        $old_object = Build::getB2DBTable()->selectById($original_value);
+                                                        break;
+                                                    case CustomDatatype::MILESTONE_CHOICE:
+                                                        $old_object = Milestone::getB2DBTable()->selectById($original_value);
                                                         break;
                                                     case CustomDatatype::STATUS_CHOICE:
-                                                        $old_object = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($original_value);
+                                                        $old_object = Status::getB2DBTable()->selectById($original_value);
+                                                        break;
+                                                    case CustomDatatype::TEAM_CHOICE:
+                                                        $old_object = Team::getB2DBTable()->selectById($original_value);
+                                                        break;
+                                                    case CustomDatatype::USER_CHOICE:
+                                                        $old_object = User::getB2DBTable()->selectById($original_value);
+                                                        break;
+                                                    case CustomDatatype::CLIENT_CHOICE:
+                                                        $old_object = Client::getB2DBTable()->selectById($original_value);
                                                         break;
                                                 }
                                             }
@@ -5071,16 +5082,14 @@
                                                 switch ($customdatatype->getType())
                                                 {
                                                     case CustomDatatype::EDITIONS_CHOICE:
-                                                        $new_object = \thebuggenie\core\entities\Edition::getB2DBTable()->selectById($this->getCustomField($key));
-                                                        break;
                                                     case CustomDatatype::COMPONENTS_CHOICE:
-                                                        $new_object = \thebuggenie\core\entities\Component::getB2DBTable()->selectById($this->getCustomField($key));
-                                                        break;
                                                     case CustomDatatype::RELEASES_CHOICE:
-                                                        $new_object = \thebuggenie\core\entities\Build::getB2DBTable()->selectById($this->getCustomField($key));
-                                                        break;
+                                                    case CustomDatatype::MILESTONE_CHOICE:
                                                     case CustomDatatype::STATUS_CHOICE:
-                                                        $new_object = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($this->getCustomField($key));
+                                                    case CustomDatatype::TEAM_CHOICE:
+                                                    case CustomDatatype::USER_CHOICE:
+                                                    case CustomDatatype::CLIENT_CHOICE:
+                                                        $new_object = $this->getCustomField($key);
                                                         break;
                                                 }
                                             }
