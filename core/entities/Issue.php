@@ -762,7 +762,6 @@
             if ($issue instanceof \thebuggenie\core\entities\Issue)
                 return array(array($issue), 1);
 
-            $filters = array('text' => array('value' => $text, 'operator' => '='));
             $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
