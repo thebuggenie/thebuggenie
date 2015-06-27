@@ -114,6 +114,12 @@
                         deps: ['prototype', 'controls'],
                         exports: 'Scriptaculous'
                     },
+                    'bootstrap-typeahead': {
+                        deps: ['jquery']
+                    },
+                    'mention': {
+                        deps: ['jquery', 'bootstrap-typeahead']
+                    },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };

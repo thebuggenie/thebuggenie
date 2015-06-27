@@ -18,7 +18,15 @@
  * ============================================================ */
 
 
-!function($){
+(function(factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD Registration
+        define([ 'jquery' ], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function($) {
 
   "use strict"; // jshint ;_;
 
@@ -332,4 +340,6 @@
     $this.typeahead($this.data())
   })
 
-}(window.jQuery);
+
+}));
+

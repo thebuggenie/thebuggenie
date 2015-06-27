@@ -1,6 +1,13 @@
 /*jslint forin: true */
-
-;(function($) {
+(function(factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD Registration
+        define([ 'jquery' ], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function($) {
     $.fn.extend({
         mention: function(options) {
             this.opts = {
@@ -163,4 +170,4 @@
             });
         }
     });
-})(jQuery);
+}));
