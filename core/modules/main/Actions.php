@@ -3286,7 +3286,7 @@
 
                     $comment->setContent($request->getRawParameter('comment_body'));
                     $comment->setIsPublic($request['comment_visibility']);
-                    $comment->setSyntax((int) $request['comment_body_syntax']);
+                    $comment->setSyntax($request['comment_body_syntax']);
                     $comment->setUpdatedBy($this->getUser()->getID());
                     $comment->save();
 
