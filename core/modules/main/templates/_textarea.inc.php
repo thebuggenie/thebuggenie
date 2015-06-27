@@ -37,7 +37,7 @@
             <li class="pt <?php if ($syntax == 'pt') echo 'selected'; ?>" data-syntax-name="<?php echo __('Plaintext'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'pt');"><?php echo __('Plain text'); ?></a></li>
         </ul>
     </div>
-    <textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" <?php if ($mentionable): ?> data-target-type="<?php echo $target_type; ?>" data-target-id="<?php echo $target_id; ?>" onfocus="TBG.Main.initializeMentionable(this);"<?php endif; ?> class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?> <?php if ($mentionable) echo ' mentionable'; ?>" style="<?php if (isset($height)) echo 'height: '.$height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
+    <textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" <?php if ($mentionable): ?> data-target-type="<?php echo $target_type; ?>" data-target-id="<?php echo $target_id; ?>" <?php endif; ?> class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?> <?php if ($mentionable) echo ' mentionable'; ?>" style="<?php if (isset($height)) echo 'height: '.$height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
     <?php if (!isset($hide_hint) || $hide_hint == false): ?>
         <div class="textarea_hint">
             <p class="syntax_pt_hint hint_container">
@@ -130,11 +130,12 @@
     <?php endif; ?>
 </div>
 <script type="text/javascript">
-    require(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'], function (tools, TBG, domReady, jQuery) {
+    require(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'], function (tools, TBG, domReady, jQuery, mention) {
         domReady(function () {
             (function ($) {
                 $$("textarea").each(function (ta) {
                     ta.on('focus', function (e) {
+                        TBG.Main.initializeMentionable(e.target);
                         var ec = this.up('.editor_container');
                         if (ec != undefined)
                             ec.addClassName('focussed');
