@@ -335,12 +335,12 @@
 
         protected function _parse_image($href,$title,$options)
         {
-            if ($this->ignore_images) return "";
-            if (!$this->image_uri) return $title;
+            // if ($this->ignore_images) return "";
+            // if (!$this->image_uri) return $title;
 
-            $href = $this->image_uri . $href;
+            // $href = $this->image_uri . $href;
 
-            $imagetag = sprintf('<img src="%s" alt="s" />', $href, $title);
+            $imagetag = sprintf('<img src="%s" alt="%s" />', $href, $title);
             foreach ($options as $k=>$option)
             {
                 switch($option)
@@ -546,7 +546,10 @@
                     }
                     else
                     {
-                        if (strpos($file_link, 'http') !== 0 && $file_link == $filename) {
+                        if (strpos($file_link, 'http') === 0) {
+                            $retval = $this->_parse_image($file_link, $caption, $options);
+                        }
+                        else if ($file_link == $filename) {
                             $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
                         }
                         else {
