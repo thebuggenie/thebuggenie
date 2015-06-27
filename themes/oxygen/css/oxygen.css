@@ -708,6 +708,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commentbody { padding: 1px 5px 5px 40px; font-size: 1em; overflow: hidden; }
 #issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
+.commentbody .more_actions_dropdown { right: auto; top: auto; }
 .commenttools { display: block; padding: 10px 0; font-size: 0.9em; text-align: left; }
 .commenttools a { color: #AAA; text-transform: uppercase; display: inline-block; margin: 0 10px 0 0; border-bottom: 1px dotted transparent; }
 .commenttools a:hover { border-bottom-color: #AAA; }
