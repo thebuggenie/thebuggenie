@@ -689,7 +689,7 @@
             return "";
         }
 
-        public static function parseIssuelink($matches)
+        public static function parseIssuelink($matches, $markdown_format = false)
         {
             $theIssue = \thebuggenie\core\entities\Issue::getIssueFromLink($matches[0]);
             $output = '';
@@ -700,7 +700,14 @@
             }
             if ($theIssue instanceof \thebuggenie\core\entities\Issue)
             {
-                $output = ' '.link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey())), $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
+                $theIssueUrl = make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey()));
+
+                if ($markdown_format) {
+                    $output = "[{$matches[0]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\") {.$classname}";
+                }
+                else {
+                    $output = ' '.link_tag($theIssueUrl, $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
+                }
             }
             else
             {

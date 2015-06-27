@@ -37,9 +37,9 @@
         {
             $this->no_markup = true;
             $this->no_entities = true;
-            $text = parent::transform($text);
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+            $text = parent::transform($text);
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 
@@ -48,7 +48,7 @@
 
         protected function _parse_issuelink($matches)
         {
-            return \thebuggenie\core\helpers\TextParser::parseIssuelink($matches);
+            return \thebuggenie\core\helpers\TextParser::parseIssuelink($matches, true);
         }
 
         protected function doHardBreaks($text)
