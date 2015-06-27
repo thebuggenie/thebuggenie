@@ -908,7 +908,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         {separator: '---------------'},
                         {name: 'Picture', key: 'P', replaceWith: '![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
                         {name: 'Link', key: 'L', openWith: '[', closeWith: ']([![Url:!:http://]!] "[![Title]!]")', placeHolder: 'Your text to link here...'},
-                        {name: 'Url', openWith: "[[![Url:!:http://]!] ", closeWith: ']', placeHolder: 'Your text to link here...'},
+                        {name: 'Url', openWith: '[', closeWith: ']([![Url:!:http://]!])', placeHolder: 'Your text to link here...'},
                         {separator: '---------------'},
                         {name: 'Quotes', openWith: '> '},
                         {name: 'Code', openWith: '(!(\t|!|`)!)', closeWith: '(!(`)!)'}
