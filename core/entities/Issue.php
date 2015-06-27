@@ -763,9 +763,10 @@
                 return array(array($issue), 1);
 
             $filters = array('text' => array('value' => $text, 'operator' => '='));
+            $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $filters['project_id'] = array('value' => $project->getID(), 'operator' => '=');
+                $filters['project_id'] = SearchFilter::createFilter('project_id', array('v' => $project->getID(), 'o' => '='));
             }
             return self::findIssues($filters);
         }
