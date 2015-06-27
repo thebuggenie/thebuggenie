@@ -3284,6 +3284,10 @@
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('The comment must have some content')));
                     }
 
+                    if ($comment->getTarget() instanceof entities\Issue) {
+                        framework\Context::setCurrentProject($comment->getTarget()->getProject());
+                    }
+
                     $comment->setContent($request->getRawParameter('comment_body'));
                     $comment->setIsPublic($request['comment_visibility']);
                     $comment->setSyntax($request['comment_body_syntax']);
