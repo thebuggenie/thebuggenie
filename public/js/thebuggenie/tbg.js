@@ -2917,7 +2917,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails = function (list) {
             var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
             var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
-            var visible_issues = list_issues.filter(':visible');
+            var visible_issues = list_issues;
             var sum_points = 0;
             var sum_hours = 0;
             visible_issues.each(function (index) {
