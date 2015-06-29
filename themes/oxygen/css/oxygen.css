@@ -2475,7 +2475,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard_indicator, .planning_indicator { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.6); z-index: 10; }
 #planning_indicator { position: fixed; }
 .dashboard_indicator img, .milestone_box .planning_indicator img, .planning_indicator img { position: absolute; left: 50%; top: 50%; margin-top: -8px; margin-left: -8px; }
-#planning_indicator .planning_indicator img { top: 200px; }
+#planning_indicator.planning_indicator img { top: 200px; }
 .planning_indicator .milestone_percentage {
     width: 400px;
     position: absolute;
