@@ -14,7 +14,7 @@
                 </tr>
             </table>
         </div>
-        <?php echo javascript_link_tag(__('Create new sprint'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."', TBG.Project.Planning.updateNewMilestoneIssues);")); ?>
+        <?php echo javascript_link_tag(__('Create new sprint'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'agilemilestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."', TBG.Project.Planning.updateNewMilestoneIssues);")); ?>
     </div>
 </li>
 <?php foreach ($board->getBacklogSearchObject()->getIssues() as $issue): ?>
