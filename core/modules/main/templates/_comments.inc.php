@@ -5,7 +5,7 @@
             <li id="comment_add_button"><input class="button button-green first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
         </ul>
     <?php endif; ?>
-    <div id="comment_add" class="comment_add comment_editor editor_container" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
+    <div id="comment_add" class="comment_add comment_editor" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
         <div class="comment_add_main">
             <div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
             <form id="comment_form" accept-charset="<?php echo mb_strtoupper(\thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" action="<?php echo make_url('comment_add', array('comment_applies_id' => $target_id, 'comment_applies_type' => $target_type, 'comment_module' => $module)); ?>" method="post" onSubmit="TBG.Main.Comment.add('<?php echo make_url('comment_add', array('comment_applies_id' => $target_id, 'comment_applies_type' => $target_type, 'comment_module' => 'core')); ?>', '<?php echo $comment_count_div; ?>');return false;">
