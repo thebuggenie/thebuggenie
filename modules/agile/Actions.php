@@ -120,6 +120,7 @@
                 $this->board->setType($request['type']);
                 $this->board->setProject($this->selected_project);
                 $this->board->setIsPrivate($request['is_private']);
+                $this->board->setUser(framework\Context::getUser());
                 $this->board->setEpicIssuetype($request['epic_issuetype_id']);
                 $this->board->setTaskIssuetype($request['task_issuetype_id']);
                 list($type, $id) = explode('_', $request['backlog_search']);
