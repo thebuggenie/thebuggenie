@@ -432,8 +432,8 @@
                 {
                     case $request->isPost():
                         $issue_table = \thebuggenie\core\entities\tables\Issues::getTable();
-                        $orders = array_keys($request["issue_ids"]);
-                        foreach ($request["issue_ids"] as $issue_id)
+                        $orders = array_keys($request["issue_ids"] ?: array());
+                        foreach ($request["issue_ids"] ?: array() as $issue_id)
                         {
                             $issue_table->setOrderByIssueId(array_pop($orders), $issue_id);
                         }
