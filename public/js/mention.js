@@ -51,13 +51,13 @@
 		                    return true;
 	                    }
                     }
-                    
-                    for (i in settings.queryBy) {
+
+                    for (i = 0; i < settings.queryBy.length; i++) {
                         if (itemProps[settings.queryBy[i]]) {
                             var item = itemProps[settings.queryBy[i]].toLowerCase(),
                                 usernames = (this.query.toLowerCase()).match(new RegExp(settings.delimiter + '\\w+', "g")),
                                 j;
-                            if ( !! usernames) {
+                            if (usernames.length) {
                                 for (j = 0; j < usernames.length; j++) {
                                     var username = (usernames[j].substring(1)).toLowerCase(),
                                         re = new RegExp(settings.delimiter + item, "g"),
@@ -117,10 +117,9 @@
                                     priorities.low.push(currentRes);
                                 }
                             }
-                            for (i in priorities) {
-                                var j;
-                                for (j in priorities[i]) {
-                                    finals.push(priorities[i][j]);
+                            for (a in priorities) {
+                                for (b = 0; b < priorities[a].length; b++) {
+                                    finals.push(priorities[a][b]);
                                 }
                             }
                             return finals;
