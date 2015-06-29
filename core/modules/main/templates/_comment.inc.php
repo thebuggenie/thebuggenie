@@ -65,7 +65,7 @@
                 <?php echo image_tag('spinning_16.gif'); ?>
             </div>
             <div id="comment_edit_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
-                <?php echo __('%save_changes or %cancel', array('%save_changes' => '<input type="submit" class="comment_editsave button button-silver" value="'.__('Save changes').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_edit_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();")))); ?>
+                <?php echo __('%save_changes or %cancel', array('%save_changes' => '<input type="submit" class="comment_editsave button button-silver" value="'.__('Save changes').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_edit_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();$('comment_add_button').show();")))); ?>
             </div>
         </form>
     </div>
@@ -84,7 +84,7 @@
                 <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
             </div>
             <div id="comment_reply_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
-                <?php echo __('%post_reply or %cancel', array('%post_reply' => '<input type="submit" class="comment_replysave button button-silver" value="'.__('Post reply').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_reply_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();")))); ?>
+                <?php echo __('%post_reply or %cancel', array('%post_reply' => '<input type="submit" class="comment_replysave button button-silver" value="'.__('Post reply').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_reply_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();$('comment_add_button').show();")))); ?>
             </div>
         </form>
     </div>

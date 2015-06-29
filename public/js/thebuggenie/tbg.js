@@ -1618,7 +1618,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 },
                 success: {
                     hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
-                    show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
+                    show: ['comment_view_' + cid, 'comment_edit_controls_' + cid, 'comment_add_button'],
                     update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
                 },
                 failure: {
@@ -1666,7 +1666,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     hide: ['comment_reply_' + reply_comment_id],
                     clear: 'comment_reply_bodybox_' + reply_comment_id,
                     update: {element: 'comments_box', insertion: true, from: 'comment_data'},
-                    show: 'comment_reply_controls_' + reply_comment_id,
+                    show: ['comment_reply_controls_' + reply_comment_id, 'comment_add_button'],
                     callback: function (json) {
                         $('comment_reply_visibility_' + reply_comment_id).setValue(1);
                     }
