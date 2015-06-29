@@ -1,5 +1,5 @@
-define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
-    function (tools, TBG, domReady, jQuery) {
+define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'],
+    function (tools, TBG, domReady, jQuery, mention) {
 
         domReady(function () {
             TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
@@ -40,6 +40,21 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
                         return;
                     TBG.Main.Profile.clearPopupsAndButtons();
                     e.stopPropagation();
+                });
+                $$("textarea").each(function (ta) {
+                    ta.on('focus', function (e) {
+                        TBG.Main.initializeMentionable(e.target);
+                        var ec = this.up('.editor_container');
+                        if (ec != undefined)
+                            ec.addClassName('focussed');
+                    });
+                });
+                $$("textarea").each(function (ta) {
+                    ta.on('blur', function (e) {
+                        var ec = this.up('.editor_container');
+                        if (ec != undefined)
+                            ec.removeClassName('focussed');
+                    });
                 });
                 TBG.Main.Dashboard.initializeSorting($);
             })(jQuery);
