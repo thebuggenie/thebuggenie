@@ -60,7 +60,6 @@
             </select>
             <br />
             <label for="comment_edit_<?php echo $comment->getId(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
-            <br />
             <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
             <div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
                 <?php echo image_tag('spinning_16.gif'); ?>
