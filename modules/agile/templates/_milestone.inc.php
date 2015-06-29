@@ -10,7 +10,7 @@
             case AgileBoard::TYPE_SCRUM:
             case AgileBoard::TYPE_KANBAN:
                 if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
-                $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
+                $milestoneplaceholder = __('Give the sprint a name such as "Sprint 2", or similar');
                 $milestoneheader = ($milestone->getId()) ? __('Edit sprint details') : __('Add new sprint');
                 $milestonenamelabel = __e('Sprint name');
                 $milestoneincludeissues_text = __e('The %number selected issue(s) will be automatically added to the new sprint', array('%number' => '<span id="milestone_include_num_issues"></span>'));
