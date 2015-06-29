@@ -149,6 +149,9 @@
                     });
                 });
             })(jQuery);
+            <?php if ($markuppable): ?>
+            TBG.Main.Helpers.MarkitUp([$("<?php echo $base_id; ?>")]);
+            <?php endif; ?>
         });
     });
 </script>
