@@ -3247,7 +3247,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         }
 
         TBG.Project.Milestone.remove = function (url, milestone_id) {
-            TBG.Main.Helpers.Dialog.dismiss();
             TBG.Main.Helpers.ajax(url, {
                 url_method: 'delete',
                 loading: {
@@ -3256,6 +3255,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     callback: function (json) {
                         $('milestone_' + milestone_id).remove();
+                        TBG.Main.Helpers.Dialog.dismiss();
                         TBG.Main.Helpers.Backdrop.reset();
                         if ($('milestone_list').childElements().size() == 0)
                             $('no_milestones').show();
