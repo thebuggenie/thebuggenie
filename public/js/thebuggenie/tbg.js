@@ -1828,7 +1828,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 elm.removeClassName('active');
             });
             $(section).addClassName('active');
-            if (section != 'register') {
+            if (section != 'register' && $('registration-button-container')) {
                 $('registration-button-container').addClassName('active');
             }
             $('login_backdrop').show();
@@ -3210,13 +3210,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     reset: 'edit_milestone_form',
                     hide: 'no_milestones',
                     callback: function (json) {
+                        TBG.Main.Helpers.Backdrop.reset();
+                        if ($('milestone_' + json.milestone_id)) {
+                            $('milestone_' + json.milestone_id).replace(json.component);
+                        } else {
+                            $('milestone_list').insert(json.component);
+                        }
                         if (on_board) {
-                            TBG.Main.Helpers.Backdrop.reset();
-                            if ($('milestone_' + json.milestone_id)) {
-                                $('milestone_' + json.milestone_id).replace(json.component);
-                            } else {
-                                $('milestone_list').insert(json.component);
-                            }
                             if (!include_selected_issues) {
                                 // console.log('asdf', $('milestone_' + json.milestone_id), json);
                                 setTimeout(function () {
@@ -3226,9 +3226,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 TBG.Project.Planning.initializeDragDropSorting();
                                 TBG.Core.Pollers.Callbacks.planningPoller();
                             }
-                        }
-                        else if (jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').length) {
-                            jQuery('.milestone_details_link.selected').eq(0).find('> a:first-child').trigger('click');
                         }
                     }
                 }
@@ -6315,12 +6312,36 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             window.location = fif.dataset.historyUrl + '?' + parameters + '&format=' + format;
         };
 
+        TBG.Search.updateSavedSearchCounts = function () {
+            var search_ids = '',
+                searchitems = $$('.savedsearch-item'),
+                project_id = $('search_sidebar').dataset.projectId;
+
+            searchitems.each(function (searchitem) {
+                search_ids += '&search_ids[]='+$(searchitem).dataset.searchId;
+            });
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'get',
+                params: '&say=getsearchcounts&project_id='+project_id+search_ids,
+                success: {
+                    callback: function (json) {
+                        searchitems.each(function (searchitem) {
+                            var badge = $(searchitem).down('.num_results_badge');
+                            if (badge !== undefined) {
+                                badge.update(json[$(searchitem).dataset.searchId]);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
         TBG.Search.liveUpdate = function (force) {
             var fif = $('find_issues_form');
             var url = fif.action;
             var parameters = fif.serialize();
 
-            var results_loaded = fif.dataset.resultsLoaded != undefined;
+            var results_loaded = (fif.dataset.resultsLoaded != undefined && fif.dataset.resultsLoaded != '');
 
             if (force == true || results_loaded) {
                 $('search_sidebar').addClassName('collapsed');
@@ -6337,6 +6358,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {update: 'search_results'},
                     complete: {
                         callback: function (json) {
+                            if (!results_loaded) {
+                                TBG.Search.updateSavedSearchCounts();
+                            }
                             $('findissues_num_results_span').update(json.num_issues);
                             if (! $('findissues_search_title').visible() && ! $('findissues_search_generictitle').visible()) {
                                 $('findissues_search_generictitle').show();
@@ -6349,7 +6373,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 if (!header_elm.hasClassName('nosort')) {
                                     header_elm.on('click', TBG.Search.sortResults);
                                 }
-                            })
+                            });
                             if (TBG.Search.isDirty()) {
                                 TBG.Search.loadDynamicChoices();
                                 TBG.Search.clearDirty();

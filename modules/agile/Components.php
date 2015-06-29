@@ -69,13 +69,6 @@
             }
         }
 
-        public function componentMilestoneWhiteboardStatusDetails()
-        {
-            $this->statuses = \thebuggenie\core\entities\Status::getAll();
-            if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
-                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
-        }
-
         public function componentColorpicker()
         {
             $this->colors = array('#E20700', '#6094CF', '#37A42B', '#E3AA00', '#FFE955', '#80B5FF', '#80FF80', '#00458A', '#8F6A32', '#FFF');

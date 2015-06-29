@@ -11,7 +11,12 @@
 
         public function getAuthenticationMethodForAction($action)
         {
-            return (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
+            $value = (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
+            $event = framework\Event::createNew('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', $action);
+            $event->setReturnValue($value);
+            $event->trigger();
+
+            return $event->getReturnValue();
         }
 
         /**
@@ -733,6 +738,7 @@
             $this->writable_link = is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes');
             $this->theme_message = framework\Context::getMessageAndClear('theme_message');
             $this->theme_error = framework\Context::getMessageAndClear('theme_error');
+            $this->is_default_scope = framework\Context::getScope()->isDefault();
         }
 
         /**
@@ -743,10 +749,12 @@
          */
         public function runUpdateModule(framework\Request $request)
         {
-            $module = framework\Context::getModule($request['module_key']);
-            $module->upgrade();
-            $module->enable();
-            framework\Context::setMessage('module_message', $this->getI18n()->__('The module was updated'));
+            if (framework\Context::getScope()->isDefault()) {
+                $module = framework\Context::getModule($request['module_key']);
+                $module->upgrade();
+                $module->enable();
+                framework\Context::setMessage('module_message', $this->getI18n()->__('The module was updated'));
+            }
             $this->forward($this->getRouting()->generate('configure_modules'));
         }
 
@@ -761,12 +769,15 @@
         {
             $themes = framework\Context::getThemes();
             if (array_key_exists($request['theme_key'], $themes)) {
-                $theme_link_path = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'css' . DS . $request['theme_key'];
-                $theme_path = '..' . DS . '..' . DS . 'themes' . DS . $request['theme_key'] . DS . 'css';
-                if (file_exists($theme_link_path)) {
-                    unlink($theme_link_path);
+                if (framework\Context::getScope()->isDefault())
+                {
+                    $theme_link_path = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'css' . DS . $request['theme_key'];
+                    $theme_path = '..' . DS . '..' . DS . 'themes' . DS . $request['theme_key'] . DS . 'css';
+                    if (file_exists($theme_link_path)) {
+                        unlink($theme_link_path);
+                    }
+                    symlink($theme_path, $theme_link_path);
                 }
-                symlink($theme_path, $theme_link_path);
                 framework\Settings::saveSetting(framework\Settings::SETTING_THEME_NAME, $request['theme_key']);
                 framework\Context::setMessage('theme_message', $this->getI18n()->__('The theme has been enabled'));
             } else {
@@ -966,17 +977,24 @@
                 $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
                 if ($request['enable_uploads'])
                 {
-                    if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
-                    {
-                        if (!is_dir($request['upload_localpath']))
+                    if (framework\Context::getScope()->isDefault()) {
+                        $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
+
+                        if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
                         {
-                            mkdir($request['upload_localpath'], 0744, true);
+                            if (!is_dir($request['upload_localpath']))
+                            {
+                                mkdir($request['upload_localpath'], 0744, true);
+                            }
+                            if (!is_writable($request['upload_localpath']))
+                            {
+                                $this->getResponse()->setHttpStatus(400);
+                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't writable")));
+                            }
                         }
-                        if (!is_writable($request['upload_localpath']))
-                        {
-                            $this->getResponse()->setHttpStatus(400);
-                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The upload path isn't writable")));
-                        }
+                    } else {
+                        $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size');
+                        framework\Settings::copyDefaultScopeSetting('upload_localpath');
                     }
 
                     if (!is_numeric($request['upload_max_file_size']))
@@ -984,8 +1002,6 @@
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__("The maximum file size must be a number")));
                     }
-
-                    $settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
                     foreach ($settings as $setting)
                     {

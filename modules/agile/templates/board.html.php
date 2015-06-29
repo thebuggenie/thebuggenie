@@ -39,7 +39,7 @@
                 <?php if ($board->getEpicIssuetypeID()): ?>
                     <button class="button button-silver" id="epics_toggler_button" onclick="$(this).toggleClassName('button-pressed');$('epics_list').toggleClassName('expanded');" disabled><?php echo __('Epics'); ?></button>
                 <?php endif; ?>
-                <?php echo javascript_link_tag($newmilestonelabel, array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."');")); ?>
+                <?php echo javascript_link_tag($newmilestonelabel, array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'agilemilestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."');")); ?>
                 <?php echo image_tag('spinning_16.gif', array('id' => 'retrieve_indicator', 'class' => 'indicator', 'style' => 'display: none;')); ?>
                 <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
@@ -70,7 +70,7 @@
                     </tr>
                 </table>
             <?php endif; ?>
-            <ul id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('agile_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
+            <ul id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('project_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
                 <?php foreach ($board->getMilestones() as $milestone): ?>
                     <?php include_component('milestonebox', array('milestone' => $milestone, 'board' => $board, 'include_counts' => !$milestone->isVisibleRoadmap())); ?>
                 <?php endforeach; ?>

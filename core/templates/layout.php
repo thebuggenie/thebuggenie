@@ -61,11 +61,18 @@
         <?php endforeach; ?>
 
         <script>
+            var bust = function (path) {
+                return path + '?bust=' + <?php echo (\thebuggenie\core\framework\Context::isDebugMode()) ? ' Math.random()' : "'" . \thebuggenie\core\framework\Settings::getVersion() . "'"; ?>;
+            };
+
             var require = {
                 baseUrl: '<?php echo make_url('home'); ?>js',
                 paths: {
                     jquery: 'jquery-2.1.3.min',
-                    'jquery-ui': 'jquery-ui.min'
+                    'jquery-ui': 'jquery-ui.min',
+                    'thebuggenie': bust('thebuggenie.js'),
+                    'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
+                    'thebuggenie/tools': bust('thebuggenie/tools.js')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },

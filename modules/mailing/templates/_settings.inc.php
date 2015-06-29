@@ -117,7 +117,7 @@
             <tr>
                 <td style="padding: 5px;"><label for="mailing_encryption"><?php echo __('Connection encryption'); ?></label></td>
                 <td>
-                    <select name="mailing_encryption" id="mailing_encryption" <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>
+                    <select name="smtp_encryption" id="mailing_encryption" <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>
                         <option value="" <?php if (!$module->getSmtpEncryption()): ?> selected<?php endif; ?>><?php echo __('No encryption'); ?></option>
                         <option value="ssl" <?php if (!$module->isSSLEncryptionAvailable()): ?> disabled<?php elseif ($module->getSmtpEncryption() == 'ssl'): ?> selected<?php endif; ?>><?php echo __('Use SSL encryption'); ?></option>
                         <option value="tls" <?php if (!$module->isTLSEncryptionAvailable()): ?> disabled<?php elseif ($module->getSmtpEncryption() == 'tls'): ?> selected<?php endif; ?>><?php echo __('Use TLS encryption'); ?></option>

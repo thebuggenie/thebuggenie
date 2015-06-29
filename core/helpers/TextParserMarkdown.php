@@ -3,6 +3,7 @@
     namespace thebuggenie\core\helpers;
 
     use \Michelf\MarkdownExtra;
+    use thebuggenie\core\framework;
 
     /**
      * Text parser class, markdown syntax
@@ -34,6 +35,8 @@
 
         public function transform($text)
         {
+            $this->no_markup = true;
+            $this->no_entities = true;
             $text = parent::transform($text);
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
@@ -57,7 +60,7 @@
             $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matches[1]);
             if ($user instanceof \thebuggenie\core\entities\User)
             {
-                $output = \thebuggenie\core\entities\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
+                $output = framework\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
                 $this->mentions[$user->getID()] = $user;
             }
             else

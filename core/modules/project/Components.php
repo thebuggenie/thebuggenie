@@ -21,6 +21,13 @@
         {
         }
 
+        public function componentMilestoneVirtualStatusDetails()
+        {
+            $this->statuses = \thebuggenie\core\entities\Status::getAll();
+            if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
+                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
+        }
+
         public function componentRecentActivities()
         {
             $this->default_displayed = isset($this->default_displayed) ? $this->default_displayed : false;
@@ -31,6 +38,21 @@
             $this->prev_date = null;
             $this->prev_timestamp = null;
             $this->prev_issue = null;
+        }
+
+        public function componentMilestone()
+        {
+            if (!isset($this->milestone))
+            {
+                $this->milestone = new \thebuggenie\core\entities\Milestone();
+                $this->milestone->setProject($this->project);
+            }
+        }
+
+        public function componentMilestoneBox()
+        {
+            $this->include_counts = (isset($this->include_counts)) ? $this->include_counts : false;
+            $this->include_buttons = (isset($this->include_buttons)) ? $this->include_buttons : true;
         }
 
         public function componentMilestoneDetails()

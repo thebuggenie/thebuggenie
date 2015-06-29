@@ -1,6 +1,6 @@
 <?php /* \thebuggenie\core\framework\Event::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); */ ?>
 <script type="text/javascript">
-    require(['domReady'], function (domReady) {
+    require(['domReady', 'prototype'], function (domReady, prototype) {
         domReady(function () {
             if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
                 if ($('tbg3_referer')) $('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
@@ -68,6 +68,10 @@
 <?php endif; ?>
 <?php if (isset($error)): ?>
     <script type="text/javascript">
-        TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
+            });
+        });
     </script>
 <?php endif; ?>

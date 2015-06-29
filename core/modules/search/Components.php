@@ -110,6 +110,9 @@
             $this->default_columns = entities\SavedSearch::getDefaultVisibleColumns();
             $this->custom_columns = entities\CustomDatatype::getAll();
             $this->visible_columns = $this->search_object->getColumns();
+            $this->cc = (isset($this->cc)) ? $this->cc : 0;
+            $this->actionable = (isset($this->actionable)) ? $this->actionable : true;
+            $this->prevgroup_id = (isset($this->prevgroup_id)) ? $this->prevgroup_id : 0;
         }
 
         public function componentResults_todo()

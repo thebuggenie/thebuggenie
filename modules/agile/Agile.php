@@ -64,6 +64,20 @@
         }
 
         /**
+         * User dashboard project list buttons listener
+         *
+         * @Listener(module="core", identifier="main\Components::DashboardViewUserProjects::links")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
+        public function userDashboardProjectButtonLinks(framework\Event $event)
+        {
+            $routing = framework\Context::getRouting();
+            $i18n = framework\Context::getI18n();
+            $event->addToReturnList(array('url' => $routing->generate('agile_index', array('project_key' => '%project_key%')), 'text' => $i18n->__('Planning')));
+        }
+
+        /**
          * Header "Agile" menu and board list
          *
          * @Listener(module="core", identifier="project/templates/projectheader")
@@ -76,6 +90,24 @@
             if ($board instanceof entities\AgileBoard)
             {
                 framework\ActionComponent::includeComponent('agile/projectheaderstriplinks', array('project' => $event->getSubject(), 'board' => $board));
+            }
+        }
+
+        /**
+         * Listen to milestone save event and return correct agile component
+         *
+         * @Listener(module="project", identifier="runMilestone::post")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
+        public function milestoneSave(framework\Event $event)
+        {
+            $board = entities\AgileBoard::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('board_id'));
+            if ($board instanceof entities\AgileBoard)
+            {
+                $component = framework\Action::returnComponentHTML('agile/milestonebox', array('milestone' => $event->getSubject(), 'board' => $board));
+                $event->setReturnValue($component);
+                $event->setProcessed();
             }
         }
 
@@ -126,7 +158,7 @@
                     $options['milestone'] = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
                     if (!$options['milestone']->hasReachedDate()) $options['milestone']->setReachedDate(time());
                     break;
-                case 'milestone':
+                case 'agilemilestone':
                     $template_name = 'agile/milestone';
                     $options['project'] = \thebuggenie\core\entities\tables\Projects::getTable()->selectById($request['project_id']);
                     $options['board'] = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);

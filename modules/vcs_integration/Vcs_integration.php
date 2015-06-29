@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\vcs_integration;
 
+    use b2db\Criteria;
+    use thebuggenie\core\entities\tables\Settings;
     use thebuggenie\core\framework,
         thebuggenie\modules\vcs_integration\entities\File,
         thebuggenie\modules\vcs_integration\entities\tables\Files,
@@ -31,7 +33,7 @@
     class Vcs_integration extends \thebuggenie\core\entities\Module
     {
 
-        const VERSION = '2.0';
+        const VERSION = '2.0.1';
 
         const MODE_DISABLED = 0;
         const MODE_ISSUECOMMITS = 1;
@@ -51,6 +53,30 @@
         protected function _initialize()
         {
 
+        }
+
+        protected function _upgrade()
+        {
+            switch ($this->_version) {
+                case '2.0':
+                    $table = Settings::getTable();
+                    $crit = $table->getCriteria();
+                    $ctn = $crit->returnCriterion(Settings::NAME, 'diff_url_%', Criteria::DB_LIKE);
+                    $ctn->addOr(Settings::NAME, 'log_url_%', Criteria::DB_LIKE);
+                    $ctn->addOr(Settings::NAME, 'blob_url_%', Criteria::DB_LIKE);
+                    $ctn->addOr(Settings::NAME, 'commit_url_%', Criteria::DB_LIKE);
+                    $crit->addWhere($ctn);
+                    $crit->addWhere(Settings::MODULE, 'vcs_integration');
+                    $urls = $table->doSelect($crit);
+                    if ($urls) {
+                        while ($url = $urls->getNextRow()) {
+                            $value = str_replace(array('%revno%', '%oldrev%', '%file%'), array('%revno', '%oldrev', '%file'), $url[Settings::VALUE]);
+                            $crit = $table->getCriteria();
+                            $crit->addUpdate(Settings::VALUE, $value);
+                            $table->doUpdateById($crit, $url[Settings::ID]);
+                        }
+                    }
+            }
         }
 
         protected function _install($scope)
@@ -220,11 +246,14 @@
              * e) and if we STILL havent found one, we use the guest user
              */
 
-            if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
+            // a)
+            $user = \thebuggenie\core\entities\tables\Users::getTable()->getByEmail($author);
+
+            if (!$user instanceof \thebuggenie\core\entities\User && preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
             {
                 $email = $matches[0];
 
-                // a)
+                // a2)
                 $user = \thebuggenie\core\entities\tables\Users::getTable()->getByEmail($email);
 
                 if (!$user instanceof \thebuggenie\core\entities\User)

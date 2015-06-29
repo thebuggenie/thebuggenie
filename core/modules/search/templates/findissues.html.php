@@ -77,6 +77,8 @@
                         <?php endif; ?>
                         <?php if ($show_results): ?>
                             setTimeout(function() { TBG.Search.liveUpdate(true); }, 250);
+                        <?php else: ?>
+                            TBG.Search.updateSavedSearchCounts();
                         <?php endif; ?>
 
                         var hash = window.location.hash;

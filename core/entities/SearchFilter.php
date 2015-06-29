@@ -640,14 +640,14 @@
                             if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_LIKE);
                             $ctn->addOr(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
                             $ctn->addOr(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+//                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
                         }
                         else
                         {
                             if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
                             $ctn->addWhere(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
                             $ctn->addWhere(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+//                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
                         }
                         return $ctn;
                     }

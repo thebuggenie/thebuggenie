@@ -26,7 +26,7 @@
     class Mailing extends \thebuggenie\core\entities\Module
     {
 
-        const VERSION = '2.0';
+        const VERSION = '2.0.1';
         const MAIL_TYPE_PHP = 1;
         const MAIL_TYPE_SMTP = 2;
         const MAIL_TYPE_SENDMAIL = 3;
@@ -254,7 +254,9 @@ EOT;
         /**
          * Gets a configured Swift_Message object
          *
-         * @param Swift_Message $subject
+         * @param string $subject
+         * @param string $message_plain
+         * @param string $message_html
          */
         public function getSwiftMessage($subject, $message_plain, $message_html)
         {
@@ -302,10 +304,11 @@ EOT;
                 $current_language = framework\Context::getI18n()->getCurrentLanguage();
                 try
                 {
-                    framework\Context::getI18n()->setLanguage($language);
+                    $i18n = framework\Context::getI18n();
+                    $i18n->setLanguage($language);
                     $body_parts = $this->getEmailTemplates($template, $parameters);
-                    $translated_subject = framework\Context::getI18n()->__($subject, $subject_parameters);
-                    $message = $this->getSwiftMessage($translated_subject, $body_parts[0], $body_parts[1]);
+                    $translated_subject = $i18n->__($subject, $subject_parameters);
+                    $message = $this->getSwiftMessage(html_entity_decode($translated_subject, ENT_NOQUOTES, $i18n->getCharset()), $body_parts[0], $body_parts[1]);
                     foreach ($users as $user)
                     {
                         $message->addTo($user->getEmail(), $user->getName());
@@ -422,7 +425,7 @@ EOT;
             }
         }
 
-        protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user)
+        protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user = null)
         {
             $u_id = ($triggered_by_user instanceof User) ? $triggered_by_user->getID() : $triggered_by_user;
             $users = $article->getSubscribers();
@@ -438,7 +441,7 @@ EOT;
             return $users;
         }
 
-        protected function _getIssueRelatedUsers(Issue $issue, $postedby)
+        protected function _getIssueRelatedUsers(Issue $issue, $postedby = null)
         {
             $u_id = ($postedby instanceof User) ? $postedby->getID() : $postedby;
             $users = $issue->getSubscribers();
@@ -829,6 +832,7 @@ EOT;
         {
             if ($this->mailer === null)
             {
+                require_once THEBUGGENIE_VENDOR_PATH . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
                 switch ($this->getMailerType()) {
                     case self::MAIL_TYPE_SENDMAIL:
                         $command = $this->getSendmailCommand();
@@ -858,7 +862,6 @@ EOT;
 
         public function mail(Swift_Message $message)
         {
-            require_once THEBUGGENIE_VENDOR_PATH . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
             $mailer = $this->getMailer();
             return $mailer->send($message);
         }
@@ -869,7 +872,7 @@ EOT;
             {
                 if ($this->usesEmailQueue())
                 {
-                    tables\MailQueueTable::getTable()->addMailToQueue($email);
+                    MailQueueTable::getTable()->addMailToQueue($email);
                     return true;
                 }
                 else

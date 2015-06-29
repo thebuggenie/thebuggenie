@@ -238,11 +238,11 @@
                 case 'all':
                     if ($allow_keywords)
                     {
-                        $limit = 50000;
+                        $limit = 500;
                         break;
                     }
                 default:
-                    if (mb_strlen($details) == 1) $limit = 50000;
+                    if (mb_strlen($details) == 1) $limit = 500;
                     $details = (mb_strlen($details) == 1) ? mb_strtolower("$details%") : mb_strtolower("%$details%");
                     $ctn = $crit->returnCriterion(self::UNAME, $details, Criteria::DB_LIKE);
                     $ctn->addOr(self::BUDDYNAME, $details, Criteria::DB_LIKE);
@@ -251,6 +251,8 @@
                     $crit->addWhere($ctn);
                     break;
             }
+            $crit->addJoin(UserScopes::getTable(), UserScopes::USER_ID, self::ID, array(), Criteria::DB_INNER_JOIN);
+            $crit->addWhere(UserScopes::SCOPE, framework\Context::getScope()->getID());
             $crit->addWhere(self::DELETED, false);
 
             $users = array();

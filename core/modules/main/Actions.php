@@ -5,8 +5,7 @@
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables,
-        thebuggenie\modules\agile,
-        Alchemy\Zippy\Zippy;
+        thebuggenie\modules\agile;
 
     /**
      * actions for the main module
@@ -167,11 +166,11 @@
                     }
                 }
             }
-            elseif (! framework\Context::hasMessage('issue_deleted'))
+            elseif (!framework\Context::hasMessage('issue_deleted'))
             {
                 $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-                if (! $issue instanceof entities\Issue || $issue->isDeleted())
+                if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
                 {
                     return $this->forward($request_referer);
                 }
@@ -403,7 +402,7 @@
                     switch ($request['say'])
                     {
                         case 'get_module_updates':
-                            $addons_param = [];
+                            $addons_param = array();
                             foreach ($request['addons'] as $addon) {
                                 $addons_param[] = 'addons[]='.$addon;
                             }
@@ -416,8 +415,23 @@
                             catch (\Exception $e) {}
                             return $this->renderJSON($addons_json);
                             break;
+                        case 'getsearchcounts':
+                            $counts_json = array();
+                            foreach ($request['search_ids'] as $search_id) {
+                                if (is_numeric($search_id)) {
+                                    $search = tables\SavedSearches::getTable()->selectById($search_id);
+                                } else {
+                                    $predefined_id = str_replace('predefined_', '', $search_id);
+                                    $search = \thebuggenie\core\entities\SavedSearch::getPredefinedSearchObject($predefined_id);
+                                }
+                                if ($search instanceof entities\SavedSearch) {
+                                    $counts_json[$search_id] = $search->getTotalNumberOfIssues();
+                                }
+                            }
+                            return $this->renderJSON($counts_json);
+                            break;
                         case 'get_theme_updates':
-                            $addons_param = [];
+                            $addons_param = array();
                             foreach ($request['addons'] as $addon) {
                                 $addons_param[] = 'themes[]='.$addon;
                             }
@@ -1611,7 +1625,7 @@
                     {
                         if (in_array($field, entities\Datatype::getAvailableFields(true)))
                         {
-                            if (!$this->selected_project->fieldPermissionCheck($field, true))
+                            if (!$this->selected_project->fieldPermissionCheck($field))
                             {
                                 $permission_errors[$field] = true;
                             }
@@ -1638,14 +1652,14 @@
             $issue->setProject($this->selected_project);
             if (isset($fields_array['shortname']))
                 $issue->setShortname($this->selected_shortname);
-            if (isset($fields_array['description']))
+            if (isset($fields_array['description'])) {
                 $issue->setDescription($this->selected_description);
-            if (isset($fields_array['description_syntax']))
                 $issue->setDescriptionSyntax($this->selected_description_syntax);
-            if (isset($fields_array['reproduction_steps']))
+            }
+            if (isset($fields_array['reproduction_steps'])) {
                 $issue->setReproductionSteps($this->selected_reproduction_steps);
-            if (isset($fields_array['reproduction_steps_syntax']))
                 $issue->setReproductionStepsSyntax($this->selected_reproduction_steps_syntax);
+            }
             if (isset($fields_array['category']) && $this->selected_category instanceof entities\Datatype)
                 $issue->setCategory($this->selected_category->getID());
             if (isset($fields_array['status']) && $this->selected_status instanceof entities\Datatype)
@@ -1853,6 +1867,10 @@
                 foreach ($errors as $field => $value)
                 {
                     $err_msg[] = $i18n->__('Please provide a value for the %field_name field', array('%field_name' => $field));
+                }
+                foreach ($permission_errors as $field => $value)
+                {
+                    $err_msg[] = $i18n->__("The %field_name field is marked as required, but you don't have permission to set it", array('%field_name' => $field));
                 }
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg)));
@@ -3691,6 +3709,12 @@
                         $template_name = 'configuration/userscopes';
                         $options['user'] = new entities\User((int) $request['user_id']);
                         break;
+                    case 'milestone':
+                        $template_name = 'project/milestone';
+                        $options['project'] = \thebuggenie\core\entities\tables\Projects::getTable()->selectById($request['project_id']);
+                        if ($request->hasParameter('milestone_id'))
+                            $options['milestone'] = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
+                        break;
                     default:
                         $event = new \thebuggenie\core\framework\Event('core', 'get_backdrop_partial', $request['key']);
                         $event->triggerUntilProcessed();
@@ -4664,6 +4688,91 @@
             catch (\Exception $e)
             {
                 throw $e;
+            }
+        }
+
+        protected function _saveMilestoneDetails(framework\Request $request, $milestone = null)
+        {
+            if (!$request['name'])
+                throw new \Exception($this->getI18n()->__('You must provide a valid milestone name'));
+
+            if ($milestone === null) $milestone = new \thebuggenie\core\entities\Milestone();
+            $milestone->setName($request['name']);
+            $milestone->setProject($this->selected_project);
+            $milestone->setStarting((bool) $request['is_starting']);
+            $milestone->setScheduled((bool) $request['is_scheduled']);
+            $milestone->setDescription($request['description']);
+            $milestone->setVisibleRoadmap($request['visibility_roadmap']);
+            $milestone->setVisibleIssues($request['visibility_issues']);
+            $milestone->setType($request->getParameter('milestone_type', \thebuggenie\core\entities\Milestone::TYPE_REGULAR));
+            if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+            {
+                $scheduled_date = mktime(23, 59, 59, framework\Context::getRequest()->getParameter('sch_month'), framework\Context::getRequest()->getParameter('sch_day'), framework\Context::getRequest()->getParameter('sch_year'));
+                $milestone->setScheduledDate($scheduled_date);
+            }
+            else
+                $milestone->setScheduledDate(0);
+
+            if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+            {
+                $starting_date = mktime(0, 0, 1, framework\Context::getRequest()->getParameter('starting_month'), framework\Context::getRequest()->getParameter('starting_day'), framework\Context::getRequest()->getParameter('starting_year'));
+                $milestone->setStartingDate($starting_date);
+            }
+            else
+                $milestone->setStartingDate(0);
+
+            $milestone->save();
+        }
+
+        /**
+         * Milestone actions
+         *
+         * @Route(url="/:project_key/milestone/:milestone_id/actions/*", name='project_milestone')
+         *
+         * @param \thebuggenie\core\framework\Request $request
+         */
+        public function runMilestone(framework\Request $request)
+        {
+            $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
+            $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
+
+            try
+            {
+                if (!$this->getUser()->canManageProject($this->selected_project) || !$this->getUser()->canManageProjectReleases($this->selected_project))
+                    throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
+
+                switch (true)
+                {
+                    case $request->isDelete():
+                        $milestone->delete();
+
+                        $no_milestone = new \thebuggenie\core\entities\Milestone(0);
+                        $no_milestone->setProject($milestone->getProject());
+                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+                    case $request->isPost():
+                        $this->_saveMilestoneDetails($request, $milestone);
+
+                        if ($request->hasParameter('issues') && $request['include_selected_issues'])
+                            \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
+
+                        $event = \thebuggenie\core\framework\Event::createNew('project', 'runMilestone::post', $milestone);
+                        $event->triggerUntilProcessed();
+                        
+                        if ($event->isProcessed()) {
+                            $component = $event->getReturnValue();
+                        } else {
+                            $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone));
+                        }
+                        $message = framework\Context::getI18n()->__('Milestone saved');
+                        return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
+                    default:
+                        return $this->forward($this->getRouting()->generate('project_roadmap', array('project_key' => $this->selected_project->getKey())));
+                }
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $e->getMessage()));
             }
         }
 

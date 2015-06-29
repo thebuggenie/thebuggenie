@@ -11,15 +11,31 @@
 
 ?>
 <div id="project_roadmap_page" class="<?php if ($mode == 'upcoming') echo 'upcoming'; ?> project_info_container">
-    <div class="project_right_container">
+    <div class="project_right_container" id="project_planning">
         <div class="project_right" id="project_roadmap_container">
+            <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
+                <div class="planning_indicator" id="milestone_0_indicator" style="display: none;"><?php echo image_tag('spinning_30.gif'); ?></div>
+                <div class="project_save_container" id="project_planning_action_strip">
+                    <?php echo javascript_link_tag(__('New milestone'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');")); ?>
+                    <?php echo image_tag('spinning_16.gif', array('id' => 'retrieve_indicator', 'class' => 'indicator', 'style' => 'display: none;')); ?>
+                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
+                    <ul class="more_actions_dropdown popup_box">
+                        <li><?php echo javascript_link_tag(__('Sort milestones'), array('onclick' => "TBG.Project.Planning.toggleMilestoneSorting();")); ?></li>
+                    </ul>
+                </div>
+                <div class="project_save_container" id="milestone-sort-actions">
+                    <button class="button button-silver" id="milestone_sort_toggler_button" onclick="TBG.Project.Planning.toggleMilestoneSorting();"><?php echo __('Done sorting'); ?></button>
+                </div>
+            <?php endif; ?>
             <div id="project_roadmap" style="<?php if (isset($selected_milestone) && $selected_milestone instanceof \thebuggenie\core\entities\Milestone) echo 'display: none'; ?>">
                 <?php if (count($milestones) == 0): ?>
                     <div style="padding: 15px; color: #AAA; font-size: 12px;"><?php echo __('There is no roadmap to be shown for this project, as it does not have any available milestones'); ?></div>
                 <?php else: ?>
-                    <?php foreach ($milestones as $milestone): ?>
-                        <?php include_component('agile/milestonebox', array('milestone' => $milestone, 'include_counts' => true, 'include_buttons' => false)); ?>
-                    <?php endforeach; ?>
+                    <div id="milestone_list" class="jsortable" data-sort-url="<?php echo make_url('project_sort_milestones', array('project_key' => $selected_project->getKey())); ?>">
+                        <?php foreach ($milestones as $milestone): ?>
+                            <?php include_component('project/milestonebox', array('milestone' => $milestone, 'include_counts' => true, 'include_buttons' => true)); ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
             </div>
             <div id="milestone_details_overview" style="<?php if (!(isset($selected_milestone) && $selected_milestone instanceof \thebuggenie\core\entities\Milestone)) echo 'display: none'; ?>">

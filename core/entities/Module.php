@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\tables\Modules;
     use thebuggenie\core\framework;
 
     /**
@@ -200,8 +201,8 @@
             framework\Context::clearRoutingCache();
             framework\Context::clearPermissionsCache();
             $this->_upgrade();
-            $this->_version = static::VERSION;
             $this->save();
+            Modules::getTable()->setModuleVersion($this->_name, static::VERSION);
         }
 
         final public function uninstall($scope = null)

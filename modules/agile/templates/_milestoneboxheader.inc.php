@@ -4,7 +4,7 @@
         <?php if (isset($board)): ?>
         <a href="<?php echo make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>#<?php echo $milestone->getID(); ?>"><span class="milestone_name"><?php echo $milestone->getName(); ?></span></a>
         <?php else: ?>
-            <span class="milestone_name milestone_virtual_status"><?php include_component('agile/milestonewhiteboardstatusdetails', array('milestone' => $milestone)); ?></span>
+            <span class="milestone_name milestone_virtual_status"><?php include_component('project/milestonevirtualstatusdetails', array('milestone' => $milestone)); ?></span>
         <?php endif; ?>
         <dl class="info">
             <?php if ($milestone->getID()): ?>
@@ -49,7 +49,7 @@
                     <li class="separator"></li>
                     <li><?php echo javascript_link_tag(__('Mark as finished'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone_finish', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
                     <li class="separator"></li>
-                    <li><?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
+                    <li><?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'agilemilestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID(), 'board_id' => isset($board) ? $board->getID() : ''))."');")); ?></li>
                     <li><?php
                         if (isset($board))
                         {

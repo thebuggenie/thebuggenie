@@ -69,44 +69,6 @@
         }
 
         /**
-         * Sorting milestones
-         *
-         * @Route(url="/milestones/sort", name="sort_milestones")
-         * @CsrfProtected
-         * 
-         * @param framework\Request $request
-         */
-        public function runSortMilestones(framework\Request $request)
-        {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
-            $milestones = $request->getParameter('milestone_ids', array());
-
-            try
-            {
-                if (is_array($milestones))
-                {
-                    foreach ($milestones as $order => $milestone_id)
-                    {
-                        $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectByID($milestone_id);
-
-                        if ($milestone->getProject()->getID() != $this->selected_project->getID())
-                            continue;
-
-                        $milestone->setOrder($order);
-                        $milestone->save();
-                    }
-                }
-            }
-            catch (\Exception $e)
-            {
-                $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('error' => $this->getI18n()->__('An error occurred when trying to save the milestone order')));
-            }
-
-            return $this->renderJSON(array('sorted' => 'ok'));
-        }
-
-        /**
          * The agile boards list
          *
          * @Route
@@ -140,6 +102,11 @@
         {
             $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
+            
+            if (!$this->board instanceof entities\AgileBoard) {
+                return $this->return404();
+            }
+
             if ($request->isDelete())
             {
                 $board_id = $this->board->getID();
@@ -284,7 +251,7 @@
         public function runWhiteboardMilestoneStatus(framework\Request $request)
         {
             $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-            return $this->renderJSON(array('content' => $this->getComponentHTML('agile/milestonewhiteboardstatusdetails', array('milestone' => $milestone))));
+            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', array('milestone' => $milestone))));
         }
 
         /**
@@ -642,7 +609,7 @@
                             \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
 
                         $message = framework\Context::getI18n()->__('Milestone saved');
-                        return $this->renderJSON(array('message' => $message, 'component' => $this->getComponentHTML('milestonebox', array('milestone' => $milestone, 'board' => $board)), 'milestone_id' => $milestone->getID()));
+                        return $this->renderJSON(array('message' => $message, 'component' => $this->getComponentHTML('agile/milestonebox', array('milestone' => $milestone, 'board' => $board)), 'milestone_id' => $milestone->getID()));
                     default:
                         return $this->renderJSON(array('content' => framework\Action::returnComponentHTML('agile/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
                 }
@@ -667,7 +634,10 @@
             $last_refreshed = $request['last_refreshed'];
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
-            $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
+            {
+                $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+            }
 
             if ($request['mode'] == 'whiteboard')
             {
@@ -680,9 +650,12 @@
                 $epic_ids = ($board->getEpicIssuetypeID()) ? \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
             }
             $backlog_ids = array();
-            foreach ($search_object->getIssues() as $backlog_issue)
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {
-                $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
+                foreach ($search_object->getIssues() as $backlog_issue)
+                {
+                    $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
+                }
             }
 
             return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id'));
