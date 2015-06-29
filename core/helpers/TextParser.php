@@ -703,7 +703,9 @@
                 $theIssueUrl = make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey()));
 
                 if ($markdown_format) {
-                    $output = "[{$matches[0]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\") {.$classname}";
+                    if ($classname != '') $classname = ' {.'.$classname.'}';
+
+                    $output = "[{$matches[0]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
                 }
                 else {
                     $output = ' '.link_tag($theIssueUrl, $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
