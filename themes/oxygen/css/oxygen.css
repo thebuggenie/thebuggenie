@@ -2815,6 +2815,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .backlog_toggler img { vertical-align: top; display: block; }
 .backlog_toggler:hover { cursor: pointer; border-color: rgba(100, 100, 100, 0.1); opacity: 1; }
 .left_toggled .backlog_toggler { box-shadow: 0 0 4px rgba(100, 100, 100, 0.2) inset; border-color: rgba(100, 100, 100, 0.3); background-color: rgba(220, 220, 220, 0.1); opacity: 1; }
+.left_toggled .milestone_issues  { display: none; }
 
 .planning_board_intro {
     font-size: 1em;
