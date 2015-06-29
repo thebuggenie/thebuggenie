@@ -3180,6 +3180,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 form: form,
                 loading: {
+                    indicator: 'milestone_edit_indicator',
                     callback: function () {
                         $('mark_milestone_finished_form').select('input.button').each(Element.disable);
                     }
