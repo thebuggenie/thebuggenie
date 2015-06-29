@@ -130,25 +130,19 @@
     <?php endif; ?>
 </div>
 <script type="text/javascript">
-    require(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'], function (tools, TBG, domReady, jQuery, mention) {
+    require(['thebuggenie/tbg', 'domReady', 'mention'], function (TBG, domReady, mention) {
         domReady(function () {
-            (function ($) {
-                $$("textarea").each(function (ta) {
-                    ta.on('focus', function (e) {
-                        TBG.Main.initializeMentionable(e.target);
-                        var ec = this.up('.editor_container');
-                        if (ec != undefined)
-                            ec.addClassName('focussed');
-                    });
-                });
-                $$("textarea").each(function (ta) {
-                    ta.on('blur', function (e) {
-                        var ec = this.up('.editor_container');
-                        if (ec != undefined)
-                            ec.removeClassName('focussed');
-                    });
-                });
-            })(jQuery);
+            $("<?php echo $base_id; ?>").on('focus', function (e) {
+                TBG.Main.initializeMentionable(e.target);
+                var ec = this.up('.editor_container');
+                if (ec != undefined)
+                    ec.addClassName('focussed');
+            });
+            $("<?php echo $base_id; ?>").on('blur', function (e) {
+                var ec = this.up('.editor_container');
+                if (ec != undefined)
+                    ec.removeClassName('focussed');
+            });
             <?php if ($markuppable): ?>
             TBG.Main.Helpers.MarkitUp([$("<?php echo $base_id; ?>")]);
             <?php endif; ?>
