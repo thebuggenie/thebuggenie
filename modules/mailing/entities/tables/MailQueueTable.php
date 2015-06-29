@@ -26,7 +26,7 @@
             parent::_addInteger(self::DATE, 10);
         }
 
-        public function addMailToQueue(\thebuggenie\core\entities\Mimemail $mail)
+        public function addMailToQueue($mail)
         {
             $message = serialize($mail);
             $crit = $this->getCriteria();
