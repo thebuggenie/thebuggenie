@@ -66,7 +66,7 @@
                     {
                         foreach ($messages as $message_id => $message)
                         {
-                            $retval = $mailing->send($message);
+                            $retval = $mailing->getMailer()->send($message);
                             $processed_messages[] = $message_id;
                             if (!$retval) $failed_messages++;
                         }
