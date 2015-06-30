@@ -43,6 +43,11 @@
             framework\Logging::log('done (user dropdown component)');
         }
 
+        public function componentUserdropdown_Inline()
+        {
+            $this->componentUserdropdown();
+        }
+
         public function componentClientusers()
         {
             try
