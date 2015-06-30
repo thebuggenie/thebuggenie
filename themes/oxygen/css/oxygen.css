@@ -991,8 +991,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .header { font-weight: 600; text-align: left; }
 
 /* general text area styling */
-.editor_container.focussed .textarea_hint { opacity: 0; bottom: 0; }
-.editor_container.focussed .textarea_hint:hover { opacity: 0.9; bottom: 20px; }
+.editor_container.focussed .textarea_hint { opacity: 0; visibility: hidden; }
 .editor_container .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; font-weight: 600; }
 .editor_container .textarea_hint {
     color: #999;
@@ -1013,11 +1012,11 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     position: absolute;
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(200, 200, 200, 0.4);
-    -webkit-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -moz-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -ms-transition: opacity 0.3s ease, bottom 0.3s ease;
-    -o-transition: opacity 0.3s ease, bottom 0.3s ease;
-    transition: opacity 0.3s ease, bottom 0.3s ease;
+    -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
+    -moz-transition: opacity 0.3s ease, visibility 0.3s ease;
+    -ms-transition: opacity 0.3s ease, visibility 0.3s ease;
+    -o-transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .textarea_container .textarea_hint .hint_container, .backdrop_box p.hint_container { display: none; padding: 0; margin: 0; }
 .textarea_container.syntax_md .textarea_hint .syntax_md_hint { display: block; }
