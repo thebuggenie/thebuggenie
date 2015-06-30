@@ -2923,19 +2923,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails = function (list) {
-            var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
-            var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
+            // var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
+            var list_issues = jQuery(list).find('.issue_container.issue_from_milestone');
+            // var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
+            var closed_issues = jQuery(list).find('.issue_container.issue_from_milestone.issue_closed');
             var visible_issues = list_issues;
             var sum_points = 0;
             var sum_hours = 0;
             visible_issues.each(function (index) {
                 var elm = $(this);
-                if (!elm.hasClassName('child_issue')) {
+                // if (!elm.hasClassName('child_issue')) {
                     if (elm.dataset.estimatedPoints !== undefined)
                         sum_points += parseInt(elm.dataset.estimatedPoints);
                     if (elm.dataset.estimatedHours !== undefined)
                         sum_hours += parseInt(elm.dataset.estimatedHours);
-                }
+                // }
             });
             var num_visible_issues = visible_issues.size();
             var milestone_id = $(list).up('.milestone_box').dataset.milestoneId;
