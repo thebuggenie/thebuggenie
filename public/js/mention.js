@@ -57,7 +57,7 @@
                             var item = itemProps[settings.queryBy[i]].toLowerCase(),
                                 usernames = (this.query.toLowerCase()).match(new RegExp(settings.delimiter + '\\w+', "g")),
                                 j;
-                            if (usernames.length) {
+                            if (usernames != undefined && usernames.length) {
                                 for (j = 0; j < usernames.length; j++) {
                                     var username = (usernames[j].substring(1)).toLowerCase(),
                                         re = new RegExp(settings.delimiter + item, "g"),
