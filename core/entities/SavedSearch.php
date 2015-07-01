@@ -719,6 +719,7 @@
 
             if ($this->_issues === null)
             {
+                $this->_b2dbLazyload('_filters');
                 $this->_performSearch();
             }
 
