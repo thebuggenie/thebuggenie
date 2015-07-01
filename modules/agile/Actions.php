@@ -655,6 +655,10 @@
             {
                 foreach ($search_object->getIssues() as $backlog_issue)
                 {
+                    foreach ($ids as $id_issue) {
+                        if ($id_issue['issue_id'] == $backlog_issue->getID()) continue 2;
+                    }
+
                     $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
                 }
             }
