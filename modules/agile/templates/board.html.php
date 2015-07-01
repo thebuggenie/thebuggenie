@@ -16,7 +16,7 @@
         case AgileBoard::TYPE_SCRUM:
         case AgileBoard::TYPE_KANBAN:
             $newmilestonelabel = __('Add new sprint');
-            $togglemilestoneslabel = __('Toggle past, unfinished sprints');
+            $togglemilestoneslabel = __('Toggle hidden sprints');
             $addmilestoneslabel = __('There are no active sprints. Why not add one?');
             break;
     }
