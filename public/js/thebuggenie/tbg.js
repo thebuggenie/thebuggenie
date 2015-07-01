@@ -3147,7 +3147,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 backlog.removeClassName('initialized');
                                 $('milestone_0_issues').update('');
                                 $('milestone_0_issues').removeClassName('ui-sortable');
-                                TBG.project_t.Planning.initialize(TBG.Project.Planning.options);
+                                TBG.Project.Planning.initialize(TBG.Project.Planning.options);
                             }
                         }
                     }
