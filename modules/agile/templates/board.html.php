@@ -47,7 +47,7 @@
                         <li><?php echo javascript_link_tag(__('Sort milestones'), array('onclick' => "TBG.Project.Planning.toggleMilestoneSorting();")); ?></li>
                         <li class="separator"></li>
                         <li><?php echo javascript_link_tag(__('Toggle closed issues'), array('onclick' => "TBG.Project.Planning.toggleClosedIssues(this);")); ?></li>
-                        <li><?php echo javascript_link_tag($togglemilestoneslabel, array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
+                        <li><?php echo javascript_link_tag($togglemilestoneslabel, array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Profile.clearPopupsAndButtons();")); ?></li>
                     </ul>
                 <?php endif; ?>
             </div>
