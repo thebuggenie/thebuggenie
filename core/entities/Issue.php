@@ -2960,6 +2960,11 @@
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
+                if ($related_issue->getMilestone() instanceof Milestone) {
+                    $related_issue->removeMilestone();
+                    $related_issue->save();
+                }
+
                 $res = tables\IssueRelations::getTable()->addChildIssue($this->getID(), $related_issue->getID());
                 $this->_child_issues = null;
 
@@ -5609,11 +5614,18 @@
                     case 'resolution':
                     case 'priority':
                     case 'severity':
-                    case 'milestone':
                     case 'category':
                     case 'reproducability':
                         $method = 'get'.ucfirst($field);
                         $value = $this->$method();
+                        break;
+                    case 'milestone':
+                        $method = 'get'.ucfirst($field);
+                        $value = $this->$method();
+                        if (is_numeric($value) && $value == 0) {
+                            $value = new Milestone();
+                            $value->setID(0);
+                        }
                         break;
                     case 'owner':
                         $value = $this->getOwner();
