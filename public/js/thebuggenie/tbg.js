@@ -2311,6 +2311,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     $('planning_filter_title_input').enable();
                                 }
                             }
+
+                            if (! milestone.down('.planning_indicator').hidden) milestone.down('.planning_indicator').hide();
                         }
                     },
                     failure: {
@@ -3145,6 +3147,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 backlog.removeClassName('initialized');
                                 $('milestone_0_issues').update('');
                                 $('milestone_0_issues').removeClassName('ui-sortable');
+                                backlog.down('.planning_indicator').show();
                                 TBG.Project.Planning.initialize(TBG.Project.Planning.options);
                             }
                         }
