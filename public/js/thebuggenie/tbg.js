@@ -1093,9 +1093,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 if (e.lengthComputable) {
                     var percent = (e.loaded / e.total) * 100;
                     progress_elm.setStyle({width: percent + '%'});
-                    if (percent == 100)
+                    if (percent == 100) {
                         progress_elm.addClassName('completed');
     //					progressBar.textContent = progressBar.value; // Fallback for unsupported browsers.
+                        $('file_upload_dummy').value = null;
+                    }
                 }
             };
 
