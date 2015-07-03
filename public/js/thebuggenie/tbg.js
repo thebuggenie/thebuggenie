@@ -3234,7 +3234,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     TBG.Project.Planning.getMilestoneIssues($('milestone_' + json.milestone_id), TBG.Project.Planning.initializeDragDropSorting);
                                 }, 250);
                             } else {
-                                TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails('milestone_0_issues');
+                                TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails($('milestone_0_issues'));
                                 TBG.Project.Planning.initializeDragDropSorting();
                             }
                         }
