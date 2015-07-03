@@ -3230,7 +3230,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         }
                         if (on_board) {
                             if (!include_selected_issues) {
-                                // console.log('asdf', $('milestone_' + json.milestone_id), json);
                                 setTimeout(function () {
                                     TBG.Project.Planning.getMilestoneIssues($('milestone_' + json.milestone_id), TBG.Project.Planning.initializeDragDropSorting);
                                 }, 250);
