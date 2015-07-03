@@ -2491,13 +2491,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
+            if (issue) {
+                issue.detach().css({left: '0', top: '0'}).prependTo(column);
+            }
 
             if (issue.data('column-id') == column.data('column-id'))
                 return;
-
-            if (issue) {
-                issue.detach().css({left: 'inherit', top: 'inherit'}).prependTo(column);
-            }
 
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
