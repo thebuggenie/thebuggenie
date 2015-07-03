@@ -3229,6 +3229,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     reset: 'edit_milestone_form',
                     hide: 'no_milestones',
                     callback: function (json) {
+                        $$('.milestone_issue.included').each(function (issue) { issue.remove(); });
                         TBG.Main.Helpers.Backdrop.reset();
                         if ($('milestone_' + json.milestone_id)) {
                             $('milestone_' + json.milestone_id).replace(json.component);
@@ -3241,6 +3242,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     TBG.Project.Planning.getMilestoneIssues($('milestone_' + json.milestone_id), TBG.Project.Planning.initializeDragDropSorting);
                                 }, 250);
                             } else {
+                                TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails('milestone_0_issues');
                                 TBG.Project.Planning.initializeDragDropSorting();
                                 TBG.Core.Pollers.Callbacks.planningPoller();
                             }
