@@ -337,7 +337,7 @@
 
             $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
-            if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))
+            if ($issue->isChildIssue())
             {
                 return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
             }
