@@ -2969,8 +2969,14 @@
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
-                if ($related_issue->getMilestone() instanceof Milestone) {
+                if (! $this->getMilestone() instanceof Milestone && $related_issue->getMilestone() instanceof Milestone)
+                {
                     $related_issue->removeMilestone();
+                    $related_issue->save();
+                }
+                else if ($this->getMilestone() instanceof Milestone)
+                {
+                    $related_issue->setMilestone($this->getMilestone()->getID());
                     $related_issue->save();
                 }
 
