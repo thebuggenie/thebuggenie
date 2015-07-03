@@ -339,7 +339,12 @@
 
             if ($issue->isChildIssue())
             {
-                return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
+                foreach ($issue->getParentIssues() as $parent)
+                {
+                    if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
+
+                    return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
+                }
             }
             elseif ($issue->getIssueType()->getID() == $board->getEpicIssuetypeID())
             {
