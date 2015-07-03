@@ -4848,6 +4848,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('no_spent_time_' + json.issue_id).hide();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
                         }
+                        TBG.Issues.Field.updateEstimatedPercentbar(json);
                     }
                 }
             });
@@ -4869,9 +4870,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('no_spent_time_' + json.issue_id).hide();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
                         }
+                        TBG.Issues.Field.updateEstimatedPercentbar(json);
                     }
                 }
             });
+        };
+
+        TBG.Issues.Field.updateEstimatedPercentbar = function (data) {
+            $('estimated_percentbar').update(data.percentbar);
+            if ($('no_estimated_time_' + data.issue_id).visible()) {
+                $('estimated_percentbar').hide();
+            }
+            else {
+                $('estimated_percentbar').show();
+            }
         };
 
         TBG.Issues.relate = function (url) {
@@ -5273,6 +5285,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         if ($('issue_' + issue_id)) {
                             ['points', 'hours'].each(function (unit) {
                                 if (field == 'estimated_time') {
+                                    TBG.Issues.Field.updateEstimatedPercentbar(json);
                                     $('issue_' + issue_id).setAttribute('data-estimated-' + unit, json.values[unit]);
                                     $('issue_' + issue_id).down('.issue_estimate.' + unit).update(json.values[unit]);
                                     (parseInt(json.values[unit]) > 0) ? $('issue_' + issue_id).down('.issue_estimate.' + unit).show() : $('issue_' + issue_id).down('.issue_estimate.' + unit).hide();
@@ -5328,7 +5341,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         if (json.field != undefined) {
                             if (field == 'status' || field == 'issuetype')
                                 TBG.Issues.Field.Updaters.dualFromJSON(json.issue_id, json.field, field);
-                            else if (field == 'estimated_time' || field == 'spent_time')
+                            else if (field == 'estimated_time') {
+                                TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
+                                TBG.Issues.Field.updateEstimatedPercentbar(json);
+                            }
+                            else if (field == 'spent_time')
                                 TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
                             else if (field == 'percent_complete')
                                 TBG.Main.updatePercentageLayout(json.field);
