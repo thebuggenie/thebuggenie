@@ -2834,18 +2834,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 params: 'issue_id=' + issue_id,
                 url_method: 'get',
-                loading: {indicator: (!existing_element) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
+                loading: {indicator: (!$(existing_element)) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
                 success: {
                     callback: function (json) {
                         if (json.epic) {
-                            if (!existing_element) {
+                            if (!$(existing_element)) {
                                 $('add_epic_container').insert({before: json.component});
                                 setTimeout(TBG.Project.Planning.initializeEpicDroptargets, 250);
                             } else {
-                                existing_element.up('.milestone_issue').replace(json.component);
+                                $(existing_element).up('.milestone_issue').replace(json.component);
                             }
                         } else {
-                            if (!existing_element) {
+                            if (!$(existing_element)) {
                                 if (json.issue_details.milestone && json.issue_details.milestone.id) {
                                     if ($('milestone_'+json.issue_details.milestone.id).hasClassName('initialized')) {
                                         TBG.Project.Planning.insertIntoMilestone(json.issue_details.milestone.id, json.component);
@@ -2855,12 +2855,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 }
                             } else {
                                 var json_milestone_id = (json.issue_details.milestone && json.issue_details.milestone.id != undefined) ? parseInt(json.issue_details.milestone.id) : 0;
-                                if (parseInt(existing_element.up('.milestone_box').dataset.milestoneId) == json_milestone_id) {
-                                    existing_element.up('.milestone_issue').replace(json.component);
+                                if (parseInt($(existing_element).up('.milestone_box').dataset.milestoneId) == json_milestone_id) {
+                                    $(existing_element).up('.milestone_issue').replace(json.component);
                                     TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails($('milestone_' + json_milestone_id + '_issues'));
                                     TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
                                 } else {
-                                    existing_element.up('.milestone_issue').remove();
+                                    $(existing_element).up('.milestone_issue').remove();
                                     TBG.Project.Planning.insertIntoMilestone(json_milestone_id, json.component, 'all');
                                 }
                             }
@@ -2887,7 +2887,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     var issue_details = json.ids[i];
                                     var issue_element = $('issue_' + issue_details.issue_id);
                                     if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, 'issue_' + issue_details.issue_id);
                                     }
                                 }
                             }
@@ -2896,7 +2896,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     var issue_details = json.backlog_ids[i];
                                     var issue_element = $('issue_' + issue_details.issue_id);
                                     if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, 'issue_' + issue_details.issue_id);
                                     }
                                 }
                             }
@@ -2905,7 +2905,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     var issue_details = json.epic_ids[i];
                                     var issue_element = $('epic_' + issue_details.issue_id);
                                     if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                        TBG.Project.Planning.retrieveIssue(issue_details.issue_id, retrieve_url, 'epic_' + issue_details.issue_id);
                                     }
                                 }
                             }
@@ -3236,7 +3236,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             } else {
                                 TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails('milestone_0_issues');
                                 TBG.Project.Planning.initializeDragDropSorting();
-                                TBG.Core.Pollers.Callbacks.planningPoller();
                             }
                         }
                     }
