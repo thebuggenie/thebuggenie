@@ -445,7 +445,7 @@
         public function clearMilestone($milestone_id)
         {
             $crit = $this->getCriteria();
-            $crit->addUpdate(self::MILESTONE, null);
+            $crit->addUpdate(self::MILESTONE, 0);
             $crit->addUpdate(self::LAST_UPDATED, time());
             $crit->addWhere(self::MILESTONE, $milestone_id);
             $this->doUpdate($crit);
