@@ -2882,6 +2882,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     params: 'last_refreshed=' + last_refreshed,
                     success: {
                         callback: function (json) {
+                            pc.dataset.lastRefreshed = get_current_timestamp();
                             for (var i in json.ids) {
                                 if (json.ids.hasOwnProperty(i)) {
                                     var issue_details = json.ids[i];
@@ -2909,7 +2910,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                 }
                             }
-                            pc.dataset.lastRefreshed = get_current_timestamp();
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
                     }
