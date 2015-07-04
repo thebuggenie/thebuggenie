@@ -1228,8 +1228,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         };
 
-        TBG.Main.detachFileFromArticle = function (url, file_id, article_name) {
-            TBG.Core._detachFile(url, file_id, 'article_' + article_name + '_files_');
+        TBG.Main.detachFileFromArticle = function (url, file_id, article_id) {
+            TBG.Core._detachFile(url, file_id, 'article_' + article_id + '_files_', 'dialog_indicator');
         };
 
         TBG.Main.toggleFavouriteArticle = function (url, article_id)
