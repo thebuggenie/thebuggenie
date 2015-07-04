@@ -2879,8 +2879,9 @@
                 {
                     $this->_removeParentIssue($related_issue, $relation_id);
                 }
-                $this->touch();
-                $related_issue->touch();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
                 tables\IssueRelations::getTable()->doDeleteById($relation_id);
             }
         }
@@ -2978,7 +2979,9 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $this->calculateTime();
                 $this->save();
-                $related_issue->touch();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
 
                 return true;
             }
@@ -3714,9 +3717,9 @@
             return $this->_last_updated;
         }
 
-        public function touch()
+        public function touch($last_updated = null)
         {
-            tables\Issues::getTable()->touchIssue($this->getID());
+            tables\Issues::getTable()->touchIssue($this->getID(), $last_updated);
         }
 
         /**

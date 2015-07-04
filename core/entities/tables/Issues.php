@@ -916,10 +916,10 @@
             $this->doUpdateById($crit, $issue_id);
         }
 
-        public function touchIssue($issue_id)
+        public function touchIssue($issue_id, $last_updated = null)
         {
             $crit = $this->getCriteria();
-            $crit->addUpdate(self::LAST_UPDATED, time());
+            $crit->addUpdate(self::LAST_UPDATED, isset($last_updated) ? $last_updated : time());
             $this->doUpdateById($crit, $issue_id);
         }
 
