@@ -5242,7 +5242,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 TBG.Issues.Field.Updaters.dualFromJSON(json.issue_id, json.field, field);
                             else if (field == 'percent_complete')
                                 TBG.Main.updatePercentageLayout(json.percent);
-                            else if (field == 'estimated_time' || field == 'spent_time') {
+                            else if (field == 'estimated_time') {
+                                TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
+                                $(field + '_' + json.issue_id + '_change').hide();
+                                TBG.Issues.Field.updateEstimatedPercentbar(json);
+                            }
+                            else if (field == 'spent_time') {
                                 TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
                                 $(field + '_' + json.issue_id + '_change').hide();
                             }
