@@ -2941,8 +2941,8 @@
                     break;
                 case 'article':
                     $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
-                    $base_id = 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files';
                     $container_id = 'article_' . $target->getID() . '_files';
+                    $base_id = $container_id;
                     $target_identifier = 'article_name';
                     $target_id = $request['article_name'];
                     break;
@@ -2952,6 +2952,9 @@
             foreach ($request['file_description'] ?: array() as $file_id => $description)
             {
                 $file = entities\File::getB2DBTable()->selectById($file_id);
+
+                if (! $file instanceof entities\File) continue;
+
                 $file->setDescription($description);
                 $file->save();
                 if (in_array($file_id, $saved_file_ids))
