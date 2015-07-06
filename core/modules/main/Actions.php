@@ -2122,11 +2122,11 @@
                     }
                     else
                     {
-                        $issue->setEstimatedMonths($request['months']);
-                        $issue->setEstimatedWeeks($request['weeks']);
-                        $issue->setEstimatedDays($request['days']);
-                        $issue->setEstimatedHours($request['hours']);
-                        $issue->setEstimatedPoints($request['points']);
+                        if ($request->hasParameter('months')) $issue->setEstimatedMonths($request['months']);
+                        if ($request->hasParameter('weeks')) $issue->setEstimatedWeeks($request['weeks']);
+                        if ($request->hasParameter('days')) $issue->setEstimatedDays($request['days']);
+                        if ($request->hasParameter('hours')) $issue->setEstimatedHours($request['hours']);
+                        if ($request->hasParameter('points')) $issue->setEstimatedPoints($request['points']);
                     }
                     if ($request['do_save'])
                     {
