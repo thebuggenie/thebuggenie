@@ -5346,6 +5346,36 @@
             return true;
         }
 
+        public function saveSpentTime()
+        {
+            $spent_times = array('months', 'weeks', 'days', 'hours', 'points');
+            $spent_times_changed_items = array();
+            $changed_properties = $this->_getChangedProperties();
+
+            foreach ($spent_times as $spent_time_unit)
+            {
+                $property = '_spent_'.$spent_time_unit;
+
+                if (! $this->_isPropertyChanged($property)) continue;
+
+                $spent_times_changed_items[$property] = $changed_properties[$property];
+                unset($changed_properties[$property]);
+            }
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_revertPropertyChange($property);
+            }
+
+            $this->_changed_items = array();
+            $this->save();
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_addChangedProperty($property, $property_values['current_value']);
+            }
+        }
+
         public function checkTaskStates()
         {
             if ($this->isOpen())

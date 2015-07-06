@@ -1953,6 +1953,7 @@
                     if ($spenttime instanceof entities\IssueSpentTime)
                     {
                         $spenttime->delete();
+                        $spenttime->getIssue()->saveSpentTime();
                     }
                     $timesum = array_sum($issue->getSpentTime());
 
@@ -2027,6 +2028,8 @@
             $spenttime->setActivityType($request['timespent_activitytype']);
             $spenttime->setComment($request['timespent_comment']);
             $spenttime->save();
+
+            $spenttime->getIssue()->saveSpentTime();
 
             $timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
