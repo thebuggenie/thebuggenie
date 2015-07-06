@@ -32,7 +32,7 @@
             <?php if ($board->getEpicIssuetypeID() && $issue->hasParentIssuetype($board->getEpicIssuetypeID())): ?>
                 <?php foreach ($issue->getParentIssues() as $parent): ?>
                     <?php if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()): ?>
-                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>" data-parent-epic-id="<?php echo $parent_prefix . $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
+                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>; color: <?php echo $parent->getAgileTextColor(); ?>" data-parent-epic-id="<?php echo $parent_prefix . $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>

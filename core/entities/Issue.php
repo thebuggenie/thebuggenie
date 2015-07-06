@@ -2831,6 +2831,18 @@
             return $this->_scrumcolor;
         }
 
+        public function getAgileTextColor()
+        {
+            if (!\thebuggenie\core\framework\Context::isCLI())
+            {
+                \thebuggenie\core\framework\Context::loadLibrary('ui');
+            }
+
+            $rgb = hex2rgb($this->_scrumcolor);
+
+            return 0.299*$rgb['red'] + 0.587*$rgb['green'] + 0.114*$rgb['blue'] > 170 ? '#333' : '#FFF';
+        }
+
         /**
          * Set the agile board color for this issue
          *

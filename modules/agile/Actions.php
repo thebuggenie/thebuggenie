@@ -573,7 +573,7 @@
 
                 $epic->addChildIssue($issue, true);
 
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime())));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime()), 'text_color' => $epic->getAgileTextColor()));
             }
             catch (\Exception $e)
             {
