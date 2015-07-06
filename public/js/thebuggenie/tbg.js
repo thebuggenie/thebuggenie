@@ -2007,11 +2007,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 params: {color: color},
                 loading: {indicator: 'color_selector_' + story_id + '_indicator'},
                 success: {
-                    callback: function () {
+                    callback: function (json) {
                         $('story_color_' + story_id).style.backgroundColor = color;
+                        $('story_color_' + story_id).style.color = json.text_color;
                         $$('.epic_badge').each(function (badge) {
                             if (badge.dataset.parentEpicId == story_id) {
                                 badge.style.backgroundColor = color;
+                                badge.style.color = json.text_color;
                             }
                         });
                     }
