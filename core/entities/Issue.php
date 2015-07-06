@@ -2966,11 +2966,11 @@
          *
          * @return boolean
          */
-        public function addChildIssue(\thebuggenie\core\entities\Issue $related_issue)
+        public function addChildIssue(\thebuggenie\core\entities\Issue $related_issue, $epic = false)
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
-                if (! $this->getMilestone() instanceof Milestone && $related_issue->getMilestone() instanceof Milestone)
+                if (! $epic && ! $this->getMilestone() instanceof Milestone && $related_issue->getMilestone() instanceof Milestone)
                 {
                     $related_issue->removeMilestone();
                     $related_issue->save();

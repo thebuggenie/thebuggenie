@@ -571,7 +571,7 @@
                 $epic = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['epic_id']);
                 $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
 
-                $epic->addChildIssue($issue);
+                $epic->addChildIssue($issue, true);
 
                 return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime())));
             }
