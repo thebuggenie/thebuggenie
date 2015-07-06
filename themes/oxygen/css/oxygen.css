@@ -4420,6 +4420,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .interactive_dropdown > label {
     color: #888;
     margin: 0 5px 0 0;
+    float: left;
 }
 .interactive_dropdown li label {
     vertical-align: top;
@@ -4435,6 +4436,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     color: #333;
     font-size: 1em;
     margin: 0 5px 0 0;
+}
+.interactive_dropdown > span.value {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
 }
 .interactive_menu h1, .interactive_filters_list h1 {
     font-size: 1.1em;

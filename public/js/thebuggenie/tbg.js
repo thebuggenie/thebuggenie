@@ -7268,12 +7268,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Main.Helpers.updateFancyFilterVisibleValue = function (filter, value) {
-            var fl = filter.getLayout();
-            var width = fl.get('width') + fl.get('padding-left') + fl.get('padding-right');
-            var maxlength = Math.round(width / 8.5);
-            if (value.length > maxlength) {
-                value = value.substr(0, maxlength - 3) + '...';
-            }
             filter.down('.value').update(value);
         };
 
