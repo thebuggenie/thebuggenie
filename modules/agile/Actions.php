@@ -337,6 +337,36 @@
 
             $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
+            $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON());
+
+            if ($request['mode'] == 'whiteboard')
+            {
+                $text['swimlane_type'] = $board->getSwimlaneType();
+
+                if ($board->getSwimlaneType() == $request['swimlane_type'])
+                {
+                    if ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone && $issue->getMilestone()->getID() == $request['milestone_id'])
+                    {
+                        foreach ($board->getMilestoneSwimlanes($issue->getMilestone()) as $swimlane)
+                        {
+                            foreach ($swimlane->getBoard()->getColumns() as $column)
+                            {
+                                if (! $column->hasIssue($issue)) continue;
+
+                                $text['swimlane_identifier'] = $swimlane->getIdentifier();
+                                $text['column_id'] = $column->getID();
+                                $component = $this->getComponentHTML('agile/whiteboardissue', compact('issue', 'column', 'swimlane'));
+                                break 2;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
+            }
+
             if ($issue->isChildIssue())
             {
                 foreach ($issue->getParentIssues() as $parent)
@@ -351,7 +381,9 @@
                 return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
             }
 
-            return $this->renderJSON(array('child_issue' => 0, 'component' => $this->getComponentHTML('agile/milestoneissue', array('issue' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+            $text['component'] = isset($component) ? $component : '';
+
+            return $this->renderJSON($text);
         }
 
         /**
