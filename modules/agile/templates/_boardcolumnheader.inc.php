@@ -1,4 +1,4 @@
-<td data-min-workitems="<?php echo $column->getMinWorkitems(); ?>" data-max-workitems="<?php echo $column->getMaxWorkitems(); ?>">
+<div class="td" data-min-workitems="<?php echo $column->getMinWorkitems(); ?>" data-max-workitems="<?php echo $column->getMaxWorkitems(); ?>">
     <h1>
         <?php echo $column->getName(); ?>
         <?php if ($column->getBoard()->getType() != thebuggenie\modules\agile\entities\AgileBoard::TYPE_KANBAN || (!$column->getMinWorkitems() && !$column->getMaxWorkitems())): ?>
@@ -18,4 +18,4 @@
             <?php endif; ?>
         <?php endforeach; ?>
     </h1>
-</td>
+</div>

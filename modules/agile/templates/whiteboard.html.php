@@ -56,24 +56,24 @@
                         </tr>
                     </table>
                 </form>
-                <table class="whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
-                    <thead id="whiteboard-headers-placeholder">
-                        <tr>
+                <div class="table whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" data-swimlane-type="<?php echo $board->getSwimlaneType(); ?>">
+                    <div class="thead" id="whiteboard-headers-placeholder">
+                        <div class="tr">
                             <?php foreach ($board->getColumns() as $column): ?>
-                                <td>&nbsp;</td>
+                                <div class="td">&nbsp;</div>
                             <?php endforeach; ?>
-                        </tr>
-                    </thead>
+                        </div>
+                    </div>
                     <?php if (count($board->getColumns())): ?>
-                        <thead id="whiteboard-headers">
-                            <tr>
+                        <div class="thead" id="whiteboard-headers">
+                            <div class="tr">
                                 <?php foreach ($board->getColumns() as $column): ?>
                                     <?php include_component('agile/boardcolumnheader', compact('column')); ?>
                                 <?php endforeach; ?>
-                            </tr>
-                        </thead>
+                            </div>
+                        </div>
                     <?php endif; ?>
-                </table>
+                </div>
             </div>
         </div>
     </div>

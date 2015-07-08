@@ -349,9 +349,43 @@
                     {
                         foreach ($board->getMilestoneSwimlanes($issue->getMilestone()) as $swimlane)
                         {
+                            if ($swimlane->getBoard()->usesSwimlanes()
+                                && $swimlane->hasIdentifiables()
+                                && $swimlane->getBoard()->getSwimlaneType() == entities\AgileBoard::SWIMLANES_ISSUES
+                                && $swimlane->getIdentifierIssue()->getID() == $issue->getID())
+                            {
+                                $text['swimlane_identifier'] = $swimlane->getIdentifier();
+                                $text['column_id'] = $request['column_id'];
+                                $component = $this->getComponentHTML('agile/boardswimlane', compact('swimlane'));
+                                break;
+                            }
+
+                            $issue_in_swimlane = false;
+
+                            foreach ($swimlane->getIssues() as $swimlane_issue)
+                            {
+                                if ($swimlane_issue->getID() == $issue->getID())
+                                {
+                                    $issue_in_swimlane = true;
+                                    break;
+                                }
+                            }
+
+                            if (! $issue_in_swimlane) continue;
+
                             foreach ($swimlane->getBoard()->getColumns() as $column)
                             {
                                 if (! $column->hasIssue($issue)) continue;
+
+                                if ($issue->isChildIssue())
+                                {
+                                    foreach ($issue->getParentIssues() as $parent)
+                                    {
+                                        if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
+
+                                        $text['child_issue'] = 1;
+                                    }
+                                }
 
                                 $text['swimlane_identifier'] = $swimlane->getIdentifier();
                                 $text['column_id'] = $column->getID();
@@ -364,21 +398,21 @@
             }
             else
             {
-                $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
-            }
-
-            if ($issue->isChildIssue())
-            {
-                foreach ($issue->getParentIssues() as $parent)
+                if ($issue->isChildIssue())
                 {
-                    if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
+                    foreach ($issue->getParentIssues() as $parent)
+                    {
+                        if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
 
-                    return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
+                        return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
+                    }
                 }
-            }
-            elseif ($issue->getIssueType()->getID() == $board->getEpicIssuetypeID())
-            {
-                return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+                elseif ($issue->getIssueType()->getID() == $board->getEpicIssuetypeID())
+                {
+                    return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+                }
+
+                $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
             }
 
             $text['component'] = isset($component) ? $component : '';
@@ -687,6 +721,7 @@
                 $ids = \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
                 $epic_ids = ($board->getEpicIssuetypeID()) ? \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
             }
+
             $backlog_ids = array();
             if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {

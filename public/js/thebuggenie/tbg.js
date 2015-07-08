@@ -2371,13 +2371,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.calculateColumnCounts = function() {
-            $$('#whiteboard-headers td').each(function (column, index) {
+            $$('#whiteboard-headers .td').each(function (column, index) {
                 var counts = 0;
                 var status_counts = [];
                 column.select('.status_badge').each(function (status) {
                     status_counts[parseInt(status.dataset.statusId)] = 0;
                 });
-                $$('#whiteboard tbody tr').each(function (row) {
+                $$('#whiteboard .tbody .tr').each(function (row) {
                     row.childElements().each(function (subcolumn, subindex) {
                         if (subindex == index) {
                             var issues = subcolumn.select('.whiteboard-issue');
@@ -2400,7 +2400,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         column.down('.under_count').update(counts);
                         column.removeClassName('over-workitems');
                         column.addClassName('under-workitems');
-                        $$('#whiteboard tbody tr').each(function (row) {
+                        $$('#whiteboard .tbody .tr').each(function (row) {
                             row.childElements().each(function (subcolumn, subindex) {
                                 if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
                                     subcolumn.removeClassName('over-workitems');
@@ -2413,7 +2413,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         column.down('.over_count').update(counts);
                         column.removeClassName('under-workitems');
                         column.addClassName('over-workitems');
-                        $$('#whiteboard tbody tr').each(function (row) {
+                        $$('#whiteboard .tbody .tr').each(function (row) {
                             row.childElements().each(function (subcolumn, subindex) {
                                 if (!subcolumn.hasClassName('swimlane-header') && subindex == index) {
                                     subcolumn.removeClassName('under-workitems');
@@ -2438,7 +2438,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 loading: {
                     indicator: 'whiteboard_indicator',
                     callback: function() {
-                        $('whiteboard').select('thead .column_count.primary').each(function (cc) {
+                        $('whiteboard').select('.thead .column_count.primary').each(function (cc) {
                             cc.update('-');
                         });
                         wb.dataset.milestoneId = milestone_id;
@@ -2447,7 +2447,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     callback: function(json) {
                         wb.addClassName('initialized');
-                        wb.select('tbody').each(Element.remove);
+                        wb.select('.tbody').each(Element.remove);
                         $('whiteboard-headers').insert({after: json.component});
                         setTimeout(function () {
                             TBG.Project.Planning.Whiteboard.calculateColumnCounts();
@@ -2560,7 +2560,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, ui) {
             var issue = $(event.target);
             var issue_statuses = issue.dataset.validStatusIds.split(',');
-            issue.up('tr').childElements().each(function (column) {
+            issue.up('.tr').childElements().each(function (column) {
                 var column_statuses = column.dataset.statusIds.split(',');
                 var has_status = false;
                 issue_statuses.each(function (status) {
@@ -2578,8 +2578,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
-            $('whiteboard').select('tbody td.column').each(function (column) {
-                var swimlane_identifier = column.up('tbody').dataset.swimlaneIdentifier;
+            $('whiteboard').select('.tbody .td.column').each(function (column) {
+                var swimlane_identifier = column.up('.tbody').dataset.swimlaneIdentifier;
                 jQuery(column).droppable({
                     drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
                     scope: swimlane_identifier,
@@ -2602,40 +2602,67 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Project.Planning.Whiteboard.retrieveIssue = function (issue_id, url, existing_element) {
             var milestone_id = $('whiteboard').dataset.milestoneId;
-            var swimlane_identifier = $('whiteboard').down('tbody').dataset.swimlaneIdentifier;
             var swimlane_type = $('whiteboard').dataset.swimlaneType;
-            var column_id = (!existing_element) ? '' : existing_element.dataset.columnId;
+            var column_id = ($(existing_element) != null && $(existing_element).dataset.columnId != undefined) ? $(existing_element).dataset.columnId : '';
+
+            if ($(existing_element) != null) {
+                if ($(existing_element).hasClassName('tbody')) {
+                    var swimlane_identifier = $(existing_element).dataset.swimlaneIdentifier;
+                }
+                else {
+                    var swimlane_identifier = $(existing_element).up('.tbody').dataset.swimlaneIdentifier;
+                }
+            }
+            else {
+                var swimlane_identifier = $('whiteboard').down('.tbody').dataset.swimlaneIdentifier;
+            }
 
             TBG.Main.Helpers.ajax(url, {
-                params: 'issue_id=' + issue_id + '&milestone_id=' + milestone_id + '&swimlane_type=' + swimlane_type + '&column_id=' + column_id,
+                params: 'issue_id=' + issue_id + '&milestone_id=' + milestone_id + '&swimlane_type=' + swimlane_type + '&column_id=' + column_id + '&swimlane_identifier=' + swimlane_identifier,
                 url_method: 'get',
-                loading: {indicator: (!existing_element) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
+                loading: {indicator: (!$(existing_element)) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
                 success: {
                     callback: function (json) {
                         if (swimlane_type != json.swimlane_type) {
                             TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                             return;
                         }
-                        if (!existing_element) {
+                        if (!$(existing_element)) {
                             if (json.issue_details.milestone && json.issue_details.milestone.id == milestone_id && json.component != '') {
-                                if ($('whiteboard').hasClassName('initialized') && $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
-                                    $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id).insert({top: json.component});
+                                if ($('whiteboard').hasClassName('initialized')) {
+                                    if ($('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
+                                        $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id).insert({top: json.component});
+                                    } else {
+                                        if (json.child_issue == '0') {
+                                            $('whiteboard-headers').insert({after: json.component});
+                                        }
+                                    }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
+                                    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
                                 }
                             }
                         } else {
                             var json_milestone_id = (json.issue_details.milestone && json.issue_details.milestone.id != undefined) ? parseInt(json.issue_details.milestone.id) : 0;
                             if (json_milestone_id == 0 || json.component == '') {
-                                existing_element.remove();
+                                $(existing_element).remove();
+                                TBG.Project.Planning.Whiteboard.calculateColumnCounts();
                             } else if (json_milestone_id != milestone_id || json.swimlane_identifier != swimlane_identifier || json.column_id != column_id) {
-                                existing_element.remove();
-                                if ($('whiteboard').hasClassName('initialized') && $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
-                                    $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id).insert({top: json.component});
+                                $(existing_element).remove();
+                                if ($('whiteboard').hasClassName('initialized')) {
+                                    if ($('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
+                                        $('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id).insert({top: json.component});
+                                    } else {
+                                        if (json.child_issue == '0') {
+                                            $('whiteboard-headers').insert({after: json.component});
+                                        }
+                                    }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 }
+                                TBG.Project.Planning.Whiteboard.calculateColumnCounts();
                             } else {
-                                existing_element.replace(json.component);
+                                $(existing_element).replace(json.component);
                                 TBG.Project.Planning.Whiteboard.initializeDragDrop();
+                                TBG.Project.Planning.Whiteboard.calculateColumnCounts();
                             }
                         }
                     }
@@ -2662,7 +2689,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         var issue_details = json.ids[i];
                                         var issue_element = $('whiteboard_issue_' + issue_details.issue_id);
                                         if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                            TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                            TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, 'whiteboard_issue_' + issue_details.issue_id);
                                         }
                                     }
                                 }
@@ -2671,7 +2698,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         var issue_details = json.backlog_ids[i];
                                         var issue_element = $('whiteboard_issue_' + issue_details.issue_id);
                                         if (!issue_element || parseInt(issue_element.dataset.lastUpdated) < parseInt(issue_details.last_updated)) {
-                                            TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, issue_element);
+                                            TBG.Project.Planning.Whiteboard.retrieveIssue(issue_details.issue_id, retrieve_url, 'whiteboard_issue_' + issue_details.issue_id);
                                         }
                                     }
                                 }
