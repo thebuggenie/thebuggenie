@@ -3529,7 +3529,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.whiteboard-columns td {
+.whiteboard-columns td,
+.whiteboard-columns .td {
     width: auto;
     padding: 0;
     box-sizing: border-box;
@@ -3538,7 +3539,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.whiteboard-columns td.ui-sortable-placeholder {
+.whiteboard-columns td.ui-sortable-placeholder,
+.whiteboard-columns .td.ui-sortable-placeholder {
     width: 35px;
     border: 2px dotted #CCC;
     background-color: rgba(225, 225, 225, 0.3);
@@ -3644,11 +3646,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     bottom: 0;
     margin: 0;
 }
-.whiteboard-columns thead td {
+.whiteboard-columns thead td,
+.whiteboard-columns .thead .td {
     padding: 0 10px;
     background-color: #FFF;
 }
-.whiteboard-columns thead h1 {
+.whiteboard-columns thead h1,
+.whiteboard-columns .thead h1 {
     font-size: 1.1em;
     font-weight: 600;
     color: #777;
@@ -3660,19 +3664,24 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-transition: border-color 0.3s ease;
     -webkit-transition: border-color 0.3s ease;
 }
-.type-kanban .whiteboard-columns thead td.over-workitems h1 {
+.type-kanban .whiteboard-columns thead td.over-workitems h1,
+.type-kanban .whiteboard-columns .thead .td.over-workitems h1 {
     border-bottom-color: rgba(225, 100, 100, 0.8);
 }
-.type-kanban .whiteboard-columns tbody td.over-workitems {
+.type-kanban .whiteboard-columns tbody td.over-workitems,
+.type-kanban .whiteboard-columns .tbody .td.over-workitems {
     background-color: rgba(225, 100, 100, 0.8);
 }
-.type-kanban .whiteboard-columns thead td.under-workitems h1 {
+.type-kanban .whiteboard-columns thead td.under-workitems h1,
+.type-kanban .whiteboard-columns .thead .td.under-workitems h1 {
     border-bottom-color: rgba(255, 255, 50, 0.6);
 }
-.type-kanban .whiteboard-columns tbody td.under-workitems {
+.type-kanban .whiteboard-columns tbody td.under-workitems,
+.type-kanban .whiteboard-columns .tbody .td.under-workitems {
     background: rgba(255, 255, 50, 0.6);
 }
-.whiteboard-columns thead h1 .column_count {
+.whiteboard-columns thead h1 .column_count,
+.whiteboard-columns .thead h1 .column_count {
     display: inline-block;
     font-weight: 300;
     background-color: #FFF;
@@ -3681,13 +3690,16 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     font-size: 1em;
     margin-left: 5px;
 }
-.whiteboard-columns thead h1 .column_count.under, .whiteboard-columns thead h1 .column_count.over, .whiteboard-columns thead td.under-workitems h1 .column_count.primary, .whiteboard-columns thead td.over-workitems h1 .column_count.primary, .whiteboard-columns thead td.under-workitems h1 .column_count.workitems, .whiteboard-columns thead td.over-workitems h1 .column_count.workitems {
+.whiteboard-columns thead h1 .column_count.under, .whiteboard-columns thead h1 .column_count.over, .whiteboard-columns thead td.under-workitems h1 .column_count.primary, .whiteboard-columns thead td.over-workitems h1 .column_count.primary, .whiteboard-columns thead td.under-workitems h1 .column_count.workitems, .whiteboard-columns thead td.over-workitems h1 .column_count.workitems,
+.whiteboard-columns .thead h1 .column_count.under, .whiteboard-columns .thead h1 .column_count.over, .whiteboard-columns .thead .td.under-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.over-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.under-workitems h1 .column_count.workitems, .whiteboard-columns .thead .td.over-workitems h1 .column_count.workitems {
     display: none;
 }
-.whiteboard-columns thead td.under-workitems h1 .column_count.under, .whiteboard-columns thead td.over-workitems h1 .column_count.over {
+.whiteboard-columns thead td.under-workitems h1 .column_count.under, .whiteboard-columns thead td.over-workitems h1 .column_count.over,
+.whiteboard-columns .thead .td.under-workitems h1 .column_count.under, .whiteboard-columns .thead .td.over-workitems h1 .column_count.over {
     display: inline-block;
 }
-.whiteboard-columns thead h1 .status_badge {
+.whiteboard-columns thead h1 .status_badge,
+.whiteboard-columns .thead h1 .status_badge {
     float: right;
     line-height: 1em;
     margin-left: 2px;
@@ -3696,24 +3708,31 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     opacity: 0.7;
     color: rgba(0, 0, 0, 0.7);
 }
-.whiteboard-columns.transition-selector thead h1 .status_badge, .whiteboard-columns.transition-selector thead h1 .column_count {
+.whiteboard-columns.transition-selector thead h1 .status_badge, .whiteboard-columns.transition-selector thead h1 .column_count,
+.whiteboard-columns.transition-selector .thead h1 .status_badge, .whiteboard-columns.transition-selector .thead h1 .column_count {
     display: none;
 }
-.whiteboard-columns tbody {
+.whiteboard-columns tbody,
+.whiteboard-columns .tbody {
     border-bottom: 1px solid rgba(100, 100, 100, 0.2);
     box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
+    position: relative;
 }
-.whiteboard-columns.swimlanes tbody td.swimlane-header {
+.whiteboard-columns.swimlanes tbody td.swimlane-header,
+.whiteboard-columns.swimlanes .tbody .td.swimlane-header {
     padding: 0;
     border: none;
 }
-.whiteboard-columns tbody.collapsed tr:first-child {
+.whiteboard-columns tbody.collapsed tr:first-child,
+.whiteboard-columns .tbody.collapsed .tr:first-child {
     display: table-row;
 }
-.whiteboard-columns tbody.collapsed tr, .whiteboard-columns tbody.collapsed .collapser, .whiteboard-columns tbody .expander {
+.whiteboard-columns tbody.collapsed tr, .whiteboard-columns tbody.collapsed .collapser, .whiteboard-columns tbody .expander,
+.whiteboard-columns .tbody.collapsed .tr, .whiteboard-columns .tbody.collapsed .collapser, .whiteboard-columns .tbody .expander {
     display: none;
 }
-.whiteboard-columns tbody.collapsed .expander {
+.whiteboard-columns tbody.collapsed .expander,
+.whiteboard-columns .tbody.collapsed .expander {
     display: initial;
 }
 .whiteboard-columns .expander, .whiteboard-columns .collapser {
@@ -3731,18 +3750,21 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
 }
-.whiteboard-columns.swimlanes tbody tr:first-child td > .header {
+.whiteboard-columns.swimlanes tbody tr:first-child td > .header,
+.whiteboard-columns.swimlanes .tbody .tr:first-child .td > .header {
     font-size: 1.1em;
     margin: 5px 0 0 0;
     padding: 10px;
     font-weight: 300;
     border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
 }
-.whiteboard-columns.swimlanes tbody tr:first-child td > .header .issue_header.closed {
+.whiteboard-columns.swimlanes tbody tr:first-child td > .header .issue_header.closed,
+.whiteboard-columns.swimlanes .tbody .tr:first-child .td > .header .issue_header.closed {
     color: #999;
     text-decoration: line-through;
 }
-.whiteboard-columns tbody td.column {
+.whiteboard-columns tbody td.column,
+.whiteboard-columns .tbody .td.column {
     border-left: 1px solid rgba(100, 100, 100, 0.2);
     border-right: 1px solid rgba(100, 100, 100, 0.2);
     background-color: rgba(245, 245, 245, 0.4);
@@ -3754,19 +3776,24 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -webkit-transition: background-color 0.3s ease;
     position: relative;
 }
-.whiteboard-columns.swimlanes tbody[data-swimlane-identifier=swimlane_0] td.column {
+.whiteboard-columns.swimlanes tbody[data-swimlane-identifier=swimlane_0] td.column,
+.whiteboard-columns.swimlanes .tbody[data-swimlane-identifier=swimlane_0] .td.column {
     background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.4) 10px, rgba(255,255,255,0.4) 20px);
 }
-.whiteboard-columns tbody td.column.drop-valid {
+.whiteboard-columns tbody td.column.drop-valid,
+.whiteboard-columns .tbody .td.column.drop-valid {
     background-color: rgba(150, 225, 150, 0.3);
 }
-.whiteboard-columns tbody td.column.drop-valid.drop-hover {
+.whiteboard-columns tbody td.column.drop-valid.drop-hover,
+.whiteboard-columns .tbody .td.column.drop-valid.drop-hover {
     background-color: rgba(225, 225, 150, 0.3);
 }
-.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue {
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue,
+.whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue {
     opacity: 0;
 }
-.whiteboard-columns td.column.current_column .whiteboard-issue {
+.whiteboard-columns td.column.current_column .whiteboard-issue,
+.whiteboard-columns .td.column.current_column .whiteboard-issue {
     opacity: 0.3;
 }
 .transition-selector-indicator {
@@ -3798,19 +3825,24 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns.transition-selector {
     margin-bottom: 20px;
 }
-.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.ui-draggable-dragging {
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.ui-draggable-dragging,
+.whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue.ui-draggable-dragging {
     opacity: 1;
 }
-.whiteboard-columns.no-swimlanes thead h1 {
+.whiteboard-columns.no-swimlanes thead h1,
+.whiteboard-columns.no-swimlanes .thead h1 {
     margin-bottom: 10px;
 }
-.whiteboard-columns.no-swimlanes tbody td.column {
+.whiteboard-columns.no-swimlanes tbody td.column,
+.whiteboard-columns.no-swimlanes .tbody .td.column {
     border-top: 1px solid rgba(100, 100, 100, 0.2);
 }
-.whiteboard-columns tbody td:first-child {
+.whiteboard-columns tbody td:first-child,
+.whiteboard-columns .tbody .td:first-child {
     border-left: none;
 }
-.whiteboard-columns tbody td:last-child {
+.whiteboard-columns tbody td:last-child,
+.whiteboard-columns .tbody .td:last-child {
     border-right: none;
 }
 .whiteboard-issue {
@@ -5849,3 +5881,20 @@ div.calendar tr.days td.otherDay
 {
     color: #bbb;
 }
+
+.table { display: table; }
+.table, .td { height: 100%; }
+.thead { display: table-header-group; }
+.tbody { display: table-row-group; }
+.tr { display: table-row; clear: left; }
+.td { display: table-cell; }
+.td-colspan-1 { width: 100% !important; display: inline; float: left; }
+.td-colspan-2 { width: 200% !important; display: inline; float: left; }
+.td-colspan-3 { width: 300% !important; display: inline; float: left; }
+.td-colspan-4 { width: 400% !important; display: inline; float: left; }
+.td-colspan-5 { width: 500% !important; display: inline; float: left; }
+.td-colspan-6 { width: 600% !important; display: inline; float: left; }
+.td-colspan-7 { width: 700% !important; display: inline; float: left; }
+.td-colspan-8 { width: 800% !important; display: inline; float: left; }
+.td-colspan-9 { width: 900% !important; display: inline; float: left; }
+.td-colspan-10 { width: 1000% !important; display: inline; float: left; }

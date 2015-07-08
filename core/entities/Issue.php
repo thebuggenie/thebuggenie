@@ -2235,12 +2235,14 @@
         {
             $issuetype_id = ($issuetype instanceof \thebuggenie\core\entities\Issuetype) ? $issuetype->getID() : $issuetype;
 
+            if (! count($this->getParentIssues())) return false;
+
             foreach ($this->getParentIssues() as $issue)
             {
-                if ($issue->getIssueType()->getID() == $issuetype_id) return true;
+                if ($issue->getIssueType()->getID() != $issuetype_id) return false;
             }
 
-            return false;
+            return true;
         }
 
         /**
