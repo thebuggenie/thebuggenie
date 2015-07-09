@@ -2731,7 +2731,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.Whiteboard.initialize = function (options) {
             $('body').on('click', '#selected_milestone_input li', TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus);
             Event.observe(window, 'hashchange', TBG.Project.Planning.Whiteboard.checkNav);
-            TBG.Project.Planning._initializeFilterSearch();
+            TBG.Project.Planning._initializeFilterSearch(true);
             if (window.location.hash) {
                 TBG.Project.Planning.Whiteboard.checkNav();
             } else {
@@ -2750,17 +2750,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             $('planning_filter_title_input').enable();
         };
 
-        TBG.Project.Planning._initializeFilterSearch = function() {
+        TBG.Project.Planning._initializeFilterSearch = function(whiteboard) {
             TBG.ift_observers = {};
             var pfti = $('planning_filter_title_input');
             pfti.dataset.previousValue = '';
             var fk = 'pfti';
+            if (whiteboard == undefined) whiteboard = false;
             pfti.on('keyup', function (event, element) {
                 if (TBG.ift_observers[fk])
                     clearTimeout(TBG.ift_observers[fk]);
                 if ((pfti.getValue().length >= 3 || pfti.getValue().length == 0) && pfti.getValue() != pfti.dataset.lastValue) {
                     TBG.ift_observers[fk] = setTimeout(function () {
-                        TBG.Project.Planning.filterTitles(pfti.getValue());
+                        TBG.Project.Planning.filterTitles(pfti.getValue(), whiteboard);
                         pfti.dataset.lastValue = pfti.getValue();
                     }, 500);
                 }
@@ -2847,21 +2848,30 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Project.Planning.filterTitles = function (title) {
+        TBG.Project.Planning.filterTitles = function (title, whiteboard) {
             $('planning_indicator').show();
             if (title !== '') {
                 var matching = new RegExp(title, "i");
                 $('project_planning').addClassName('issue_title_filtered');
-                $$('.milestone_issue').each(function (issue) {
-                    if (issue.down('.issue_link').down('a').innerHTML.search(matching) !== -1) {
-                        issue.addClassName('title_unfiltered');
-                    } else {
-                        issue.removeClassName('title_unfiltered');
+                $$(whiteboard ? '.whiteboard-issue' : '.milestone_issue').each(function (issue) {
+                    if (whiteboard) {
+                        if (issue.down('.issue_header').innerHTML.search(matching) !== -1) {
+                            issue.addClassName('title_unfiltered');
+                        } else {
+                            issue.removeClassName('title_unfiltered');
+                        }
+                    }
+                    else {
+                        if (issue.down('.issue_link').down('a').innerHTML.search(matching) !== -1) {
+                            issue.addClassName('title_unfiltered');
+                        } else {
+                            issue.removeClassName('title_unfiltered');
+                        }
                     }
                 });
             } else {
                 $('project_planning').removeClassName('issue_title_filtered');
-                $$('.milestone_issue').each(function (issue) {
+                $$(whiteboard ? '.whiteboard-issue' : '.milestone_issue').each(function (issue) {
                     issue.removeClassName('title_unfiltered');
                 });
             }

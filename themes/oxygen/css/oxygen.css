@@ -2642,10 +2642,12 @@ table.issue_affects td img { vertical-align: bottom; }
     width: 250px;
 }
 
-#project_planning.issue_title_filtered .milestone_issue {
+#project_planning.issue_title_filtered .milestone_issue,
+#project_planning.issue_title_filtered .whiteboard-issue {
     display: none;
 }
-#project_planning.issue_title_filtered .milestone_issue.title_unfiltered {
+#project_planning.issue_title_filtered .milestone_issue.title_unfiltered,
+#project_planning.issue_title_filtered .whiteboard-issue.title_unfiltered {
     display: block;
 }
 
