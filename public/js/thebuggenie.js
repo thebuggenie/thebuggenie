@@ -32,6 +32,9 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                 jQuery("#disable-tutorial-button").on("click", TBG.Tutorial.disable);
 
                 jQuery("body").on("click", function (e) {
+                    if (e.target.up('#topmenu-container') == undefined && jQuery('#topmenu-container').hasClass('active')) {
+                        $('#topmenu-container').removeClass('active');
+                    }
                     if (['INPUT'].indexOf(e.target.nodeName) != -1)
                         return;
                     else if (e.target.up('.popup_box') != undefined)
