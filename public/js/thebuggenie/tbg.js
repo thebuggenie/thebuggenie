@@ -2344,10 +2344,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 },
                 url_method: 'get',
                 success: {
-                    update: { element: 'planning_whiteboard_columns_form_row', insertion: true },
-                    callback: function() {
-                        TBG.Main.Helpers.initializeFancyFilters();
-                        TBG.Main.Helpers.recalculateFancyFilters();
+                    callback: function(json) {
+                        $('planning_whiteboard_columns_form_row').insert({bottom: json.component});
+                        if (json.status_element_id != undefined) {
+                            TBG.Main.Helpers.initializeFancyFilters($(json.status_element_id));
+                            TBG.Main.Helpers.recalculateFancyFilters($(json.status_element_id));
+                        }
+                        else {
+                            TBG.Main.Helpers.initializeFancyFilters();
+                            TBG.Main.Helpers.recalculateFancyFilters();
+                        }
                         TBG.Project.Planning.Whiteboard.setSortOrder();
                     }
                 }
@@ -7289,8 +7295,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Main.Helpers.recalculateFancyFilters = function() {
-            $$('.filter').each(TBG.Main.Helpers.calculateFancyFilterDetails);
+        TBG.Main.Helpers.recalculateFancyFilters = function(filter) {
+            if (filter != undefined) {
+                $$('.filter').each(TBG.Main.Helpers.calculateFancyFilterDetails);
+            }
+            else {
+                TBG.Main.Helpers.calculateFancyFilterDetails(filter);
+            }
         };
 
         TBG.Main.Helpers.toggleFancyFilterValueElement = function (element, checked) {
@@ -7334,8 +7345,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             filter.down('.value').update(value);
         };
 
-        TBG.Main.Helpers.initializeFancyFilters = function() {
-            $$('.fancyfilter').each(TBG.Main.Helpers.initializeFancyFilterField);
+        TBG.Main.Helpers.initializeFancyFilters = function(fancyfilter) {
+            if (fancyfilter != undefined) {
+                TBG.Main.Helpers.initializeFancyFilterField(fancyfilter);
+            }
+            else {
+                $$('.fancyfilter').each(TBG.Main.Helpers.initializeFancyFilterField);
+            }
         };
 
         TBG.Core.getPluginUpdates = function (type) {
