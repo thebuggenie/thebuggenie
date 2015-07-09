@@ -172,7 +172,9 @@
                 $column->setBoard($board);
             }
 
-            return $this->renderJSON(array('content' => $this->getComponentHTML('agile/editboardcolumn', array('column' => $column))));
+            $column_id = $column->getColumnOrRandomID();
+
+            return $this->renderJSON(array('component' => $this->getComponentHTML('agile/editboardcolumn', compact('column', 'column_id')), 'status_element_id' => 'boardcolumn_'. $column_id .'_status'));
         }
 
         /**

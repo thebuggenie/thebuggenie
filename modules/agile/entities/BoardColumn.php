@@ -179,4 +179,9 @@
             return in_array($issue->getStatus()->getID(), $this->getStatusIds());
         }
 
+        public function getColumnOrRandomID()
+        {
+            return ($this->getID()) ? $this->getID() : md5(rand(0,1000000));
+        }
+
     }
