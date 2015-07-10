@@ -35,6 +35,10 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                     if (e.target.up('#topmenu-container') == undefined && jQuery('#topmenu-container').hasClass('active')) {
                         jQuery('#topmenu-container').removeClass('active');
                     }
+                    if (e.target.up('#user_notifications') == undefined && jQuery('#user_notifications').hasClass('active') && e.target.id != 'user_notifications_count') {
+                        jQuery('#user_notifications').removeClass('active');
+                        jQuery('#user_notifications_container').removeClass('active');
+                    }
                     if (['INPUT'].indexOf(e.target.nodeName) != -1)
                         return;
                     else if (e.target.up('.popup_box') != undefined)
