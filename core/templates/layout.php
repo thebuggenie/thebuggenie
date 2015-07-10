@@ -72,7 +72,9 @@
                     'jquery-ui': 'jquery-ui.min',
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
-                    'thebuggenie/tools': bust('thebuggenie/tools.js')
+                    'thebuggenie/tools': bust('thebuggenie/tools.js'),
+                    'perfect-scrollbar': 'perfect-scrollbar',
+                    'perfect-scrollbar.jquery': 'perfect-scrollbar.jquery'
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
@@ -152,7 +154,7 @@
         <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
             var TBG, jQuery;
-            require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
+            require(['domReady', 'thebuggenie/tbg', 'jquery', 'perfect-scrollbar.jquery'], function (domReady, tbgjs, jquery, perfect_scrollbar) {
                 domReady(function () {
                     TBG = tbgjs;
                     jQuery = jquery;

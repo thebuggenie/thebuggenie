@@ -501,7 +501,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             indicator: 'user_notifications_loading_indicator'
                         },
                         success: {
-                            update: 'user_notifications_list'
+                            update: 'user_notifications_list',
+                            callback: function () {
+                                jQuery("#user_notifications_list").perfectScrollbar();
+                            }
                         }
                     });
                 }
