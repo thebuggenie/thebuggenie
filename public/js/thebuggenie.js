@@ -33,7 +33,7 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
 
                 jQuery("body").on("click", function (e) {
                     if (e.target.up('#topmenu-container') == undefined && jQuery('#topmenu-container').hasClass('active')) {
-                        $('#topmenu-container').removeClass('active');
+                        jQuery('#topmenu-container').removeClass('active');
                     }
                     if (['INPUT'].indexOf(e.target.nodeName) != -1)
                         return;
