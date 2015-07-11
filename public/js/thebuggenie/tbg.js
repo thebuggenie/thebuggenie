@@ -1181,7 +1181,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     reset: 'attach_link_' + target_type + '_' + target_id + '_form',
                     hide: ['attach_link_' + target_type + '_' + target_id, target_type + '_' + target_id + '_no_links'],
-                    update: {element: target_type + '_' + target_id + '_links', insertion: true}
+                    update: {element: target_type + '_' + target_id + '_links', insertion: true},
+                    callback: function () {
+                        if ($(target_type + '_' + target_id + '_container').hasClassName('menu_editing')) {
+                            jQuery('#toggle_' + target_type + '_' + target_id +'_edit_mode').trigger('click');
+                            jQuery('#toggle_' + target_type + '_' + target_id +'_edit_mode').trigger('click');
+                        }
+                    }
                 },
                 complete: {
                     callback: function () {
