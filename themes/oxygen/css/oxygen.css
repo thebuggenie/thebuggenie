@@ -4305,6 +4305,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end dashboard */
 
 /* project timeline */
+.recent_activities { margin: 0 5px 10px 5px; }
 .recent_activities td .time { font-size: 0.9em; }
 #timeline { padding: 5px 0 30px 15px; }
 #timeline .latest_action_dates { font-weight: 300; color: #888; text-transform: uppercase; border-bottom: 1px dotted #CCC; padding: 15px 0 5px; margin-bottom: 5px; }
