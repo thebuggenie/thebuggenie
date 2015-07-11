@@ -149,9 +149,11 @@ header #user_notifications_count.unread + img { opacity: 1; }
     z-index: 10000;
     color: #222;
 }
-#user_notifications_list{
+#user_notifications_list_wrapper {
     max-height : 500px;
     overflow : auto;
+}
+#user_notifications_list{
     list-style: none;
     margin: 0;
     padding: 0;
@@ -5903,141 +5905,446 @@ div.calendar tr.days td.otherDay
 .td-colspan-9 { width: 900% !important; display: inline; float: left; }
 .td-colspan-10 { width: 1000% !important; display: inline; float: left; }
 
-/* perfect-scrollbar v0.6.3 */
-.ps-container {
-  ms-touch-action: none;
-  overflow: hidden !important;
+
+/*
+== malihu jquery custom scrollbar plugin ==
+Plugin URI: http://manos.malihu.gr/jquery-custom-content-scroller
+*/
+
+/*
+CONTENTS:
+  1. BASIC STYLE - Plugin's basic/essential CSS properties (normally, should not be edited).
+  2. VERTICAL SCROLLBAR - Positioning and dimensions of vertical scrollbar.
+  3. HORIZONTAL SCROLLBAR - Positioning and dimensions of horizontal scrollbar.
+  4. VERTICAL AND HORIZONTAL SCROLLBARS - Positioning and dimensions of 2-axis scrollbars.
+  5. TRANSITIONS - CSS3 transitions for hover events, auto-expanded and auto-hidden scrollbars.
+  6. SCROLLBAR COLORS, OPACITY AND BACKGROUNDS
+    6.1 THEMES - Scrollbar colors, opacity, dimensions, backgrounds etc. via ready-to-use themes.
+*/
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+1. BASIC STYLE
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+.mCustomScrollbar { -ms-touch-action: none; touch-action: none; /* MSPointer events - direct all pointer events to js */ }
+
+.mCustomScrollbar.mCS_no_scrollbar, .mCustomScrollbar.mCS_touch_action { -ms-touch-action: auto; touch-action: auto; }
+
+.mCustomScrollBox { /* contains plugin's markup */
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  max-width: 100%;
+  outline: none;
+  direction: ltr;
 }
 
-.ps-container.ps-active-x > .ps-scrollbar-x-rail, .ps-container.ps-active-y > .ps-scrollbar-y-rail {
-  display: block;
+.mCSB_container { /* contains the original content */
+  overflow: hidden;
+  width: auto;
+  height: auto;
 }
 
-.ps-container.ps-in-scrolling {
-  pointer-events: none;
+/*
+------------------------------------------------------------------------------------------------------------------------
+2. VERTICAL SCROLLBAR
+y-axis
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+.mCSB_inside > .mCSB_container { margin-right: 5px; }
+
+.mCSB_container.mCS_no_scrollbar_y.mCS_y_hidden { margin-right: 0; }
+
+/* non-visible scrollbar */
+
+.mCS-dir-rtl > .mCSB_inside > .mCSB_container { /* RTL direction/left-side scrollbar */
+  margin-right: 0;
+  margin-left: 30px;
 }
 
-.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
-  background-color: #EEEEEE;
-  opacity: 0.9;
-}
+.mCS-dir-rtl > .mCSB_inside > .mCSB_container.mCS_no_scrollbar_y.mCS_y_hidden { margin-left: 0; }
 
-.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-  background-color: #999999;
-}
+/* RTL direction/left-side scrollbar */
 
-.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
-  background-color: #EEEEEE;
-  opacity: 0.9;
-}
-
-.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-  background-color: #999999;
-}
-
-.ps-container > .ps-scrollbar-x-rail {
-  border-radius: 4px;
-  bottom: 3px;
-  display: none;
-  height: 8px;
-  moz-border-radius: 4px;
-  moz-transition: background-color .2s linear, opacity .2s linear;
-  ms-border-radius: 4px;
-  opacity: 0;
-  o-transition: background-color .2s linear, opacity .2s linear;
+.mCSB_scrollTools { /* contains scrollbar markup (draggable element, dragger rail, buttons etc.) */
   position: absolute;
-  transition: background-color .2s linear, opacity .2s linear;
-  webkit-border-radius: 4px;
-  webkit-transition: background-color .2s linear, opacity .2s linear;
-}
-
-.ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-  background-color: #AAAAAA;
-  border-radius: 4px;
-  bottom: 0;
-  height: 8px;
-  moz-border-radius: 4px;
-  moz-transition: background-color .2s linear;
-  ms-border-radius: 4px;
-  o-transition: background-color .2s linear;
-  position: absolute;
-  transition: background-color .2s linear;
-  webkit-border-radius: 4px;
-  webkit-transition: background-color .2s linear;
-}
-
-.ps-container > .ps-scrollbar-y-rail {
-  border-radius: 4px;
-  display: none;
-  moz-border-radius: 4px;
-  moz-transition: background-color .2s linear, opacity .2s linear;
-  ms-border-radius: 4px;
-  opacity: 0;
-  o-transition: background-color .2s linear, opacity .2s linear;
-  position: absolute;
-  right: 3px;
-  transition: background-color .2s linear, opacity .2s linear;
-  webkit-border-radius: 4px;
-  webkit-transition: background-color .2s linear, opacity .2s linear;
-  width: 8px;
-}
-
-.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-  background-color: #AAAAAA;
-  border-radius: 4px;
-  moz-border-radius: 4px;
-  moz-transition: background-color .2s linear;
-  ms-border-radius: 4px;
-  o-transition: background-color .2s linear;
-  position: absolute;
+  width: 16px;
+  height: auto;
+  left: auto;
+  top: 0;
   right: 0;
-  transition: background-color .2s linear;
-  webkit-border-radius: 4px;
-  webkit-transition: background-color .2s linear;
+  bottom: 0;
+}
+
+.mCSB_outside + .mCSB_scrollTools { right: -26px; }
+
+/* scrollbar position: outside */
+
+.mCS-dir-rtl > .mCSB_inside > .mCSB_scrollTools,
+.mCS-dir-rtl > .mCSB_outside + .mCSB_scrollTools { /* RTL direction/left-side scrollbar */
+  right: auto;
+  left: 0;
+}
+
+.mCS-dir-rtl > .mCSB_outside + .mCSB_scrollTools { left: -26px; }
+
+/* RTL direction/left-side scrollbar (scrollbar position: outside) */
+
+.mCSB_scrollTools .mCSB_draggerContainer { /* contains the draggable element and dragger rail markup */
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: auto;
+}
+
+.mCSB_scrollTools a + .mCSB_draggerContainer { margin: 20px 0; }
+
+.mCSB_scrollTools .mCSB_draggerRail {
+  width: 2px;
+  height: 100%;
+  margin: 0 auto;
+  -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+}
+
+.mCSB_scrollTools .mCSB_dragger { /* the draggable element */
+  cursor: pointer;
+  width: 100%;
+  height: 30px; /* minimum dragger height */
+  z-index: 1;
+}
+
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar { /* the dragger element */
+  position: relative;
   width: 5px;
+  height: 100%;
+  margin: 0 auto;
+  -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+  text-align: center;
+  border: 1px solid rgba(85, 85, 85, 0.6);
 }
 
-.ps-container:hover.ps-in-scrolling {
-  pointer-events: none;
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_dragger.mCSB_dragger_onDrag_expanded .mCSB_dragger_bar,
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_draggerContainer:hover .mCSB_dragger .mCSB_dragger_bar {
+    width: 8px; /* auto-expanded scrollbar */
+    -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
 }
 
-.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
-  background-color: #EEEEEE;
-  opacity: 0.9;
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_dragger.mCSB_dragger_onDrag_expanded + .mCSB_draggerRail,
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_draggerContainer:hover .mCSB_draggerRail {
+    width: 10px; /* auto-expanded scrollbar */
+    -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
 }
 
-.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-  background-color: #999999;
+.mCSB_scrollTools .mCSB_buttonUp,
+.mCSB_scrollTools .mCSB_buttonDown {
+  display: block;
+  position: absolute;
+  height: 20px;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  cursor: pointer;
 }
 
-.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
-  background-color: #EEEEEE;
-  opacity: 0.9;
+.mCSB_scrollTools .mCSB_buttonDown { bottom: 0; }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+3. HORIZONTAL SCROLLBAR
+x-axis
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+.mCSB_horizontal.mCSB_inside > .mCSB_container {
+  margin-right: 0;
+  margin-bottom: 30px;
 }
 
-.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-  background-color: #999999;
+.mCSB_horizontal.mCSB_outside > .mCSB_container { min-height: 100%; }
+
+.mCSB_horizontal > .mCSB_container.mCS_no_scrollbar_x.mCS_x_hidden { margin-bottom: 0; }
+
+/* non-visible scrollbar */
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal {
+  width: auto;
+  height: 16px;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
-.ps-container:hover > .ps-scrollbar-x-rail, .ps-container:hover > .ps-scrollbar-y-rail {
-  opacity: 0.6;
+.mCustomScrollBox + .mCSB_scrollTools.mCSB_scrollTools_horizontal,
+.mCustomScrollBox + .mCSB_scrollTools + .mCSB_scrollTools.mCSB_scrollTools_horizontal { bottom: -26px; }
+
+/* scrollbar position: outside */
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal a + .mCSB_draggerContainer { margin: 0 20px; }
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_draggerRail {
+  width: 100%;
+  height: 2px;
+  margin: 7px 0;
 }
 
-.ps-container:hover > .ps-scrollbar-x-rail:hover {
-  background-color: #EEEEEE;
-  opacity: 0.9;
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_dragger {
+  width: 30px; /* minimum dragger width */
+  height: 100%;
+  left: 0;
 }
 
-.ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
-  background-color: #999999;
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_dragger .mCSB_dragger_bar {
+  width: 100%;
+  height: 5px;
+  margin: 6px auto;
 }
 
-.ps-container:hover > .ps-scrollbar-y-rail:hover {
-  background-color: #EEEEEE;
-  opacity: 0.9;
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_dragger.mCSB_dragger_onDrag_expanded .mCSB_dragger_bar,
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_draggerContainer:hover .mCSB_dragger .mCSB_dragger_bar {
+  height: 12px; /* auto-expanded scrollbar */
+  margin: 2px auto;
 }
 
-.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y {
-  background-color: #999999;
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_dragger.mCSB_dragger_onDrag_expanded + .mCSB_draggerRail,
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_draggerContainer:hover .mCSB_draggerRail {
+  height: 8px; /* auto-expanded scrollbar */
+  margin: 4px 0;
 }
-/* end perfect-scrollbar */
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_buttonLeft,
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_buttonRight {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_buttonLeft { left: 0; }
+
+.mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_buttonRight { right: 0; }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+4. VERTICAL AND HORIZONTAL SCROLLBARS
+yx-axis
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+.mCSB_container_wrapper {
+  position: absolute;
+  height: auto;
+  width: auto;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+.mCSB_container_wrapper > .mCSB_container {
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.mCSB_scrollTools_vertical { margin-bottom: 7px; }
+
+.mCSB_vertical_horizontal > .mCSB_scrollTools.mCSB_scrollTools_vertical { bottom: 20px; }
+
+.mCSB_vertical_horizontal > .mCSB_scrollTools.mCSB_scrollTools_horizontal { right: 20px; }
+
+/* non-visible horizontal scrollbar */
+.mCSB_container_wrapper.mCS_no_scrollbar_x.mCS_x_hidden + .mCSB_scrollTools.mCSB_scrollTools_vertical { bottom: 0; }
+
+/* non-visible vertical scrollbar/RTL direction/left-side scrollbar */
+.mCSB_container_wrapper.mCS_no_scrollbar_y.mCS_y_hidden + .mCSB_scrollTools ~ .mCSB_scrollTools.mCSB_scrollTools_horizontal,
+.mCS-dir-rtl > .mCustomScrollBox.mCSB_vertical_horizontal.mCSB_inside > .mCSB_scrollTools.mCSB_scrollTools_horizontal { right: 0; }
+
+/* RTL direction/left-side scrollbar */
+.mCS-dir-rtl > .mCustomScrollBox.mCSB_vertical_horizontal.mCSB_inside > .mCSB_scrollTools.mCSB_scrollTools_horizontal { left: 20px; }
+
+/* non-visible scrollbar/RTL direction/left-side scrollbar */
+.mCS-dir-rtl > .mCustomScrollBox.mCSB_vertical_horizontal.mCSB_inside > .mCSB_container_wrapper.mCS_no_scrollbar_y.mCS_y_hidden + .mCSB_scrollTools ~ .mCSB_scrollTools.mCSB_scrollTools_horizontal { left: 0; }
+
+.mCS-dir-rtl > .mCSB_inside > .mCSB_container_wrapper { /* RTL direction/left-side scrollbar */
+  margin-right: 0;
+  margin-left: 30px;
+}
+
+.mCSB_container_wrapper.mCS_no_scrollbar_y.mCS_y_hidden > .mCSB_container {
+  padding-right: 0;
+  -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
+}
+
+.mCSB_container_wrapper.mCS_no_scrollbar_x.mCS_x_hidden > .mCSB_container {
+  padding-bottom: 0;
+  -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
+}
+
+.mCustomScrollBox.mCSB_vertical_horizontal.mCSB_inside > .mCSB_container_wrapper.mCS_no_scrollbar_y.mCS_y_hidden {
+  margin-right: 0; /* non-visible scrollbar */
+  margin-left: 0;
+}
+
+/* non-visible horizontal scrollbar */
+.mCustomScrollBox.mCSB_vertical_horizontal.mCSB_inside > .mCSB_container_wrapper.mCS_no_scrollbar_x.mCS_x_hidden { margin-bottom: 0; }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+5. TRANSITIONS
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+.mCSB_scrollTools,
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+.mCSB_scrollTools .mCSB_buttonUp,
+.mCSB_scrollTools .mCSB_buttonDown,
+.mCSB_scrollTools .mCSB_buttonLeft,
+.mCSB_scrollTools .mCSB_buttonRight {
+  -webkit-transition: opacity .2s ease-in-out, background-color .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out, background-color .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out, background-color .2s ease-in-out;
+  transition: opacity .2s ease-in-out, background-color .2s ease-in-out;
+}
+
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_dragger_bar, /* auto-expanded scrollbar */
+.mCSB_scrollTools_vertical.mCSB_scrollTools_onDrag_expand .mCSB_draggerRail,
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_dragger_bar,
+.mCSB_scrollTools_horizontal.mCSB_scrollTools_onDrag_expand .mCSB_draggerRail {
+  -webkit-transition: width .2s ease-out .2s, height .2s ease-out .2s,
+  margin-left .2s ease-out .2s, margin-right .2s ease-out .2s,
+  margin-top .2s ease-out .2s, margin-bottom .2s ease-out .2s,
+  opacity .2s ease-in-out, background-color .2s ease-in-out;
+  -moz-transition: width .2s ease-out .2s, height .2s ease-out .2s,
+  margin-left .2s ease-out .2s, margin-right .2s ease-out .2s,
+  margin-top .2s ease-out .2s, margin-bottom .2s ease-out .2s,
+  opacity .2s ease-in-out, background-color .2s ease-in-out;
+  -o-transition: width .2s ease-out .2s, height .2s ease-out .2s,
+  margin-left .2s ease-out .2s, margin-right .2s ease-out .2s,
+  margin-top .2s ease-out .2s, margin-bottom .2s ease-out .2s,
+  opacity .2s ease-in-out, background-color .2s ease-in-out;
+  transition: width .2s ease-out .2s, height .2s ease-out .2s,
+  margin-left .2s ease-out .2s, margin-right .2s ease-out .2s,
+  margin-top .2s ease-out .2s, margin-bottom .2s ease-out .2s,
+  opacity .2s ease-in-out, background-color .2s ease-in-out;
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+6. SCROLLBAR COLORS, OPACITY AND BACKGROUNDS
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+/*
+----------------------------------------
+6.1 THEMES
+----------------------------------------
+*/
+
+/* default theme ("light") */
+
+.mCSB_scrollTools { opacity: 0.75; filter: "alpha(opacity=75)"; -ms-filter: "alpha(opacity=75)"; }
+
+.mCS-autoHide > .mCustomScrollBox > .mCSB_scrollTools,
+.mCS-autoHide > .mCustomScrollBox ~ .mCSB_scrollTools { opacity: 0; filter: "alpha(opacity=0)"; -ms-filter: "alpha(opacity=0)"; }
+
+.mCustomScrollbar > .mCustomScrollBox > .mCSB_scrollTools.mCSB_scrollTools_onDrag,
+.mCustomScrollbar > .mCustomScrollBox ~ .mCSB_scrollTools.mCSB_scrollTools_onDrag,
+.mCustomScrollBox:hover > .mCSB_scrollTools,
+.mCustomScrollBox:hover ~ .mCSB_scrollTools,
+.mCS-autoHide:hover > .mCustomScrollBox > .mCSB_scrollTools,
+.mCS-autoHide:hover > .mCustomScrollBox ~ .mCSB_scrollTools { opacity: 1; filter: "alpha(opacity=100)"; -ms-filter: "alpha(opacity=100)"; }
+
+.mCSB_scrollTools .mCSB_draggerRail {
+  background-color: transparent;
+}
+
+.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag_expanded + .mCSB_draggerRail,
+.mCSB_scrollTools .mCSB_draggerContainer:hover .mCSB_draggerRail,
+.mCSB_scrollTools .mCSB_draggerContainer:active .mCSB_draggerRail {
+  background-color: #000000; background-color: rgba(0, 0, 0, 0.15);
+  filter: "alpha(opacity=15)"; -ms-filter: "alpha(opacity=15)";
+}
+
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+  background-color: #000000; background-color: rgba(0, 0, 0, 0.4);
+  filter: "alpha(opacity=40)"; -ms-filter: "alpha(opacity=40)";
+}
+
+/*.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
+  background-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.85);
+  filter: "alpha(opacity=85)"; -ms-filter: "alpha(opacity=85)";
+}
+
+.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar,
+.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar {
+  background-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.9);
+  filter: "alpha(opacity=90)"; -ms-filter: "alpha(opacity=90)";
+}
+
+.mCSB_scrollTools .mCSB_buttonUp,
+.mCSB_scrollTools .mCSB_buttonDown,
+.mCSB_scrollTools .mCSB_buttonLeft,
+.mCSB_scrollTools .mCSB_buttonRight {
+  background-image: url(mCSB_buttons.png); /* css sprites */
+  background-repeat: no-repeat;
+  opacity: 0.4; filter: "alpha(opacity=40)"; -ms-filter: "alpha(opacity=40)";
+}
+
+.mCSB_scrollTools .mCSB_buttonUp {
+  background-position: 0 0;
+  /*
+  sprites locations
+  light: 0 0, -16px 0, -32px 0, -48px 0, 0 -72px, -16px -72px, -32px -72px
+  dark: -80px 0, -96px 0, -112px 0, -128px 0, -80px -72px, -96px -72px, -112px -72px
+  */
+}
+
+.mCSB_scrollTools .mCSB_buttonDown {
+  background-position: 0 -20px;
+  /*
+  sprites locations
+  light: 0 -20px, -16px -20px, -32px -20px, -48px -20px, 0 -92px, -16px -92px, -32px -92px
+  dark: -80px -20px, -96px -20px, -112px -20px, -128px -20px, -80px -92px, -96px -92px, -112 -92px
+  */
+}
+
+.mCSB_scrollTools .mCSB_buttonLeft {
+  background-position: 0 -40px;
+  /*
+  sprites locations
+  light: 0 -40px, -20px -40px, -40px -40px, -60px -40px, 0 -112px, -20px -112px, -40px -112px
+  dark: -80px -40px, -100px -40px, -120px -40px, -140px -40px, -80px -112px, -100px -112px, -120px -112px
+  */
+}
+
+.mCSB_scrollTools .mCSB_buttonRight {
+  background-position: 0 -56px;
+  /*
+  sprites locations
+  light: 0 -56px, -20px -56px, -40px -56px, -60px -56px, 0 -128px, -20px -128px, -40px -128px
+  dark: -80px -56px, -100px -56px, -120px -56px, -140px -56px, -80px -128px, -100px -128px, -120px -128px
+  */
+}
+
+.mCSB_scrollTools .mCSB_buttonUp:hover,
+.mCSB_scrollTools .mCSB_buttonDown:hover,
+.mCSB_scrollTools .mCSB_buttonLeft:hover,
+.mCSB_scrollTools .mCSB_buttonRight:hover { opacity: 0.75; filter: "alpha(opacity=75)"; -ms-filter: "alpha(opacity=75)"; }
+
+.mCSB_scrollTools .mCSB_buttonUp:active,
+.mCSB_scrollTools .mCSB_buttonDown:active,
+.mCSB_scrollTools .mCSB_buttonLeft:active,
+.mCSB_scrollTools .mCSB_buttonRight:active { opacity: 0.9; filter: "alpha(opacity=90)"; -ms-filter: "alpha(opacity=90)"; }
+
+/* end malihu jquery custom scrollbar plugin */
