@@ -2557,7 +2557,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     }
                 },
                 failure: {
-                    show: issue
+                    show: issue,
                     callback: function(json) {
                         if (json.error != undefined && typeof(json.error) == 'string' && json.error.length) {
                             issue.detach().css({left: '0', top: '0'}).prependTo(original_column);
