@@ -1174,7 +1174,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 form: 'attach_link_' + target_type + '_' + target_id + '_form',
                 loading: {
                     indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
-                    hide: 'attach_link_' + target_type + '_' + target_id + '_submit'
+                    callback: function () {
+                        $('attach_link_' + target_type + '_' + target_id + '_submit').disable();
+                    }
                 },
                 success: {
                     reset: 'attach_link_' + target_type + '_' + target_id + '_form',
@@ -1182,7 +1184,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     update: {element: target_type + '_' + target_id + '_links', insertion: true}
                 },
                 complete: {
-                    show: 'attach_link_' + target_type + '_' + target_id + '_submit'
+                    callback: function () {
+                        $('attach_link_' + target_type + '_' + target_id + '_submit').enable();
+                    }
                 }
             });
         };
