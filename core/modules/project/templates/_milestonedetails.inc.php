@@ -51,7 +51,7 @@
             </tbody>
         </table>
         <script type="text/javascript">
-            require(['domReady', 'jquery', 'jquery.flot', 'jquery.flot.time'], function (domReady, jQuery) {
+            require(['domReady', 'jquery', 'jquery.flot', 'jquery.flot.time', 'jquery.flot.dashes'], function (domReady, jQuery) {
                 domReady(function () {
                     jQuery(function () {
 

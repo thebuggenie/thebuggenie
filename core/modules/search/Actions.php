@@ -52,8 +52,8 @@
             $this->issavedsearch = ($this->search_object instanceof entities\SavedSearch && $this->search_object->getB2DBID());
             $this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('fs') || $request->getParameter('search', false)) ? true : false;
 
-            $this->searchterm = $this->search_object->getSearchterm();
-            $this->searchtitle = $this->search_object->getTitle();
+            $this->searchterm = ($this->search_object instanceof entities\SavedSearch) ? $this->search_object->getSearchterm() : '';
+            $this->searchtitle = ($this->search_object instanceof entities\SavedSearch) ? $this->search_object->getTitle() : '';
 
             if ($this->issavedsearch)
             {

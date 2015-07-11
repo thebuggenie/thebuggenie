@@ -39,13 +39,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    <?php if (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message')): ?>
-        TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message'); ?>');
-    <?php elseif (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message_err')): ?>
-        TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message_err'); ?>');
-    <?php endif; ?>
     require(['domReady', 'prototype'], function (domReady, prototype) {
         domReady(function () {
+        <?php if (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message')): ?>
+            TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message'); ?>');
+        <?php elseif (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message_err')): ?>
+            TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message_err'); ?>');
+        <?php endif; ?>
             $('tbg3_password').focus();
         });
     });

@@ -107,6 +107,9 @@
                     'jquery.flot.time': {
                         deps: ['jquery.flot']
                     },
+                    'jquery.flot.dashes': {
+                        deps: ['jquery.flot']
+                    },
                     'scriptaculous': {
                         deps: ['prototype', 'controls'],
                         exports: 'Scriptaculous'
