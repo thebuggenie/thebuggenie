@@ -72,9 +72,7 @@
                     'jquery-ui': 'jquery-ui.min',
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
-                    'thebuggenie/tools': bust('thebuggenie/tools.js'),
-                    'perfect-scrollbar': 'perfect-scrollbar',
-                    'perfect-scrollbar.jquery': 'perfect-scrollbar.jquery'
+                    'thebuggenie/tools': bust('thebuggenie/tools.js')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
@@ -89,6 +87,9 @@
                     },
                     'jquery.markitup': {
                         deps: ['jquery']
+                    },
+                    'jquery.mCustomScrollbar': {
+                        deps: ['jquery', 'jquery-mousewheel']
                     },
                     'calendarview': {
                         deps: ['prototype'],
@@ -154,7 +155,7 @@
         <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
             var TBG, jQuery;
-            require(['domReady', 'thebuggenie/tbg', 'jquery', 'perfect-scrollbar.jquery'], function (domReady, tbgjs, jquery, perfect_scrollbar) {
+            require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.mCustomScrollbar'], function (domReady, tbgjs, jquery, mCustomScrollbar) {
                 domReady(function () {
                     TBG = tbgjs;
                     jQuery = jquery;

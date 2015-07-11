@@ -452,13 +452,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Core.Pollers.datapoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, 10);
             TBG.Core.Pollers.Callbacks.dataPoller();
             TBG.OpenID.init();
-            jQuery(function($) {
-                $('#user_notifications_list').bind('scroll', function() {
-                    if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
-                        TBG.Main.Notifications.loadMore();
-                    }
-                });
-            });
+            // Mimick browser scroll to element with id as hash once header get 'fixed' class
+            // from _scrollWatcher method.
+            setTimeout(function () {
+                var hash = window.location.hash;
+                if (hash != undefined && hash.indexOf('comment_') == 1 && typeof(window.location.href) == 'string') {
+                    window.location.href = window.location.href;
+                }
+            }, 1000);
         };
 
         TBG.Core.Pollers.Callbacks.dataPoller = function () {
@@ -503,7 +504,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         success: {
                             update: 'user_notifications_list',
                             callback: function () {
-                                jQuery("#user_notifications_list").perfectScrollbar();
+                                jQuery("#user_notifications_list_wrapper").mCustomScrollbar({
+                                    scrollInertia: 1300,
+                                    autoHideScrollbar: true,
+                                    autoExpandScrollbar: true,
+                                    callbacks: {
+                                        updateOnSelectorChange: "ul li",
+                                    },
+                                    callbacks: {
+                                        onTotalScroll: TBG.Main.Notifications.loadMore
+                                    }
+                                });
                             }
                         }
                     });
@@ -7153,6 +7164,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {
                         update: { element: 'user_notifications_list', insertion: true },
                         callback: function () {
+                            jQuery("#user_notifications_list_wrapper").mCustomScrollbar('update');
                             unl_data.offset = parseInt(unl_data.offset) + 25;
                             TBG.Main.Notifications.loadingLocked = false;
                         }
