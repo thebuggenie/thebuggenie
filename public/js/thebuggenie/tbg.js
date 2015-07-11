@@ -1198,11 +1198,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     hide: target_type + '_' + target_id + '_links_' + link_id + '_remove_link',
-                    indicator: target_type + '_' + target_id + '_links_' + link_id + '_remove_indicator'
+                    indicator: 'dialog_indicator'
                 },
                 success: {
                     remove: [target_type + '_' + target_id + '_links_' + link_id, target_type + '_' + target_id + '_links_' + link_id + '_remove_confirm'],
                     callback: function (json) {
+                        TBG.Main.Helpers.Dialog.dismiss();
                         if ($(json.target_type + '_' + json.target_id + '_links').childElements().size() == 0) {
                             $(json.target_type + '_' + json.target_id + '_no_links').show();
                         }
