@@ -4,9 +4,11 @@
             <?php echo __('Your notifications'); ?>
             <a href="javascript:void(0);" onclick="TBG.Main.Notifications.markAllRead();"><?php echo __('Mark all read'); ?></a>
         </h1>
-        <div id="user_notifications_list_wrapper">
-            <ul id="user_notifications_list" data-notifications-url="<?php echo make_url('get_partial_for_backdrop', array('key' => 'notifications')); ?>" data-offset="25">
-            </ul>
+        <div id="user_notifications_list_wrapper_nano" class="nano">
+            <div id="user_notifications_list_wrapper" class="nano-content">
+                <ul id="user_notifications_list" data-notifications-url="<?php echo make_url('get_partial_for_backdrop', array('key' => 'notifications')); ?>" data-offset="25">
+                </ul>
+            </div>
         </div>
         <?php echo image_tag('spinning_32.gif', array('id' => 'user_notifications_loading_indicator')); ?>
     </div>

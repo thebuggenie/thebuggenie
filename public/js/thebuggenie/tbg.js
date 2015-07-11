@@ -504,16 +504,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         success: {
                             update: 'user_notifications_list',
                             callback: function () {
-                                jQuery("#user_notifications_list_wrapper").mCustomScrollbar({
-                                    scrollInertia: 1300,
-                                    autoHideScrollbar: true,
-                                    autoExpandScrollbar: true,
-                                    callbacks: {
-                                        updateOnSelectorChange: "ul li",
-                                    },
-                                    callbacks: {
-                                        onTotalScroll: TBG.Main.Notifications.loadMore
-                                    }
+                                jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
+                                jQuery("#user_notifications_list_wrapper_nano").bind("scrollend", function (e) {
+                                    TBG.Main.Notifications.loadMore();
                                 });
                             }
                         }
@@ -7177,7 +7170,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {
                         update: { element: 'user_notifications_list', insertion: true },
                         callback: function () {
-                            jQuery("#user_notifications_list_wrapper").mCustomScrollbar('update');
+                            jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
                             unl_data.offset = parseInt(unl_data.offset) + 25;
                             TBG.Main.Notifications.loadingLocked = false;
                         }
