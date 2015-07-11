@@ -6281,17 +6281,6 @@ yx-axis
   filter: "alpha(opacity=40)"; -ms-filter: "alpha(opacity=40)";
 }
 
-/*.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
-  background-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.85);
-  filter: "alpha(opacity=85)"; -ms-filter: "alpha(opacity=85)";
-}
-
-.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar,
-.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar {
-  background-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.9);
-  filter: "alpha(opacity=90)"; -ms-filter: "alpha(opacity=90)";
-}
-
 .mCSB_scrollTools .mCSB_buttonUp,
 .mCSB_scrollTools .mCSB_buttonDown,
 .mCSB_scrollTools .mCSB_buttonLeft,
