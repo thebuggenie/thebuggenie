@@ -2661,6 +2661,8 @@
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
                 foreach ($this->_notifications as $notification)
                 {
+                    if ($notification->getTriggeredByUser()->getID() == $this->getID()) continue;
+
                     array_unshift($notifications['all'], $notification);
                     if ($notification->isRead())
                     {
