@@ -3719,19 +3719,16 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-columns tbody,
 .whiteboard-columns .tbody {
-    border-bottom: 1px solid #ccc;
     box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
     position: relative;
 }
 .whiteboard-columns .tbody:after {
     content: '';
     display: block;
+    width: 100%;
+    height: 8px;
     position: absolute;
-    top: 100%;
-    bottom: -5px;
-    left: 0;
-    right: 0;
-    box-shadow: 0 6px 8px -8px rgba(50, 50, 50, 0.3);
+    box-shadow: inset 0 6px 8px -8px rgba(50, 50, 50, 0.3);
 }
 .whiteboard-columns.swimlanes tbody td.swimlane-header,
 .whiteboard-columns.swimlanes .tbody .td.swimlane-header {
@@ -3781,6 +3778,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns tbody td.column,
 .whiteboard-columns .tbody .td.column {
     border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     background-color: rgba(245, 245, 245, 0.4);
     min-height: 50px;
     transition: background-color 0.3s ease;
