@@ -494,6 +494,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             if (un.hasClassName('active')) {
                 un.removeClassName('active');
             } else {
+                un.style.right = (jQuery(window).width() - (jQuery('#user_notifications_container').offset().left + jQuery('#user_notifications_container').outerWidth()) - parseInt(jQuery('#user_notifications').css('border-right-width'), 10)) + 'px';
                 un.addClassName('active');
                 if ($('user_notifications_list').childElements().size() == 0) {
                     TBG.Main.Helpers.ajax($('user_notifications_list').dataset.notificationsUrl, {
