@@ -81,7 +81,7 @@
                                 <?php if (!$status->canUserSet($tbg_user)) continue; ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');">
-                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;">
+                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getTextColor() : '#333'; ?>;">
                                             <span>&nbsp;&nbsp;</span>
                                         </div>
                                         <?php echo __($status->getName()); ?>
@@ -93,7 +93,7 @@
                         </ul>
                     <?php endif; ?>
                     <div style="display: inline-block; float: left; width: auto;<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> display: none;<?php endif; ?>" id="status_table">
-                        <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                        <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getTextColor() : '#333'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
                             <span id="status_content"><?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) echo __($issue->getStatus()->getName()); ?></span>
                         </div>
                     </div>
