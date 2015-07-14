@@ -2487,7 +2487,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 },
                 success: {
                     update: 'selected_milestone_status_details',
-                    show: 'selected_milestone_status_details'
+                    show: 'selected_milestone_status_details',
+                    callback: function () {
+                        $('reportissue_button').dataset.milestoneId = milestone_id;
+                    }
                 }
             });
         };
@@ -4987,6 +4990,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             else {
                 $('estimated_percentbar').show();
             }
+        };
+
+        TBG.Issues.Add = function (url) {
+            var btn = $('reportissue_button');
+            var additional_params_query = '';
+
+            if (btn.dataset != undefined && btn.dataset.milestoneId != undefined && parseInt(btn.dataset.milestoneId) > 0) {
+                additional_params_query += '/milestone_id/' + btn.dataset.milestoneId;
+            }
+
+            TBG.Main.Helpers.Backdrop.show(url +  additional_params_query);
         };
 
         TBG.Issues.relate = function (url) {
