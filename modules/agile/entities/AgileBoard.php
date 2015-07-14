@@ -500,6 +500,9 @@
                                 case 'category':
                                     $items = \thebuggenie\core\entities\Category::getAll();
                                     break;
+                                default:
+                                    $items = array();
+                                    break;
                             }
                             if ($this->getSwimlaneType() == self::SWIMLANES_EXPEDITE)
                             {
