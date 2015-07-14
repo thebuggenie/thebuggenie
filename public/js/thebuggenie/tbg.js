@@ -2519,14 +2519,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
-            original_column = issue.parents('.column');
+            var original_column = issue.parents('.column');
+            var issue_index = issue.index();
+
+            if (issue.data('column-id') == column.data('column-id')) {
+                issue.css({left: '0', top: '0'});
+                return;
+            }
 
             if (issue) {
                 issue.detach().css({left: '0', top: '0'}).prependTo(column);
             }
-
-            if (issue.data('column-id') == column.data('column-id'))
-                return;
 
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
@@ -2565,7 +2568,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     show: issue,
                     callback: function(json) {
                         if (json.error != undefined && typeof(json.error) == 'string' && json.error.length) {
-                            issue.detach().css({left: '0', top: '0'}).prependTo(original_column);
+                            issue.css({left: '0', top: '0'});
+
+                            if (issue_index <= 0) {
+                                issue.prependTo(original_column);
+                            }
+                            else {
+                                issue.insertAfter(original_column.children().eq(issue_index - 1));
+                            }
                         }
                     }
                 }
