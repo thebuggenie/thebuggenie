@@ -170,7 +170,7 @@
 <?php elseif ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <div class="rounded_box report_issue_desc <?php if (!$tbg_request->isAjaxCall()): ?>green<?php endif; ?> borderless" style="margin-bottom: 10px;" id="report_issue_reported_issue_details">
         <div style="font-size: 1.1em;">
-            <strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?>:</strong>
+            <strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?></strong>
             <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle()); ?><br>
         </div>
         <span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
