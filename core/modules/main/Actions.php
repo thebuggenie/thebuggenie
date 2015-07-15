@@ -1838,6 +1838,7 @@
                             $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
                             $options['selected_build'] = $this->_getBuildFromRequest($request);
                             $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
+                            $options['medium_backdrop'] = 1;
                             return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
                         }
                         if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
