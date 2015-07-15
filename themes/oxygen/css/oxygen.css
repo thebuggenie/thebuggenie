@@ -3031,7 +3031,8 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     -webkit-transition: background-color 0.3s ease, border-color 0.3s ease;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking {
+.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking
+.whiteboard-issue.blocking {
     border: 1px solid rgba(200, 50, 50, 0.6) !important;
 }
 .milestone_box .milestone_issues li.milestone_issue .child_issues_container { padding: 0 0 0 15px; list-style: none; margin: 0; }
