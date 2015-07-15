@@ -3272,8 +3272,8 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .milestone_box .milestone_issues .issue_closed .issue_link a, .milestone_box .milestone_issues .issue_closed .issue_link a:hover { color: #BEB; text-decoration: line-through; }
 .milestone_box .issue_closed img, .milestone_box .issue_closed .status_badge, .milestone_box .issue_closed .epic_badge, .milestone_box .issue_closed .avatar { opacity: 0.35; }
 
-.milestone_box .milestone_issues li.milestone_issue .issue_container.issue_closed { display: none; }
-#milestone_list.show_closed .milestone_box .milestone_issues li.milestone_issue .issue_container.issue_closed { display: block; }
+.milestone_box .milestone_issues li.milestone_issue .issue_container.issue_closed, .milestone_box .milestone_issues li.milestone_issue.issue_closed.has_child_issues .child_issues_container { display: none; }
+#milestone_list.show_closed .milestone_box .milestone_issues li.milestone_issue .issue_container.issue_closed, #milestone_list.show_closed .milestone_box .milestone_issues li.milestone_issue.issue_closed.has_child_issues .child_issues_container { display: block; }
 
 #associated_projects li { padding: 0 5px 5px 0; border: 0; position: relative; margin: 0; }
 #associated_projects li .project_name { text-align: left; padding: 0 5px 5px; font-weight: 600; }
