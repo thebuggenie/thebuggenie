@@ -2595,7 +2595,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
                                         stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
                                         axis: 'x',
-                                        revert: 'invalid'
+                                        revert: 'invalid',
+                                        containment: '#whiteboard'
                                     });
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
                                 }, 350);
@@ -2659,7 +2660,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
                     stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
                     axis: 'x',
-                    revert: 'invalid'
+                    revert: 'invalid',
+                    containment: '#whiteboard'
                 });
             });
 
