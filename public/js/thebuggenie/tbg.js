@@ -2464,6 +2464,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 },
                 success: {
                     callback: function(json) {
+                        if (json.swimlanes) {
+                            wb.removeClassName('no-swimlanes');
+                            wb.addClassName('swimlanes');
+                        }
+                        else {
+                            wb.removeClassName('swimlanes');
+                            wb.addClassName('no-swimlanes');
+                        }
                         wb.addClassName('initialized');
                         wb.select('.tbody').each(Element.remove);
                         $('whiteboard-headers').insert({after: json.component});
