@@ -2555,8 +2555,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 }
             };
             var customEscapeWatcher = function (event) {
-                if (event.keyCode != undefined && Event.KEY_ESC != event.keyCode)
-                    return;
+                if (event.keyCode != undefined && event.keyCode != 0 && Event.KEY_ESC != event.keyCode) return;
                 TBG.Main.Helpers.Backdrop.reset(revertIssuePosition);
                 setTimeout(function() {
                     document.stopObserving('keydown', customEscapeWatcher);
