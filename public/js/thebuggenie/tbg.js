@@ -2599,9 +2599,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         containment: '#whiteboard'
                                     });
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
-                                    TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                                 }, 350);
                             }
+                            TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                         }
                     }
                 },
