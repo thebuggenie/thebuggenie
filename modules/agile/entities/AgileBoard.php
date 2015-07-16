@@ -532,6 +532,14 @@
                         case self::SWIMLANES_ISSUES:
                             foreach ($milestone->getIssues() as $issue)
                             {
+                                if ($issue->isChildIssue())
+                                {
+                                    foreach ($issue->getParentIssues() as $parent)
+                                    {
+                                        if ($parent->getIssueType()->getID() != $this->getEpicIssuetypeID()) continue 2;
+                                    }
+                                }
+
                                 if (in_array($issue->getIssueType()->getID(), $this->getSwimlaneFieldValues()))
                                 {
                                     $swimlanes[] = array('identifiables' => $issue);

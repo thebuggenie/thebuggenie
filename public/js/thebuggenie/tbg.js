@@ -2530,7 +2530,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
-            if (issue.data('column-id') == column.data('column-id')) {
+            if (transition_id == undefined & issue.data('column-id') == column.data('column-id')) {
                 issue.css({left: '0', top: '0'});
                 return;
             }
@@ -2543,7 +2543,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
 
             var wb = jQuery('#whiteboard');
-            var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
+            var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('.tbody').data('swimlane-identifier');
             var revertIssuePosition = function () {
                 issue.css({left: '0', top: '0'});
 
@@ -2599,6 +2599,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         containment: '#whiteboard'
                                     });
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                    TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                                 }, 350);
                             }
                         }
