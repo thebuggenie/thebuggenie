@@ -234,7 +234,7 @@
                 else
                 {
                     $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-                    return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
+                    return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardcontent', array('board' => $this->board, 'milestone' => $milestone)), 'swimlanes' => $this->board->usesSwimlanes() ? 1 : 0));
                 }
             }
             catch (\Exception $e)
