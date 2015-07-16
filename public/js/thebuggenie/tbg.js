@@ -848,10 +848,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Main.Helpers.Backdrop.reset = function () {
+        TBG.Main.Helpers.Backdrop.reset = function (callback) {
             $$('body')[0].setStyle({'overflow': 'auto'});
             $('fullpage_backdrop').fade({duration: 0.2});
             TBG.Core._resizeWatcher();
+            if (callback) callback();
         };
 
         TBG.Main.Helpers.tabSwitcher = function (visibletab, menu) {
@@ -2529,13 +2530,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
-            var original_column = issue.parents('.column');
-            var issue_index = issue.index();
-
             if (issue.data('column-id') == column.data('column-id')) {
                 issue.css({left: '0', top: '0'});
                 return;
             }
+
+            var original_column = issue.parents('.column');
+            var issue_index = issue.index();
 
             if (issue) {
                 issue.detach().css({left: '0', top: '0'}).prependTo(column);
@@ -2543,18 +2544,46 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('tbody').data('swimlane-identifier');
+            var revertIssuePosition = function () {
+                issue.css({left: '0', top: '0'});
+
+                if (issue_index <= 0) {
+                    issue.prependTo(original_column);
+                }
+                else {
+                    issue.insertAfter(original_column.children().eq(issue_index - 1));
+                }
+            };
+            var customEscapeWatcher = function (event) {
+                if (event.keyCode != undefined && Event.KEY_ESC != event.keyCode)
+                    return;
+                TBG.Main.Helpers.Backdrop.reset(revertIssuePosition);
+                setTimeout(function() {
+                    document.stopObserving('keydown', customEscapeWatcher);
+                    document.observe('keydown', TBG.Core._escapeWatcher);
+                }, 350);
+            };
+
             if (transition_id) parameters += '&transition_id=' + transition_id;
 
             TBG.Main.Helpers.ajax(wb.data('whiteboard-url'), {
                 additional_params: parameters,
                 url_method: 'post',
+                loading: {
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
+                },
                 success: {
                     callback: function(json) {
                         if (json.component) {
+                            document.stopObserving('keydown', TBG.Core._escapeWatcher);
+                            document.observe('keydown', customEscapeWatcher);
                             $('fullpage_backdrop').appear({duration: 0.2});
                             $('fullpage_backdrop_content').update(json.component);
                             $('fullpage_backdrop_content').appear({duration: 0.2});
                             $('fullpage_backdrop_indicator').fade({duration: 0.2});
+                            $('transition-selector-close-link').observe('click', customEscapeWatcher);
                         } else {
                             $('fullpage_backdrop_content').update('');
                             $('fullpage_backdrop').fade({duration: 0.2});
@@ -2578,14 +2607,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     show: issue,
                     callback: function(json) {
                         if (json.error != undefined && typeof(json.error) == 'string' && json.error.length) {
-                            issue.css({left: '0', top: '0'});
-
-                            if (issue_index <= 0) {
-                                issue.prependTo(original_column);
-                            }
-                            else {
-                                issue.insertAfter(original_column.children().eq(issue_index - 1));
-                            }
+                            revertIssuePosition();
                         }
                     }
                 }

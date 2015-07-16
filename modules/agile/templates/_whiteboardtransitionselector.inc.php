@@ -28,4 +28,7 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <div class="backdrop_detail_footer">
+        <a id="transition-selector-close-link" href="javascript:void(0);"><?php echo __('Cancel and close this pop-up'); ?></a>
+    </div>
 </div>
