@@ -409,16 +409,7 @@
             </div>
         </div>
     </div>
-    <div id="workflow_transition_container" style="display: none;">
-        <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-            <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-                <?php if ($transition instanceof \thebuggenie\core\entities\WorkflowTransition && $transition->hasTemplate()): ?>
-                    <?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-    <div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>
+    <?php include_component('main/issue_workflow_transition', compact('issue')); ?>
     <?php if ($tbg_user->isViewissueTutorialEnabled()): ?>
         <?php include_component('main/tutorial_viewissue', compact('issue')); ?>
     <?php endif; ?>

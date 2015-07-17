@@ -22,6 +22,7 @@
         </div>
         <h2><?php echo __('Please select which transition to apply'); ?></h2>
         <?php foreach ($statuses as $status_id): ?>
+            <?php if (in_array($status_id, $same_transition_statuses)) continue; ?>
             <div class="transition">
                 <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_<?php echo $issue->getID(); ?>'), jQuery('#swimlane_<?php echo $swimlane_identifier; ?>_column_<?php echo $new_column->getID(); ?>'), <?php echo $transitions[$status_id]->getID(); ?>);"><?php echo $transitions[$status_id]->getName(); ?></a>
                 <p><?php echo $transitions[$status_id]->getDescription(); ?></p>
