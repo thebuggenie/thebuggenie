@@ -118,3 +118,4 @@
         });
     });
 </script>
+<div id="moving_issue_workflow_transition"></div>

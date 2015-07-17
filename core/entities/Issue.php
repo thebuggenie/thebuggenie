@@ -1065,14 +1065,32 @@
         {
             $status_ids = array();
             $transitions = array();
+            $available_statuses = Status::getAll();
+            $rule_status_valid = false;
 
             foreach ($this->getAvailableWorkflowTransitions() as $transition)
             {
-                $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
-                $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+                if ($transition->getOutgoingStep()->hasLinkedStatus())
+                {
+                    $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
+                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+                }
+                elseif ($transition->hasPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID))
+                {
+                    $values = explode(',', $transition->getPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID)->getRuleValue());
+
+                    foreach ($values as $value)
+                    {
+                        if (! array_key_exists($value, $available_statuses)) continue;
+                        if (! $rule_status_valid) $rule_status_valid = true;
+
+                        $transitions[$value] = $transition;
+                        $status_ids[] = $value;
+                    }
+                }
             }
 
-            return array($status_ids, $transitions);
+            return array($status_ids, $transitions, $rule_status_valid);
         }
 
         /**

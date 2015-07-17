@@ -212,11 +212,21 @@
                     if ($request->hasParameter('transition_id'))
                     {
                         $transitions = array(\thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->selectById((int) $request['transition_id']));
+
+                        if ($transitions[0]->hasTemplate())
+                        {
+                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[0]->getID()));
+                        }
                     }
                     else
                     {
-                        list ($status_ids, $transitions) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
+                        list ($status_ids, $transitions, $rule_status_valid) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
                         $available_statuses = array_intersect($status_ids, $column->getStatusIds());
+
+                        if ($rule_status_valid && count($available_statuses) == 1)
+                        {
+                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[reset($available_statuses)]->getID()));
+                        }
 
                         if (empty($available_statuses))
                         {

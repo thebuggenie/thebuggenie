@@ -2575,7 +2575,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 },
                 success: {
                     callback: function(json) {
-                        if (json.component) {
+                        if (json.transition_id && json.component) {
+                            console.log('asdf');
+                            $('moving_issue_workflow_transition').update(json.component);
+                            TBG.Issues.showWorkflowTransition(json.transition_id);
+                        } else if (json.component) {
                             document.stopObserving('keydown', TBG.Core._escapeWatcher);
                             document.observe('keydown', customEscapeWatcher);
                             $('fullpage_backdrop').appear({duration: 0.2});
