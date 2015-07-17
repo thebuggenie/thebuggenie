@@ -154,6 +154,7 @@
                     }
                 }
                 $this->_search_object->setSortFields(array('issues.milestone_order' => \b2db\Criteria::SORT_ASC));
+                $this->_search_object->setGroupby(null);
             }
         }
 
