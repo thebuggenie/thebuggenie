@@ -1039,7 +1039,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 base.insert(file_elm);
                             });
                             if (json.files.length) {
-                                $('viewissue_uploaded_attachments_count').update(json.files.length);
+                                if ($('viewissue_uploaded_attachments_count')) $('viewissue_uploaded_attachments_count').update(json.files.length);
                                 $('viewissue_no_uploaded_files').hide();
                             }
                         }
