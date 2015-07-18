@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         <tr class="hover_highlight">
-            <td style="padding: 2px; border-bottom: 1px solid #EAEAEA;"><?php echo __('<b>Global </b>(Everyone with access)'); ?></td>
+            <td style="padding: 2px; border-bottom: 1px solid #EAEAEA;"><?php echo __('<b>Global </b>(Everyone with access)', array(), true); ?></td>
             <td style="padding: 2px; border-bottom: 1px solid #EAEAEA; text-align: center;">
                 <?php include_component('configuration/permissionsinfoitem', array('key' => $key, 'target_id' => $target_id, 'type' => 'everyone', 'mode' => $mode, 'item_id' => 0, 'module' => $module, 'access_level' => $access_level)); ?>
             </td>
