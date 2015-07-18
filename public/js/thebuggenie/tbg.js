@@ -2530,14 +2530,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column)
         };
 
-        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id) {
+        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index) {
             if (transition_id == undefined & issue.data('column-id') == column.data('column-id')) {
                 issue.css({left: '0', top: '0'});
                 return;
             }
 
-            var original_column = issue.parents('.column');
-            var issue_index = issue.index();
+            if (! original_column) var original_column = issue.parents('.column');
+            if (! issue_index) var issue_index = issue.index();
 
             if (issue) {
                 issue.detach().css({left: '0', top: '0'}).prependTo(column);
@@ -2558,6 +2558,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var customEscapeWatcher = function (event) {
                 if (event.keyCode != undefined && event.keyCode != 0 && Event.KEY_ESC != event.keyCode) return;
                 TBG.Main.Helpers.Backdrop.reset(revertIssuePosition);
+                $('workflow_transition_fullpage').hide();
                 setTimeout(function() {
                     document.stopObserving('keydown', customEscapeWatcher);
                     document.observe('keydown', TBG.Core._escapeWatcher);
@@ -2577,9 +2578,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     callback: function(json) {
                         if (json.transition_id && json.component) {
-                            console.log('asdf');
+                            document.stopObserving('keydown', TBG.Core._escapeWatcher);
+                            document.observe('keydown', customEscapeWatcher);
                             $('moving_issue_workflow_transition').update(json.component);
                             TBG.Issues.showWorkflowTransition(json.transition_id);
+                            $('transition_working_' + json.transition_id + '_cancel').observe('click', function (event) {
+                                Event.stop(event);
+                                customEscapeWatcher(event);
+                            });
+                            $('transition_working_' + json.transition_id + '_submit').observe('click', function (event) {
+                                Event.stop(event);
+                                TBG.Issues.submitWorkflowTransition($('workflow_transition_' + json.transition_id + '_form'), function () {
+                                    issue.draggable('destroy');
+                                    TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
+                                });
+                            });
                         } else if (json.component) {
                             document.stopObserving('keydown', TBG.Core._escapeWatcher);
                             document.observe('keydown', customEscapeWatcher);
@@ -2588,22 +2601,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('fullpage_backdrop_content').appear({duration: 0.2});
                             $('fullpage_backdrop_indicator').fade({duration: 0.2});
                             $('transition-selector-close-link').observe('click', customEscapeWatcher);
+                            $$('.transition-selector-button').each(function (elem) {
+                                elem.observe('click', function (event) {
+                                    TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_' + elem.dataset.issueId), jQuery('#swimlane_' + elem.dataset.swimlaneIdentifier + '_column_' + elem.dataset.columnId), elem.dataset.transitionId, original_column, issue_index);
+                                });
+                            });
                         } else {
                             $('fullpage_backdrop_content').update('');
                             $('fullpage_backdrop').fade({duration: 0.2});
                             if (!issue) {
                                 jQuery(json.issue).prependTo(column);
-                                setTimeout(function() {
-                                    jQuery('.whiteboard-issue').not('ui-draggable').draggable({
-                                        scope: column.parents('tbody').data('swimlane-identifier'),
-                                        start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
-                                        stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
-                                        axis: 'x',
-                                        revert: 'invalid',
-                                        containment: '#whiteboard'
-                                    });
-                                    TBG.Project.Planning.Whiteboard.calculateColumnCounts();
-                                }, 350);
+                            }
+                            else {
+                                issue.draggable('destroy');
                             }
                             TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                         }
@@ -2653,14 +2663,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
             $('whiteboard').select('.tbody .td.column').each(function (column) {
                 var swimlane_identifier = column.up('.tbody').dataset.swimlaneIdentifier;
-                jQuery(column).droppable({
+                jQuery(column).not('ui-droppable').droppable({
                     drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
                     scope: swimlane_identifier,
                     accept: '.whiteboard-issue',
                     tolerance: 'intersect',
                     hoverClass: 'drop-hover'
                 });
-                jQuery(column).find('.whiteboard-issue').draggable({
+                jQuery(column).find('.whiteboard-issue').not('ui-draggable').draggable({
                     scope: swimlane_identifier,
                     start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
                     stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
@@ -2698,6 +2708,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     callback: function (json) {
                         if (swimlane_type != json.swimlane_type) {
+                            TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                             return;
                         }
@@ -2713,6 +2724,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                    TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                                 }
                             }
                         } else {
@@ -2720,6 +2732,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (json_milestone_id == 0 || json.component == '') {
                                 $(existing_element).remove();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else if (json_milestone_id != milestone_id || json.swimlane_identifier != swimlane_identifier || json.column_id != column_id) {
                                 $(existing_element).remove();
                                 if ($('whiteboard').hasClassName('initialized')) {
@@ -2733,10 +2746,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 }
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else {
                                 $(existing_element).replace(json.component);
                                 TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             }
                         }
                     }
@@ -3279,6 +3294,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             TBG.Main.Helpers.Backdrop.reset();
                         } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id) && $('project_planning').hasClassName('whiteboard')) {
                             TBG.Main.Helpers.Backdrop.reset();
+                            TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                         } else if ($('project_planning') && parseInt($('project_planning').dataset.boardId) == parseInt(json.id)) {
                             var backlog = $('milestone_0');
@@ -4924,6 +4940,24 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 }
 
             }});
+        };
+
+        TBG.Issues.submitWorkflowTransition = function (form, callback) {
+            TBG.Main.Helpers.ajax(form.action, {
+                form: form,
+                loading: {
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop', 'workflow_transition_fullpage']
+                },
+                success: {
+                    hide: 'workflow_transition_fullpage',
+                    callback: callback
+                },
+                failure: {
+                    show: 'workflow_transition_fullpage'
+                }
+            });
         };
 
         TBG.Issues.showLog = function (url) {

@@ -11,7 +11,7 @@
     <form action="<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>" method="post" onsubmit="TBG.Search.interactiveWorkflowTransition('<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>', <?php echo $transition->getID(); ?>, 'workflow_transition_form');return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="workflow_transition_form">
         <input type="hidden" name="issue_ids[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
 <?php elseif ($issue instanceof \thebuggenie\core\entities\Issue): ?>
-    <form action="<?php echo make_url('transition_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
+    <form action="<?php echo make_url('transition_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="workflow_transition_<?php echo $transition->getID(); ?>_form">
 <?php else: ?>
         <form action="<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>" method="post" onsubmit="TBG.Search.bulkWorkflowTransition('<?php echo make_url('transition_issues', array('project_key' => $project->getKey(), 'transition_id' => $transition->getID())); ?>', <?php echo $transition->getID(); ?>);return false;" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="bulk_workflow_transition_form">
     <?php foreach ($issues as $issue_id => $i): ?>
@@ -191,14 +191,14 @@
             </ul>
             <div style="text-align: right; margin-right: 5px;">
                 <?php echo image_tag('spinning_32.gif', array('style' => 'margin: -3px 0 -3px 5px; display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')); ?>
-                <a href="javascript:void(0);" onclick="($('workflow_transition_fullpage')) ? $('workflow_transition_fullpage').fade({duration: 0.2}) : TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Cancel'); ?></a>
+                <a href="javascript:void(0);" id="transition_working_<?php echo $transition->getID(); ?>_cancel" onclick="($('workflow_transition_fullpage')) ? $('workflow_transition_fullpage').fade({duration: 0.2}) : TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Cancel'); ?></a>
                 <?php echo __('%cancel or %submit', array('%cancel' => '', '%submit' => '')); ?>
                 <input type="submit" class="workflow_transition_submit_button" value="<?php echo $transition->getName(); ?>" id="transition_working_<?php echo $transition->getID(); ?>_submit">
             </div>
         </div>
     </form>
     <?php if (($issue instanceof \thebuggenie\core\entities\Issue && ($issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
-        <?php include_component('identifiableselector', array(    'html_id'             => 'popup_assigned_to_change_'.$transition->getID(),
+        <?php include_component('main/identifiableselector', array(    'html_id'             => 'popup_assigned_to_change_'.$transition->getID(),
                                                                 'header'             => __('Assign this issue'),
                                                                 'callback'             => "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
                                                                 'teamup_callback'     => "TBG.Issues.updateWorkflowAssigneeTeamup('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
