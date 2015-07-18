@@ -87,8 +87,8 @@
             <?php echo $article->getManualName(); ?>
         <?php else: ?>
             <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
-                <?php if ((mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName())) == 0) || ($article instanceof \thebuggenie\modules\publish\entities\Article && $article->isCategory() && mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName())) == 9)): ?>
-                    <?php $project_article_name = mb_substr($article_name, (($article instanceof \thebuggenie\modules\publish\entities\Article && $article->isCategory()) * 9) + mb_strlen(preg_replace("/[^A-Za-z0-9 :]/", '', \thebuggenie\core\framework\Context::getCurrentProject()->getName()))+1); ?>
+                <?php if (mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName())) == 0): ?>
+                    <?php $project_article_name = mb_substr($article_name, mb_strlen(preg_replace('/[^\p{L}\p{N}]/u', '', \thebuggenie\core\framework\Context::getCurrentProject()->getName()))); ?>
                     <?php if ($article->getID() && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
                 <?php endif; ?>
             <?php elseif (mb_substr($article_name, 0, 9) == 'Category:'): ?>
