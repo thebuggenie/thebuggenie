@@ -81,7 +81,7 @@
                 <?php endif; ?>
                 <br>
                 <?php if (count($user->getTeams())): ?>
-                    <b><?php echo __('Member of the following teams:</b> %list_of_teams', array('%list_of_teams' => '')); ?></b><br>
+                    <b><?php echo __('Member of the following teams:</b> %list_of_teams', array('%list_of_teams' => ''), true); ?></b><br>
                     <ul class="teamlist">
                         <?php foreach ($user->getTeams() as $team): ?>
                             <li><?php include_component('main/teamdropdown', array('team' => $team)); ?></li>

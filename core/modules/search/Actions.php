@@ -186,21 +186,16 @@
          */
         public function runFindIssues(framework\Request $request)
         {
+            if ($request['delete_saved_search']) {
+                return $this->runEditSavedSearch($request);
+            }
+
             $this->resultcount = 0;
             if ($request['quicksearch'] == true)
             {
                 if ($request->isAjaxCall())
                 {
                     return $this->redirect('quicksearch');
-                }
-                else
-                {
-                    $issues = $this->issues;
-                    $issue = array_shift($issues);
-                    if ($issue instanceof entities\Issue)
-                    {
-                        return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-                    }
                 }
             }
             if ($this->search_object->hasQuickfoundIssues()) {

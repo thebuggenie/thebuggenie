@@ -67,6 +67,23 @@
                     break;
                 }
             }
+
+            $transition_ids = array();
+            $same_transition_statuses = array();
+
+            foreach ($this->transitions as $status_id => $transition)
+            {
+                if (in_array($transition->getID(), $transition_ids))
+                {
+                    $same_transition_statuses[] = $status_id;
+                }
+                else
+                {
+                    $transition_ids[] = $transition->getID();
+                }
+            }
+
+            $this->same_transition_statuses = $same_transition_statuses;
         }
 
         public function componentColorpicker()

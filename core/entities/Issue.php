@@ -660,12 +660,7 @@
         {
             $project = framework\Context::getCurrentProject();
             $found_issue = null;
-            $issue_no = mb_strtolower(trim($issue_number));
-            if (mb_strpos($issue_no, ' ') !== false)
-            {
-                $issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
-            }
-            if (mb_substr($issue_no, 0, 1) == '#') $issue_no = mb_substr($issue_no, 1);
+            $issue_no = self::extractIssueNoFromNumber($issue_number);
             if (is_numeric($issue_no))
             {
                 try
@@ -691,6 +686,25 @@
             }
 
             return ($found_issue instanceof \thebuggenie\core\entities\Issue) ? $found_issue : null;
+        }
+
+        /**
+         * Extract issue no from issue integer or string with prefix '#'.
+         *
+         * @param string $issue_number An integer or issue number
+         *
+         * @return string
+         */
+        public static function extractIssueNoFromNumber($issue_number)
+        {
+            $issue_no = mb_strtolower(trim($issue_number));
+            if (mb_strpos($issue_no, ' ') !== false)
+            {
+                $issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
+            }
+            if (mb_substr($issue_no, 0, 1) == '#') $issue_no = mb_substr($issue_no, 1);
+
+            return $issue_no;
         }
 
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'asc'))
@@ -748,10 +762,10 @@
             if ($issue instanceof \thebuggenie\core\entities\Issue)
                 return array(array($issue), 1);
 
-            $filters = array('text' => array('value' => $text, 'operator' => '='));
+            $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $filters['project_id'] = array('value' => $project->getID(), 'operator' => '=');
+                $filters['project_id'] = SearchFilter::createFilter('project_id', array('v' => $project->getID(), 'o' => '='));
             }
             return self::findIssues($filters);
         }
@@ -1051,14 +1065,32 @@
         {
             $status_ids = array();
             $transitions = array();
+            $available_statuses = Status::getAll();
+            $rule_status_valid = false;
 
             foreach ($this->getAvailableWorkflowTransitions() as $transition)
             {
-                $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
-                $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+                if ($transition->getOutgoingStep()->hasLinkedStatus())
+                {
+                    $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
+                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+                }
+                elseif ($transition->hasPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID))
+                {
+                    $values = explode(',', $transition->getPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID)->getRuleValue());
+
+                    foreach ($values as $value)
+                    {
+                        if (! array_key_exists($value, $available_statuses)) continue;
+                        if (! $rule_status_valid) $rule_status_valid = true;
+
+                        $transitions[$value] = $transition;
+                        $status_ids[] = $value;
+                    }
+                }
             }
 
-            return array($status_ids, $transitions);
+            return array($status_ids, $transitions, $rule_status_valid);
         }
 
         /**
@@ -2221,12 +2253,14 @@
         {
             $issuetype_id = ($issuetype instanceof \thebuggenie\core\entities\Issuetype) ? $issuetype->getID() : $issuetype;
 
+            if (! count($this->getParentIssues())) return false;
+
             foreach ($this->getParentIssues() as $issue)
             {
-                if ($issue->getIssueType()->getID() == $issuetype_id) return true;
+                if ($issue->getIssueType()->getID() != $issuetype_id) return false;
             }
 
-            return false;
+            return true;
         }
 
         /**
@@ -2817,6 +2851,18 @@
             return $this->_scrumcolor;
         }
 
+        public function getAgileTextColor()
+        {
+            if (!\thebuggenie\core\framework\Context::isCLI())
+            {
+                \thebuggenie\core\framework\Context::loadLibrary('ui');
+            }
+
+            $rgb = hex2rgb($this->_scrumcolor);
+
+            return 0.299*$rgb['red'] + 0.587*$rgb['green'] + 0.114*$rgb['blue'] > 170 ? '#333' : '#FFF';
+        }
+
         /**
          * Set the agile board color for this issue
          *
@@ -2874,8 +2920,9 @@
                 {
                     $this->_removeParentIssue($related_issue, $relation_id);
                 }
-                $this->touch();
-                $related_issue->touch();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
                 tables\IssueRelations::getTable()->doDeleteById($relation_id);
             }
         }
@@ -2951,10 +2998,21 @@
          *
          * @return boolean
          */
-        public function addChildIssue(\thebuggenie\core\entities\Issue $related_issue)
+        public function addChildIssue(\thebuggenie\core\entities\Issue $related_issue, $epic = false)
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
+                if (! $epic && ! $this->getMilestone() instanceof Milestone && $related_issue->getMilestone() instanceof Milestone)
+                {
+                    $related_issue->removeMilestone();
+                    $related_issue->save();
+                }
+                else if ($this->getMilestone() instanceof Milestone)
+                {
+                    $related_issue->setMilestone($this->getMilestone()->getID());
+                    $related_issue->save();
+                }
+
                 $res = tables\IssueRelations::getTable()->addChildIssue($this->getID(), $related_issue->getID());
                 $this->_child_issues = null;
 
@@ -2962,7 +3020,9 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $this->calculateTime();
                 $this->save();
-                $related_issue->touch();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
 
                 return true;
             }
@@ -3698,9 +3758,9 @@
             return $this->_last_updated;
         }
 
-        public function touch()
+        public function touch($last_updated = null)
         {
-            tables\Issues::getTable()->touchIssue($this->getID());
+            tables\Issues::getTable()->touchIssue($this->getID(), $last_updated);
         }
 
         /**
@@ -5327,6 +5387,36 @@
             return true;
         }
 
+        public function saveSpentTime()
+        {
+            $spent_times = array('months', 'weeks', 'days', 'hours', 'points');
+            $spent_times_changed_items = array();
+            $changed_properties = $this->_getChangedProperties();
+
+            foreach ($spent_times as $spent_time_unit)
+            {
+                $property = '_spent_'.$spent_time_unit;
+
+                if (! $this->_isPropertyChanged($property)) continue;
+
+                $spent_times_changed_items[$property] = $changed_properties[$property];
+                unset($changed_properties[$property]);
+            }
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_revertPropertyChange($property);
+            }
+
+            $this->_changed_items = array();
+            $this->save();
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_addChangedProperty($property, $property_values['current_value']);
+            }
+        }
+
         public function checkTaskStates()
         {
             if ($this->isOpen())
@@ -5604,11 +5694,18 @@
                     case 'resolution':
                     case 'priority':
                     case 'severity':
-                    case 'milestone':
                     case 'category':
                     case 'reproducability':
                         $method = 'get'.ucfirst($field);
                         $value = $this->$method();
+                        break;
+                    case 'milestone':
+                        $method = 'get'.ucfirst($field);
+                        $value = $this->$method();
+                        if (is_numeric($value) && $value == 0) {
+                            $value = new Milestone();
+                            $value->setID(0);
+                        }
                         break;
                     case 'owner':
                         $value = $this->getOwner();

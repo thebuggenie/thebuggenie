@@ -635,19 +635,22 @@
                     if ($this['value'] != '')
                     {
                         $searchterm = (mb_strpos($this['value'], '%') !== false) ? $this['value'] : "%{$this['value']}%";
+                        $issue_no = Issue::extractIssueNoFromNumber($this['value']);
                         if ($this['operator'] == '=')
                         {
                             if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_LIKE);
                             $ctn->addOr(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
                             $ctn->addOr(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-//                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+                            if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
+                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
                         }
                         else
                         {
                             if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
                             $ctn->addWhere(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
                             $ctn->addWhere(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-//                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+                            if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
+                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
                         }
                         return $ctn;
                     }

@@ -170,12 +170,12 @@
 <?php elseif ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <div class="rounded_box report_issue_desc <?php if (!$tbg_request->isAjaxCall()): ?>green<?php endif; ?> borderless" style="margin-bottom: 10px;" id="report_issue_reported_issue_details">
         <div style="font-size: 1.1em;">
-            <strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?>:</strong>
+            <strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?></strong>
             <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle()); ?><br>
         </div>
         <span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
     </div>
-    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list'), $('report_issue_reported_issue_details')].each(function (el) { Element.toggle(el, 'block'); });"><?php echo __('Report another issue'); ?></a>
+    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list'), $('report_issue_reported_issue_details')].each(function (el) { Element.toggle(el, 'block'); });$('reportissue_container').removeClassName('medium');$('reportissue_container').addClassName('huge');"><?php echo __('Report another issue'); ?></a>
 <?php endif; ?>
 <?php if ($tbg_request->isAjaxCall()): ?>
     <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" onsubmit="TBG.Main.submitIssue('<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey(), 'return_format' => 'planning')); ?>');return false;" id="report_issue_form" style="<?php if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue) echo 'display: none;'; ?>">

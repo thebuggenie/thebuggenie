@@ -1,5 +1,5 @@
 <?php if (count($actions) > 0): ?>
-    <table cellpadding=0 cellspacing=0 style="margin: 5px;">
+    <table cellpadding=0 cellspacing=0 class="recent_activities">
         <?php $prev_date = null; ?>
         <?php $prev_timestamp = null; ?>
         <?php $prev_issue = null; ?>

@@ -120,6 +120,7 @@
                 $this->board->setType($request['type']);
                 $this->board->setProject($this->selected_project);
                 $this->board->setIsPrivate($request['is_private']);
+                $this->board->setUser(framework\Context::getUser());
                 $this->board->setEpicIssuetype($request['epic_issuetype_id']);
                 $this->board->setTaskIssuetype($request['task_issuetype_id']);
                 list($type, $id) = explode('_', $request['backlog_search']);
@@ -171,7 +172,9 @@
                 $column->setBoard($board);
             }
 
-            return $this->renderJSON(array('content' => $this->getComponentHTML('agile/editboardcolumn', array('column' => $column))));
+            $column_id = $column->getColumnOrRandomID();
+
+            return $this->renderJSON(array('component' => $this->getComponentHTML('agile/editboardcolumn', compact('column', 'column_id')), 'status_element_id' => 'boardcolumn_'. $column_id .'_status'));
         }
 
         /**
@@ -209,11 +212,23 @@
                     if ($request->hasParameter('transition_id'))
                     {
                         $transitions = array(\thebuggenie\core\entities\tables\WorkflowTransitions::getTable()->selectById((int) $request['transition_id']));
+
+                        if ($transitions[0]->hasTemplate())
+                        {
+                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[0]->getID()));
+                        }
+
+                        $transitions[0]->transitionIssueToOutgoingStepWithoutRequest($issue);
                     }
                     else
                     {
-                        list ($status_ids, $transitions) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
+                        list ($status_ids, $transitions, $rule_status_valid) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
                         $available_statuses = array_intersect($status_ids, $column->getStatusIds());
+
+                        if ($rule_status_valid && count($available_statuses) == 1 && $transitions[reset($available_statuses)]->hasTemplate())
+                        {
+                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[reset($available_statuses)]->getID()));
+                        }
 
                         if (empty($available_statuses))
                         {
@@ -223,15 +238,16 @@
 
                         if (count($available_statuses) > 1)
                             return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardtransitionselector', array('issue' => $issue, 'transitions' => $transitions, 'statuses' => $available_statuses, 'new_column' => $column, 'board' => $column->getBoard(), 'swimlane_identifier' => $request['swimlane_identifier']))));
+
+                        $transitions[reset($available_statuses)]->transitionIssueToOutgoingStepWithoutRequest($issue);
                     }
 
-                    current($transitions)->transitionIssueToOutgoingStepWithoutRequest($issue);
                     return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getComponentHTML('agile/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));
                 }
                 else
                 {
                     $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-                    return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardcontent', array('board' => $this->board, 'milestone' => $milestone))));
+                    return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardcontent', array('board' => $this->board, 'milestone' => $milestone)), 'swimlanes' => $this->board->usesSwimlanes() ? 1 : 0));
                 }
             }
             catch (\Exception $e)
@@ -336,16 +352,87 @@
 
             $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
-            if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))
+            $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON());
+
+            if ($request['mode'] == 'whiteboard')
             {
-                return $this->renderJSON(array('child_issue' => 1));
+                $text['swimlane_type'] = $board->getSwimlaneType();
+
+                if ($board->getSwimlaneType() == $request['swimlane_type'])
+                {
+                    if ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone && $issue->getMilestone()->getID() == $request['milestone_id'])
+                    {
+                        foreach ($board->getMilestoneSwimlanes($issue->getMilestone()) as $swimlane)
+                        {
+                            if ($swimlane->getBoard()->usesSwimlanes()
+                                && $swimlane->hasIdentifiables()
+                                && $swimlane->getBoard()->getSwimlaneType() == entities\AgileBoard::SWIMLANES_ISSUES
+                                && $swimlane->getIdentifierIssue()->getID() == $issue->getID())
+                            {
+                                $text['swimlane_identifier'] = $swimlane->getIdentifier();
+                                $text['column_id'] = $request['column_id'];
+                                $component = $this->getComponentHTML('agile/boardswimlane', compact('swimlane'));
+                                break;
+                            }
+
+                            $issue_in_swimlane = false;
+
+                            foreach ($swimlane->getIssues() as $swimlane_issue)
+                            {
+                                if ($swimlane_issue->getID() == $issue->getID())
+                                {
+                                    $issue_in_swimlane = true;
+                                    break;
+                                }
+                            }
+
+                            if (! $issue_in_swimlane) continue;
+
+                            foreach ($swimlane->getBoard()->getColumns() as $column)
+                            {
+                                if (! $column->hasIssue($issue)) continue;
+
+                                if ($issue->isChildIssue())
+                                {
+                                    foreach ($issue->getParentIssues() as $parent)
+                                    {
+                                        if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
+
+                                        $text['child_issue'] = 1;
+                                    }
+                                }
+
+                                $text['swimlane_identifier'] = $swimlane->getIdentifier();
+                                $text['column_id'] = $column->getID();
+                                $component = $this->getComponentHTML('agile/whiteboardissue', compact('issue', 'column', 'swimlane'));
+                                break 2;
+                            }
+                        }
+                    }
+                }
             }
-            elseif ($issue->getIssueType()->getID() == $board->getEpicIssuetypeID())
+            else
             {
-                return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+                if ($issue->isChildIssue())
+                {
+                    foreach ($issue->getParentIssues() as $parent)
+                    {
+                        if ($parent->getIssueType()->getID() == $board->getEpicIssuetypeID()) continue;
+
+                        return $this->renderJSON(array('child_issue' => 1, 'issue_details' => array('milestone' => array('id' => -1))));
+                    }
+                }
+                elseif ($issue->getIssueType()->getID() == $board->getEpicIssuetypeID())
+                {
+                    return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+                }
+
+                $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
             }
 
-            return $this->renderJSON(array('child_issue' => 0, 'component' => $this->getComponentHTML('agile/milestoneissue', array('issue' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
+            $text['component'] = isset($component) ? $component : '';
+
+            return $this->renderJSON($text);
         }
 
         /**
@@ -431,8 +518,8 @@
                 {
                     case $request->isPost():
                         $issue_table = \thebuggenie\core\entities\tables\Issues::getTable();
-                        $orders = array_keys($request["issue_ids"]);
-                        foreach ($request["issue_ids"] as $issue_id)
+                        $orders = array_keys($request["issue_ids"] ?: array());
+                        foreach ($request["issue_ids"] ?: array() as $issue_id)
                         {
                             $issue_table->setOrderByIssueId(array_pop($orders), $issue_id);
                         }
@@ -565,9 +652,9 @@
                 $epic = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['epic_id']);
                 $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
 
-                $epic->addChildIssue($issue);
+                $epic->addChildIssue($issue, true);
 
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime())));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime()), 'text_color' => $epic->getAgileTextColor()));
             }
             catch (\Exception $e)
             {
@@ -649,11 +736,16 @@
                 $ids = \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID());
                 $epic_ids = ($board->getEpicIssuetypeID()) ? \thebuggenie\core\entities\tables\Issues::getTable()->getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_refreshed - 2, $this->selected_project->getID(), $board->getEpicIssuetypeID()) : array();
             }
+
             $backlog_ids = array();
             if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {
                 foreach ($search_object->getIssues() as $backlog_issue)
                 {
+                    foreach ($ids as $id_issue) {
+                        if ($id_issue['issue_id'] == $backlog_issue->getID()) continue 2;
+                    }
+
                     $backlog_ids[] = array('issue_id' => $backlog_issue->getID(), 'last_updated' => $backlog_issue->getLastUpdatedTime());
                 }
             }
