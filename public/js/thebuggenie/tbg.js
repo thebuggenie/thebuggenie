@@ -1271,6 +1271,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         };
 
+        TBG.Main.deleteArticle = function (url) {
+            TBG.Main.Helpers.ajax(url, {
+                method: 'post',
+                loading: {
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'dialog_backdrop']
+                },
+                success: {
+                    callback: function () {
+                        location.reload();
+                    }
+                }
+            });
+        };
+
         TBG.Main.reloadImage = function (id) {
             var src = $(id).src;
             var date = new Date();

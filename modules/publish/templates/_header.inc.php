@@ -57,7 +57,7 @@
                             <?php endif; ?>
                             <li class="separator"></li>
                             <?php if ($article->canDelete()): ?>
-                                <li><?php echo javascript_link_tag(__('Delete this article'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function() {TBG.Main.Helpers.ajax('".make_url('publish_article_delete', array('article_name' => $article->getName()))."', {method: 'post'}); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>
+                                <li><?php echo javascript_link_tag(__('Delete this article'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function () { TBG.Main.deleteArticle('".make_url('publish_article_delete', array('article_name' => $article->getName()))."') }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>
                             <?php endif; ?>
                         <?php endif; ?>
                     </ul>
