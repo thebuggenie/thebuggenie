@@ -217,13 +217,15 @@
                         {
                             return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[0]->getID()));
                         }
+
+                        $transitions[0]->transitionIssueToOutgoingStepWithoutRequest($issue);
                     }
                     else
                     {
                         list ($status_ids, $transitions, $rule_status_valid) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
                         $available_statuses = array_intersect($status_ids, $column->getStatusIds());
 
-                        if ($rule_status_valid && count($available_statuses) == 1)
+                        if ($rule_status_valid && count($available_statuses) == 1 && $transitions[reset($available_statuses)]->hasTemplate())
                         {
                             return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[reset($available_statuses)]->getID()));
                         }
@@ -236,9 +238,10 @@
 
                         if (count($available_statuses) > 1)
                             return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardtransitionselector', array('issue' => $issue, 'transitions' => $transitions, 'statuses' => $available_statuses, 'new_column' => $column, 'board' => $column->getBoard(), 'swimlane_identifier' => $request['swimlane_identifier']))));
+
+                        $transitions[reset($available_statuses)]->transitionIssueToOutgoingStepWithoutRequest($issue);
                     }
 
-                    current($transitions)->transitionIssueToOutgoingStepWithoutRequest($issue);
                     return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getComponentHTML('agile/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));
                 }
                 else
