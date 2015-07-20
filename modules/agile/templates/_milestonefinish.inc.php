@@ -60,6 +60,7 @@
                         <?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
                             <option value="<?php echo $cc; ?>" <?php if ($milestone->getReachedYear() == $cc || (!$milestone->hasReachedDate() && $cc == date('Y'))) echo " selected"; ?>><?php echo $cc; ?></option>
                         <?php endfor; ?>
+                        </select>
                     </td>
                 </tr>
             </table>
@@ -114,6 +115,6 @@
         </div>
     </div>
     <?php if ($milestone->countOpenIssues()): ?>
-        <?php include_component('agile/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone(), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
+        <?php include_component('agile/milestone', array('milestone' => new \thebuggenie\core\entities\Milestone($milestone->getID()), 'board' => $board, 'includeform' => false, 'starthidden' => true, 'savebuttonlabel' => $savelabel)); ?>
     <?php endif; ?>
 </form>
