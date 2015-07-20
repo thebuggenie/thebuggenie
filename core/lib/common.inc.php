@@ -78,6 +78,13 @@
         return $randomNumber;
     }
 
+    function day_delta($tstamp, $tzoffset)
+    {
+        $mdy = explode(':', date('m:d:Y', time() + $tzoffset));
+        $midnight = mktime(0, 0, 0, $mdy[0], $mdy[1], $mdy[2]);
+        return floor(($tstamp - $midnight) / 24 / 60 / 60);
+    }
+
     /**
      * Returns a formatted string of the given timestamp
      *
@@ -88,10 +95,12 @@
      */
     function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false, $skiptimestamp = false)
     {
+        $tzoffset = 0;
         // offset the timestamp properly
         if (!$skiptimestamp)
         {
-            $tstamp += tbg_get_timezone_offset($skipusertimestamp);
+            $tzoffset = tbg_get_timezone_offset($skipusertimestamp);
+            $tstamp += $tzoffset;
         }
 
         switch ($format)
@@ -131,15 +140,16 @@
                 break;
             case 12:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ', ';
                 }
@@ -151,15 +161,16 @@
                 break;
             case 13:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     //$tstring .= __('Today') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ', ';
                 }
@@ -171,15 +182,16 @@
                 break;
             case 14:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow');
                 }
@@ -205,15 +217,16 @@
                 break;
             case 20:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
@@ -277,15 +290,16 @@
                 break;
             case 23:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow');
                 }

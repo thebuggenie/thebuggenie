@@ -573,6 +573,11 @@
          */
         public function getMilestoneSwimlanes($milestone)
         {
+            if (!($milestone instanceof \thebuggenie\core\entities\Milestone))
+            {
+                return array();
+            }
+
             $this->_populateMilestoneSwimlanes($milestone);
 
             return $this->_swimlanes[$milestone->getID()];
