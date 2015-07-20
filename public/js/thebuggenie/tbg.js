@@ -1190,7 +1190,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 success: {
                     reset: 'attach_link_' + target_type + '_' + target_id + '_form',
                     hide: ['attach_link_' + target_type + '_' + target_id, target_type + '_' + target_id + '_no_links'],
-                    update: {element: target_type + '_' + target_id + '_links', insertion: true}
+                    update: {element: target_type + '_' + target_id + '_links', insertion: true},
+                    callback: function () {
+                        if ($(target_type + '_' + target_id + '_container').hasClassName('menu_editing')) {
+                            jQuery('#toggle_' + target_type + '_' + target_id +'_edit_mode').trigger('click');
+                            jQuery('#toggle_' + target_type + '_' + target_id +'_edit_mode').trigger('click');
+                        }
+                    }
                 },
                 complete: {
                     callback: function () {
@@ -5037,6 +5043,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('spent_time_' + json.issue_id + '_name').hide();
                         } else {
                             $('no_spent_time_' + json.issue_id).hide();
+                            $('spent_time_' + json.issue_id + '_name').show();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
                         }
                         TBG.Issues.Field.updateEstimatedPercentbar(json);
@@ -5059,6 +5066,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('spent_time_' + json.issue_id + '_name').hide();
                         } else {
                             $('no_spent_time_' + json.issue_id).hide();
+                            $('spent_time_' + json.issue_id + '_name').show();
                             $('spent_time_' + json.issue_id + '_value').update(json.spenttime);
                         }
                         TBG.Issues.Field.updateEstimatedPercentbar(json);
@@ -5221,6 +5229,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             }
                         } else if (json.subscriber != '') {
                             $('subscribers_list').insert(json.subscriber);
+                        }
+                        if (json.count != undefined && $('subscribers_field_count')) {
+                            $('subscribers_field_count').update(json.count);
                         }
                     }
                 }

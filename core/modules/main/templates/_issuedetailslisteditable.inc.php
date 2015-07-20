@@ -329,7 +329,7 @@
                     <?php echo __('Subscribers'); ?>
                 </dt>
                 <dd class="hoverable">
-                    <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo __('%number_of subscriber(s)', array('%number_of' => count($issue->getSubscribers()))); ?></a>
+                    <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo __('%number_of subscriber(s)', array('%number_of' => '<span id="subscribers_field_count">'.count($issue->getSubscribers()).'</span>')); ?></a>
                 </dd>
             </dl>
             <div class="tooltip from-above" style="width: 300px; font-size: 0.9em; margin-top: 10px; margin-left: 17px;"><?php echo __('Click here to show the list of subscribers'); ?></div>

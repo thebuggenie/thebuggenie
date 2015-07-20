@@ -1958,7 +1958,7 @@
                     }
                     $timesum = array_sum($issue->getSpentTime());
 
-                    return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime())));
+                    return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                 }
                 catch (\Exception $e)
                 {
@@ -2034,7 +2034,7 @@
 
             $timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
         }
 
         /**
@@ -3375,7 +3375,11 @@
                 switch ($comment_applies_type)
                 {
                     case entities\Comment::TYPE_ISSUE:
-                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => entities\Issue::getB2DBTable()->selectById($request['comment_applies_id'])));
+                        $issue = entities\Issue::getB2DBTable()->selectById($request['comment_applies_id']);
+
+                        framework\Context::setCurrentProject($issue->getProject());
+
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue));
                         break;
                     case entities\Comment::TYPE_ARTICLE:
                         $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));

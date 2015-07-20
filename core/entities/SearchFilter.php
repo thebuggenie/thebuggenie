@@ -644,6 +644,8 @@
                             $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
                             if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
                             $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+                            if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
+                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
                         }
                         else
                         {
@@ -653,6 +655,8 @@
                             $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
                             if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
                             $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+                            if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
+                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
                         }
                         return $ctn;
                     }
