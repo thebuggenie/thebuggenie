@@ -196,7 +196,7 @@
                 else
                 {
                     $issues = $this->issues;
-                    $issue = array_shift($issues);
+                    $issue = is_array($issues) ? array_shift($issues) : null;
                     if ($issue instanceof entities\Issue)
                     {
                         return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
