@@ -14,10 +14,17 @@
                 </tr>
             </table>
         </div>
-        <?php echo javascript_link_tag(__('Create new sprint'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."', TBG.Project.Planning.updateNewMilestoneIssues);")); ?>
+        <?php echo javascript_link_tag(__('Create new sprint'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'agilemilestone', 'project_id' => $board->getProject()->getId(), 'board_id' => $board->getID()))."', TBG.Project.Planning.updateNewMilestoneIssues);")); ?>
     </div>
 </li>
 <?php foreach ($board->getBacklogSearchObject()->getIssues() as $issue): ?>
-    <?php if ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone || ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID()))) continue; ?>
-    <?php include_component('agile/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
+    <?php if ($issue->getMilestone() instanceof thebuggenie\core\entities\Milestone) continue; ?>
+    <?php if ($issue->isChildIssue()): ?>
+        <?php foreach ($issue->getParentIssues() as $parent): ?>
+            <?php if ($parent->getIssueType()->getID() != $board->getEpicIssuetypeID()) continue 2; ?>
+        <?php endforeach; ?>
+        <?php include_component('agile/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
+    <?php else: ?>
+        <?php include_component('agile/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
+    <?php endif; ?>
 <?php endforeach; ?>

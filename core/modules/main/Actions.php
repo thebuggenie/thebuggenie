@@ -1838,6 +1838,7 @@
                             $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
                             $options['selected_build'] = $this->_getBuildFromRequest($request);
                             $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
+                            $options['medium_backdrop'] = 1;
                             return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
                         }
                         if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
@@ -1938,7 +1939,7 @@
             }
 
 
-            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
+            return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getComponentHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)), 'count' => count($issue->getSubscribers()))));
         }
 
         public function runIssueDeleteTimeSpent(framework\Request $request)
@@ -1953,11 +1954,11 @@
                     if ($spenttime instanceof entities\IssueSpentTime)
                     {
                         $spenttime->delete();
-                        $spenttime->getIssue()->save();
+                        $spenttime->getIssue()->saveSpentTime();
                     }
                     $timesum = array_sum($issue->getSpentTime());
 
-                    return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime())));
+                    return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                 }
                 catch (\Exception $e)
                 {
@@ -2029,11 +2030,11 @@
             $spenttime->setComment($request['timespent_comment']);
             $spenttime->save();
 
-            $spenttime->getIssue()->save();
+            $spenttime->getIssue()->saveSpentTime();
 
             $timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+            return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
         }
 
         /**
@@ -2122,17 +2123,17 @@
                     }
                     else
                     {
-                        $issue->setEstimatedMonths($request['months']);
-                        $issue->setEstimatedWeeks($request['weeks']);
-                        $issue->setEstimatedDays($request['days']);
-                        $issue->setEstimatedHours($request['hours']);
-                        $issue->setEstimatedPoints($request['points']);
+                        if ($request->hasParameter('months')) $issue->setEstimatedMonths($request['months']);
+                        if ($request->hasParameter('weeks')) $issue->setEstimatedWeeks($request['weeks']);
+                        if ($request->hasParameter('days')) $issue->setEstimatedDays($request['days']);
+                        if ($request->hasParameter('hours')) $issue->setEstimatedHours($request['hours']);
+                        if ($request->hasParameter('points')) $issue->setEstimatedPoints($request['points']);
                     }
                     if ($request['do_save'])
                     {
                         $issue->save();
                     }
-                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+                    return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                 case 'posted_by':
                 case 'owned_by':
                 case 'assigned_to':
@@ -2285,9 +2286,6 @@
                                 }
                                 else
                                 {
-                                    if (!$issue->$is_changed_function_name())
-                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
-
                                     if (isset($parameter))
                                     {
                                         $name = $parameter->getName();
@@ -2298,11 +2296,16 @@
                                     }
 
                                     $field = array('id' => $parameter_id, 'name' => $name);
+
                                     if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                     {
                                         framework\Context::loadLibrary('ui');
                                         $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
                                     }
+
+                                    if (!$issue->$is_changed_function_name())
+                                        return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false, 'field' => $field));
+
                                     if ($parameter_id == 0)
                                     {
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0)));
@@ -2570,7 +2573,7 @@
                     break;
                 case 'estimated_time':
                     $issue->revertEstimatedTime();
-                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+                    return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                     break;
                 case 'spent_time':
                     $issue->revertSpentTime();
@@ -2942,17 +2945,20 @@
                     break;
                 case 'article':
                     $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
-                    $base_id = 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files';
                     $container_id = 'article_' . $target->getID() . '_files';
+                    $base_id = $container_id;
                     $target_identifier = 'article_name';
                     $target_id = $request['article_name'];
                     break;
             }
             $saved_file_ids = $request['files'];
-            $files = array();
+            $files = $image_files = array();
             foreach ($request['file_description'] ?: array() as $file_id => $description)
             {
                 $file = entities\File::getB2DBTable()->selectById($file_id);
+
+                if (! $file instanceof entities\File) continue;
+
                 $file->setDescription($description);
                 $file->save();
                 if (in_array($file_id, $saved_file_ids))
@@ -2963,11 +2969,16 @@
                 {
                     $target->detachFile($file);
                 }
-                $files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                if ($file->isImage()) {
+                    $image_files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                }
+                else {
+                    $files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
+                }
             }
             $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-            return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => $files, 'attachmentcount' => $attachmentcount));
+            return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount));
         }
 
         public function runUploadFile(framework\Request $request)
@@ -3001,18 +3012,14 @@
                 {
                     framework\Logging::log('Upload complete and ok, storing upload status and returning filename ' . $new_filename);
                     $content_type = entities\File::getMimeType($filename);
-                    $file_object = new entities\File();
-                    $file_object->setRealFilename($new_filename);
-                    $file_object->setOriginalFilename(basename($file['name']));
-                    $file_object->setContentType($content_type);
-                    $file_object->setDescription('');
-                    $file_object->setUploadedBy(framework\Context::getUser());
                     if (framework\Settings::getUploadStorage() == 'database')
                     {
-                        $file_object->setContent(file_get_contents($filename));
+                        $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
                     }
-                    $file_object->save();
-                    return $this->renderJSON(array('file_id' => $file_object->getID()));
+                    else {
+                        $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type);
+                    }
+                    return $this->renderJSON(array('file_id' => $file_object_id));
                 }
             }
 
@@ -3281,9 +3288,13 @@
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('The comment must have some content')));
                     }
 
+                    if ($comment->getTarget() instanceof entities\Issue) {
+                        framework\Context::setCurrentProject($comment->getTarget()->getProject());
+                    }
+
                     $comment->setContent($request->getRawParameter('comment_body'));
                     $comment->setIsPublic($request['comment_visibility']);
-                    $comment->setSyntax((int) $request['comment_body_syntax']);
+                    $comment->setSyntax($request['comment_body_syntax']);
                     $comment->setUpdatedBy($this->getUser()->getID());
                     $comment->save();
 
@@ -3364,7 +3375,11 @@
                 switch ($comment_applies_type)
                 {
                     case entities\Comment::TYPE_ISSUE:
-                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => entities\Issue::getB2DBTable()->selectById($request['comment_applies_id'])));
+                        $issue = entities\Issue::getB2DBTable()->selectById($request['comment_applies_id']);
+
+                        framework\Context::setCurrentProject($issue->getProject());
+
+                        $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue));
                         break;
                     case entities\Comment::TYPE_ARTICLE:
                         $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
@@ -3860,6 +3875,40 @@
             }
         }
 
+        public function runRemoveDuplicatedIssue(framework\Request $request)
+        {
+            try
+            {
+                try
+                {
+                    $issue_id = (int) $request['issue_id'];
+                    $duplicated_issue_id = (int) $request['duplicated_issue_id'];
+                    $issue = null;
+                    $duplicated_issue = null;
+                    if ($issue_id && $duplicated_issue_id)
+                    {
+                        $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                        $duplicated_issue = entities\Issue::getB2DBTable()->selectById($duplicated_issue_id);
+                    }
+                    if (!$issue instanceof entities\Issue || !$duplicated_issue instanceof entities\Issue || !$duplicated_issue->isDuplicate() || $duplicated_issue->getDuplicateOf()->getID() != $issue_id)
+                    {
+                        throw new \Exception('');
+                    }
+                    $duplicated_issue->clearDuplicate();
+                }
+                catch (\Exception $e)
+                {
+                    throw new \Exception($this->getI18n()->__('Please provide a valid issue number and a valid duplicated issue number'));
+                }
+                return $this->renderJSON(array('message' => $this->getI18n()->__('The issues are no longer duplications')));
+            }
+            catch (\Exception $e)
+            {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => $e->getMessage()));
+            }
+        }
+
         public function runRelateIssues(framework\Request $request)
         {
             $status = 200;
@@ -3933,7 +3982,7 @@
 
             if ($cc > 0)
             {
-                return $this->renderJSON(array('content' => $content, 'message' => framework\Context::getI18n()->__('The related issue was added')));
+                return $this->renderJSON(array('content' => $content, 'message' => framework\Context::getI18n()->__('The related issue was added'), 'count' => count($issue->getChildIssues())));
             }
             else
             {
@@ -4145,7 +4194,7 @@
 
                         $issue->removeAffectedEdition($edition['edition']);
 
-                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is no longer affected by this issue', array('%edition' => $edition['edition']->getName()));
+                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is no longer affected by this issue', array('%edition' => $edition['edition']->getName()), true);
 
                         break;
                     case 'component':
@@ -4160,7 +4209,7 @@
 
                         $issue->removeAffectedComponent($component['component']);
 
-                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is no longer affected by this issue', array('%component' => $component['component']->getName()));
+                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is no longer affected by this issue', array('%component' => $component['component']->getName()), true);
 
                         break;
                     case 'build':
@@ -4176,7 +4225,7 @@
                             $build = $builds[$request['affected_id']];
 
                             $issue->removeAffectedBuild($build['build']);
-                            $message = framework\Context::getI18n()->__('Release <b>%build</b> is no longer affected by this issue', array('%build' => $build['build']->getName()));
+                            $message = framework\Context::getI18n()->__('Release <b>%build</b> is no longer affected by this issue', array('%build' => $build['build']->getName()), true);
                         }
                         else
                         {
@@ -4319,7 +4368,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition->getName()));
+                        $message = framework\Context::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition->getName()), true);
 
                         break;
                     case 'component':
@@ -4352,7 +4401,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component->getName()));
+                        $message = framework\Context::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component->getName()), true);
 
                         break;
                     case 'build':
@@ -4385,7 +4434,7 @@
                             $content = get_component_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
                         }
 
-                        $message = framework\Context::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build->getName()));
+                        $message = framework\Context::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build->getName()), true);
 
                         break;
                     default:
@@ -4735,6 +4784,7 @@
         {
             $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
             $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
+            $action_option = str_replace($this->selected_project->getKey().'/milestone/'.$request['milestone_id'].'/', '', $request['url']);
 
             try
             {
@@ -4765,6 +4815,13 @@
                         }
                         $message = framework\Context::getI18n()->__('Milestone saved');
                         return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
+                    case $action_option == 'details':
+                        \thebuggenie\core\framework\Context::performAction(
+                            new \thebuggenie\core\modules\project\Actions,
+                            'project',
+                            'MilestoneDetails'
+                        );
+                        return true;
                     default:
                         return $this->forward($this->getRouting()->generate('project_roadmap', array('project_key' => $this->selected_project->getKey())));
                 }

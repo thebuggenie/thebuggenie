@@ -37,17 +37,18 @@
         {
             $this->no_markup = true;
             $this->no_entities = true;
-            $text = parent::transform($text);
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+            $text = parent::transform($text);
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
+            $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 
             return $text;
         }
 
         protected function _parse_issuelink($matches)
         {
-            return \thebuggenie\core\helpers\TextParser::parseIssuelink($matches);
+            return \thebuggenie\core\helpers\TextParser::parseIssuelink($matches, true);
         }
 
         protected function doHardBreaks($text)
@@ -60,7 +61,7 @@
             $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matches[1]);
             if ($user instanceof \thebuggenie\core\entities\User)
             {
-                $output = framework\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
+                $output = framework\Action::returnComponentHTML('main/userdropdown_inline', array('user' => $matches[1], 'displayname' => $matches[0]));
                 $this->mentions[$user->getID()] = $user;
             }
             else
@@ -86,6 +87,18 @@
             $user_id = ($user instanceof \thebuggenie\core\entities\User) ? $user->getID() : $user;
             
             return array_key_exists($user_id, $this->mentions);
+        }
+
+        public static function getStrikethroughRegex()
+        {
+            return array('/~~(.+?)~~/');
+        }
+
+        protected function _parse_strikethrough($matches)
+        {
+            if (! isset($matches[1])) return $matches[0];
+
+            return '<strike>'.$matches[1].'</strike>';
         }
 
     }

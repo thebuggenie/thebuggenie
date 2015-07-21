@@ -1,5 +1,5 @@
 <li id="viewissue_links_<?php echo $link_id; ?>" class="attached_item">
-    <a href="<?php echo $link['url']; ?>" class="downloadlink" title="<?php echo $link['url']; ?>">
+    <a href="<?php echo $link['url']; ?>" class="downloadlink" title="<?php echo $link['url']; ?>" target="_blank">
         <?php echo image_tag('icon_link.png'); ?>
         <?php echo ($link['description'] != '') ? $link['description'] : $link['url']; ?>
     </a>

@@ -1,5 +1,5 @@
-define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
-    function (tools, TBG, domReady, jQuery) {
+define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'],
+    function (tools, TBG, domReady, jQuery, mention) {
 
         domReady(function () {
             TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
@@ -32,6 +32,13 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
                 jQuery("#disable-tutorial-button").on("click", TBG.Tutorial.disable);
 
                 jQuery("body").on("click", function (e) {
+                    if (e.target.up('#topmenu-container') == undefined && jQuery('#topmenu-container').hasClass('active')) {
+                        jQuery('#topmenu-container').removeClass('active');
+                    }
+                    if (e.target.up('#user_notifications') == undefined && jQuery('#user_notifications').hasClass('active') && e.target.id != 'user_notifications_count') {
+                        jQuery('#user_notifications').removeClass('active');
+                        jQuery('#user_notifications_container').removeClass('active');
+                    }
                     if (['INPUT'].indexOf(e.target.nodeName) != -1)
                         return;
                     else if (e.target.up('.popup_box') != undefined)
@@ -43,6 +50,7 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery'],
                 });
                 $$("textarea").each(function (ta) {
                     ta.on('focus', function (e) {
+                        TBG.Main.initializeMentionable(e.target);
                         var ec = this.up('.editor_container');
                         if (ec != undefined)
                             ec.addClassName('focussed');

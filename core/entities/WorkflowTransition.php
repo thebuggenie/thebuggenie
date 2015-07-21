@@ -489,10 +489,13 @@
         {
             $this->getOutgoingStep()->applyToIssue($issue);
             if (!empty($this->_validation_errors)) return false;
+
+            // Pass new Request object so that functions like getParameter can be called.
+            $request = new \thebuggenie\core\framework\Request;
             
             foreach ($this->getActions() as $action)
             {
-                $action->perform($issue);
+                $action->perform($issue, $request);
             }
             
             $issue->save();

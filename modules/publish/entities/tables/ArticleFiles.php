@@ -94,8 +94,9 @@
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::ARTICLE_ID, $article_id);
+            $crit->addWhere(self::FILE_ID, $file_id);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            if ($res = $this->doSelectById($file_id, $crit))
+            if ($res = $this->doSelectOne($crit))
             {
                 $this->doDelete($crit);
             }

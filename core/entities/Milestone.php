@@ -221,7 +221,6 @@
                     foreach ($issue->getParentIssues() as $parent)
                     {
                         if ($parent->getIssuetype()->getID() != $epic_issuetype_id) unset($issues[$id]);
-                        break 2;
                     }
                 }
                 elseif ($issue->getIssuetype()->getID() == $epic_issuetype_id)

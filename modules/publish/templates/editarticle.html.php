@@ -17,16 +17,16 @@
                     <?php echo $error; ?>
                 </div>
             <?php endif; ?>
+            <?php if (isset($preview) && $preview): ?>
+                <div class="rounded_box yellow borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
+                    <?php echo __('This is a preview of the article'); ?><br>
+                    <b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article" onclick="$('article_content').focus();"><?php echo __('Continue editing'); ?></a>]
+                </div>
+                <?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'view')); ?>
+            <?php endif; ?>
             <a name="edit_article"></a>
-            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url($article_route, $article_route_params); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');var isvisible = $('change_reason_container').visible() || $('article_preview').value == 1;$('change_reason_container').show();$('change_reason').focus();return isvisible;">
+            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url($article_route, $article_route_params); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');var isvisible = $('change_reason_container').visible() || $('article_preview').value == 1;return isvisible;">
                 <?php include_component('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
-                <?php if (isset($preview) && $preview): ?>
-                    <div class="rounded_box yellow borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
-                        <?php echo __('This is a preview of the article'); ?><br>
-                        <b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article" onclick="$('article_content').focus();"><?php echo __('Continue editing'); ?></a>]
-                    </div>
-                    <?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
-                <?php endif; ?>
                 <input type="hidden" name="preview" value="0" id="article_preview">
                 <input type="hidden" name="article_id" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? $article->getID() : 0; ?>">
                 <input type="hidden" name="last_modified" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? $article->getPostedDate() : 0; ?>">
@@ -96,7 +96,7 @@
                         <?php echo link_tag((($article instanceof \thebuggenie\modules\publish\entities\Article) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel')); ?>
                     <?php endif; ?>
                     <input class="button button-silver" type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Preview changes') : __('Preview article'); ?>">
-                    <input class="button button-green" type="submit" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Save changes') : __('Create article'); ?>">
+                    <input class="button button-green" type="button" value="<?php echo ($article instanceof \thebuggenie\modules\publish\entities\Article) ? __('Save changes') : __('Create article'); ?>" onclick="$('change_reason_container').show();$('change_reason').focus();">
                 </div>
             </form>
             <form id="parent_selector_container" class="fullpage_backdrop" style="display: none;" onsubmit="TBG.Main.loadParentArticles(this);return false;" action="<?php echo make_url('publish_article_parents', array('article_name' => $article->getName())); ?>">

@@ -17,7 +17,7 @@
                     <?php echo link_tag($project_url, __('Project wiki frontpage')); ?>
                     <?php $quicksearch_title = __('Find project article (press enter to search)'); ?>
                     <div style="font-weight: normal; margin: 0 0 15px 5px;">
-                        <form action="<?php echo make_url('publish_find_project_articles', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
+                        <form action="<?php echo make_url('publish_find_project_articles', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                             <input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
                         </form>
                     </div>
@@ -38,7 +38,7 @@
                 <?php foreach (\thebuggenie\core\entities\Project::getAll() as $project): ?>
                     <?php if (!$project->hasAccess() || (isset($project_url) && $project->getID() == \thebuggenie\core\framework\Context::getCurrentProject()->getID())) continue; ?>
                     <?php if (!$project->hasWikiURL()): ?>
-                        <?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), $project->getName()); ?>
+                        <?php echo link_tag(make_url('publish_article', array('article_name' => $project->getName().':MainPage')), $project->getName()); ?>
                     <?php else: ?>
                         <?php echo link_tag($project->getWikiURL(), $project->getName(), array('target' => 'blank')) ?>
                     <?php endif; ?>

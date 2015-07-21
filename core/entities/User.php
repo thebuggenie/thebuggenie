@@ -2448,7 +2448,7 @@
 
                 foreach ($this->getTeams() as $team)
                 {
-                    $project_ids += array_keys($team->getAssociatedProjects());
+                    $project_ids = array_merge($project_ids, array_keys($team->getAssociatedProjects()));
                 }
 
                 $project_ids = array_unique($project_ids);
@@ -2661,6 +2661,8 @@
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
                 foreach ($this->_notifications as $notification)
                 {
+                    if ($notification->getTriggeredByUser()->getID() == $this->getID()) continue;
+
                     array_unshift($notifications['all'], $notification);
                     if ($notification->isRead())
                     {

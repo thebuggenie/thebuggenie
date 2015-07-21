@@ -335,12 +335,12 @@
 
         protected function _parse_image($href,$title,$options)
         {
-            if ($this->ignore_images) return "";
-            if (!$this->image_uri) return $title;
+            // if ($this->ignore_images) return "";
+            // if (!$this->image_uri) return $title;
 
-            $href = $this->image_uri . $href;
+            // $href = $this->image_uri . $href;
 
-            $imagetag = sprintf('<img src="%s" alt="s" />', $href, $title);
+            $imagetag = sprintf('<img src="%s" alt="%s" />', $href, $title);
             foreach ($options as $k=>$option)
             {
                 switch($option)
@@ -546,7 +546,15 @@
                     }
                     else
                     {
-                        $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                        if (strpos($file_link, 'http') === 0) {
+                            $retval = $this->_parse_image($file_link, $caption, $options);
+                        }
+                        else if ($file_link == $filename) {
+                            $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
+                        }
+                        else {
+                            $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                        }
                     }
                 }
                 return $retval;
@@ -681,7 +689,7 @@
             return "";
         }
 
-        public static function parseIssuelink($matches)
+        public static function parseIssuelink($matches, $markdown_format = false)
         {
             $theIssue = \thebuggenie\core\entities\Issue::getIssueFromLink($matches[0]);
             $output = '';
@@ -692,11 +700,20 @@
             }
             if ($theIssue instanceof \thebuggenie\core\entities\Issue)
             {
-                $output = ' '.link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey())), $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
+                $theIssueUrl = make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey()));
+
+                if ($markdown_format) {
+                    if ($classname != '') $classname = ' {.'.$classname.'}';
+
+                    $output = "[{$matches[0]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
+                }
+                else {
+                    $output = ' '.link_tag($theIssueUrl, $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
+                }
             }
             else
             {
-                $output = $matches[1];
+                $output = $matches[0];
             }
             return $output;
         }
@@ -706,7 +723,7 @@
             $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matches[1]);
             if ($user instanceof \thebuggenie\core\entities\User)
             {
-                $output = framework\Action::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
+                $output = framework\Action::returnComponentHTML('main/userdropdown_inline', array('user' => $matches[1], 'displayname' => $matches[0]));
                 $this->mentions[$user->getID()] = $user;
             }
             else

@@ -49,6 +49,18 @@
         {
             return $this->_itemdata;
         }
+
+        public function getTextColor()
+        {
+            if (!\thebuggenie\core\framework\Context::isCLI())
+            {
+                \thebuggenie\core\framework\Context::loadLibrary('ui');
+            }
+
+            $rgb = hex2rgb($this->_itemdata);
+
+            return 0.299*$rgb['red'] + 0.587*$rgb['green'] + 0.114*$rgb['blue'] > 170 ? '#333' : '#FFF';
+        }
         
         public function hasLinkedWorkflowStep()
         {

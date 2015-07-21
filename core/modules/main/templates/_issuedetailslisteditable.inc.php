@@ -10,7 +10,7 @@
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditIssuetype()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-                        <?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
+                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul id="issuetype_change" class="popup_box more_actions_dropdown">
                             <li class="header"><?php echo __('Set issue type'); ?></li>
@@ -39,7 +39,7 @@
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditShortname()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>', 'shortname');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-                        <?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
+                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to edit issue label'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul id="shortname_change" class="popup_box more_actions_dropdown">
                             <li class="header"><?php echo __('Set issue label'); ?></li>
@@ -52,7 +52,7 @@
                             <li id="shortname_change_error" class="error_message" style="display: none;"></li>
                         </ul>
                     <?php endif; ?>
-                    <span id="shortname_name"><?php if ($issue->hasShortname()) echo __e($issue->getShortname()); ?></span>
+                    <span id="shortname_name"><?php if ($issue->hasShortname()) echo $issue->getShortname(); ?></span>
                     <span class="faded_out" id="no_shortname"<?php if ($issue->hasShortname()): ?> style="display: none;"<?php endif; ?>><?php echo __('No label set'); ?></span>
                 </dd>
             </dl>
@@ -81,8 +81,8 @@
                                 <?php if (!$status->canUserSet($tbg_user)) continue; ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');">
-                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
-                                            <span id="status_content">&nbsp;&nbsp;</span>
+                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getTextColor() : '#333'; ?>;">
+                                            <span>&nbsp;&nbsp;</span>
                                         </div>
                                         <?php echo __($status->getName()); ?>
                                     </a>
@@ -93,7 +93,7 @@
                         </ul>
                     <?php endif; ?>
                     <div style="display: inline-block; float: left; width: auto;<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> display: none;<?php endif; ?>" id="status_table">
-                        <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                        <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getTextColor() : '#333'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
                             <span id="status_content"><?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) echo __($issue->getStatus()->getName()); ?></span>
                         </div>
                     </div>
@@ -119,12 +119,11 @@
                                     <input type="submit" value="<?php echo __('Set'); ?>">
                                 </form>
                             </li>
-                            <li class="separator"></li>
+                            <li id="percent_complete_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                         </ul>
                     <?php endif; ?>
                     <div id="issue_percent_complete">
                         <?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 16)); ?>
-                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_spinning')); ?>
                     </div>
                 </dd>
             </dl>
@@ -169,7 +168,7 @@
         <li id="pain_likelihood_field" class="issue_detail_field<?php if ($issue->isPainLikelihoodChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPainLikelihoodMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="pain_likelihood_header"><?php echo __('Likelihood'); ?></dt>
-                <dd id="pain_likelihood_content" class="<?php if ($issue->isPainLikelihoodChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainLikelihoodMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                <dd id="pain_likelihood_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
@@ -199,7 +198,7 @@
         <li id="pain_effect_field" class="issue_detail_field<?php if ($issue->isPainEffectChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPainEffectMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="pain_effect_header"><?php echo __('Effect'); ?></dt>
-                <dd id="pain_effect_content" class="<?php if ($issue->isPainEffectChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainEffectMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                <dd id="pain_effect_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
@@ -241,7 +240,7 @@
         <li id="posted_by_field" class="issue_detail_field<?php if ($issue->isPostedByChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="posted_by_header"><?php echo __('Posted by'); ?></dt>
-                <dd id="posted_by_content" class="<?php if ($issue->isPostedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                <dd id="posted_by_content">
                     <?php if ($issue->isEditable() && $issue->canEditPostedBy()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'posted_by_undo_spinning')); ?>
@@ -265,7 +264,7 @@
         <li id="owned_by_field" style="<?php if (!$issue->isOwnedByVisible()): ?> display: none;<?php endif; ?>" class="issue_detail_field<?php if ($issue->isOwnerChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="owned_by_header"><?php echo __('Owned by'); ?></dt>
-                <dd id="owned_by_content" class="<?php if ($issue->isOwnerChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                <dd id="owned_by_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditOwner()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by')); ?>', 'owned_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'owned_by_undo_spinning')); ?>
@@ -295,7 +294,7 @@
         <li id="assigned_to_field" class="issue_detail_field primary<?php if ($issue->isAssigneeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="assigned_to_header"><?php echo __('Assigned to'); ?></dt>
-                <dd id="assigned_to_content" class="<?php if ($issue->isAssigneeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+                <dd id="assigned_to_content">
                     <?php if ($issue->canEditAssignee() && $issue->isUpdateable()): ?>
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
@@ -330,7 +329,7 @@
                     <?php echo __('Subscribers'); ?>
                 </dt>
                 <dd class="hoverable">
-                    <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo __('%number_of subscriber(s)', array('%number_of' => count($issue->getSubscribers()))); ?></a>
+                    <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo __('%number_of subscriber(s)', array('%number_of' => '<span id="subscribers_field_count">'.count($issue->getSubscribers()).'</span>')); ?></a>
                 </dd>
             </dl>
             <div class="tooltip from-above" style="width: 300px; font-size: 0.9em; margin-top: 10px; margin-left: 17px;"><?php echo __('Click here to show the list of subscribers'); ?></div>
@@ -384,8 +383,8 @@
                     <span id="spent_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
                         <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()); ?></a>
                     </span>
-                    <span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
-                    <div id="estimated_percentbar"><?php if ($issue->hasEstimatedTime() && $issue->hasSpentTime()) include_component('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)); ?></div>
+                    <span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');"><?php echo __('No time spent'); ?></a></span>
+                    <div id="estimated_percentbar"<?php if (!($issue->hasEstimatedTime())): ?> style="display: none;"<?php endif; ?>><?php include_component('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)); ?></div>
                 </dd>
             </dl>
             <div class="tooltip from-above" style="width: 300px; font-size: 0.9em; margin-top: 10px; margin-left: 17px;"><?php echo __('Click here to see time logged against this issue'); ?></div>
@@ -505,7 +504,7 @@
                                                 <?php foreach (\thebuggenie\core\entities\Status::getAll() as $choice): ?>
                                                     <li>
                                                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');">
-                                                            <div class="status_badge" style="background-color: <?php echo ($choice instanceof \thebuggenie\core\entities\Status) ? $choice->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                                                            <div class="status_badge" style="background-color: <?php echo ($choice instanceof \thebuggenie\core\entities\Status) ? $choice->getColor() : '#FFF'; ?>;">
                                                                 <span id="status_content">&nbsp;&nbsp;</span>
                                                             </div>
                                                             <?php echo __($choice->getName()); ?>
@@ -650,7 +649,14 @@
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
             <?php foreach ($issue->getFiles() as $file_id => $file): ?>
-                <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
+                <?php if (!$file->isImage()): ?>
+                    <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+                <?php if ($file->isImage()): ?>
+                    <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
+                <?php endif; ?>
             <?php endforeach; ?>
         </ul>
     </div>

@@ -298,6 +298,11 @@
                 if ($request['quicksearch'])
                 {
                     $this->setSortFields(array(tables\Issues::LAST_UPDATED => 'asc'));
+
+                    if ($request['term'])
+                    {
+                        $request->setParameter('fs', array('text' => array('v' => $request['term'], 'o' => '=')));
+                    }
                 }
 
                 $this->_filters = SearchFilter::getFromRequest($request, $this);
