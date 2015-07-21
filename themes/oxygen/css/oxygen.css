@@ -4492,7 +4492,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    display: block;
+    display: inline-block;
 }
 .interactive_menu h1, .interactive_filters_list h1 {
     font-size: 1.1em;
