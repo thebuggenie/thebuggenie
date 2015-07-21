@@ -2860,6 +2860,8 @@
 
             $rgb = hex2rgb($this->_scrumcolor);
 
+            if (! $rgb) return '#333';
+
             return 0.299*$rgb['red'] + 0.587*$rgb['green'] + 0.114*$rgb['blue'] > 170 ? '#333' : '#FFF';
         }
 
