@@ -12,13 +12,15 @@
         <div class="project_right planning_container" id="planning_container">
             <div class="project_save_container" id="project_planning_action_strip">
                 <input type="search" class="planning_filter_title" id="planning_filter_title_input" disabled placeholder="<?php echo __('Filter issues by title'); ?>">
-                <div class="edit-mode-buttons">
-                    <?php if (count($board->getColumns())): ?>
-                        <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
-                    <?php endif; ?>
-                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('agile_whiteboardcolumn', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
-                    <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
-                </div>
+                <?php if ($tbg_user->canManageProject($selected_project)): ?>
+                    <div class="edit-mode-buttons">
+                        <?php if (count($board->getColumns())): ?>
+                            <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.toggleEditMode();"><?php echo __('Cancel'); ?></a>
+                        <?php endif; ?>
+                        <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.addColumn(this);" data-url="<?php echo make_url('agile_whiteboardcolumn', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>"><?php echo __('Add column'); ?></a>
+                        <a class="button button-silver" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.saveColumns($('planning_whiteboard_columns_form'));"><?php echo __('Save columns'); ?></a>
+                    </div>
+                <?php endif; ?>
                 <div class="button-group whiteboard-view-mode">
                     <a class="button button-silver" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('main_container').toggleClassName('fullscreen');"><?php echo image_tag('view-fullscreen.png'); ?></a>
                 </div>
@@ -47,15 +49,17 @@
             </div>
             <div id="planning_whiteboard">
                 <div class="planning_indicator" id="whiteboard_indicator"><?php echo image_tag('spinning_30.gif'); ?></div>
-                <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
-                    <table class="whiteboard-columns">
-                        <tr id="planning_whiteboard_columns_form_row">
-                            <?php foreach ($board->getColumns() as $column): ?>
-                                <?php include_component('agile/editboardcolumn', compact('column')); ?>
-                            <?php endforeach; ?>
-                        </tr>
-                    </table>
-                </form>
+                <?php if ($tbg_user->canManageProject($selected_project)): ?>
+                    <form id="planning_whiteboard_columns_form" onsubmit="TBG.Project.Planning.Whiteboard.saveColumns(this);return false;" action="<?php echo make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>">
+                        <table class="whiteboard-columns">
+                            <tr id="planning_whiteboard_columns_form_row">
+                                <?php foreach ($board->getColumns() as $column): ?>
+                                    <?php include_component('agile/editboardcolumn', compact('column')); ?>
+                                <?php endforeach; ?>
+                            </tr>
+                        </table>
+                    </form>
+                <?php endif; ?>
                 <div class="table whiteboard-columns <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>" id="whiteboard" data-whiteboard-url="<?php echo make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" data-swimlane-type="<?php echo $board->getSwimlaneType(); ?>">
                     <div class="thead" id="whiteboard-headers-placeholder">
                         <div class="tr">
