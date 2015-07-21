@@ -107,9 +107,21 @@
                     'jquery.flot.time': {
                         deps: ['jquery.flot']
                     },
+                    'jquery.flot.dashes': {
+                        deps: ['jquery.flot']
+                    },
                     'scriptaculous': {
                         deps: ['prototype', 'controls'],
                         exports: 'Scriptaculous'
+                    },
+                    'bootstrap-typeahead': {
+                        deps: ['jquery']
+                    },
+                    'mention': {
+                        deps: ['jquery', 'bootstrap-typeahead']
+                    },
+                    'jquery.nanoscroller': {
+                        deps: ['jquery']
                     },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
@@ -143,7 +155,7 @@
         <?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
         <script type="text/javascript">
             var TBG, jQuery;
-            require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jquery) {
+            require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], function (domReady, tbgjs, jquery, nanoscroller) {
                 domReady(function () {
                     TBG = tbgjs;
                     jQuery = jquery;

@@ -445,7 +445,7 @@
         public function clearMilestone($milestone_id)
         {
             $crit = $this->getCriteria();
-            $crit->addUpdate(self::MILESTONE, null);
+            $crit->addUpdate(self::MILESTONE, 0);
             $crit->addUpdate(self::LAST_UPDATED, time());
             $crit->addWhere(self::MILESTONE, $milestone_id);
             $this->doUpdate($crit);
@@ -576,7 +576,7 @@
             $crit->addSelectionColumn(self::ID, 'id');
             $crit->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
             $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::MILESTONE, $milestone_id, Criteria::DB_NOT_EQUALS);
+            $crit->addWhere(self::MILESTONE, $milestone_id, Criteria::DB_EQUALS);
             $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
 
             $res = $this->doSelect($crit);
@@ -916,10 +916,10 @@
             $this->doUpdateById($crit, $issue_id);
         }
 
-        public function touchIssue($issue_id)
+        public function touchIssue($issue_id, $last_updated = null)
         {
             $crit = $this->getCriteria();
-            $crit->addUpdate(self::LAST_UPDATED, time());
+            $crit->addUpdate(self::LAST_UPDATED, isset($last_updated) ? $last_updated : time());
             $this->doUpdateById($crit, $issue_id);
         }
 

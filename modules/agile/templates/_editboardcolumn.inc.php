@@ -3,7 +3,7 @@
     use thebuggenie\modules\agile\entities\BoardColumn,
         thebuggenie\modules\agile\entities\AgileBoard;
 
-    $column_id = ($column->getID()) ? $column->getID() : md5(rand(0,1000000));
+    if (! isset($column_id)) $column_id = $column->getColumnOrRandomID();
 
 ?>
 <td>

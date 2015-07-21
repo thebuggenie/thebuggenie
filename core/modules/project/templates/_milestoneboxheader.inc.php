@@ -20,7 +20,7 @@
             <tr>
                 <td id="milestone_<?php echo $milestone->getID(); ?>_issues_count">
                     <?php if ($include_counts): ?>
-                        <?php echo $milestone->countOpenIssues(); ?><?php if ($milestone->countClosedIssues() > 0) echo ' ('.$milestone->countClosedIssues().')'; ?>
+                        <?php echo $milestone->countOpenIssues(); ?><?php if ($milestone->countClosedIssues() > 0) echo ' ('.$milestone->countIssues().')'; ?>
                     <?php else: ?>
                         -
                     <?php endif; ?>

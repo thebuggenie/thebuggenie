@@ -1,4 +1,5 @@
 <div <?php if (!isset($fake) || !$fake): ?> id="whiteboard_issue_<?php echo $issue->getID(); ?>"<?php endif; ?> class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>" data-valid-status-ids="<?php echo join(',', array_keys($issue->getAvailableStatuses())); ?>" data-column-id="<?php echo $column->getID(); ?>">
+    <div class="planning_indicator" id="issue_<?php echo $issue->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
     <?php include_component('agile/colorpicker', array('issue' => $issue)); ?>
     <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
     <?php if (isset($swimlane)): ?>
@@ -28,13 +29,14 @@
             <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
                 <?php foreach ($issue->getParentIssues() as $parent): ?>
                     <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
-                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
+                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>; color: <?php echo $parent->getAgileTextColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         <?php endif; ?>
     </div>
     <div class="issue_info">
+        <?php echo image_tag('icon_block.png', array('class' => 'blocking', 'title' => __('This issue is marked as a blocker'))); ?>
         <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
             <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getName() : __('Unknown'); ?>">&nbsp;&nbsp;&nbsp;</div>
         <?php endif; ?>

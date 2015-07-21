@@ -18,15 +18,6 @@
                 <?php endif; ?>
             </div>
         </div>
-        <?php /* <div class="rounded_box lightyellow borderless shadowed comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none; width: 300px; position: absolute; right: 0; top: 0; padding: 5px; z-index: 20;">
-            <h5><?php echo __('Really delete this comment?'); ?></h5>
-            <div id="comment_delete_controls_<?php echo $comment->getID(); ?>" style="text-align: right; font-size: 12px;">
-                <a href="javascript:void(0)" onclick="TBG.Main.Comment.remove('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink"><?php echo __('Yes');?></a> :: <a href="javascript:void(0)" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
-            </div>
-            <div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
-                <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
-            </div>
-        </div> */ ?>
         <div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
             <div class="commentcontent" id="comment_<?php echo $comment->getID(); ?>_content">
                 <?php echo $comment->getParsedContent($options); ?>
@@ -69,13 +60,12 @@
             </select>
             <br />
             <label for="comment_edit_<?php echo $comment->getId(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
-            <br />
             <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
             <div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
                 <?php echo image_tag('spinning_16.gif'); ?>
             </div>
             <div id="comment_edit_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
-                <?php echo __('%save_changes or %cancel', array('%save_changes' => '<input type="submit" class="comment_editsave button button-silver" value="'.__('Save changes').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_edit_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();")))); ?>
+                <?php echo __('%save_changes or %cancel', array('%save_changes' => '<input type="submit" class="comment_editsave button button-silver" value="'.__('Save changes').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_edit_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();$('comment_add_button').show();")))); ?>
             </div>
         </form>
     </div>
@@ -94,7 +84,7 @@
                 <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
             </div>
             <div id="comment_reply_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
-                <?php echo __('%post_reply or %cancel', array('%post_reply' => '<input type="submit" class="comment_replysave button button-silver" value="'.__('Post reply').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_reply_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();")))); ?>
+                <?php echo __('%post_reply or %cancel', array('%post_reply' => '<input type="submit" class="comment_replysave button button-silver" value="'.__('Post reply').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('comment_reply_{$comment->getID()}').hide();$('comment_view_{$comment->getID()}').show();$('comment_add_button').show();")))); ?>
             </div>
         </form>
     </div>

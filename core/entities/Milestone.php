@@ -221,7 +221,6 @@
                     foreach ($issue->getParentIssues() as $parent)
                     {
                         if ($parent->getIssuetype()->getID() != $epic_issuetype_id) unset($issues[$id]);
-                        break 2;
                     }
                 }
                 elseif ($issue->getIssuetype()->getID() == $epic_issuetype_id)
@@ -767,6 +766,10 @@
                 $spent_times = tables\IssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
 
                 $burndown = array();
+                foreach ($spent_times['hours'] as $key => $val)
+                {
+                    $spent_times['hours'][$key] = round($spent_times['hours'][$key] / 100, 2);
+                }
                 foreach ($estimations['hours'] as $key => $val)
                 {
                     $burndown['hours'][$key] = (array_key_exists($key, $spent_times['hours'])) ? $val - $spent_times['hours'][$key] : $val;
@@ -775,11 +778,6 @@
                 {
                     $burndown['points'][$key] = (array_key_exists($key, $spent_times['points'])) ? $val - $spent_times['points'][$key] : $val;
                 }
-                foreach ($spent_times['hours'] as $key => $val)
-                {
-                    $spent_times['hours'][$key] = round($spent_times['hours'][$key] / 100, 2);
-                }
-
 
                 $this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);
             }
