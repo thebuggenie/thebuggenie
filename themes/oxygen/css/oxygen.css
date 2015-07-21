@@ -1784,7 +1784,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 
 #project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
 #project_planning.milestone-sort #milestone-sort-actions { display: block; }
-.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, a.button-pressed, a.button-pressed:hover { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; text-decoration: none; border: none; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, .viewissue_comments_header .dropper.button-pressed, a.button-pressed, a.button-pressed:hover { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; text-decoration: none; border: none; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown {
     width: 360px;
@@ -2073,6 +2073,7 @@ dd { float: left; display: block; width: 195px; font-weight: 300; margin: 0; pad
 .userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown { font-size: 1em; }
 .more_actions_dropdown { padding: 3px 0; margin: 30px 0 0 -203px; display: none; box-sizing: border-box; width: 200px; position: absolute; z-index: 1000; right: auto; top: auto; bottom: auto; left: auto;  background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); text-align: left; }
 .more_actions_dropdown:last-of-type { margin-left: -200px; }
+.viewissue_comments_header .more_actions_dropdown:last-of-type { margin-left: 0; left: 0; }
 .more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; text-transform: none; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: 300; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; white-space: normal; }
 #issue_details .more_actions_dropdown li a, #issue_details .more_actions_dropdown li a:hover { white-space: normal; }
