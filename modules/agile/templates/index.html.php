@@ -12,7 +12,9 @@
             <?php foreach ($project_boards as $board): ?>
                 <?php include_component('agile/boardbox', compact('board')); ?>
             <?php endforeach; ?>
-            <li id="add_board_project_link" class="add_board_container" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $selected_project->getID(), 'is_private' => 0)); ?>');">+</li>
+            <?php if ($tbg_user->canManageProject($selected_project)): ?>
+                <li id="add_board_project_link" class="add_board_container" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'agileboard', 'project_id' => $selected_project->getID(), 'is_private' => 0)); ?>');">+</li>
+            <?php endif; ?>
         </ul>
         <h3><?php echo __('Private project boards'); ?></h3>
         <ul id="agileboards_user">
