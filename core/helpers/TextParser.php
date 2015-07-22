@@ -1037,7 +1037,7 @@
             $char_regexes[] = array('/(\[([^\]]*?)(?:\s+([^\]]*?))?\])/i', array($this, "_parse_save_elink"));
             $char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
             $char_regexes[] = array('/\B\@([\w\-]+)/i', array($this, '_parse_mention'));
-            $char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
+            $char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/', array($this, '_getsmiley'));
             $char_regexes[] = array('/\&amp\;(.*)\;/i', array($this, '_parse_specialchar'));
 
             $this->stop = false;
