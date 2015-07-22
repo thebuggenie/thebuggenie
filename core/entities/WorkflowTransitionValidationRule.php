@@ -369,7 +369,7 @@
                         {
                             $type = "\\thebuggenie\\core\\entities\\{$fieldname}";
                             $getter = "get{$fieldname}";
-                            if ($type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID())
+                            if (is_object($input->$getter()) && $type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID())
                             {
                                 $valid = true;
                                 break;
