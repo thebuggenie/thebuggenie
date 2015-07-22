@@ -222,7 +222,6 @@
                 $crit->addWhere(Issues::PROJECT_ID, $project_id);
                 $crit->addWhere(Issues::DELETED, false);
                 $crit->addJoin(IssueTypes::getTable(), IssueTypes::ID, Issues::ISSUE_TYPE, array(), Criteria::DB_LEFT_JOIN, $joinedtable);
-                $crit->addWhere(IssueTypes::ICON, 'bug_report');
                 $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), Criteria::DB_GREATER_THAN_EQUAL);
                 $ctn->addWhere(self::TIME, NOW - (86400 * $cc), Criteria::DB_LESS_THAN_EQUAL);
