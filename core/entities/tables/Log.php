@@ -186,6 +186,7 @@
             $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
             $crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), Criteria::DB_IN);
             $crit->addWhere(Issues::PROJECT_ID, $project_id);
+            $crit->addWhere(Issues::DELETED, false);
             if ($limit !== null)
             {
                 $crit->setLimit($limit);
