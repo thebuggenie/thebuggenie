@@ -2110,7 +2110,7 @@
                         {
                             if (($outgoing_step = tables\WorkflowSteps::getTable()->selectById((int) $request['outgoing_step_id'])) && $step instanceof entities\WorkflowStep)
                             {
-                                if (array_key_exists($request['template'], entities\WorkflowTransition::getTemplates()))
+                                if (!$request['template'] || array_key_exists($request['template'], entities\WorkflowTransition::getTemplates()))
                                 {
                                     $transition = new entities\WorkflowTransition();
                                     $transition->setWorkflow($this->workflow);

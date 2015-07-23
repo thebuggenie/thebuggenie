@@ -261,4 +261,12 @@
             return $this->_dashboards;
         }
 
+        public function toJSON()
+        {
+            return array(
+                'id' => $this->getID(),
+                'name' => $this->getName()
+            );
+        }
+
     }

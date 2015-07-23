@@ -51,7 +51,7 @@
 
             $this->cliEcho("Processing mail queue ... \n", 'white', 'bold');
             $limit = $this->getProvidedArgument('limit', null);
-            $messages = tables\MailQueueTable::getTable()->getQueuedMessages($limit);
+            $messages = MailQueueTable::getTable()->getQueuedMessages($limit);
 
             $this->cliEcho("Email(s) to process: ");
             $this->cliEcho(count($messages)."\n", 'white', 'bold');
@@ -66,7 +66,7 @@
                     {
                         foreach ($messages as $message_id => $message)
                         {
-                            $retval = $mailing->send($message);
+                            $retval = $mailing->getMailer()->send($message);
                             $processed_messages[] = $message_id;
                             if (!$retval) $failed_messages++;
                         }
@@ -75,7 +75,7 @@
 
                     if (count($processed_messages))
                     {
-                        tables\MailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
+                        MailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
                         $this->cliEcho("Emails successfully processed: ");
                         $this->cliEcho(count($messages)."\n", 'green', 'bold');
                         if ($failed_messages > 0)

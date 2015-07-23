@@ -73,10 +73,6 @@
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul class="popup_box more_actions_dropdown" id="status_change">
                             <li class="header"><?php echo __('Set status'); ?></li>
-                            <li>
-                                <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => 0)); ?>', 'status');"><?php echo __('Clear the status'); ?></a>
-                            </li>
-                            <li class="separator"></li>
                             <?php foreach ($statuses as $status): ?>
                                 <?php if (!$status->canUserSet($tbg_user)) continue; ?>
                                 <li>

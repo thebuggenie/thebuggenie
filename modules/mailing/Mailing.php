@@ -1057,7 +1057,7 @@ EOT;
         public function getOrCreateUserFromEmailString($email_string)
         {
             $email = $this->getEmailAdressFromSenderString($email_string);
-            if (!$user = User::findUser($email))
+            if (!$user = User::findUser($email, true))
             {
                 $name = $email;
 
@@ -1216,7 +1216,7 @@ EOT;
                                 foreach ($message->getAttachments() as $attachment_no => $attachment)
                                 {
                                     echo 'saving attachment ' . $attachment_no;
-                                    $name = $attachment['filename'];
+                                    $name = iconv_mime_decode($attachment['filename'], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
                                     $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($name);
                                     if (framework\Settings::getUploadStorage() == 'files')
                                     {
