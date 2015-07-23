@@ -1057,7 +1057,7 @@ EOT;
         public function getOrCreateUserFromEmailString($email_string)
         {
             $email = $this->getEmailAdressFromSenderString($email_string);
-            if (!$user = User::findUser($email))
+            if (!$user = User::findUser($email, true))
             {
                 $name = $email;
 
