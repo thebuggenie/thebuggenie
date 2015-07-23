@@ -85,4 +85,19 @@
             return $this->selectOne($crit);
         }
 
+        /**
+         * Whether a commit is already processed
+         * @param string $id
+         * @param integer $project
+         */
+        public function isProjectCommitProcessed($id, $project)
+        {
+            $crit = new Criteria();
+
+            $crit->addWhere(self::NEW_REV, $id);
+            $crit->addWhere(self::PROJECT_ID, $project);
+
+            return (bool) $this->count($crit);
+        }
+
     }

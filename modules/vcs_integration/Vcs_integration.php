@@ -196,8 +196,11 @@
             $output = '';
             framework\Context::setCurrentProject($project);
 
-            if ($project->isArchived()): return;
-            endif;
+            if ($project->isArchived())
+                return;
+
+            if (Commits::getTable()->isProjectCommitProcessed($new_rev, $project->getID()))
+                return;
 
             try
             {
