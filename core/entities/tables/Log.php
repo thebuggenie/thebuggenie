@@ -154,6 +154,7 @@
             $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET);
             $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
             $crit->addWhere(Issues::PROJECT_ID, $project_id);
+            $crit->addWhere(Issues::DELETED, false);
             if ($limit !== null)
             {
                 $crit->setLimit($limit);
