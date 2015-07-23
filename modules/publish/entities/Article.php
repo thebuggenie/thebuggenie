@@ -844,7 +844,7 @@
          */
         public function setName($name)
         {
-            $this->_name = preg_replace('/[^\p{L}\p{N}]/u', '', $name);
+            $this->_name = preg_replace('/[^\p{L}\p{N} :]/u', '', $name);
         }
 
         /**

@@ -88,7 +88,7 @@
         <?php else: ?>
             <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                 <?php if (mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName())) == 0): ?>
-                    <?php $project_article_name = mb_substr($article_name, mb_strlen(preg_replace('/[^\p{L}\p{N}]/u', '', \thebuggenie\core\framework\Context::getCurrentProject()->getName()))); ?>
+                    <?php $project_article_name = mb_substr($article_name, mb_strlen(preg_replace('/[^\p{L}\p{N} :]/u', '', \thebuggenie\core\framework\Context::getCurrentProject()->getName()))+1); ?>
                     <?php if ($article->getID() && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
                 <?php endif; ?>
             <?php elseif (mb_substr($article_name, 0, 9) == 'Category:'): ?>
