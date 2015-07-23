@@ -277,7 +277,7 @@ EOT;
                 if (is_numeric($user))
                     $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user);
 
-                if ($user instanceof User)
+                if ($user instanceof User && $user->getEmail() != '')
                 {
                     $user_language = $user->getLanguage();
                     if (!array_key_exists($user_language, $langs))
