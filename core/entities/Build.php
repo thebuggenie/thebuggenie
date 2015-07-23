@@ -372,13 +372,9 @@
          */
         public function setVersion($ver_mj, $ver_mn, $ver_rev)
         {
-            $ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
-            $ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
-            $ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
-
-            $this->_version_major = $ver_mj;
-            $this->_version_minor = $ver_mn;
-            $this->_version_revision = $ver_rev;
+            $this->_version_major = ($ver_mj) ? $ver_mj : 0;
+            $this->_version_minor = ($ver_mn) ? $ver_mn : 0;
+            $this->_version_revision = ($ver_rev) ? $ver_rev : 0;
         }
 
         /**
@@ -388,8 +384,7 @@
          */
         public function setVersionMajor($ver_mj)
         {
-            $ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
-            $this->_version_major = $ver_mj;
+            $this->_version_major = ($ver_mj) ? $ver_mj : 0;
         }
 
         /**
@@ -399,8 +394,7 @@
          */
         public function setVersionMinor($ver_mn)
         {
-            $ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
-            $this->_version_minor = $ver_mn;
+            $this->_version_minor = ($ver_mn) ? $ver_mn : 0;
         }
 
         /**
@@ -410,8 +404,7 @@
          */
         public function setVersionRevision($ver_rev)
         {
-            $ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
-            $this->_version_revision = $ver_rev;
+            $this->_version_revision = ($ver_rev) ? $ver_rev : 0;
         }
 
         /**
