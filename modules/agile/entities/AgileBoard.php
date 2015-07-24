@@ -293,6 +293,7 @@
                 $this->_search_object->setIssuesPerPage(0);
                 $this->_search_object->setOffset(0);
                 $this->_search_object->setSortFields(array('issues.milestone_order' => 'desc'));
+                $this->_search_object->setGroupBy(null);
             }
 
             return $this->_search_object;
