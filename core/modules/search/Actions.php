@@ -532,6 +532,18 @@
                             $groupby_description = $i18n->__('Not assigned');
                         }
                         break;
+                    case 'posted_by':
+                        if ($issue->getPostedBy() instanceof entities\common\Identifiable)
+                        {
+                            $groupby_id = $issue->getPostedByID();
+                            $groupby_description = $issue->getPostedBy()->getNameWithUsername();
+                        }
+                        else
+                        {
+                            $groupby_id = 0;
+                            $groupby_description = $i18n->__('Unknown');
+                        }
+                        break;
                     case 'state':
                         if ($issue->isClosed())
                         {

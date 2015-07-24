@@ -165,7 +165,7 @@
             $this->nondatecustomfields = entities\CustomDatatype::getAllExceptTypes(array(entities\CustomDatatype::DATE_PICKER));
             $this->datecustomfields = entities\CustomDatatype::getByFieldType(entities\CustomDatatype::DATE_PICKER);
             $i18n = framework\Context::getI18n();
-            $columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('Percent completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'posted' => $i18n->__('Posted at'), 'comments' => $i18n->__('Number of comments'));
+            $columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'posted_by' => $i18n->__('Posted by'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('Percent completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'posted' => $i18n->__('Posted at'), 'comments' => $i18n->__('Number of comments'));
             foreach ($this->nondatecustomfields as $field)
             {
                 $columns[$field->getKey()] = $i18n->__($field->getName());
@@ -181,6 +181,7 @@
 
             $groupoptions['milestone'] = $i18n->__('Milestone');
             $groupoptions['assignee'] = $i18n->__("Who's assigned");
+            $groupoptions['posted_by'] = $i18n->__("Who posted the issue");
             $groupoptions['state'] = $i18n->__('State (open or closed)');
             $groupoptions['status'] = $i18n->__('Status');
             $groupoptions['category'] = $i18n->__('Category');
@@ -235,7 +236,7 @@
                     break;
             }
             $i18n = framework\Context::getI18n();
-            $this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
+            $this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'posted_by' => $i18n->__('Posted by'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
         }
 
         public function componentBulkWorkflow()

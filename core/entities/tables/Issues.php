@@ -704,6 +704,14 @@
                             $crit3->addOrderBy(self::ASSIGNEE_TEAM);
                             $crit3->addOrderBy(self::ASSIGNEE_USER, $grouporder);
                             break;
+                        case 'posted_by':
+                            $crit->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $crit3->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $crit->addSelectionColumn(self::POSTED_BY);
+                            $crit->addSelectionColumn(Users::UNAME);
+                            $crit->addOrderBy(Users::UNAME, $grouporder);
+                            $crit3->addOrderBy(Users::UNAME, $grouporder);
+                            break;
                         case 'state':
                             $crit->addSelectionColumn(self::STATE);
                             $crit->addOrderBy(self::STATE, $grouporder);
