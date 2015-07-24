@@ -709,6 +709,11 @@
                             $crit->addOrderBy(self::STATE, $grouporder);
                             $crit3->addOrderBy(self::STATE, $grouporder);
                             break;
+                        case 'posted':
+                            $crit->addSelectionColumn(self::POSTED);
+                            $crit->addOrderBy(self::POSTED, $grouporder);
+                            $crit3->addOrderBy(self::POSTED, $grouporder);
+                            break;
                         case 'severity':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
                             $crit->addSelectionColumn(self::SEVERITY);

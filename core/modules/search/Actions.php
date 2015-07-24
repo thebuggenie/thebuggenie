@@ -544,6 +544,10 @@
                             $groupby_description = $i18n->__('Open');
                         }
                         break;
+                    case 'posted':
+                        $groupby_id = date('Ymd', $issue->getPosted());
+                        $groupby_description = tbg_formatTime($issue->getPosted(), 20);
+                        break;
                 }
                 if ($groupby_id !== $prevgroup_id)
                 {
