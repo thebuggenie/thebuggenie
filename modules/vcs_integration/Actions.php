@@ -515,9 +515,9 @@
                         break;
                     case 'bitbucket':
                         $base_url = $request['browser_url'];
-                        $link_rev = '/changeset/%revno';
+                        $link_rev = '/commits/%revno';
                         $link_file = '/history/%file';
-                        $link_diff = '/changeset/%revno#chg-%file';
+                        $link_diff = '/commits/%revno#chg-%file';
                         $link_view = '/src/%revno/%file';
                         break;
                     case 'gitorious':
