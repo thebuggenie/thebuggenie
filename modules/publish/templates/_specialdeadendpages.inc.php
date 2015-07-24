@@ -6,7 +6,7 @@
         </div>
     <?php endif; ?>
     <p>
-        <?php echo __('Below is a listing of all pages that has no links to other pages.'); ?>
+        <?php echo __('Below is a listing of pages that have no links to other pages.'); ?>
     </p>
     <?php include_component('publish/articleslist', array('articles' => $articles, 'include_redirects' => false)); ?>
 </div>
