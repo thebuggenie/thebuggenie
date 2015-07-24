@@ -9,7 +9,7 @@
     defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DS . '..' . DS) . DS);
 
     // Default behaviour: define the public folder name to "public" (actually autodetect name of current folder)
-    defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', mb_substr($path, strrpos($path, DS) + 1));
+    defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', substr($path, strrpos($path, DS) + 1));
 
     // Root installation: http://issues.thebuggenie.com/wiki/TheBugGenie:HowTo:RootDirectoryInstallation
     // ----
