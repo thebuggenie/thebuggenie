@@ -65,26 +65,6 @@
         public function getUniqueArticleNames()
         {
             $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::LINK_ARTICLE_NAME);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->setDistinct();
-
-            $names = array();
-            if ($res = $this->doSelect($crit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $article_name = $row->get(self::LINK_ARTICLE_NAME);
-                    $names[$article_name] = $article_name;
-                }
-            }
-
-            return $names;
-        }
-
-        public function getUniqueLinkedArticleNames()
-        {
-            $crit = $this->getCriteria();
             $crit->addSelectionColumn(self::ARTICLE_NAME);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->setDistinct();
@@ -95,6 +75,26 @@
                 while ($row = $res->getNextRow())
                 {
                     $article_name = $row->get(self::ARTICLE_NAME);
+                    $names[$article_name] = $article_name;
+                }
+            }
+
+            return $names;
+        }
+
+        public function getUniqueLinkedArticleNames()
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::LINK_ARTICLE_NAME);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->setDistinct();
+
+            $names = array();
+            if ($res = $this->doSelect($crit))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $article_name = $row->get(self::LINK_ARTICLE_NAME);
                     $names[$article_name] = $article_name;
                 }
             }
