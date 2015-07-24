@@ -754,7 +754,7 @@
             return count($this->_issues);
         }
 
-        public static function extractIssues($matches)
+        public function extractIssues($matches)
         {
             $issue = Issue::getIssueFromLink($matches["issues"]);
             if ($issue instanceof Issue)
@@ -776,7 +776,7 @@
             if ($this->_quickfound_issues === null) {
                 $this->_quickfound_issues = array();
                 if ($this->getSearchterm()) {
-                    preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array('\thebuggenie\core\entities\SavedSearch', 'extractIssues'), $this->getSearchterm());
+                    preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, 'extractIssues'), $this->getSearchterm());
                 }
             }
             if (!count($this->_quickfound_issues)) {
