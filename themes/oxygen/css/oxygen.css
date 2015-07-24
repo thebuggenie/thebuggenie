@@ -4404,6 +4404,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     max-width: 300px;
     vertical-align: middle;
     cursor: pointer;
+    line-height: 1.2em;
 }
 .interactive_plus_container {
     display: inline-block;
