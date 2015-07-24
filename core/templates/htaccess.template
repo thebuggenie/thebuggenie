@@ -6,6 +6,9 @@
 	php_flag register_globals	off
 </IfModule>
 
+# Follow symlinks
+Options +FollowSymlinks
+
 # rewrite rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
