@@ -460,7 +460,7 @@
                     case 'websvn':
                         $base_url = $request['browser_url'];
                         $link_rev = '/revision.php?repname=' . $request['repository'] . '&amp;isdir=1&amp;rev=%revno';
-                        $link_file = '/log.php?repname=' . $request['repository'] . '&amp;path=/$%file';
+                        $link_file = '/log.php?repname=' . $request['repository'] . '&amp;path=/%file';
                         $link_diff = '/comp.php?repname=' . $request['repository'] . '&amp;compare[]=/%file@%revno&amp;compare[]=/%file@%oldrev';
                         $link_view = '/filedetails.php?repname=' . $request['repository'] . '&path=/%file&amp;rev=%revno';
                         break;
