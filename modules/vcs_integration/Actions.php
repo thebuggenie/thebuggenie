@@ -100,7 +100,7 @@
             }
 
             // Obtain previous revision
-            if (!framework\Context::getRequest()->hasParameter('oldrev') && !is_integer($new_rev))
+            if (!framework\Context::getRequest()->hasParameter('oldrev') && !ctype_digit($new_rev))
             {
                 echo 'Error: If only the new revision is specified, it must be a number so that old revision can be calculated from it (by substracting 1 from new revision number).';
                 exit;

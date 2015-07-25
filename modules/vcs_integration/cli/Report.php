@@ -68,7 +68,7 @@
                 exit;
             }
 
-            if ($old_rev === null && !is_integer($new_rev))
+            if ($old_rev === null && !ctype_digit($new_rev))
             {
                 $this->cliEcho("Error: if only the new revision is specified, it must be a number so that old revision can be calculated from it (by substracting 1 from new revision number).");
             }
