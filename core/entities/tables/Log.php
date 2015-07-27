@@ -218,24 +218,27 @@
             for ($cc = 15; $cc >= 0; $cc--)
             {
                 $crit = $this->getCriteria();
-                $joinedtable = $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET);
-                $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
+                $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET, array(array(Issues::PROJECT_ID, $project_id), array(Issues::DELETED, false)));
                 $crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), Criteria::DB_IN);
-                $crit->addWhere(Issues::PROJECT_ID, $project_id);
-                $crit->addWhere(Issues::DELETED, false);
-                $crit->addJoin(IssueTypes::getTable(), IssueTypes::ID, Issues::ISSUE_TYPE, array(), Criteria::DB_LEFT_JOIN, $joinedtable);
+                $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
                 $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), Criteria::DB_GREATER_THAN_EQUAL);
                 $ctn->addWhere(self::TIME, NOW - (86400 * $cc), Criteria::DB_LESS_THAN_EQUAL);
                 $crit->addWhere($ctn);
 
-                $crit2 = clone $crit;
-
-                $crit->addWhere(self::CHANGE_TYPE, self::LOG_ISSUE_CLOSE);
-                $crit2->addWhere(self::CHANGE_TYPE, self::LOG_ISSUE_CREATED);
-
-                $retarr[0][$cc] = $this->doCount($crit);
-                $retarr[1][$cc] = $this->doCount($crit2);
+                $closed_count = array();
+                $open_count = array();
+                if ($res = $this->doSelect($crit)) {
+                    while ($row = $res->getNextRow()) {
+                        if ($row[self::CHANGE_TYPE] == self::LOG_ISSUE_CLOSE) {
+                            $closed_count[$row->get(self::TARGET)] = true;
+                        } else {
+                            $open_count[$row->get(self::TARGET)] = true;
+                        }
+                    }
+                }
+                $retarr[0][$cc] = count($closed_count);
+                $retarr[1][$cc] = count($open_count);
             }
             return $retarr;
         }
