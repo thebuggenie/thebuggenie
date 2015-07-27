@@ -395,6 +395,7 @@
             {
                 $crit->addWhere(self::MILESTONE, $milestone_id);
             }
+            $crit->addSelectionColumn(self::STATE, 'state');
             $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
             $crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
             $crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
