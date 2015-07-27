@@ -127,7 +127,7 @@
 
         public function escape($string)
         {
-            $chars = array('\\', '*', '()', ')', chr(0));
+            $chars = array('*', '()', ')', chr(0));
             foreach ($chars as $char)
             {
                 $string = str_replace($char, '\\' . $char, $string);
