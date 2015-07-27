@@ -6025,7 +6025,9 @@ button:focus, input:focus, select:focus {outline:0;}
 /* Configure */
 
 .configuration_page .tab_menu li.selected,
-.configuration_page .tab_menu li.selected:hover
+.configuration_page .tab_menu li.selected:hover,
+ul#account_tabs li.selected,
+ul#account_tabs li.selected:hover
 {
     background-color: #FFF;
 }
