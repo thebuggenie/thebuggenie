@@ -337,7 +337,7 @@
                         {
                             $dn = $data[0][strtolower($dn_attr)][0];
                         }
-                        $bind = $this->bind($connection, $this->escape($dn), $password);
+                        $bind = $this->bind($connection, $this->escape($dn), html_entity_decode($password));
                     }
                     catch (\Exception $e)
                     {
