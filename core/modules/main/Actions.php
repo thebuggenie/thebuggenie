@@ -2923,8 +2923,8 @@
             elseif (array_key_exists('file_id', $status) && $request['mode'] == 'article')
             {
                 $file = entities\File::getB2DBTable()->selectById($status['file_id']);
-                $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
-                $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower(urldecode($request['article_name'])) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
+                $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower($request['article_name']) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
+                $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower($request['article_name']) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
                 $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
                 $status['attachmentcount'] = count($article->getFiles());
             }

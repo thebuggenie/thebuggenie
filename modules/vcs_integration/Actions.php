@@ -64,15 +64,15 @@
 
             /* Prepare variables */
             $passkey = framework\Context::getRequest()->getParameter('passkey');
-            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
-            $author = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('author')), ENT_QUOTES), '"');
+            $project_id = framework\Context::getRequest()->getParameter('project_id');
+            $author = trim(html_entity_decode(framework\Context::getRequest()->getParameter('author'), ENT_QUOTES), '"');
             $new_rev = framework\Context::getRequest()->getParameter('rev');
-            $commit_msg = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
-            $changed = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('changed')), ENT_QUOTES), '"');
+            $commit_msg = trim(html_entity_decode(framework\Context::getRequest()->getParameter('commit_msg'), ENT_QUOTES), '"');
+            $changed = trim(html_entity_decode(framework\Context::getRequest()->getParameter('changed'), ENT_QUOTES), '"');
 
             if (framework\Context::getRequest()->hasParameter('branch'))
             {
-                $branch = trim(html_entity_decode(urldecode(framework\Context::getRequest()->getParameter('branch')), ENT_QUOTES), '"');
+                $branch = trim(html_entity_decode(framework\Context::getRequest()->getParameter('branch'), ENT_QUOTES), '"');
             }
             else
             {
@@ -142,7 +142,7 @@
             framework\Context::getResponse()->renderHeaders();
 
             $passkey = framework\Context::getRequest()->getParameter('passkey');
-            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
+            $project_id = framework\Context::getRequest()->getParameter('project_id');
 
             try
             {
@@ -282,7 +282,7 @@
             framework\Context::getResponse()->renderHeaders();
 
             $passkey = framework\Context::getRequest()->getParameter('passkey');
-            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
+            $project_id = framework\Context::getRequest()->getParameter('project_id');
 
             try
             {
@@ -356,7 +356,7 @@
             framework\Context::getResponse()->renderHeaders();
 
             $passkey = framework\Context::getRequest()->getParameter('passkey');
-            $project_id = urldecode(framework\Context::getRequest()->getParameter('project_id'));
+            $project_id = framework\Context::getRequest()->getParameter('project_id');
             $project = Project::getB2DBTable()->selectByID($project_id);
 
             // Validate access

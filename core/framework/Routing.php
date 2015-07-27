@@ -525,7 +525,7 @@
                     {
                         if (preg_match('#[a-z_\-]#i', $name))
                         {
-                            $out[$name] = urldecode($value);
+                            $out[$name] = $value;
                         }
                         else
                         {
@@ -539,7 +539,7 @@
                         // if $found is a named url element (i.e. ':action')
                         if (isset($names[$pos]))
                         {
-                            $out[$names[$pos]] = urldecode($found);
+                            $out[$names[$pos]] = $found;
                         }
                         // unnamed elements go in as 'pass'
                         else
