@@ -7292,7 +7292,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {
                         update: { element: 'user_notifications_list', insertion: true },
                         callback: function () {
-                            jQuery("#user_notifications_list_wrapper").mCustomScrollbar('update');
+                            jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
                             unl_data.offset = parseInt(unl_data.offset) + 25;
                             TBG.Main.Notifications.loadingLocked = false;
                         }
