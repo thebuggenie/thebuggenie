@@ -2150,11 +2150,12 @@
             $theme = \thebuggenie\core\framework\Settings::getThemeName();
             foreach (self::getModules() as $module)
             {
-                if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css"))
+                if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css")) {
                     self::getResponse()->addStylesheet("{$theme}/{$module->getName()}.css");
-
-                if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js"))
+                }
+                if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js")) {
                     self::getResponse()->addJavascript($module->getName());
+                }
             }
 
             list ($localjs, $externaljs) = self::getResponse()->getJavascripts();
@@ -2163,12 +2164,16 @@
             $values = compact('content', 'localjs', 'externaljs', 'webroot');
             return $values;
         }
-        
+
         /**
-         * Performs an action
+         * Performs an action.
          *
+         * @param $action
          * @param string $module Name of the action module
          * @param string $method Name of the action method to run
+         *
+         * @return bool
+         * @throws \Exception
          */
         public static function performAction($action, $module, $method)
         {
@@ -2413,6 +2418,7 @@
                     {
                         $route = array('module' => 'installation', 'action' => 'installIntro');
                     }
+
                     if (!self::isInternalModule($route['module']))
                     {
                         if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
@@ -2426,18 +2432,32 @@
                         {
                             throw new \Exception('Cannot load the ' . $route['module'] . ' module');
                         }
-                        $actionClassName = "\\thebuggenie\\modules\\".$route['module']."\\Actions";
+                        $actionClassBase = "\\thebuggenie\\modules\\".$route['module'].'\\';
                     }
                     else
                     {
-                        $actionClassName = "\\thebuggenie\\core\\modules\\".$route['module']."\\Actions";
+                        $actionClassBase = "\\thebuggenie\\core\\modules\\".$route['module'].'\\';
                     }
 
                     // Set up the action object
-                    // Construct the action class and method name, including any pre- action(s)
-                    $actionObject = new $actionClassName();
+                    // If a separate controller is defined within the action name
+                    if (strpos($route['action'], '::')) {
+                        $routing = explode('::', $route['action']);
+
+                        $moduleController = $actionClassBase . 'controller\\' . $routing[0] . 'Controller';
+                        $moduleMethod = $routing[1];
+
+                        if (class_exists($moduleController) && is_callable($moduleController, 'run'.ucfirst($moduleMethod))) {
+                            $actionObject = new $moduleController();
+                        } else {
+                            throw new \Exception('The `' . $route['action'] . '` controller action is not callable');
+                        }
+                    } else {
+                        $actionClassName = $actionClassBase . 'Actions';
+                        $actionObject = new $actionClassName();
+                        $moduleMethod = $route['action'];
+                    }
                     $moduleName = $route['module'];
-                    $moduleMethod = $route['action'];
                 }
                 else
                 {

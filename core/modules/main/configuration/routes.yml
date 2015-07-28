@@ -647,3 +647,9 @@ issue_moreactions:
     action: issueMoreactions
     parameters: [ ]
     csrf_enabled: false
+
+assetic_resolve_asset:
+    route: '/assets/*'
+    module: main
+    action: Asset::resolve
+
