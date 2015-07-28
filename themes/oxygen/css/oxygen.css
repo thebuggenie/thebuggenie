@@ -3311,6 +3311,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 .whiteboard-issue .issue_more_actions_link_container {
     left: 16px;
+    right: initial;
     bottom: 2px;
     top: initial;
 }
