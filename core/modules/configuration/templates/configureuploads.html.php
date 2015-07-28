@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->setTitle(__('Configure uploads &amp; attachments'));
+    $tbg_response->setTitle(__('Configure uploads & attachments'));
     
 ?>
 <script type="text/javascript">
@@ -34,7 +34,7 @@
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_UPLOADS)); ?>
         <td valign="top" style="padding-left: 15px;">
             <div style="width: 730px;">
-                <h3><?php echo __('Configure uploads &amp; attachments'); ?></h3>
+                <h3><?php echo __('Configure uploads & attachments'); ?></h3>
                 <?php if ($uploads_enabled && $access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
                 <?php endif; ?>
