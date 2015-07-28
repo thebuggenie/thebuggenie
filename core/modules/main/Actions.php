@@ -3166,14 +3166,21 @@
                     $this->getResponse()->renderHeaders();
                     if (framework\Settings::getUploadStorage() == 'files')
                     {
-                        fpassthru(fopen(framework\Settings::getUploadsLocalpath() . $file->getRealFilename(), 'r'));
-                        exit();
+                        $fh = fopen(framework\Settings::getUploadsLocalpath() . $file->getRealFilename(), 'r');
                     }
                     else
                     {
-                        echo $file->getContent();
-                        exit();
+                        $fh = $file->getContent();
                     }
+                    if (is_resource($fh))
+                    {
+                        fpassthru($fh);
+                    }
+                    else
+                    {
+                        echo $fh;
+                    }
+                    exit();
                 }
             }
             $this->return404(framework\Context::getI18n()->__('This file does not exist'));
