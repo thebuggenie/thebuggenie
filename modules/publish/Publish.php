@@ -425,9 +425,10 @@
                 foreach ($namespaces as $namespace)
                 {
                     $composite_ns .= ($composite_ns != '') ? ":{$namespace}" : $namespace;
-                    if ($user->hasPermission($permission_name, $composite_ns, 'publish'))
+                    $retval = $user->hasPermission($permission_name, $composite_ns, 'publish');
+                    if ($retval !== null)
                     {
-                        return true;
+                        return $retval;
                     }
                 }
             }
