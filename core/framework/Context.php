@@ -1625,7 +1625,7 @@
                 }
                 foreach (\thebuggenie\core\entities\Datatype::getTypes() as $type => $class)
                 {
-                    self::$_available_permissions['issues']['set_datatype_' . $type] = array('description' => $i18n->__('Can change issue field "%type_name" for issues reported by the user', array('%type_name' => __($type))));
+                    self::$_available_permissions['issues']['set_datatype_' . $type] = array('description' => $i18n->__('Can change issue field "%type_name" for issues reported by the user', array('%type_name' => $i18n->__($type))));
                 }
                 self::$_available_permissions['issues']['canaddextrainformationtoissues'] = array('description' => $i18n->__('Can add/remove extra information and link issues (edition, component, release, links and files) to issues'), 'details' => array());
                 self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuildsown'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for issues reported by the user'));
