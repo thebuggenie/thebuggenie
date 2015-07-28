@@ -505,17 +505,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         success: {
                             update: 'user_notifications_list',
                             callback: function () {
-                                jQuery("#user_notifications_list_wrapper").mCustomScrollbar({
-                                    scrollInertia: 1300,
-                                    autoHideScrollbar: true,
-                                    autoExpandScrollbar: true,
-                                    callbacks: {
-                                        updateOnSelectorChange: "ul li",
-                                    },
-                                    callbacks: {
-                                        onTotalScroll: TBG.Main.Notifications.loadMore
-                                    }
-                                });
+                                jQuery('#user_notifications_list_wrapper_nano').nanoScroller();
+                                jQuery('#user_notifications_list_wrapper_nano').bind('scrollend', TBG.Main.Notifications.loadMore);
                             }
                         }
                     });
