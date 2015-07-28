@@ -5,7 +5,7 @@
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="tab_menu inset">
             <ul id="editions_menu">
-                <li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="edition_settings"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('edition_settings', 'editions_menu');"><?php echo __('Details &amp; settings'); ?></a></li>
+                <li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="edition_settings"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('edition_settings', 'editions_menu');"><?php echo __('Details & settings'); ?></a></li>
                 <li<?php if ($selected_section == 'components'): ?> class="selected"<?php endif; ?> id="edition_components"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('edition_components', 'editions_menu');"><?php echo __('Components'); ?></a></li>
                 <li<?php if ($selected_section == 'team'): ?> class="selected"<?php endif; ?> id="edition_team"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('edition_team', 'editions_menu');"><?php echo __('Team'); ?></a></li>
             </ul>
