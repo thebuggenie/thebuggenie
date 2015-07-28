@@ -10847,16 +10847,6 @@ li#header_usermenu_link > div
     margin-left: 5px !important;
 }
 
-#user_notifications_container #user_notifications_count img
-{
-    background-image: url("/logos/thebuggenie/public/iconsets/oxygen_new/spinning_16_white.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    content: "";
-    width: 16px;
-    height: 16px;
-}
-
 #user_notifications_loading_indicator
 {
     margin-left: 85px;
