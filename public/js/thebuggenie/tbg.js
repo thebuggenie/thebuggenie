@@ -4598,6 +4598,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     }
                 });
             }
+            else {
+                $('team_' + team_id + '_permissions_container').show();
+            }
         };
 
         TBG.Config.Team.add = function (url) {
