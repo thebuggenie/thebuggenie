@@ -1,6 +1,6 @@
 <div class="article">
     <div class="header">Special:<?php echo ($projectnamespace != '') ? "<span class='faded_out'>{$projectnamespace}</span>" : ''; ?>All Pages</div>
-        <div class="greybox" class="special-pages-note" style="margin: 15px;">
+        <div class="greybox" style="margin: 15px 0;">
             <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                 <?php echo __('Note: This page lists all articles for "%project_name". For a list of global articles, see %all_pages', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName(), '%all_pages' => link_tag(make_url('publish_article', array('article_name' => "Special:AllPages")), 'Special:AllPages'))); ?>
             <?php else: ?>

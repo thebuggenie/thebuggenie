@@ -131,7 +131,7 @@
                 <form accept-charset="utf-8" action="index.php" method="post">
                     <input type="hidden" name="step" value="2">
                     <label for="start_install">Start the installation by pressing this button</label>
-                    <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+                    <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;" >
                     <input type="submit" onclick="$('start_install').hide();$('next_indicator').show();" id="start_install" value="Start installation" style="margin-left: 10px;">
                 </form>
             </div>
