@@ -1935,13 +1935,14 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 /* issue extra data (pain and votes) - includes search result styling */
 #viewissue_header_container
 {
-    margin: 10px; z-index: 110;
+    position: relative;
+    margin: 10px; z-index: 1000;
     -webkit-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
     -moz-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
     -o-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
     transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
 }
-#viewissue_header_container.fixed { position: fixed; top: 0; left: 0; margin: 0; z-index: 1000; }
+#viewissue_header_container.fixed { position: fixed; top: 0; left: 0; margin: 0; }
 #viewissue_header_container.fixed #issue_info_container .issue_info_backdrop { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
 #viewissue_header_container table.title_area {
     table-layout: fixed;
