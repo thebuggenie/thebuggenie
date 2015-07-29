@@ -16,8 +16,8 @@
             <title><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName() . ' ~ '. $searchtitle; ?></title>
             <link><?php echo make_url('home', array(), false); ?></link>
         </image>
-<?php if ($issues != false): ?>
-<?php foreach ($issues as $issue): ?>
+<?php if ($search_object->getNumberOfIssues()): ?>
+    <?php foreach ($search_object->getIssues() as $issue): ?>
         
         <item>
             <title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . strip_tags($issue->getTitle()); ?></title>
