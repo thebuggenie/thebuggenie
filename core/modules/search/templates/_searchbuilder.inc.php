@@ -174,8 +174,11 @@
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values" id="filter_export_options">
                                 <li onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon_savedsearch.png', array('class' => 'icon')) . __('Save search filters'); ?></li>
-                                <li onclick="TBG.Search.download('csv');">
-                                    <?php echo image_tag('icon_csv.png', array('class' => 'icon')) . __('Download as CSV file'); ?>
+                                <li onclick="TBG.Search.download('ods');">
+                                    <?php echo image_tag('icon_ods.png', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
+                                </li>
+                                <li onclick="TBG.Search.download('xlsx');">
+                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.ods)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
                                     <?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>

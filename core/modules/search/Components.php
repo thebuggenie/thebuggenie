@@ -115,6 +115,21 @@
             $this->prevgroup_id = (isset($this->prevgroup_id)) ? $this->prevgroup_id : 0;
         }
 
+        public function componentResults_normal_sheet()
+        {
+            $this->custom_columns = entities\CustomDatatype::getAll();
+            $this->cc = (isset($this->cc)) ? $this->cc : 0;
+            require realpath(THEBUGGENIE_VENDOR_PATH) . DS . 'phpoffice' . DS . 'phpexcel' . DS . 'Classes' . DS . 'PHPExcel.php';
+            $phpexcel = new \PHPExcel();
+            foreach ($phpexcel->getAllSheets() as $index => $sheet)
+            {
+                $phpexcel->removeSheetByIndex($index);
+            }
+
+            $this->phpexcel = $phpexcel;
+            $this->sheet = $phpexcel->createSheet();
+        }
+
         public function componentResults_todo()
         {
 
