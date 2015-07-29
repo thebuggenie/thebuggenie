@@ -165,6 +165,76 @@
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
+                <?php foreach ($customfields_list as $field => $info): ?>
+                    <?php if (($issue instanceof \thebuggenie\core\entities\Issue && ($issue->isUpdateable()) || isset($issues)) && $transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::CUSTOMFIELD_SET_PREFIX.$field) && !$transition->getAction(\thebuggenie\core\entities\WorkflowTransitionAction::CUSTOMFIELD_SET_PREFIX.$field)->hasTargetValue()): ?>
+                        <li id="transition_popup_<?php echo $field; ?>_div_<?php echo $transition->getID(); ?>">
+                            <label for="transition_popup_set_<?php echo $field; ?>_<?php echo $transition->getID(); ?>"><?php echo $info['title']; ?></label>
+                            <?php if (array_key_exists('choices', $info) && is_array($info['choices'])): ?>
+                                <select name="<?php echo $field; ?>_id" id="transition_popup_set_<?php echo $field; ?>_<?php echo $transition->getID(); ?>">
+                                    <?php foreach ($info['choices'] ?: array() as $choice): ?>
+                                        <?php if (!$transition->hasPostValidationRule(\thebuggenie\core\entities\WorkflowTransitionValidationRule::CUSTOMFIELD_VALIDATE_PREFIX.$field) || $transition->getPostValidationRule(\thebuggenie\core\entities\WorkflowTransitionValidationRule::CUSTOMFIELD_VALIDATE_PREFIX.$field)->isValueValid($choice->getID())): ?>
+                                            <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\CustomDatatypeOption && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                                <div id="customfield_<?php echo $field; ?>_calendar_container"></div>
+                                <script type="text/javascript">
+                                    require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                                        domReady(function () {
+                                            Calendar.setup({
+                                                dateField: '<?php echo $field; ?>_id',
+                                                parentElement: 'customfield_<?php echo $field; ?>_calendar_container'
+                                            });
+                                        });
+                                    });
+                                </script>
+                            <?php else: ?>
+                                <select name="<?php echo $field; ?>_id" id="transition_popup_set_<?php echo $field; ?>_<?php echo $transition->getID(); ?>">
+                                    <?php
+
+                                        switch ($info['type'])
+                                        {
+                                            case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
+                                                foreach ($project->getEditions() as $choice): ?>
+                                                    <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Edition && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                                <?php endforeach;
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
+                                                foreach ($project->getMilestones() as $choice): ?>
+                                                    <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Milestone && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                                <?php endforeach;
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                                foreach (\thebuggenie\core\entities\Status::getAll() as $choice): ?>
+                                                    <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Edition && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                                <?php endforeach;
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
+                                                foreach ($project->getComponents() as $choice): ?>
+                                                    <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Edition && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                                <?php endforeach;
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
+                                                foreach ($project->getBuilds() as $choice): ?>
+                                                    <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Edition && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
+                                                <?php endforeach;
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
+                                                ?>
+                                                <input type="text" name="<?php echo $field; ?>_id" placeholder="<?php echo $info['name'] ?>">
+                                                <?php
+                                                break;
+                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                                include_component('main/textarea', array('area_name' => $field.'_id', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => ''));
+                                                break;
+                                        }
+                                    ?>
+                                </select>
+                            <?php endif; ?>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
                 <?php if ($transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_USER_STOP_WORKING)): ?>
                     <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
                         <li id="transition_popup_stop_working_div_<?php echo $transition->getID(); ?>">
