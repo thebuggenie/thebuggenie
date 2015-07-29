@@ -165,6 +165,12 @@
                 case 'rss':
                     $this->setContentType('application/xml');
                     break;
+                case 'xlsx':
+                    $this->setContentType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    break;
+                case 'ods':
+                    $this->setContentType('application/vnd.oasis.opendocument.spreadsheet');
+                    break;
                 case 'json':
                     $this->setContentType('application/json');
                     break;

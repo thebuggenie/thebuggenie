@@ -292,7 +292,7 @@
                 $this->_templatename = ($request->hasParameter('template') && self::isTemplateValid($request['template'])) ? $request['template'] : 'results_normal';
                 $this->_templateparameter = $request['template_parameter'];
 
-                $this->_issues_per_page = $request->getParameter('issues_per_page', 50);
+                $this->_issues_per_page = (in_array($request->getRequestedFormat(), array('csv', 'xlsx', 'ods'))) ? 0 : $request->getParameter('issues_per_page', 50);
                 $this->_offset = $request->getParameter('offset', 0);
 
                 if ($request['quicksearch'])
