@@ -82,7 +82,7 @@
                     if ($request['direction'] == 'next') {
                         $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                     } else {
-                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                     }
                 } else {
                     if ($request['direction'] == 'next') {
