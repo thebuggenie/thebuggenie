@@ -183,9 +183,9 @@
             }
         }
 
-        public function __e($text)
+        public function __e($text, $replacements = array())
         {
-            return htmlentities($text, ENT_QUOTES, $this->getCharset());
+            return htmlentities($this->applyTextReplacements($text, $replacements), ENT_QUOTES, $this->getCharset());
         }
 
         public function addString($key, $translation)
@@ -259,15 +259,23 @@
                 }
             }
 
-            if (!empty($replacements))
-            {
-                $retstring = str_replace(array_keys($replacements), array_values($replacements), $retstring);
-            }
+            $retstring = $this->applyTextReplacements($text, $replacements);
+
             if ($html_decode) {
                 $retstring = html_entity_decode($retstring);
             }
 
             return $retstring;
+        }
+
+        protected function applyTextReplacements($text, $replacements)
+        {
+            if (!empty($replacements))
+            {
+                $text = str_replace(array_keys($replacements), array_values($replacements), $text);
+            }
+
+            return $text;
         }
 
         /**
