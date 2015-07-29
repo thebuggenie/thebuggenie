@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\vcs_integration\entities;
 
+    use thebuggenie\core\entities\Issue;
     use thebuggenie\core\helpers\TextParser,
         \thebuggenie\core\entities\Notification,
         \thebuggenie\core\entities\Project,
@@ -307,7 +308,7 @@
 
         private function _populateAffectedFiles()
         {
-            if ($this->_files == null)
+            if ($this->_files === null)
             {
                 $this->_files = tables\Files::getTable()->getByCommitID($this->_id);
             }
@@ -315,9 +316,16 @@
 
         private function _populateAffectedIssues()
         {
-            if ($this->_issues == null)
+            if ($this->_issues === null)
             {
-                $this->_issues = tables\IssueLinks::getTable()->getByCommitID($this->_id);
+                $issuelinks = tables\IssueLinks::getTable()->getByCommitID($this->_id);
+                $issues = array();
+                foreach ($issuelinks as $issuelink) {
+                    if ($issuelink->getIssue() instanceof Issue) {
+                        $issues[$issuelink->getIssue()->getId()] = $issuelink->getIssue();
+                    }
+                }
+                $this->_issues = $issues;
             }
         }
 

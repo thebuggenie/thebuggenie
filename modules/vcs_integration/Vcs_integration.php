@@ -86,9 +86,11 @@
 
         protected function _loadFixtures($scope)
         {
-            Commits::getTable()->createIndexes();
-            Files::getTable()->createIndexes();
-            IssueLinks::getTable()->createIndexes();
+            if ($scope->isDefault()) {
+                Commits::getTable()->createIndexes();
+                Files::getTable()->createIndexes();
+                IssueLinks::getTable()->createIndexes();
+            }
         }
 
         protected function _addListeners()
