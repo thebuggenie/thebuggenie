@@ -291,9 +291,8 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 header #header_userinfo { float: right; }
 header #header_userinfo li { margin-right: 0 !important; }
-header #header_userinfo li.temporarily_switched { background-color: #fec41e; box-shadow: inset 0 0 4px rgba(50, 50, 150, 0.8); -webkit-box-shadow: inset 0 0 4px rgba(50, 50, 150, 0.8); -moz-box-shadow: inset 0 0 4px rgba(50, 50, 150, 0.8); }
-header #header_userinfo li.temporarily_switched a { color: #333; }
-header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: #fec41e; }
+header #header_userinfo li.temporarily_switched { background-color: rgb(228, 156, 109); }
+header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: rgb(252, 240, 233); }
 #header_avatar { margin: -2px 5px 0 0; border-radius: 5px; }
 
 .userlink { font-weight: normal; margin-left: 5px; }
@@ -10425,6 +10424,27 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
     padding-top: 5px;
 }
 
+#issue_main #description_content hr,
+#issue_main #reproduction_steps_content hr
+{
+    border: none;
+    height: 1px;
+    color: #DCDCDC; /* old IE */
+    background-color: #DCDCDC; /* Modern Browsers */
+    margin: 10px 0;
+}
+
+#issue_main .issue_inline_description > ul
+{
+    margin-top: 5px;
+}
+
+#issue_main .issue_inline_description ul,
+#issue_main .issue_inline_description ol
+{
+    padding-left: 30px;
+}
+
 #issue_main #description_header img.undo,
 #issue_main #reproduction_steps_header img.undo
 {
@@ -11090,4 +11110,19 @@ div[id^='wiki_'][id$='_no_links']
 .main_area.article label[for=find_article_name]
 {
     margin-top: 3px;
+}
+
+.main_area.article hr
+{
+    border: none;
+    height: 1px;
+    color: #DCDCDC; /* old IE */
+    background-color: #DCDCDC; /* Modern Browsers */
+    margin: 10px 0;
+}
+
+.main_area.article ul,
+.main_area.article ol
+{
+    padding-left: 30px;
 }
