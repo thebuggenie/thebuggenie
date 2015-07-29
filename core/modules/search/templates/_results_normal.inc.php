@@ -146,10 +146,36 @@ foreach ($search_object->getIssues() as $issue):
                     <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
                         <?php echo (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()); ?>
                     </td>
-                    <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getLastUpdatedTime(); ?></span><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
-                    <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getPosted(); ?></span><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
+                    <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
+                    <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
                     <?php foreach ($custom_columns as $column): ?>
-                        <td class="smaller sc_<?php echo $column->getKey(); ?>" title="<?php echo ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 21) : $issue->getCustomField($column->getKey()); ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getCustomField($column->getKey()); ?></span><?php echo ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) ? tbg_formatTime($issue->getCustomField($column->getKey()), 20) : $issue->getCustomField($column->getKey()); ?></td>
+                        <td class="smaller sc_<?php echo $column->getKey(); ?>" <?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php
+                            $value = $issue->getCustomField($column->getKey());
+                            switch ($column->getType()) {
+                                case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                    echo tbg_formatTime($value, 20);
+                                    break;
+                                case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                                case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:
+                                echo ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $value->getValue() : '';
+                                    break;
+                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
+                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                    echo $value;
+                                    break;
+                                case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
+                                case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
+                                    echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
+                                    break;
+                            }
+                        ?></td>
                     <?php endforeach; ?>
                     <td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
                         <?php echo $issue->countUserComments(); ?>
