@@ -143,6 +143,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
     -moz-border-radius-bottomleft: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
+    overflow: hidden;
 }
 #user_notifications_list_wrapper {
     max-height : 500px;
@@ -3310,6 +3311,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 .whiteboard-issue .issue_more_actions_link_container {
     left: 16px;
+    right: initial;
     bottom: 2px;
     top: initial;
 }
@@ -4470,6 +4472,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues .results_header { font-weight: normal; font-size: 1.4em; padding: 0 0 5px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; position: relative; }
 .searchbuilder_filterstrip { background-color: rgba(200, 200, 200, 0.2); border-bottom: 1px solid rgba(200, 200, 200, 0.6); padding: 5px; }
 .searchbuilder_filterstrip input[type=image] { vertical-align: middle; margin: 0 5px; }
+.searchbuilder_filterstrip .interactive_dropdown > span.value { float: left; }
 .interactive_dropdown, .interactive_plus_button {
     display: inline-block;
     position: relative;
@@ -10846,16 +10849,6 @@ li#header_usermenu_link > div
     margin-left: 5px !important;
 }
 
-#user_notifications_container #user_notifications_count img
-{
-    background-image: url("/logos/thebuggenie/public/iconsets/oxygen_new/spinning_16_white.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    content: "";
-    width: 16px;
-    height: 16px;
-}
-
 #user_notifications_loading_indicator
 {
     margin-left: 85px;
@@ -10874,20 +10867,26 @@ li#header_usermenu_link > div
     margin-top: 5px !important;
 }
 
+#user_notifications > h1
+{
+    position: relative;
+    padding: 8px 5px;
+    margin: 0;
+}
+
 #user_notifications > h1:after
 {
     content: "";
-    width: 400px;
-    height: 18px;
-    margin-top: 9px;
-    margin-left: -200px;
-    display: block;
+    top: -3px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: "";
     position: absolute;
-    left: 50%;
     z-index: 1;
-    -webkit-box-shadow: inset 0 15px 20px -20px rgba(0,0,0,0.7);
-    -moz-box-shadow: inset 0 15px 20px -20px rgba(0,0,0,0.7);
-    box-shadow: inset 0 15px 20px -20px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 /** nano scroller **/
