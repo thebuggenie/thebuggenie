@@ -143,7 +143,7 @@
                 $this->_install($scope);
                 $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'entities' . DS . 'tables';
 
-                if (framework\Context::getScope()->isDefault() && is_dir($b2db_classpath))
+                if ($scope->isDefault() && is_dir($b2db_classpath))
                 {
                     $b2db_classpath_handle = opendir($b2db_classpath);
                     while ($table_class_file = readdir($b2db_classpath_handle))
