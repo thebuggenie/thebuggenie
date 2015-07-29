@@ -78,13 +78,18 @@
 
             do
             {
-                if ($request['direction'] == 'next')
-                {
-                    $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
-                }
-                else
-                {
-                    $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                if ($issue->getMilestone() instanceof entities\Milestone) {
+                    if ($request['direction'] == 'next') {
+                        $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    } else {
+                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    }
+                } else {
+                    if ($request['direction'] == 'next') {
+                        $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    } else {
+                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                    }
                 }
                 if (is_null($found_issue))
                     break;

@@ -909,6 +909,19 @@
             return $this->selectOne($crit);
         }
 
+        public function getNextIssueFromIssueIDAndMilestoneID($issue_id, $milestone_id, $only_open = false)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::MILESTONE_ORDER, $issue_id, Criteria::DB_GREATER_THAN);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $crit->addWhere(self::DELETED, false);
+            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+
+            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_ASC);
+
+            return $this->selectOne($crit);
+        }
+
         public function getPreviousIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
         {
             $crit = $this->getCriteria();
@@ -918,6 +931,19 @@
             if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
             $crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);
+
+            return $this->selectOne($crit);
+        }
+
+        public function getPreviousIssueFromIssueIDAndMilestoneID($issue_id, $milestone_id, $only_open = false)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::MILESTONE_ORDER, $issue_id, Criteria::DB_LESS_THAN);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $crit->addWhere(self::DELETED, false);
+            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+
+            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
 
             return $this->selectOne($crit);
         }
