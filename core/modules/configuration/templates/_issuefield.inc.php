@@ -24,7 +24,7 @@
                 <tr>
                     <?php if (in_array($type, array('status', 'category'))): ?>
                         <td style="font-size: 14px; width: 70px;">
-                            <input data-cancel-text="<?php echo __('Cancel'); ?>" data-choose-text="<?php echo __('Select this color'); ?>" type="color" class="color" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" value="<?php echo $item->getColor(); ?>">
+                            <input data-cancel-text="<?php echo __('Cancel'); ?>" data-choose-text="<?php echo __('Select this color'); ?>" type="hidden" class="color" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" value="<?php echo $item->getColor(); ?>">
                         </td>
                     <?php endif; ?>
                     <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>

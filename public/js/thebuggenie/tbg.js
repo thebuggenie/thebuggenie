@@ -4090,12 +4090,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     success: {
                         update: field + '_content',
                         callback: function () {
-                            jQuery('input[type=color]').each(function (index, element) {
+                            jQuery('input.color').each(function (index, element) {
                                 var input = jQuery(element);
                                 input.spectrum({
                                     cancelText: input.data('cancel-text'),
                                     chooseText: input.data('choose-text'),
-                                    clickoutFiresChange: true
+                                    preferredFormat: 'hex'
                                 });
                             });
                         }
