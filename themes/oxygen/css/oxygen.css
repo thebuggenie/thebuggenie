@@ -7018,12 +7018,7 @@ img[id^='edit_custom_type_'][id$='_indicator']
 
 .issuefield_item_option form table input[name=itemdata]
 {
-    width: 58px !important;
-}
-
-#config_issuefields form div:first-child
-{
-    top: 22px !important;
+    width: 24px;
 }
 
 #config_issuefields form label:nth-of-type(2)

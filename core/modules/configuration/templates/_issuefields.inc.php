@@ -18,7 +18,7 @@
             <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
                 <label for="add_option_<?php echo $type; ?>_name"><?php echo __('Add an option'); ?>:</label>
                 <input type="text" id="add_option_<?php echo $type; ?>_name" name="name" style="width: 200px;">
-                <?php if ($type == 'status'): ?>
+                <?php if (in_array($type, array('status', 'category'))): ?>
                     <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Color'); ?></label>
                     #<input type="text" id="add_option_<?php echo $type; ?>_itemdata" name="itemdata" style="width: 45px;">
                 <?php endif; ?>

@@ -1,7 +1,7 @@
 <li class="issuefield_item_option" id="item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>" style="clear: both; height: 24px;">
     <div id="item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>_content">
-        <?php if ($type == 'status'): ?>
-            <div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 16px; border: 1px solid rgba(0, 0, 0, 0.2); height: 16px; margin-right: 2px; float: left;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div>
+        <?php if (in_array($type, array('status', 'category'))): ?>
+            <div style="border: 0; background-color: <?php echo $item->getItemdata(); ?>; font-size: 1px; width: 16px; border: 1px solid rgba(0, 0, 0, 0.2); height: 16px; margin-right: 2px; float: left;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div>
         <?php endif; ?>
         <?php if (!$item->isBuiltin()): ?>
             <div style="width: 50px; display: inline;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_value"><?php echo $item->getValue(); ?></div>
@@ -22,9 +22,9 @@
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="TBG.Config.Issuefields.Options.update('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
             <table style="width: 100%;" cellpadding="0" cellspacing="0">
                 <tr>
-                    <?php if ($type == 'status'): ?>
+                    <?php if (in_array($type, array('status', 'category'))): ?>
                         <td style="font-size: 14px; width: 70px;">
-                            <input type="text" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" style="width: 45px;" value="<?php echo $item->getColor(); ?>">
+                            <input data-cancel-text="<?php echo __('Cancel'); ?>" data-choose-text="<?php echo __('Select this color'); ?>" type="color" class="color" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" value="<?php echo $item->getColor(); ?>">
                         </td>
                     <?php endif; ?>
                     <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>

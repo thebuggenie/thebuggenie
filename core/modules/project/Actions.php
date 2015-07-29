@@ -410,7 +410,7 @@
                         {
                             $labels[] = ($item instanceof entities\Datatype) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
                             framework\Context::loadLibrary('common');
-                            if ($item instanceof entities\Status)
+                            if ($item instanceof entities\common\Colorizable)
                                 $colors[] = tbg_hex_to_rgb($item->getColor());
                         }
                         else

@@ -1,5 +1,5 @@
-define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-ui', 'jquery.markitup'],
-    function (prototype, effects, controls, scriptaculous, jQuery) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-ui', 'jquery.markitup', 'spectrum'],
+    function (prototype, effects, controls, scriptaculous, jQuery, spectrum) {
 
         var TBG = {
             Core: {
@@ -4087,7 +4087,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             if ($(field + '_content').childElements().size() == 0) {
                 TBG.Main.Helpers.ajax(url, {
                     loading: {indicator: field + '_indicator'},
-                    success: {update: field + '_content'}
+                    success: {
+                        update: field + '_content',
+                        callback: function () {
+                            jQuery('input[type=color]').each(function (input) {
+                                jQuery(input).spectrum({
+                                    cancelText: input.data('cancel-text'),
+                                    chooseText: input.data('choose-text'),
+                                    clickoutFiresChange: true
+                                });
+                            });
+                        }
+                    }
                 });
             }
         }
