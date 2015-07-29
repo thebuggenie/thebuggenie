@@ -80,9 +80,9 @@
             {
                 if ($issue->getMilestone() instanceof entities\Milestone) {
                     if ($request['direction'] == 'next') {
-                        $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                        $found_issue = tables\Issues::getTable()->getNextIssueFromIssueMilestoneOrderAndMilestoneID($issue->getMilestoneOrder(), $issue->getMilestone()->getID(), $request['mode'] == 'open');
                     } else {
-                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndMilestoneID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+                        $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueMilestoneOrderAndMilestoneID($issue->getMilestoneOrder(), $issue->getMilestone()->getID(), $request['mode'] == 'open');
                     }
                 } else {
                     if ($request['direction'] == 'next') {

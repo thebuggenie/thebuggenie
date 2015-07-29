@@ -909,15 +909,16 @@
             return $this->selectOne($crit);
         }
 
-        public function getNextIssueFromIssueIDAndMilestoneID($issue_id, $milestone_id, $only_open = false)
+        public function getNextIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(self::MILESTONE_ORDER, $issue_id, Criteria::DB_GREATER_THAN);
+            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_GREATER_THAN);
             $crit->addWhere(self::MILESTONE, $milestone_id);
             $crit->addWhere(self::DELETED, false);
             if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
             $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_ASC);
+            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
 
             return $this->selectOne($crit);
         }
@@ -935,15 +936,16 @@
             return $this->selectOne($crit);
         }
 
-        public function getPreviousIssueFromIssueIDAndMilestoneID($issue_id, $milestone_id, $only_open = false)
+        public function getPreviousIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(self::MILESTONE_ORDER, $issue_id, Criteria::DB_LESS_THAN);
+            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_LESS_THAN);
             $crit->addWhere(self::MILESTONE, $milestone_id);
             $crit->addWhere(self::DELETED, false);
             if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
             $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
+            $crit->addOrderBy(self::ID, Criteria::SORT_DESC);
 
             return $this->selectOne($crit);
         }

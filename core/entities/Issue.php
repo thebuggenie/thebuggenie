@@ -5893,4 +5893,9 @@
             return $users;
         }
 
+        public function getMilestoneOrder()
+        {
+            return $this->_milestone_order;
+        }
+
     }
