@@ -4092,8 +4092,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         callback: function () {
                             jQuery('input[type=color]').each(function (input) {
                                 jQuery(input).spectrum({
-                                    cancelText: input.data('cancel-text'),
-                                    chooseText: input.data('choose-text'),
+                                    cancelText: jQuery(input).data('cancel-text'),
+                                    chooseText: jQuery(input).data('choose-text'),
                                     clickoutFiresChange: true
                                 });
                             });
