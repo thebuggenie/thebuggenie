@@ -428,7 +428,7 @@
 
         protected function _retrieveLinksAndCategoriesFromContent($options = array())
         {
-            $parser = new \thebuggenie\core\helpers\TextParser(html_entity_decode($this->_content));
+            $parser = new \thebuggenie\core\helpers\TextParser($this->_content);
             $options['no_code_highlighting'] = true;
             $parser->doParse($options);
             return array($parser->getInternalLinks(), $parser->getCategories());
