@@ -44,18 +44,14 @@
     </div>
     <br style="clear: both;">
 <?php endif; ?>
-<?php if (!$embedded && $show_article && $article->getContentSyntax() == \thebuggenie\core\framework\Settings::SYNTAX_MW): ?>
+<?php if (!$embedded && $show_article && count($article->getCategories()) > 0 && $article->getContentSyntax() == \thebuggenie\core\framework\Settings::SYNTAX_MW): ?>
     <br style="clear: both;">
     <div class="greybox categories">
-        <b><?php echo __('Categories:'); ?></b>
-        <?php if (count($article->getCategories()) > 0): ?>
-            <?php $category_links = array(); ?>
-            <?php foreach ($article->getCategories() as $category): ?>
-                <?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
-            <?php endforeach; ?>
-            <?php echo join(', ', $category_links); ?>
-        <?php else: ?>
-            <span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
-        <?php endif; ?>
+        <?php echo __('Categories:'); ?>
+        <?php $category_links = array(); ?>
+        <?php foreach ($article->getCategories() as $category): ?>
+            <?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
+        <?php endforeach; ?>
+        <?php echo join(', ', $category_links); ?>
     </div>
 <?php endif; ?>
