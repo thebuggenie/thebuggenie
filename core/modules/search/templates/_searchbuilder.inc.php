@@ -178,7 +178,7 @@
                                     <?php echo image_tag('icon_ods.png', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('xlsx');">
-                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.ods)'); ?>
+                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
                                     <?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>
