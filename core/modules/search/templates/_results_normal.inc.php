@@ -110,7 +110,7 @@ foreach ($search_object->getIssues() as $issue):
                     </td>
                     <td class="sc_status<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
                         <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
-                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name" style="color: <?php echo $issue->getStatus()->getTextColor(); ?>;"><?php echo $issue->getStatus()->getName(); ?></span></div>
                         <?php else: ?>
                             -
                         <?php endif; ?>
