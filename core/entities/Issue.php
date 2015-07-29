@@ -937,11 +937,11 @@
          *
          * @return boolean
          */
-        public function hasAccess()
+        public function hasAccess($target_user = null)
         {
             \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
-            $user = framework\Context::getUser();
+            $user = ($target_user === null) ? framework\Context::getUser() : $user;
             if (!$user->isGuest() && $user->isAuthenticated())
             {
                 $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
