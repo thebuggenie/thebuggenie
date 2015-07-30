@@ -1,5 +1,5 @@
 <?php foreach ($search_object->getIssues() as $issue): ?>
-    <?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\Actions::resultGrouping($issue, $search_object->getGroupby(), $cc, $prevgroup_id); ?>
+    <?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupby(), $cc, $prevgroup_id); ?>
     <?php if ($showtablestart && $cc > 1): ?>
         <?php echo '</tbody></table>'; ?>
     <?php endif; ?>

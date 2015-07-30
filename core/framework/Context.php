@@ -2484,7 +2484,7 @@ class Context
                 Logging::log('Elevated permissions required', 'main', Logging::LEVEL_NOTICE);
                 if (self::getRouting()->getCurrentRouteName() != 'elevated_login')
                     self::setMessage('elevated_login_message_err', self::geti18n()->__('Please re-enter your password to continue'));
-                $actionObject = new \thebuggenie\core\modules\main\Actions();
+                $actionObject = new \thebuggenie\core\modules\main\controllers\Main();
                 $moduleName = 'main';
                 $moduleMethod = 'elevatedLogin';
             }

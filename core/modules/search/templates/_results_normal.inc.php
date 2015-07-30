@@ -4,7 +4,7 @@ $current_count = 0;
 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 $current_spent_time = $current_estimated_time;
 foreach ($search_object->getIssues() as $issue):
-    list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\Actions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
+    list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
     if (($showtablestart || $showheader) && $cc > 1):
                 echo '</tbody></table>';
                 include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));

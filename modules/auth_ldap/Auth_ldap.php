@@ -56,7 +56,7 @@
 
         protected function _addListeners()
         {
-            framework\Event::listen('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
+            framework\Event::listen('core', 'thebuggenie\core\modules\configuration\controllers\Main\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
         }
 
         public function postConfigSettings(framework\Request $request)

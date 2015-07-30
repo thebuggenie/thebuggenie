@@ -4791,7 +4791,7 @@ class Main extends framework\Action
                     return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
                 case $action_option == 'details':
                     \thebuggenie\core\framework\Context::performAction(
-                        new \thebuggenie\core\modules\project\Actions,
+                        new \thebuggenie\core\modules\project\controllers\Main(),
                         'project',
                         'MilestoneDetails'
                     );
