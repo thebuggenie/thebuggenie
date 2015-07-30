@@ -201,6 +201,8 @@ header #user_notifications_count.unread + img { opacity: 1; }
 #user_notifications h1 a {
     float: right;
     font-size: 1em;
+    position: relative;
+    z-index: 2;
 }
 #user_notifications_ist > li h1 {
     font-size: 1em;
