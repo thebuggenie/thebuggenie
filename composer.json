@@ -26,6 +26,7 @@
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "phpoffice/phpexcel": "~1.8",
+        "kriswallsmith/assetic": "~1.2",
         "ext-gd" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",

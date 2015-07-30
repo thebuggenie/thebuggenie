@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\modules\vcs_integration;
+    namespace thebuggenie\modules\vcs_integration\controllers;
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities\Project,
@@ -22,7 +22,7 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         public function getAuthenticationMethodForAction($action)

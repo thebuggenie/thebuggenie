@@ -4,9 +4,8 @@
      * Configuration for theme
      */
 
-    $tbg_response->addStylesheet('oxygen/oxygen.css');
+    $tbg_response->addStylesheet('assets/css/theme.css');
     \thebuggenie\core\framework\Settings::setIconsetName('oxygen');
-
 ?>
 <style>
     #tbg3_username, #fieldusername { background-image: url('<?php echo $webroot . 'iconsets/' . \thebuggenie\core\framework\Settings::getIconsetName() . '/'; ?>user_mono.png'); }

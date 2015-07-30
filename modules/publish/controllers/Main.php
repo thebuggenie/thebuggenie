@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\modules\publish;
+    namespace thebuggenie\modules\publish\controllers;
 
     use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\Article,
@@ -12,7 +12,7 @@
      * @property Article $article
      *
      */
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         protected function _getArticleNameDetails($original_article_name)

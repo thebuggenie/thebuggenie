@@ -4,5 +4,5 @@
      * Configuration for theme
      */
 
-    \thebuggenie\core\framework\Context::getResponse()->addStylesheet('firehouse/firehouse.css');
+    $tbg_response->addStylesheet('assets/css/theme.css');
     \thebuggenie\core\framework\Settings::setIconsetName('oxygen');

@@ -41,11 +41,12 @@
 
         /**
          * Handles an uploaded file, stores it to the correct folder, adds an entry
-         * to the database and returns a \thebuggenie\core\entities\File object
+         * to the database and returns a \thebuggenie\core\entities\File object.
          *
          * @param string $key The request parameter the file was sent as
          *
-         * @return \thebuggenie\core\entities\File The File object
+         * @return File The File object
+         * @throws \Exception
          */
         public function handleUpload($key)
         {

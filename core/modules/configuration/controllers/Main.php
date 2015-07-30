@@ -1,12 +1,12 @@
 <?php
 
-    namespace thebuggenie\core\modules\configuration;
+    namespace thebuggenie\core\modules\configuration\controllers;
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables;
 
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         public function getAuthenticationMethodForAction($action)

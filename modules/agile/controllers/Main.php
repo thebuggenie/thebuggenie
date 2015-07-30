@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\modules\agile;
+    namespace thebuggenie\modules\agile\controllers;
 
     use thebuggenie\core\framework,
         thebuggenie\core\helpers;
@@ -10,7 +10,7 @@
      *
      * @Routes(name_prefix="agile_", url_prefix="/:project_key/agile")
      */
-    class Actions extends helpers\ProjectActions
+    class Main extends helpers\ProjectActions
     {
 
         /**

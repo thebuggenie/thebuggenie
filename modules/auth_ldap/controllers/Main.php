@@ -1,13 +1,13 @@
 <?php
 
-    namespace thebuggenie\modules\auth_ldap;
+    namespace thebuggenie\modules\auth_ldap\controllers;
 
     use thebuggenie\core\framework;
 
     /**
      * actions for the ldap_authentication module
      */
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         /**
