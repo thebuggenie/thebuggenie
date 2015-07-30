@@ -2501,6 +2501,9 @@
 
                             $role->addPermission($p);
                         }
+                        framework\Context::clearPermissionsCache();
+
+                        framework\Context::cacheAllPermissions();
                         return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
                     }
                     return $this->renderComponent('configuration/rolepermissionsedit', array('role' => $role));

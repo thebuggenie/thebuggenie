@@ -172,7 +172,7 @@
             $this->_populatePermissions();
             $permission_id = $permission->getID();
             unset($this->_permissions[$permission_id]);
-            tables\Permissions::getTable()->deleteRolePermission($this->getID(), $permission->getPermission(), $permission->getTargetID());
+            tables\Permissions::getTable()->deleteRolePermission($this->getID(), $permission->getPermission(), $this->getProject() instanceof \thebuggenie\core\entities\Project ? $this->getProject()->getID() : '');
             $permission->delete();
         }
 
@@ -192,7 +192,7 @@
             {
                 $this->_permissions[$permission->getID()] = $permission;
             }
-            tables\Permissions::getTable()->addRolePermission($this->getID(), $permission);
+            tables\Permissions::getTable()->addRolePermission($this, $permission);
         }
 
         /**

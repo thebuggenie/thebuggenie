@@ -122,4 +122,25 @@
             return $roles;
         }
 
+        public function getTeamsByRoleID($role_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::TEAM_ID, 'tid');
+            $crit->addWhere(self::ROLE_ID, $role_id);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $teams = array();
+
+            if ($res = $this->doSelect($crit, 'none'))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $tid = $row['tid'];
+                    if (!array_key_exists($tid, $teams))
+                        $teams[$tid] = new \thebuggenie\core\entities\Team($tid);
+                }
+            }
+
+            return $teams;
+        }
+
     }
