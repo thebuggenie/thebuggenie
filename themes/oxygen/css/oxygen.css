@@ -6346,6 +6346,11 @@ form[id^='role_'][id$='_form'] ul li:hover
     background-color: rgba(0, 0, 0, 0.05);
 }
 
+form[id^='role_'][id$='_form'] ul li a:hover
+{
+    border-bottom: none;
+}
+
 
 /* Backdrop -> Permission details */
 
