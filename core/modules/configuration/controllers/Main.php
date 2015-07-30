@@ -1,18 +1,18 @@
 <?php
 
-    namespace thebuggenie\core\modules\configuration;
+    namespace thebuggenie\core\modules\configuration\controllers;
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables;
 
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         public function getAuthenticationMethodForAction($action)
         {
             $value = (framework\Settings::isElevatedLoginRequired()) ? framework\Action::AUTHENTICATION_METHOD_ELEVATED : framework\Action::AUTHENTICATION_METHOD_CORE;
-            $event = framework\Event::createNew('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', $action);
+            $event = framework\Event::createNew('core', 'thebuggenie\core\modules\configuration\controllers\Main\getAuthenticationMethodForAction', $action);
             $event->setReturnValue($value);
             $event->trigger();
 
@@ -2501,6 +2501,9 @@
 
                             $role->addPermission($p);
                         }
+                        framework\Context::clearPermissionsCache();
+
+                        framework\Context::cacheAllPermissions();
                         return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
                     }
                     return $this->renderComponent('configuration/rolepermissionsedit', array('role' => $role));

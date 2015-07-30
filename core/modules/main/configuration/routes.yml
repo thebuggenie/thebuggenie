@@ -148,7 +148,7 @@ set_state:
 logout:
     route: /logout
     module: main
-    action: logout
+    action: Common::logout
     parameters: [ ]
     csrf_enabled: false
 
@@ -190,7 +190,7 @@ get_temp_identifiable:
 about:
     route: /about
     module: main
-    action: about
+    action: Common::about
     parameters: [ ]
     csrf_enabled: false
 
@@ -647,3 +647,28 @@ issue_moreactions:
     action: issueMoreactions
     parameters: [ ]
     csrf_enabled: false
+
+asset_js:
+    route: '/js/:theme_name/:js'
+    module: main
+    action: Asset::resolve
+
+asset_module_js:
+    route: '/js/module/:module_name/:js'
+    module: main
+    action: Asset::resolve
+
+asset_css:
+    route: '/css/:theme_name/:css'
+    module: main
+    action: Asset::resolve
+
+asset_css_unthemed:
+    route: '/css/:css'
+    module: main
+    action: Asset::resolve
+
+asset_js_unthemed:
+    route: '/js/:js'
+    module: main
+    action: Asset::resolve
