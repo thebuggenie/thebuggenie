@@ -355,7 +355,7 @@
                         if ($this->getTargetValue())
                             $issue->setCustomField($customkey, $this->getTargetValue());
                         else
-                            $issue->setCustomField($customkey, $request[$customkey + '_id']);
+                            $issue->setCustomField($customkey, $request[$customkey . '_id']);
                     }
                     else
                     {

@@ -62,7 +62,13 @@
                 <td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
                     <?php if ($action->hasValidTarget()): ?>
                         <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS): ?>
-                            <?php echo __('Set status to %status', array('%status' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\Status::getB2DBTable()->selectById((int) $action->getTargetValue())->getName() : __('Status provided by user')) . '</span>')); ?>
+                            <?php
+                                $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\Status::getB2DBTable()->selectById((int) $action->getTargetValue()) : '';
+                                if ($target instanceof \thebuggenie\core\entities\Status)
+                                    echo __('Set status to %status', array('%status' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;"><span class="status_badge" style="background-color: '.$target->getColor().'; color: '.$target->getTextColor().';">' . $target->getName() . '</span></span>'));
+                                else
+                                    echo __('Set status to %status', array('%status' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . __('Status provided by user') . '</span>'));
+                            ?>
                         <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
                             <?php echo __('Set priority to %priority', array('%priority' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\Priority::getB2DBTable()->selectById((int) $action->getTargetValue())->getName() : __('Priority provided by user')) . '</span>')); ?>
                         <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT): ?>
@@ -112,26 +118,33 @@
                                     echo '</div>';
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Clients::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Components::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Components::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Editions::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Editions::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\ListTypes::getTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" class="status_badge" style="background-color: '.$target->getColor().'; color: '.$target->getTextColor().';">' . (($action->getTargetValue()) ? $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
                                 default:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? \thebuggenie\core\entities\CustomDatatypeOption::getB2DBTable()->selectById((int) $action->getTargetValue())->getName() : __('Value provided by user')) . '</span>'));
+                                    $target = ($action->getTargetValue()) ? \thebuggenie\core\entities\CustomDatatypeOption::getB2DBTable()->selectById((int) $action->getTargetValue()) : null;
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? $target->getName() : __('Value provided by user')) . '</span>'));
                                     break;
                             }
                             ?>
@@ -175,30 +188,11 @@
                                     elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
                                         $options = \thebuggenie\core\entities\Reproducability::getAll();
                                     elseif ($action->isCustomAction()) {
-                                        switch (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType()) {
-                                            case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
-                                                $options = (new \thebuggenie\core\entities\tables\Builds)->selectAll();
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
-                                                $options = (new \thebuggenie\core\entities\tables\Components)->selectAll();
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
-                                                $options = (new \thebuggenie\core\entities\tables\Editions)->selectAll();
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
-                                                $options = (new \thebuggenie\core\entities\tables\Milestones)->selectAll();
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
-                                                $options = \thebuggenie\core\entities\Status::getAll();
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD:
-                                                $options = array();
-                                                break;
-                                            default:
-                                                if (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->hasCustomOptions()) {
-                                                    $options = \thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getOptions();
-                                                }
-                                                break;
+                                        $customfield = \thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType());
+                                        if ($customfield->getType() == \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD) {
+                                            $options = array();
+                                        } else {
+                                            $options = $customfield->getOptions();
                                         }
                                     }
 
@@ -216,6 +210,8 @@
                                                 <?php echo __('Resolution provided by user'); ?>
                                             <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
                                                 <?php echo __('Reproducability provided by user'); ?>
+                                            <?php elseif ($action->isCustomAction()): ?>
+                                                <?php echo __('Value provided by user'); ?>
                                             <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
                                                 <?php echo __('User or team specified during transition'); ?>
                                             <?php endif; ?>
@@ -240,6 +236,8 @@
                                                 <option value="<?php echo ($option instanceof \thebuggenie\core\entities\common\Identifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
                                                     <?php if ($option instanceof \thebuggenie\core\entities\User): ?>
                                                         <?php echo $option->getNameWithUsername(); ?>
+                                                    <?php elseif ($option instanceof \thebuggenie\core\entities\Milestone || $option instanceof \thebuggenie\core\entities\Build || $option instanceof \thebuggenie\core\entities\Component): ?>
+                                                        <?php echo $option->getProject()->getName() . ' - ' . $option->getName(); ?>
                                                     <?php elseif ($option instanceof \thebuggenie\core\entities\common\Identifiable): ?>
                                                         <?php echo $option->getName(); ?>
                                                     <?php else: ?>

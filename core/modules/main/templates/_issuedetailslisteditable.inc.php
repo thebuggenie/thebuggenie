@@ -438,7 +438,9 @@
                                                                                         'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
                             <?php else: ?>
                                 <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
-                                    <li class="dropdown_header"><?php echo $info['change_header']; ?></li>
+                                    <li class="header"><?php echo $info['change_header']; ?></li>
+                                    <li id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
+                                    <li id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></li>
                                     <?php if (array_key_exists('choices', $info) && is_array($info['choices'])): ?>
                                         <li>
                                             <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
@@ -550,8 +552,6 @@
                                         }
 
                                     endif; ?>
-                                    <li id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
-                                    <li id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></li>
                                 </ul>
                             <?php endif; ?>
                         <?php endif; ?>

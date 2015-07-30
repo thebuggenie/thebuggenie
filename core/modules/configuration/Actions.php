@@ -1971,13 +1971,15 @@
                                     $text = ($this->action->getTargetValue()) ? tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Reproducability specified by user');
                                     break;
                                 case entities\WorkflowTransitionAction::ACTION_SET_STATUS:
-                                    $text = ($this->action->getTargetValue()) ? tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Status specified by user');
+                                    $target = ($this->action->getTargetValue()) ? tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                    $text = ($this->action->getTargetValue()) ? '<span class="status_badge" style="background-color: '.$target->getColor().'; color: '.$target->getTextColor().';">'.$target->getName().'</span>' : $this->getI18n()->__('Status provided by user');
                                     break;
                                 case entities\WorkflowTransitionAction::ACTION_SET_PRIORITY:
                                     $text = ($this->action->getTargetValue()) ? tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Priority specified by user');
                                     break;
                                 case entities\WorkflowTransitionAction::ACTION_SET_MILESTONE:
-                                    $text = ($this->action->getTargetValue()) ? tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Milestone specified by user');
+                                    $target = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                    $text = ($this->action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : $this->getI18n()->__('Milestone specified by user');
                                     break;
                                 case entities\WorkflowTransitionAction::CUSTOMFIELD_SET_PREFIX . $this->action->getCustomActionType():
                                     switch (\thebuggenie\core\entities\CustomDatatype::getByKey($this->action->getCustomActionType())->getType()) {
@@ -2000,27 +2002,32 @@
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
                                             if (is_numeric($this->action->getTargetValue())) {
-                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                                $target = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Builds::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                                $text = ($this->action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : $this->getI18n()->__('Value provided by user');
                                             }
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
                                             if (is_numeric($this->action->getTargetValue())) {
-                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Components::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                                $target = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Components::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                                $text = ($this->action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : $this->getI18n()->__('Value provided by user');
                                             }
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
                                             if (is_numeric($this->action->getTargetValue())) {
-                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Editions::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                                $target = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Editions::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                                $text = ($this->action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : $this->getI18n()->__('Value provided by user');
                                             }
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
                                             if (is_numeric($this->action->getTargetValue())) {
-                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                                $target = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                                $text = ($this->action->getTargetValue()) ? $target->getProject()->getName() . ' - ' . $target->getName() : $this->getI18n()->__('Value provided by user');
                                             }
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
                                             if (is_numeric($this->action->getTargetValue())) {
-                                                $text = ($this->action->getTargetValue()) ? \thebuggenie\core\entities\tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue())->getName() : $this->getI18n()->__('Value provided by user');
+                                                $target = ($this->action->getTargetValue()) ? tables\ListTypes::getTable()->selectById((int) $this->action->getTargetValue()) : null;
+                                                $text = ($this->action->getTargetValue()) ? '<span class="status_badge" style="background-color: '.$target->getColor().'; color: '.$target->getTextColor().';">'.$target->getName().'</span>' : $this->getI18n()->__('Value provided by user');
                                             }
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
@@ -2074,24 +2081,41 @@
                         }
                         elseif ($mode == 'update_validation_rule')
                         {
-                            $this->rule = tables\WorkflowTransitionValidationRules::getTable()->selectById((int) $request['rule_id']);
+                            $rule = tables\WorkflowTransitionValidationRules::getTable()->selectById((int) $request['rule_id']);
                             $text = null;
-                            switch ($this->rule->getRule())
-                            {
-                                case entities\WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
-                                    $this->rule->setRuleValue($request['rule_value']);
-                                    $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : $this->getI18n()->__('Unlimited');
-                                    break;
-                                case entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
-                                case entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
-                                case entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
-                                case entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
-                                case entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
-                                    $this->rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
-                                    $text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
-                                    break;
+                            if ($rule->isCustom()) {
+                                switch ($rule->getCustomType()) {
+                                    case entities\CustomDatatype::RADIO_CHOICE:
+                                    case entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                                    case entities\CustomDatatype::TEAM_CHOICE:
+                                    case entities\CustomDatatype::STATUS_CHOICE:
+                                    case entities\CustomDatatype::MILESTONE_CHOICE:
+                                    case entities\CustomDatatype::CLIENT_CHOICE:
+                                    case entities\CustomDatatype::COMPONENTS_CHOICE:
+                                    case entities\CustomDatatype::EDITIONS_CHOICE:
+                                    case entities\CustomDatatype::RELEASES_CHOICE:
+                                        $rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
+                                        $text = ($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
+                                        break;
+                                }
+                            } else {
+                                switch ($rule->getRule()) {
+                                    case entities\WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+                                        $rule->setRuleValue($request['rule_value']);
+                                        $text = ($rule->getRuleValue()) ? $rule->getRuleValue() : $this->getI18n()->__('Unlimited');
+                                        break;
+                                    case entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+                                    case entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+                                    case entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+                                    case entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
+                                    case entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+                                        $rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
+                                        $text = ($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
+                                        break;
+                                }
                             }
-                            $this->rule->save();
+                            $rule->save();
+                            $this->rule = $rule;
                             return $this->renderJSON(array('content' => $text));
                         }
                     }

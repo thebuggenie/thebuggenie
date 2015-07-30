@@ -941,7 +941,7 @@
         {
             \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
-            $user = ($target_user === null) ? framework\Context::getUser() : $user;
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
             if (!$user->isGuest() && $user->isAuthenticated())
             {
                 $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');

@@ -223,7 +223,7 @@
                 <?php include_component('publish/articledisplay', array('article' => $introarticle, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
             <?php endif; ?>
             <?php foreach ($issuetypes as $issuetype): ?>
-                <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
+                <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
                 <?php if (isset($board) && $issuetype->getID() == $board->getEpicIssuetypeID()) continue; ?>
                 <a class="button button-silver" data-key="<?php echo $issuetype->getKey(); ?>" data-id="<?php echo $issuetype->getID(); ?>" href="javascript:void(0);">
                     <?php echo image_tag($issuetype->getIcon() . '.png'); ?>

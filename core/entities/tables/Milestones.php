@@ -92,4 +92,16 @@
             return $this->select($crit);
         }
 
+        public function selectAll()
+        {
+            $crit = $this->getCriteria();
+
+            $crit->addJoin(Projects::getTable(), Projects::ID, self::PROJECT);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addOrderBy(Projects::NAME, Criteria::SORT_ASC);
+            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
+
+            return $this->select($crit);
+        }
+
     }
