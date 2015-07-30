@@ -793,7 +793,7 @@ a.not_clickable:hover { cursor: default; }
 .tab_menu .tab_menu_dropdown#issues_menu { width: 300px; }
 .tab_menu .tab_menu_dropdown#issues_menu a { width: 290px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .tab_menu .tab_menu_dropdown#wiki_dropdown_menu { width: 300px; }
-.tab_menu .tab_menu_dropdown#wiki_dropdown_menu input[type=search] { width: 290px; box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); border-radius: 2px; font-size: 1em; padding: 4px; }
+.tab_menu .tab_menu_dropdown#wiki_dropdown_menu input[type=search] { width: calc(100% - 5px); box-sizing: border-box; box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); border-radius: 2px; font-size: 1em; padding: 4px; }
 #header_userinfo .tab_menu_dropdown { top: 25px; right: 0; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 0px; border-top-left-radius: 0px; -moz-border-radius-topleft: 0px; }
 .user_menu_dropdown a { font-size: 0.9em; }
 .user_menu_dropdown .header:first-child { padding-top: 0; margin-top: 0 !important; }
