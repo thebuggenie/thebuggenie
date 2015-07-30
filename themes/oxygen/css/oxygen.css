@@ -4265,7 +4265,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     -webkit-transition: color 0.3s ease;
     transition: color 0.3s ease;
 }
-.dashboard_view_content .project_role {font-weight: normal; margin: 5px 0; width: 290px;}
+.dashboard_view_content .project_role {font-weight: normal; margin: 5px 0; font-size: 0.9em; }
 .project_role .label {font-weight: bold; float: left; margin: 0 10px 0 0;}
 .project_role .value {width: auto; display: table-cell; clear: none; padding: 0 10px 0 0;}
 
@@ -9119,7 +9119,8 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 
 .dashboard_view_content #project_description {
     margin-bottom: 10px;
-    font-size: 1em;
+    font-size: 0.9em;
+    line-height: 1.5;
 }
 
 .dashboard_view_content .button.button-silver.dash {
@@ -9513,6 +9514,7 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
 {
     display: inline-block;
     padding: 0 10px 5px 0;
+    font-size: 0.9em;
 }
 
 #find_issues a.dynamic_menu_link
