@@ -595,8 +595,8 @@
           if (BROWSER_SCROLLBAR_WIDTH === 0 && isFFWithBuggyScrollbar()) {
             currentPadding = window.getComputedStyle(this.content, null).getPropertyValue('padding-right').replace(/\D+/g, '');
             cssRule = {
-              marginRight: -14,
-              paddingRight: +currentPadding + 14
+              // marginRight: -14,
+              // paddingRight: +currentPadding + 14
             };
           } else if (BROWSER_SCROLLBAR_WIDTH) {
             cssRule = {
