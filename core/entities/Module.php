@@ -4,6 +4,7 @@
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\entities\tables\Modules;
+    use thebuggenie\core\entities\tables\Settings;
     use thebuggenie\core\framework;
 
     /**
@@ -143,7 +144,7 @@
                 $this->_install($scope);
                 $b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'entities' . DS . 'tables';
 
-                if ($scope->isDefault() && is_dir($b2db_classpath))
+                if ($scope == framework\Settings::getDefaultScopeID() && is_dir($b2db_classpath))
                 {
                     $b2db_classpath_handle = opendir($b2db_classpath);
                     while ($table_class_file = readdir($b2db_classpath_handle))

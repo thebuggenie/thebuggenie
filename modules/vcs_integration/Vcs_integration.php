@@ -86,7 +86,7 @@
 
         protected function _loadFixtures($scope)
         {
-            if ($scope->isDefault()) {
+            if ($scope == framework\Settings::getDefaultScopeID()) {
                 Commits::getTable()->createIndexes();
                 Files::getTable()->createIndexes();
                 IssueLinks::getTable()->createIndexes();
