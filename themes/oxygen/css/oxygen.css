@@ -6341,6 +6341,11 @@ img[id^='role_'][id$='_form_indicator']
     margin-top: 14px;
 }
 
+form[id^='role_'][id$='_form'] ul li:hover
+{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 
 /* Backdrop -> Permission details */
 
@@ -6928,6 +6933,12 @@ span[id^='update_'][id$='_choices_indicator']
 {
     display: block;
     margin-top: 5px;
+}
+
+#workflow_transition_actions_validations .status_badge
+{
+    padding: 2px 3px;
+    margin: 4px 0;
 }
 
 
