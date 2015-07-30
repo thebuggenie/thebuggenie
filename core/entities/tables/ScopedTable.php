@@ -46,6 +46,21 @@
             return $row;
         }
 
+        public function selectAll()
+        {
+            if (defined('static::SCOPE'))
+            {
+                $crit = $this->getCriteria();
+                $crit->addWhere(static::SCOPE, $this->getCurrentScopeID());
+                $results = $this->select($crit);
+            }
+            else
+            {
+                $results = parent::selectAll();
+            }
+            return $results;
+        }
+
         protected function _setup($b2db_name, $id_column)
         {
             parent::_setup($b2db_name, $id_column);

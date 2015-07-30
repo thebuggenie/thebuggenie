@@ -186,17 +186,34 @@
         {
             if ($this->_options === null)
             {
-                $this->_b2dbLazyload('_options');
+                if ($this->hasCustomOptions()) {
+                    $this->_b2dbLazyload('_options');
+                } else {
+                    switch ($this->getType()) {
+                        case self::RELEASES_CHOICE:
+                            $this->_options = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getBuilds() : \thebuggenie\core\entities\tables\Builds::getTable()->selectAll();
+                            break;
+                        case self::COMPONENTS_CHOICE:
+                            $this->_options = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getComponents() : \thebuggenie\core\entities\tables\Components::getTable()->selectAll();
+                            break;
+                        case self::EDITIONS_CHOICE:
+                            $this->_options = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getEditions() : \thebuggenie\core\entities\tables\Editions::getTable()->selectAll();
+                            break;
+                        case self::MILESTONE_CHOICE:
+                            $this->_options = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getMilestonesForIssues() : \thebuggenie\core\entities\tables\Milestones::getTable()->selectAll();
+                            break;
+                        case self::STATUS_CHOICE:
+                            $this->_options = \thebuggenie\core\entities\Status::getAll();
+                            break;
+                    }
+                }
             }
         }
 
         public function getOptions()
         {
-            if ($this->hasCustomOptions())
-            {
-                $this->_populateOptions();
-                return $this->_options;
-            }
+            $this->_populateOptions();
+            return $this->_options;
         }
 
         public function createNewOption($name, $value, $itemdata = null)

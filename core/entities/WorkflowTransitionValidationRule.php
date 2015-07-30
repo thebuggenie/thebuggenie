@@ -2,7 +2,15 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\common\Identifiable;
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\tables\Builds;
+    use thebuggenie\core\entities\tables\Clients;
+    use thebuggenie\core\entities\tables\Components;
+    use thebuggenie\core\entities\tables\Editions;
+    use thebuggenie\core\entities\tables\ListTypes;
+    use thebuggenie\core\entities\tables\Milestones;
+    use thebuggenie\core\entities\tables\Teams;
     use thebuggenie\core\framework;
 
     /**
@@ -173,8 +181,10 @@
 
         public function getRuleValueAsJoinedString()
         {
-            $is_core = true;
-            $is_custom = false;
+            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID));
+            $is_custom = $this->isCustom();
+            $customtype = $this->getCustomType();
+
             if ($this->_name == self::RULE_STATUS_VALID)
             {
                 $fieldname = '\thebuggenie\core\entities\Status';
@@ -195,11 +205,7 @@
             {
                 $fieldname = '\thebuggenie\core\entities\Team';
             }
-            else
-            {
-                $is_core = false;
-                $is_custom = (bool) (strpos($this->_name, self::CUSTOMFIELD_VALIDATE_PREFIX) !== false);
-            }
+
             if ($is_core || $is_custom)
             {
                 $values = explode(',', $this->getRuleValue());
@@ -219,11 +225,43 @@
                         }
                         elseif ($is_custom)
                         {
-                            $field = tables\CustomFieldOptions::getTable()->selectById((int) $value);
+                            switch ($customtype) {
+                                case CustomDatatype::RADIO_CHOICE:
+                                case CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                                    $field = tables\CustomFieldOptions::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::TEAM_CHOICE:
+                                    $field = Teams::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::STATUS_CHOICE:
+                                    $field = ListTypes::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::MILESTONE_CHOICE:
+                                    $field = Milestones::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::CLIENT_CHOICE:
+                                    $field = Clients::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::COMPONENTS_CHOICE:
+                                    $field = Components::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::EDITIONS_CHOICE:
+                                    $field = Editions::getTable()->selectById((int) $value);
+                                    break;
+                                case CustomDatatype::RELEASES_CHOICE:
+                                    $field = Builds::getTable()->selectById((int) $value);
+                                    break;
+                            }
                         }
                         if ($field instanceof \thebuggenie\core\entities\common\Identifiable)
                         {
-                            $return_values[] = $field->getName();
+                            if ($field instanceof Milestone || $field instanceof Component || $field instanceof Edition || $field instanceof Build) {
+                                $return_values[] = $field->getProject()->getName() . ' - ' . $field->getName();
+                            } elseif ($field instanceof Status) {
+                                $return_values[] = '<span class="status_badge" style="background-color: '.$field->getColor().'; color: '.$field->getTextColor().';">'.$field->getName().'</span>';
+                            } else {
+                                $return_values[] = $field->getName();
+                            }
                         }
                     }
                     catch (\Exception $e) {}
@@ -239,49 +277,69 @@
             }
         }
 
+        public function isCustom()
+        {
+            return (bool) (strpos($this->_name, self::CUSTOMFIELD_VALIDATE_PREFIX) !== false);
+        }
+
+        /**
+         * Returns the identifier key for the customfield used in the validation rule
+         *
+         * @return string
+         */
+        public function getCustomFieldname()
+        {
+            return substr($this->_name, strlen(self::CUSTOMFIELD_VALIDATE_PREFIX));
+        }
+
+        /**
+         * Returns the custom field object used in the validation rule
+         *
+         * @return CustomDatatype
+         */
+        public function getCustomField()
+        {
+            return CustomDatatype::getByKey($this->getCustomFieldname());
+        }
+
+        /**
+         * Returns the custom type for the custom field object used in the validation rule
+         * 
+         * @return string
+         */
+        public function getCustomType()
+        {
+            return ($this->isCustom()) ? $this->getCustomField()->getType() : '';
+        }
+
+        public function getRuleOptions()
+        {
+            if ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID) {
+                $options = \thebuggenie\core\entities\Status::getAll();
+            } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID) {
+                $options = \thebuggenie\core\entities\Priority::getAll();
+            } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID) {
+                $options = \thebuggenie\core\entities\Resolution::getAll();
+            } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID) {
+                $options = \thebuggenie\core\entities\Reproducability::getAll();
+            } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID) {
+                $options = \thebuggenie\core\entities\Team::getAll();
+            } elseif ($this->isCustom()) {
+                $options = $this->getCustomField()->getOptions();
+            }
+
+            return $options;
+        }
+
         public function isValueValid($value)
         {
-            $is_core = true;
-            $is_custom = false;
-            if ($this->_name == self::RULE_STATUS_VALID)
-            {
-                $fieldname = '\thebuggenie\core\entities\Status';
-            }
-            elseif ($this->_name == self::RULE_RESOLUTION_VALID)
-            {
-                $fieldname = '\thebuggenie\core\entities\Resolution';
-            }
-            elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID)
-            {
-                $fieldname = '\thebuggenie\core\entities\Reproducability';
-            }
-            elseif ($this->_name == self::RULE_PRIORITY_VALID)
-            {
-                $fieldname = '\thebuggenie\core\entities\Priority';
-            }
-            elseif ($this->_name == self::RULE_TEAM_MEMBERSHIP_VALID)
-            {
-                $fieldname = '\thebuggenie\core\entities\Team';
-            }
-            else
-            {
-                $is_core = false;
-                $is_custom = (bool) (strpos($this->_name, self::CUSTOMFIELD_VALIDATE_PREFIX) !== false);
-            }
+            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID));
+            $is_custom = $this->isCustom();
+
             if ($is_core || $is_custom)
             {
-                switch ($this->_name)
-                {
-                    case self::RULE_STATUS_VALID:
-                    case self::RULE_RESOLUTION_VALID:
-                    case self::RULE_REPRODUCABILITY_VALID:
-                    case self::RULE_PRIORITY_VALID:
-                    case self::RULE_TEAM_MEMBERSHIP_VALID:
-                        $value = (is_object($value)) ? $value->getID() : $value;
-                        return ($this->getRuleValue()) ? in_array($value, explode(',', $this->getRuleValue())) : (bool) $value;
-                        break;
-                }
-                return true;
+                $value = (is_object($value)) ? $value->getID() : $value;
+                return ($this->getRuleValue()) ? in_array($value, explode(',', $this->getRuleValue())) : (bool) $value;
             }
             else
             {
@@ -338,61 +396,97 @@
                 case self::RULE_REPRODUCABILITY_VALID:
                     $valid_items = explode(',', $this->getRuleValue());
                     $valid = false;
-                    foreach ($valid_items as $item)
-                    {
-                        if ($this->_name == self::RULE_STATUS_VALID)
-                        {
-                            $fieldname = 'Status';
-                            $fieldname_small = 'status';
-                        }
-                        elseif ($this->_name == self::RULE_RESOLUTION_VALID)
-                        {
-                            $fieldname = 'Resolution';
-                            $fieldname_small = 'resolution';
-                        }
-                        elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID)
-                        {
-                            $fieldname = 'Reproducability';
-                            $fieldname_small = 'reproducability';
-                        }
-                        elseif ($this->_name == self::RULE_PRIORITY_VALID)
-                        {
-                            $fieldname = 'Priority';
-                            $fieldname_small = 'priority';
-                        }
-                        else
-                        {
-                            throw new framework\exceptions\ConfigurationException(framework\Context::getI18n()->__('Invalid workflow validation rule: %rule_name', array('%rule_name' => $this->_name)));
-                        }
+                    if ($this->_name == self::RULE_STATUS_VALID) {
+                        $fieldname = 'Status';
+                        $fieldname_small = 'status';
+                    } elseif ($this->_name == self::RULE_RESOLUTION_VALID) {
+                        $fieldname = 'Resolution';
+                        $fieldname_small = 'resolution';
+                    } elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID) {
+                        $fieldname = 'Reproducability';
+                        $fieldname_small = 'reproducability';
+                    } elseif ($this->_name == self::RULE_PRIORITY_VALID) {
+                        $fieldname = 'Priority';
+                        $fieldname_small = 'priority';
+                    } else {
+                        throw new framework\exceptions\ConfigurationException(framework\Context::getI18n()->__('Invalid workflow validation rule: %rule_name', array('%rule_name' => $this->_name)));
+                    }
 
-                        if ($input instanceof \thebuggenie\core\entities\Issue)
-                        {
-                            $type = "\\thebuggenie\\core\\entities\\{$fieldname}";
+                    if (!$this->getRuleValue()) {
+                        if ($input instanceof \thebuggenie\core\entities\Issue) {
                             $getter = "get{$fieldname}";
-                            if (is_object($input->$getter()) && $type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID())
-                            {
+
+                            if (is_object($input->$getter())) {
                                 $valid = true;
-                                break;
+                            }
+                        } elseif ($input instanceof framework\Request) {
+                            if ($input->getParameter("{$fieldname_small}_id") && Status::has($input->getParameter("{$fieldname_small}_id"))) {
+                                $valid = true;
                             }
                         }
-                        elseif ($input instanceof framework\Request)
-                        {
-                            if ($input->getParameter("{$fieldname_small}_id") == $item)
-                            {
-                                $valid = true;
-                                break;
+                    } else {
+                        foreach ($valid_items as $item) {
+                            if ($input instanceof \thebuggenie\core\entities\Issue) {
+                                $type = "\\thebuggenie\\core\\entities\\{$fieldname}";
+                                $getter = "get{$fieldname}";
+
+                                if (is_object($input->$getter()) && $type::getB2DBTable()->selectByID((int) $item)->getID() == $input->$getter()->getID()) {
+                                    $valid = true;
+                                    break;
+                                }
+                            } elseif ($input instanceof framework\Request) {
+                                if ($input->getParameter("{$fieldname_small}_id") == $item) {
+                                    $valid = true;
+                                    break;
+                                }
                             }
                         }
                     }
                     return $valid;
                     break;
                 default:
-                    if (strpos($this->_name, self::CUSTOMFIELD_VALIDATE_PREFIX) !== false)
-                    {
+                    if ($this->isCustom()) {
+                        switch ($this->getCustomType()) {
+                            case CustomDatatype::RADIO_CHOICE:
+                            case CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                            case CustomDatatype::TEAM_CHOICE:
+                            case CustomDatatype::STATUS_CHOICE:
+                            case CustomDatatype::MILESTONE_CHOICE:
+                            case CustomDatatype::CLIENT_CHOICE:
+                            case CustomDatatype::COMPONENTS_CHOICE:
+                            case CustomDatatype::EDITIONS_CHOICE:
+                            case CustomDatatype::RELEASES_CHOICE:
+                                $valid_items = explode(',', $this->getRuleValue());
+                                if ($input instanceof \thebuggenie\core\entities\Issue) {
+                                    $value = $input->getCustomField($this->getCustomFieldname());
+                                } elseif ($input instanceof framework\Request) {
+                                    $value = $input->getParameter($this->getCustomFieldname() . "_id");
+                                }
 
-                    }
-                    else
-                    {
+                                $valid = false;
+                                if (!$this->getRuleValue()) {
+                                    foreach ($this->getCustomField()->getOptions() as $item) {
+                                        if ($item->getID() == $value) {
+                                            $valid = true;
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    foreach ($valid_items as $item) {
+                                        if ($value instanceof Identifiable && $value->getID() == $item) {
+                                            $valid = true;
+                                            break;
+                                        } elseif (is_numeric($value) && $value == $item) {
+                                            $valid = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                return $valid;
+                                break;
+                        }
+                    } else {
                         $event = new \thebuggenie\core\framework\Event('core', 'WorkflowTransitionValidationRule::isValid', $this);
                         $event->setReturnValue(false);
                         $event->triggerUntilProcessed(array('input' => $input));

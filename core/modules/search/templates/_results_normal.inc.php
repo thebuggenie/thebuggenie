@@ -164,12 +164,16 @@ foreach ($search_object->getIssues() as $issue):
                                 case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     echo $value;
                                     break;
+                                case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                    if ($value instanceof \thebuggenie\core\entities\Status):
+                                        ?><div class="sc_status_color status_badge" style="background-color: <?php echo $value->getColor(); ?>;"><span class="sc_status_name" style="color: <?php echo $value->getTextColor(); ?>;"><?php echo $value->getName(); ?></span></div><?php
+                                    endif;
+                                    break;
                                 case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                                     echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';

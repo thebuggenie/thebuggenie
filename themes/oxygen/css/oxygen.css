@@ -2112,7 +2112,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 .issue_closed .status_badge { opacity: 0.7; }
-.status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; vertical-align: middle; }
+.status_badge { font-weight: normal; display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; vertical-align: middle; }
 *.button-pressed + .more_actions_dropdown { display: block; }
 .userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown { right: auto; font-size: 1em; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 99999; right: 0; display: none; background: #FFF; border: 1px solid #CCC; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); }
