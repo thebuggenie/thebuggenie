@@ -1,6 +1,6 @@
 <?php
 
-namespace thebuggenie\core\modules\main\controller;
+namespace thebuggenie\core\modules\main\controllers;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
@@ -14,9 +14,8 @@ use thebuggenie\core\framework,
  *
  * @package thebuggenie\core\modules\main\controller
  */
-class AssetController extends framework\Action
+class Asset extends framework\Action
 {
-
     public function runResolve(framework\Request $request)
     {
         $theme = \thebuggenie\core\framework\Settings::getThemeName();
@@ -39,5 +38,4 @@ class AssetController extends framework\Action
         $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
         return $this->renderText($fileAsset->dump());
     }
-
 }

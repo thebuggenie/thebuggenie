@@ -148,7 +148,7 @@ set_state:
 logout:
     route: /logout
     module: main
-    action: logout
+    action: Common::logout
     parameters: [ ]
     csrf_enabled: false
 
@@ -190,7 +190,7 @@ get_temp_identifiable:
 about:
     route: /about
     module: main
-    action: about
+    action: Common::about
     parameters: [ ]
     csrf_enabled: false
 
@@ -652,4 +652,3 @@ assetic_resolve_asset:
     route: '/assets/*'
     module: main
     action: Asset::resolve
-

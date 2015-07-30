@@ -26,6 +26,7 @@
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "phpoffice/phpexcel": "~1.8",
+        "kriswallsmith/assetic": "~1.2",
         "ext-gd" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
@@ -35,8 +36,7 @@
         "ext-pcre" : "*",
         "ext-Reflection" : "*",
         "lib-pcre" : "8.*",
-        "net/http" : "dev-master",
-        "kriswallsmith/assetic": "~1.2"
+        "net/http" : "dev-master"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",
