@@ -105,20 +105,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
          * Initializes the autocompleter
          */
         TBG.Core._initializeAutocompleter = function () {
-//            if (jQuery('#searchfor')) {
-//                jQuery('#searchfor').autocomplete({
-//                    source: TBG.autocompleter_url,
-//                    minLength: 2,
-//                    select: function( event, ui ) {
-//                        log( ui.item ?
-//                        "Selected: " + ui.item.value + " aka " + ui.item.id :
-//                        "Nothing selected, input was " + this.value );
-//                    }
-//                })
-//                .data('autocomplete')
-//                ._renderItem = function (ul, item) {
-//                    
-//                };
+            if ($('searchfor') == null)
+                return;
             new Ajax.Autocompleter(
                 "searchfor",
                 "searchfor_autocomplete_choices",
@@ -142,7 +130,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     afterUpdateElement: TBG.Core._extractAutocompleteValue
                 }
             );
-//            }
         };
 
         /**
