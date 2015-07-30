@@ -54,7 +54,7 @@
 
         <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
         <?php foreach ($localcss as $css): ?>
-            <link rel="stylesheet" href="<?php print make_url('home').$css; ?>">
+            <link rel="stylesheet" href="<?php print $css; ?>">
         <?php endforeach; ?>
         <?php foreach ($externalcss as $css): ?>
             <link rel="stylesheet" href="<?php echo $css; ?>">

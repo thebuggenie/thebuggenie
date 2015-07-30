@@ -3,6 +3,7 @@
     namespace thebuggenie\modules\agile\controllers;
 
     use thebuggenie\core\framework,
+        thebuggenie\modules\agile\entities,
         thebuggenie\core\helpers;
 
     /**

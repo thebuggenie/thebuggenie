@@ -3,6 +3,7 @@
     namespace thebuggenie\modules\publish\controllers;
 
     use thebuggenie\core\framework,
+        thebuggenie\modules\publish\entities,
         thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\publish\entities\tables\Articles;
 

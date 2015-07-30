@@ -2,7 +2,8 @@
 
     namespace thebuggenie\modules\mailing\controllers;
 
-    use thebuggenie\core\framework;
+    use thebuggenie\core\framework,
+        thebuggenie\modules\mailing\entities;
 
     class Main extends framework\Action
     {

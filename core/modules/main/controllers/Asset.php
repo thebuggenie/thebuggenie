@@ -18,13 +18,24 @@ class Asset extends framework\Action
 {
     public function runResolve(framework\Request $request)
     {
-        $theme = \thebuggenie\core\framework\Settings::getThemeName();
+        $theme = isset($request['theme_name']) ? $request['theme_name'] : framework\Settings::getThemeName();
         if ($request->hasParameter('css')) {
             $this->getResponse()->setContentType('text/css');
-            $asset = THEBUGGENIE_PATH . 'themes'.DS.$theme.DS.'css'.DS.$request->getParameter('css');
+            if (!$request->hasParameter('theme_name')) {
+                $asset = THEBUGGENIE_PATH . 'public'.DS.'css'.DS.$request->getParameter('css');
+            } else {
+                $asset = THEBUGGENIE_PATH . 'themes'.DS.$theme.DS.'css'.DS.$request->getParameter('css');
+            }
         } elseif ($request->hasParameter('js')) {
             $this->getResponse()->setContentType('text/javascript');
-            $asset = THEBUGGENIE_PATH . 'themes'.DS.$theme.DS.'js'.DS.$request->getParameter('js');
+            if ($request->hasParameter('theme_name')) {
+                $asset = THEBUGGENIE_PATH . 'themes'.DS.$theme.DS.'js'.DS.$request->getParameter('js');
+            } elseif ($request->hasParameter('module_name')) {
+                $module_path = (framework\Context::isInternalModule($request['module_name'])) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
+                $asset = $module_path . $request['module_name'].'public'.DS.'js'.DS.$request->getParameter('js');
+            } else {
+                $asset = THEBUGGENIE_PATH . 'public'.DS.'css'.DS.$request->getParameter('js');
+            }
         } else {
             throw new \Exception('The expected theme Asset type is not supported.');
         }

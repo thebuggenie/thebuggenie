@@ -2151,10 +2151,10 @@ class Context
         foreach (self::getModules() as $module)
         {
             if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css")) {
-                self::getResponse()->addStylesheet("{$theme}/{$module->getName()}.css");
+                self::getResponse()->addStylesheet(self::getRouting()->generate('asset_css', array('theme_name' => $theme, 'css' => "{$module->getName()}.css")));
             }
             if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js")) {
-                self::getResponse()->addJavascript($module->getName());
+                self::getResponse()->addJavascript(self::getRouting()->generate('asset_js_unthemed', array('js' => "{$module->getName()}.js")));
             }
         }
 

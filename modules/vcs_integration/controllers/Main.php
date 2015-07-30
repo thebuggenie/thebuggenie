@@ -4,6 +4,8 @@
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities\Project,
+        thebuggenie\modules\vcs_integration\Vcs_integration,
+        thebuggenie\modules\vcs_integration\entities,
         thebuggenie\modules\vcs_integration\entities\Commit;
 
     /**
