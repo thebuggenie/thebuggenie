@@ -212,48 +212,6 @@
             $this->groupoptions = $groupoptions;
         }
 
-        public function componentExtralinks()
-        {
-            switch (true)
-            {
-                case framework\Context::getRequest()->hasParameter('quicksearch'):
-                    $searchfor = framework\Context::getRequest()->getParameter('searchfor');
-                    $project_key = (framework\Context::getCurrentProject() instanceof entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
-                    $this->csv_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'csv')) . '?searchfor=' . $searchfor;
-                    $this->rss_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'rss')) . '?searchfor=' . $searchfor;
-                    break;
-                case framework\Context::getRequest()->hasParameter('predefined_search'):
-                    $searchno = framework\Context::getRequest()->getParameter('predefined_search');
-                    $project_key = (framework\Context::getCurrentProject() instanceof entities\Project) ? framework\Context::getCurrentProject()->getKey() : 0;
-                    $url = (framework\Context::getCurrentProject() instanceof entities\Project) ? 'project_issues' : 'search';
-                    $this->csv_url = framework\Context::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv'));
-                    $this->rss_url = framework\Context::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss'));
-                    break;
-                default:
-                    preg_match('/((?<=\/)issues).+$/i', framework\Context::getRequest()->getQueryString(), $get);
-
-                    if (!isset($get[0]))
-                        preg_match('/((?<=url=)issues).+$/i', framework\Context::getRequest()->getQueryString(), $get);
-
-                    if (isset($get[0]))
-                    {
-                        if (framework\Context::isProjectContext())
-                        {
-                            $this->csv_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => framework\Context::getCurrentProject()->getKey(), 'format' => 'csv')) . '/' . $get[0];
-                            $this->rss_url = framework\Context::getRouting()->generate('project_issues', array('project_key' => framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')) . '?' . $get[0];
-                        }
-                        else
-                        {
-                            $this->csv_url = framework\Context::getRouting()->generate('search', array('format' => 'csv')) . '/' . $get[0];
-                            $this->rss_url = framework\Context::getRouting()->generate('search', array('format' => 'rss')) . '?' . $get[0];
-                        }
-                    }
-                    break;
-            }
-            $i18n = framework\Context::getI18n();
-            $this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'posted_by' => $i18n->__('Posted by'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
-        }
-
         public function componentBulkWorkflow()
         {
             $workflow_items = array();

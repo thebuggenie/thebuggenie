@@ -2357,6 +2357,7 @@
                                     if ($customdatatypeoption_value == '')
                                     {
                                         $issue->setCustomField($key, "");
+                                        $finalvalue = "";
                                     }
                                     else
                                     {
@@ -2387,27 +2388,27 @@
                                                 $temp = tables\Clients::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                                 break;
                                         }
-                                        $issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
+                                        $issue->setCustomField($key, $customdatatypeoption_value);
+
+                                        if ($customdatatype->getType() == entities\CustomDatatype::STATUS_CHOICE && isset($temp) && is_object($temp))
+                                        {
+                                            $finalvalue = '<div class="status_badge" style="background-color: ' . $temp->getColor() . ';"><span>' . $temp->getName() . '</span></div>';
+                                        }
+                                        elseif ($customdatatype->getType() == entities\CustomDatatype::USER_CHOICE && isset($temp) && is_object($temp))
+                                        {
+                                            $finalvalue = $this->getComponentHTML('main/userdropdown', array('user' => $temp));
+                                        }
+                                        elseif ($customdatatype->getType() == entities\CustomDatatype::TEAM_CHOICE && isset($temp) && is_object($temp))
+                                        {
+                                            $finalvalue = $this->getComponentHTML('main/teamdropdown', array('team' => $temp));
+                                        }
+                                        else
+                                        {
+                                            $finalvalue = (is_object($temp)) ? $temp->getName() : $this->getI18n()->__('Unknown');
+                                        }
                                     }
 
-                                    if ($customdatatype->getType() == entities\CustomDatatype::STATUS_CHOICE && isset($temp) && is_object($temp))
-                                    {
-                                        $finalvalue = '<div class="status_badge" style="background-color: ' . $temp->getColor() . ';"><span>' . $temp->getName() . '</span></div>';
-                                    }
-                                    elseif ($customdatatype->getType() == entities\CustomDatatype::USER_CHOICE && isset($temp) && is_object($temp))
-                                    {
-                                        $finalvalue = $this->getComponentHTML('main/userdropdown', array('user' => $temp));
-                                    }
-                                    elseif ($customdatatype->getType() == entities\CustomDatatype::TEAM_CHOICE && isset($temp) && is_object($temp))
-                                    {
-                                        $finalvalue = $this->getComponentHTML('main/teamdropdown', array('team' => $temp));
-                                    }
-                                    else
-                                    {
-                                        $finalvalue = (is_object($temp)) ? $temp->getName() : $this->getI18n()->__('Unknown');
-                                    }
-
-                                    $changed_methodname = "isCustomfield{$key}Changed";
+                                $changed_methodname = "isCustomfield{$key}Changed";
                                     if (!$issue->$changed_methodname())
                                         return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
 
