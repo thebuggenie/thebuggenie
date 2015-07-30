@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableEventContainer;
+    use thebuggenie\core\entities\tables\UserIssues;
     use thebuggenie\core\framework;
 
     /**
@@ -1162,24 +1163,9 @@
         {
             if ($this->_starredissues === null)
             {
-                $this->_b2dbLazyload('_starredissues');
-                foreach ($this->_starredissues as $k => $issue)
-                {
-                    if (!$issue->getScope() instanceof Scope || $issue->getScope()->getID() != framework\Context::getScope()->getID()) unset($this->_starredissues[$k]);
-                }
+                $this->_starredissues = UserIssues::getTable()->getUserStarredIssues($this->getID());
                 ksort($this->_starredissues, SORT_NUMERIC);
             }
-        }
-
-        /**
-         * Returns an array of issues ids which are "starred" by this user
-         *
-         * @return array
-         */
-        public function getStarredIssues()
-        {
-            $this->_populateStarredIssues();
-            return $this->_starredissues;
         }
 
         /**

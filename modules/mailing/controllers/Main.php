@@ -1,10 +1,11 @@
 <?php
 
-    namespace thebuggenie\modules\mailing;
+    namespace thebuggenie\modules\mailing\controllers;
 
-    use thebuggenie\core\framework;
+    use thebuggenie\core\framework,
+        thebuggenie\modules\mailing\entities;
 
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         /**

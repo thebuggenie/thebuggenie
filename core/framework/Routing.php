@@ -227,7 +227,10 @@
         {
             $is_internal = Context::isInternalModule($module_name);
             $namespace = ($is_internal) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
-            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\Actions', $module_name);
+
+            // Point the annotated routes to the right module controller
+            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\controllers\\Main', $module_name);
+
             if (!$is_internal)
             {
                 $this->loadModuleOverrideMappings($namespace . $module_name . '\\Components', $module_name);

@@ -104,6 +104,8 @@
             framework\Event::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
             framework\Event::listen('core', '_notification_view', array($this, 'listen_notificationview'));
             framework\Event::listen('core', 'thebuggenie\core\entities\Notification::getTarget', array($this, 'listen_thebuggenie_core_entities_Notification_getTarget'));
+            framework\Event::listen('core', 'thebuggenie\core\framework\helpers\TextParser::_parse_line::char_regexes', array($this, 'listen_thebuggenie_core_helpers_textparser_char_regexes'));
+            framework\Event::listen('core', 'thebuggenie\core\framework\helpers\TextParserMarkdown::transform', array($this, 'listen_thebuggenie_core_helpers_textparser_char_regexes'));
         }
 
         protected function _uninstall()
@@ -120,6 +122,30 @@
         public function hasProjectAwareRoute()
         {
             return false;
+        }
+
+        public function listen_thebuggenie_core_helpers_textparser_char_regexes(framework\Event $event)
+        {
+            $event->addToReturnList(array(array('/([a-f0-9]{40})/'), array($this, '_parse_commit')));
+        }
+
+        protected function _getCommitLink($commit)
+        {
+            return '<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show(\''.make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())).'\');">'.$commit->getRevisionString().'</a>';
+        }
+
+        public function _parse_commit($matches)
+        {
+            if (!framework\Context::isProjectContext())
+                return $matches[0];
+
+            /* <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())); ?>');"><?php echo $commit->getRevisionString(); ?></a> */
+            $commit = Commits::getTable()->getCommitByCommitId($matches[0], framework\Context::getCurrentProject()->getID());
+
+            if (!$commit instanceof Commit)
+                return $matches[0];
+
+            return $this->_getCommitLink($commit);
         }
 
         public function listen_sidebar_links(framework\Event $event)

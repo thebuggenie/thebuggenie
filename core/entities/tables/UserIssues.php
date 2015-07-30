@@ -91,9 +91,17 @@
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE);
             $crit->addWhere(Issues::DELETED, 0);
-            
+            $crit->addSelectionColumn(Issues::ID, 'issue_id');
+
             $res = $this->doSelect($crit);
-            return $res;
+            $issues = array();
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $issue_id = $row['issue_id'];
+                    $issues[$issue_id] = $issue_id;
+                }
+            }
+            return $issues;
         }
         
         public function addStarredIssue($user_id, $issue_id)
