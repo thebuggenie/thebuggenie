@@ -221,6 +221,8 @@
                 $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET, array(array(Issues::PROJECT_ID, $project_id), array(Issues::DELETED, false)));
                 $crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), Criteria::DB_IN);
                 $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
+                $crit->addWhere(Issues::DELETED, false);
+                $crit->addWhere(Issues::PROJECT_ID, $project_id);
                 $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), Criteria::DB_GREATER_THAN_EQUAL);
                 $ctn->addWhere(self::TIME, NOW - (86400 * $cc), Criteria::DB_LESS_THAN_EQUAL);
