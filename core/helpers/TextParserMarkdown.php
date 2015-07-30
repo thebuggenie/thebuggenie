@@ -43,6 +43,13 @@
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 
+            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParserMarkdown::transform', $this);
+            $event->trigger();
+
+            foreach ($event->getReturnList() as $regex) {
+                $text = preg_replace_callback($regex[0], $regex[1], $text);
+            }
+
             return $text;
         }
 
