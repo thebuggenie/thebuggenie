@@ -2484,11 +2484,16 @@
                             $permission_details = explode(',', $new_permission);
                             $new_permissions[$permission_details[2]] = array('module' => $permission_details[0], 'target_id' => $permission_details[1]);
                         }
+                        $existing_permissions = array();
                         foreach ($role->getPermissions() as $existing_permission)
                         {
                             if (!array_key_exists($existing_permission->getPermission(), $new_permissions))
                             {
                                 $role->removePermission($existing_permission);
+                            }
+                            else {
+                                $existing_permissions[$existing_permission->getPermission()] = $new_permissions[$existing_permission->getPermission()];
+                                unset($new_permissions[$existing_permission->getPermission()]);
                             }
                         }
                         foreach ($new_permissions as $permission_key => $details)
@@ -2500,6 +2505,16 @@
                                 $p->setTargetID($details['target_id']);
 
                             $role->addPermission($p);
+                        }
+                        foreach ($existing_permissions as $permission_key => $details)
+                        {
+                            $p = new entities\RolePermission();
+                            $p->setModule($details['module']);
+                            $p->setPermission($permission_key);
+                            if ($details['target_id'])
+                                $p->setTargetID($details['target_id']);
+
+                            tables\Permissions::getTable()->addRolePermission($role, $p);
                         }
                         framework\Context::clearPermissionsCache();
 
