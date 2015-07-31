@@ -218,7 +218,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
     font-style: italic;
     font-weight: normal;
     margin: 0;
-    padding: 0;
+    padding: 0 4px;
     clear: both;
     display: block;
 }
