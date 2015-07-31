@@ -1926,7 +1926,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .issue_info.error.active ~ .issue_info_backdrop { background-color: #FAA; }
 #issue_deleted_message { width: 900px; font-size: 1.1em; text-align: center; margin: 25px auto 0 auto; }
 #issue_deleted_message .header, #issue_deleted_message .content { text-align: center; }
-#notfound_error { vertical-align: middle; text-align: center; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 900px; margin: 25px auto 0 auto; }
+#notfound_error { vertical-align: middle; text-align: center; padding: 15px; color: #B32626; font-size: 1.3em; width: 600px; margin: 25px auto 0 auto; box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); background-color: rgba(255, 50, 50, 0.25); }
 #notfound_error .content { font-weight: normal; }
 #notfound_error .header { text-align: center; }
 #viewissue_saved { cursor: pointer; }
@@ -2477,7 +2477,8 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard ul.dashboard_column > li .container_div {
     margin: 5px;
     border: 1px solid rgba(100, 100, 100, 0.2);
-    box-shadow: 0 0 7px -4px rgba(100, 100, 100, 0.5);
+    box-shadow: 0 0 5px rgba(100, 100, 100, 0.15);
+    margin-bottom: 15px;
 }
 .dashboard.layout_standard ul.dashboard_column > li img.mover, .dashboard.layout_standard ul.dashboard_column > li img.remover { float: right; margin: 3px 5px 0 5px; display: none; }
 .dashboard.layout_standard.editable ul.dashboard_column.jsortable > li:hover img.mover { display: inline-block; cursor: move; }
@@ -10841,6 +10842,20 @@ div[id^='comment_reply_indicator_']
 
 #topmenu-container.active .header_menu li.selected .tab_menu_dropdown {
     margin-left: -10px;
+}
+
+#topmenu-container.active #user_notifications_container:hover #user_notifications_count {
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 7px 0 0 0;
+    padding: 4px 5px 2px 5px;
+    height: initial;
+    box-sizing: initial;
+    height: 16px;
+}
+
+#topmenu-container.active #user_notifications_container:hover
+{
+    box-shadow: none;
 }
 
 li#header_usermenu_link > div
