@@ -5806,10 +5806,10 @@ table.sortable tr th.nosort {
 .redbox, .greybox, .lightyellowbox, .yellowbox, .greenbox, .bluebox { border: 1px solid rgba(50, 50, 50, 0.3); }
 
 .tutorial-message {
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     color: #333;
     background-color: #FFF;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.25);
     width: 400px;
     margin: 100px auto 0 auto;
     padding: 10px;
@@ -5843,7 +5843,7 @@ table.sortable tr th.nosort {
     top: -20px;
     bottom: auto;
     left: 50%;
-    border-bottom: 10px solid rgba(0, 0, 0, 0.75);
+    border-bottom: 10px solid rgba(0, 0, 0, 0.25);
 }
 .tutorial-message.below:after, .popup-menu.below:after {
     margin-left: -10px;
@@ -5854,7 +5854,7 @@ table.sortable tr th.nosort {
     bottom: auto;
     right: -20px;
     left: auto;
-    border-left: 10px solid rgba(0, 0, 0, 0.75);
+    border-left: 10px solid rgba(0, 0, 0, 0.25);
 }
 .tutorial-message.left:after, .popup-menu.left:after {
     margin-top: -1px;
@@ -5865,7 +5865,7 @@ table.sortable tr th.nosort {
     bottom: auto;
     right: auto;
     left: -11px;
-    border-right: 10px solid rgba(0, 0, 0, 0.75);
+    border-right: 10px solid rgba(0, 0, 0, 0.25);
 }
 .tutorial-message.right:after, .popup-menu.right:after {
     margin-top: -1px;
@@ -10862,7 +10862,7 @@ li#header_usermenu_link > div
 #topmenu-container #usermenu_changestate_toggler
 {
     margin-top: -2px;
-    color: rgb(85, 85, 85);
+    color: rgb(85, 85, 85) !important;
 }
 
 #usermenu_changestate a
