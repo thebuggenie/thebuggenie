@@ -432,7 +432,7 @@
                     }
                 }
             }
-            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
+            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? false : $permissive;
             $retval = $user->hasPermission($permission_name, 0, 'publish');
             return ($retval !== null) ? $retval : $permissive;
         }
