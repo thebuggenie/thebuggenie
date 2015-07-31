@@ -652,23 +652,28 @@ asset_js:
     route: '/js/:theme_name/:js'
     module: main
     action: Asset::resolve
+    anonymous_route: true
 
 asset_module_js:
     route: '/js/module/:module_name/:js'
     module: main
     action: Asset::resolve
+    anonymous_route: true
 
 asset_css:
     route: '/css/:theme_name/:css'
     module: main
     action: Asset::resolve
+    anonymous_route: true
 
 asset_css_unthemed:
     route: '/css/:css'
     module: main
     action: Asset::resolve
+    anonymous_route: true
 
 asset_js_unthemed:
     route: '/js/:js'
     module: main
     action: Asset::resolve
+    anonymous_route: true
