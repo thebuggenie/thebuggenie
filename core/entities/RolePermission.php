@@ -81,4 +81,12 @@
             return str_replace('%project_key%', $project->getKey(), $this->_target_id);
         }
 
+        public function getExpandedTargetID(Role $role)
+        {
+            $project = $role->getProject();
+
+            return $this->hasTargetID() ? ($project instanceof Project && ! $role->isSystemRole() ? $this->getReplacedTargetID($project) : ($role->isSystemRole() ? '0' : $role->getItemdata())) : ($role->isSystemRole() ? '0' : $role->getItemdata());
+        }
+
     }
+

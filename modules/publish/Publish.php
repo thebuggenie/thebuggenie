@@ -335,7 +335,7 @@
 
         public function listen_rolePermissionsEdit(framework\Event $event)
         {
-            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
+            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key%'));
         }
 
         public function listen_BreadcrumbMainLinks(framework\Event $event)

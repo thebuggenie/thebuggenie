@@ -85,7 +85,16 @@
             $crit->addWhere(self::UID, $uid);
             $crit->addWhere(self::GID, $gid);
             $crit->addWhere(self::TID, $tid);
-            $crit->addWhere(self::TARGET_ID, $target_id);
+            if ($target_id != 0)
+            {
+                $crit->addWhere(self::TID, $tid);
+            }
+            else
+            {
+                $ctn = $crit->returnCriterion(self::TARGET_ID, $target_id);
+                $ctn->addOr(self::TARGET_ID, 0);
+                $crit->addWhere($ctn);
+            }
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
 
             $res = $this->doDelete($crit);
@@ -245,7 +254,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::ROLE_ID, $role_id);
             $existing_identifiables = array(self::UID => array(), self::TID => array());
-            $target_id = $role->getProject() instanceof \thebuggenie\core\entities\Project ? $role->getProject()->getID() : '';
+            $target_id = $rolepermission->getExpandedTargetID($role);
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
@@ -276,7 +285,7 @@
                     $crit = $this->getCriteria();
                     $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
                     $crit->addInsert(self::PERMISSION_TYPE, $rolepermission->getPermission());
-                    $crit->addInsert(self::TARGET_ID, $rolepermission->getTargetID() ?: $identifiable['target_id']);
+                    $crit->addInsert(self::TARGET_ID, $identifiable['target_id']);
                     $crit->addInsert($key, $identifiable['id']);
                     $crit->addInsert(self::ALLOWED, true);
                     $crit->addInsert(self::MODULE, $rolepermission->getModule());

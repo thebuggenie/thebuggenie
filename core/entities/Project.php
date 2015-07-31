@@ -1406,7 +1406,8 @@
             {
                 foreach ($role->getPermissions() as $role_permission)
                 {
-                    $target_id = ($role_permission->hasTargetID()) ? $role_permission->getReplacedTargetID($this) : $this->getID();
+                    $target_id = strtolower($role_permission->getExpandedTargetID($role));
+                    framework\Context::removeAllPermissionsForCombination($user_id, 0, $team_id, $target_id);
                     framework\Context::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role->getID());
                 }
             }
