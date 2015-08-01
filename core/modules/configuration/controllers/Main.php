@@ -114,7 +114,8 @@
                     framework\Settings::SETTING_TBG_NAME, framework\Settings::SETTING_TBG_NAME_HTML, framework\Settings::SETTING_DEFAULT_CHARSET, framework\Settings::SETTING_DEFAULT_LANGUAGE,
                     framework\Settings::SETTING_SERVER_TIMEZONE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
                     framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES, framework\Settings::SETTING_HEADER_LINK,
-                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED);
+                    framework\Settings::SETTING_MAINTENANCE_MESSAGE, framework\Settings::SETTING_MAINTENANCE_MODE, framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED,
+                    framework\Settings::SETTING_NOTIFICATION_POLL_INTERVAL);
 
                 foreach ($settings as $setting)
                 {
@@ -141,6 +142,12 @@
                                     return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid setting for charset')));
                                 }
                                 break;
+                            case framework\Settings::SETTING_NOTIFICATION_POLL_INTERVAL:
+                                if (!ctype_digit($value))
+                                {
+                                    $this->getResponse()->setHttpStatus(400);
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please provide a valid setting for notification poll interval')));
+                                }
                         }
                         framework\Settings::saveSetting($setting, $value);
                     }

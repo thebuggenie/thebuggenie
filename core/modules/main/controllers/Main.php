@@ -511,6 +511,7 @@ class Main extends framework\Action
                         break;
                     default:
                         $data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+                        $data['poll_interval'] = framework\Settings::getNotificationPollInterval();
                 }
             }
 
