@@ -184,6 +184,8 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 #user_notifications_list li.faded_out {
     color: #AAA;
+    padding: 8px 5px 2px !important;
+    border-bottom: none;
 }
 #user_notifications_list li.faded_out:hover {
     background-color: transparent;
