@@ -25,7 +25,7 @@
                     <?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
                     <?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Closed issues (including subprojects)')); ?>
                 </li>
-                <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST; ?>" style="clear: both; margin-bottom: 20px;">
+                <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST; ?>" style="clear: both; margin-bottom: 15px;">
                     <?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
                     <?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Project wishlist')); ?><span class="num_results_badge">-</span>
                 </li>
@@ -33,7 +33,7 @@
                     <?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
                     <?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Milestone todo-list for this project')); ?>
                 </li>
-                <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED; ?>" style="clear: both; margin-bottom: 20px;">
+                <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED; ?>" style="clear: both; margin-bottom: 15px;">
                     <?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
                     <?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Most voted for issues')); ?>
                 </li>

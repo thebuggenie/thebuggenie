@@ -385,6 +385,11 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+@-moz-document url-prefix() {
+    .side_bar {
+        box-shadow: 10px 0 15px -21px rgba(0, 0, 0, 0.8);
+    }
+}
 .side_bar .header .button-group {
     float: right;
     margin: -3px 0 0;
@@ -2503,7 +2508,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard .issue_link img { float: left; display: block; margin: 7px; vertical-align: middle; }
 .dashboard.layout_standard .issue_link + .status_badge { font-size: 0.8em; }
 #dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; position: relative; }
-#dashboard_lefthand { width: 250px; padding: 5px 10px 5px 0; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD;}
+#dashboard_lefthand { width: 250px; padding: 5px 10px 5px 0; border-right: 1px solid #DDD; }
 #dashboard_righthand { width: 250px; padding: 5px 5px 5px 10px; box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-left: 1px dotted #DDD;}
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
@@ -4342,7 +4347,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_description {font-size: 1.1em; font-weight: normal; color: #666;}
 #project_description.none {color: #AAA;}
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
-#search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
+#search_sidebar { height: 100%; border-right: 1px solid #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 0; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
 #search_sidebar .header { background: transparent; font-weight: normal; margin: 0; padding: 6px 0; border-bottom: 1px dotted #AAA; font-size: 15px; }
@@ -4351,7 +4356,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     clear: both;
     display: block;
     list-style: none;
-    margin: 0 0 2px 0;
+    margin: 0 0 6px 0;
+    font-size: 0.9em;
     padding: 0;
     transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
@@ -4371,7 +4377,14 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar.collapsed .collapser, .side_bar.collapsed .container_div { display: none; }
 .side_bar.collapsed .expander { display: inline; }
 .side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
-.side_bar .collapser_link { cursor: pointer; position: absolute; left: 290px; right: auto; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -3px 2px 2px rgba(0, 0, 0, 0.2); transition: left 0.3s ease, right 0.3s ease; }
+.side_bar .collapser_link { cursor: pointer; position: absolute; left: 290px; right: auto; width: 14px; background-color: #FFF; border: 1px solid #CCC; line-height: 1; padding: 3px; box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.15); transition: left 0.3s ease, right 0.3s ease; }
+@-moz-document url-prefix() {
+    .side_bar .collapser_link {
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.15);
+    }
+}
+.side_bar .collapser_link:before { content: ""; position: absolute; width: 10px; height: 21px; background-color: #FFF; top: 2px; left: 16px; }
+.side_bar .collapser_link:after { content: ""; position: absolute; width: 10px; height: 27px; background-color: #FFF; top: -2px; left: 19px; }
 .side_bar.collapsed .collapser_link { left: 5px; right: auto; }
 #dashboard_righthand.side_bar .collapser_link { left: auto; right: 250px; }
 #dashboard_righthand.side_bar.collapsed .collapser_link { right: 10px; }
@@ -4471,7 +4484,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search styling */
 /* search boxes */
-#find_issues { width: auto; padding: 5px; vertical-align: top; }
+#find_issues { width: auto; padding: 5px 5px 5px 10px; vertical-align: top; }
 #find_issues .results_header { font-weight: normal; font-size: 1.4em; padding: 0 0 5px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; position: relative; }
 .searchbuilder_filterstrip { background-color: rgba(200, 200, 200, 0.2); border-bottom: 1px solid rgba(200, 200, 200, 0.6); padding: 5px; }
 .searchbuilder_filterstrip input[type=image] { vertical-align: middle; margin: 0 5px; }
@@ -4936,7 +4949,7 @@ li.filtervalue .hidden { display: none; }
 .search_results td.result_issue a:hover .issue_title { color: #555; }
 .search_results td.result_issue a, .search_results td.result_issue a:hover { font-weight: normal; font-size: 1.1em; }
 .search_results td.smaller { font-size: 0.85em; }
-.search_results div.results_summary { border: 1px dotted #CCC; font-size: 1em; margin: 5px 0 20px; padding: 10px; }
+.search_results div.results_summary { border: 1px dotted #CCC; font-size: 0.9em; margin: 5px 0 20px; padding: 10px; padding: 5px 10px; line-height: 1.7; }
 .search_results div.results_summary .summary_header { font-weight: bold; font-size: 1.1em; }
 .search_results div.results_summary .issue_count, .search_results div.results_summary .issue_spent_time_summary, .search_results div.results_summary .issue_estimated_time_summary { font-weight: bold; font-size: 1.1em; }
 .search_results tr.priority_0 td { background-color: transparent; }
@@ -9282,7 +9295,7 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 }
 
 
-    /* Issues */
+/* Issues */
 
 #search_sidebar .collapser_link
 {
@@ -9540,6 +9553,12 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     min-width: 110px !important;
     max-width: 250px !important;
     width: initial;
+}
+
+#search_results .sca_actions,
+#search_results .sca_action_selector
+{
+    padding-left: 6px !important;
 }
 
 
