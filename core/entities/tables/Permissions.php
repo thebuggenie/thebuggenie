@@ -65,7 +65,7 @@
             return $res;
         }
         
-        public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope)
+        public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope, $role_id = null)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $uid);
@@ -75,19 +75,23 @@
             $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
             $crit->addWhere(self::TARGET_ID, $target_id);
             $crit->addWhere(self::SCOPE, $scope);
+            if ($role_id !== null)
+            {
+                $crit->addWhere(self::ROLE_ID, $role_id);
+            }
             
             $res = $this->doDelete($crit);
         }
 
-        public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0)
+        public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $role_id = null)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $uid);
             $crit->addWhere(self::GID, $gid);
             $crit->addWhere(self::TID, $tid);
-            if ($target_id != 0)
+            if ($target_id == 0)
             {
-                $crit->addWhere(self::TID, $tid);
+                $crit->addWhere(self::TARGET_ID, $target_id);
             }
             else
             {
@@ -96,6 +100,10 @@
                 $crit->addWhere($ctn);
             }
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            if ($role_id !== null)
+            {
+                $crit->addWhere(self::ROLE_ID, $role_id);
+            }
 
             $res = $this->doDelete($crit);
         }
