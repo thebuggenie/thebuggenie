@@ -5078,8 +5078,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Issues.Add = function (url) {
-            var btn = $('reportissue_button');
+        TBG.Issues.Add = function (url, btn) {
+            var btn = btn != undefined ? $(btn) : $('reportissue_button');
             var additional_params_query = '';
 
             if (btn.dataset != undefined && btn.dataset.milestoneId != undefined && parseInt(btn.dataset.milestoneId) > 0) {
