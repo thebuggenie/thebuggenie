@@ -270,9 +270,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 var y = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
                 var y2 = $('body').scrollHeight;
                 if (y >= y2 - ip_height) {
-                    ip.removeClassName('fixed');
+                    ip.removeClassName('visible');
                 } else {
-                    ip.addClassName('fixed');
+                    ip.addClassName('visible');
                 }
             }
         };
