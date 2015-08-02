@@ -4323,7 +4323,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function (json) {
                         $('adduser_div').hide();
                         TBG.Config.User._updateLinks(json);
-                        f.reset();
+                        $(f).reset();
                     }
                 },
                 failure: {
