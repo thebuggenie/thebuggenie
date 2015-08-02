@@ -315,7 +315,7 @@ account_add_application_password:
     csrf_enabled: true
 
 account_remove_application_password:
-    route: /account/remove/password/:id
+    route: /account/remove/password/:id/:csrf_token
     module: main
     action: accountRemovePassword
     parameters: [ ]
