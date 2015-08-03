@@ -37,11 +37,11 @@
 <?php endif; ?>
 <?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 <?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
-    <?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green button-report-issue righthugging')); ?>
+    <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue righthugging')); ?>
     <a class="dropper button button-green last lefthugging reportissue_dropdown_button" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>
     <ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
         <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
-            <li><?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?></li>
+            <li><?php echo javascript_link_tag(image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName()), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId(), 'issuetype' => $issuetype->getKey())) . "', this);")); ?></li>
         <?php endforeach;?>
     </ul>
 <?php endif; ?>

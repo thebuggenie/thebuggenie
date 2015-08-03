@@ -270,9 +270,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 var y = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
                 var y2 = $('body').scrollHeight;
                 if (y >= y2 - ip_height) {
-                    ip.removeClassName('fixed');
+                    ip.removeClassName('visible');
                 } else {
-                    ip.addClassName('fixed');
+                    ip.addClassName('visible');
                 }
             }
         };
@@ -4323,7 +4323,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function (json) {
                         $('adduser_div').hide();
                         TBG.Config.User._updateLinks(json);
-                        f.reset();
+                        $(f).reset();
                     }
                 },
                 failure: {
@@ -5078,8 +5078,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             }
         };
 
-        TBG.Issues.Add = function (url) {
-            var btn = $('reportissue_button');
+        TBG.Issues.Add = function (url, btn) {
+            var btn = btn != undefined ? $(btn) : $('reportissue_button');
             var additional_params_query = '';
 
             if (btn.dataset != undefined && btn.dataset.milestoneId != undefined && parseInt(btn.dataset.milestoneId) > 0) {

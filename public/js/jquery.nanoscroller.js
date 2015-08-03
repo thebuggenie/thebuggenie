@@ -594,14 +594,14 @@
           this.slider = this.pane.find("." + sliderClass);
           if (BROWSER_SCROLLBAR_WIDTH === 0 && isFFWithBuggyScrollbar()) {
             currentPadding = window.getComputedStyle(this.content, null).getPropertyValue('padding-right').replace(/\D+/g, '');
-            if (this.$el.find("." + this.options.paneClass).length >= 7) {
+            if (this.$content.find("li").length >= 7) {
               cssRule = {
                 marginRight: -14,
                 paddingRight: +currentPadding + 14
               };
             }
           } else if (BROWSER_SCROLLBAR_WIDTH) {
-            if (this.$el.find("." + this.options.paneClass).length >= 7) {
+            if (this.$content.find("li").length >= 7) {
               cssRule = {
                 marginRight: -BROWSER_SCROLLBAR_WIDTH
               };
