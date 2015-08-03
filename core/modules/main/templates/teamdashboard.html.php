@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     $tbg_response->addBreadcrumb(__('Teams'), null, tbg_get_breadcrumblinks('main_links'));
     if ($team instanceof \thebuggenie\core\entities\Team)
@@ -12,14 +12,14 @@
         $tbg_response->setTitle(__('Team dashboard'));
         $tbg_response->addBreadcrumb(__('Team dashboard'));
     }
-    
+
 ?>
 
 <div class="team_dashboard">
     <div class="dashboard_team_info">
         <span class="dashboard_team_header"><?php echo $team->getName(); ?></span><br />
     </div>
-    
+
     <table class="team_dashboard_table">
         <tr>
             <td class="team_dashboard_projects padded">
@@ -33,7 +33,7 @@
                         <li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
                     <?php endforeach; ?>
                     </ul>
-                    <div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
+                    <div class="header" style="margin: 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
                     <?php $milestone_cc = 0; ?>
                     <?php foreach ($projects as $project): ?>
                         <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>

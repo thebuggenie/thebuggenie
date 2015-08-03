@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
     if ($client instanceof \thebuggenie\core\entities\Client)
@@ -12,7 +12,7 @@
         $tbg_response->setTitle(__('Client dashboard'));
         $tbg_response->addBreadcrumb(__('Client dashboard'));
     }
-    
+
 ?>
 
 <?php if ($client instanceof \thebuggenie\core\entities\Client): ?>
@@ -44,14 +44,14 @@
                         <?php echo __('Projects for %client', array('%client' => $client->getName())); ?>
                         <a style="float: right;" class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $client->getID())); ?>');"><?php echo __('Show archived projects'); ?></a>
                     </div>
-        
+
                     <?php if (count($projects) > 0): ?>
                         <ul class="project_list simple_list">
                         <?php foreach ($projects as $aProject): ?>
                             <li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
                         <?php endforeach; ?>
                         </ul>
-                        <div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
+                        <div class="header" style="margin: 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
                         <?php $milestone_cc = 0; ?>
                         <?php foreach ($projects as $project): ?>
                             <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>

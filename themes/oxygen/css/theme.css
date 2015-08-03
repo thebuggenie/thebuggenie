@@ -2501,7 +2501,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard ul.dashboard_column > li table tr td .issue_closed { text-decoration: line-through; }
 .dashboard.layout_standard ul.dashboard_column > li .imgtd img {padding: 4px 5px 0 0}
 .dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 2px 5px; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1em; border-bottom: 1px dotted #CCC; background-color: #FFF; }
-.dashboard.layout_standard ul.dashboard_column > li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
+.dashboard.layout_standard ul.dashboard_column > li .milestone_box .header { margin: 0 -10px; padding: 0; border: none; background: none; border-bottom: 1px dotted #CCC; }
 .dashboard.layout_standard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
 .dashboard.layout_standard .dashboard_view_content { padding: 5px 10px; }
 .dashboard.layout_standard .dashboard_view_content ul li { float: none; width: auto; }
@@ -5042,7 +5042,7 @@ li.filtervalue .hidden { display: none; }
 }
 .container_div { margin: 5px; clear: both; font-size: 1.1em; display: block; padding: 0 0 2px; background-color: #FFF; border: none; box-shadow: none; position: relative; }
 .container_div .header, .team_dashboard .header, .project_overview .header {
-    margin: 5px 0;
+    margin: 0;
     padding: 5px 0;
     border: none;
     border-bottom: 1px dotted #CCC;
@@ -9209,7 +9209,10 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 .team_dashboard_projects .milestone_box,
 .client_dashboard_projects .milestone_box
 {
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-right: 0;
+    padding-left: 10px;
 }
 
 .dashboard_view_content .milestone_box:last-child,
@@ -9224,7 +9227,9 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 .client_dashboard_projects .milestone_box > .header
 {
     background-color: rgba(255,255,255,0.6) !important;
-    padding: 5px !important;
+    padding: 5px 0 5px 10px !important;
+    margin-left: -10px;
+    margin-right: -10px;
 }
 
 .dashboard_view_content .milestone_box > .date,
@@ -9241,7 +9246,8 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 .client_dashboard_projects .milestone_box > .percentage > .numbers
 {
     right: 4px;
-    top: -1px;
+    top: -21px;
+    font-size: 0.85em;
 }
 
 .dashboard_view_content .milestone_box > .status,
@@ -9380,6 +9386,26 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 #dashboard_lefthand .collapser_link:after
 {
     height: 23px;
+}
+
+.rounded_box.milestone_box.red
+{
+
+}
+
+.rounded_box.milestone_box.red
+{
+    border-color: #E8CFCF;
+}
+
+.rounded_box.milestone_box.green
+{
+    border-color: #CFE8CF;
+}
+
+.rounded_box.milestone_box.iceblue
+{
+    border-color: #D4E5FF;
 }
 
 
