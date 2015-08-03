@@ -219,7 +219,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
     color: #999;
     font-style: italic;
     font-weight: normal;
-    margin: 0;
+    margin: 0 0 5px 0;
     padding: 0 4px;
     clear: both;
     display: block;
@@ -9297,6 +9297,46 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     line-height: 1.4 !important;
 }
 
+.project_strip .button-group .button-wiki
+{
+    border-right: none;
+}
+
+.project_strip .button-group .button-report-issue
+{
+    border-left: 1px solid #438739;
+}
+
+.legendColorBox > div
+{
+    margin-top: 1px;
+    margin-right: 2px;
+}
+
+.legendColorBox > div > div
+{
+    width: 1px !important;
+}
+
+#dashboard_lefthand .collapser_link
+{
+    left: 230px;
+    z-index: 1;
+    padding-top: 4px;
+    padding-bottom: 1px;
+    margin-top: 3px;
+}
+
+#dashboard_lefthand .collapser_link:before
+{
+    height: 17px;
+}
+
+#dashboard_lefthand .collapser_link:after
+{
+    height: 23px;
+}
+
 
 /* Issues */
 
@@ -10971,11 +11011,12 @@ li#header_usermenu_link > div
 
 /** nano scroller **/
 .nano {
+
     position : relative;
     width    : 100%;
     height   : 100%;
     overflow : hidden;
-    margin-bottom: 6px;
+    margin-bottom: -1px;
 }
 .nano > .nano-content {
     position      : relative;
