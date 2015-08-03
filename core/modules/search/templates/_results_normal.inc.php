@@ -208,14 +208,10 @@ foreach ($search_object->getIssues() as $issue):
             setTimeout(function() {
                 tbgjs.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
             }, 250);
-            if (! results_events_binded) {
-                // issue checkboxes
-                jQuery(".sca_actions").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckbox);
-                // issue checkboxes select all
-                jQuery(".sca_action_selector").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckboxes);
-
-                results_events_binded = true;
-            }
+            // issue checkboxes
+            jQuery(".sca_actions").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckbox);
+            // issue checkboxes select all
+            jQuery(".sca_action_selector").on("click", "input[type='checkbox']", tbgjs.Search.toggleCheckboxes);
         });
     });
 </script>

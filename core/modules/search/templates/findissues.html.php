@@ -67,7 +67,6 @@
             </div>
             <script>
                 var TBG;
-                var results_events_binded = false;
                 require(['domReady', 'thebuggenie/tbg'], function (domReady, tbgjs) {
                     domReady(function () {
                         TBG = tbgjs;
