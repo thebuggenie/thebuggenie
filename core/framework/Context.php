@@ -882,10 +882,6 @@ class Context
             self::$_user = ($user === null) ? User::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
             if (self::$_user->isAuthenticated())
             {
-                if (self::$_user->isOffline() || self::$_user->isAway())
-                {
-                    self::$_user->setOnline();
-                }
                 if (!self::getRequest()->hasCookie('tbg3_original_username'))
                 {
                     self::$_user->updateLastSeen();
