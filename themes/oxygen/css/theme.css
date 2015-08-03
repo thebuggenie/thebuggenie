@@ -2002,7 +2002,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
     -o-animation: top_slide 0.3s ease-out;
     animation: top_slide 0.3s ease-out;
 }
-#viewissue_header_container.fixed #votes_additional { display: none; }
+#viewissue_header_container.fixed #votes_additional, #viewissue_header_container.fixed #user_pain_additional { display: none; }
 #workflow_actions.fixed #comment_add_button { margin-left: 5px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #comment_add_button { padding: 0; }
 #issue_main .button_container { display: inline-block; float: right; margin: -6px 0 0; font-size: 1.1em; }
