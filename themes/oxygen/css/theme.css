@@ -1687,7 +1687,7 @@ a.friend { color: #277CBA; }
     margin: 0 10px;
     vertical-align: top;
     border-right: 1px solid #DDD;
-    box-shadow: 10px 0 15px -21px rgba(0, 0, 0, 0.8);
+    box-shadow: 10px 0 15px -19px rgba(0, 0, 0, 0.8);
     position: relative;
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
@@ -2634,7 +2634,7 @@ table.issue_affects td img { vertical-align: bottom; }
     content: "";
     position: absolute;
     width: 10px;
-    height: 23px;
+    height: 21px;
     background-color: #FFF;
     top: -2px;
     left: 19px;
