@@ -1687,13 +1687,18 @@ a.friend { color: #277CBA; }
     margin: 0 10px;
     vertical-align: top;
     border-right: 1px solid #DDD;
-    box-shadow: 10px 0 15px -19px rgba(0, 0, 0, 0.8);
+    box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.8);
     position: relative;
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
     -ms-transition: width 0.3s ease;
     -o-transition: width 0.3s ease;
     transition: width 0.3s ease;
+}
+@-moz-document url-prefix() {
+    #issue_details {
+        box-shadow: 10px 0 15px -22px rgba(0, 0, 0, 0.8);
+    }
 }
 #issue_details .issue_details_fieldsets_wrapper {
     width: 350px;
@@ -1767,11 +1772,11 @@ a.friend { color: #277CBA; }
     border-color: rgba(0, 0, 0, 0.2);
     opacity: 1;
     visibility: visible;
-    -webkit-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
-    -moz-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
-    -ms-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
-    -o-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
-    transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
+    -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -moz-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -ms-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -o-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
@@ -2620,24 +2625,34 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 
 #dashboard_righthand .collapser_link { left: -1px; right: auto; border-left: none; border-right: 1px dotted #CCC; box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.2); }
-#issue_details .collapser_link { right: 0px; top: 8px; position: absolute; background-color: #FFF; border: 1px solid #E5E5E5; border-right-style: none; line-height: 1; padding: 3px 3px 1px 3px; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15) inset; }
+#issue_details .collapser_link { right: -1px; top: 8px; position: absolute; background-color: #FFF; border: 1px solid #E5E5E5; border-right-style: none; line-height: 1; padding: 5px 3px 2px 3px; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1) inset; }
+@-moz-document url-prefix() {
+    #issue_details .collapser_link {
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1) inset;
+    }
+}
 #issue_details .collapser_link:before {
     content: "";
     position: absolute;
     width: 10px;
-    height: 15px;
+    height: 19px;
     background-color: #FFF;
     top: 2px;
     left: 16px;
+}
+@-moz-document url-prefix() {
+    #issue_details .collapser_link:before {
+        top: 1px;
+    }
 }
 #issue_details .collapser_link:after {
     content: "";
     position: absolute;
     width: 10px;
-    height: 21px;
+    height: 24px;
     background-color: #FFF;
     top: -2px;
-    left: 19px;
+    left: 20px;
 }
 #issue_details .collapser_link .collapser { display: inline; }
 #issue_details .collapser_link .expander { display: none; }
@@ -4414,10 +4429,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #search_sidebar.collapsed .container_div, #dashboard_lefthand.collapsed .container_div { display: block; }
 .side_bar.collapsed .expander { display: inline; }
 .side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
-.side_bar .collapser_link { cursor: pointer; position: absolute; left: 290px; right: auto; width: 14px; background-color: #FFF; border: 1px solid #CCC; line-height: 1; padding: 3px; box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.15); transition: left 0.3s ease, right 0.3s ease; }
+.side_bar .collapser_link { cursor: pointer; position: absolute; left: 290px; right: auto; width: 14px; background-color: #FFF; border: 1px solid #DDD; line-height: 1; padding: 3px; box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1); transition: left 0.3s ease, right 0.3s ease; }
 @-moz-document url-prefix() {
     .side_bar .collapser_link {
-        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.15);
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
 }
 .side_bar .collapser_link:before { content: ""; position: absolute; width: 10px; height: 21px; background-color: #FFF; top: 2px; left: 16px; }
