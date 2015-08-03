@@ -4984,7 +4984,7 @@ li.filtervalue .hidden { display: none; }
 
 /* paginator */
 .issue_paginator { text-align: center; width: auto; margin: 10px auto 10px auto; padding: 3px 5px 3px 5px; font-size: 13px; text-align: center; }
-.issue_paginator.fixed { width: 100%; margin: 10px auto 0 auto; padding: 5px 0; background-color: rgba(255, 255, 255, 0.9); border-top: 1px solid rgba(100, 100, 100, 0.3); position: fixed; bottom: 0; left: 0; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.issue_paginator.fixed { width: 100%; margin: 10px auto 0 auto; padding: 5px 0; background-color: rgba(255, 255, 255, 0.9); border-top: 1px solid rgba(100, 100, 100, 0.3); position: fixed; bottom: 0; left: 0; z-index: 100; box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
 .issue_paginator.fixed.visible { opacity: 1; visibility: visible; }
 /* end paginator */
 
@@ -10668,6 +10668,13 @@ div[id^='comment_reply_indicator_']
 #account_info_container #confirmed_scope_memberships
 {
     line-height: 2.2;
+}
+
+#add_application_password_indicator
+{
+    position: absolute;
+    margin-left: -30px;
+    margin-top: 3px;
 }
 
 
