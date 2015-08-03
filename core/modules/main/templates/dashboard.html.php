@@ -18,8 +18,10 @@
                     <?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
                 </a>
             </div>
-            <div class="container_div" style="margin: 0 0 5px 10px;">
-                <?php include_component('main/myfriends'); ?>
+            <div class="container_divs_wrapper">
+                <div class="container_div" style="margin: 0 0 5px 10px;">
+                    <?php include_component('main/myfriends'); ?>
+                </div>
             </div>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'dashboard_left_bottom')->trigger(); ?>
         </td>

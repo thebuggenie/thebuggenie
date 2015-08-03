@@ -1669,7 +1669,7 @@ a.friend { color: #277CBA; }
     -o-transition: margin 0.3s ease;
     transition: margin 0.3s ease;
 }
-#issue_main_container.uncollapsed #issue_main { margin-left: 60px; }
+#issue_main_container.uncollapsed #issue_main { margin-left: 50px; }
 #issue_details_container {
     float: left;
     width: 360px;
@@ -1686,14 +1686,17 @@ a.friend { color: #277CBA; }
     width: 350px;
     margin: 0 10px;
     vertical-align: top;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.9);
+    border-right: 1px solid #DDD;
+    box-shadow: 10px 0 15px -21px rgba(0, 0, 0, 0.8);
     position: relative;
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
     -ms-transition: width 0.3s ease;
     -o-transition: width 0.3s ease;
     transition: width 0.3s ease;
+}
+#issue_details .issue_details_fieldsets_wrapper {
+    width: 350px;
 }
 #issue_view fieldset { border: 0; padding: 5px; margin: 0; }
 #issue_view fieldset legend {
@@ -1752,22 +1755,23 @@ a.friend { color: #277CBA; }
 .button-group.inset .button.button-pressed, .button-group.inset .button.button-pressed:hover { box-shadow: 0 0 6px rgba(150, 150, 150, 0.4) inset; color: #888; }
 /* end very visible button */
 
-#issue_details_container.collapsed { width: 40px; }
-#issue_details_container.collapsed #issue_details { width: 30px; box-shadow: 10px 0 15px -14px rgba(0, 0, 0, 0.9); }
+#issue_details_container.collapsed { width: 30px; }
+#issue_details_container.collapsed #issue_details { width: 20px; }
 #issue_details_container.collapsed fieldset {
     opacity: 0;
-    margin-left: -400px;
-    margin-right: 30px;
+    visibility: hidden;
+    margin-left: -350px;
 }
 #issue_details fieldset {
     margin: 0 8px 15px 0;
     border-color: rgba(0, 0, 0, 0.2);
     opacity: 1;
-    -webkit-transition: opacity 0.3s ease, margin-left 0.3s ease;
-    -moz-transition: opacity 0.3s ease, margin-left 0.3s ease;
-    -ms-transition: opacity 0.3s ease, margin-left 0.3s ease;
-    -o-transition: opacity 0.3s ease, margin-left 0.3s ease;
-    transition: opacity 0.3s ease, margin-left 0.3s ease;
+    visibility: visible;
+    -webkit-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
+    -moz-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
+    -ms-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
+    -o-transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
+    transition: opacity 1s ease, visibility 1s ease, margin-left 0.3s ease;
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
@@ -2513,8 +2517,14 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard_lefthand { width: 250px; padding: 5px 10px 5px 0; border-right: 1px solid #DDD; }
 #dashboard_righthand { width: 250px; padding: 5px 5px 5px 10px; box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-left: 1px dotted #DDD;}
 #dashboard_lefthand a.friend { color: #00a400; }
-#dashboard_lefthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
+#dashboard_lefthand.side_bar.collapsed { width: 25px; margin: 0; }
 #dashboard_righthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
+#dashboard_lefthand .container_divs_wrapper {
+    width: 239px;
+}
+#dashboard_lefthand.collapsed .container_divs_wrapper {
+    margin-left: -239px;
+}
 
 .jsortable .sortable-placeholder {
     display: block;
@@ -2610,7 +2620,25 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 
 #dashboard_righthand .collapser_link { left: -1px; right: auto; border-left: none; border-right: 1px dotted #CCC; box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.2); }
-#issue_details .collapser_link { right: 0px; top: 8px; position: absolute; background-color: #FFF; border: 1px solid #E5E5E5; border-right-style: none; line-height: 1; padding: 3px 3px 1px 3px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2); }
+#issue_details .collapser_link { right: 0px; top: 8px; position: absolute; background-color: #FFF; border: 1px solid #E5E5E5; border-right-style: none; line-height: 1; padding: 3px 3px 1px 3px; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15) inset; }
+#issue_details .collapser_link:before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    background-color: #FFF;
+    top: 2px;
+    left: 16px;
+}
+#issue_details .collapser_link:after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 23px;
+    background-color: #FFF;
+    top: -2px;
+    left: 19px;
+}
 #issue_details .collapser_link .collapser { display: inline; }
 #issue_details .collapser_link .expander { display: none; }
 #issue_details.collapsed .collapser_link .collapser { display: none; }
@@ -4351,6 +4379,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; border-right: 1px solid #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 0; }
+#search_sidebar .container_divs_wrapper {
+    width: 294px;
+}
+#search_sidebar.collapsed .container_divs_wrapper {
+    margin-left: -294px;
+}
 #search_sidebar .container_div { border: none; box-shadow: none; }
 #search_sidebar .header { background: transparent; font-weight: normal; margin: 0; padding: 6px 0; border-bottom: 1px dotted #AAA; font-size: 15px; }
 #search_sidebar .container_div ul { margin: 5px 0; padding: 0; }
@@ -4377,6 +4411,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar .expander { display: none; }
 .side_bar .collapser { display: inline; }
 .side_bar.collapsed .collapser, .side_bar.collapsed .container_div { display: none; }
+#search_sidebar.collapsed .container_div, #dashboard_lefthand.collapsed .container_div { display: block; }
 .side_bar.collapsed .expander { display: inline; }
 .side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
 .side_bar .collapser_link { cursor: pointer; position: absolute; left: 290px; right: auto; width: 14px; background-color: #FFF; border: 1px solid #CCC; line-height: 1; padding: 3px; box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.15); transition: left 0.3s ease, right 0.3s ease; }
@@ -4387,7 +4422,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 }
 .side_bar .collapser_link:before { content: ""; position: absolute; width: 10px; height: 21px; background-color: #FFF; top: 2px; left: 16px; }
 .side_bar .collapser_link:after { content: ""; position: absolute; width: 10px; height: 27px; background-color: #FFF; top: -2px; left: 19px; }
-.side_bar.collapsed .collapser_link { left: 5px; right: auto; }
+.side_bar.collapsed .collapser_link, #dashboard_lefthand.collapsed .collapser_link { left: 5px; right: auto; }
 #dashboard_righthand.side_bar .collapser_link { left: auto; right: 250px; }
 #dashboard_righthand.side_bar.collapsed .collapser_link { right: 10px; }
 .side_bar .collapser_link a { padding: 0; }
@@ -4995,6 +5030,16 @@ li.filtervalue .hidden { display: none; }
 .saved_searches .container_div { margin-bottom: 10px; }
 
 .backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 0px; padding-bottom: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19); border-radius: 3px; }
+.side_bar .container_divs_wrapper {
+    margin-left: 0px;
+    visibility: visible;
+    opacity: 1;
+    transition: margin-left 0.3s ease 0s, opacity 1s ease 0s, visibility 1s ease 0s;
+}
+.side_bar.collapsed .container_divs_wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
 .container_div { margin: 5px; clear: both; font-size: 1.1em; display: block; padding: 0 0 2px; background-color: #FFF; border: none; box-shadow: none; position: relative; }
 .container_div .header, .team_dashboard .header, .project_overview .header {
     margin: 5px 0;
@@ -9329,7 +9374,7 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 
 #dashboard_lefthand .collapser_link:before
 {
-    height: 17px;
+    height: 16px;
 }
 
 #dashboard_lefthand .collapser_link:after
