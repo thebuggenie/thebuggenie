@@ -1,7 +1,7 @@
 <?php /* <div style="text-align: center;"><?php echo image_tag(make_url('project_statistics_last_15', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), array('style' => 'margin-top: 10px;'), true); ?></div> */ ?>
 <div id="dashboard_<?php echo $view->getID(); ?>_graph" class="graph_view" style="margin: 5px; width: 100%; height: 250px;"></div>
 <script type="text/javascript">
-    require(['jquery', 'jquery.flot'],
+    require(['jquery', 'jquery.flot', 'jquery.ba-resize'],
         function (jQuery) {
             var d_open = [];
             <?php for ($i = 0; $i < count($issues['open']); $i++): ?>
@@ -47,9 +47,9 @@
                     }
                 });
             }
-            window.onresize = function(event) {
+            jQuery("#dashboard_<?php echo $view->getID(); ?>_graph").resize(function () {
                 initPlot();
-            };
+            });
             initPlot();
     });
 </script>
