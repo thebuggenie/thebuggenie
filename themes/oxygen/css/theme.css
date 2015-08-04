@@ -9423,6 +9423,17 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     border-color: #D4E5FF;
 }
 
+.dashboard_view_content .statistics_percentage
+{
+    border-spacing: 0 5px;
+}
+
+.dashboard_view_content .statistics_percentage .percent_filled
+{
+    height: 7px !important;
+    margin-top: 7px;
+}
+
 
 /* Issues */
 
