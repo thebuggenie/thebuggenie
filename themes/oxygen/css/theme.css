@@ -1702,6 +1702,18 @@ a.friend { color: #277CBA; }
 }
 #issue_details .issue_details_fieldsets_wrapper {
     width: 350px;
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -moz-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -ms-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    -o-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
+}
+#issue_details_container.collapsed .issue_details_fieldsets_wrapper {
+    opacity: 0;
+    visibility: hidden;
+    margin-left: -350px;
 }
 #issue_view fieldset { border: 0; padding: 5px; margin: 0; }
 #issue_view fieldset legend {
@@ -1762,21 +1774,9 @@ a.friend { color: #277CBA; }
 
 #issue_details_container.collapsed { width: 30px; }
 #issue_details_container.collapsed #issue_details { width: 20px; }
-#issue_details_container.collapsed fieldset {
-    opacity: 0;
-    visibility: hidden;
-    margin-left: -350px;
-}
 #issue_details fieldset {
     margin: 0 8px 15px 0;
     border-color: rgba(0, 0, 0, 0.2);
-    opacity: 1;
-    visibility: visible;
-    -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
-    -moz-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
-    -ms-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
-    -o-transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
-    transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
