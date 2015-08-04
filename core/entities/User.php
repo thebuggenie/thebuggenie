@@ -2347,6 +2347,14 @@
             return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
         }
 
+        public function canAddScrumSprints(\thebuggenie\core\entities\Project $project)
+        {
+            if ($project->isArchived()) return false;
+            if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
+
+            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'candoscrumplanning', $project->getID(), false);
+        }
+
         /**
          * Return if the user can edit project details and settings
          *
