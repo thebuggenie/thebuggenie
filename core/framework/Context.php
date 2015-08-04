@@ -1350,6 +1350,10 @@ class Context
     {
         try
         {
+            if (! is_array($permission_roles_allowed))
+            {
+                $permission_roles_allowed = array();
+            }
             if ($uid != 0 || $gid != 0 || $tid != 0)
             {
                 if ($uid != 0)
