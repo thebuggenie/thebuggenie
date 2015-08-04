@@ -1382,7 +1382,7 @@ class Context
                             $new_permission_roles_allowed[] = $permission;
                         }
                     }
-                    if (count($new_permission_roles_allowed) && is_array($permission_roles_allowed))
+                    if (count($new_permission_roles_allowed))
                     {
                         return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
@@ -1419,7 +1419,7 @@ class Context
                         }
 
                     }
-                    if (count($new_permission_roles_allowed) && is_array($permission_roles_allowed))
+                    if (count($new_permission_roles_allowed))
                     {
                         return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
@@ -1455,7 +1455,7 @@ class Context
                             $new_permission_roles_allowed[] = 1;
                         }
                     }
-                    if (count($new_permission_roles_allowed) && is_array($permission_roles_allowed))
+                    if (count($new_permission_roles_allowed))
                     {
                         return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
@@ -1490,7 +1490,7 @@ class Context
                     $new_permission_roles_allowed[] = 1;
                 }
             }
-            if (count($new_permission_roles_allowed) && is_array($permission_roles_allowed))
+            if (count($new_permission_roles_allowed))
             {
                 return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
             }
