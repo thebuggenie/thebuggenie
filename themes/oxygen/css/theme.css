@@ -4443,10 +4443,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar .collapser_link a { padding: 0; }
 .side_bar .collapser_link a:hover { text-decoration: none; border: 0; }
 .project_information_sidebar.collapsed .sidebar_links, .project_information_sidebar.collapsed #project_header_container div { display: none; }
-.project_information_sidebar .sidebar_links a { display: block; padding: 7px; color: #555; border: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset; }
+.project_information_sidebar .sidebar_links a { display: block; padding: 8px; color: #555; border-top: 1px dotted #DDD; border-left: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset; }
 .project_information_sidebar .sidebar_links a:first-child { border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 3px; }
-.project_information_sidebar .sidebar_links a:last-child { border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 3px; }
-.project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
+.project_information_sidebar .sidebar_links a:last-child { border-bottom: 1px dotted #DDD; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 3px; }
+.project_information_sidebar .sidebar_links a:hover { border-bottom: none; background-color: #F1F1F1; border-right-color: #CCC; }
 .project_information_sidebar .sidebar_links a.selected { border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-bottom-left-radius: 3px; border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 12px; font-weight: bold; background-color: #FFF; box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.2); }
 .project_information_sidebar .sidebar_links a.selected + a { border-top: none; box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.3) inset; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
