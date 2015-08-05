@@ -1346,7 +1346,7 @@ class Context
         return null;
     }
 
-    protected static function _permissionsCheck($permissions, $uid, $gid, $tid, $permission_roles_allowed = array())
+    protected static function _permissionsCheck($permissions, $uid, $gid, $tid, $permission_roles_allowed, $target_id)
     {
         try
         {
@@ -1408,7 +1408,26 @@ class Context
                                         return $pp['allowed'];
                                     }
 
-                                    $new_permission_roles_allowed[] = $pp;
+                                    $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($pp['role_id'], $target_id);
+
+                                    if (is_array($tid))
+                                    {
+                                        foreach ($tid as $team)
+                                        {
+                                            if (array_key_exists($team->getID(), $role_assigned_teams))
+                                            {
+                                                $new_permission_roles_allowed[] = $pp;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (array_key_exists($tid, $role_assigned_teams))
+                                        {
+                                            $new_permission_roles_allowed[] = $pp;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1419,7 +1438,26 @@ class Context
                                 return $permission['allowed'];
                             }
 
-                            $new_permission_roles_allowed[] = $permission;
+                            $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($permission['role_id'], $target_id);
+
+                            if (is_array($tid))
+                            {
+                                foreach ($tid as $team)
+                                {
+                                    if (array_key_exists($team->getID(), $role_assigned_teams))
+                                    {
+                                        $new_permission_roles_allowed[] = $permission;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (array_key_exists($tid, $role_assigned_teams))
+                                {
+                                    $new_permission_roles_allowed[] = $permission;
+                                }
+                            }
                         }
 
                     }
@@ -1536,13 +1574,13 @@ class Context
             {
                 $permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
 
-                $retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid);
+                $retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid, array(), $target_id);
 
             }
 
             if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
             {
-                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval);
+                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, $target_id);
             }
 
             if (is_array($retval)) return true;
