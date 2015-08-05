@@ -206,6 +206,11 @@
                     Context::setMessage('login_referer', Context::getRouting()->generate(Context::getRouting()->getCurrentRouteName(), Context::getRequest()->getParameters()));
                     $this->forward(Context::getRouting()->generate('login_page'), 403);
                 }
+                elseif (Context::getRequest()->isAjaxCall())
+                {
+                    $this->getResponse()->setHttpStatus(403);
+                    throw new \Exception(Context::getI18n()->__("You don't have access to perform this action"));
+                }
                 else
                 {
                     $this->getResponse()->setHttpStatus(403);
