@@ -4082,6 +4082,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 input.spectrum({
                                     cancelText: input.data('cancel-text'),
                                     chooseText: input.data('choose-text'),
+                                    showInput: true,
                                     preferredFormat: 'hex'
                                 });
                             });
