@@ -31,35 +31,37 @@
             <?php echo $image_tag; ?>
         <?php endif; ?>
     </span>
-    <span style="float:right;margin-top:3px;margin-right:10px;" id="role_permissions_<?php echo $key; ?>_<?php echo $target_id; ?>_<?php echo $type; ?>_<?php echo $item_id; ?>" title="<?php echo __('Inherited access from roles'); ?>">
-        <?php $val = \thebuggenie\core\framework\Context::isPermissionSet($type, $key, $item_id, $target_id, $module, false); ?>
-        <?php if (is_bool($val)): ?>
-            <?php $image_tag = ($val) ? image_tag('permission_set_ok.png') : image_tag('permission_set_denied.png'); ?>
-        <?php elseif ($mode == 'datatype'): ?>
-            <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
-        <?php elseif ($mode == 'general' && $type == 'everyone'): ?>
-            <?php $image_tag = (\thebuggenie\core\framework\Settings::isPermissive()) ? image_tag('permission_unset_ok.png') : image_tag('permission_unset_denied.png'); ?>
-        <?php elseif ($mode == 'configuration' && $type == 'everyone'): ?>
-            <?php $image_tag = image_tag('permission_unset_denied.png'); ?>
-        <?php elseif ($mode == 'pages' && $type == 'everyone'): ?>
-            <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
-        <?php elseif ($mode == 'user' && $type == 'everyone'): ?>
-            <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
-        <?php else: ?>
-            <?php $image_tag = image_tag('permission_set_unset.png'); ?>
-        <?php endif; ?>
-        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-            <?php if (is_null($val)): ?>
-                <?php echo $image_tag; ?>
-            <?php elseif ($val): ?>
-                <?php echo $image_tag; ?>
-            <?php elseif (!$val): ?>
+    <?php if ($type != 'everyone' && $type != 'group'): ?>
+        <span style="float:right;margin-top:3px;margin-right:10px;" id="role_permissions_<?php echo $key; ?>_<?php echo $target_id; ?>_<?php echo $type; ?>_<?php echo $item_id; ?>" title="<?php echo __('Inherited access from roles'); ?>">
+            <?php $val = \thebuggenie\core\framework\Context::isPermissionSet($type, $key, $item_id, $target_id, $module, false); ?>
+            <?php if (is_bool($val)): ?>
+                <?php $image_tag = ($val) ? image_tag('permission_set_ok.png') : image_tag('permission_set_denied.png'); ?>
+            <?php elseif ($mode == 'datatype'): ?>
+                <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
+            <?php elseif ($mode == 'general' && $type == 'everyone'): ?>
+                <?php $image_tag = (\thebuggenie\core\framework\Settings::isPermissive()) ? image_tag('permission_unset_ok.png') : image_tag('permission_unset_denied.png'); ?>
+            <?php elseif ($mode == 'configuration' && $type == 'everyone'): ?>
+                <?php $image_tag = image_tag('permission_unset_denied.png'); ?>
+            <?php elseif ($mode == 'pages' && $type == 'everyone'): ?>
+                <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
+            <?php elseif ($mode == 'user' && $type == 'everyone'): ?>
+                <?php $image_tag = image_tag('permission_unset_ok.png'); ?>
+            <?php else: ?>
+                <?php $image_tag = image_tag('permission_set_unset.png'); ?>
+            <?php endif; ?>
+            <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                <?php if (is_null($val)): ?>
+                    <?php echo $image_tag; ?>
+                <?php elseif ($val): ?>
+                    <?php echo $image_tag; ?>
+                <?php elseif (!$val): ?>
+                    <?php echo $image_tag; ?>
+                <?php endif; ?>
+            <?php else: ?>
                 <?php echo $image_tag; ?>
             <?php endif; ?>
-        <?php else: ?>
-            <?php echo $image_tag; ?>
-        <?php endif; ?>
-    </span>
+        </span>
+    <?php endif; ?>
 <?php if (! isset($in_json)): ?>
 </div>
 <?php endif; ?>
