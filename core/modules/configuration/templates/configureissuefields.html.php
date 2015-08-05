@@ -1,6 +1,6 @@
 <?php
     $tbg_response->setTitle(__('Configure data types'));
-    $tbg_response->addStylesheet('spectrum.css');
+    $tbg_response->addStylesheet(make_url('asset_css_unthemed', array('css' => 'spectrum.css')));
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
