@@ -1408,25 +1408,37 @@ class Context
                                         return $pp['allowed'];
                                     }
 
-                                    $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($pp['role_id'], $target_id);
-
-                                    if (is_array($tid))
+                                    if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
                                     {
-                                        foreach ($tid as $team)
+                                        $target_id = self::getCurrentProject()->getID();
+                                    }
+
+                                    if ($target_id != 0)
+                                    {
+                                        $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($pp['role_id'], $target_id);
+
+                                        if (is_array($tid))
                                         {
-                                            if (array_key_exists($team->getID(), $role_assigned_teams))
+                                            foreach ($tid as $team)
+                                            {
+                                                if (array_key_exists($team->getID(), $role_assigned_teams))
+                                                {
+                                                    $new_permission_roles_allowed[] = $pp;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (array_key_exists($tid, $role_assigned_teams))
                                             {
                                                 $new_permission_roles_allowed[] = $pp;
-                                                break;
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        if (array_key_exists($tid, $role_assigned_teams))
-                                        {
-                                            $new_permission_roles_allowed[] = $pp;
-                                        }
+                                        $new_permission_roles_allowed[] = $pp;
                                     }
                                 }
                             }
@@ -1438,25 +1450,36 @@ class Context
                                 return $permission['allowed'];
                             }
 
-                            $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($permission['role_id'], $target_id);
-
-                            if (is_array($tid))
+                            if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
                             {
-                                foreach ($tid as $team)
+                                $target_id = self::getCurrentProject()->getID();
+                            }
+
+                            if ($target_id != 0)
+                            {
+                                $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($permission['role_id'], $target_id);
+
+                                if (is_array($tid))
                                 {
-                                    if (array_key_exists($team->getID(), $role_assigned_teams))
+                                    foreach ($tid as $team)
                                     {
-                                        $new_permission_roles_allowed[] = $permission;
-                                        break;
+                                        if (array_key_exists($team->getID(), $role_assigned_teams))
+                                        {
+                                            $new_permission_roles_allowed[] = $permission;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
+                                else
+                                {
+                                    if (array_key_exists($tid, $role_assigned_teams))
+                                    {
+                                        $new_permission_roles_allowed[] = $permission;
+                                    }
+                                }
                             else
                             {
-                                if (array_key_exists($tid, $role_assigned_teams))
-                                {
-                                    $new_permission_roles_allowed[] = $permission;
-                                }
+                                $new_permission_roles_allowed[] = $permission;
                             }
                         }
 
@@ -1565,7 +1588,7 @@ class Context
         if (array_key_exists($module_name, self::$_permissions) &&
                 array_key_exists($permission_type, self::$_permissions[$module_name]))
         {
-            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
+            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
             {
                 $permissions_notarget = self::$_permissions[$module_name][$permission_type][0];
             }
@@ -1578,7 +1601,7 @@ class Context
 
             }
 
-            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
+            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
             {
                 $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, $target_id);
             }
