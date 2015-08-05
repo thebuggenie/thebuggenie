@@ -2298,8 +2298,14 @@
         {
             $retval = $this->hasPermission('canviewconfig', $section);
             $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $section);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', 0);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', 0);
+
+            foreach (range(0, 19) as $target_id)
+            {
+                if ($retval !== null) break;
+
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', $target_id);
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $target_id);
+            }
 
             return (bool) ($retval !== null) ? $retval : false;
         }
