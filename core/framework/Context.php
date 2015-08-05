@@ -1477,6 +1477,7 @@ class Context
                                         $new_permission_roles_allowed[] = $permission;
                                     }
                                 }
+                            }
                             else
                             {
                                 $new_permission_roles_allowed[] = $permission;
