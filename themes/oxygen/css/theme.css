@@ -1419,7 +1419,7 @@ table.cleantable th { text-align: center; }
 .permission_list ul li ul li ul li:hover { background-color: #E8E8E8; }
 .permission_list ul li ul li ul li ul li:hover { background-color: #dfdfdf; }
 .permission_list ul li ul li ul li a.permission_description { display: block; width: 540px; }
-.permissions_warning { background-color: rgba(255, 111, 85, 0.7); border: 1px solid rgba(50, 50, 50, 0.3); padding: 10px; font-size: 1em; font-weight: normal; display: block; margin: 10px 0 10px 0; color: rgba(50, 50, 50, 0.8); }
+.permissions_warning { background-color: rgba(255, 111, 85, 0.3); border: 1px solid rgba(121, 35, 35, 0.4); padding: 10px; font-size: 1em; font-weight: normal; display: block; margin: 10px 0 10px 0; color: rgb(183, 24, 24); border-radius: 3px; }
 .permissions_warning strong { display: block; font-weight: bold; text-transform: uppercase; }
 /* end permissions */
 
