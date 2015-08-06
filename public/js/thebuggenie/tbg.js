@@ -4079,17 +4079,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     loading: {indicator: field + '_indicator'},
                     success: {
                         update: field + '_content',
-                        callback: function () {
-                            jQuery('input.color').each(function (index, element) {
-                                var input = jQuery(element);
-                                input.spectrum({
-                                    cancelText: input.data('cancel-text'),
-                                    chooseText: input.data('choose-text'),
-                                    showInput: true,
-                                    preferredFormat: 'hex'
-                                });
-                            });
-                        }
+                        callback: TBG.Main.Helpers.initializeColorPicker
                     }
                 });
             }
@@ -4108,6 +4098,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             Sortable.destroy(type + '_list');
                             Sortable.create(type + '_list', sortable_options);
                         }
+                        TBG.Main.Helpers.initializeColorPicker();
                     }
                 }
             });
@@ -7486,6 +7477,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Main.Helpers.updateFancyFilterVisibleValue = function (filter, value) {
             filter.down('.value').update(value);
+        };
+
+        TBG.Main.Helpers.initializeColorPicker = function () {
+            jQuery('input.color').each(function (index, element) {
+                var input = jQuery(element);
+                input.spectrum({
+                    cancelText: input.data('cancel-text'),
+                    chooseText: input.data('choose-text'),
+                    showInput: true,
+                    preferredFormat: 'hex'
+                });
+            });
         };
 
         TBG.Main.Helpers.initializeFancyFilters = function(fancyfilter) {
