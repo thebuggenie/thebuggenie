@@ -1748,8 +1748,8 @@ class Context
             self::$_available_permissions['issues']['caneditissuecustomfields'] = array('description' => $i18n->__('Can change custom field values for any issues'), 'details' => array());
             foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $cdf)
             {
-                self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfields' . $cdf->getKey() . 'own'] = array('description' => $i18n->__('Can change custom field "%field_name" for issues reported by the user', array('%field_name' => __($cdf->getDescription()))));
-                self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields' . $cdf->getKey()] = array('description' => $i18n->__('Can change custom field "%field_name" for any issues', array('%field_name' => __($cdf->getDescription()))));
+                self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfields' . $cdf->getKey() . 'own'] = array('description' => $i18n->__('Can change custom field "%field_name" for issues reported by the user', array('%field_name' => $i18n->__($cdf->getDescription()))));
+                self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields' . $cdf->getKey()] = array('description' => $i18n->__('Can change custom field "%field_name" for any issues', array('%field_name' => $i18n->__($cdf->getDescription()))));
 
                 // Set permissions for custom option types
                 if ($cdf->hasCustomOptions())
@@ -1757,7 +1757,7 @@ class Context
                     $options = $cdf->getOptions();
                     foreach ($options as $option)
                     {
-                        self::$_available_permissions['issues']['set_datatype_' . $option->getID()] = array('description' => $i18n->__('Can change issue field to "%option_name" for issues reported by the user', array('%option_name' => __($option->getValue()))));
+                        self::$_available_permissions['issues']['set_datatype_' . $option->getID()] = array('description' => $i18n->__('Can change issue field to "%option_name" for issues reported by the user', array('%option_name' => $i18n->__($option->getValue()))));
                     }//endforeach
                 }//endif
             }
