@@ -136,4 +136,13 @@
             ); ?>
         </td>
     </tr>
+    <tr>
+        <td><label for="notification_poll_interval"><?php echo __('Notification poll interval'); ?></label></td>
+        <td>
+            <input type="text" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_NOTIFICATION_POLL_INTERVAL; ?>" style="width: 50px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="notification_poll_interval" value="<?php echo (\thebuggenie\core\framework\Settings::getNotificationPollInterval()); ?>" />
+            <?php echo config_explanation(
+                __('Polling is used to check for new user notifications. Set the default polling interval in seconds, or 0 to disable polling.')
+            ); ?>
+        </td>
+    </tr>
 </table>
