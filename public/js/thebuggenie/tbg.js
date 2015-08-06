@@ -436,7 +436,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             $('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
             document.observe('keydown', TBG.Core._escapeWatcher);
 
-            TBG.Core.Pollers.datapoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, 10);
             TBG.Core.Pollers.Callbacks.dataPoller();
             TBG.OpenID.init();
             // Mimick browser scroll to element with id as hash once header get 'fixed' class
@@ -468,6 +467,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 }
                             }
                             TBG.Core.Pollers.Locks.datapoller = false;
+                            if (TBG.Core.Pollers.datapoller != null)
+                                TBG.Core.Pollers.datapoller.stop();
+                            var interval = parseInt(json.poll_interval);
+                            TBG.Core.Pollers.datapoller = interval > 0 ? new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, interval) : null;
                         }
                     }
                 });

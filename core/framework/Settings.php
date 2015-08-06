@@ -85,6 +85,7 @@
         const SETTING_IS_PERMISSIVE_MODE = 'permissive';
         const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
         const SETTING_KEEP_COMMENT_TRAIL_CLEAN = 'cleancomments';
+        const SETTING_NOTIFICATION_POLL_INTERVAL = 'notificationpollinterval';
         const SETTING_OFFLINESTATE = 'offlinestate';
         const SETTING_ONLINESTATE = 'onlinestate';
         const SETTING_PREVIEW_COMMENT_IMAGES = 'previewcommentimages';
@@ -902,6 +903,17 @@
                 default:
                     return self::SYNTAX_MD;
             }
+        }
+
+        /**
+         * Notification polling interval in seconds
+         * 
+         * @return integer
+         */
+        public static function getNotificationPollInterval()
+        {
+            $seconds = self::get(self::SETTING_NOTIFICATION_POLL_INTERVAL);
+            return $seconds == null ? 10 : $seconds;
         }
 
         /**
