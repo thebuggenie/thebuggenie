@@ -123,6 +123,9 @@
                     'jquery.nanoscroller': {
                         deps: ['jquery']
                     },
+                    'jquery.ba-resize': {
+                        deps: ['jquery']
+                    },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };

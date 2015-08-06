@@ -402,7 +402,7 @@
                                 <?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
                             </a>
                         </div>
-                        <?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?>
+                        <div class="issue_details_fieldsets_wrapper"><?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?></div>
                         <div style="clear: both; margin-bottom: 5px;"> </div>
                     </div>
                 </div>

@@ -882,10 +882,6 @@ class Context
             self::$_user = ($user === null) ? User::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
             if (self::$_user->isAuthenticated())
             {
-                if (self::$_user->isOffline() || self::$_user->isAway())
-                {
-                    self::$_user->setOnline();
-                }
                 if (!self::getRequest()->hasCookie('tbg3_original_username'))
                 {
                     self::$_user->updateLastSeen();
@@ -1214,7 +1210,7 @@ class Context
                         {
                             self::$_permissions[$row->get(Permissions::MODULE)][$row->get(Permissions::PERMISSION_TYPE)][$row->get(Permissions::TARGET_ID)] = array();
                         }
-                        self::$_permissions[$row->get(Permissions::MODULE)][$row->get(Permissions::PERMISSION_TYPE)][$row->get(Permissions::TARGET_ID)][] = array('uid' => $row->get(Permissions::UID), 'gid' => $row->get(Permissions::GID), 'tid' => $row->get(Permissions::TID), 'allowed' => (bool) $row->get(Permissions::ALLOWED));
+                        self::$_permissions[$row->get(Permissions::MODULE)][$row->get(Permissions::PERMISSION_TYPE)][$row->get(Permissions::TARGET_ID)][] = array('uid' => $row->get(Permissions::UID), 'gid' => $row->get(Permissions::GID), 'tid' => $row->get(Permissions::TID), 'allowed' => (bool) $row->get(Permissions::ALLOWED), 'role_id' => $row->get(Permissions::ROLE_ID));
                     }
                 }
                 Logging::log('done (starting to cache access permissions)');
@@ -1261,21 +1257,21 @@ class Context
      * @param boolean $recache Whether to recache after clearing this permission
      * @param integer $scope A specified scope if not the default
      */
-    public static function removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, $recache = true, $scope = null)
+    public static function removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, $recache = true, $scope = null, $role_id = null)
     {
         if ($scope === null)
             $scope = self::getScope()->getID();
 
-        Permissions::getTable()->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
+        Permissions::getTable()->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope, $role_id);
         self::clearPermissionsCache();
 
         if ($recache)
             self::cacheAllPermissions();
     }
 
-    public static function removeAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0)
+    public static function removeAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $role_id = null)
     {
-        Permissions::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id);
+        Permissions::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id, $role_id);
         self::clearPermissionsCache();
     }
 
@@ -1298,7 +1294,7 @@ class Context
 
         if ($role_id === null)
         {
-            self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
+            self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope, 0);
         }
         Permissions::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope, $role_id);
         self::clearPermissionsCache();
@@ -1306,7 +1302,7 @@ class Context
         self::cacheAllPermissions();
     }
 
-    public static function isPermissionSet($type, $permission_key, $id, $target_id = 0, $module_name = 'core')
+    public static function isPermissionSet($type, $permission_key, $id, $target_id = 0, $module_name = 'core', $without_role = null)
     {
         if (array_key_exists($module_name, self::$_permissions) &&
                 array_key_exists($permission_key, self::$_permissions[$module_name]) &&
@@ -1316,7 +1312,7 @@ class Context
             {
                 foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
                 {
-                    if ($permission['gid'] == $id)
+                    if ($permission['gid'] == $id && (($without_role == true && $permission['role_id'] == 0) || ($without_role == false && $permission['role_id'] != 0)))
                         return $permission['allowed'];
                 }
             }
@@ -1324,7 +1320,7 @@ class Context
             {
                 foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
                 {
-                    if ($permission['uid'] == $id)
+                    if ($permission['uid'] == $id && (($without_role == true && $permission['role_id'] == 0) || ($without_role == false && $permission['role_id'] != 0)))
                         return $permission['allowed'];
                 }
             }
@@ -1332,7 +1328,7 @@ class Context
             {
                 foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
                 {
-                    if ($permission['tid'] == $id)
+                    if ($permission['tid'] == $id && (($without_role == true && $permission['role_id'] == 0) || ($without_role == false && $permission['role_id'] != 0)))
                         return $permission['allowed'];
                 }
             }
@@ -1340,7 +1336,7 @@ class Context
             {
                 foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
                 {
-                    if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
+                    if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0 && (($without_role == true && $permission['role_id'] == 0) || ($without_role == false && $permission['role_id'] != 0)))
                     {
                         return $permission['allowed'];
                     }
@@ -1350,14 +1346,19 @@ class Context
         return null;
     }
 
-    protected static function _permissionsCheck($permissions, $uid, $gid, $tid)
+    protected static function _permissionsCheck($permissions, $uid, $gid, $tid, $permission_roles_allowed, $target_id)
     {
         try
         {
+            if (! is_array($permission_roles_allowed))
+            {
+                $permission_roles_allowed = array();
+            }
             if ($uid != 0 || $gid != 0 || $tid != 0)
             {
                 if ($uid != 0)
                 {
+                    $new_permission_roles_allowed = array();
                     foreach ($permissions as $key => $permission)
                     {
                         if (!array_key_exists('uid', $permission))
@@ -1366,17 +1367,34 @@ class Context
                             {
                                 if ($pp['uid'] == $uid)
                                 {
-                                    return $pp['allowed'];
+                                    if ($pp['role_id'] == 0)
+                                    {
+                                        return $pp['allowed'];
+                                    }
+
+                                    $new_permission_roles_allowed[] = $pp;
                                 }
                             }
                         }
                         elseif ($permission['uid'] == $uid)
-                            return $permission['allowed'];
+                        {
+                            if ($permission['role_id'] == 0)
+                            {
+                                return $permission['allowed'];
+                            }
+
+                            $new_permission_roles_allowed[] = $permission;
+                        }
+                    }
+                    if (count($new_permission_roles_allowed))
+                    {
+                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
                 }
 
                 if (is_array($tid) || $tid != 0)
                 {
+                    $new_permission_roles_allowed = array();
                     foreach ($permissions as $key => $permission)
                     {
                         if (!array_key_exists('tid', $permission))
@@ -1385,19 +1403,97 @@ class Context
                             {
                                 if ((is_array($tid) && in_array($pp['tid'], array_keys($tid))) || $pp['tid'] == $tid)
                                 {
-                                    return $pp['allowed'];
+                                    if ($pp['role_id'] == 0)
+                                    {
+                                        return $pp['allowed'];
+                                    }
+
+                                    if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
+                                    {
+                                        $target_id = self::getCurrentProject()->getID();
+                                    }
+
+                                    if ($target_id != 0)
+                                    {
+                                        $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($pp['role_id'], $target_id);
+
+                                        if (is_array($tid))
+                                        {
+                                            foreach ($tid as $team)
+                                            {
+                                                if (array_key_exists($team->getID(), $role_assigned_teams))
+                                                {
+                                                    $new_permission_roles_allowed[] = $pp;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (array_key_exists($tid, $role_assigned_teams))
+                                            {
+                                                $new_permission_roles_allowed[] = $pp;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $new_permission_roles_allowed[] = $pp;
+                                    }
                                 }
                             }
                         }
                         elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
                         {
-                            return $permission['allowed'];
+                            if ($permission['role_id'] == 0)
+                            {
+                                return $permission['allowed'];
+                            }
+
+                            if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
+                            {
+                                $target_id = self::getCurrentProject()->getID();
+                            }
+
+                            if ($target_id != 0)
+                            {
+                                $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($permission['role_id'], $target_id);
+
+                                if (is_array($tid))
+                                {
+                                    foreach ($tid as $team)
+                                    {
+                                        if (array_key_exists($team->getID(), $role_assigned_teams))
+                                        {
+                                            $new_permission_roles_allowed[] = $permission;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (array_key_exists($tid, $role_assigned_teams))
+                                    {
+                                        $new_permission_roles_allowed[] = $permission;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                $new_permission_roles_allowed[] = $permission;
+                            }
                         }
+
+                    }
+                    if (count($new_permission_roles_allowed))
+                    {
+                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
                 }
 
                 if ($gid != 0)
                 {
+                    $new_permission_roles_allowed = array();
                     foreach ($permissions as $key => $permission)
                     {
                         if (!array_key_exists('gid', $permission))
@@ -1405,15 +1501,34 @@ class Context
                             foreach ($permission as $pkey => $pp)
                             {
                                 if ($pp['gid'] == $gid)
-                                    return $pp['allowed'];
+                                {
+                                    if ($pp['role_id'] == 0)
+                                    {
+                                        return $pp['allowed'];
+                                    }
+
+                                    $new_permission_roles_allowed[] = 1;
+                                }
                             }
                         }
                         elseif ($permission['gid'] == $gid)
-                            return $permission['allowed'];
+                        {
+                            if ($permission['role_id'] == 0)
+                            {
+                                return $permission['allowed'];
+                            }
+
+                            $new_permission_roles_allowed[] = 1;
+                        }
+                    }
+                    if (count($new_permission_roles_allowed))
+                    {
+                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
                     }
                 }
             }
 
+            $new_permission_roles_allowed = array();
             foreach ($permissions as $key => $permission)
             {
                 if (!array_key_exists('uid', $permission))
@@ -1421,11 +1536,29 @@ class Context
                     foreach ($permission as $pkey => $pp)
                     {
                         if ($pp['uid'] + $pp['gid'] + $pp['tid'] == 0)
-                            return $pp['allowed'];
+                        {
+                            if ($pp['role_id'] == 0)
+                            {
+                                return $pp['allowed'];
+                            }
+
+                            $new_permission_roles_allowed[] = 1;
+                        }
                     }
                 }
                 elseif ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
-                    return $permission['allowed'];
+                {
+                    if ($permission['role_id'] == 0)
+                    {
+                        return $permission['allowed'];
+                    }
+
+                    $new_permission_roles_allowed[] = 1;
+                }
+            }
+            if (count($new_permission_roles_allowed))
+            {
+                return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
             }
         }
         catch (\Exception $e)
@@ -1448,28 +1581,33 @@ class Context
      *
      * @return unknown_type
      */
-    public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core')
+    public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $check_global_role = true)
     {
         $uid = (int) $uid;
         $gid = (int) $gid;
         $retval = null;
         if (array_key_exists($module_name, self::$_permissions) &&
-                array_key_exists($permission_type, self::$_permissions[$module_name]) &&
-                (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]) || $target_id === null))
+                array_key_exists($permission_type, self::$_permissions[$module_name]))
         {
-            if (array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
+            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
             {
                 $permissions_notarget = self::$_permissions[$module_name][$permission_type][0];
             }
 
-            $permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
-
-            $retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid);
-
-            if (array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
+            if (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
             {
-                $retval = ($retval !== null) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid);
+                $permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
+
+                $retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid, array(), $target_id);
+
             }
+
+            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
+            {
+                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, $target_id);
+            }
+
+            if (is_array($retval)) return true;
 
             if ($retval !== null)
                 return $retval;
@@ -1534,6 +1672,8 @@ class Context
             self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Users, teams and groups" configuration page'), 'target_id' => 2));
             self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Modules" and any module configuration page'), 'target_id' => 15));
             self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Modules" configuration page and any modules'), 'target_id' => 15));
+            self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Themes" configuration page and any themes'), 'target_id' => 19));
+            self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Themes" configuration page and any themes'), 'target_id' => 19));
             self::$_available_permissions['general']['canfindissuesandsavesearches'] = array('description' => $i18n->__('Can search for issues and create saved searches'), 'details' => array());
             self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['canfindissues'] = array('description' => $i18n->__('Can search for issues'));
             self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['cancreatepublicsearches'] = array('description' => $i18n->__('Can create saved searches that are public'));
@@ -1562,10 +1702,8 @@ class Context
             self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectbuilds'] = array('description' => $i18n->__('Can see all releases'));
             self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectmilestones'] = array('description' => $i18n->__('Can see all milestones'));
             self::$_available_permissions['project']['candoscrumplanning'] = array('description' => $i18n->__('Can manage stories, tasks, sprints and backlog on the project planning page'), 'details' => array());
-            self::$_available_permissions['project']['candoscrumplanning']['details']['canaddscrumuserstories'] = array('description' => $i18n->__('Can add new issues/tasks/stories to the backlog on the project planning page'));
-            self::$_available_permissions['project']['candoscrumplanning']['details']['candoscrumplanning_backlog'] = array('description' => $i18n->__('Can manage the backlog on the project planning page'));
             self::$_available_permissions['project']['candoscrumplanning']['details']['canaddscrumsprints'] = array('description' => $i18n->__('Can add milestones/sprints on the project planning page'));
-            self::$_available_permissions['project']['candoscrumplanning']['details']['canassignscrumuserstoriestosprints'] = array('description' => $i18n->__('Can (re-)assign issues/tasks/stories to milestones/sprints on the project planning page'));
+            self::$_available_permissions['project']['candoscrumplanning']['details']['canassignscrumuserstoriestosprints'] = array('description' => $i18n->__('Can (re-)assign issues/tasks/stories to milestones/sprints/backlog on the project planning page'));
             self::$_available_permissions['project']['canmanageproject'] = array('description' => $i18n->__('Can manage project'));
             self::$_available_permissions['project']['canmanageproject']['details']['canmanageprojectreleases'] = array('description' => $i18n->__('Can manage project releases and components'));
             self::$_available_permissions['project']['canmanageproject']['details']['caneditprojectdetails'] = array('description' => $i18n->__('Can edit project details and settings'));

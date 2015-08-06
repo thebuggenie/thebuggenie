@@ -33,7 +33,7 @@
             // forward 403 if you're not allowed here
             if ($request->isAjaxCall() == false) // for avoiding empty error when an user disables himself its own permissions
             {
-                $this->forward403unless(framework\Context::getUser()->canAccessConfigurationPage());
+                $this->forward403unless(framework\Context::getUser()->canAccessConfigurationPage($request['section']));
             }
 
             $this->access_level = $this->getAccessLevel($request['section'], 'core');
@@ -737,6 +737,7 @@
          *
          * @param framework\Request $request
          * @Route(name="configuration_themes", url="/configure/themes")
+         * @Parameters(config_module="core", section=19)
          */
         public function runConfigureThemes(framework\Request $request)
         {
@@ -910,10 +911,10 @@
                         framework\Context::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, false);
                         break;
                     case 'unset':
-                        framework\Context::removePermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid);
+                        framework\Context::removePermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, true, null, 0);
                         break;
                 }
-                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request['key'], 'target_id' => $request['target_id'], 'type' => $request['target_type'], 'mode' => $request['template_mode'], 'item_id' => $request['item_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
+                return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request['key'], 'target_id' => $request['target_id'], 'type' => $request['target_type'], 'mode' => $request['template_mode'], 'item_id' => $request['item_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level, 'in_json' => 1))));
             }
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify permissions")));
@@ -2491,11 +2492,16 @@
                             $permission_details = explode(',', $new_permission);
                             $new_permissions[$permission_details[2]] = array('module' => $permission_details[0], 'target_id' => $permission_details[1]);
                         }
+                        $existing_permissions = array();
                         foreach ($role->getPermissions() as $existing_permission)
                         {
                             if (!array_key_exists($existing_permission->getPermission(), $new_permissions))
                             {
                                 $role->removePermission($existing_permission);
+                            }
+                            else {
+                                $existing_permissions[$existing_permission->getPermission()] = $new_permissions[$existing_permission->getPermission()];
+                                unset($new_permissions[$existing_permission->getPermission()]);
                             }
                         }
                         foreach ($new_permissions as $permission_key => $details)
@@ -2508,6 +2514,19 @@
 
                             $role->addPermission($p);
                         }
+                        foreach ($existing_permissions as $permission_key => $details)
+                        {
+                            $p = new entities\RolePermission();
+                            $p->setModule($details['module']);
+                            $p->setPermission($permission_key);
+                            if ($details['target_id'])
+                                $p->setTargetID($details['target_id']);
+
+                            tables\Permissions::getTable()->addRolePermission($role, $p);
+                        }
+                        framework\Context::clearPermissionsCache();
+
+                        framework\Context::cacheAllPermissions();
                         return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
                     }
                     return $this->renderComponent('configuration/rolepermissionsedit', array('role' => $role));

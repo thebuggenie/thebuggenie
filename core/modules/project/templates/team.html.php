@@ -30,7 +30,7 @@
                                     <?php $roles = $selected_project->getRolesForUser($user); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>
@@ -50,7 +50,7 @@
                                     <?php $roles = $selected_project->getRolesForTeam($team); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

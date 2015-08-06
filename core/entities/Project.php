@@ -1404,10 +1404,12 @@
             }
             if ($role instanceof \thebuggenie\core\entities\Role)
             {
+                $role_id = $role->getID();
                 foreach ($role->getPermissions() as $role_permission)
                 {
-                    $target_id = ($role_permission->hasTargetID()) ? $role_permission->getReplacedTargetID($this) : $this->getID();
-                    framework\Context::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role->getID());
+                    $target_id = strtolower($role_permission->getExpandedTargetID($role));
+                    tables\Permissions::getTable()->removeSavedPermission($user_id, 0, $team_id, $role_permission->getModule(), $role_permission->getPermission(), $target_id, framework\Context::getScope()->getID(), $role_id);
+                    framework\Context::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role_id);
                 }
             }
         }

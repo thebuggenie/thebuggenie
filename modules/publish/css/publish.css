@@ -7,12 +7,12 @@
 .article_list.special_pages a { font-size: 1.1em; }
 .article_list.special_pages img { margin-top: 1px; }
 
-.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
-.toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
-.toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 0.95em; }
-.toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 0.9em; }
-.toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 0.85em; }
-.toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 0.8em; }
+.toc .publish_toc_1 { margin: 10px 0 3px 2px; font-size: 1.2em; font-weight: bold; }
+.toc .publish_toc_2 { margin: 0 0 3px 7px; font-size: 1.1em; }
+.toc .publish_toc_3 { margin: 0 0 3px 13px; font-size: 1.05em; }
+.toc .publish_toc_4 { margin: 0 0 3px 20px; font-size: 1em; }
+.toc .publish_toc_5 { margin: 0 0 3px 27px; font-size: 0.95em; }
+.toc .publish_toc_6 { margin: 0 0 3px 35px; font-size: 0.9em; }
 
 .article .article .content a { border-bottom: 1px dotted #CCC; }
 .article h1, .article h2, .article h3, .article h4, .article h5, .article h6 {
@@ -25,7 +25,7 @@
 .article h1:first-child, .article h2:first-child, .article h3:first-child, .article h4:first-child, .article h5:first-child, .article h6:first-child {
     margin-top: 5px;
 }
-.article h1 { font-size: 1.5em; }
+.article h1 { font-size: 1.8em; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
 .article h1 a, .article h2 a, .article h3 a, .article h4 a, .article h5 a, .article h6 a {
     font-size: 0.6em;
@@ -169,11 +169,11 @@
 
 .article .details { color: #AAA; padding-bottom: 15px; }
 
-.article .toc { float: right; margin: 17px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(245, 245, 245, 0.9); }
-.article .toc.fixed { position: fixed; top: 147px; right: 10px; }
-.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; }
+.article .toc { float: right; margin: 3px 0 15px 25px; width: 350px; box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(247, 247, 247, 0.85); }
+.article .toc.fixed { position: fixed; top: 159px; right: 10px; }
+.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; margin-bottom: 10px; }
 .article .toc .header .button-group { float: right; }
-.article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: normal !important; padding: 2px !important; }
+.article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: normal !important; padding: 2px !important; width: 22px; }
 .article .toc .faded_out { display: none; }
 .article .content .toc a, .article .content .toc a:hover { border-bottom: 0; }
 .article.edit .editor_container {
@@ -186,7 +186,7 @@
 
 .article table { border: 0; border-collapse: collapse; }
 .article.edit table, .article.edit table td { border: 0; }
-.article table td, .article table th { border: 1px solid #DDD; padding: 2px; font-size: 0.9em; text-align: inherit; color: inherit; }
+.article table td, .article table th { border: 1px solid #DDD; padding: 4px; font-size: 0.9em; text-align: inherit; color: inherit; }
 .article table th { text-align: center; }
 
 .category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }

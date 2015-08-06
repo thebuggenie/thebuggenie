@@ -4763,7 +4763,7 @@ class Main extends framework\Action
 
         try
         {
-            if (!$this->getUser()->canManageProject($this->selected_project) || !$this->getUser()->canManageProjectReleases($this->selected_project))
+            if (!($this->getUser()->canAddScrumSprints($this->selected_project) || ($this->getUser()->canManageProjectReleases($this->selected_project) && $this->getUser()->canManageProject($this->selected_project))))
                 throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
 
             switch (true)

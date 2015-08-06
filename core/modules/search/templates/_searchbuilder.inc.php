@@ -73,7 +73,7 @@
             </div>
             <div style="display: inline-block; position: relative;">
                 <input type="image" src="<?php echo image_url('icon-mono-search.png'); ?>">
-                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;">
+                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;transition-delay: 1s;">
                     <?php echo __("Press the search button to trigger a search if it doesn't happen automatically"); ?>
                 </div>
             </div>

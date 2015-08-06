@@ -335,7 +335,7 @@
 
         public function listen_rolePermissionsEdit(framework\Event $event)
         {
-            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
+            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key%'));
         }
 
         public function listen_BreadcrumbMainLinks(framework\Event $event)
@@ -432,7 +432,7 @@
                     }
                 }
             }
-            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
+            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? false : $permissive;
             $retval = $user->hasPermission($permission_name, 0, 'publish');
             return ($retval !== null) ? $retval : $permissive;
         }

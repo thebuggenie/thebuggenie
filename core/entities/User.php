@@ -2040,7 +2040,8 @@
         {
             framework\Logging::log('Checking permission '.$permission_type);
             $group_id = (int) $this->getGroupID();
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name);
+            $has_associated_project = is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true;
+            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $has_associated_project);
             if ($retval !== null)
             {
                 framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
@@ -2297,8 +2298,14 @@
         {
             $retval = $this->hasPermission('canviewconfig', $section);
             $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $section);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', 0);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', 0);
+
+            foreach (range(0, 19) as $target_id)
+            {
+                if ($retval !== null) break;
+
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', $target_id);
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $target_id);
+            }
 
             return (bool) ($retval !== null) ? $retval : false;
         }
@@ -2344,6 +2351,14 @@
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
             return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
+        }
+
+        public function canAddScrumSprints(\thebuggenie\core\entities\Project $project)
+        {
+            if ($project->isArchived()) return false;
+            if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
+
+            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'candoscrumplanning', $project->getID(), false);
         }
 
         /**
