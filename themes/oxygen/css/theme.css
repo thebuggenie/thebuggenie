@@ -6974,7 +6974,7 @@ span[id^='update_'][id$='_choices_indicator']
 .scheme_list.issuetype_scheme_list.simple_list > div
 {
     margin: 0px 0 10px 0 !important;
-    padding: 10px;
+    padding: 15px 10px 10px 10px;
 }
 
 .scheme_list.issuetype_scheme_list.simple_list > div > .header
@@ -6996,7 +6996,6 @@ span[id^='update_'][id$='_choices_indicator']
 .scheme_list.issuetype_scheme_list.simple_list form
 {
     margin-top: 15px;
-    margin-bottom: -5px;
 }
 
 .scheme_list.issuetype_scheme_list.simple_list .content
