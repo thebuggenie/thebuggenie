@@ -3563,6 +3563,9 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 
 ul.milestone_issues_container, #project_dashboard ul, #associated_projects { list-style-type: none; padding: 0; margin: 10px 0 0 0; clear: both; }
+#associated_projects { font-size: 0.9em; }
+#associated_projects li { margin-bottom: 5px; }
+#associated_projects li:last-child { margin-bottom: 0; }
 ul.milestone_issues_container { padding: 0; }
 ul.milestone_issues_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
 .moveable, .draggable { cursor: move; }
@@ -9334,6 +9337,14 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
     padding: 7px 7px 0px 7px;
+}
+
+.dashboard_view_issues .userdropdown .user_popup .header
+{
+    margin: 0 !important;
+    background-color: rgb(253, 250, 223) !important;
+    text-transform: none;
+    padding: 7px 7px 0px 7px !important;
 }
 
 .dashboard_view_content .recent_activities tr td:last-child > b
