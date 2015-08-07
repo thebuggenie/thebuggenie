@@ -60,6 +60,8 @@
             <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php endforeach; ?>
 
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimerWorker.min.js"></script>
         <script>
             var bust = function (path) {
                 return path + '?bust=' + <?php echo (\thebuggenie\core\framework\Context::isDebugMode()) ? ' Math.random()' : "'" . \thebuggenie\core\framework\Settings::getVersion() . "'"; ?>;
