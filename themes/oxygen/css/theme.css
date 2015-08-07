@@ -9339,6 +9339,14 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     padding: 7px 7px 0px 7px;
 }
 
+.dashboard_view_issues .userdropdown .user_popup .header
+{
+    margin: 0 !important;
+    background-color: rgb(253, 250, 223) !important;
+    text-transform: none;
+    padding: 7px 7px 0px 7px !important;
+}
+
 .dashboard_view_content .recent_activities tr td:last-child > b
 {
     font-size: 1.1em;
