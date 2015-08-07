@@ -24,9 +24,10 @@
         <?php foreach ($statuses as $status_id): ?>
             <?php if (in_array($status_id, $same_transition_statuses)) continue; ?>
             <div class="transition">
-                <a class="button button-silver transition-selector-button" href="javascript:void(0);" data-issue-id="<?php echo $issue->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane_identifier; ?>" data-column-id="<?php echo $new_column->getID(); ?>" data-transition-id="<?php echo $transitions[$status_id]->getID(); ?>"><?php echo $transitions[$status_id]->getName(); ?></a>
-                <p><?php echo $transitions[$status_id]->getDescription(); ?></p>
+                <a class="button button-silver transition-selector-button" href="javascript:void(0);" data-issue-id="<?php echo $issue->getID(); ?>" data-swimlane-identifier="<?php echo $swimlane_identifier; ?>" data-column-id="<?php echo $new_column->getID(); ?>" data-transition-id="<?php echo $transitions[$status_id][$statuses_occurred[$status_id]]->getID(); ?>"><?php echo $transitions[$status_id][$statuses_occurred[$status_id]]->getName(); ?></a>
+                <p><?php echo $transitions[$status_id][$statuses_occurred[$status_id]]->getDescription(); ?></p>
             </div>
+            <?php $statuses_occurred[$status_id]++; ?>
         <?php endforeach; ?>
     </div>
     <div class="backdrop_detail_footer">
