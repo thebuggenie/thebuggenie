@@ -10,7 +10,7 @@
     <span id="user_<?php echo $user->getID(); ?>_username_span"><?php include_component('main/userdropdown', array('user' => $user, 'displayname' => ($user->isOpenIdLocked()) ? '<span class="faded_out">'.$user->getEmail().'</span>' : $user->getUsername())); ?></span>
     <?php if (isset($random_password)): ?>
         <br>
-        <?php echo __e('New password: %random_password', array('%random_password' => "<b>{$random_password}</b>")); ?></td>
+        <?php echo __('New password: %random_password', array('%random_password' => "<b>{$random_password}</b>")); ?></td>
     <?php endif; ?>
 </td>
 <td style="padding: 3px;">
