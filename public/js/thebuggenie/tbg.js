@@ -1083,7 +1083,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     inserted_elm.remove();
                     TBG.Main.Helpers.Message.error(json.error);
                 }
-                if (is_last && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
+                if (is_last && $('dynamic_uploader_submit') && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
             };
 
             xhr.upload.onprogress = function (e) {
@@ -1098,7 +1098,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 }
             };
 
-            if (!$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
+            if ($('dynamic_uploader_submit') && !$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
             xhr.send(formData);
         };
 
