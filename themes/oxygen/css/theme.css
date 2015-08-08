@@ -9225,7 +9225,8 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 
 .dashboard_view_content .milestone_box,
 .team_dashboard_projects .milestone_box,
-.client_dashboard_projects .milestone_box
+.client_dashboard_projects .milestone_box,
+.dashboard_milestones .milestone_box
 {
     margin-top: 10px;
     margin-bottom: 20px;
@@ -9235,14 +9236,16 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 
 .dashboard_view_content .milestone_box:last-child,
 .team_dashboard_projects .milestone_box:last-child,
-.client_dashboard_projects .milestone_box:last-child
+.client_dashboard_projects .milestone_box:last-child,
+.dashboard_milestones .milestone_box:last-child
 {
     margin-bottom: 3px;
 }
 
 .dashboard_view_content .milestone_box > .header,
 .team_dashboard_projects .milestone_box > .header,
-.client_dashboard_projects .milestone_box > .header
+.client_dashboard_projects .milestone_box > .header,
+.dashboard_milestones .milestone_box > .header
 {
     background-color: rgba(255,255,255,0.6) !important;
     padding: 5px 0 5px 10px !important;
@@ -9250,27 +9253,21 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
     margin-right: -10px;
 }
 
-.dashboard_view_content .milestone_box > .date,
-.team_dashboard_projects .milestone_box > .date,
-.client_dashboard_projects .milestone_box > .date
+.milestone_box > .date
 {
     font-size: 13px;
     margin-top: 10px;
     margin-left: 2px;
 }
 
-.dashboard_view_content .milestone_box > .percentage > .numbers,
-.team_dashboard_projects .milestone_box > .percentage > .numbers,
-.client_dashboard_projects .milestone_box > .percentage > .numbers
+.milestone_box > .percentage > .numbers
 {
     right: 4px;
     top: -21px;
     font-size: 0.85em;
 }
 
-.dashboard_view_content .milestone_box > .status,
-.team_dashboard_projects .milestone_box > .status,
-.client_dashboard_projects .milestone_box > .status
+.milestone_box > .status
 {
     text-align: left;
     margin-left: 2px;
