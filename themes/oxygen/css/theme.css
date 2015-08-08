@@ -2985,7 +2985,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_counts_container td { padding: 0 10px; text-align: center; font-weight: normal; }
 .milestone_counts_container tr:first-child td { font-size: 2.3em; line-height: 1.1em; }
 .milestone_counts_container tr:nth-child(2) td { font-size: 1em; line-height: 1.1em; text-transform: uppercase; color: #AAA; }
-.milestone_box .milestone_name { font-weight: normal; font-size: 1.3em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; }
+.milestone_box .milestone_name { font-weight: normal; font-size: 1.2em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
 .milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 400px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
 .milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
 .milestone_box .header .button img { display: none; }
