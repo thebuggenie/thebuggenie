@@ -2448,6 +2448,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         }
 
+        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function() {
+            $$('#whiteboard .tbody').each(function (swimlane) {
+                swimlane_rows = swimlane.select('.tr');
+
+                if (swimlane_rows.size() != 2) return;
+
+                swimlane_rows[0].down('.swimlane_count').update(swimlane_rows[1].select('.whiteboard-issue').size());
+            });
+        }
+
         TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
             var wb = $('whiteboard');
             wb.removeClassName('initialized');
@@ -2481,6 +2491,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         $('whiteboard-headers').insert({after: json.component});
                         setTimeout(function () {
                             TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                            TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                             TBG.Project.Planning.Whiteboard.initializeDragDrop();
                         }, 250);
                     }
@@ -2727,6 +2738,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                                 }
                             }
@@ -2735,6 +2747,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (json_milestone_id == 0 || json.component == '') {
                                 $(existing_element).remove();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else if (json_milestone_id != milestone_id || json.swimlane_identifier != swimlane_identifier || json.column_id != column_id) {
                                 $(existing_element).remove();
@@ -2749,11 +2762,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 }
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else {
                                 $(existing_element).replace(json.component);
                                 TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             }
                         }

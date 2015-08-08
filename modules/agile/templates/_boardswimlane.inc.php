@@ -18,7 +18,7 @@
                     <?php else: ?>
                         <?php echo $swimlane->getName(); ?>
                     <?php endif; ?>
-                    (<?php echo count($issues); ?>)
+                    (<span class="swimlane_count"><?php echo count($issues); ?></span>)
                 </div>
             </div>
         </div>
