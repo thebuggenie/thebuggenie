@@ -3124,12 +3124,20 @@ class Main extends framework\Action
         {
             if ($file->hasAccess())
             {
+                $disableCache = true;
                 $this->getResponse()->cleanBuffer();
                 $this->getResponse()->clearHeaders();
                 $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
+
+                if ($file->isImage() && \thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()) {
+                  $this->getResponse()->addHeader('Pragma: public');
+                  $this->getResponse()->addHeader('Cache-Control: public, max-age: 15768000');
+                  $this->getResponse()->addHeader("Expires: " . gmdate('D, d M Y H:i:s', time() + 15768000) . " GMT");
+                  $disableCache = false;
+                }
+
                 $this->getResponse()->addHeader('Content-disposition: ' . (($request['mode'] == 'download') ? 'attachment' : 'inline') . '; filename="' . $file->getOriginalFilename() . '"');
                 $this->getResponse()->setContentType($file->getContentType());
-                $this->getResponse()->renderHeaders();
                 if (framework\Settings::getUploadStorage() == 'files')
                 {
                     $fh = fopen(framework\Settings::getUploadsLocalpath() . $file->getRealFilename(), 'r');
@@ -3140,10 +3148,19 @@ class Main extends framework\Action
                 }
                 if (is_resource($fh))
                 {
-                    fpassthru($fh);
+                    if (\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()) {
+                        $this->getResponse()->addHeader('X-Sendfile: ' . framework\Settings::getUploadsLocalpath() . $file->getRealFilename());
+                        $this->getResponse()->renderHeaders($disableCache);
+                    }
+                    else
+                    {
+                        $this->getResponse()->renderHeaders($disableCache);
+                        fpassthru($fh);
+                    }
                 }
                 else
                 {
+                    $this->getResponse()->renderHeaders($disableCache);
                     echo $fh;
                 }
                 exit();

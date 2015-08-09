@@ -1,7 +1,7 @@
 <?php
 
     $tbg_response->setTitle(__('Configure uploads & attachments'));
-    
+
 ?>
 <script type="text/javascript">
 
@@ -17,6 +17,8 @@
             {
                 $('upload_localpath').enable();
             }
+            $('upload_allow_image_caching').enable();
+            $('upload_delivery_use_xsend').enable();
         }
         else
         {
@@ -25,6 +27,8 @@
             $('upload_storage').disable();
             $('upload_max_file_size').disable();
             $('upload_localpath').disable();
+            $('upload_allow_image_caching').disable();
+            $('upload_delivery_use_xsend').disable();
         }
     }
 

@@ -1020,6 +1020,8 @@
                     }
                 }
 
+                framework\Settings::saveSetting('upload_allow_image_caching', framework\Context::getRequest()->getParameter('upload_allow_image_caching'));
+                framework\Settings::saveSetting('upload_delivery_use_xsend', framework\Context::getRequest()->getParameter('upload_delivery_use_xsend'));
                 framework\Settings::saveSetting('enable_uploads', framework\Context::getRequest()->getParameter('enable_uploads'));
 
                 return $this->renderJSON(array('title' => framework\Context::getI18n()->__('All settings saved')));
