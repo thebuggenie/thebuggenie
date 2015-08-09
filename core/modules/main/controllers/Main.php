@@ -3125,6 +3125,7 @@ class Main extends framework\Action
             if ($file->hasAccess())
             {
                 $disableCache = true;
+                $isFile = false;
                 $this->getResponse()->cleanBuffer();
                 $this->getResponse()->clearHeaders();
                 $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
@@ -3141,6 +3142,7 @@ class Main extends framework\Action
                 if (framework\Settings::getUploadStorage() == 'files')
                 {
                     $fh = fopen(framework\Settings::getUploadsLocalpath() . $file->getRealFilename(), 'r');
+                    $isFile = true;
                 }
                 else
                 {
@@ -3148,7 +3150,7 @@ class Main extends framework\Action
                 }
                 if (is_resource($fh))
                 {
-                    if (\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()) {
+                    if ($isFile && \thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()) {
                         $this->getResponse()->addHeader('X-Sendfile: ' . framework\Settings::getUploadsLocalpath() . $file->getRealFilename());
                         $this->getResponse()->renderHeaders($disableCache);
                     }
