@@ -84,7 +84,7 @@
 </table>
 <?php else: ?>
     <div class="redbox" id="notfound_error">
-        <div class="header"><?php echo __("You have specified an article that can't be shown"); ?></div>
-        <div class="content"><?php echo __("This could be because you the article doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
+        <div class="header"><?php echo __("This article can not be displayed"); ?></div>
+        <div class="content"><?php echo __("This article either does not exist, has been deleted or you do not have permission to view it."); ?></div>
     </div>
 <?php endif; ?>
