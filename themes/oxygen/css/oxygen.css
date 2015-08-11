@@ -4281,7 +4281,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar.collapsed .collapser, .side_bar.collapsed .container_div { display: none; }
 .side_bar.collapsed .expander { display: inline; }
 .side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
-.side_bar .collapser_link { cursor: pointer; position: absolute; left: 245px; right: auto; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -3px 2px 2px rgba(0, 0, 0, 0.2); transition: left 0.3s ease, right 0.3s ease; }
+.side_bar .collapser_link { cursor: pointer; position: absolute; z-index: 1; left: 295px; right: auto; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -3px 2px 2px rgba(0, 0, 0, 0.2); transition: left 0.3s ease, right 0.3s ease; }
 .side_bar.collapsed .collapser_link { left: 10px; right: auto; }
 #dashboard_righthand.side_bar .collapser_link { left: auto; right: 250px; }
 #dashboard_righthand.side_bar.collapsed .collapser_link { right: 10px; }
