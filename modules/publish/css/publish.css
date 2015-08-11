@@ -64,13 +64,13 @@
     padding: 10px;
     text-align: right;
 }
-.article .publish_article_actions a, .article .publish_article_actions a:hover, .change_reason_actions a, .change_reason_actions a:hover {
+.article .publish_article_actions a, .article .publish_article_actions a:hover {
     display: inline-block;
     vertical-align: middle;
     margin-right: 10px;
     border: none;
 }
-.article .publish_article_actions .button, .change_reason_actions .button, .change_reason_actions .button:hover {
+.article .publish_article_actions .button {
     display: inline-block;
     padding: 4px 8px;
     font-size: 1.1em;
@@ -114,12 +114,26 @@
     line-height: 1.5em;
     min-height: 450px;
 }
-#change_reason {
-    width: 100%;
+#change_reason_container {
+    display: block;
+    padding: 10px 10px 0 10px;
 }
-.change_reason_actions {
-    text-align: right;
-    padding: 15px 0;
+#change_reason_container label {
+    float: left;
+    padding-right: 10px;
+}
+#change_reason_container span {
+    display: block;
+    overflow: hidden;
+}
+#change_reason {
+    font-size: 1em;
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
 }
 
 .article.edit .markItUpHeader { border-bottom: 1px solid rgba(100, 100, 100, 0.3); }
