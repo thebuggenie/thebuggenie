@@ -1083,7 +1083,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     inserted_elm.remove();
                     TBG.Main.Helpers.Message.error(json.error);
                 }
-                if (is_last && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
+                if (is_last && $('dynamic_uploader_submit') && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
             };
 
             xhr.upload.onprogress = function (e) {
@@ -1098,7 +1098,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 }
             };
 
-            if (!$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
+            if ($('dynamic_uploader_submit') && !$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
             xhr.send(formData);
         };
 
@@ -2448,6 +2448,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         }
 
+        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function() {
+            $$('#whiteboard .tbody').each(function (swimlane) {
+                swimlane_rows = swimlane.select('.tr');
+
+                if (swimlane_rows.size() != 2) return;
+
+                swimlane_rows[0].down('.swimlane_count').update(swimlane_rows[1].select('.whiteboard-issue').size());
+            });
+        }
+
         TBG.Project.Planning.Whiteboard.retrieveWhiteboard = function() {
             var wb = $('whiteboard');
             wb.removeClassName('initialized');
@@ -2481,6 +2491,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         $('whiteboard-headers').insert({after: json.component});
                         setTimeout(function () {
                             TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                            TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                             TBG.Project.Planning.Whiteboard.initializeDragDrop();
                         }, 250);
                     }
@@ -2727,6 +2738,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                                 }
                             }
@@ -2735,6 +2747,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (json_milestone_id == 0 || json.component == '') {
                                 $(existing_element).remove();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else if (json_milestone_id != milestone_id || json.swimlane_identifier != swimlane_identifier || json.column_id != column_id) {
                                 $(existing_element).remove();
@@ -2749,11 +2762,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 }
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             } else {
                                 $(existing_element).replace(json.component);
                                 TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                 TBG.Project.Planning.Whiteboard.calculateColumnCounts();
+                                TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
                                 TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                             }
                         }
@@ -4079,17 +4094,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     loading: {indicator: field + '_indicator'},
                     success: {
                         update: field + '_content',
-                        callback: function () {
-                            jQuery('input.color').each(function (index, element) {
-                                var input = jQuery(element);
-                                input.spectrum({
-                                    cancelText: input.data('cancel-text'),
-                                    chooseText: input.data('choose-text'),
-                                    showInput: true,
-                                    preferredFormat: 'hex'
-                                });
-                            });
-                        }
+                        callback: TBG.Main.Helpers.initializeColorPicker
                     }
                 });
             }
@@ -4108,6 +4113,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             Sortable.destroy(type + '_list');
                             Sortable.create(type + '_list', sortable_options);
                         }
+                        TBG.Main.Helpers.initializeColorPicker();
                     }
                 }
             });
@@ -7486,6 +7492,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         TBG.Main.Helpers.updateFancyFilterVisibleValue = function (filter, value) {
             filter.down('.value').update(value);
+        };
+
+        TBG.Main.Helpers.initializeColorPicker = function () {
+            jQuery('input.color').each(function (index, element) {
+                var input = jQuery(element);
+                input.spectrum({
+                    cancelText: input.data('cancel-text'),
+                    chooseText: input.data('choose-text'),
+                    showInput: true,
+                    preferredFormat: 'hex'
+                });
+            });
         };
 
         TBG.Main.Helpers.initializeFancyFilters = function(fancyfilter) {

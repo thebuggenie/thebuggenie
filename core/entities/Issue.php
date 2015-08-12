@@ -1073,7 +1073,11 @@
                 if ($transition->getOutgoingStep()->hasLinkedStatus())
                 {
                     $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
-                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+
+                    if (! isset($transitions[$transition->getOutgoingStep()->getLinkedStatusID()]))
+                        $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = array();
+
+                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()][] = $transition;
                 }
                 elseif ($transition->hasPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID))
                 {
@@ -1083,8 +1087,9 @@
                     {
                         if (! array_key_exists($value, $available_statuses)) continue;
                         if (! $rule_status_valid) $rule_status_valid = true;
+                        if (! isset($transitions[$value])) $transitions[$value] = array();
 
-                        $transitions[$value] = $transition;
+                        $transitions[$value][] = $transition;
                         $status_ids[] = $value;
                     }
                 }

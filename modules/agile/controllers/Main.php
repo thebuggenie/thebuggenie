@@ -226,9 +226,9 @@
                         list ($status_ids, $transitions, $rule_status_valid) = $issue->getAvailableWorkflowStatusIDsAndTransitions();
                         $available_statuses = array_intersect($status_ids, $column->getStatusIds());
 
-                        if ($rule_status_valid && count($available_statuses) == 1 && $transitions[reset($available_statuses)]->hasTemplate())
+                        if ($rule_status_valid && count($available_statuses) == 1 && count($transitions[reset($available_statuses)]) == 1 && $transitions[reset($available_statuses)][0]->hasTemplate())
                         {
-                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[reset($available_statuses)]->getID()));
+                            return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[reset($available_statuses)][0]->getID()));
                         }
 
                         if (empty($available_statuses))
@@ -237,10 +237,10 @@
                             return $this->renderJSON(array('error' => $this->getI18n()->__('There are no valid transitions to any states in this column')));
                         }
 
-                        if (count($available_statuses) > 1)
+                        if (count($available_statuses) > 1 || (count($available_statuses) == 1 && count($transitions[reset($available_statuses)]) > 1))
                             return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardtransitionselector', array('issue' => $issue, 'transitions' => $transitions, 'statuses' => $available_statuses, 'new_column' => $column, 'board' => $column->getBoard(), 'swimlane_identifier' => $request['swimlane_identifier']))));
 
-                        $transitions[reset($available_statuses)]->transitionIssueToOutgoingStepWithoutRequest($issue);
+                        $transitions[reset($available_statuses)][0]->transitionIssueToOutgoingStepWithoutRequest($issue);
                     }
 
                     return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getComponentHTML('agile/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));

@@ -2985,7 +2985,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_counts_container td { padding: 0 10px; text-align: center; font-weight: normal; }
 .milestone_counts_container tr:first-child td { font-size: 2.3em; line-height: 1.1em; }
 .milestone_counts_container tr:nth-child(2) td { font-size: 1em; line-height: 1.1em; text-transform: uppercase; color: #AAA; }
-.milestone_box .milestone_name { font-weight: normal; font-size: 1.3em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; }
+.milestone_box .milestone_name { font-weight: normal; font-size: 1.2em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
 .milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 400px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
 .milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
 .milestone_box .header .button img { display: none; }
@@ -3563,6 +3563,9 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 
 ul.milestone_issues_container, #project_dashboard ul, #associated_projects { list-style-type: none; padding: 0; margin: 10px 0 0 0; clear: both; }
+#associated_projects { font-size: 0.9em; }
+#associated_projects li { margin-bottom: 5px; }
+#associated_projects li:last-child { margin-bottom: 0; }
 ul.milestone_issues_container { padding: 0; }
 ul.milestone_issues_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
 .moveable, .draggable { cursor: move; }
@@ -6974,7 +6977,7 @@ span[id^='update_'][id$='_choices_indicator']
 .scheme_list.issuetype_scheme_list.simple_list > div
 {
     margin: 0px 0 10px 0 !important;
-    padding: 10px;
+    padding: 15px 10px 10px 10px;
 }
 
 .scheme_list.issuetype_scheme_list.simple_list > div > .header
@@ -6996,7 +6999,6 @@ span[id^='update_'][id$='_choices_indicator']
 .scheme_list.issuetype_scheme_list.simple_list form
 {
     margin-top: 15px;
-    margin-bottom: -5px;
 }
 
 .scheme_list.issuetype_scheme_list.simple_list .content
@@ -9223,7 +9225,8 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 
 .dashboard_view_content .milestone_box,
 .team_dashboard_projects .milestone_box,
-.client_dashboard_projects .milestone_box
+.client_dashboard_projects .milestone_box,
+.dashboard_milestones .milestone_box
 {
     margin-top: 10px;
     margin-bottom: 20px;
@@ -9233,14 +9236,16 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 
 .dashboard_view_content .milestone_box:last-child,
 .team_dashboard_projects .milestone_box:last-child,
-.client_dashboard_projects .milestone_box:last-child
+.client_dashboard_projects .milestone_box:last-child,
+.dashboard_milestones .milestone_box:last-child
 {
     margin-bottom: 3px;
 }
 
 .dashboard_view_content .milestone_box > .header,
 .team_dashboard_projects .milestone_box > .header,
-.client_dashboard_projects .milestone_box > .header
+.client_dashboard_projects .milestone_box > .header,
+.dashboard_milestones .milestone_box > .header
 {
     background-color: rgba(255,255,255,0.6) !important;
     padding: 5px 0 5px 10px !important;
@@ -9248,27 +9253,21 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
     margin-right: -10px;
 }
 
-.dashboard_view_content .milestone_box > .date,
-.team_dashboard_projects .milestone_box > .date,
-.client_dashboard_projects .milestone_box > .date
+.milestone_box > .date
 {
     font-size: 13px;
     margin-top: 10px;
     margin-left: 2px;
 }
 
-.dashboard_view_content .milestone_box > .percentage > .numbers,
-.team_dashboard_projects .milestone_box > .percentage > .numbers,
-.client_dashboard_projects .milestone_box > .percentage > .numbers
+.milestone_box > .percentage > .numbers
 {
     right: 4px;
     top: -21px;
     font-size: 0.85em;
 }
 
-.dashboard_view_content .milestone_box > .status,
-.team_dashboard_projects .milestone_box > .status,
-.client_dashboard_projects .milestone_box > .status
+.milestone_box > .status
 {
     text-align: left;
     margin-left: 2px;
@@ -9335,6 +9334,14 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
     padding: 7px 7px 0px 7px;
+}
+
+.dashboard_view_issues .userdropdown .user_popup .header
+{
+    margin: 0 !important;
+    background-color: rgb(253, 250, 223) !important;
+    text-transform: none;
+    padding: 7px 7px 0px 7px !important;
 }
 
 .dashboard_view_content .recent_activities tr td:last-child > b
