@@ -415,12 +415,12 @@
     <?php endif; ?>
 <?php elseif (isset($issue_deleted)): ?>
     <div class="greenbox" id="issue_deleted_message">
-        <div class="header"><?php echo __("The issue has been deleted"); ?></div>
-        <div class="content"><?php echo __("The issue you selected has been deleted. This message will disappear when you reload the page."); ?></div>
+        <div class="header"><?php echo __("This issue has been deleted"); ?></div>
+        <div class="content"><?php echo __("This message will disappear when you reload the page."); ?></div>
     </div>
 <?php else: ?>
     <div class="redbox" id="notfound_error">
-        <div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
-        <div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
+        <div class="header"><?php echo __("This issue can not be displayed"); ?></div>
+        <div class="content"><?php echo __("This issue either does not exist, has been deleted or you do not have permission to view it."); ?></div>
     </div>
 <?php endif; ?>
