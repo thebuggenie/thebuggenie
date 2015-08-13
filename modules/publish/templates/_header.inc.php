@@ -83,20 +83,27 @@
             <input type="text" name="manual_name" id="manual_name" value="<?php echo $article->getManualName(); ?>">
         </div>
     <?php else: ?>
-        <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL): ?>
-            <?php echo $article->getManualName(); ?>
-        <?php else: ?>
-            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
-                <?php if (mb_strpos($article_name, ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName())) == 0): ?>
-                    <?php $project_article_name = mb_substr($article_name, mb_strlen(preg_replace('/[^\p{L}\p{N} :]/u', '', \thebuggenie\core\framework\Context::getCurrentProject()->getName()))+1); ?>
-                    <?php if ($article->getID() && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(\thebuggenie\core\framework\Context::getCurrentProject()->getName()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
-                <?php endif; ?>
-            <?php elseif (mb_substr($article_name, 0, 9) == 'Category:'): ?>
-                <span class="faded_out blue">Category:</span><?php echo get_spaced_name(mb_substr($article_name, 9)); ?>
-            <?php else: ?>
-                <?php echo get_spaced_name($article_name); ?>
-            <?php endif; ?>
-        <?php endif; ?>
+    <?php
+        if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL)
+        {
+            echo $article->getManualName();
+        }
+        else
+        {
+            $namespaces = explode(':', $article_name);
+            if (count($namespaces) > 1 && $namespaces[0] == 'Category')
+            {
+                array_shift($namespaces);
+                echo '<span class="faded_out blue">Category:</span>';
+            }
+            if (\thebuggenie\core\framework\Context::isProjectContext() && count($namespaces) > 1 && mb_strtolower($namespaces[0]) == \thebuggenie\core\framework\Context::getCurrentProject()->getKey())
+            {
+                array_shift($namespaces);
+                echo '<span>', \thebuggenie\core\framework\Context::getCurrentProject()->getName(), ':</span>';
+            }
+            echo get_spaced_name(implode(':', $namespaces));
+        }
+    ?>
     <?php endif; ?>
     <?php
 

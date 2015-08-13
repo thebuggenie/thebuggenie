@@ -16,35 +16,33 @@
     class Main extends framework\Action
     {
 
-        protected function _getArticleNameDetails($original_article_name)
+        protected function _getArticleNameDetails($article_name)
         {
-            $namespace = mb_substr($original_article_name, 0, mb_strpos($original_article_name, ':'));
-            $article_name = mb_substr($original_article_name, mb_strpos($original_article_name, ':') + 1);
+            $namespaces = explode(':', $article_name);
+            $namespace = array_shift($namespaces);
 
             if (strtolower($namespace) == 'special')
             {
                 $this->special = true;
-                $namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
-                if ($namespace)
+                $namespace = null;
+                if (count($namespaces) > 1)
                 {
-                    $this->selected_project = \thebuggenie\core\entities\Project::getByKey($namespace);
-                    $article_name = mb_substr($article_name, mb_strpos($article_name, $namespace) + strlen($namespace) + 1);
+                    $namespace = array_shift($namespaces);
                 }
-                $article_name = mb_strtolower(mb_substr($article_name, mb_strpos($article_name, ':')));
+                $article_name = mb_strtolower(array_shift($namespaces));
             }
             elseif ($namespace == 'Category')
             {
-                $namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
-                $article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
+                $namespace = array_shift($namespaces);
             }
 
-            if ($namespace != '')
+            if (!is_null($namespace))
             {
                 $key = mb_strtolower($namespace);
                 $this->selected_project = \thebuggenie\core\entities\Project::getByKey($key);
             }
 
-            return ($namespace == 'Category' || $this->special) ? $article_name : $original_article_name;
+            return $article_name;
         }
 
         /**
