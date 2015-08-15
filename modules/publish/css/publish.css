@@ -336,7 +336,7 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     position: absolute;
     left: 50%;
     top: 80px;
-    bottom: 80px;
+    bottom: 104px;
 }
 #main_container.distraction-free .syntax_picker_container {
     position: absolute;
@@ -425,6 +425,14 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     bottom: -28px;
     display: block;
     box-shadow: -3px -3px 3px -3px rgba(100, 100, 100, 0.2) inset;
+}
+#main_container.distraction-free #change_reason_container {
+    width: 900px;
+    margin: 0 0 0 -450px;
+    padding: 15px 0;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
 }
 #main_container.distraction-free .publish_article_actions {
     width: 900px;
