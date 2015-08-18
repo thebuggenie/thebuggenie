@@ -10735,6 +10735,42 @@ div[id^='comment_reply_indicator_']
     margin-top: 7px;
 }
 
+.issue_inline_description h1 { font-size: 1.8em; }
+.issue_inline_description h2 { font-size: 1.5em; }
+.issue_inline_description h3 { font-size: 1.4em; }
+.issue_inline_description h4 { font-size: 1.25em; }
+.issue_inline_description h5 { font-size: 1.15em; }
+.issue_inline_description h6 { font-size: 1.05em; }
+
+.issue_inline_description h1, .issue_inline_description h2,
+.issue_inline_description h3, .issue_inline_description h4,
+.issue_inline_description h5, .issue_inline_description h6
+{
+    font-weight: normal;
+    padding: 5px 0;
+    margin: 20px 0 5px 0;
+}
+
+.issue_inline_description h1 a, .issue_inline_description h2 a,
+.issue_inline_description h3 a, .issue_inline_description h4 a,
+.issue_inline_description h5 a, .issue_inline_description h6 a
+{
+    font-size: 0.6em;
+    opacity: 0.3;
+    -webkit-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -moz-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -ms-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -o-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    transition: opacity 0.3s ease, margin-left 0.3s ease;
+}
+
+.issue_inline_description h1:hover a, .issue_inline_description h2:hover a,
+.issue_inline_description h3:hover a, .issue_inline_description h4:hover a,
+.issue_inline_description h5:hover a, .issue_inline_description h6:hover a
+{
+    opacity: 1;
+}
+
 
 /* Your account */
 
@@ -11331,8 +11367,8 @@ div[id^='wiki_'][id$='_no_links']
     margin: 10px 0;
 }
 
-.main_area.article ul,
-.main_area.article ol
+.main_area.article .content ul,
+.main_area.article .content ol
 {
     padding-left: 30px;
 }
