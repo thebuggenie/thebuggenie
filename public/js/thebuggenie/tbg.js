@@ -472,6 +472,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             var interval = parseInt(json.poll_interval);
                             TBG.Core.Pollers.datapoller = interval > 0 ? new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, interval) : null;
                         }
+                    },
+                    exception: {
+                        callback: function () {
+                            TBG.Core.Pollers.Locks.datapoller = false;
+                        }
                     }
                 });
             }
@@ -761,6 +766,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         TBG.Core._processCommonAjaxPostEvents(options.failure);
                         if (options.failure.callback) {
                             options.failure.callback(json);
+                        }
+                    }
+                },
+                onException: function (response) {
+                    var json = (response.responseJSON) ? response.responseJSON : undefined;
+                    if (response.responseJSON && (json.error || json.message)) {
+                        TBG.Main.Helpers.Message.error(json.error, json.message);
+                    } else if (response.responseText) {
+                        TBG.Main.Helpers.Message.error(response.responseText);
+                    }
+                    if (options.exception) {
+                        TBG.Core._processCommonAjaxPostEvents(options.exception);
+                        if (options.exception.callback) {
+                            options.exception.callback(json);
                         }
                     }
                 },
@@ -2814,6 +2833,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             pc.dataset.lastRefreshed = get_current_timestamp();
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
+                    },
+                    exception: {
+                        callback: function () {
+                            TBG.Core.Pollers.Locks.planningpoller = false;
+                        }
                     }
                 });
             }
@@ -3085,6 +3109,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                 }
                             }
+                            TBG.Core.Pollers.Locks.planningpoller = false;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
                     }
@@ -7578,6 +7607,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     jQuery('#'+type+'_'+pluginkey+'_perform_update').children('input[type=submit]').prop('disabled', false);
                                     TBG.Core.cancelManualUpdatePoller();
                                 }
+                                TBG.Core.Pollers.Locks.pluginupdatepoller = false;
+                            }
+                        },
+                        exception: {
+                            callback: function () {
                                 TBG.Core.Pollers.Locks.pluginupdatepoller = false;
                             }
                         }
