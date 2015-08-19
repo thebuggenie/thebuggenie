@@ -75,6 +75,22 @@
                         </h1>
                         <?php
                         break;
+                    case \thebuggenie\core\entities\Notification::TYPE_ISSUE_MENTIONED:
+                        ?>
+                        <h1>
+                            <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+                            <?php echo __('%user_name mentioned you in an issue %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getFormattedIssueNo(true, true)) .' - '. $notification->getTarget()->getTitle())); ?>
+                        </h1>
+                        <?php
+                        break;
+                    case \thebuggenie\core\entities\Notification::TYPE_ARTICLE_MENTIONED:
+                        ?>
+                        <h1>
+                            <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+                            <?php echo __('%user_name mentioned you in an article %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
+                        </h1>
+                        <?php
+                        break;
                     default:
                         \thebuggenie\core\framework\Event::createNew('core', '_notification_view', $notification)->trigger();
                 }

@@ -140,6 +140,8 @@
          */
         protected $_description_syntax;
 
+        protected $_description_parser = null;
+
         /**
          * This issues reproduction steps
          *
@@ -155,6 +157,8 @@
          * @Column(type="integer", length=2, default=1)
          */
         protected $_reproduction_steps_syntax;
+
+        protected $_reproduction_steps_parser = null;
 
         /**
          * When the issue was posted
@@ -2490,7 +2494,7 @@
 
         public function getParsedDescription($options)
         {
-            return $this->_getParsedText($this->getDescription(), $this->getDescriptionSyntax(), $options);
+            return $this->_getParsedText($this->getDescription(), $this->getDescriptionSyntax(), $options, '_description_parser');
         }
 
         /**
@@ -2503,7 +2507,7 @@
             return $this->_description_syntax;
         }
 
-        protected function _getParsedText($text, $syntax, $options = array())
+        protected function _getParsedText($text, $syntax, $options = array(), $parser_ref = null)
         {
             switch ($syntax)
             {
@@ -2511,12 +2515,12 @@
                 case \thebuggenie\core\framework\Settings::SYNTAX_PT:
                     $options = array('plain' => true);
                 case \thebuggenie\core\framework\Settings::SYNTAX_MW:
-                    $wiki_parser = new \thebuggenie\core\helpers\TextParser($text);
+                    $parser = new \thebuggenie\core\helpers\TextParser($text);
                     foreach ($options as $option => $value)
                     {
-                        $wiki_parser->setOption($option, $value);
+                        $parser->setOption($option, $value);
                     }
-                    $text = $wiki_parser->getParsedText();
+                    $text = $parser->getParsedText();
                     break;
                 case \thebuggenie\core\framework\Settings::SYNTAX_MD:
                     $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
@@ -2524,6 +2528,10 @@
                     break;
             }
 
+            if (isset($parser) && ! is_null($parser_ref))
+            {
+                $this->$parser_ref = $parser;
+            }
             return $text;
         }
 
@@ -2581,7 +2589,7 @@
 
         public function getParsedReproductionSteps($options)
         {
-            return $this->_getParsedText($this->getReproductionSteps(), $this->getReproductionStepsSyntax(), $options);
+            return $this->_getParsedText($this->getReproductionSteps(), $this->getReproductionStepsSyntax(), $options, '_reproduction_steps_parser');
         }
 
         /**
@@ -5362,6 +5370,24 @@
             }
             else
             {
+                $_description_parser = $this->_getDescriptionParser();
+                $_reproduction_steps_parser = $this->_getReproductionStepsParser();
+                if (! is_null($_description_parser) && $_description_parser->hasMentions())
+                {
+                    foreach ($_description_parser->getMentions() as $user)
+                    {
+                        if ($user->getID() == framework\Context::getUser()->getID()) continue;
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                    }
+                }
+                if (! is_null($_reproduction_steps_parser) && $_reproduction_steps_parser->hasMentions())
+                {
+                    foreach ($_reproduction_steps_parser->getMentions() as $user)
+                    {
+                        if ($user->getID() == framework\Context::getUser()->getID()) continue;
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                    }
+                }
                 $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
                 $this->_addCreateNotifications($this->getPostedBy());
                 \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
@@ -5901,6 +5927,24 @@
         public function getMilestoneOrder()
         {
             return $this->_milestone_order;
+        }
+
+        protected function _getDescriptionParser()
+        {
+            if (is_null($this->_description_parser))
+            {
+                $this->getParsedDescription(array());
+            }
+            return $this->_description_parser;
+        }
+
+        protected function _getReproductionStepsParser()
+        {
+            if (is_null($this->_reproduction_steps_parser))
+            {
+                $this->getParsedReproductionSteps(array());
+            }
+            return $this->_reproduction_steps_parser;
         }
 
     }

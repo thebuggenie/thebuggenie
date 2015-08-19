@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities;
 
+    use thebuggenie\core\entities\Notification;
     use \thebuggenie\core\framework,
         \thebuggenie\core\entities\File,
         \thebuggenie\core\entities\Project,
@@ -159,6 +160,8 @@
          */
         protected $_subscribers = null;
 
+        protected $_parser = null;
+
         /**
          * Article constructor
          *
@@ -258,26 +261,7 @@
 
         public function getParsedContent($options = array())
         {
-            switch ($this->_content_syntax)
-            {
-                case framework\Settings::SYNTAX_MD:
-                    $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
-                    $text = $parser->transform($this->_content);
-                    break;
-                case framework\Settings::SYNTAX_PT:
-                    $options = array('plain' => true);
-                case framework\Settings::SYNTAX_MW:
-                default:
-                    $wiki_parser = new \thebuggenie\core\helpers\TextParser($this->_content, true, $this->getID());
-                    foreach ($options as $option => $value)
-                    {
-                        $wiki_parser->setOption($option, $value);
-                    }
-                    $text = $wiki_parser->getParsedText();
-                    break;
-            }
-
-            return $text;
+            return $this->_parseContent($options);
         }
 
         public function setContentSyntax($syntax)
@@ -923,4 +907,70 @@
             tables\UserArticles::getTable()->addStarredArticle($user_id, $this->getID());
         }
 
+        protected function _postSave($is_new)
+        {
+            if ($is_new)
+            {
+                if ($this->_getParser()->hasMentions())
+                {
+                    foreach ($this->_getParser()->getMentions() as $user)
+                    {
+                        if ($user->getID() == framework\Context::getUser()->getID()) continue;
+                        $this->_addNotification(Notification::TYPE_ARTICLE_MENTIONED, $user, $this->getAuthor());
+                    }
+                }
+            }
+        }
+
+        protected function _addNotification($type, $user, $updated_by)
+        {
+            $notification = new Notification();
+            $notification->setTarget($this);
+            $notification->setNotificationType($type);
+            $notification->setTriggeredByUser($updated_by);
+            $notification->setUser($user);
+            $notification->save();
+        }
+
+        protected function _parseContent($options = array())
+        {
+            switch ($this->_content_syntax)
+            {
+                case framework\Settings::SYNTAX_MD:
+                    $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
+                    $text = $parser->transform($this->_content);
+                    break;
+                case framework\Settings::SYNTAX_PT:
+                    $options = array('plain' => true);
+                case framework\Settings::SYNTAX_MW:
+                default:
+                    $parser = new \thebuggenie\core\helpers\TextParser($this->_content, true, $this->getID());
+                    foreach ($options as $option => $value)
+                    {
+                        $parser->setOption($option, $value);
+                    }
+                    $text = $parser->getParsedText();
+                    break;
+            }
+
+            if (isset($parser))
+            {
+                $this->_parser = $parser;
+            }
+            return $text;
+        }
+
+        /**
+         * Returns the associated parser object
+         *
+         * @return \thebuggenie\core\helpers\ContentParser
+         */
+        protected function _getParser()
+        {
+            if (!isset($this->_parser))
+            {
+                $this->_parseContent();
+            }
+            return $this->_parser;
+        }
     }
