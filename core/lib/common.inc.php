@@ -345,6 +345,10 @@
                 break;
             case \thebuggenie\core\framework\Settings::SYNTAX_MD:
                 $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
+                foreach ($options as $option => $value)
+                {
+                    $parser->setOption($option, $value);
+                }
                 $text = $parser->transform($text);
                 break;
         }

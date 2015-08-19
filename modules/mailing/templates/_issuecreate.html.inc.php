@@ -5,7 +5,7 @@
     </h3>
     <br>
     <h4><?php echo __('Description:');?></h4>
-    <p><?php echo tbg_parse_text($issue->getDescription()); ?></p>
+    <p><?php echo tbg_parse_text($issue->getDescription(), false, null, array('in_email' => true)); ?></p>
     <br>
     <?php if ($issue->getReproductionSteps()): ?>
         <h4><?php echo __('Reproduction steps') . ':';?></h4>
