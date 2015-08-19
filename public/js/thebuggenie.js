@@ -3,7 +3,7 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention',
 
         domReady(function () {
             Offline.options = {
-                reconnect: false,
+                // reconnect: false,
                 requests: false
             };
             TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
