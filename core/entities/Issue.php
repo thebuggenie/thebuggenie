@@ -5924,6 +5924,36 @@
             return $users;
         }
 
+        public function getMentionedUsers()
+        {
+            $users = array();
+            $_description_parser = $this->_getDescriptionParser();
+            $_reproduction_steps_parser = $this->_getReproductionStepsParser();
+            if (! is_null($_description_parser) && $_description_parser->hasMentions())
+            {
+                foreach ($_description_parser->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+            if (! is_null($_reproduction_steps_parser) && $_reproduction_steps_parser->hasMentions())
+            {
+                foreach ($_reproduction_steps_parser->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+            foreach ($this->getComments() as $comment)
+            {
+                foreach ($comment->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+
+            return $users;
+        }
+
         public function getMilestoneOrder()
         {
             return $this->_milestone_order;

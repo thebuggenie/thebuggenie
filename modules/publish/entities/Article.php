@@ -973,4 +973,36 @@
             }
             return $this->_parser;
         }
+
+        public function hasMentions()
+        {
+            return $this->_getParser()->hasMentions();
+        }
+
+        public function getMentions()
+        {
+            return $this->_getParser()->getMentions();
+        }
+
+        public function getMentionedUsers()
+        {
+            $users = array();
+            if ($this->hasMentions())
+            {
+                foreach ($this->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+            foreach ($this->getComments() as $comment)
+            {
+                foreach ($comment->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+
+            return $users;
+        }
+
     }

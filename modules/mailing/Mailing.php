@@ -60,6 +60,11 @@
          * Notify the user when he updates an issue
          */
         const NOTIFY_UPDATED_SELF = 'notify_updated_self';
+
+        /**
+         * Notify the user when he is mentioned
+         */
+        const NOTIFY_MENTIONED = 'notify_mentioned';
         const MAIL_ENCODING_BASE64 = 3;
         const MAIL_ENCODING_QUOTED = 4;
         const MAIL_ENCODING_UTF7 = 0;
@@ -428,15 +433,26 @@ EOT;
         protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user = null)
         {
             $u_id = ($triggered_by_user instanceof User) ? $triggered_by_user->getID() : $triggered_by_user;
-            $users = $article->getSubscribers();
-            foreach ($users as $key => $user)
+            $subscribers = $article->getSubscribers();
+            $users = array();
+            foreach ($subscribers as $user)
             {
                 if ($user->getNotificationSetting(self::NOTIFY_SUBSCRIBED_ARTICLES, true, 'mailing')->isOff())
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_UPDATED_SELF, true, 'mailing')->isOff() && $user->getID() == $u_id)
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), false, 'mailing')->isOn())
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
+            }
+            $mentioned_users = $article->getMentionedUsers();
+            foreach ($mentioned_users as $user)
+            {
+                $users[$user->getID()] = $user;
+
+                if ($user->getNotificationSetting(self::NOTIFY_MENTIONED, true, 'mailing')->isOff())
+                    unset($users[$user->getID()]);
+                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
+                    unset($users[$user->getID()]);
             }
             return $users;
         }
@@ -444,15 +460,28 @@ EOT;
         protected function _getIssueRelatedUsers(Issue $issue, $postedby = null)
         {
             $u_id = ($postedby instanceof User) ? $postedby->getID() : $postedby;
-            $users = $issue->getSubscribers();
-            foreach ($users as $key => $user)
+            $subscribers = $issue->getSubscribers();
+            $users = array();
+            foreach ($subscribers as $user)
             {
+                $users[$user->getID()] = $user;
+
                 if ($user->getNotificationSetting(self::NOTIFY_SUBSCRIBED_ISSUES, true, 'mailing')->isOff())
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_UPDATED_SELF, true, 'mailing')->isOff() && $user->getID() == $u_id)
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
-                    unset($users[$key]);
+                    unset($users[$user->getID()]);
+            }
+            $mentioned_users = $issue->getMentionedUsers();
+            foreach ($mentioned_users as $user)
+            {
+                $users[$user->getID()] = $user;
+
+                if ($user->getNotificationSetting(self::NOTIFY_MENTIONED, true, 'mailing')->isOff())
+                    unset($users[$user->getID()]);
+                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
+                    unset($users[$user->getID()]);
             }
             return $users;
         }
@@ -695,6 +724,7 @@ EOT;
             $notificationsettings[self::NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify by email when new articles are created in my project(s)');
             $notificationsettings[self::NOTIFY_ITEM_ONCE] = $i18n->__('Only send one email per issue or article until I view the issue or article in my browser');
             $notificationsettings[self::NOTIFY_UPDATED_SELF] = $i18n->__('Notify by email also when I am the one making the changes');
+            $notificationsettings[self::NOTIFY_MENTIONED] = $i18n->__('Notify by email when I am mentioned in issue or article or their comment');
             return $notificationsettings;
         }
 
