@@ -148,6 +148,7 @@
             }
         </style>
 
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimerWorker.min.js"></script>
         <script>
