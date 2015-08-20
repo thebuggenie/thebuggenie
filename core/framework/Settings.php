@@ -132,9 +132,9 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 0;
-        protected static $_ver_rev = '2';
-        protected static $_ver_name = "Cotton";
+        protected static $_ver_mn = 1;
+        protected static $_ver_rev = '0';
+        protected static $_ver_name = "Abstract Apricot";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
