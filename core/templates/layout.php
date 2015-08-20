@@ -59,94 +59,6 @@
         <?php foreach ($externalcss as $css): ?>
             <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php endforeach; ?>
-        <style type="text/css">
-            .offline-ui .offline-ui-retry:before {
-              content: "<?php echo __('Reconnect'); ?>";
-            }
-            .offline-ui.offline-ui-up .offline-ui-content:before {
-              content: "<?php echo __('Your computer is connected to the internet.'); ?>";
-            }
-            @media (max-width: 1024px) {
-              .offline-ui.offline-ui-up .offline-ui-content:before {
-                content: "<?php echo __('Your device is connected to the internet.'); ?>";
-              }
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-up .offline-ui-content:before {
-                content: "<?php echo __('Your device is connected.'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down .offline-ui-content:before {
-              content: "<?php echo __('Your computer lost its internet connection.'); ?>";
-            }
-            @media (max-width: 1024px) {
-              .offline-ui.offline-ui-down .offline-ui-content:before {
-                content: "<?php echo __('Your device lost its internet connection.'); ?>";
-              }
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down .offline-ui-content:before {
-                content: "<?php echo __('Your device isn\'t connected.'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:before, .offline-ui.offline-ui-down.offline-ui-connecting-2s .offline-ui-content:before {
-              content: "<?php echo __('Attempting to reconnect...'); ?>";
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="second"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " seconds...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="second"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "s...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="second"][data-retry-in-value="1"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " second...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="second"][data-retry-in-value="1"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "s...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="minute"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " minutes...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="minute"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "m...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="minute"][data-retry-in-value="1"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " minute...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="minute"][data-retry-in-value="1"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "m...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="hour"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " hours...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="hour"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "h...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="hour"][data-retry-in-value="1"]:before {
-              content: "<?php echo __('Connection lost. Reconnecting in " attr(data-retry-in-value) " hour...'); ?>";
-            }
-            @media (max-width: 568px) {
-              .offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content[data-retry-in-unit="hour"][data-retry-in-value="1"]:before {
-                content: "<?php echo __('Reconnecting in " attr(data-retry-in-value) "h...'); ?>";
-              }
-            }
-            .offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {
-              display: none;
-            }
-            .offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s .offline-ui-content:before {
-              content: "<?php echo __('Connection attempt failed.'); ?>";
-            }
-        </style>
 
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
@@ -217,9 +129,6 @@
                     'jquery.ba-resize': {
                         deps: ['jquery']
                     },
-                    'offline-simulate-ui.min': {
-                        deps: ['offline']
-                    },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };
@@ -272,9 +181,6 @@
                     <?php endif; ?>
                 });
             });
-            <?php if (\thebuggenie\core\framework\Context::isDebugMode()): ?>
-                require(['offline-simulate-ui.min'], function () {});
-            <?php endif; ?>
         </script>
     </body>
 </html>

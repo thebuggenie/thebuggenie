@@ -1,11 +1,7 @@
-define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention', 'offline'],
+define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'],
     function (tools, TBG, domReady, jQuery, mention) {
 
         domReady(function () {
-            Offline.options = {
-                // reconnect: false,
-                requests: false
-            };
             TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
             (function ($) {
                 jQuery("body").on("click", ".dropper", function (e) {
