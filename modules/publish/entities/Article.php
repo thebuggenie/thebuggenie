@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities;
 
+    use thebuggenie\core\entities\Comment;
     use thebuggenie\core\entities\Notification;
     use \thebuggenie\core\framework,
         \thebuggenie\core\entities\File,
@@ -994,7 +995,7 @@
                     $users[$user->getID()] = $user;
                 }
             }
-            foreach ($this->getComments() as $comment)
+            foreach (Comment::getComments($this->getID(), Comment::TYPE_ARTICLE) as $comment)
             {
                 foreach ($comment->getMentions() as $user)
                 {
