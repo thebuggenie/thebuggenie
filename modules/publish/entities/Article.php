@@ -103,7 +103,7 @@
          * Child article, if this article has any
          *
          * @var array|\thebuggenie\modules\publish\entities\Article
-         * @Relates(class="\thebuggenie\modules\publish\entities\Article", collection=true, foreign_column="parent_article_id")
+         * @Relates(class="\thebuggenie\modules\publish\entities\Article", collection=true, foreign_column="parent_article_id", orderby="name")
          */
         protected $_child_articles = null;
 
