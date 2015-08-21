@@ -4068,8 +4068,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     display: table;
     table-layout: fixed;
     background-color: #FFF;
-    z-index: 1;
-    box-shadow: 0 0 5px -3px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
 }
 #whiteboard.fixedheader #whiteboard-headers-placeholder {
     display: table-header-group;
