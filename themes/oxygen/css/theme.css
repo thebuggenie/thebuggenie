@@ -3801,6 +3801,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -ms-transition: border-color 0.3s ease;
     -moz-transition: border-color 0.3s ease;
     -webkit-transition: border-color 0.3s ease;
+    position: relative;
+}
+.whiteboard-columns thead h1 .column-header-name,
+.whiteboard-columns .thead h1 .column-header-name {
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
 }
 .type-kanban .whiteboard-columns thead td.over-workitems h1,
 .type-kanban .whiteboard-columns .thead .td.over-workitems h1 {
@@ -3826,7 +3833,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     color: #888;
     text-transform: none;
     font-size: 1em;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 .whiteboard-columns thead h1 .column_count.under, .whiteboard-columns thead h1 .column_count.over, .whiteboard-columns thead td.under-workitems h1 .column_count.primary, .whiteboard-columns thead td.over-workitems h1 .column_count.primary, .whiteboard-columns thead td.under-workitems h1 .column_count.workitems, .whiteboard-columns thead td.over-workitems h1 .column_count.workitems,
 .whiteboard-columns .thead h1 .column_count.under, .whiteboard-columns .thead h1 .column_count.over, .whiteboard-columns .thead .td.under-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.over-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.under-workitems h1 .column_count.workitems, .whiteboard-columns .thead .td.over-workitems h1 .column_count.workitems {
@@ -3835,6 +3842,17 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns thead td.under-workitems h1 .column_count.under, .whiteboard-columns thead td.over-workitems h1 .column_count.over,
 .whiteboard-columns .thead .td.under-workitems h1 .column_count.under, .whiteboard-columns .thead .td.over-workitems h1 .column_count.over {
     display: inline-block;
+}
+.whiteboard-columns thead h1 .statuses_badge,
+.whiteboard-columns .thead h1 .statuses_badge {
+    position: absolute;
+    right: 0px;
+    padding-left: 20px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
 }
 .whiteboard-columns thead h1 .status_badge,
 .whiteboard-columns .thead h1 .status_badge {
