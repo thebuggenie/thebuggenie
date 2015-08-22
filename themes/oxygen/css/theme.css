@@ -3284,7 +3284,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 }
 .whiteboard-issue .issue_estimate {
     display: inline-block;
-    padding: 1px 5px;
+    padding: 1px 5px 2px 5px;
     border-radius: 2px;
     background: rgba(50, 50, 50, 0.8);
     color: #FFF;
@@ -8794,6 +8794,11 @@ img[id^='remove_assignee_team_'][id$='_indicator']
 #timeline_indicator
 {
     float: none !important;
+}
+
+#project_release_center #project_release_center_container #timeline .recent_activities
+{
+    font-size: 1em;
 }
 
 
