@@ -144,7 +144,7 @@
          * List of components for this project
          *
          * @var array|Component
-         * @Relates(class="\thebuggenie\core\entities\Component", collection=true, foreign_column="project")
+         * @Relates(class="\thebuggenie\core\entities\Component", collection=true, foreign_column="project", orderby="name")
          */
         protected $_components = null;
 
