@@ -26,7 +26,7 @@
  *   }
  * }
  */
-(function($){
+define(['jquery'], function ($) {
   
   function init(plot) {
     
@@ -233,5 +233,5 @@
     version: '0.1'
   });
 
-})(jQuery)
+});
 

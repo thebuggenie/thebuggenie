@@ -61,17 +61,20 @@
     </div>
     <br style="clear: both;">
 </div>
-<script type="text/javascript">
-    var TBG;
 
-    require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jQuery) {
-        domReady(function () {
-            TBG = tbgjs;
-            var hash = window.location.hash;
+<?php if ($mode != 'milestone') : ?>
+    <script type="text/javascript">
+        var TBG;
 
-            if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
-                jQuery(hash + '_details_link').eq(0).find('> a:first-child').trigger('click');
-            }
+        require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jQuery) {
+            domReady(function () {
+                TBG = tbgjs;
+                var hash = window.location.hash;
+
+                if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
+                    jQuery(hash + '_details_link').eq(0).find('> a:first-child').trigger('click');
+                }
+            });
         });
-    });
-</script>
+    </script>
+<?php endif; ?>

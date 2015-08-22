@@ -105,13 +105,13 @@
                         deps: ['jquery']
                     },
                     'jquery.flot.selection': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'jquery.flot.time': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'jquery.flot.dashes': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'scriptaculous': {
                         deps: ['prototype', 'controls'],
