@@ -114,4 +114,15 @@
             return $this->count($crit);
         }
 
+        public function removeIssueRelations($issue_id)
+        {
+            $crit = $this->getCriteria();
+            $ctn = $crit->returnCriterion(self::PARENT_ID, $issue_id);
+            $ctn->addOr(self::CHILD_ID, $issue_id);
+            $crit->addWhere($ctn);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->doDelete($crit);
+            return $res;
+        }
+
     }

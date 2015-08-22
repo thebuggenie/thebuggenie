@@ -2745,7 +2745,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                             return;
                         }
-                        if (!$(existing_element)) {
+                        if (json.deleted == '1') {
+                            if ($(existing_element)) $(existing_element).remove();
+                        }
+                        else if (!$(existing_element)) {
                             if (json.issue_details.milestone && json.issue_details.milestone.id == milestone_id && json.component != '') {
                                 if ($('whiteboard').hasClassName('initialized')) {
                                     if ($('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
@@ -3036,7 +3039,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 loading: {indicator: (!$(existing_element)) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
                 success: {
                     callback: function (json) {
-                        if (json.epic) {
+                        if (json.deleted == '1') {
+                            if ($(existing_element)) $(existing_element).up('.milestone_issue').remove();
+                        }
+                        else if (json.epic) {
                             if (!$(existing_element)) {
                                 $('add_epic_container').insert({before: json.component});
                                 setTimeout(TBG.Project.Planning.initializeEpicDroptargets, 250);

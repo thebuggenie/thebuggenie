@@ -4161,6 +4161,8 @@
         public function deleteIssue()
         {
             $this->_deleted = true;
+            $this->touch();
+            tables\IssueRelations::getTable()->removeIssueRelations($this->getID());
         }
 
         /**
