@@ -3776,6 +3776,11 @@
         public function touch($last_updated = null)
         {
             tables\Issues::getTable()->touchIssue($this->getID(), $last_updated);
+
+            foreach ($this->getParentIssues() as $parent_issue)
+            {
+                tables\Issues::getTable()->touchIssue($parent_issue->getID(), $last_updated);
+            }
         }
 
         /**
