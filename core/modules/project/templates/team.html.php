@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Team overview'));
+    $tbg_response->addBreadcrumb(__('Team overview'), make_url('project_team', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" project team', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
 

@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Releases'));
+    $tbg_response->addBreadcrumb(__('Releases'), make_url('project_releases', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" releases', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Releases')));
 

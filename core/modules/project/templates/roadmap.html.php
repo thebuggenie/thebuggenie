@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Roadmap'));
+    $tbg_response->addBreadcrumb(__('Roadmap'), make_url('project_roadmap', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" roadmap', array('%project_name' => $selected_project->getName())));
     $tbg_response->addJavascript('excanvas');
     $tbg_response->addJavascript('jquery.flot');
