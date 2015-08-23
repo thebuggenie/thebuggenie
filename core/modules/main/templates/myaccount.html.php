@@ -1,7 +1,7 @@
 <?php
 
     $tbg_response->setTitle('Your account details');
-    $tbg_response->addBreadcrumb(__('Account details'), make_url('account'), tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
     
 ?>
 <?php if ($tbg_user->canChangePassword()): ?>

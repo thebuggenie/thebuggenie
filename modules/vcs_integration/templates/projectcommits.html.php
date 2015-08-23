@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Commits'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Commits'));
     $tbg_response->setTitle(__('"%project_name" commits', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Project commits')));
 

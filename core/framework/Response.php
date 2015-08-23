@@ -702,6 +702,24 @@
                             $links[] = array('url' => Context::getRouting()->generate('team_dashboard', array('team_id' => $team->getID())), 'title' => $team->getName());
                     }
                     break;
+                case 'configure':
+                    $config_sections = Settings::getConfigSections($i18n);
+                    foreach ($config_sections as $key => $sections)
+                    {
+                        foreach ($sections as $section)
+                        {
+                            if ($key == Settings::CONFIGURATION_SECTION_MODULES)
+                            {
+                                $url = (is_array($section['route'])) ? make_url($section['route'][0], $section['route'][1]) : make_url($section['route']);
+                                $links[] = array('url' => $url, 'title' => $section['description']);
+                            }
+                            else
+                            {
+                                $links[] = array('url' => make_url($section['route']), 'title' => $section['description']);
+                            }
+                        }
+                    }
+                    break;
             }
 
             return $links;

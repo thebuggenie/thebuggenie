@@ -1,6 +1,6 @@
 <?php 
 
-    $tbg_response->addBreadcrumb(__('Report an issue'), make_url('project_reportissue', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
+    $tbg_response->addBreadcrumb(__('Report an issue'), make_url('project_reportissue', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())));
     $tbg_response->setTitle(__('Report an issue'));
     
 ?>
