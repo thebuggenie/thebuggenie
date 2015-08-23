@@ -675,6 +675,20 @@
                     $links[] = array('url' => Context::getRouting()->generate('about'), 'title' => $i18n->__('About %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     $links[] = array('url' => Context::getRouting()->generate('account'), 'title' => $i18n->__('Account details'));
 
+                    $root_projects = array_merge(\thebuggenie\core\entities\Project::getAllRootProjects(true), \thebuggenie\core\entities\Project::getAllRootProjects(false));
+                    $first = true;
+                    foreach ($root_projects as $project)
+                    {
+                        if (!$project->hasAccess())
+                            continue;
+                        if ($first)
+                        {
+                            $first = false;
+                            $links[] = array('url' => '#', 'title' => '<hr />');
+                        }
+                        $links[] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $project->getName());
+                    }
+
                     break;
                 case 'project_summary':
                     $links['project_dashboard'] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $i18n->__('Dashboard'));
