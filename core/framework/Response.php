@@ -692,7 +692,7 @@
                     break;
                 case 'project_summary':
                     $links['project_dashboard'] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $i18n->__('Dashboard'));
-                    $links['project_releases'] = array('url' => Context::getRouting()->generate('project_release_center', array('project_key' => $project->getKey())), 'title' => $i18n->__('Releases'));
+                    $links['project_releases'] = array('url' => Context::getRouting()->generate('project_releases', array('project_key' => $project->getKey())), 'title' => $i18n->__('Releases'));
                     $links['project_roadmap'] = array('url' => Context::getRouting()->generate('project_roadmap', array('project_key' => $project->getKey())), 'title' => $i18n->__('Roadmap'));
                     $links['project_team'] = array('url' => Context::getRouting()->generate('project_team', array('project_key' => $project->getKey())), 'title' => $i18n->__('Team overview'));
                     $links['project_statistics'] = array('url' => Context::getRouting()->generate('project_statistics', array('project_key' => $project->getKey())), 'title' => $i18n->__('Statistics'));
