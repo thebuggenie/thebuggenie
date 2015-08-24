@@ -1958,82 +1958,45 @@ class Context
 
                     throw new \Exception(self::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
                 }
+
+                $projects_processed[$t->getKey()] = $t;
+
+                $itemsubmenulinks = self::getResponse()->getPredefinedBreadcrumbLinks('project_summary', $t);
+
+                if ($t->hasChildren())
+                {
+                    $itemsubmenulinks[] = array('url' => '#', 'title' => '<hr/>');
+                    foreach ($t->getChildren() as $child)
+                    {
+                        if (!$child->hasAccess())
+                            continue;
+                        $itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
+                    }
+                }
+
+                $hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
+
+                if ($t->hasParent())
+                {
+                    $parent = $t->getParent();
+                    $t = $t->getParent();
+                }
                 else
                 {
-                    $all_projects = array_merge(Project::getAllRootProjects(true), Project::getAllRootProjects(false));
-                    // If this is a root project, display a list of other root projects, then t is null
-                    if (!($t->hasParent()) && count($all_projects) > 1)
-                    {
-                        $itemsubmenulinks = array();
-                        foreach ($all_projects as $child)
-                        {
-                            if (!$child->hasAccess())
-                                continue;
-                            $itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
-                        }
-
-                        $hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
-
-                        $projects_processed[$t->getKey()] = $t;
-
-                        $t = null;
-                        continue;
-                    }
-                    elseif (!($t->hasParent()))
-                    {
-                        $hierarchy_breadcrumbs[] = array($t, null);
-
-                        $projects_processed[$t->getKey()] = $t;
-
-                        $t = null;
-                        continue;
-                    }
-                    else
-                    {
-                        // What we want to do here is to build a list of the children of the parent unless we are the only one
-                        $parent = $t->getParent();
-                        $children = $parent->getChildren();
-
-                        $itemsubmenulinks = null;
-
-                        if ($parent->hasChildren() && count($children) > 1)
-                        {
-                            $itemsubmenulinks = array();
-                            foreach ($children as $child)
-                            {
-                                if (!$child->hasAccess())
-                                    continue;
-                                $itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
-                            }
-                        }
-
-                        $hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
-
-                        $projects_processed[$t->getKey()] = $t;
-
-                        $t = $parent;
-                        continue;
-                    }
+                    $t = null;
                 }
             }
 
-            $clientsubmenulinks = null;
             if (self::$_selected_project->hasClient())
             {
-                $clientsubmenulinks = array();
-                foreach (Client::getAll() as $client)
-                {
-                    if ($client->hasAccess())
-                        $clientsubmenulinks[] = array('url' => self::getRouting()->generate('client_dashboard', array('client_id' => $client->getID())), 'title' => $client->getName());
-                }
                 self::setCurrentClient(self::$_selected_project->getClient());
             }
             if (mb_strtolower(Settings::getSiteHeaderName()) != mb_strtolower(self::$_selected_project->getName()) || self::isClientContext())
             {
-                self::getResponse()->addBreadcrumb(Settings::getSiteHeaderName(), self::getRouting()->generate('home'));
+                self::getResponse()->addBreadcrumb(Settings::getSiteHeaderName(), self::getRouting()->generate('home'), self::getResponse()->getPredefinedBreadcrumbLinks('main_links', self::$_selected_project));
                 if (self::isClientContext())
                 {
-                    self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
+                    self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), self::getResponse()->getPredefinedBreadcrumbLinks('client_list'));
                 }
             }
 
@@ -2052,7 +2015,7 @@ class Context
         }
         else
         {
-            self::getResponse()->addBreadcrumb(Settings::getSiteHeaderName(), self::getRouting()->generate('home'));
+            self::getResponse()->addBreadcrumb(Settings::getSiteHeaderName(), self::getRouting()->generate('home'), self::getResponse()->getPredefinedBreadcrumbLinks('main_links'));
         }
     }
 

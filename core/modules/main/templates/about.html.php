@@ -1,7 +1,7 @@
 <?php
 
     $tbg_response->setTitle(__('About %sitename', array('%sitename' => \thebuggenie\core\framework\Settings::getSiteHeaderName())));
-    $tbg_response->addBreadcrumb(__('About %sitename', array('%sitename' => \thebuggenie\core\framework\Settings::getSiteHeaderName())), make_url('about'), tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->addBreadcrumb(__('About %sitename', array('%sitename' => \thebuggenie\core\framework\Settings::getSiteHeaderName())), make_url('about'));
 
 ?>
 <div class="rounded_box borderless mediumgrey" style="margin: 10px auto 0 auto; width: 500px; padding: 5px 5px 15px 5px; font-size: 13px; text-align: center;">

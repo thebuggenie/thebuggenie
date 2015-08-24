@@ -340,7 +340,7 @@
 
         public function listen_BreadcrumbMainLinks(framework\Event $event)
         {
-            $link = array('url' => framework\Context::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(framework\Context::isProjectContext()));
+            $link = array('url' => framework\Context::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(false));
             $event->addToReturnList($link);
         }
 

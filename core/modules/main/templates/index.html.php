@@ -1,7 +1,7 @@
 <?php 
 
     $tbg_response->setTitle(__('Frontpage'));
-    $tbg_response->addBreadcrumb(__('Frontpage'), make_url('home'), tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->addBreadcrumb(__('Frontpage'), make_url('home'));
 
 ?>
 <?php if ($show_project_config_link && $show_project_list): ?>
