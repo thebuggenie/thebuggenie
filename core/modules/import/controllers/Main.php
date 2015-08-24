@@ -96,7 +96,7 @@ class Main extends framework\Action
         {
             $this->getResponse()->setPage('config');
             framework\Context::loadLibrary('ui');
-            $this->getResponse()->addBreadcrumb(framework\Context::getI18n()->__('Configure %thebuggenie_name', array('%thebuggenie_name' => framework\Settings::getSiteHeaderName())), framework\Context::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+            $this->getResponse()->addBreadcrumb(framework\Context::getI18n()->__('Configure %thebuggenie_name', array('%thebuggenie_name' => framework\Settings::getSiteHeaderName())), framework\Context::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('configure'));
         }
     }
 

@@ -5,11 +5,11 @@
     {
         if (\thebuggenie\core\framework\Context::isProjectContext())
         {
-            $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
+            $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey() . ':MainPage')));
         }
         else
         {
-            $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => 'MainPage')), tbg_get_breadcrumblinks('main_links'));
+            $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => 'MainPage')));
         }
         $items = explode(':', $article_name);
         $bcpath = array_shift($items);
@@ -33,5 +33,5 @@
     }
     else
     {
-        $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
+        $tbg_response->addBreadcrumb(\thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(), make_url('publish_article', array('article_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey() . ':MainPage')));
     }

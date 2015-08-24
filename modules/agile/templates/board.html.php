@@ -2,7 +2,7 @@
 
     use thebuggenie\modules\agile\entities\AgileBoard;
 
-    $tbg_response->addBreadcrumb(__('Planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Planning'), make_url('agile_board', array('project_key' => $selected_project->getKey(), 'board_id' => $board->getId())));
     $tbg_response->setTitle(__('"%project_name" project planning', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => $board->getName()));
 

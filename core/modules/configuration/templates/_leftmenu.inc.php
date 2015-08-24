@@ -8,7 +8,7 @@
             <?php else: ?>
                 <?php $url = make_url($info['route']); ?>
             <?php endif;?>
-            <?php if ($is_selected) $tbg_response->addBreadcrumb($info['description'], $url, $breadcrumblinks); ?>
+            <?php if ($is_selected) $tbg_response->addBreadcrumb($info['description'], $url); ?>
             <a href="<?php echo $url; ?>"<?php if ($is_selected): ?> class="selected"<?php endif; ?>>
                 <?php
                     if (isset($info['module']) && $info['module'] != 'core'):

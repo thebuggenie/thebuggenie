@@ -1,11 +1,11 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('client_list'));
     if ($client instanceof \thebuggenie\core\entities\Client)
     {
         $tbg_response->setTitle(__('Client dashboard for %client_name', array('%client_name' => $client->getName())));
         $tbg_response->setPage('client');
-        $tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())), tbg_get_breadcrumblinks('client_list'));
+        $tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())));
     }
     else
     {

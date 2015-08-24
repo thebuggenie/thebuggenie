@@ -675,10 +675,24 @@
                     $links[] = array('url' => Context::getRouting()->generate('about'), 'title' => $i18n->__('About %sitename', array('%sitename' => Settings::getSiteHeaderName())));
                     $links[] = array('url' => Context::getRouting()->generate('account'), 'title' => $i18n->__('Account details'));
 
+                    $root_projects = array_merge(\thebuggenie\core\entities\Project::getAllRootProjects(true), \thebuggenie\core\entities\Project::getAllRootProjects(false));
+                    $first = true;
+                    foreach ($root_projects as $project)
+                    {
+                        if (!$project->hasAccess())
+                            continue;
+                        if ($first)
+                        {
+                            $first = false;
+                            $links[] = array('url' => '#', 'title' => '<hr />');
+                        }
+                        $links[] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $project->getName());
+                    }
+
                     break;
                 case 'project_summary':
                     $links['project_dashboard'] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $i18n->__('Dashboard'));
-                    $links['project_releases'] = array('url' => Context::getRouting()->generate('project_release_center', array('project_key' => $project->getKey())), 'title' => $i18n->__('Releases'));
+                    $links['project_releases'] = array('url' => Context::getRouting()->generate('project_releases', array('project_key' => $project->getKey())), 'title' => $i18n->__('Releases'));
                     $links['project_roadmap'] = array('url' => Context::getRouting()->generate('project_roadmap', array('project_key' => $project->getKey())), 'title' => $i18n->__('Roadmap'));
                     $links['project_team'] = array('url' => Context::getRouting()->generate('project_team', array('project_key' => $project->getKey())), 'title' => $i18n->__('Team overview'));
                     $links['project_statistics'] = array('url' => Context::getRouting()->generate('project_statistics', array('project_key' => $project->getKey())), 'title' => $i18n->__('Statistics'));
@@ -700,6 +714,24 @@
                     {
                         if ($team->hasAccess())
                             $links[] = array('url' => Context::getRouting()->generate('team_dashboard', array('team_id' => $team->getID())), 'title' => $team->getName());
+                    }
+                    break;
+                case 'configure':
+                    $config_sections = Settings::getConfigSections($i18n);
+                    foreach ($config_sections as $key => $sections)
+                    {
+                        foreach ($sections as $section)
+                        {
+                            if ($key == Settings::CONFIGURATION_SECTION_MODULES)
+                            {
+                                $url = (is_array($section['route'])) ? make_url($section['route'][0], $section['route'][1]) : make_url($section['route']);
+                                $links[] = array('url' => $url, 'title' => $section['description']);
+                            }
+                            else
+                            {
+                                $links[] = array('url' => make_url($section['route']), 'title' => $section['description']);
+                            }
+                        }
                     }
                     break;
             }
