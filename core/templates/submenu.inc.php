@@ -23,7 +23,8 @@
                         {
                             if (array_key_exists('url', $subitem) || $subitem['title'] == $next_title)
                             {
-                                $class = strpos($subitem['title'], $next_title) === 0 ? 'selected' : '';
+                                $class = isset($subitem['class']) ? $subitem['class'] : '';
+                                $class .= strpos($subitem['title'], $next_title) === 0 ? ' selected' : '';
                                 $url = array_key_exists('url', $subitem) ? $subitem['url'] : '#';
                                 echo '<li class="', $class, '"><a href="', $url, '">', $subitem['title'], '</a></li>';
                             }
