@@ -52,4 +52,7 @@
         <div class="issue_estimate points" title="<?php echo __('Estimated points'); ?>" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedPoints(); ?></div>
         <div class="issue_estimate hours" title="<?php echo __('Estimated hours'); ?>" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedHours(); ?></div>
     </div>
+    <div class="issue_percentage" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
+        <div class="filler" id="issue_<?php echo $issue->getID(); ?>_percentage_filler" style="width: <?php echo $issue->getPercentCompleted(); ?>%;" title="<?php echo __('%percentage completed', array('%percentage' => $issue->getPercentCompleted().'%')); ?>"></div>
+    </div>
 </div>

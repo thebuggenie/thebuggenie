@@ -950,7 +950,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_stuff img.dropdown_activator.clickable:hover { background-color: #FFF; border: 1px dotted #CCC; }
 .project_stuff a.dropper:hover { border: none; text-decoration: none; }
 .project_stuff a.button-pressed img.dropdown_activator, .project_stuff a.button-pressed img.dropdown_activator:hover { background-color: #FFF; border: 1px dotted #CCC; }
-.project_stuff .more_actions_dropdown { right: auto; left: 22px; top: -18px; margin-top: 0; font-size: 1.1em; }
+.project_stuff .more_actions_dropdown { right: auto; left: 100%; top: -18px; margin-top: 0; font-size: 1.1em; }
 .project_stuff .more_actions_dropdown li a, .project_stuff .more_actions_dropdown li a:hover { padding: 5px 20px 5px 5px; }
 .project_stuff > li { height: 23px; float: none; display: inline-block; position: relative; margin: 0; padding-bottom: 0; }
 .project_stuff li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
@@ -1835,7 +1835,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 }
 .milestone_virtual_status .statusblock:hover { opacity: 0.35; }
 .milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 6px; top: 7px; font-size: 0.9em; line-height: 1em; padding: 0; }
-.milestone_virtual_status .milestone_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
+.milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
 #project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
@@ -2562,7 +2562,11 @@ table.issue_affects td img { vertical-align: bottom; }
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.4) inset;
     border-radius: 10px;
 }
-.planning_indicator .milestone_percentage .filler {
+.issue_percentage {
+   box-shadow: 0 0 3px rgba(100, 100, 100, 0.4) inset;
+   border-radius: 10px;
+ }
+.planning_indicator .milestone_percentage .filler, .issue_percentage .filler {
     height: 20px;
     border-radius: 10px;
 }
@@ -3010,8 +3014,9 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .milestone_box dl.info dt.milestone_issues_count img { vertical-align: middle; }
 .milestone_box dl.info dt.milestone_issues_count + dd { margin-left: -5px; min-width: 25px; }
 .milestone_box dl.info dd { margin: 0 20px 0 0; min-width: 90px; }
-.milestone_percentage { display: block; height: 3px; background-color: #E7E7E7; padding: 0; width: 100%; margin: 5px 0; position: relative; }
-.milestone_percentage .filler {
+.milestone_percentage, .issue_percentage { display: block; height: 3px; background-color: #E7E7E7; padding: 0; width: 100%; margin: 5px 0; position: relative; }
+.issue_percentage { margin: 0 0 2px 0; bottom: -2px; }
+.milestone_percentage .filler, .issue_percentage .filler {
     display: block;
     height: 3px;
     position: absolute;
@@ -3371,7 +3376,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .whiteboard-issue .issue_more_actions_link_container {
     left: 16px;
     right: initial;
-    bottom: 2px;
+    bottom: 8px;
     top: initial;
 }
 .milestone_issue .more_actions_dropdown {
@@ -4549,7 +4554,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_releases_container h3:first-of-type, #project_release_center_container h3:first-of-type { margin-top: 0; }
 #project_release_center_container.only_active .release_item, #project_release_center_container.only_archived .release_item.active, #project_release_center_container.only_downloads .release_item { display: none; }
 #project_release_center_container.only_active .release_item.active, #project_release_center_container.only_archived .release_item, #project_release_center_container.only_downloads .release_item.download { display: block; }
-.release_item { display: block; clear: both; margin-bottom: 5px; }
+.release_item { display: block; clear: both; margin-bottom: 12px; }
 .release_item .button-group { float: right; margin: 5px 5px 0 0; }
 .release_item .button-group .button { font-size: 1.1em; padding: 5px 10px; }
 .release_item .release_name { font-size: 1.2em; }
