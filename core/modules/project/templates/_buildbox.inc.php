@@ -13,7 +13,11 @@
         <?php if ($build->isReleased()): ?>
             <?php $release_date_text = $build->hasReleaseDate() ? __('Released %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))) : __('Released'); ?>
         <?php else: ?>
-            <?php $release_date_text = __('Not released yet'); ?>
+            <?php if ($build->hasReleaseDate()): ?>
+                <?php $release_date_text = __('Not released yet, scheduled for %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))); ?>
+            <?php else: ?>
+                <?php $release_date_text = __('Not released yet'); ?>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if ($build->hasDownload()): ?>
             <?php $release_date_text = __('%release_date, download: %download_filename', array('%release_date' => $release_date_text, '%download_filename' => ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), $build->getFile()->getOriginalFilename()) : link_tag($build->getFileURL()))); ?>
