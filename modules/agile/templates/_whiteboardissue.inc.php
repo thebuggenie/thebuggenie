@@ -49,8 +49,8 @@
         <?php endif; ?>
     </div>
     <div class="issue_estimates">
-        <div class="issue_estimate points" title="<?php echo __('Estimated points'); ?>" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedPoints(); ?></div>
-        <div class="issue_estimate hours" title="<?php echo __('Estimated hours'); ?>" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedHours(); ?></div>
+        <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
+        <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
     </div>
     <div class="issue_percentage" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
         <div class="filler" id="issue_<?php echo $issue->getID(); ?>_percentage_filler" style="width: <?php echo $issue->getPercentCompleted(); ?>%;" title="<?php echo __('%percentage completed', array('%percentage' => $issue->getPercentCompleted().'%')); ?>"></div>
