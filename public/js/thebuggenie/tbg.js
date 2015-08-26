@@ -7325,18 +7325,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         };
         
         TBG.Main.Notifications.loadMore = function (event, loadToTop) {
-            if (TBG.Main.Notifications.loadingLocked !== true) {
-                TBG.Main.Notifications.loadingLocked = true;
+            var loadToTop = loadToTop || false;
+            if (TBG.Main.Notifications.loadingLocked !== true || loadToTop) {
+                if (! loadToTop) TBG.Main.Notifications.loadingLocked = true;
                 var unl = $('user_notifications_list'),
-                    unl_data = unl.dataset,
-                    loadToTop = loadToTop || false;
+                    unl_data = unl.dataset;
+                if (! unl) return;
                 if (loadToTop) {
                     var url_url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
-                    var insert_location = 'before';
                 }
                 else {
                     var url_url = unl_data.notificationsUrl+'&offset='+unl_data.offset;
-                    var insert_location = 'after';
                 }
                 TBG.Main.Helpers.ajax(url_url, {
                     url_method: 'get',
