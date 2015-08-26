@@ -959,7 +959,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_stuff li.project_name span { font-weight: normal; font-size: 0.9em; color: #886; }
 .project_stuff li.project_name a { color: #555; }
 .project_stuff li.breadcrumb { color: #886; font-size: 1.1em; padding-top: 0; }
-.menu_project_strip .faded_out dark { color: #B0aa64; }
+.menu_project_strip .faded_out.dark { color: #B0aa64; }
 /* end project menu */
 
 /* project front page menu */
