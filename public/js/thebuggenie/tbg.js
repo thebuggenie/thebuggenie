@@ -457,7 +457,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         callback: function (json) {
                             var unc = $('user_notifications_count');
                             if (unc) {
-                                TBG.Main.Notifications.loadMore(undefined, true);
                                 if (parseInt(json.unread_notifications) != parseInt(unc.innerHTML)) {
                                     unc.update(json.unread_notifications);
                                     if (parseInt(json.unread_notifications) > 0) {
@@ -466,6 +465,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         unc.removeClassName('unread');
                                     }
                                 }
+                                TBG.Main.Notifications.loadMore(undefined, true);
                             }
                             TBG.Core.Pollers.Locks.datapoller = false;
                             if (TBG.Core.Pollers.datapoller != null)
