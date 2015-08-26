@@ -1662,7 +1662,6 @@ a.friend { color: #277CBA; }
 #issue_main_container { float: left; overflow: hidden; width: 100%; }
 #issue_main {
     margin: 0 10px 0 380px;
-    overflow: auto;
     -webkit-transition: margin 0.3s ease;
     -moz-transition: margin 0.3s ease;
     -ms-transition: margin 0.3s ease;
@@ -10092,6 +10091,14 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
 #issue_details #owned_by_change
 {
     width: 328px !important;
+}
+
+#posted_by_change > li.disabled,
+#assigned_to_change > li.disabled,
+#issue_details #owned_by_change > li.disabled
+{
+    padding: 2px 7px;
+    color: #AAA;
 }
 
 #issue_details #owned_by_form
