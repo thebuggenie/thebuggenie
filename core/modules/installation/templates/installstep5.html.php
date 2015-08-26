@@ -25,7 +25,7 @@
             <input type="hidden" name="step" value="6">
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
-                <input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 40px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
+                <input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 45px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
             </div>
         </form>
     </div>

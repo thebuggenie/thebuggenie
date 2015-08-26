@@ -34,9 +34,9 @@
             </dd>
         </dl>
         <br style="clear: both;">
-        <div style="padding: 0 10px; text-align: right;">
-            <label for="connection_type_dsn">DSN</label><input type="radio" name="connection_type" value="dsn" id="connection_type_dsn"<?php if ($selected_connection_detail == 'dsn'): ?> checked<?php endif; ?> onclick="$('dsn_info').show();$('custom_info').hide()">&nbsp;&nbsp;
-            <label for="connection_type_custom">Custom</label><input type="radio" name="connection_type" value="custom" id="connection_type_custom"<?php if ($selected_connection_detail == 'custom'): ?> checked<?php endif; ?> onclick="$('dsn_info').hide();$('custom_info').show()">
+        <div>
+            <label for="connection_type_dsn">DSN</label><input type="radio" style="vertical-align: text-top;" name="connection_type" value="dsn" id="connection_type_dsn"<?php if ($selected_connection_detail == 'dsn'): ?> checked<?php endif; ?> onclick="$('dsn_info').show();$('custom_info').hide()">&nbsp;&nbsp;
+            <label for="connection_type_custom">Custom</label><input type="radio" style="vertical-align: text-top;" name="connection_type" value="custom" id="connection_type_custom"<?php if ($selected_connection_detail == 'custom'): ?> checked<?php endif; ?> onclick="$('dsn_info').hide();$('custom_info').show()">
         </div>
         <dl class="install_list" style="<?php if ($selected_connection_detail != 'dsn') echo 'display: none;'; ?>" id="dsn_info">
             <dt style="padding-bottom: 10px;">
@@ -77,7 +77,7 @@
         </dl>
         <div style="padding-top: 20px; clear: both; text-align: center;">
             <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to test the database connection details</label>
-            <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+            <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
             <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
         </div>
     </form>

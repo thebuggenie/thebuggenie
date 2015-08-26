@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Team overview'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Team overview'), make_url('project_team', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" project team', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
 
@@ -30,7 +30,7 @@
                                     <?php $roles = $selected_project->getRolesForUser($user); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>
@@ -50,7 +50,7 @@
                                     <?php $roles = $selected_project->getRolesForTeam($team); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

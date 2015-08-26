@@ -7,7 +7,7 @@
                     <?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png'); ?>
                     <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedTitle(true, false), array('style' => 'text-overflow: ellipsis;')); ?>
                 </div>
-                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+                <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getTextColor() : '#333'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
                     <span id="status_content"><?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? __($issue->getStatus()->getName()) : __('Unknown'); ?></span>
                 </div>
                 <span class="secondary">

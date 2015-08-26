@@ -1,7 +1,7 @@
 <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <?php
 
-        $tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject()));
+        $tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())));
         $tbg_response->addBreadcrumb($issue->getFormattedIssueNo(true, true), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
         $tbg_response->setTitle('['.(($issue->isClosed()) ? mb_strtoupper(__('Closed')) : mb_strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . tbg_decodeUTF8($issue->getTitle()));
 
@@ -402,7 +402,7 @@
                                 <?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
                             </a>
                         </div>
-                        <?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?>
+                        <div class="issue_details_fieldsets_wrapper"><?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?></div>
                         <div style="clear: both; margin-bottom: 5px;"> </div>
                     </div>
                 </div>
@@ -415,12 +415,12 @@
     <?php endif; ?>
 <?php elseif (isset($issue_deleted)): ?>
     <div class="greenbox" id="issue_deleted_message">
-        <div class="header"><?php echo __("The issue has been deleted"); ?></div>
-        <div class="content"><?php echo __("The issue you selected has been deleted. This message will disappear when you reload the page."); ?></div>
+        <div class="header"><?php echo __("This issue has been deleted"); ?></div>
+        <div class="content"><?php echo __("This message will disappear when you reload the page."); ?></div>
     </div>
 <?php else: ?>
     <div class="redbox" id="notfound_error">
-        <div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
-        <div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
+        <div class="header"><?php echo __("This issue can not be displayed"); ?></div>
+        <div class="content"><?php echo __("This issue either does not exist, has been deleted or you do not have permission to view it."); ?></div>
     </div>
 <?php endif; ?>

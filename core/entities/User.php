@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableEventContainer;
+    use thebuggenie\core\entities\tables\UserIssues;
     use thebuggenie\core\framework;
 
     /**
@@ -625,6 +626,12 @@
                                     throw new \Exception('No such login');
                                     //framework\Context::getResponse()->headerRedirect(framework\Context::getRouting()->generate('login'));
                                 }
+                                // In case the operation was a success, but no autologin was enabled, set the user to null
+                                // so the rest of the code that deals with guest access can handle it.
+                                else if ($user == true)
+                                {
+                                    $user = null;
+                                }
                             }
                             catch (\Exception $e)
                             {
@@ -1162,24 +1169,9 @@
         {
             if ($this->_starredissues === null)
             {
-                $this->_b2dbLazyload('_starredissues');
-                foreach ($this->_starredissues as $k => $issue)
-                {
-                    if (!$issue->getScope() instanceof Scope || $issue->getScope()->getID() != framework\Context::getScope()->getID()) unset($this->_starredissues[$k]);
-                }
+                $this->_starredissues = UserIssues::getTable()->getUserStarredIssues($this->getID());
                 ksort($this->_starredissues, SORT_NUMERIC);
             }
-        }
-
-        /**
-         * Returns an array of issues ids which are "starred" by this user
-         *
-         * @return array
-         */
-        public function getStarredIssues()
-        {
-            $this->_populateStarredIssues();
-            return $this->_starredissues;
         }
 
         /**
@@ -2054,7 +2046,8 @@
         {
             framework\Logging::log('Checking permission '.$permission_type);
             $group_id = (int) $this->getGroupID();
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name);
+            $has_associated_project = is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true;
+            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $has_associated_project);
             if ($retval !== null)
             {
                 framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
@@ -2311,8 +2304,14 @@
         {
             $retval = $this->hasPermission('canviewconfig', $section);
             $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $section);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', 0);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', 0);
+
+            foreach (range(0, 19) as $target_id)
+            {
+                if ($retval !== null) break;
+
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', $target_id);
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $target_id);
+            }
 
             return (bool) ($retval !== null) ? $retval : false;
         }
@@ -2358,6 +2357,14 @@
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
             return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
+        }
+
+        public function canAddScrumSprints(\thebuggenie\core\entities\Project $project)
+        {
+            if ($project->isArchived()) return false;
+            if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
+
+            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'candoscrumplanning', $project->getID(), false);
         }
 
         /**

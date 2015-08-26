@@ -223,14 +223,31 @@
         protected function _preDelete()
         {
             $tables = array(
-                '\thebuggenie\core\entities\tables\IssueCustomFields', '\thebuggenie\core\entities\tables\IssueAffectsEdition',
-                '\thebuggenie\core\entities\tables\IssueAffectsBuild', '\thebuggenie\core\entities\tables\IssueAffectsComponent', '\thebuggenie\core\entities\tables\IssueFiles',
-                '\thebuggenie\core\entities\tables\IssueRelations', '\thebuggenie\core\entities\tables\IssuetypeSchemeLink', '\thebuggenie\core\entities\tables\IssuetypeSchemes',
-                '\thebuggenie\core\entities\tables\IssueTypes', '\thebuggenie\core\entities\tables\ListTypes', '\thebuggenie\core\entities\tables\Issues', '\thebuggenie\core\entities\tables\Comments',
-                '\thebuggenie\core\entities\tables\ProjectAssignedTeams', '\thebuggenie\core\entities\tables\ProjectAssignedUsers',
-                '\thebuggenie\core\entities\tables\Components', '\thebuggenie\core\entities\tables\Editions', '\thebuggenie\core\entities\tables\Builds', '\thebuggenie\core\entities\tables\Milestones',
-                '\thebuggenie\core\entities\tables\Issues', '\thebuggenie\core\entities\tables\Projects', '\thebuggenie\core\entities\tables\UserScopes', '\thebuggenie\core\entities\tables\Dashboards', '\thebuggenie\core\entities\tables\DashboardViews',
-                '\thebuggenie\core\entities\tables\ScopeHostnames'
+                '\thebuggenie\core\entities\tables\IssueCustomFields',
+                '\thebuggenie\core\entities\tables\IssueAffectsEdition',
+                '\thebuggenie\core\entities\tables\IssueAffectsBuild',
+                '\thebuggenie\core\entities\tables\IssueAffectsComponent',
+                '\thebuggenie\core\entities\tables\IssueFiles',
+                '\thebuggenie\core\entities\tables\IssueRelations',
+                '\thebuggenie\core\entities\tables\IssuetypeSchemeLink',
+                '\thebuggenie\core\entities\tables\IssuetypeSchemes',
+                '\thebuggenie\core\entities\tables\IssueTypes',
+                '\thebuggenie\core\entities\tables\ListTypes',
+                '\thebuggenie\core\entities\tables\Issues',
+                '\thebuggenie\core\entities\tables\Comments',
+                '\thebuggenie\core\entities\tables\ProjectAssignedTeams',
+                '\thebuggenie\core\entities\tables\ProjectAssignedUsers',
+                '\thebuggenie\core\entities\tables\Components',
+                '\thebuggenie\core\entities\tables\Editions',
+                '\thebuggenie\core\entities\tables\Builds',
+                '\thebuggenie\core\entities\tables\Milestones',
+                '\thebuggenie\core\entities\tables\Issues',
+                '\thebuggenie\core\entities\tables\Projects',
+                '\thebuggenie\core\entities\tables\UserScopes',
+                '\thebuggenie\core\entities\tables\Dashboards',
+                '\thebuggenie\core\entities\tables\DashboardViews',
+                '\thebuggenie\core\entities\tables\ScopeHostnames',
+                '\thebuggenie\core\entities\tables\Settings'
             );
             foreach($tables as $table)
             {

@@ -27,7 +27,7 @@
      */
     function __e($text, $replacements = array())
     {
-        return htmlentities(\thebuggenie\core\framework\Context::getI18n()->__($text, $replacements), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        return \thebuggenie\core\framework\Context::getI18n()->__e($text, $replacements);
     }
 
     /**

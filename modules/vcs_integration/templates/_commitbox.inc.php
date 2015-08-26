@@ -161,7 +161,7 @@
                             }
                         }
 
-                        if (count($valid_issues) == '')
+                        if (!count($valid_issues))
                         {
                             echo '<span class="faded_out">'.__('This commit affects no issues').'</span>';
                         }
@@ -171,16 +171,7 @@
                             echo '<ul>';
                             foreach ($valid_issues as $issue)
                             {
-                                if ($issue->hasAccess())
-                                {
-                                    $c++;
-                                    echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)).'</li>';
-                                }
-
-                                if ($c == 0)
-                                {
-                                    echo '<span class="faded_out">'.__('This commit only affects issues you do not have access to').'</span>';
-                                }
+                                echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)).'</li>';
                             }
                             echo '</ul>';
                         }

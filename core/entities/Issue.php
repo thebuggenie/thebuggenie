@@ -937,11 +937,11 @@
          *
          * @return boolean
          */
-        public function hasAccess()
+        public function hasAccess($target_user = null)
         {
             \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
-            $user = framework\Context::getUser();
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
             if (!$user->isGuest() && $user->isAuthenticated())
             {
                 $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
@@ -1073,7 +1073,11 @@
                 if ($transition->getOutgoingStep()->hasLinkedStatus())
                 {
                     $status_ids[] = $transition->getOutgoingStep()->getLinkedStatusID();
-                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = $transition;
+
+                    if (! isset($transitions[$transition->getOutgoingStep()->getLinkedStatusID()]))
+                        $transitions[$transition->getOutgoingStep()->getLinkedStatusID()] = array();
+
+                    $transitions[$transition->getOutgoingStep()->getLinkedStatusID()][] = $transition;
                 }
                 elseif ($transition->hasPostValidationRule(WorkflowTransitionValidationRule::RULE_STATUS_VALID))
                 {
@@ -1083,8 +1087,9 @@
                     {
                         if (! array_key_exists($value, $available_statuses)) continue;
                         if (! $rule_status_valid) $rule_status_valid = true;
+                        if (! isset($transitions[$value])) $transitions[$value] = array();
 
-                        $transitions[$value] = $transition;
+                        $transitions[$value][] = $transition;
                         $status_ids[] = $value;
                     }
                 }
@@ -1181,12 +1186,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsEdition::STATUS);
-                            $this->_editions[$row->get(tables\IssueAffectsEdition::ID)] = array(
-                                                        'edition' => tables\Editions::getTable()->selectById((int) $row->get(tables\IssueAffectsEdition::EDITION), null, null),
-                                                        'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                        'confirmed' => (bool) $row->get(tables\IssueAffectsEdition::CONFIRMED),
-                                                        'a_id' => $row->get(tables\IssueAffectsEdition::ID));
+                            $edition = tables\Editions::getTable()->selectById((int) $row->get(tables\IssueAffectsEdition::EDITION), null, null);
+                            if ($edition instanceof Edition) {
+                                $status_id = $row->get(tables\IssueAffectsEdition::STATUS);
+                                $this->_editions[$row->get(tables\IssueAffectsEdition::ID)] = array(
+                                    'edition' => $edition,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsEdition::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsEdition::ID));
+                            }
                         }
                         catch (\Exception $e) {}
                     }
@@ -1198,12 +1206,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsBuild::STATUS);
-                            $this->_builds[$row->get(tables\IssueAffectsBuild::ID)] = array(
-                                                        'build' => tables\Builds::getTable()->selectById((int) $row->get(tables\IssueAffectsBuild::BUILD), null, null),
-                                                        'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                        'confirmed' => (bool) $row->get(tables\IssueAffectsBuild::CONFIRMED),
-                                                        'a_id' => $row->get(tables\IssueAffectsBuild::ID));
+                            $build = tables\Builds::getTable()->selectById((int) $row->get(tables\IssueAffectsBuild::BUILD), null, null);
+                            if ($build instanceof Build) {
+                                $status_id = $row->get(tables\IssueAffectsBuild::STATUS);
+                                $this->_builds[$row->get(tables\IssueAffectsBuild::ID)] = array(
+                                    'build' => $build,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsBuild::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsBuild::ID));
+                            }
                         }
                         catch (\Exception $e) { }
                     }
@@ -1215,12 +1226,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsComponent::STATUS);
-                            $this->_components[$row->get(tables\IssueAffectsComponent::ID)] = array(
-                                                            'component' => tables\Components::getTable()->selectById((int) $row->get(tables\IssueAffectsComponent::COMPONENT), null, null),
-                                                            'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                            'confirmed' => (bool) $row->get(tables\IssueAffectsComponent::CONFIRMED),
-                                                            'a_id' => $row->get(tables\IssueAffectsComponent::ID));
+                            $component = tables\Components::getTable()->selectById((int) $row->get(tables\IssueAffectsComponent::COMPONENT), null, null);
+                            if ($component instanceof Component) {
+                                $status_id = $row->get(tables\IssueAffectsComponent::STATUS);
+                                $this->_components[$row->get(tables\IssueAffectsComponent::ID)] = array(
+                                    'component' => $component,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsComponent::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsComponent::ID));
+                            }
                         }
                         catch (\Exception $e) { }
                     }
@@ -2859,6 +2873,8 @@
             }
 
             $rgb = hex2rgb($this->_scrumcolor);
+
+            if (! $rgb) return '#333';
 
             return 0.299*$rgb['red'] + 0.587*$rgb['green'] + 0.114*$rgb['blue'] > 170 ? '#333' : '#FFF';
         }
@@ -5889,6 +5905,11 @@
             }
 
             return $users;
+        }
+
+        public function getMilestoneOrder()
+        {
+            return $this->_milestone_order;
         }
 
     }

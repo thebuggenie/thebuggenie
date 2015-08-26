@@ -277,7 +277,7 @@ EOT;
                 if (is_numeric($user))
                     $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user);
 
-                if ($user instanceof User)
+                if ($user instanceof User && $user->getEmail() != '')
                 {
                     $user_language = $user->getLanguage();
                     if (!array_key_exists($user_language, $langs))
@@ -482,9 +482,10 @@ EOT;
                     $to_users = $issue->getRelatedUsers();
                     if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
                         unset($to_users[framework\Context::getUser()->getID()]);
+
                     foreach ($to_users as $uid => $user)
                     {
-                        if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff())
+                        if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user))
                             unset($to_users[$uid]);
                     }
                     $messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
@@ -609,6 +610,14 @@ EOT;
                     $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
                     $parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
                     $to_users = $this->_getIssueRelatedUsers($issue, $parameters['updated_by']);
+                    if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
+                        unset($to_users[framework\Context::getUser()->getID()]);
+
+                    foreach ($to_users as $uid => $user)
+                    {
+                        if (!$issue->hasAccess($user))
+                            unset($to_users[$uid]);
+                    }
                     $this->_markIssueSent($issue, $to_users);
                     $messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
 
@@ -1057,7 +1066,7 @@ EOT;
         public function getOrCreateUserFromEmailString($email_string)
         {
             $email = $this->getEmailAdressFromSenderString($email_string);
-            if (!$user = User::findUser($email))
+            if (!$user = User::findUser($email, true))
             {
                 $name = $email;
 
@@ -1216,7 +1225,7 @@ EOT;
                                 foreach ($message->getAttachments() as $attachment_no => $attachment)
                                 {
                                     echo 'saving attachment ' . $attachment_no;
-                                    $name = $attachment['filename'];
+                                    $name = iconv_mime_decode($attachment['filename'], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
                                     $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($name);
                                     if (framework\Settings::getUploadStorage() == 'files')
                                     {

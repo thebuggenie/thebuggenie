@@ -292,7 +292,7 @@
                 $this->_templatename = ($request->hasParameter('template') && self::isTemplateValid($request['template'])) ? $request['template'] : 'results_normal';
                 $this->_templateparameter = $request['template_parameter'];
 
-                $this->_issues_per_page = $request->getParameter('issues_per_page', 50);
+                $this->_issues_per_page = (in_array($request->getRequestedFormat(), array('csv', 'xlsx', 'ods'))) ? 0 : $request->getParameter('issues_per_page', 50);
                 $this->_offset = $request->getParameter('offset', 0);
 
                 if ($request['quicksearch'])
@@ -754,7 +754,7 @@
             return count($this->_issues);
         }
 
-        public static function extractIssues($matches)
+        public function extractIssues($matches)
         {
             $issue = Issue::getIssueFromLink($matches["issues"]);
             if ($issue instanceof Issue)
@@ -776,7 +776,7 @@
             if ($this->_quickfound_issues === null) {
                 $this->_quickfound_issues = array();
                 if ($this->getSearchterm()) {
-                    preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array('\thebuggenie\core\entities\SavedSearch', 'extractIssues'), $this->getSearchterm());
+                    preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, 'extractIssues'), $this->getSearchterm());
                 }
             }
             if (!count($this->_quickfound_issues)) {

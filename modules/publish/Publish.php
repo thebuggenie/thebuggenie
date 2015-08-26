@@ -335,12 +335,12 @@
 
         public function listen_rolePermissionsEdit(framework\Event $event)
         {
-            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
+            framework\ActionComponent::includeComponent('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key%'));
         }
 
         public function listen_BreadcrumbMainLinks(framework\Event $event)
         {
-            $link = array('url' => framework\Context::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(framework\Context::isProjectContext()));
+            $link = array('url' => framework\Context::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(false));
             $event->addToReturnList($link);
         }
 
@@ -425,13 +425,14 @@
                 foreach ($namespaces as $namespace)
                 {
                     $composite_ns .= ($composite_ns != '') ? ":{$namespace}" : $namespace;
-                    if ($user->hasPermission($permission_name, $composite_ns, 'publish'))
+                    $retval = $user->hasPermission($permission_name, $composite_ns, 'publish');
+                    if ($retval !== null)
                     {
-                        return true;
+                        return $retval;
                     }
                 }
             }
-            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
+            $permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? false : $permissive;
             $retval = $user->hasPermission($permission_name, 0, 'publish');
             return ($retval !== null) ? $retval : $permissive;
         }

@@ -243,10 +243,12 @@
                 {
                     while ($row = $res->getNextRow())
                     {
+                        $points = ($res->get('state') == Issue::STATE_CLOSED && $res->get('estimated_points') > $res->get('spent_points')) ? $res->get('estimated_points') : $res->get('spent_points');
+                        $hours = ($res->get('state') == Issue::STATE_CLOSED && $res->get('estimated_hours') > $res->get('spent_hours')) ? $res->get('estimated_hours') : $res->get('spent_hours');
                         $this->_points['estimated'] += $res->get('estimated_points');
-                        $this->_points['spent'] += $res->get('spent_points');
+                        $this->_points['spent'] += $points;
                         $this->_hours['estimated'] += $res->get('estimated_hours');
-                        $this->_hours['spent'] += round($res->get('spent_hours') / 100, 2);
+                        $this->_hours['spent'] += round($hours / 100, 2);
                     }
                 }
             }

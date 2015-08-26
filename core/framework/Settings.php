@@ -85,6 +85,7 @@
         const SETTING_IS_PERMISSIVE_MODE = 'permissive';
         const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
         const SETTING_KEEP_COMMENT_TRAIL_CLEAN = 'cleancomments';
+        const SETTING_NOTIFICATION_POLL_INTERVAL = 'notificationpollinterval';
         const SETTING_OFFLINESTATE = 'offlinestate';
         const SETTING_ONLINESTATE = 'onlinestate';
         const SETTING_PREVIEW_COMMENT_IMAGES = 'previewcommentimages';
@@ -107,6 +108,8 @@
         const SETTING_UPLOAD_MAX_FILE_SIZE = 'upload_max_file_size';
         const SETTING_UPLOAD_RESTRICTION_MODE = 'upload_restriction_mode';
         const SETTING_UPLOAD_STORAGE = 'upload_storage';
+        const SETTING_UPLOAD_ALLOW_IMAGE_CACHING = 'upload_allow_image_caching';
+        const SETTING_UPLOAD_DELIVERY_USE_XSEND = 'upload_delivery_use_xsend';
         const SETTING_USER_DISPLAYNAME_FORMAT = 'user_displayname_format';
         const SETTING_USER_GROUP = 'defaultgroup';
         const SETTING_USER_TIMEZONE = 'timezone';
@@ -129,9 +132,9 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 0;
-        protected static $_ver_rev = '2';
-        protected static $_ver_name = "Cotton";
+        protected static $_ver_mn = 1;
+        protected static $_ver_rev = '0';
+        protected static $_ver_name = "Abstract Apricot";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
@@ -742,6 +745,18 @@
             return (bool) (Context::getScope()->isUploadsEnabled() && self::get(self::SETTING_ENABLE_UPLOADS));
         }
 
+        public static function isUploadsImageCachingEnabled()
+        {
+            $caching = self::get(self::SETTING_UPLOAD_ALLOW_IMAGE_CACHING);
+            return (($caching == null) ? false : (bool) $caching);
+        }
+
+        public static function isUploadsDeliveryUseXsend()
+        {
+            $useXsend = self::get(self::SETTING_UPLOAD_DELIVERY_USE_XSEND);
+            return (($useXsend == null) ? false : (bool) $useXsend);
+        }
+
         public static function getUploadsMaxSize($bytes = false)
         {
             return ($bytes) ? (int) (self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE) * 1024 * 1024) : (int) self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE);
@@ -887,7 +902,7 @@
          * Return syntax value for a given syntax shorthand
          *
          * @param string $syntax
-         * 
+         *
          * @return integer
          */
         public static function getSyntaxValue($syntax)
@@ -905,8 +920,19 @@
         }
 
         /**
+         * Notification polling interval in seconds
+         *
+         * @return integer
+         */
+        public static function getNotificationPollInterval()
+        {
+            $seconds = self::get(self::SETTING_NOTIFICATION_POLL_INTERVAL);
+            return $seconds == null ? 10 : $seconds;
+        }
+
+        /**
          * Whether or not the authentication backend is external
-         * 
+         *
          * @return boolean
          */
         public static function isUsingExternalAuthenticationBackend()

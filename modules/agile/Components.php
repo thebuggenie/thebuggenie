@@ -71,19 +71,23 @@
             $transition_ids = array();
             $same_transition_statuses = array();
 
-            foreach ($this->transitions as $status_id => $transition)
+            foreach ($this->transitions as $status_id => $transitions)
             {
-                if (in_array($transition->getID(), $transition_ids))
+                foreach ($transitions as $transition)
                 {
-                    $same_transition_statuses[] = $status_id;
-                }
-                else
-                {
-                    $transition_ids[] = $transition->getID();
+                    if (in_array($transition->getID(), $transition_ids))
+                    {
+                        $same_transition_statuses[] = $status_id;
+                    }
+                    else
+                    {
+                        $transition_ids[] = $transition->getID();
+                    }
                 }
             }
 
             $this->same_transition_statuses = $same_transition_statuses;
+            $this->statuses_occurred = array_fill_keys($this->statuses, 0);
         }
 
         public function componentColorpicker()

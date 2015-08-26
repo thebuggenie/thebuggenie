@@ -1,6 +1,6 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Project settings'), null, tbg_get_breadcrumblinks('project_settings', $selected_project));
+    $tbg_response->addBreadcrumb(__('Project settings'), make_url('project_settings', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" settings', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Settings')));
 

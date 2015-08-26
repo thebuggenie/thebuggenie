@@ -12,7 +12,7 @@
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
             <input type="hidden" name="sortfields" value="<?php echo $search_object->getSortFieldsAsString(); ?>" id="search_sortfields_input">
             <input type="hidden" name="fs[text][o]" value="=">
-            <input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
+            <input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo htmlentities($search_object->getSearchTerm(), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
             <div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
                 <div class="interactive_plus_button" id="interactive_plus_button"><?php echo image_tag('icon-mono-add.png'); ?></div>
                 <div class="interactive_filters_list <?php echo (count($nondatecustomfields)) ? 'three_columns' : 'two_columns'; ?>">
@@ -73,7 +73,7 @@
             </div>
             <div style="display: inline-block; position: relative;">
                 <input type="image" src="<?php echo image_url('icon-mono-search.png'); ?>">
-                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;">
+                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;transition-delay: 1s;">
                     <?php echo __("Press the search button to trigger a search if it doesn't happen automatically"); ?>
                 </div>
             </div>
@@ -174,8 +174,11 @@
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values" id="filter_export_options">
                                 <li onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon_savedsearch.png', array('class' => 'icon')) . __('Save search filters'); ?></li>
-                                <li onclick="TBG.Search.download('csv');">
-                                    <?php echo image_tag('icon_csv.png', array('class' => 'icon')) . __('Download as CSV file'); ?>
+                                <li onclick="TBG.Search.download('ods');">
+                                    <?php echo image_tag('icon_ods.png', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
+                                </li>
+                                <li onclick="TBG.Search.download('xlsx');">
+                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
                                     <?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>

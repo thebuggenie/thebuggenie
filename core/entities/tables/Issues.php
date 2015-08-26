@@ -395,6 +395,7 @@
             {
                 $crit->addWhere(self::MILESTONE, $milestone_id);
             }
+            $crit->addSelectionColumn(self::STATE, 'state');
             $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
             $crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
             $crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
@@ -704,10 +705,23 @@
                             $crit3->addOrderBy(self::ASSIGNEE_TEAM);
                             $crit3->addOrderBy(self::ASSIGNEE_USER, $grouporder);
                             break;
+                        case 'posted_by':
+                            $crit->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $crit3->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $crit->addSelectionColumn(self::POSTED_BY);
+                            $crit->addSelectionColumn(Users::UNAME);
+                            $crit->addOrderBy(Users::UNAME, $grouporder);
+                            $crit3->addOrderBy(Users::UNAME, $grouporder);
+                            break;
                         case 'state':
                             $crit->addSelectionColumn(self::STATE);
                             $crit->addOrderBy(self::STATE, $grouporder);
                             $crit3->addOrderBy(self::STATE, $grouporder);
+                            break;
+                        case 'posted':
+                            $crit->addSelectionColumn(self::POSTED);
+                            $crit->addOrderBy(self::POSTED, $grouporder);
+                            $crit3->addOrderBy(self::POSTED, $grouporder);
                             break;
                         case 'severity':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
@@ -895,6 +909,20 @@
             return $this->selectOne($crit);
         }
 
+        public function getNextIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_GREATER_THAN);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $crit->addWhere(self::DELETED, false);
+            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+
+            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_ASC);
+            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+
+            return $this->selectOne($crit);
+        }
+
         public function getPreviousIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
         {
             $crit = $this->getCriteria();
@@ -904,6 +932,20 @@
             if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
 
             $crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);
+
+            return $this->selectOne($crit);
+        }
+
+        public function getPreviousIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_LESS_THAN);
+            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $crit->addWhere(self::DELETED, false);
+            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+
+            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
+            $crit->addOrderBy(self::ID, Criteria::SORT_DESC);
 
             return $this->selectOne($crit);
         }

@@ -1,7 +1,7 @@
 <div class="article">
     <div class="header"><?php echo __('Wiki special pages'); ?></div>
     <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
-        <div class="greybox" style="margin: 15px;">
+        <div class="greybox" style="margin: 15px 0;">
             <?php echo __('Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName(), '%special_pages' => link_tag(make_url('publish_article', array('article_name' => "Special:SpecialPages")), __('Special pages')))); ?>
         </div>
     <?php endif; ?>

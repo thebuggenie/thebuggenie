@@ -42,7 +42,7 @@
         {
             $this->_addIndex('scope_uid', array(self::SCOPE, self::UID));
         }
-        
+
         protected function _initialize()
         {
             parent::_setup(self::B2DBNAME, self::ID);
@@ -52,7 +52,7 @@
             parent::_addInteger(self::UID, 10);
             parent::_addInteger(self::UPDATED_AT, 10);
         }
-        
+
         public function getSettingsForScope($scope, $uid = 0)
         {
             $crit = $this->getCriteria();
@@ -91,7 +91,7 @@
                 $crit2->addWhere(self::SCOPE, $scope);
                 $crit2->addWhere(self::ID, $theID, Criteria::DB_NOT_EQUALS);
                 $res2 = $this->doDelete($crit2);
-                
+
                 $crit = $this->getCriteria();
                 $crit->addUpdate(self::NAME, $name);
                 $crit->addUpdate(self::MODULE, $module);
@@ -127,7 +127,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::MODULE, $module_name);
             $crit->addWhere(self::UID, 0, Criteria::DB_GREATER_THAN);
-            if ($scope !== null) 
+            if ($scope !== null)
             {
                 $crit->addWhere(self::SCOPE, $scope);
             }
@@ -153,6 +153,8 @@
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_EXTENSIONS_LIST] = 'exe,bat,php,asp,jsp';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_STORAGE] = 'files';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_LOCAL_PATH] = THEBUGGENIE_PATH . 'files/';
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = 0;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = 0;
             $settings[\thebuggenie\core\framework\Settings::SETTING_TBG_NAME] = 'The Bug Genie';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html4strict';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
@@ -170,5 +172,5 @@
                 $this->saveSetting($settings_name, 'core', $settings_val, 0, $scope_id);
             }
         }
-        
+
     }

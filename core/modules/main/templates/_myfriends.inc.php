@@ -1,7 +1,7 @@
-<div class="header" style="margin: 2px 0 5px 0; padding: 3px 3px 3px 5px;"><?php echo __('Friends'); ?></div>
+<div class="header" style="margin: 2px 0 5px 0; padding: 3px 3px 7px 5px;"><?php echo __('Friends'); ?></div>
 <?php if (count($friends) > 0): ?>
     <?php foreach ($friends as $friend): ?>
-        <div style="padding: 5px 0 5px 10px; clear: both;">
+        <div style="padding: 5px 0 7px 0; clear: both; font-size: 0.95em;">
             <div>
                 <?php echo include_component('main/userdropdown', array('user' => $friend, 'class' => 'leftie')); ?>
             </div>

@@ -5,6 +5,7 @@
     $tbg_response->setTitle($article_name);
 
 ?>
+<?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
     <tr>
         <td class="side_bar <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL) echo 'manual'; ?>">
@@ -81,3 +82,9 @@
         </td>
     </tr>
 </table>
+<?php else: ?>
+    <div class="redbox" id="notfound_error">
+        <div class="header"><?php echo __("This article can not be displayed"); ?></div>
+        <div class="content"><?php echo __("This article either does not exist, has been deleted or you do not have permission to view it."); ?></div>
+    </div>
+<?php endif; ?>

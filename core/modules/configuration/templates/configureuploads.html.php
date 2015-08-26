@@ -1,7 +1,7 @@
 <?php
 
-    $tbg_response->setTitle(__('Configure uploads &amp; attachments'));
-    
+    $tbg_response->setTitle(__('Configure uploads & attachments'));
+
 ?>
 <script type="text/javascript">
 
@@ -17,6 +17,8 @@
             {
                 $('upload_localpath').enable();
             }
+            $('upload_allow_image_caching').enable();
+            $('upload_delivery_use_xsend').enable();
         }
         else
         {
@@ -25,6 +27,8 @@
             $('upload_storage').disable();
             $('upload_max_file_size').disable();
             $('upload_localpath').disable();
+            $('upload_allow_image_caching').disable();
+            $('upload_delivery_use_xsend').disable();
         }
     }
 
@@ -34,7 +38,7 @@
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_UPLOADS)); ?>
         <td valign="top" style="padding-left: 15px;">
             <div style="width: 730px;">
-                <h3><?php echo __('Configure uploads &amp; attachments'); ?></h3>
+                <h3><?php echo __('Configure uploads & attachments'); ?></h3>
                 <?php if ($uploads_enabled && $access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
                 <?php endif; ?>
@@ -119,6 +123,33 @@
                                 <td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files folder in the main folder (not the public folder)", array('%files' => '<b>files/</b>')); ?></td>
                             </tr>
                         <?php endif; ?>
+                        <tr>
+                            <td style="width: 200px;"><label for="upload_delivery_use_xsend_yes"><?php echo __('Use X-Sendfile for delivering files'); ?></label></td>
+                            <td style="width: auto;">
+                                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                                    <input type="radio" name="upload_delivery_use_xsend" value="1" id="upload_delivery_use_xsend_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+                                    <input type="radio" name="upload_delivery_use_xsend" value="0" id="upload_delivery_use_xsend_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_no"><?php echo __('No'); ?></label>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="config_explanation" colspan="2">
+                              <?php echo __("Choose whether files shall be delivered through PHP or the X-Sendfile server extension. X-Sendfile allows delivering big files without impacting PHP's memory limit."); ?><br />
+                              <?php echo '<b>' . __("Warning:") . '</b> ' . __(" When enabling this option, make sure the X-Sendfile extension is installed on your server and configured properly to serve files from the above upload location, or file delivery will be severely broken."); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px;"><label for="upload_allow_image_caching_yes"><?php echo __('Enable browser caching for images'); ?></label></td>
+                            <td style="width: auto;">
+                                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                                <input type="radio" name="upload_allow_image_caching" value="1" id="upload_allow_image_caching_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+                                <input type="radio" name="upload_allow_image_caching" value="0" id="upload_allow_image_caching_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_no"><?php echo __('No'); ?></label>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="config_explanation" colspan="2"><?php echo __('By default, browser caching is disabled for uploads and attachments. When enabling this option, image files will be delivered to the browser with a valid caching header.'); ?></td>
+                        </tr>
                     </table>
                 <?php else: ?>
                     <div class="content faded_out dark" style="width: 730px;">

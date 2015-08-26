@@ -124,4 +124,25 @@
             return $roles;
         }
 
+        public function getUsersByRoleID($role_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::USER_ID, 'uid');
+            $crit->addWhere(self::ROLE_ID, $role_id);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $users = array();
+
+            if ($res = $this->doSelect($crit, 'none'))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $uid = $row['uid'];
+                    if (!array_key_exists($uid, $users))
+                        $users[$uid] = new \thebuggenie\core\entities\User($uid);
+                }
+            }
+
+            return $users;
+        }
+
     }

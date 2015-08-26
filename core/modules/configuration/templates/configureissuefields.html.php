@@ -1,4 +1,7 @@
-<?php $tbg_response->setTitle(__('Configure data types')); ?>
+<?php
+    $tbg_response->setTitle(__('Configure data types'));
+    $tbg_response->addStylesheet(make_url('asset_css_unthemed', array('css' => 'spectrum.css')));
+?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => 4)); ?>
@@ -44,3 +47,5 @@
         </td>
     </tr>
 </table>
+<script>
+</script>

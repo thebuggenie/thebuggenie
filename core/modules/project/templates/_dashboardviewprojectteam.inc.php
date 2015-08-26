@@ -10,7 +10,7 @@
                 <?php $roles = ($assignee instanceof \thebuggenie\core\entities\User) ? $project->getRolesForUser($assignee) : $project->getRolesForTeam($assignee); ?>
                 <?php $role_names = array(); ?>
                 <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                <?php echo join(',', $role_names); ?>
+                <?php echo join(', ', $role_names); ?>
             </span>
         </div>
     <?php endforeach; ?>

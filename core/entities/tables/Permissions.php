@@ -65,7 +65,7 @@
             return $res;
         }
         
-        public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope)
+        public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope, $role_id = null)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $uid);
@@ -75,18 +75,35 @@
             $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
             $crit->addWhere(self::TARGET_ID, $target_id);
             $crit->addWhere(self::SCOPE, $scope);
+            if ($role_id !== null)
+            {
+                $crit->addWhere(self::ROLE_ID, $role_id);
+            }
             
             $res = $this->doDelete($crit);
         }
 
-        public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0)
+        public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $role_id = null)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $uid);
             $crit->addWhere(self::GID, $gid);
             $crit->addWhere(self::TID, $tid);
-            $crit->addWhere(self::TARGET_ID, $target_id);
+            if ($target_id == 0)
+            {
+                $crit->addWhere(self::TARGET_ID, $target_id);
+            }
+            else
+            {
+                $ctn = $crit->returnCriterion(self::TARGET_ID, $target_id);
+                $ctn->addOr(self::TARGET_ID, 0);
+                $crit->addWhere($ctn);
+            }
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            if ($role_id !== null)
+            {
+                $crit->addWhere(self::ROLE_ID, $role_id);
+            }
 
             $res = $this->doDelete($crit);
         }
@@ -239,33 +256,49 @@
             }
         }
 
-        public function addRolePermission($role_id, \thebuggenie\core\entities\RolePermission $rolepermission)
+        public function addRolePermission(\thebuggenie\core\entities\Role $role, \thebuggenie\core\entities\RolePermission $rolepermission)
         {
+            $role_id = $role->getID();
             $crit = $this->getCriteria();
             $crit->addWhere(self::ROLE_ID, $role_id);
-            $existing_identifiables = array('users' => array(), 'teams' => array());
+            $existing_identifiables = array(self::UID => array(), self::TID => array());
+            $target_id = $rolepermission->getExpandedTargetID($role);
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
                 {
                     $key = ($row->get(self::UID)) ? self::UID : self::TID;
-                    $existing_identifiables[$key][$row->get($key)] = array('id' => $row->get($key), 'target_id' => $row->get(self::TARGET_ID));
-                }
+                    if (! isset($existing_identifiables[$key][$row->get($key)])) $existing_identifiables[$key][$row->get($key)] = array('id' => $row->get($key), 'target_id' => $target_id, 'permission_type_module' => array());
 
-                foreach ($existing_identifiables as $key => $identifiables)
+                    $existing_identifiables[$key][$row->get($key)]['permission_type_module'][] = $row->get(self::PERMISSION_TYPE).';'.$row->get(self::MODULE);
+                }
+            }
+
+            foreach (ProjectAssignedUsers::getTable()->getUsersByRoleID($role_id) as $uid => $assigned_user)
+            {
+                if (! isset($existing_identifiables[self::UID][$uid])) $existing_identifiables[self::UID][$uid] = array('id' => $uid, 'target_id' => $target_id, 'permission_type_module' => array());
+            }
+
+            foreach (ProjectAssignedTeams::getTable()->getTeamsByRoleID($role_id) as $tid => $assigned_team)
+            {
+                if (! isset($existing_identifiables[self::TID][$tid])) $existing_identifiables[self::TID][$tid] = array('id' => $tid, 'target_id' => $target_id, 'permission_type_module' => array());
+            }
+
+            foreach ($existing_identifiables as $key => $identifiables)
+            {
+                foreach ($identifiables as $identifiable)
                 {
-                    foreach ($identifiables as $identifiable)
-                    {
-                        $crit = $this->getCriteria();
-                        $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                        $crit->addInsert(self::PERMISSION_TYPE, $rolepermission->getPermission());
-                        $crit->addInsert(self::TARGET_ID, $identifiable['target_id']);
-                        $crit->addInsert($key, $identifiable['id']);
-                        $crit->addInsert(self::ALLOWED, true);
-                        $crit->addInsert(self::MODULE, $rolepermission->getModule());
-                        $crit->addInsert(self::ROLE_ID, $role_id);
-                        $res = $this->doInsert($crit);
-                    }
+                    if (in_array($rolepermission->getPermission().';'.$rolepermission->getModule(), $identifiable['permission_type_module'])) continue;
+
+                    $crit = $this->getCriteria();
+                    $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+                    $crit->addInsert(self::PERMISSION_TYPE, $rolepermission->getPermission());
+                    $crit->addInsert(self::TARGET_ID, $identifiable['target_id']);
+                    $crit->addInsert($key, $identifiable['id']);
+                    $crit->addInsert(self::ALLOWED, true);
+                    $crit->addInsert(self::MODULE, $rolepermission->getModule());
+                    $crit->addInsert(self::ROLE_ID, $role_id);
+                    $res = $this->doInsert($crit);
                 }
             }
         }

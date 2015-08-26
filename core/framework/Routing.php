@@ -227,7 +227,10 @@
         {
             $is_internal = Context::isInternalModule($module_name);
             $namespace = ($is_internal) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
-            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\Actions', $module_name);
+
+            // Point the annotated routes to the right module controller
+            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\controllers\\Main', $module_name);
+
             if (!$is_internal)
             {
                 $this->loadModuleOverrideMappings($namespace . $module_name . '\\Components', $module_name);
@@ -525,7 +528,7 @@
                     {
                         if (preg_match('#[a-z_\-]#i', $name))
                         {
-                            $out[$name] = urldecode($value);
+                            $out[$name] = $value;
                         }
                         else
                         {
@@ -539,7 +542,7 @@
                         // if $found is a named url element (i.e. ':action')
                         if (isset($names[$pos]))
                         {
-                            $out[$names[$pos]] = urldecode($found);
+                            $out[$names[$pos]] = $found;
                         }
                         // unnamed elements go in as 'pass'
                         else

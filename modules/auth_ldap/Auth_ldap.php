@@ -56,7 +56,7 @@
 
         protected function _addListeners()
         {
-            framework\Event::listen('core', 'thebuggenie\core\modules\configuration\Actions\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
+            framework\Event::listen('core', 'thebuggenie\core\modules\configuration\controllers\Main\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
         }
 
         public function postConfigSettings(framework\Request $request)
@@ -127,7 +127,7 @@
 
         public function escape($string)
         {
-            $chars = array('\\', '*', '()', ')', chr(0));
+            $chars = array('*', '()', ')', chr(0));
             foreach ($chars as $char)
             {
                 $string = str_replace($char, '\\' . $char, $string);
@@ -337,7 +337,7 @@
                         {
                             $dn = $data[0][strtolower($dn_attr)][0];
                         }
-                        $bind = $this->bind($connection, $this->escape($dn), $password);
+                        $bind = $this->bind($connection, $this->escape($dn), html_entity_decode($password));
                     }
                     catch (\Exception $e)
                     {

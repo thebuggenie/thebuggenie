@@ -5,8 +5,8 @@
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\helpers\MentionableProvider;
     use thebuggenie\core\framework;
-    use \Michelf\MarkdownExtra,
-        thebuggenie\modules\publish\entities\tables\Articles;
+    use thebuggenie\modules\publish;
+    use \Michelf\MarkdownExtra;
 
     /**
      * Class used for comments
@@ -623,7 +623,7 @@
                         $this->_target = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($this->_target_id);
                         break;
                     case self::TYPE_ARTICLE:
-                        $this->_target = tables\Articles::getTable()->selectById($this->_target_id);
+                        $this->_target = publish\entities\tables\Articles::getTable()->selectById($this->_target_id);
                         break;
                     default:
                         $event = \thebuggenie\core\framework\Event::createNew('core', 'Comment::getTarget', $this);

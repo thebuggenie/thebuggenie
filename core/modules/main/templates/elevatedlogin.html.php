@@ -39,7 +39,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    require(['domReady', 'prototype'], function (domReady, prototype) {
+    require(['domReady', 'thebuggenie/tbg', 'prototype'], function (domReady, TBG, prototype) {
         domReady(function () {
         <?php if (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message')): ?>
             TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message'); ?>');

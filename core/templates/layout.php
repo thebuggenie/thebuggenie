@@ -54,12 +54,14 @@
 
         <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
         <?php foreach ($localcss as $css): ?>
-            <link rel="stylesheet" href="<?php print make_url('home').'css/'.$css; ?>">
+            <link rel="stylesheet" href="<?php print $css; ?>">
         <?php endforeach; ?>
         <?php foreach ($externalcss as $css): ?>
             <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php endforeach; ?>
 
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimerWorker.min.js"></script>
         <script>
             var bust = function (path) {
                 return path + '?bust=' + <?php echo (\thebuggenie\core\framework\Context::isDebugMode()) ? ' Math.random()' : "'" . \thebuggenie\core\framework\Settings::getVersion() . "'"; ?>;
@@ -121,6 +123,9 @@
                         deps: ['jquery', 'bootstrap-typeahead']
                     },
                     'jquery.nanoscroller': {
+                        deps: ['jquery']
+                    },
+                    'jquery.ba-resize': {
                         deps: ['jquery']
                     },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]

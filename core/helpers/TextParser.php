@@ -129,7 +129,7 @@
 
         public static function getMentionsRegex()
         {
-            return '/\B\@([\w\-]+)/i';
+            return '/\B\@([\w\-.]+)/i';
         }
 
         /**
@@ -1036,9 +1036,14 @@
             $char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\[\]\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9\[\]$_.+!*(),;\/?:@&~=-]*))?([A-Za-z0-9\[\]$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
             $char_regexes[] = array('/(\[([^\]]*?)(?:\s+([^\]]*?))?\])/i', array($this, "_parse_save_elink"));
             $char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
-            $char_regexes[] = array('/\B\@([\w\-]+)/i', array($this, '_parse_mention'));
-            $char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
-            $char_regexes[] = array('/\&amp\;(.*)\;/i', array($this, '_parse_specialchar'));
+            $char_regexes[] = array('/\B\@([\w\-.]+)/i', array($this, '_parse_mention'));
+            $char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/', array($this, '_getsmiley'));
+            $char_regexes[] = array('/&amp;([A-Za-z0-9]+|\#[0-9]+|\#[xX][0-9A-Fa-f]+);/', array($this, '_parse_specialchar'));
+
+            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParser::_parse_line::char_regexes', $this, array(), $char_regexes);
+            $event->trigger();
+
+            $char_regexes = $event->getReturnList();
 
             $this->stop = false;
             $this->stop_all = false;
@@ -1127,7 +1132,7 @@
 
                 $text = tbg_decodeUTF8($text, true);
 
-                $text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)?&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
+                $text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font|sub|sup)(\s.*)?&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
                 $text = str_replace('&lt;br&gt;', '<br>' ,$text);
 
                 $lines = explode("\n", $text);

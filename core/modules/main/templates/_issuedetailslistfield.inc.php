@@ -35,7 +35,7 @@
                 </ul>
             <?php endif; ?>
             <?php if (array_key_exists('url', $info) && $info['url']): ?>
-                <a id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?> target="_new" href="<?php echo $info['current_url']; ?>"><?php echo __($info['name']); ?></a>
+                <a id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?> target="_new" href="<?php echo $info['current_url']; ?>"><?php echo $info['name']; ?></a>
             <?php else: ?>
                 <span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __($info['name']); ?></span>
             <?php endif; ?>

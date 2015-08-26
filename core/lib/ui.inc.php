@@ -303,7 +303,7 @@
      * @return array
      */
     function hex2rgb($colour) {
-        if ($colour[0] == '#')
+        if (strlen($colour) > 0 && $colour[0] == '#')
         {
             $colour = substr($colour, 1);
         }
