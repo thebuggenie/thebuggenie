@@ -3557,6 +3557,7 @@ class Main extends framework\Action
                 case 'notifications':
                     $template_name = 'main/notifications';
                     $options['offset'] = $request['offset'];
+                    $options['first_notification_id'] = $request['first_notification_id'];
                     break;
                 case 'workflow_transition':
                     $transition = entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);

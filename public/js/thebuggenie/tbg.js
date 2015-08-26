@@ -457,6 +457,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         callback: function (json) {
                             var unc = $('user_notifications_count');
                             if (unc) {
+                                TBG.Main.Notifications.loadMore(undefined, true);
                                 if (parseInt(json.unread_notifications) != parseInt(unc.innerHTML)) {
                                     unc.update(json.unread_notifications);
                                     if (parseInt(json.unread_notifications) > 0) {
@@ -7323,21 +7324,41 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         };
         
-        TBG.Main.Notifications.loadMore = function () {
+        TBG.Main.Notifications.loadMore = function (event, loadToTop) {
             if (TBG.Main.Notifications.loadingLocked !== true) {
                 TBG.Main.Notifications.loadingLocked = true;
                 var unl = $('user_notifications_list'),
-                    unl_data = unl.dataset;
-                TBG.Main.Helpers.ajax(unl_data.notificationsUrl+'&offset='+unl_data.offset, {
+                    unl_data = unl.dataset,
+                    loadToTop = loadToTop || false;
+                if (loadToTop) {
+                    var url_url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
+                    var insert_location = 'before';
+                }
+                else {
+                    var url_url = unl_data.notificationsUrl+'&offset='+unl_data.offset;
+                    var insert_location = 'after';
+                }
+                TBG.Main.Helpers.ajax(url_url, {
                     url_method: 'get',
                     loading: {
                         indicator: 'user_notifications_loading_indicator'
                     },
                     success: {
-                        update: { element: 'user_notifications_list', insertion: true },
-                        callback: function () {
+                        update: { element: '', insertion: true },
+                        callback: function (json) {
+                            if (loadToTop) {
+                                $('user_notifications_list').insert({top: json.content});
+                            }
+                            else {
+                                $('user_notifications_list').insert({bottom: json.content});
+                            }
                             jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
                             unl_data.offset = parseInt(unl_data.offset) + 25;
+                            TBG.Main.Notifications.loadingLocked = false;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
                             TBG.Main.Notifications.loadingLocked = false;
                         }
                     }

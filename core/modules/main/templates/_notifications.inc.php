@@ -1,4 +1,4 @@
-    <?php if ($num_unread + $num_read == 0): ?>
+    <?php if ($num_unread + $num_read == 0 && ! $filter_first_notification): ?>
         <li class="faded_out"><?php echo __('You have no notifications'); ?></li>
     <?php else: ?>
         <?php foreach ($notifications as $notification): ?>
@@ -11,7 +11,7 @@
             }
 
         ?>
-        <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container">
+        <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container" data-notification-id="<?php echo $notification->getID(); ?>">
             <a href="javascript:void(0);" onclick="TBG.Main.Notifications.toggleRead(<?php echo $notification->getID(); ?>);" class="notification_status_toggler">
                 <?php echo image_tag('icon_notification_read.png', array('class' => 'icon_read')); ?>
                 <?php echo image_tag('icon_notification_unread.png', array('class' => 'icon_unread')); ?>

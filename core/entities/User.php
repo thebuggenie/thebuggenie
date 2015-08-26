@@ -365,6 +365,8 @@
 
         protected $_read_notifications_count = null;
 
+        protected $_filter_first_notification = null;
+
         /**
          * Retrieve a user by username
          *
@@ -2654,26 +2656,40 @@
             return array_key_exists($scope->getID(), $this->getScopes());
         }
 
-        protected function _populateNotifications()
+        protected function _populateNotifications($first_notification_id = null)
         {
+            $filter_first_notification = ! is_null($first_notification_id) && is_numeric($first_notification_id);
+            if ($filter_first_notification)
+            {
+                $this->_notifications = null;
+                $this->_filter_first_notification = true;
+            }
+            else if (! $filter_first_notification && $this->_filter_first_notification)
+            {
+                $this->_notifications = null;
+                $this->_filter_first_notification = false;
+            }
             if (!is_array($this->_notifications))
             {
                 $this->_b2dbLazyload('_notifications');
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
-                foreach ($this->_notifications as $notification)
+                $db_notifcations = array_reverse($this->_notifications);
+                foreach ($db_notifcations as $notification)
                 {
+                    if ($filter_first_notification && $notification->getID() <= $first_notification_id) break;
                     if ($notification->getTriggeredByUser()->getID() == $this->getID()) continue;
 
-                    array_unshift($notifications['all'], $notification);
+                    array_push($notifications['all'], $notification);
                     if ($notification->isRead())
                     {
-                        array_unshift($notifications['read'], $notification);
+                        array_push($notifications['read'], $notification);
                     }
                     else
                     {
-                        array_unshift($notifications['unread'], $notification);
+                        array_push($notifications['unread'], $notification);
                     }
                 }
+                $notifications = array_reverse($notifications);
                 $this->_notifications = $notifications;
                 $this->_unread_notifications_count = count($notifications['unread']);
                 $this->_read_notifications_count = count($notifications['read']);
@@ -2685,9 +2701,9 @@
          *
          * @return array|\thebuggenie\core\entities\Notification
          */
-        public function getNotifications()
+        public function getNotifications($first_notification_id = null)
         {
-            $this->_populateNotifications();
+            $this->_populateNotifications($first_notification_id);
             return $this->_notifications['all'];
         }
 
