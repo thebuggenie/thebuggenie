@@ -7335,7 +7335,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     var url_url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
                 }
                 else {
-                    var url_url = unl_data.notificationsUrl+'&offset='+unl_data.offset;
+                    var url_url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:last-child")[0].dataset.notificationId;
                 }
                 TBG.Main.Helpers.ajax(url_url, {
                     url_method: 'get',
@@ -7352,13 +7352,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                 $('user_notifications_list').insert({bottom: json.content});
                             }
                             jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
-                            unl_data.offset = parseInt(unl_data.offset) + 25;
-                            TBG.Main.Notifications.loadingLocked = false;
+                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
                         }
                     },
                     exception: {
                         callback: function () {
-                            TBG.Main.Notifications.loadingLocked = false;
+                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
                         }
                     }
                 });

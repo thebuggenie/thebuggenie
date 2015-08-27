@@ -2656,7 +2656,7 @@
             return array_key_exists($scope->getID(), $this->getScopes());
         }
 
-        protected function _populateNotifications($first_notification_id = null)
+        protected function _populateNotifications($first_notification_id = null, $last_notification_id = null)
         {
             $filter_first_notification = ! is_null($first_notification_id) && is_numeric($first_notification_id);
             if ($filter_first_notification)
@@ -2677,6 +2677,7 @@
                 foreach ($db_notifcations as $notification)
                 {
                     if ($filter_first_notification && $notification->getID() <= $first_notification_id) break;
+                    if (! $filter_first_notification && ! is_null($last_notification_id) && $notification->getID() >= $last_notification_id) continue;
                     if ($notification->getTriggeredByUser()->getID() == $this->getID()) continue;
 
                     array_push($notifications['all'], $notification);
@@ -2701,9 +2702,9 @@
          *
          * @return array|\thebuggenie\core\entities\Notification
          */
-        public function getNotifications($first_notification_id = null)
+        public function getNotifications($first_notification_id = null, $last_notification_id = null)
         {
-            $this->_populateNotifications($first_notification_id);
+            $this->_populateNotifications($first_notification_id, $last_notification_id);
             return $this->_notifications['all'];
         }
 
