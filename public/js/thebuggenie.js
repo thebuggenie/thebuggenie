@@ -1,4 +1,4 @@
-define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention', 'jquery.ui.touch-punch'],
+define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention', 'jquery.ui.touch-punch', 'jquery.animate-enhanced.min'],
     function (tools, TBG, domReady, jQuery, mention) {
 
         domReady(function () {

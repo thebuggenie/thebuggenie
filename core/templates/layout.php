@@ -132,9 +132,34 @@
                     'jquery.ui.touch-punch': {
                         deps: ['jquery-ui']
                     },
+                    'jquery.animate-enhanced.min': {
+                        deps: ['jquery']
+                    },
+                    'jquery-ui': {
+                        deps: ['jquery.animate-enhanced.min']
+                    },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };
+        </script>
+        <script type="text/javascript">
+        //   function startWorker() {
+        //     if(typeof(Worker) !== "undefined") {
+        //       if(typeof(w) == "undefined") {
+        //         wrker = new Worker("<?php echo make_url('home'); ?>js/workers.js");
+        //         wrker.onmessage = function(e) {
+        //           log("Received: " + e.data);
+        //         }
+        //         wrker.postMessage();
+        //       }
+        //       w.onmessage = function(event) {
+        //         document.getElementById("result").innerHTML = event.data;
+        //       };
+        //     } else {
+        //       document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+        //     }
+        //   }
+        //   startWorker();
         </script>
         <script data-main="thebuggenie" src="<?php echo make_url('home'); ?>js/require.js"></script>
         <?php foreach ($externaljs as $js): ?>
