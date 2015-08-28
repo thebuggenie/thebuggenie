@@ -129,6 +129,9 @@
                     'jquery.ba-resize': {
                         deps: ['jquery']
                     },
+                    'jquery.ui.touch-punch': {
+                        deps: ['jquery-ui']
+                    },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };
