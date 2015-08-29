@@ -112,6 +112,7 @@
             framework\Event::listen('core', 'thebuggenie\core\entities\User::_postSave', array($this, 'listen_createUser'));
             framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save', array($this, 'listen_issueSave'));
             framework\Event::listen('core', 'thebuggenie\core\entities\Comment::createNew', array($this, 'listen_thebuggenie_core_entities_Comment_createNew'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\Comment::_postSave', array($this, 'listen_thebuggenie_core_entities_Comment_createNew'));
             framework\Event::listen('core', 'thebuggenie\modules\publish\entities\Article::doSave', array($this, 'listen_Article_doSave'));
             framework\Event::listen('core', 'viewissue', array($this, 'listen_viewissue'));
             framework\Event::listen('core', 'issue_subscribe_user', array($this, 'listen_issueSubscribeUser'));

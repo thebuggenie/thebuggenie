@@ -315,6 +315,20 @@
                     }
                 }
             }
+            else
+            {
+                switch ($this->getTargetType())
+                {
+                    case self::TYPE_ISSUE:
+                        \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::_postSave', $this, array('issue' => $this->getTarget()))->trigger();
+                        break;
+                    case self::TYPE_ARTICLE:
+                        \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::_postSave', $this, array('article' => $this->getTarget()))->trigger();
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
 
         protected function _canPermissionOrSeeAndEditAllComments($permission)
