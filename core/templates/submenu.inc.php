@@ -21,11 +21,15 @@
                     echo '<ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown">';
                         foreach ($breadcrumb['subitems'] as $subindex => $subitem)
                         {
-                            if (array_key_exists('url', $subitem) || $subitem['title'] == $next_title)
+                            if (array_key_exists('url', $subitem) || (array_key_exists('title', $subitem) && $subitem['title'] == $next_title))
                             {
                                 $class = strpos($subitem['title'], $next_title) === 0 ? 'selected' : '';
                                 $url = array_key_exists('url', $subitem) ? $subitem['url'] : '#';
                                 echo '<li class="', $class, '"><a href="', $url, '">', $subitem['title'], '</a></li>';
+                            }
+                            elseif (array_key_exists('separator', $subitem) && $subitem['separator'])
+                            {
+                                echo '<li class="separator"></li>';
                             }
                         }
                     echo '</ul>';
