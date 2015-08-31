@@ -1965,7 +1965,7 @@ class Context
 
                 if ($t->hasChildren())
                 {
-                    $itemsubmenulinks[] = array('url' => '#', 'title' => '', 'class' => 'separator');
+                    $itemsubmenulinks[] = array('url' => '#', 'title' => '<hr/>');
                     foreach ($t->getChildren() as $child)
                     {
                         if (!$child->hasAccess())

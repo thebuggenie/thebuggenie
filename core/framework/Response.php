@@ -684,7 +684,7 @@
                         if ($first)
                         {
                             $first = false;
-                            $links[] = array('url' => '#', 'title' => '', 'class' => 'separator');
+                            $links[] = array('url' => '#', 'title' => '<hr />');
                         }
                         $links[] = array('url' => Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $project->getName());
                     }
