@@ -551,7 +551,7 @@ class Main extends framework\Action
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
         $this->current_version = $version_info[0];
-        $this->upgrade_available = ($this->current_version != '4.0');
+        $this->upgrade_available = ($this->current_version != framework\Settings::getVersion(false));
 
         if ($this->upgrade_available)
         {
@@ -560,15 +560,24 @@ class Main extends framework\Action
             $scope->setEnabled();
             framework\Context::setScope($scope);
 
-            $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
-            $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
+            if ($this->current_version == '3.2') {
+                $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
+                $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
+            }
         }
         $this->upgrade_complete = false;
 
         if ($this->upgrade_available && $request->isPost())
         {
             $this->upgrade_complete = false;
-            $this->_upgradeFrom3dot2($request);
+
+            switch ($this->current_version) {
+                case '3.2':
+                    $this->_upgradeFrom3dot2($request);
+                    break;
+                default:
+                    $this->upgrade_complete = true;
+            }
 
             if ($this->upgrade_complete)
             {

@@ -55,6 +55,8 @@
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::ISSUE, $issue_ids, Criteria::DB_IN);
+            $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE, array(), Criteria::DB_INNER_JOIN);
+            $crit->addJoin(Builds::getTable(), Builds::ID, self::BUILD, array(), Criteria::DB_INNER_JOIN);
             $res = $this->doSelect($crit, false);
             return $res;
         }

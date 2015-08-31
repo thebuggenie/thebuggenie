@@ -1190,12 +1190,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsEdition::STATUS);
-                            $this->_editions[$row->get(tables\IssueAffectsEdition::ID)] = array(
-                                                        'edition' => tables\Editions::getTable()->selectById((int) $row->get(tables\IssueAffectsEdition::EDITION), null, null),
-                                                        'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                        'confirmed' => (bool) $row->get(tables\IssueAffectsEdition::CONFIRMED),
-                                                        'a_id' => $row->get(tables\IssueAffectsEdition::ID));
+                            $edition = tables\Editions::getTable()->selectById((int) $row->get(tables\IssueAffectsEdition::EDITION), null, null);
+                            if ($edition instanceof Edition) {
+                                $status_id = $row->get(tables\IssueAffectsEdition::STATUS);
+                                $this->_editions[$row->get(tables\IssueAffectsEdition::ID)] = array(
+                                    'edition' => $edition,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsEdition::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsEdition::ID));
+                            }
                         }
                         catch (\Exception $e) {}
                     }
@@ -1207,12 +1210,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsBuild::STATUS);
-                            $this->_builds[$row->get(tables\IssueAffectsBuild::ID)] = array(
-                                                        'build' => tables\Builds::getTable()->selectById((int) $row->get(tables\IssueAffectsBuild::BUILD), null, null),
-                                                        'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                        'confirmed' => (bool) $row->get(tables\IssueAffectsBuild::CONFIRMED),
-                                                        'a_id' => $row->get(tables\IssueAffectsBuild::ID));
+                            $build = tables\Builds::getTable()->selectById((int) $row->get(tables\IssueAffectsBuild::BUILD), null, null);
+                            if ($build instanceof Build) {
+                                $status_id = $row->get(tables\IssueAffectsBuild::STATUS);
+                                $this->_builds[$row->get(tables\IssueAffectsBuild::ID)] = array(
+                                    'build' => $build,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsBuild::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsBuild::ID));
+                            }
                         }
                         catch (\Exception $e) { }
                     }
@@ -1224,12 +1230,15 @@
                     {
                         try
                         {
-                            $status_id = $row->get(tables\IssueAffectsComponent::STATUS);
-                            $this->_components[$row->get(tables\IssueAffectsComponent::ID)] = array(
-                                                            'component' => tables\Components::getTable()->selectById((int) $row->get(tables\IssueAffectsComponent::COMPONENT), null, null),
-                                                            'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
-                                                            'confirmed' => (bool) $row->get(tables\IssueAffectsComponent::CONFIRMED),
-                                                            'a_id' => $row->get(tables\IssueAffectsComponent::ID));
+                            $component = tables\Components::getTable()->selectById((int) $row->get(tables\IssueAffectsComponent::COMPONENT), null, null);
+                            if ($component instanceof Component) {
+                                $status_id = $row->get(tables\IssueAffectsComponent::STATUS);
+                                $this->_components[$row->get(tables\IssueAffectsComponent::ID)] = array(
+                                    'component' => $component,
+                                    'status' => ($status_id) ? Status::getB2DBTable()->selectById((int) $status_id) : null,
+                                    'confirmed' => (bool) $row->get(tables\IssueAffectsComponent::CONFIRMED),
+                                    'a_id' => $row->get(tables\IssueAffectsComponent::ID));
+                            }
                         }
                         catch (\Exception $e) { }
                     }

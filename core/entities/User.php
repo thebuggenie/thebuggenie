@@ -628,6 +628,12 @@
                                     throw new \Exception('No such login');
                                     //framework\Context::getResponse()->headerRedirect(framework\Context::getRouting()->generate('login'));
                                 }
+                                // In case the operation was a success, but no autologin was enabled, set the user to null
+                                // so the rest of the code that deals with guest access can handle it.
+                                else if ($user == true)
+                                {
+                                    $user = null;
+                                }
                             }
                             catch (\Exception $e)
                             {

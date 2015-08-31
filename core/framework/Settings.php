@@ -132,9 +132,9 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 0;
-        protected static $_ver_rev = '2';
-        protected static $_ver_name = "Cotton";
+        protected static $_ver_mn = 1;
+        protected static $_ver_rev = '0';
+        protected static $_ver_name = "Abstract Apricot";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
@@ -1017,14 +1017,14 @@
             $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'details' => $i18n->__('Configure the authentication method in this section'));
 
             if (Context::getScope()->isUploadsEnabled())
-                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads & attachments'), 'icon' => 'files', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
+                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads and attachments'), 'icon' => 'files', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
 
             $config_sections['general'][self::CONFIGURATION_SECTION_IMPORT] = array('route' => 'import_home', 'description' => $i18n->__('Import data'), 'icon' => 'import_small', 'details' => $i18n->__('Import data from CSV files and other sources.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'icon' => 'projects', 'details' => $i18n->__('Set up all projects in this configuration section.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_ISSUETYPES] = array('route' => 'configure_issuetypes', 'icon' => 'issuetypes', 'description' => $i18n->__('Issue types'), 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
             $config_sections['general'][self::CONFIGURATION_SECTION_ISSUEFIELDS] = array('route' => 'configure_issuefields', 'icon' => 'resolutiontypes', 'description' => $i18n->__('Issue fields'), 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_WORKFLOW] = array('route' => 'configure_workflow', 'icon' => 'workflow', 'description' => $i18n->__('Workflow'), 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams & clients'), 'icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams and clients'), 'icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_MODULES] = array('route' => 'configure_modules', 'description' => $i18n->__('Manage modules'), 'icon' => 'modules', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
             foreach (Context::getModules() as $module)
             {

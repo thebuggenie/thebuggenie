@@ -265,7 +265,7 @@
                         else
                         {
                             $this->cliEcho('Start and end this with a forward slash', 'white', 'bold');
-                            $this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at the root directory, just type \"/\" (without the quotes)\n\n");
+                            $this->cliEcho(". (ex: \"/public/\")\nIf The Bug Genie is running at the root directory, just type \"/\" (without the quotes)\n\n");
                             $this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
                             $url_subdir = $this->getInput();
                         }
@@ -291,7 +291,7 @@
 
                     if ($this->getProvidedArgument('setup_htaccess') != 'yes')
                     {
-                        $this->cliEcho("Setup can autoconfigure your .htaccess and .user.ini files (located in the thebuggenie/ subfolder), so you don't have to.\n");
+                        $this->cliEcho("Setup can autoconfigure your .htaccess and .user.ini files (located in the public/ subfolder), so you don't have to.\n");
                         $this->cliEcho('Would you like setup to auto-generate those files for you?');
                         $this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess and .user.ini files: ");
                         $htaccess_ok = $this->askToDecline();
@@ -306,9 +306,9 @@
 
                     if ($htaccess_ok)
                     {
-                        if (!is_writable(THEBUGGENIE_PATH . 'thebuggenie/') || (file_exists(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') && !is_writable(THEBUGGENIE_PATH . 'thebuggenie/.htaccess')))
+                        if (!is_writable(THEBUGGENIE_PATH . 'public/') || (file_exists(THEBUGGENIE_PATH . 'public/.htaccess') && !is_writable(THEBUGGENIE_PATH . 'public/.htaccess')))
                         {
-                            $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
+                            $this->cliEcho("Permission denied when trying to save the [main folder]/public/.htaccess\n", 'red', 'bold');
                             $this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
                             $this->cliEcho('Please note: ', 'white', 'bold');
                             $this->cliEcho("The Bug Genie will not function properly until the .htaccess file is properly set up!\n");
@@ -316,10 +316,10 @@
                         else
                         {
                             $content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template'));
-                            file_put_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess', $content);
-                            if (file_get_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') != $content)
+                            file_put_contents(THEBUGGENIE_PATH . 'public/.htaccess', $content);
+                            if (file_get_contents(THEBUGGENIE_PATH . 'public/.htaccess') != $content)
                             {
-                                $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
+                                $this->cliEcho("Permission denied when trying to save the [main folder]/public/.htaccess\n", 'red', 'bold');
                                 $this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
                                 $this->cliEcho('Please note: ', 'white', 'bold');
                                 $this->cliEcho("The Bug Genie will not function properly until the .htaccess file is properly set up!\n");
@@ -330,9 +330,9 @@
                             }
                         }
 
-                    	if (!is_writable(THEBUGGENIE_PATH . 'thebuggenie/') || (file_exists(THEBUGGENIE_PATH . 'thebuggenie/.user.ini') && !is_writable(THEBUGGENIE_PATH . 'thebuggenie/.user.ini')))
+                    	if (!is_writable(THEBUGGENIE_PATH . 'public/') || (file_exists(THEBUGGENIE_PATH . 'public/.user.ini') && !is_writable(THEBUGGENIE_PATH . 'public/.user.ini')))
                         {
-                            $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.user.ini\n", 'red', 'bold');
+                            $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
                             $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
                             $this->cliEcho('Please note: ', 'white', 'bold');
                             $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");
@@ -340,10 +340,10 @@
                         else
                         {
                             $content = file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template');
-                            file_put_contents(THEBUGGENIE_PATH . 'thebuggenie/.user.ini', $content);
-                            if (file_get_contents(THEBUGGENIE_PATH . 'thebuggenie/.user.ini') != $content)
+                            file_put_contents(THEBUGGENIE_PATH . 'public/.user.ini', $content);
+                            if (file_get_contents(THEBUGGENIE_PATH . 'public/.user.ini') != $content)
                             {
-                                $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.user.ini\n", 'red', 'bold');
+                                $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
                                 $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
                                 $this->cliEcho('Please note: ', 'white', 'bold');
                                 $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");

@@ -23,6 +23,9 @@
         <script type="text/javascript" src="js/scriptaculous.js"></script>
         <script type="text/javascript" src="js/install.js"></script>
         <style type="text/css">
+            <?php include THEBUGGENIE_PATH . 'themes' . DS . 'oxygen' . DS . 'css' . DS . 'theme.css'; ?>
+        </style>
+        <style type="text/css">
             @font-face {
               font-family: 'Droid Sans Mono';
               font-style: normal;
@@ -82,7 +85,6 @@
             .installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 1.05em; line-height: 1.6; }
             .installation_box dl { font-size: 1em; }
             .installation_box dl dd, .installation_box dl dt { vertical-align: middle; font-weight: normal; margin-left: 0; }
-            .installation_box input[type="submit"] { font-weight: bold; height: 30px; font-size: 1.3em; }
             .donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 0; }
             .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
             .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; margin-top: 5px; margin-bottom: 15px; }
@@ -129,8 +131,8 @@
             ul.outlined { margin-top: 5px; }
             ul.outlined li { font-weight: bold; }
 
-            #logo_container { line-height: 1em; padding-top: 8px; }
-            #logo_container .logo { margin: -2px 10px 0 10px; float: left; }
+            #logo_container { line-height: 1em; }
+            #logo_container .logo { display: inline-block; vertical-align: middle; margin-right: 10px; }
             #logo_container .logo_name { font-size: 1.8em; float: none; line-height: 1.1em; color: #ECF0F4; }
 
             .scope_upgrade { margin: 5px; padding: 0; font-size: 0.9em; }
@@ -140,7 +142,7 @@
             .scope_upgrade li select { width: 250px; }
 
             .progress_buttons { padding: 25px 0 0; height: 30px; }
-            .progress_buttons .button { font-size: 1.2em; padding: 4px 10px !important; }
+            .progress_buttons .button, .installation_box input[type="submit"] { font-size: 1.2em; padding: 4px 10px !important; }
             .progress_buttons .button-next { float: right; }
             .progress_buttons .button-previous { float: left; }
 
