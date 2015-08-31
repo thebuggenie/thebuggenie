@@ -1035,6 +1035,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function () {
                         $('dynamic_uploader_submit').addClassName('disabled');
                         $('dynamic_uploader_submit').disable();
+                        $('report_issue_submit_button').addClassName('disabled');
+                        $('report_issue_submit_button').disable();
                     }
                 },
                 success: {
@@ -1057,6 +1059,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function () {
                         $('dynamic_uploader_submit').addClassName('disabled');
                         $('dynamic_uploader_submit').enable();
+                        $('report_issue_submit_button').addClassName('disabled');
+                        $('report_issue_submit_button').enable();
                     }
                 }
             });
@@ -1104,6 +1108,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     TBG.Main.Helpers.Message.error(json.error);
                 }
                 if (is_last && $('dynamic_uploader_submit') && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
+                if (is_last && $('report_issue_submit_button') && $('report_issue_submit_button').disabled) $('report_issue_submit_button').enable();
             };
 
             xhr.upload.onprogress = function (e) {
@@ -1119,6 +1124,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             };
 
             if ($('dynamic_uploader_submit') && !$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
+            if ($('report_issue_submit_button') && !$('report_issue_submit_button').disabled) $('report_issue_submit_button').disable();
             xhr.send(formData);
         };
 
