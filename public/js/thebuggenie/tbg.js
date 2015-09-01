@@ -2563,11 +2563,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             wb.addClassName('viewmode-'+mode);
         };
 
-        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
-            var issue = jQuery(ui.draggable);
-            var column = jQuery(event.target);
-
-            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column)
+        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, issue, column) {
+            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column);
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index) {
@@ -2580,13 +2577,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             if (! issue_index) var issue_index = issue.index();
 
             if (issue) {
-                issue.detach().css({left: '0', top: '0'}).prependTo(column);
+                issue.detach().css({left: '0', top: '0', transform: 'inherit'}).prependTo(column);
             }
 
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('.tbody').data('swimlane-identifier');
             var revertIssuePosition = function () {
-                issue.css({left: '0', top: '0'});
+                // Double revert is intentional.
+                issue.data('plugin_pep').revert();
+                issue.data('plugin_pep').revert();
 
                 if (issue_index <= 0) {
                     issue.prependTo(original_column);
@@ -2598,7 +2597,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var customEscapeWatcher = function (event) {
                 if (event.keyCode != undefined && event.keyCode != 0 && Event.KEY_ESC != event.keyCode) return;
                 TBG.Main.Helpers.Backdrop.reset(revertIssuePosition);
-                $('workflow_transition_fullpage').hide();
+                if ($('workflow_transition_fullpage')) $('workflow_transition_fullpage').hide();
                 setTimeout(function() {
                     document.stopObserving('keydown', customEscapeWatcher);
                     document.observe('keydown', TBG.Core._escapeWatcher);
@@ -2629,7 +2628,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('transition_working_' + json.transition_id + '_submit').observe('click', function (event) {
                                 Event.stop(event);
                                 TBG.Issues.submitWorkflowTransition($('workflow_transition_' + json.transition_id + '_form'), function () {
-                                    issue.draggable('destroy');
                                     TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                                 });
                             });
@@ -2652,9 +2650,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             if (!issue) {
                                 jQuery(json.issue).prependTo(column);
                             }
-                            else {
-                                issue.draggable('destroy');
-                            }
                             TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                         }
                     }
@@ -2671,17 +2666,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         };
 
-        TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event, ui) {
-            jQuery('.column.ui-droppable-disabled').each(function (index) {
-                jQuery(this).droppable("enable");
-            });
+        TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event) {
             jQuery('.column.drop-valid').each(function (index) {
                 jQuery(this).removeClass('drop-valid');
+                TweenLite.to(this, .3, {backgroundColor: "rgba(245, 245, 245, 0.4)"});
+                jQuery(this).removeClass('drop-hover');
             });
         };
 
-        TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, ui) {
-            var issue = $(event.target);
+        TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, issue) {
+            var issue = $(issue);
             var issue_statuses = issue.dataset.validStatusIds.split(',');
             issue.up('.tr').childElements().each(function (column) {
                 var column_statuses = column.dataset.statusIds.split(',');
@@ -2693,31 +2687,54 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 });
 
                 if (!has_status) {
-                    jQuery(column).droppable("disable");
+                    jQuery(column).removeClass("pep-droppable");
                 } else {
                     column.addClassName('drop-valid');
+                    TweenLite.to(column, .3, {backgroundColor: "rgba(150, 225, 150, 0.3)"});
+                    column.addClassName('pep-droppable');
                 }
             });
         };
 
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
-            $('whiteboard').select('.tbody .td.column').each(function (column) {
-                var swimlane_identifier = column.up('.tbody').dataset.swimlaneIdentifier;
-                jQuery(column).not('ui-droppable').droppable({
-                    drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
-                    scope: swimlane_identifier,
-                    accept: '.whiteboard-issue',
-                    tolerance: 'intersect',
-                    hoverClass: 'drop-hover'
-                });
-                jQuery(column).find('.whiteboard-issue').not('ui-draggable').draggable({
-                    scope: swimlane_identifier,
-                    start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
-                    stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
-                    axis: 'x',
-                    revert: 'invalid',
-                    containment: '#whiteboard'
-                });
+            jQuery('.whiteboard-issue').pep({
+                droppable: ".pep-droppable",
+                start: function (ev, obj) {
+                    TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, obj.$el[0]);
+                },
+                stop: function (ev, obj) {
+                    if (! this.started && ev.target.tagName.toLowerCase() === 'a' && 'ontouchstart' in window) {
+                        window.open(ev.target.href);
+                    }
+                    if (obj.activeDropRegions.length == 1) {
+                        TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, obj.$el, obj.activeDropRegions[0]);
+                    }
+                    TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
+                },
+                droppableActiveClass: function (el, set) {
+                    if (set) {
+                        TweenLite.to(el, .3, {backgroundColor: "rgba(225, 225, 150, 0.3)"});
+                        el.addClass('drop-hover');
+                    } else {
+                        TweenLite.to(el, .3, {backgroundColor: "rgba(150, 225, 150, 0.3)"});
+                        el.removeClass('drop-hover');
+                    }
+                },
+                axis: 'x',
+                shouldEase: false,
+                velocityMultiplier: 1,
+                revert: true,
+                revertIf: function (ev) {
+                    return ! this.activeDropRegions.length;
+                },
+                place: false,
+                overlapFunction: function($a, $b){
+                    var rect1 = $a[0].getBoundingClientRect();
+                    var rect2 = $b[0].getBoundingClientRect();
+                    var rect3 = jQuery('html')[0].getBoundingClientRect();
+
+                    return (rect1.left <= rect2.left && rect1.right >= rect2.right) || (rect1.left > rect2.left && (rect1.left - rect2.left) < rect2.width / 2) || (rect3.right - rect1.right) > (rect3.right - rect2.right) && ((rect3.right - rect1.right) - (rect3.right - rect2.right)) < rect2.width / 2;
+                }
             });
 
             if (!TBG.Core.Pollers.planningpoller)
