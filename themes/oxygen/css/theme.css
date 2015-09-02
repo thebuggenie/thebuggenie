@@ -3667,7 +3667,6 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     width: 100%;
     height: 100%;
     table-layout: fixed;
-    border-collapse: collapse;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -3960,6 +3959,10 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue {
     opacity: 0;
 }
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.gs-draggable,
+.whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue.gs-draggable {
+    opacity: 1;
+}
 .whiteboard-columns td.column.current_column .whiteboard-issue,
 .whiteboard-columns .td.column.current_column .whiteboard-issue {
     opacity: 0.3;
@@ -4028,18 +4031,18 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
+    z-index: 1;
 }
 .whiteboard-issue.issue-closed {
     opacity: 0.7;
 }
-.whiteboard-issue.ui-draggable,
-.whiteboard-issue.gs-draggable {
+.whiteboard-issue.ui-draggable {
     cursor: move;
 }
 .whiteboard-issue.ui-draggable-dragging,
 .whiteboard-issue.gs-draggable {
     box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
-    z-index: 1;
+    z-index: 2;
 }
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;

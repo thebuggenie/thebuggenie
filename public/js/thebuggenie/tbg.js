@@ -2703,7 +2703,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     this.startY = this.y;
                 },
                 onDragStart: function(ev) {
-                    jQuery(this.element).addClass('gs-draggable');
+                    jQuery(this.target).addClass('gs-draggable');
                     TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, this.target);
                 },
                 onDrag: function(ev) {
@@ -2718,7 +2718,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     }
                 },
                 onDragEnd:function(ev) {
-                    jQuery(this.element).removeClass('gs-draggable');
+                    jQuery(this.target).removeClass('gs-draggable');
                     var droppables = jQuery(droppablesSelector);
                     var i = droppables.length;
                     var column_found = false;
