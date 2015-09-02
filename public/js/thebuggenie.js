@@ -1,5 +1,5 @@
-define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention', 'TweenMax', 'GSDraggable'],
-    function (tools, TBG, domReady, jQuery, mention, TweenLite, GSDraggable) {
+define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention'],
+    function (tools, TBG, domReady, jQuery, mention) {
 
         domReady(function () {
             TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));

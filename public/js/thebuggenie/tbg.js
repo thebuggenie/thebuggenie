@@ -1,5 +1,5 @@
-define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-ui', 'jquery.markitup', 'spectrum'],
-    function (prototype, effects, controls, scriptaculous, jQuery, spectrum) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'jquery-ui', 'jquery.markitup', 'spectrum'],
+    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable) {
 
         var TBG = {
             Core: {
@@ -2695,7 +2695,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
             var overlapThreshold = '50%';
             var droppablesSelector = '.gs-droppable';
-            Draggable.create(jQuery('.whiteboard-issue'), {
+            GSDraggable.create(jQuery('.whiteboard-issue'), {
                 type: 'x',
                 bounds: jQuery('#whiteboard'),
                 onPress: function() {
