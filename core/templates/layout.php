@@ -63,9 +63,6 @@
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimerWorker.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
         <script>
             var bust = function (path) {
                 return path + '?bust=' + <?php echo (\thebuggenie\core\framework\Context::isDebugMode()) ? ' Math.random()' : "'" . \thebuggenie\core\framework\Settings::getVersion() . "'"; ?>;
@@ -78,7 +75,9 @@
                     'jquery-ui': 'jquery-ui.min',
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
-                    'thebuggenie/tools': bust('thebuggenie/tools.js')
+                    'thebuggenie/tools': bust('thebuggenie/tools.js'),
+                    TweenMax: "./greensock/TweenMax",
+                    GSDraggable: "./greensock/utils/Draggable"
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
@@ -138,12 +137,9 @@
                     'jquery.animate-enhanced.min': {
                         deps: ['jquery']
                     },
-                    'jquery-ui': {
-                        deps: ['jquery.animate-enhanced.min']
-                    },
-                    'jquery.pep': {
-                        deps: ['jquery']
-                    },
+                     'jquery-ui': {
+                         deps: ['jquery.animate-enhanced.min']
+                     },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };

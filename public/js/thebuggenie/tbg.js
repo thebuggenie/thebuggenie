@@ -2563,11 +2563,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             wb.addClassName('viewmode-'+mode);
         };
 
-        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, issue, column) {
-            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column);
+        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, issue, column, startCoordinates) {
+            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column, undefined, undefined, undefined, startCoordinates);
         };
 
-        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index) {
+        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index, startCoordinates) {
             if (transition_id == undefined & issue.data('column-id') == column.data('column-id')) {
                 issue.css({left: '0', top: '0'});
                 return;
@@ -2583,9 +2583,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('.tbody').data('swimlane-identifier');
             var revertIssuePosition = function () {
-                // Double revert is intentional.
-                issue.data('plugin_pep').revert();
-                issue.data('plugin_pep').revert();
+                TweenMax.to(issue, .3, startCoordinates);
 
                 if (issue_index <= 0) {
                     issue.prependTo(original_column);
@@ -2641,7 +2639,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('transition-selector-close-link').observe('click', customEscapeWatcher);
                             $$('.transition-selector-button').each(function (elem) {
                                 elem.observe('click', function (event) {
-                                    TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_' + elem.dataset.issueId), jQuery('#swimlane_' + elem.dataset.swimlaneIdentifier + '_column_' + elem.dataset.columnId), elem.dataset.transitionId, original_column, issue_index);
+                                    TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_' + elem.dataset.issueId), jQuery('#swimlane_' + elem.dataset.swimlaneIdentifier + '_column_' + elem.dataset.columnId), elem.dataset.transitionId, original_column, issue_index, startCoordinates);
                                 });
                             });
                         } else {
@@ -2669,7 +2667,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
         TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event) {
             jQuery('.column.drop-valid').each(function (index) {
                 jQuery(this).removeClass('drop-valid');
-                TweenLite.to(this, .3, {backgroundColor: "rgba(245, 245, 245, 0.4)"});
                 jQuery(this).removeClass('drop-hover');
             });
         };
@@ -2687,53 +2684,52 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 });
 
                 if (!has_status) {
-                    jQuery(column).removeClass("pep-droppable");
+                    jQuery(column).removeClass("gs-droppable");
                 } else {
                     column.addClassName('drop-valid');
-                    TweenLite.to(column, .3, {backgroundColor: "rgba(150, 225, 150, 0.3)"});
-                    column.addClassName('pep-droppable');
+                    column.addClassName('gs-droppable');
                 }
             });
         };
 
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
-            jQuery('.whiteboard-issue').pep({
-                droppable: ".pep-droppable",
-                start: function (ev, obj) {
-                    TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, obj.$el[0]);
+            var overlapThreshold = '50%';
+            var droppablesSelector = '.gs-droppable';
+            Draggable.create(jQuery('.whiteboard-issue'), {
+                type: 'x',
+                bounds: jQuery('#whiteboard'),
+                onPress: function() {
+                    this.startX = this.x;
+                    this.startY = this.y;
                 },
-                stop: function (ev, obj) {
-                    if (! this.started && ev.target.tagName.toLowerCase() === 'a' && 'ontouchstart' in window) {
-                        window.open(ev.target.href);
+                onDragStart: function(ev) {
+                    jQuery(this.element).addClass('gs-draggable');
+                    TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, this.target);
+                },
+                onDrag: function(ev) {
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            jQuery(droppables[i]).addClass('drop-hover');
+                        } else {
+                            jQuery(droppables[i]).removeClass('drop-hover');
+                        }
                     }
-                    if (obj.activeDropRegions.length == 1) {
-                        TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, obj.$el, obj.activeDropRegions[0]);
+                },
+                onDragEnd:function(ev) {
+                    jQuery(this.element).removeClass('gs-draggable');
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    var column_found = false;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, jQuery(this.target), jQuery(droppables[i]), {x: this.startX, y: this.startY});
+                            column_found = true;
+                        }
                     }
+                    if (! column_found) TweenMax.to(this.target, .3, {x: this.startX, y: this.startY});
                     TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
-                },
-                droppableActiveClass: function (el, set) {
-                    if (set) {
-                        TweenLite.to(el, .3, {backgroundColor: "rgba(225, 225, 150, 0.3)"});
-                        el.addClass('drop-hover');
-                    } else {
-                        TweenLite.to(el, .3, {backgroundColor: "rgba(150, 225, 150, 0.3)"});
-                        el.removeClass('drop-hover');
-                    }
-                },
-                axis: 'x',
-                shouldEase: false,
-                velocityMultiplier: 1,
-                revert: true,
-                revertIf: function (ev) {
-                    return ! this.activeDropRegions.length;
-                },
-                place: false,
-                overlapFunction: function($a, $b){
-                    var rect1 = $a[0].getBoundingClientRect();
-                    var rect2 = $b[0].getBoundingClientRect();
-                    var rect3 = jQuery('html')[0].getBoundingClientRect();
-
-                    return (rect1.left <= rect2.left && rect1.right >= rect2.right) || (rect1.left > rect2.left && (rect1.left - rect2.left) < rect2.width / 2) || (rect3.right - rect1.right) > (rect3.right - rect2.right) && ((rect3.right - rect1.right) - (rect3.right - rect2.right)) < rect2.width / 2;
                 }
             });
 

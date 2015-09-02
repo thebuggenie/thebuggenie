@@ -3935,8 +3935,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns .tbody .td.column {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    background-color: rgba(245, 245, 245, 0.4);
+    background-color: #FBFBFB;
     min-height: 50px;
+    transition: background-color .3s ease;
+    -o-transition: background-color .3s ease;
+    -ms-transition: background-color .3s ease;
+    -moz-transition: background-color .3s ease;
+    -webkit-transition: background-color .3s ease;
     position: relative;
 }
 .whiteboard-columns.swimlanes tbody[data-swimlane-identifier=swimlane_0] td.column,
@@ -3945,9 +3950,11 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-columns tbody td.column.drop-valid,
 .whiteboard-columns .tbody .td.column.drop-valid {
+    background-color: #E0F6E0;
 }
 .whiteboard-columns tbody td.column.drop-valid.drop-hover,
 .whiteboard-columns .tbody .td.column.drop-valid.drop-hover {
+    background-color: #F6F6E0;
 }
 .whiteboard-columns tbody td.column.drop-hover .whiteboard-issue,
 .whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue {
@@ -4026,11 +4033,11 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     opacity: 0.7;
 }
 .whiteboard-issue.ui-draggable,
-.whiteboard-issue.pep-active {
+.whiteboard-issue.gs-draggable {
     cursor: move;
 }
 .whiteboard-issue.ui-draggable-dragging,
-.whiteboard-issue.pep-start {
+.whiteboard-issue.gs-draggable {
     box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
     z-index: 1;
 }

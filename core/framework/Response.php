@@ -64,7 +64,7 @@
             'prototype',
             'builder',
             'effects',
-            'dragdrop',
+            //'dragdrop',
             'controls',
             'bootstrap-typeahead',
             'mention',
