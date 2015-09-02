@@ -2568,11 +2568,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index, startCoordinates) {
-            if (transition_id == undefined & issue.data('column-id') == column.data('column-id')) {
-                issue.css({left: '0', top: '0'});
-                return;
-            }
-
             if (! original_column) var original_column = issue.parents('.column');
             if (! issue_index) var issue_index = issue.index();
 
