@@ -10661,7 +10661,8 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 }
 
 #issue_main #description_content hr,
-#issue_main #reproduction_steps_content hr
+#issue_main #reproduction_steps_content hr,
+#issue_main .commentcontent hr
 {
     border: none;
     height: 1px;
