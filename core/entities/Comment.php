@@ -591,6 +591,7 @@
                     {
                         $parser->setOption($option, $value);
                     }
+                    if (! array_key_exists('issue', $options) && $this->getTarget() instanceof Issue) $parser->setOption('issue', $this->getTarget());
                     $text = $parser->getParsedText();
                     break;
             }
