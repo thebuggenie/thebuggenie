@@ -76,8 +76,8 @@
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
                     'thebuggenie/tools': bust('thebuggenie/tools.js'),
-                    TweenMax: "./greensock/TweenMax",
-                    GSDraggable: "./greensock/utils/Draggable"
+                    'TweenMax': bust('greensock/TweenMax.js'),
+                    'GSDraggable': bust('greensock/utils/Draggable.js')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
