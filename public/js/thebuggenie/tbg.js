@@ -2725,7 +2725,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                     if (! column_found) TweenMax.to(this.target, .3, {x: this.startX, y: this.startY});
                     TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
-                }
+                },
+                zIndexBoost: false
+            });
+            var highZIndex = 1010;
+            jQuery('#whiteboard').find('.whiteboard-issue').each(function () {
+                jQuery(this).css('z-index', highZIndex--);
             });
 
             if (!TBG.Core.Pollers.planningpoller)
