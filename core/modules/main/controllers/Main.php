@@ -4726,8 +4726,9 @@ class Main extends framework\Action
             if ($request['board_id']) $board = agile\entities\AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
 
             $times = (!isset($board) || $board->getType() != agile\entities\AgileBoard::TYPE_KANBAN);
+            $estimator_mode = isset($request['estimator_mode']) ? $request['estimator_mode'] : null;
 
-            return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board'))));
+            return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board', 'estimator_mode'))));
         }
         catch (\Exception $e)
         {
