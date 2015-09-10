@@ -11,7 +11,7 @@
         {
             $('upload_restriction_mode').enable();
             $('upload_extensions_list').enable();
-            $('upload_storage').enable();
+            if ($('upload_storage')) $('upload_storage').enable();
             $('upload_max_file_size').enable();
             if ($('upload_storage').getValue() == 'files')
             {
@@ -24,7 +24,7 @@
         {
             $('upload_restriction_mode').disable();
             $('upload_extensions_list').disable();
-            $('upload_storage').disable();
+            if ($('upload_storage')) $('upload_storage').disable();
             $('upload_max_file_size').disable();
             $('upload_localpath').disable();
             $('upload_allow_image_caching').disable();
