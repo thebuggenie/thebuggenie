@@ -88,7 +88,7 @@
                         <div class="fancyfilter filter interactive_dropdown" data-filterkey="task_issuetype_id" data-value="<?php echo $board->getTaskIssuetypeID(); ?>" data-no-selection-value="<?php echo __('None selected'); ?>">
                             <input type="hidden" name="task_issuetype_id" value="<?php echo $board->getTaskIssuetypeID(); ?>" id="filter_task_issuetype_id_value_input">
                             <label><?php echo __('Task issuetype'); ?></label>
-                            <span class="value"><?php echo $board->getTaskIssuetype()->getName(); ?></span>
+                            <span class="value"><?php echo ($board->getTaskIssuetypeID()) ? $board->getTaskIssuetype()->getName() : __('None selected'); ?></span>
                             <div class="interactive_menu">
                                 <h1><?php echo __('Select task issuetype'); ?></h1>
                                 <div class="interactive_values_container">

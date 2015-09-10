@@ -4630,10 +4630,16 @@ class Main extends framework\Action
     public function runDashboardView(framework\Request $request)
     {
         $view = entities\DashboardView::getB2DBTable()->selectById($request['view_id']);
+        if (!$view instanceof entities\DashboardView)
+        {
+            return $this->renderJSON(array('content' => 'invalid view'));
+        }
+
         if ($view->getTargetType() == entities\DashboardView::TYPE_PROJECT)
         {
             framework\Context::setCurrentProject($view->getDashboard()->getProject());
         }
+
         return $this->renderJSON(array('content' => $this->returnComponentHTML($view->getTemplate(), array('view' => $view))));
     }
 
