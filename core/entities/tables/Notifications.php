@@ -59,6 +59,16 @@
             return array($unread_count, $read_count);
         }
         
+        public function getByUserID($user_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::USER_ID, $user_id);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addWhere(self::TRIGGERED_BY_UID, $user_id, Criteria::DB_NOT_EQUALS);
+
+            return $this->select($crit);
+        }
+
         public function markUserNotificationsReadByTypesAndId($types, $id, $user_id)
         {
             if (!is_array($types)) $types = array($types);

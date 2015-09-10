@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableEventContainer;
+    use thebuggenie\core\entities\tables\Notifications;
     use thebuggenie\core\entities\tables\UserIssues;
     use thebuggenie\core\framework;
 
@@ -2677,7 +2678,7 @@
             }
             if (!is_array($this->_notifications))
             {
-                $this->_b2dbLazyload('_notifications');
+                $this->_notifications = Notifications::getTable()->getByUserID($this->getID());
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
                 $db_notifcations = array_reverse($this->_notifications);
                 foreach ($db_notifcations as $notification)
