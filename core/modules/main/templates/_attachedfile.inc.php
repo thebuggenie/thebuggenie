@@ -12,7 +12,7 @@
         <?php if ($file->isImage()): ?>
             <a href="<?php echo make_url('showfile', array('id' => $file_id)); ?>" target="_new" class="imagepreview" title="<?php echo ($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename(); ?>"><?php echo image_tag(make_url('showfile', array('id' => $file_id)), array(), true); ?></a>
             <div class="embedlink removelink">
-                <?php echo javascript_link_tag(image_tag('action_embed.png'), array('onclick' => "TBG.Main.Helpers.Dialog.showModal('".__('Embedding this file in descriptions or comments')."', '".__('Use this tag to include this image: [[Image:%filename|thumb|Image description]]', array('%filename' => $file->getOriginalFilename()))."');")); ?>
+                <?php echo javascript_link_tag(image_tag('action_embed.png'), array('onclick' => "TBG.Main.Helpers.Dialog.showModal('".__('Embedding this file in descriptions or comments')."', '".__('Use this tag to include this image: [[Image:%filename|thumb|Image description]]', array('%filename' => $file->getRealFilename()))."');")); ?>
             </div>
         <?php else: ?>
             <a href="<?php echo make_url('downloadfile', array('id' => $file_id)); ?>" class="downloadlink">
