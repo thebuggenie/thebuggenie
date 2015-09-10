@@ -120,18 +120,18 @@
                     switch ($this->_notification_type)
                     {
                         case self::TYPE_ARTICLE_COMMENTED:
-                        case self::TYPE_ARTICLE_MENTIONED:
                         case self::TYPE_ISSUE_COMMENTED:
-                        case self::TYPE_ISSUE_MENTIONED:
                         case self::TYPE_COMMENT_MENTIONED:
                             $this->_target = tables\Comments::getTable()->selectById((int) $this->_target_id);
                             break;
                         case self::TYPE_ISSUE_UPDATED:
                         case self::TYPE_ISSUE_CREATED:
+                        case self::TYPE_ISSUE_MENTIONED:
                             $this->_target = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $this->_target_id);
                             break;
                         case self::TYPE_ARTICLE_UPDATED:
-                            $this->_target = tables\Articles::getTable()->selectById((int) $this->_target_id);
+                        case self::TYPE_ARTICLE_MENTIONED:
+                            $this->_target = Articles::getTable()->selectById((int) $this->_target_id);
                             break;
                     }
                 }

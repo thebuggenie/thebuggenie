@@ -1,4 +1,4 @@
-    <?php if ($num_unread + $num_read == 0): ?>
+    <?php if ($num_unread + $num_read == 0 && ! $filter_first_notification): ?>
         <li class="faded_out"><?php echo __('You have no notifications'); ?></li>
     <?php else: ?>
         <?php foreach ($notifications as $notification): ?>
@@ -11,7 +11,7 @@
             }
 
         ?>
-        <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container">
+        <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container" data-notification-id="<?php echo $notification->getID(); ?>">
             <a href="javascript:void(0);" onclick="TBG.Main.Notifications.toggleRead(<?php echo $notification->getID(); ?>);" class="notification_status_toggler">
                 <?php echo image_tag('icon_notification_read.png', array('class' => 'icon_read')); ?>
                 <?php echo image_tag('icon_notification_unread.png', array('class' => 'icon_unread')); ?>
@@ -33,7 +33,7 @@
                         ?>
                         <h1>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
-                            <?php echo __('%issue_no was updated by %user_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getFormattedIssueNo(true, true)))); ?>
+                            <?php echo __('%issue_no was updated by %user_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getFormattedIssueNo(true, true)) .' - '. $notification->getTarget()->getTitle())); ?>
                         </h1>
                         <?php
                         break;
@@ -41,7 +41,7 @@
                         ?>
                         <h1>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
-                            <?php echo __('%user_name posted a %comment on %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getTarget()->getFormattedIssueNo(true, true)))); ?>
+                            <?php echo __('%user_name posted a %comment on %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getTarget()->getFormattedIssueNo(true, true)) .' - '. $notification->getTarget()->getTarget()->getTitle())); ?>
                         </h1>
                         <?php
                         break;
@@ -49,7 +49,7 @@
                         if ($notification->getTarget()->getTargetType() == \thebuggenie\core\entities\Comment::TYPE_ISSUE): ?>
                             <h1>
                                 <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
-                                <?php echo __('%user_name mentioned you in a %comment on %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getTarget()->getFormattedIssueNo(true, true)))); ?>
+                                <?php echo __('%user_name mentioned you in a %comment on %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getTarget()->getFormattedIssueNo(true, true)) .' - '. $notification->getTarget()->getTarget()->getTitle())); ?>
                             </h1>
                         <?php else: ?>
                             <h1>
@@ -72,6 +72,22 @@
                         <h1>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
                             <?php echo __('%user_name updated %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())), $notification->getTarget()->getTarget()->getName()))); ?>
+                        </h1>
+                        <?php
+                        break;
+                    case \thebuggenie\core\entities\Notification::TYPE_ISSUE_MENTIONED:
+                        ?>
+                        <h1>
+                            <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+                            <?php echo __('%user_name mentioned you in an issue %issue_no', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%issue_no' => link_tag(make_url('viewissue', array('project_key' => $notification->getTarget()->getProject()->getKey(), 'issue_no' => $notification->getTarget()->getFormattedIssueNo())), $notification->getTarget()->getFormattedIssueNo(true, true)) .' - '. $notification->getTarget()->getTitle())); ?>
+                        </h1>
+                        <?php
+                        break;
+                    case \thebuggenie\core\entities\Notification::TYPE_ARTICLE_MENTIONED:
+                        ?>
+                        <h1>
+                            <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+                            <?php echo __('%user_name mentioned you in an article %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
                         </h1>
                         <?php
                         break;

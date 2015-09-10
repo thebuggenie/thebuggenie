@@ -21,7 +21,11 @@
         <?php if ($build->isReleased()): ?>
             <?php $release_date_text = $build->hasReleaseDate() ? __('Released %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))) : __('Released'); ?>
         <?php else: ?>
-            <?php $release_date_text = __('Not released yet'); ?>
+            <?php if ($build->hasReleaseDate()): ?>
+                <?php $release_date_text = __('Not released yet, scheduled for %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))); ?>
+            <?php else: ?>
+                <?php $release_date_text = __('Not released yet'); ?>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if (! $build->isReleased()): ?>
             <div id="build_<?php echo $build->getID(); ?>_not_released"><?php echo $release_date_text; ?></div>

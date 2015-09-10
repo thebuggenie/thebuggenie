@@ -3267,7 +3267,7 @@ class Main extends framework\Action
         $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
         if ($comment instanceof entities\Comment)
         {
-            if (!$comment->canUserEditComment())
+            if (!$comment->canUserEdit(framework\Context::getUser()))
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
@@ -3556,7 +3556,8 @@ class Main extends framework\Action
                     break;
                 case 'notifications':
                     $template_name = 'main/notifications';
-                    $options['offset'] = $request['offset'];
+                    $options['first_notification_id'] = $request['first_notification_id'];
+                    $options['last_notification_id'] = $request['last_notification_id'];
                     break;
                 case 'workflow_transition':
                     $transition = entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
@@ -4725,8 +4726,9 @@ class Main extends framework\Action
             if ($request['board_id']) $board = agile\entities\AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
 
             $times = (!isset($board) || $board->getType() != agile\entities\AgileBoard::TYPE_KANBAN);
+            $estimator_mode = isset($request['estimator_mode']) ? $request['estimator_mode'] : null;
 
-            return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board'))));
+            return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board', 'estimator_mode'))));
         }
         catch (\Exception $e)
         {

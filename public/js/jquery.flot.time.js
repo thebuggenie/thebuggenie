@@ -8,7 +8,7 @@ API.txt for details.
 
 */
 
-(function($) {
+define(['jquery'], function ($) {
 
 	var options = {
 		xaxis: {
@@ -429,4 +429,4 @@ API.txt for details.
 	$.plot.formatDate = formatDate;
 	$.plot.dateGenerator = dateGenerator;
 
-})(jQuery);
+});

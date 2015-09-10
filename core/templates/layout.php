@@ -60,6 +60,7 @@
             <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php endforeach; ?>
 
+        <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimer.silent.min.js"></script>
         <script type="text/javascript" src="<?php echo make_url('home'); ?>js/HackTimerWorker.min.js"></script>
         <script>
@@ -74,7 +75,9 @@
                     'jquery-ui': 'jquery-ui.min',
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
-                    'thebuggenie/tools': bust('thebuggenie/tools.js')
+                    'thebuggenie/tools': bust('thebuggenie/tools.js'),
+                    'TweenMax': bust('greensock/TweenMax.js'),
+                    'GSDraggable': bust('greensock/utils/Draggable.js')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
@@ -104,13 +107,13 @@
                         deps: ['jquery']
                     },
                     'jquery.flot.selection': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'jquery.flot.time': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'jquery.flot.dashes': {
-                        deps: ['jquery.flot']
+                        deps: ['jquery', 'jquery.flot']
                     },
                     'scriptaculous': {
                         deps: ['prototype', 'controls'],
@@ -128,9 +131,37 @@
                     'jquery.ba-resize': {
                         deps: ['jquery']
                     },
+                    'jquery.ui.touch-punch': {
+                        deps: ['jquery-ui']
+                    },
+                    'jquery.animate-enhanced.min': {
+                        deps: ['jquery']
+                    },
+                     'jquery-ui': {
+                         deps: ['jquery.animate-enhanced.min']
+                     },
                     deps: [<?php echo join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };
+        </script>
+        <script type="text/javascript">
+        //   function startWorker() {
+        //     if(typeof(Worker) !== "undefined") {
+        //       if(typeof(w) == "undefined") {
+        //         wrker = new Worker("<?php echo make_url('home'); ?>js/workers.js");
+        //         wrker.onmessage = function(e) {
+        //           log("Received: " + e.data);
+        //         }
+        //         wrker.postMessage();
+        //       }
+        //       w.onmessage = function(event) {
+        //         document.getElementById("result").innerHTML = event.data;
+        //       };
+        //     } else {
+        //       document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+        //     }
+        //   }
+        //   startWorker();
         </script>
         <script data-main="thebuggenie" src="<?php echo make_url('home'); ?>js/require.js"></script>
         <?php foreach ($externaljs as $js): ?>

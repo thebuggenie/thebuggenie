@@ -353,7 +353,7 @@
 
             $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
 
-            $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON());
+            $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON(), 'deleted' => $issue->isDeleted() ? 1 : 0);
 
             if ($request['mode'] == 'whiteboard')
             {

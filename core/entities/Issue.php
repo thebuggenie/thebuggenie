@@ -140,6 +140,8 @@
          */
         protected $_description_syntax;
 
+        protected $_description_parser = null;
+
         /**
          * This issues reproduction steps
          *
@@ -155,6 +157,8 @@
          * @Column(type="integer", length=2, default=1)
          */
         protected $_reproduction_steps_syntax;
+
+        protected $_reproduction_steps_parser = null;
 
         /**
          * When the issue was posted
@@ -2183,11 +2187,11 @@
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 else
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 $comment->save();
                 if ($this->_files !== null)
@@ -2499,7 +2503,7 @@
 
         public function getParsedDescription($options)
         {
-            return $this->_getParsedText($this->getDescription(), $this->getDescriptionSyntax(), $options);
+            return $this->_getParsedText($this->getDescription(), $this->getDescriptionSyntax(), $options, '_description_parser');
         }
 
         /**
@@ -2512,7 +2516,7 @@
             return $this->_description_syntax;
         }
 
-        protected function _getParsedText($text, $syntax, $options = array())
+        protected function _getParsedText($text, $syntax, $options = array(), $parser_ref = null)
         {
             switch ($syntax)
             {
@@ -2520,12 +2524,12 @@
                 case \thebuggenie\core\framework\Settings::SYNTAX_PT:
                     $options = array('plain' => true);
                 case \thebuggenie\core\framework\Settings::SYNTAX_MW:
-                    $wiki_parser = new \thebuggenie\core\helpers\TextParser($text);
+                    $parser = new \thebuggenie\core\helpers\TextParser($text);
                     foreach ($options as $option => $value)
                     {
-                        $wiki_parser->setOption($option, $value);
+                        $parser->setOption($option, $value);
                     }
-                    $text = $wiki_parser->getParsedText();
+                    $text = $parser->getParsedText();
                     break;
                 case \thebuggenie\core\framework\Settings::SYNTAX_MD:
                     $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
@@ -2533,6 +2537,10 @@
                     break;
             }
 
+            if (isset($parser) && ! is_null($parser_ref))
+            {
+                $this->$parser_ref = $parser;
+            }
             return $text;
         }
 
@@ -2590,7 +2598,7 @@
 
         public function getParsedReproductionSteps($options)
         {
-            return $this->_getParsedText($this->getReproductionSteps(), $this->getReproductionStepsSyntax(), $options);
+            return $this->_getParsedText($this->getReproductionSteps(), $this->getReproductionStepsSyntax(), $options, '_reproduction_steps_parser');
         }
 
         /**
@@ -3777,6 +3785,11 @@
         public function touch($last_updated = null)
         {
             tables\Issues::getTable()->touchIssue($this->getID(), $last_updated);
+
+            foreach ($this->getParentIssues() as $parent_issue)
+            {
+                tables\Issues::getTable()->touchIssue($parent_issue->getID(), $last_updated);
+            }
         }
 
         /**
@@ -4157,6 +4170,8 @@
         public function deleteIssue()
         {
             $this->_deleted = true;
+            $this->touch();
+            tables\IssueRelations::getTable()->removeIssueRelations($this->getID());
         }
 
         /**
@@ -4300,7 +4315,7 @@
         {
             foreach ($this->getFiles() as $file_id => $file)
             {
-                if (mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
+                if (mb_strtolower($filename) == mb_strtolower($file->getRealFilename()) || mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
                 {
                     return $file;
                 }
@@ -5371,6 +5386,24 @@
             }
             else
             {
+                $_description_parser = $this->_getDescriptionParser();
+                $_reproduction_steps_parser = $this->_getReproductionStepsParser();
+                if (! is_null($_description_parser) && $_description_parser->hasMentions())
+                {
+                    foreach ($_description_parser->getMentions() as $user)
+                    {
+                        if ($user->getID() == framework\Context::getUser()->getID()) continue;
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                    }
+                }
+                if (! is_null($_reproduction_steps_parser) && $_reproduction_steps_parser->hasMentions())
+                {
+                    foreach ($_reproduction_steps_parser->getMentions() as $user)
+                    {
+                        if ($user->getID() == framework\Context::getUser()->getID()) continue;
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                    }
+                }
                 $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
                 $this->_addCreateNotifications($this->getPostedBy());
                 \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
@@ -5907,9 +5940,57 @@
             return $users;
         }
 
+        public function getMentionedUsers()
+        {
+            $users = array();
+            $_description_parser = $this->_getDescriptionParser();
+            $_reproduction_steps_parser = $this->_getReproductionStepsParser();
+            if (! is_null($_description_parser) && $_description_parser->hasMentions())
+            {
+                foreach ($_description_parser->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+            if (! is_null($_reproduction_steps_parser) && $_reproduction_steps_parser->hasMentions())
+            {
+                foreach ($_reproduction_steps_parser->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+            foreach ($this->getComments() as $comment)
+            {
+                foreach ($comment->getMentions() as $user)
+                {
+                    $users[$user->getID()] = $user;
+                }
+            }
+
+            return $users;
+        }
+
         public function getMilestoneOrder()
         {
             return $this->_milestone_order;
+        }
+
+        protected function _getDescriptionParser()
+        {
+            if (is_null($this->_description_parser))
+            {
+                $this->getParsedDescription(array());
+            }
+            return $this->_description_parser;
+        }
+
+        protected function _getReproductionStepsParser()
+        {
+            if (is_null($this->_reproduction_steps_parser))
+            {
+                $this->getParsedReproductionSteps(array());
+            }
+            return $this->_reproduction_steps_parser;
         }
 
     }

@@ -5,7 +5,7 @@
     <?php if (isset($swimlane)): ?>
         <div class="issue_more_actions_link_container">
             <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo image_tag('action_dropdown_small.png'); ?></a>
-            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
+            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true, 'estimator_mode' => 'left')); ?>
         </div>
     <?php endif; ?>
     <div class="extra">
@@ -49,7 +49,10 @@
         <?php endif; ?>
     </div>
     <div class="issue_estimates">
-        <div class="issue_estimate points" title="<?php echo __('Estimated points'); ?>" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedPoints(); ?></div>
-        <div class="issue_estimate hours" title="<?php echo __('Estimated hours'); ?>" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><?php echo $issue->getEstimatedHours(); ?></div>
+        <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
+        <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
+    </div>
+    <div class="issue_percentage" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
+        <div class="filler" id="issue_<?php echo $issue->getID(); ?>_percentage_filler" style="width: <?php echo $issue->getPercentCompleted(); ?>%;" title="<?php echo __('%percentage completed', array('%percentage' => $issue->getPercentCompleted().'%')); ?>"></div>
     </div>
 </div>

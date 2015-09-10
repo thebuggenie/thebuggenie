@@ -7,7 +7,11 @@
         </div>
         <dl class="info">
             <dt><?php echo __('Release date'); ?></dt>
-            <dd><?php echo ($release->isReleased()) ? tbg_formatTime($release->getReleaseDate(), 20) : __('Not released yet'); ?></dd>
+            <dd><?php echo $release->isReleased() ? ($build->hasReleaseDate() ? tbg_formatTime($release->getReleaseDate(), 20) : __('Released, without date')) : __('Not released yet'); ?></dd>
+            <?php if (! $release->isReleased()): ?>
+                <dt><?php echo __('Scheduled for'); ?></dt>
+                <dd><?php echo $release->hasReleaseDate() ? tbg_formatTime($release->getReleaseDate(), 20) : __('Not scheduled'); ?></dd>
+            <?php endif; ?>
             <dt><?php echo __('Version'); ?></dt>
             <dd><?php echo $release->getVersion(); ?></dd>
         </dl>

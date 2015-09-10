@@ -73,11 +73,13 @@
 
             foreach ($this->transitions as $status_id => $transitions)
             {
+                if (! in_array($status_id, $this->statuses)) continue;
+
                 foreach ($transitions as $transition)
                 {
                     if (in_array($transition->getID(), $transition_ids))
                     {
-                        $same_transition_statuses[] = $status_id;
+                         $same_transition_statuses[] = $status_id;
                     }
                     else
                     {

@@ -315,6 +315,20 @@
                     }
                 }
             }
+            else
+            {
+                switch ($this->getTargetType())
+                {
+                    case self::TYPE_ISSUE:
+                        \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::_postSave', $this, array('issue' => $this->getTarget()))->trigger();
+                        break;
+                    case self::TYPE_ARTICLE:
+                        \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::_postSave', $this, array('article' => $this->getTarget()))->trigger();
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
 
         protected function _canPermissionOrSeeAndEditAllComments($permission)
@@ -577,6 +591,7 @@
                     {
                         $parser->setOption($option, $value);
                     }
+                    if (! array_key_exists('issue', $options) && $this->getTarget() instanceof Issue) $parser->setOption('issue', $this->getTarget());
                     $text = $parser->getParsedText();
                     break;
             }

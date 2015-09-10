@@ -51,7 +51,7 @@
             </tbody>
         </table>
         <script type="text/javascript">
-            require(['domReady', 'jquery', 'jquery.flot', 'jquery.flot.time', 'jquery.flot.dashes'], function (domReady, jQuery) {
+            require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.flot', 'jquery.flot.time', 'jquery.flot.dashes'], function (domReady, TBG, jQuery) {
                 domReady(function () {
                     jQuery(function () {
 

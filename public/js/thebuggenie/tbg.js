@@ -1,5 +1,5 @@
-define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-ui', 'jquery.markitup', 'spectrum'],
-    function (prototype, effects, controls, scriptaculous, jQuery, spectrum) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'jquery-ui', 'jquery.markitup', 'spectrum'],
+    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable) {
 
         var TBG = {
             Core: {
@@ -465,12 +465,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                         unc.removeClassName('unread');
                                     }
                                 }
+                                TBG.Main.Notifications.loadMore(undefined, true);
                             }
                             TBG.Core.Pollers.Locks.datapoller = false;
                             if (TBG.Core.Pollers.datapoller != null)
                                 TBG.Core.Pollers.datapoller.stop();
                             var interval = parseInt(json.poll_interval);
                             TBG.Core.Pollers.datapoller = interval > 0 ? new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, interval) : null;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
+                            TBG.Core.Pollers.Locks.datapoller = false;
                         }
                     }
                 });
@@ -764,6 +770,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                         }
                     }
                 },
+                onException: function (response) {
+                    var json = (response.responseJSON) ? response.responseJSON : undefined;
+                    if (response.responseJSON && (json.error || json.message)) {
+                        TBG.Main.Helpers.Message.error(json.error, json.message);
+                    } else if (response.responseText) {
+                        TBG.Main.Helpers.Message.error(response.responseText);
+                    }
+                    if (options.exception) {
+                        TBG.Core._processCommonAjaxPostEvents(options.exception);
+                        if (options.exception.callback) {
+                            options.exception.callback(json);
+                        }
+                    }
+                },
                 onComplete: function (response) {
                     if (TBG.debug) {
                         $('tbg___DEBUGINFO___indicator').hide();
@@ -1015,6 +1035,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function () {
                         $('dynamic_uploader_submit').addClassName('disabled');
                         $('dynamic_uploader_submit').disable();
+                        $('report_issue_submit_button').addClassName('disabled');
+                        $('report_issue_submit_button').disable();
                     }
                 },
                 success: {
@@ -1037,6 +1059,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     callback: function () {
                         $('dynamic_uploader_submit').addClassName('disabled');
                         $('dynamic_uploader_submit').enable();
+                        $('report_issue_submit_button').addClassName('disabled');
+                        $('report_issue_submit_button').enable();
                     }
                 }
             });
@@ -1084,6 +1108,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                     TBG.Main.Helpers.Message.error(json.error);
                 }
                 if (is_last && $('dynamic_uploader_submit') && $('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').enable();
+                if (is_last && $('report_issue_submit_button') && $('report_issue_submit_button').disabled) $('report_issue_submit_button').enable();
             };
 
             xhr.upload.onprogress = function (e) {
@@ -1099,6 +1124,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             };
 
             if ($('dynamic_uploader_submit') && !$('dynamic_uploader_submit').disabled) $('dynamic_uploader_submit').disable();
+            if ($('report_issue_submit_button') && !$('report_issue_submit_button').disabled) $('report_issue_submit_button').disable();
             xhr.send(formData);
         };
 
@@ -2537,30 +2563,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             wb.addClassName('viewmode-'+mode);
         };
 
-        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, ui) {
-            var issue = jQuery(ui.draggable);
-            var column = jQuery(event.target);
-
-            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column)
+        TBG.Project.Planning.Whiteboard.updateIssueColumn = function(event, issue, column, startCoordinates) {
+            TBG.Project.Planning.Whiteboard.moveIssueColumn(issue, column, undefined, undefined, undefined, startCoordinates);
         };
 
-        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index) {
-            if (transition_id == undefined & issue.data('column-id') == column.data('column-id')) {
-                issue.css({left: '0', top: '0'});
-                return;
-            }
-
+        TBG.Project.Planning.Whiteboard.moveIssueColumn = function(issue, column, transition_id, original_column, issue_index, startCoordinates) {
             if (! original_column) var original_column = issue.parents('.column');
             if (! issue_index) var issue_index = issue.index();
 
             if (issue) {
-                issue.detach().css({left: '0', top: '0'}).prependTo(column);
+                issue.detach().css({left: '0', top: '0', transform: 'inherit'}).prependTo(column);
             }
 
             var wb = jQuery('#whiteboard');
             var parameters = '&issue_id=' + parseInt(issue.data('issue-id')) + '&column_id=' + parseInt(column.data('column-id')) + '&milestone_id=' + parseInt(jQuery('#selected_milestone_input').data('selected-value')) + '&swimlane_identifier=' + issue.parents('.tbody').data('swimlane-identifier');
             var revertIssuePosition = function () {
-                issue.css({left: '0', top: '0'});
+                TweenMax.to(issue, .3, startCoordinates);
 
                 if (issue_index <= 0) {
                     issue.prependTo(original_column);
@@ -2572,7 +2590,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             var customEscapeWatcher = function (event) {
                 if (event.keyCode != undefined && event.keyCode != 0 && Event.KEY_ESC != event.keyCode) return;
                 TBG.Main.Helpers.Backdrop.reset(revertIssuePosition);
-                $('workflow_transition_fullpage').hide();
+                if ($('workflow_transition_fullpage')) $('workflow_transition_fullpage').hide();
                 setTimeout(function() {
                     document.stopObserving('keydown', customEscapeWatcher);
                     document.observe('keydown', TBG.Core._escapeWatcher);
@@ -2603,7 +2621,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('transition_working_' + json.transition_id + '_submit').observe('click', function (event) {
                                 Event.stop(event);
                                 TBG.Issues.submitWorkflowTransition($('workflow_transition_' + json.transition_id + '_form'), function () {
-                                    issue.draggable('destroy');
                                     TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                                 });
                             });
@@ -2617,7 +2634,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('transition-selector-close-link').observe('click', customEscapeWatcher);
                             $$('.transition-selector-button').each(function (elem) {
                                 elem.observe('click', function (event) {
-                                    TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_' + elem.dataset.issueId), jQuery('#swimlane_' + elem.dataset.swimlaneIdentifier + '_column_' + elem.dataset.columnId), elem.dataset.transitionId, original_column, issue_index);
+                                    TBG.Project.Planning.Whiteboard.moveIssueColumn(jQuery('#whiteboard_issue_' + elem.dataset.issueId), jQuery('#swimlane_' + elem.dataset.swimlaneIdentifier + '_column_' + elem.dataset.columnId), elem.dataset.transitionId, original_column, issue_index, startCoordinates);
                                 });
                             });
                         } else {
@@ -2625,9 +2642,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             $('fullpage_backdrop').fade({duration: 0.2});
                             if (!issue) {
                                 jQuery(json.issue).prependTo(column);
-                            }
-                            else {
-                                issue.draggable('destroy');
                             }
                             TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller();
                         }
@@ -2645,17 +2659,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
 
         };
 
-        TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event, ui) {
-            jQuery('.column.ui-droppable-disabled').each(function (index) {
-                jQuery(this).droppable("enable");
-            });
+        TBG.Project.Planning.Whiteboard.resetAvailableDropColumns = function(event) {
             jQuery('.column.drop-valid').each(function (index) {
                 jQuery(this).removeClass('drop-valid');
+                jQuery(this).removeClass('drop-hover');
             });
         };
 
-        TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, ui) {
-            var issue = $(event.target);
+        TBG.Project.Planning.Whiteboard.detectAvailableDropColumns = function(event, issue) {
+            var issue = $(issue);
             var issue_statuses = issue.dataset.validStatusIds.split(',');
             issue.up('.tr').childElements().each(function (column) {
                 var column_statuses = column.dataset.statusIds.split(',');
@@ -2667,31 +2679,58 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 });
 
                 if (!has_status) {
-                    jQuery(column).droppable("disable");
+                    jQuery(column).removeClass("gs-droppable");
                 } else {
                     column.addClassName('drop-valid');
+                    column.addClassName('gs-droppable');
                 }
             });
         };
 
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
-            $('whiteboard').select('.tbody .td.column').each(function (column) {
-                var swimlane_identifier = column.up('.tbody').dataset.swimlaneIdentifier;
-                jQuery(column).not('ui-droppable').droppable({
-                    drop: TBG.Project.Planning.Whiteboard.updateIssueColumn,
-                    scope: swimlane_identifier,
-                    accept: '.whiteboard-issue',
-                    tolerance: 'intersect',
-                    hoverClass: 'drop-hover'
-                });
-                jQuery(column).find('.whiteboard-issue').not('ui-draggable').draggable({
-                    scope: swimlane_identifier,
-                    start: TBG.Project.Planning.Whiteboard.detectAvailableDropColumns,
-                    stop: TBG.Project.Planning.Whiteboard.resetAvailableDropColumns,
-                    axis: 'x',
-                    revert: 'invalid',
-                    containment: '#whiteboard'
-                });
+            var overlapThreshold = '50%';
+            var droppablesSelector = '.gs-droppable';
+            GSDraggable.create(jQuery('.whiteboard-issue'), {
+                type: 'x',
+                bounds: jQuery('#whiteboard'),
+                onPress: function() {
+                    this.startX = this.x;
+                    this.startY = this.y;
+                },
+                onDragStart: function(ev) {
+                    jQuery(this.target).addClass('gs-draggable');
+                    TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, this.target);
+                },
+                onDrag: function(ev) {
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            jQuery(droppables[i]).addClass('drop-hover');
+                        } else {
+                            jQuery(droppables[i]).removeClass('drop-hover');
+                        }
+                    }
+                },
+                onDragEnd:function(ev) {
+                    jQuery(this.target).removeClass('gs-draggable');
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    var column_found = false;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, jQuery(this.target), jQuery(droppables[i]), {x: this.startX, y: this.startY});
+                            column_found = true;
+                        }
+                    }
+                    if (! column_found) TweenMax.to(this.target, .3, {x: this.startX, y: this.startY});
+                    TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
+                },
+                zIndexBoost: false
+            });
+            var highZIndex = 1010;
+            jQuery('#whiteboard').find('.whiteboard-issue').each(function () {
+                jQuery(this).css('z-index', highZIndex--);
             });
 
             if (!TBG.Core.Pollers.planningpoller)
@@ -2726,7 +2765,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             TBG.Project.Planning.Whiteboard.retrieveWhiteboard();
                             return;
                         }
-                        if (!$(existing_element)) {
+                        if (json.deleted == '1') {
+                            if ($(existing_element)) $(existing_element).remove();
+                        }
+                        else if (!$(existing_element)) {
                             if (json.issue_details.milestone && json.issue_details.milestone.id == milestone_id && json.component != '') {
                                 if ($('whiteboard').hasClassName('initialized')) {
                                     if ($('swimlane_'+json.swimlane_identifier+'_column_'+json.column_id)) {
@@ -2812,6 +2854,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                             }
 
                             pc.dataset.lastRefreshed = get_current_timestamp();
+                            TBG.Core.Pollers.Locks.planningpoller = false;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
                     }
@@ -3012,7 +3059,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                 loading: {indicator: (!$(existing_element)) ? 'retrieve_indicator' : 'issue_' + issue_id + '_indicator'},
                 success: {
                     callback: function (json) {
-                        if (json.epic) {
+                        if (json.deleted == '1') {
+                            if ($(existing_element)) $(existing_element).up('.milestone_issue').remove();
+                        }
+                        else if (json.epic) {
                             if (!$(existing_element)) {
                                 $('add_epic_container').insert({before: json.component});
                                 setTimeout(TBG.Project.Planning.initializeEpicDroptargets, 250);
@@ -3085,6 +3135,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     }
                                 }
                             }
+                            TBG.Core.Pollers.Locks.planningpoller = false;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
                     }
@@ -7288,22 +7343,40 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
             });
         };
         
-        TBG.Main.Notifications.loadMore = function () {
-            if (TBG.Main.Notifications.loadingLocked !== true) {
-                TBG.Main.Notifications.loadingLocked = true;
+        TBG.Main.Notifications.loadMore = function (event, loadToTop) {
+            var loadToTop = loadToTop || false;
+            if (TBG.Main.Notifications.loadingLocked !== true || loadToTop) {
+                if (! loadToTop) TBG.Main.Notifications.loadingLocked = true;
                 var unl = $('user_notifications_list'),
                     unl_data = unl.dataset;
-                TBG.Main.Helpers.ajax(unl_data.notificationsUrl+'&offset='+unl_data.offset, {
+                if (! unl) return;
+                if (loadToTop) {
+                    var url_url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
+                }
+                else {
+                    var url_url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:last-child")[0].dataset.notificationId;
+                }
+                TBG.Main.Helpers.ajax(url_url, {
                     url_method: 'get',
                     loading: {
                         indicator: 'user_notifications_loading_indicator'
                     },
                     success: {
-                        update: { element: 'user_notifications_list', insertion: true },
-                        callback: function () {
+                        update: { element: '', insertion: true },
+                        callback: function (json) {
+                            if (loadToTop) {
+                                $('user_notifications_list').insert({top: json.content});
+                            }
+                            else {
+                                $('user_notifications_list').insert({bottom: json.content});
+                            }
                             jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
-                            unl_data.offset = parseInt(unl_data.offset) + 25;
-                            TBG.Main.Notifications.loadingLocked = false;
+                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
+                        }
+                    },
+                    exception: {
+                        callback: function () {
+                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
                         }
                     }
                 });
@@ -7578,6 +7651,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'jquery-u
                                     jQuery('#'+type+'_'+pluginkey+'_perform_update').children('input[type=submit]').prop('disabled', false);
                                     TBG.Core.cancelManualUpdatePoller();
                                 }
+                                TBG.Core.Pollers.Locks.pluginupdatepoller = false;
+                            }
+                        },
+                        exception: {
+                            callback: function () {
                                 TBG.Core.Pollers.Locks.pluginupdatepoller = false;
                             }
                         }

@@ -1663,7 +1663,6 @@ a.friend { color: #277CBA; }
 #issue_main_container { float: left; overflow: hidden; width: 100%; }
 #issue_main {
     margin: 0 10px 0 380px;
-    overflow: auto;
     -webkit-transition: margin 0.3s ease;
     -moz-transition: margin 0.3s ease;
     -ms-transition: margin 0.3s ease;
@@ -1836,7 +1835,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 }
 .milestone_virtual_status .statusblock:hover { opacity: 0.35; }
 .milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 6px; top: 7px; font-size: 0.9em; line-height: 1em; padding: 0; }
-.milestone_virtual_status .milestone_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
+.milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
 #project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
@@ -2563,7 +2562,11 @@ table.issue_affects td img { vertical-align: bottom; }
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.4) inset;
     border-radius: 10px;
 }
-.planning_indicator .milestone_percentage .filler {
+.issue_percentage {
+   box-shadow: 0 0 3px rgba(100, 100, 100, 0.4) inset;
+   border-radius: 10px;
+ }
+.planning_indicator .milestone_percentage .filler, .issue_percentage .filler {
     height: 20px;
     border-radius: 10px;
 }
@@ -3011,8 +3014,9 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .milestone_box dl.info dt.milestone_issues_count img { vertical-align: middle; }
 .milestone_box dl.info dt.milestone_issues_count + dd { margin-left: -5px; min-width: 25px; }
 .milestone_box dl.info dd { margin: 0 20px 0 0; min-width: 90px; }
-.milestone_percentage { display: block; height: 3px; background-color: #E7E7E7; padding: 0; width: 100%; margin: 5px 0; position: relative; }
-.milestone_percentage .filler {
+.milestone_percentage, .issue_percentage { display: block; height: 3px; background-color: #E7E7E7; padding: 0; width: 100%; margin: 5px 0; position: relative; }
+.issue_percentage { margin: 0 0 2px 0; bottom: -2px; }
+.milestone_percentage .filler, .issue_percentage .filler {
     display: block;
     height: 3px;
     position: absolute;
@@ -3276,10 +3280,16 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     top: 4px;
     right: 4px;
     text-align: right;
+    padding-left: 17px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
 }
 .whiteboard-issue .issue_estimate {
     display: inline-block;
-    padding: 1px 5px;
+    padding: 1px 5px 2px 5px;
     border-radius: 2px;
     background: rgba(50, 50, 50, 0.8);
     color: #FFF;
@@ -3366,7 +3376,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .whiteboard-issue .issue_more_actions_link_container {
     left: 16px;
     right: initial;
-    bottom: 2px;
+    bottom: 8px;
     top: initial;
 }
 .milestone_issue .more_actions_dropdown {
@@ -3657,7 +3667,6 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     width: 100%;
     height: 100%;
     table-layout: fixed;
-    border-collapse: collapse;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -3796,6 +3805,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -ms-transition: border-color 0.3s ease;
     -moz-transition: border-color 0.3s ease;
     -webkit-transition: border-color 0.3s ease;
+    position: relative;
+}
+.whiteboard-columns thead h1 .column-header-name,
+.whiteboard-columns .thead h1 .column-header-name {
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
 }
 .type-kanban .whiteboard-columns thead td.over-workitems h1,
 .type-kanban .whiteboard-columns .thead .td.over-workitems h1 {
@@ -3821,7 +3837,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     color: #888;
     text-transform: none;
     font-size: 1em;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 .whiteboard-columns thead h1 .column_count.under, .whiteboard-columns thead h1 .column_count.over, .whiteboard-columns thead td.under-workitems h1 .column_count.primary, .whiteboard-columns thead td.over-workitems h1 .column_count.primary, .whiteboard-columns thead td.under-workitems h1 .column_count.workitems, .whiteboard-columns thead td.over-workitems h1 .column_count.workitems,
 .whiteboard-columns .thead h1 .column_count.under, .whiteboard-columns .thead h1 .column_count.over, .whiteboard-columns .thead .td.under-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.over-workitems h1 .column_count.primary, .whiteboard-columns .thead .td.under-workitems h1 .column_count.workitems, .whiteboard-columns .thead .td.over-workitems h1 .column_count.workitems {
@@ -3830,6 +3846,17 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns thead td.under-workitems h1 .column_count.under, .whiteboard-columns thead td.over-workitems h1 .column_count.over,
 .whiteboard-columns .thead .td.under-workitems h1 .column_count.under, .whiteboard-columns .thead .td.over-workitems h1 .column_count.over {
     display: inline-block;
+}
+.whiteboard-columns thead h1 .statuses_badge,
+.whiteboard-columns .thead h1 .statuses_badge {
+    position: absolute;
+    right: 0px;
+    padding-left: 20px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
 }
 .whiteboard-columns thead h1 .status_badge,
 .whiteboard-columns .thead h1 .status_badge {
@@ -3907,13 +3934,13 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns .tbody .td.column {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    background-color: rgba(245, 245, 245, 0.4);
+    background-color: #FBFBFB;
     min-height: 50px;
-    transition: background-color 0.3s ease;
-    -o-transition: background-color 0.3s ease;
-    -ms-transition: background-color 0.3s ease;
-    -moz-transition: background-color 0.3s ease;
-    -webkit-transition: background-color 0.3s ease;
+    transition: background-color .3s ease;
+    -o-transition: background-color .3s ease;
+    -ms-transition: background-color .3s ease;
+    -moz-transition: background-color .3s ease;
+    -webkit-transition: background-color .3s ease;
     position: relative;
 }
 .whiteboard-columns.swimlanes tbody[data-swimlane-identifier=swimlane_0] td.column,
@@ -3922,15 +3949,19 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-columns tbody td.column.drop-valid,
 .whiteboard-columns .tbody .td.column.drop-valid {
-    background-color: rgba(150, 225, 150, 0.3);
+    background-color: #E0F6E0;
 }
 .whiteboard-columns tbody td.column.drop-valid.drop-hover,
 .whiteboard-columns .tbody .td.column.drop-valid.drop-hover {
-    background-color: rgba(225, 225, 150, 0.3);
+    background-color: #F6F6E0;
 }
 .whiteboard-columns tbody td.column.drop-hover .whiteboard-issue,
 .whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue {
     opacity: 0;
+}
+.whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.gs-draggable,
+.whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue.gs-draggable {
+    opacity: 1;
 }
 .whiteboard-columns td.column.current_column .whiteboard-issue,
 .whiteboard-columns .td.column.current_column .whiteboard-issue {
@@ -4000,6 +4031,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     opacity: 1;
+    z-index: 1;
 }
 .whiteboard-issue.issue-closed {
     opacity: 0.7;
@@ -4007,9 +4039,10 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue.ui-draggable {
     cursor: move;
 }
-.whiteboard-issue.ui-draggable-dragging {
+.whiteboard-issue.ui-draggable-dragging,
+.whiteboard-issue.gs-draggable {
     box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
-    z-index: 1;
+    z-index: 2;
 }
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;
@@ -4045,14 +4078,15 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     display: table;
     table-layout: fixed;
     background-color: #FFF;
-    z-index: 1;
-    box-shadow: 0 0 5px -3px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
 }
 #whiteboard.fixedheader #whiteboard-headers-placeholder {
     display: table-header-group;
 }
 #whiteboard.viewmode-detailed .whiteboard-issue .extra {
     display: block;
+    margin-bottom: 7px;
 }
 .whiteboard-issue ol {
     list-style: decimal;
@@ -4525,7 +4559,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_releases_container h3:first-of-type, #project_release_center_container h3:first-of-type { margin-top: 0; }
 #project_release_center_container.only_active .release_item, #project_release_center_container.only_archived .release_item.active, #project_release_center_container.only_downloads .release_item { display: none; }
 #project_release_center_container.only_active .release_item.active, #project_release_center_container.only_archived .release_item, #project_release_center_container.only_downloads .release_item.download { display: block; }
-.release_item { display: block; clear: both; margin-bottom: 5px; }
+.release_item { display: block; clear: both; margin-bottom: 12px; }
 .release_item .button-group { float: right; margin: 5px 5px 0 0; }
 .release_item .button-group .button { font-size: 1.1em; padding: 5px 10px; }
 .release_item .release_name { font-size: 1.2em; }
@@ -8772,6 +8806,11 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     float: none !important;
 }
 
+#project_release_center #project_release_center_container #timeline .recent_activities
+{
+    font-size: 1em;
+}
+
 
 /* Statistic */
 
@@ -10060,6 +10099,14 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     width: 328px !important;
 }
 
+#posted_by_change > li.disabled,
+#assigned_to_change > li.disabled,
+#issue_details #owned_by_change > li.disabled
+{
+    padding: 2px 7px;
+    color: #AAA;
+}
+
 #issue_details #owned_by_form
 {
     margin: 7px 0 -6px -2px;
@@ -10614,7 +10661,8 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 }
 
 #issue_main #description_content hr,
-#issue_main #reproduction_steps_content hr
+#issue_main #reproduction_steps_content hr,
+#issue_main .commentcontent hr
 {
     border: none;
     height: 1px;
@@ -10734,6 +10782,42 @@ div[id^='comment_reply_indicator_']
     display: block;
     content: "";
     margin-top: 7px;
+}
+
+.issue_inline_description h1 { font-size: 1.8em; }
+.issue_inline_description h2 { font-size: 1.5em; }
+.issue_inline_description h3 { font-size: 1.4em; }
+.issue_inline_description h4 { font-size: 1.25em; }
+.issue_inline_description h5 { font-size: 1.15em; }
+.issue_inline_description h6 { font-size: 1.05em; }
+
+.issue_inline_description h1, .issue_inline_description h2,
+.issue_inline_description h3, .issue_inline_description h4,
+.issue_inline_description h5, .issue_inline_description h6
+{
+    font-weight: normal;
+    padding: 5px 0;
+    margin: 20px 0 5px 0;
+}
+
+.issue_inline_description h1 a, .issue_inline_description h2 a,
+.issue_inline_description h3 a, .issue_inline_description h4 a,
+.issue_inline_description h5 a, .issue_inline_description h6 a
+{
+    font-size: 0.6em;
+    opacity: 0.3;
+    -webkit-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -moz-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -ms-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    -o-transition: opacity 0.3s ease, margin-left 0.3s ease;
+    transition: opacity 0.3s ease, margin-left 0.3s ease;
+}
+
+.issue_inline_description h1:hover a, .issue_inline_description h2:hover a,
+.issue_inline_description h3:hover a, .issue_inline_description h4:hover a,
+.issue_inline_description h5:hover a, .issue_inline_description h6:hover a
+{
+    opacity: 1;
 }
 
 
@@ -11332,8 +11416,8 @@ div[id^='wiki_'][id$='_no_links']
     margin: 10px 0;
 }
 
-.main_area.article ul,
-.main_area.article ol
+.main_area.article .content ul,
+.main_area.article .content ol
 {
     padding-left: 30px;
 }

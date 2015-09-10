@@ -392,9 +392,16 @@
 
         public function componentNotifications()
         {
-            $offset = $this->offset ?: 0;
-            $notifications = $this->getUser()->getNotifications();
-            $this->notifications = ($offset < count($notifications)) ? array_slice($notifications, $offset, 25) : array();
+            $this->filter_first_notification = ! is_null($this->first_notification_id) && is_numeric($this->first_notification_id);
+            $notifications = $this->getUser()->getNotifications($this->first_notification_id, $this->last_notification_id);
+            if ($this->filter_first_notification)
+            {
+                $this->notifications = $notifications;
+            }
+            else
+            {
+                $this->notifications = count($notifications) ? array_slice($notifications, 0, 25) : array();
+            }
             $this->num_unread = $this->getUser()->getNumberOfUnreadNotifications();
             $this->num_read = $this->getUser()->getNumberOfReadNotifications();
         }

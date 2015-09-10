@@ -1,5 +1,8 @@
 <?php if (isset($dynamic) && $dynamic == true): ?>
-    <ul class="more_actions_dropdown popup_box dynamic_menu" data-menu-url="<?php echo (isset($board)) ? make_url('issue_moreactions', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'board_id' => $board->getID())) : make_url('issue_moreactions', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>">
+    <?php $moreactions_url = array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()); ?>
+    <?php if (isset($board)) $moreactions_url['board_id'] = $board->getID(); ?>
+    <?php if (isset($estimator_mode)) $moreactions_url['estimator_mode'] = $estimator_mode; ?>
+    <ul class="more_actions_dropdown popup_box dynamic_menu" data-menu-url="<?php echo make_url('issue_moreactions', $moreactions_url); ?>">
         <li class="spinning"><?php echo image_tag('spinning_32.gif'); ?></li>
     </ul>
 <?php else: ?>
@@ -108,10 +111,12 @@
     </ul>
     <?php if (!isset($times) || $times): ?>
         <?php if ($issue->canEditEstimatedTime()): ?>
+            <?php $estimator_params = array('issue' => $issue, 'field' => 'estimated_time', 'instant_save' => true); ?>
+            <?php if (isset($estimator_mode)) $estimator_params['mode'] = $estimator_mode; ?>
             <?php if (isset($board)): ?>
-                <?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time', 'instant_save' => true, 'board' => $board)); ?>
+                <?php include_component('main/issueestimator', array_merge($estimator_params, compact('board'))); ?>
             <?php else: ?>
-                <?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time', 'instant_save' => true)); ?>
+                <?php include_component('main/issueestimator', $estimator_params); ?>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>

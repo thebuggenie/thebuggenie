@@ -78,7 +78,7 @@ The plugin allso adds the following methods to the plot object:
 
 */
 
-(function ($) {
+define(['jquery'], function ($) {
     function init(plot) {
         var selection = {
                 first: { x: -1, y: -1}, second: { x: -1, y: -1},
@@ -357,4 +357,4 @@ The plugin allso adds the following methods to the plot object:
         name: 'selection',
         version: '1.1'
     });
-})(jQuery);
+});
