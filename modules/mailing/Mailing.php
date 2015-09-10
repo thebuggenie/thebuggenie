@@ -452,7 +452,7 @@ EOT;
 
                 if ($user->getNotificationSetting(self::NOTIFY_MENTIONED, true, 'mailing')->isOff())
                     unset($users[$user->getID()]);
-                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
+                if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), false, 'mailing')->isOn())
                     unset($users[$user->getID()]);
             }
             return $users;
