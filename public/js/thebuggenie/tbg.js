@@ -7627,7 +7627,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 },
                 failure: {
                     callback: function (response) {
-                        console.log(response);
                     }
                 }
             });
