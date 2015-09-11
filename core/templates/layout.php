@@ -45,7 +45,7 @@
               src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.ttf') format('truetype');
             }
         </style>
-        <link rel="shortcut icon" href="<?php if (\thebuggenie\core\framework\Settings::isUsingCustomFavicon()): echo \thebuggenie\core\framework\Settings::getFaviconURL(); else: echo image_url('favicon.png'); endif; ?>">
+        <link rel="shortcut icon" href="<?php echo (\thebuggenie\core\framework\Context::isProjectContext() && \thebuggenie\core\framework\Context::getCurrentProject()->hasSmallIcon()) ? \thebuggenie\core\framework\Context::getCurrentProject()->getSmallIconName() : (\thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png')); ?>">
         <link title="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? __('%project_name search', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())) : __('%site_name search', array('%site_name' => \thebuggenie\core\framework\Settings::getSiteHeaderName())); ?>" href="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_opensearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
         <?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
             <link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
