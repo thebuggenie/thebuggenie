@@ -694,7 +694,8 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-weight: bold; display: inline-block; }
 .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
-.dropper_container .dropper, .dropper_container .dropper:hover { cursor: pointer; margin-left: 5px; opacity: 1; }
+.dropper_container .dropper { cursor: pointer; margin-left: 5px; opacity: 0.4; }
+.dropper_container .dropper:hover { opacity: 1; }
 .project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
 .commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
 #issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
@@ -1549,7 +1550,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 
 /* project list, client/team dashboard and overview */
 ul.project_list { margin-bottom: 30px; text-align: left; }
-.project_list .button-group.project-config-buttons .project-quick-edit, .project_list .button-group.project-config-buttons .project-quick-edit:hover, .project_list .button-group.project-config-buttons .project-settings, .project_list .button-group.project-config-buttons .project-settings:hover { font-size: 0.85em !important; padding: 0 3px !important; float: none; }
+.project_list .button-group.project-config-buttons .project-quick-edit, .project_list .button-group.project-config-buttons .project-quick-edit:hover, .project_list .button-group.project-config-buttons .project-settings, .project_list .button-group.project-config-buttons .project-settings:hover { font-size: 0.85em !important; padding: 0 5px !important; float: none; }
 ul.project_list > li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .client_dashboard, .project_overview { clear: both; }
 .client_dashboard .header, .project_overview .header { padding: 5px 5px 5px 2px; margin-bottom: 8px; border-bottom: 1px dotted #DDD; font-size: 1.1em; text-transform: uppercase; font-weight: normal }
@@ -2938,8 +2939,10 @@ table.issue_affects td img { vertical-align: bottom; }
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
 }
 
-#planning_board_settings_gear { margin-left: 5px; margin-right: 0; cursor: pointer; padding: 4px; }
-.project_header .planning_board_settings_gear, .project_header .planning_board_settings_gear:hover { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; }
+#planning_board_settings_gear { margin-left: 5px; margin-right: 0; cursor: pointer; padding: 4px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+#planning_board_settings_gear:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.project_header .planning_board_settings_gear { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.project_header .planning_board_settings_gear:hover { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .project_header .planning_board_settings_gear.button-pressed + ul { margin-top: 32px; font-size: 1.1em; margin-right: -5px; }
 
 #no_milestones {
@@ -2995,6 +2998,8 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
 .milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
+.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
 .milestone_box .header .draggable { display: none; }
 #project_planning.milestone-sort .milestone_box { cursor: move; }
