@@ -3967,7 +3967,6 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-columns tbody td.column.drop-hover .whiteboard-issue.gs-draggable,
 .whiteboard-columns .tbody .td.column.drop-hover .whiteboard-issue.gs-draggable {
     opacity: 1;
-    z-index: 1011 !important;
 }
 .whiteboard-columns td.column.current_column .whiteboard-issue,
 .whiteboard-columns .td.column.current_column .whiteboard-issue {
@@ -4048,7 +4047,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue.ui-draggable-dragging,
 .whiteboard-issue.gs-draggable {
     box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
-    z-index: 2;
+    z-index: 1011 !important;
 }
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;
