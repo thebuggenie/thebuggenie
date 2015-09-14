@@ -77,7 +77,8 @@
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
                     'thebuggenie/tools': bust('thebuggenie/tools.js'),
                     'TweenMax': bust('greensock/TweenMax.js'),
-                    'GSDraggable': bust('greensock/utils/Draggable.js')
+                    'GSDraggable': bust('greensock/utils/Draggable.js'),
+                    'jquery.nanoscroller': bust('jquery.nanoscroller.js')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
