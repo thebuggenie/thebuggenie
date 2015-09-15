@@ -1790,7 +1790,8 @@ a.friend { color: #277CBA; }
 .button-group > .button-dropdown, .button-group > .button-dropdown:hover { padding: 0; }
 .button-group > .button-dropdown .button { border-radius: 3px; box-shadow: none; border: none; background: none; }
 .button-group > .button-dropdown .button:hover { box-shadow: none; border: none; background: none; }
-.button-group > .button-dropdown .dropper, .button-group > .button-dropdown .dropper:hover { border-left: 1px solid rgba(0, 0, 0, 0.2); border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.button-group > .button-dropdown .dropper, .button-group > .button-dropdown .dropper:hover { border-left: 1px solid transparent; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.button-group > .button-dropdown .dropper:hover { border-left-color: rgba(0, 0, 0, 0.2); }
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 8px; font-size: 1em; font-weight: normal; }
 .project_header_right .button.reportissue_dropdown_button, .project_header_right .button.reportissue_dropdown_button:hover { padding-left: 0px !important; }
 .button-group.inset .button, .button-group.inset .button:last-child, .button-group.inset .button:first-child, .button-group.inset .button:hover { border: none; font-size: 1.1em; padding: 8px 12px; color: #555; box-shadow: none; font-weight: normal; }
@@ -7632,6 +7633,7 @@ input[type=checkbox][name=send_login_details]
 .finduser_container > form
 {
     padding: 5px;
+    width: 237px;
 }
 
 .finduser_container > form > input[type=submit]
