@@ -11307,13 +11307,13 @@ li#header_usermenu_link > div
 /* Frontpage & Wiki */
 
 #attach_link_main_menu_0_url,
-#attach_link_wiki_1_url
+input[id^='attach_link_wiki_'][id$='_url']
 {
     margin-bottom: 9px;
 }
 
 #attach_link_main_menu_0_form > div:last-child > br,
-#attach_link_wiki_1_form > div:last-child > br
+form[id^='attach_link_wiki_'][id$='_form'] > div:last-child > br
 {
     display: block;
     content: "";
@@ -11321,15 +11321,23 @@ li#header_usermenu_link > div
 }
 
 #attach_link_main_menu_0_form,
-#attach_link_wiki_1_form
+form[id^='attach_link_wiki_'][id$='_form']
 {
     margin-bottom: -7px;
 }
 
 #attach_link_main_menu_0_form div:last-child input[type=submit],
-#attach_link_wiki_1 div:last-child input[type=submit]
+div[id^='attach_link_wiki_'] div:last-child input[type=submit]
 {
     padding: 4px 9px;
+}
+
+.side_bar li hr
+{
+    border: none;
+    height: 1px;
+    border-bottom: 1px dotted #CCC;
+    margin-top: 8px;
 }
 
 
