@@ -128,6 +128,19 @@
         }
 
         /**
+         * Header "Agile" menu and board list
+         *
+         * @Listener(module="core", identifier="project_overview_item_links")
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         */
+        public function dashboardProjectLinks(framework\Event $event)
+        {
+            $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), $event->getSubject()->getID());
+            framework\ActionComponent::includeComponent('agile/projectlinks', array('project' => $event->getSubject(), 'boards' => $boards));
+        }
+
+        /**
          * @Listener(module='core', identifier='get_backdrop_partial')
          * @param \thebuggenie\core\framework\Event $event
          */

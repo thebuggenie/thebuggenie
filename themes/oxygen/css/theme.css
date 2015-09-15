@@ -1756,9 +1756,27 @@ a.friend { color: #277CBA; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions .button, .workflow_actions .button:hover, .button-group .button, .button-group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 4px 8px; }
-.workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover, .button-group .button.first, .button-group .button.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
-.workflow_actions .button.last, .button-group .button:last-child, .button-group .button:last-of-type, .button-group .button.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
+.workflow_actions .button,
+.workflow_actions .button:hover,
+.button-group > .button,
+.button-group > .button:hover,
+.button-group > .button-dropdown,
+.button-group > .button-dropdown:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 4px 8px; }
+.workflow_actions > .button.first,
+.workflow_actions > .button.first:hover,
+.button-group > .button:first-child,
+.button-group > .button:first-child:hover,
+.button-group > .button.first,
+.button-group > .button.first:hover,
+.button-group > .button-dropdown:first-child,
+.button-group > .button-dropdown:first-child:hover,
+.button-group > .button-dropdown.first,
+.button-group > .button-dropdown.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
+.workflow_actions .button.last,
+.button-group > .button:last-child,
+.button-group > .button.last,
+.button-group > .button-dropdown:last-child,
+.button-group > .button-dropdown.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .button-group .button.lefthugging { border-left: none; }
 .button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
@@ -1766,7 +1784,13 @@ a.friend { color: #277CBA; }
 .workflow_actions li.workflow { position: relative; }
 .workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 34px; width: auto; white-space: nowrap; transition-delay: 1s; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
-.button-group .button { float: left; }
+.button-group .button,
+.button-group > .button-dropdown { float: left; }
+.button-group > .button-dropdown { position: relative; border: 1px solid rgba(0, 0, 0, 0.2); border-left: none; }
+.button-group > .button-dropdown, .button-group > .button-dropdown:hover { padding: 0; }
+.button-group > .button-dropdown .button { border-radius: 3px; box-shadow: none; border: none; background: none; }
+.button-group > .button-dropdown .button:hover { box-shadow: none; border: none; background: none; }
+.button-group > .button-dropdown .dropper, .button-group > .button-dropdown .dropper:hover { border-left: 1px solid rgba(0, 0, 0, 0.2); border-top-left-radius: 0; border-bottom-left-radius: 0; }
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 8px; font-size: 1em; font-weight: normal; }
 .project_header_right .button.reportissue_dropdown_button, .project_header_right .button.reportissue_dropdown_button:hover { padding-left: 0px !important; }
 .button-group.inset .button, .button-group.inset .button:last-child, .button-group.inset .button:first-child, .button-group.inset .button:hover { border: none; font-size: 1.1em; padding: 8px 12px; color: #555; box-shadow: none; font-weight: normal; }
@@ -5187,7 +5211,12 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     vertical-align: middle;
     text-align: center;
 }
-.button:hover, input[type=submit]:hover, input[type=button]:hover, button:hover, .button-silver:hover, input.button-silver[type=submit]:hover {
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover, button:hover,
+.button-silver:hover,
+input.button-silver[type=submit]:hover,
+.button-dropdown:hover {
     box-shadow: 0 0 2px rgba(0,0,0,0.3);
     -moz-box-shadow: 0 0 2px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3);
@@ -5203,7 +5232,22 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 .button-icon img, .button-icon:hover img { margin: 1px; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; }
 
-.button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover, button, input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit], input[type=submit]:hover, .button-green.disabled, .button-green.disabled:hover, input[type=submit].button-green[disabled], input[type=submit].button-green[disabled]:hover, input[type=submit].button-green[disabled]:active, .button-green[disabled], .button-green[disabled]:hover {
+.button-silver, .button.disabled,
+.button.disabled:active,
+.button.disabled:hover,
+button,
+input[type=submit][disabled],
+input[type=submit][disabled]:hover,
+input[type=submit],
+input[type=submit]:hover,
+.button-green.disabled,
+.button-green.disabled:hover,
+input[type=submit].button-green[disabled],
+input[type=submit].button-green[disabled]:hover,
+input[type=submit].button-green[disabled]:active,
+.button-green[disabled],
+.button-green[disabled]:hover,
+.button-dropdown {
     background: #c5c5c5;
     background: -moz-linear-gradient(top, #F5F5F5 0%, #E5E5E5 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#F5F5F5), color-stop(100%,#E5E5E5)); /* Chrome,Safari4+ */
@@ -9416,14 +9460,10 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     line-height: 1.4 !important;
 }
 
-.project_strip .button-group .button-wiki
-{
-    border-right: none;
-}
-
 .project_strip .button-group .button-report-issue
 {
     border-left: 1px solid #438739;
+    margin-left: -1px;
 }
 
 .legendColorBox > div
