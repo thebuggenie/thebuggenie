@@ -674,7 +674,7 @@ footer img { margin: 4px 3px -6px 0; }
 .imgtd { width: 22px; text-align: center; vertical-align: middle; }
 
 /* frontpage article layout styling */
-.article { font-size: 1em; color: #666; width: auto; padding: 5px; position: relative; }
+.article { font-size: 1.01em; color: #666; width: auto; padding: 5px; position: relative; }
 .main_area.article { padding: 5px 5px 5px 15px; }
 .main_area.frontpage .article { padding-top: 0; }
 .main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 {
@@ -11445,7 +11445,7 @@ div[id^='wiki_'][id$='_no_links']
 
 .article .content
 {
-    line-height: 1.65;
+    line-height: 1.7;
 }
 
 .wiki-find-articles-button
