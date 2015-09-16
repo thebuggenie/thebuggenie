@@ -1762,8 +1762,8 @@ a.friend { color: #277CBA; }
 .button-group > .button:hover,
 .button-group > .button-dropdown,
 .button-group > .button-dropdown:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 4px 8px; }
-.workflow_actions > .button.first,
-.workflow_actions > .button.first:hover,
+.workflow_actions .button.first,
+.workflow_actions .button.first:hover,
 .button-group > .button:first-child,
 .button-group > .button:first-child:hover,
 .button-group > .button.first,
@@ -7633,7 +7633,6 @@ input[type=checkbox][name=send_login_details]
 .finduser_container > form
 {
     padding: 5px;
-    width: 237px;
 }
 
 .finduser_container > form > input[type=submit]
