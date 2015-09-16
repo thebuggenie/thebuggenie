@@ -1024,7 +1024,7 @@
             $line_regexes['tableopener'] = '^\{\|(.*?)$';
             $line_regexes['tablecloser'] = '^\|\}$';
             $line_regexes['tablerow'] = '^\|-(.*?)$';
-            $line_regexes['tableheader'] = '^\!(.*?)$';
+            $line_regexes['tableheader'] = '^\!\ (.*?)$';
             $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
             $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
             $line_regexes['horizontalrule'] = '^----$';
