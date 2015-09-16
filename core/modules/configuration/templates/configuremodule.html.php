@@ -26,7 +26,7 @@
                     </div>
                 <?php endif; ?>
                 <?php if ($module_message !== null): ?>
-                    <div class="greenbox" style="margin: 5px 0px 5px 0px; width: 730px;" id="module_message">
+                    <div class="greenbox" style="margin: 5px 0px 5px 0px;" id="module_message">
                         <?php echo $module_message; ?>
                     </div>
                 <?php endif; ?>
