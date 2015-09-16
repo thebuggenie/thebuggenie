@@ -7633,7 +7633,6 @@ input[type=checkbox][name=send_login_details]
 .finduser_container > form
 {
     padding: 5px;
-    width: 237px;
 }
 
 .finduser_container > form > input[type=submit]
