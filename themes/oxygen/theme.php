@@ -44,4 +44,6 @@
     .markItUpHeader ul .markItUpDropMenu { background-image: url('<?php echo $webroot; ?>iconsets/oxygen/markitup/menu.png'); }
     .markItUpHeader ul ul .markItUpDropMenu { background-image: url('<?php echo $webroot; ?>iconsets/oxygen/markitup/submenu.png'); }
 
+    #user_notifications .toggling { background: url('<?php echo $webroot; ?>iconsets/oxygen/spinning_16.gif') no-repeat 374px 11px; }
+
 </style>
