@@ -11334,7 +11334,7 @@ div[id^='attach_link_wiki_'] div:last-child input[type=submit]
     padding: 4px 9px;
 }
 
-.side_bar li hr
+.side_bar li hr, .side_bar .content hr
 {
     border: none;
     height: 1px;
