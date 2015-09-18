@@ -27,6 +27,7 @@
 
         const VERSION = '0.1';
 
+        protected $_name = 'module_name';
         protected $_longname = 'module_name';
         protected $_description = 'module_name description here';
         protected $_module_config_title = 'module_name';
