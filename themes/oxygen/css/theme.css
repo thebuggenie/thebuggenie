@@ -1863,7 +1863,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 .milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 6px; top: 7px; font-size: 0.9em; line-height: 1em; padding: 0; }
 .milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
-#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; }
+#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; z-index: 1012; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
 #issue_details fieldset .userdropdown { position: inherit; }
