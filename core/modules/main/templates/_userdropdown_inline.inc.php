@@ -3,7 +3,7 @@
 <?php elseif (!$user->isScopeConfirmed()): ?>
     <span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
 <?php else: ?>
-    <a href="javascript:void(0);" class="dropper userlink<?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').hide();">
+    <a href="javascript:void(0);" class="userlink<?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');">
         <?php if ((isset($in_email) && ! $in_email) && (!isset($userstate) || $userstate)): ?><span class="userstate"><?php echo tbg_get_userstate_image($user); ?></span><?php endif; ?>
         <?php if ($show_avatar): ?>
             <?php $extraClass = (!isset($size) || $size == 'small') ? "small" : ""; ?>
