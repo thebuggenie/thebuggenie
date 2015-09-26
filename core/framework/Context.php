@@ -2392,7 +2392,7 @@ class Context
                         {
                             $newPath = explode('/', self::getResponse()->getTemplate());
                             $templateName = (self::isInternalModule($newPath[0])) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
-                            $templateName .= $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . self::getRequest()->getRequestedFormat() . '.php';
+                            $templateName .= $newPath[0] . DS . 'templates' . DS . implode(DS, array_slice($newPath, 1)) . '.' . self::getRequest()->getRequestedFormat() . '.php';
                         }
                         else
                         {
