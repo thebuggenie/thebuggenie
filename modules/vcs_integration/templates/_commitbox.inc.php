@@ -44,6 +44,13 @@
         $link_base = str_replace('%branch', $branchname, $link_base);
     }
 
+    $misc_data_array = $commit->getMiscDataArray();
+
+    if (array_key_exists('gitlab_repos_ns', $misc_data_array))
+    {
+        $base_url = rtrim($base_url, '/').'/'.$misc_data_array['gitlab_repos_ns'];
+    }
+
     $link_rev = $base_url.str_replace('%revno', $revision, $link_base);
     $link_old = $base_url.str_replace('%revno', $oldrevision, $link_base);
 
@@ -68,85 +75,92 @@
 
             <div id="checkin_details_<?php echo $commit->getID(); ?>" style="<?php if (!isset($expanded) || $expanded == false) echo 'display: none;'; ?>">
                 <div class="commit_left">
-                    <div class="commit_header"><?php echo __('Changed files'); ?></div>
-                    <table border=0 cellpadding=0 cellspacing=0 style="width: 100%;">
                     <?php
+                    if (! array_key_exists('gitlab_repos_ns', $misc_data_array))
+                    {
+                    ?>
+                        <div class="commit_header"><?php echo __('Changed files'); ?></div>
+                        <table border=0 cellpadding=0 cellspacing=0 style="width: 100%;">
+                        <?php
 
-                    if (count($commit->getFiles()) == 0)
-                    {
-                        echo '<span class="faded_out">'.__('No files have been affected by this commit').'</span>';
-                    }
-                    else
-                    {
-                        foreach ($commit->getFiles() as $file)
+                        if (count($commit->getFiles()) == 0)
                         {
-                            echo '<tr>';
-
-                            $action = $file->getAction();
-                            if ($action == 'M'): $action = 'U'; endif;
-
-                            echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', array(), false, 'vcs_integration') . '</td>';
-
-                            $link_file = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
-                            $link_file = str_replace('%oldrev', $oldrevision, $link_file);
-
-                            if ($branchname !== null)
-                            {
-                                $link_file = str_replace('%branch', $branchname, $link_file);
-                            }
-
-                            $link_file = $base_url.str_replace('%file', $file->getFile(), $link_file);
-
-                            $link_diff = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
-                            $link_diff = str_replace('%oldrev', $oldrevision, $link_diff);
-
-                            if ($branchname !== null)
-                            {
-                                $link_diff = str_replace('%branch', $branchname, $link_diff);
-                            }
-
-                            $link_diff = $base_url.str_replace('%file', $file->getFile(), $link_diff);
-
-                            $link_view = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
-                            $link_view = str_replace('%oldrev', $oldrevision, $link_view);
-
-                            if ($branchname !== null)
-                            {
-                                $link_view = str_replace('%branch', $branchname, $link_view);
-                            }
-
-                            $link_view = $base_url.str_replace('%file', $file->getFile(), $link_view);
-
-                            echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
-                            if ($action == "U" || $action == "M")
-                            {
-                                if (mb_substr($file->getFile(), -1) == '/' || mb_substr($file->getFile(), -1) == '\\')
-                                {
-                                    echo '<td style="width: 75px;" class="faded_out">' . __('directory') . '</td>';
-                                }
-                                else
-                                {
-                                    echo '<td style="width: 75px;"><a href="' . $link_diff . '" target="_new"><b>' . __('Diff') . '</b></a></td>';
-                                }
-                            }
-
-                            if ($action == "D")
-                            {
-                                echo '<td colspan="2" class="faded_out" style="width: 150px;">'.__('deleted').'</td>';
-                            }
-                            elseif ($action == "A")
-                            {
-                                echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
-                            }
-                            elseif ($action != "D")
-                            {
-                                echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
-                            }
-                            echo '</tr>';
+                            echo '<span class="faded_out">'.__('No files have been affected by this commit').'</span>';
                         }
+                        else
+                        {
+                            foreach ($commit->getFiles() as $file)
+                            {
+                                echo '<tr>';
+
+                                $action = $file->getAction();
+                                if ($action == 'M'): $action = 'U'; endif;
+
+                                echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', array(), false, 'vcs_integration') . '</td>';
+
+                                $link_file = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
+                                $link_file = str_replace('%oldrev', $oldrevision, $link_file);
+
+                                if ($branchname !== null)
+                                {
+                                    $link_file = str_replace('%branch', $branchname, $link_file);
+                                }
+
+                                $link_file = $base_url.str_replace('%file', $file->getFile(), $link_file);
+
+                                $link_diff = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
+                                $link_diff = str_replace('%oldrev', $oldrevision, $link_diff);
+
+                                if ($branchname !== null)
+                                {
+                                    $link_diff = str_replace('%branch', $branchname, $link_diff);
+                                }
+
+                                $link_diff = $base_url.str_replace('%file', $file->getFile(), $link_diff);
+
+                                $link_view = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
+                                $link_view = str_replace('%oldrev', $oldrevision, $link_view);
+
+                                if ($branchname !== null)
+                                {
+                                    $link_view = str_replace('%branch', $branchname, $link_view);
+                                }
+
+                                $link_view = $base_url.str_replace('%file', $file->getFile(), $link_view);
+
+                                echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
+                                if ($action == "U" || $action == "M")
+                                {
+                                    if (mb_substr($file->getFile(), -1) == '/' || mb_substr($file->getFile(), -1) == '\\')
+                                    {
+                                        echo '<td style="width: 75px;" class="faded_out">' . __('directory') . '</td>';
+                                    }
+                                    else
+                                    {
+                                        echo '<td style="width: 75px;"><a href="' . $link_diff . '" target="_new"><b>' . __('Diff') . '</b></a></td>';
+                                    }
+                                }
+
+                                if ($action == "D")
+                                {
+                                    echo '<td colspan="2" class="faded_out" style="width: 150px;">'.__('deleted').'</td>';
+                                }
+                                elseif ($action == "A")
+                                {
+                                    echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
+                                }
+                                elseif ($action != "D")
+                                {
+                                    echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
+                                }
+                                echo '</tr>';
+                            }
+                        }
+                        ?>
+                        </table>
+                    <?php
                     }
                     ?>
-                    </table>
                 </div>
                 <div class="commit_right">
                     <div class="commit_header"><?php echo __('Affected issues'); ?></div>

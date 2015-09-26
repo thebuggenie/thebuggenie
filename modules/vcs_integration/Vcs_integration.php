@@ -219,7 +219,7 @@
             include_component('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
         }
 
-        public static function processCommit(\thebuggenie\core\entities\Project $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null)
+        public static function processCommit(\thebuggenie\core\entities\Project $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null, \Closure $callback = null)
         {
             $output = '';
             framework\Context::setCurrentProject($project);
@@ -335,6 +335,8 @@
                 $data = 'branch:' . $branch;
                 $commit->setMiscData($data);
             }
+
+            if ($callback !== null) $commit = $callback($commit);
 
             $commit->save();
 
