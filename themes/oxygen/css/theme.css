@@ -702,7 +702,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
 .comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; text-align: center; }
 .comment_hash a { color: #B1B8E9; }
-#issue_details .comment_hash { font-size: 1.4em; margin-top: 0; }
+#issue_details .comment_hash { font-size: 1.3em; margin-top: 3px; }
 .comments_none { font-weight: normal; }
 .comment_restricted { position: absolute; left: 7px; top: 35px; }
 .commentdate { color: #AAA; font-weight: normal; font-size: 0.9em; display: inline-block; margin-left: 5px; }
@@ -733,7 +733,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commits_next { clear: both; }
 .commit_left td { border: none !important; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 2px; font-size: 0.6em; margin: 7px 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 6px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -11475,4 +11475,37 @@ div[id^='wiki_'][id$='_no_links']
 .main_area.article .content ol
 {
     padding-left: 30px;
+}
+
+
+/* VCS integration */
+
+#viewissue_vcs_integration_commits > div[id^='commit_']
+{
+    padding: 0;
+    border-top: 0;
+    margin-top: 0;
+}
+
+#viewissue_vcs_integration_commits > div[id^='commit_'] a:hover
+{
+    border-bottom: none;
+}
+
+.commit_main {
+    line-height: 1.6;
+}
+
+#vcs_integration_getcommit_backdrop_box .comment {
+    padding: 0;
+    border-top: 0;
+    margin-top: 0;
+}
+
+#vcs_integration_getcommit_backdrop_box .commentheader {
+    padding: 0;
+}
+
+#vcs_integration_getcommit_backdrop_box .commentbody {
+    padding: 10px 0 0 0;
 }
