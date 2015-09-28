@@ -171,15 +171,6 @@ class Main extends framework\Action
                 }
             }
         }
-        elseif (!framework\Context::hasMessage('issue_deleted'))
-        {
-            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
-
-            if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
-            {
-                return $this->forward($request_referer);
-            }
-        }
         elseif (framework\Context::hasMessage('issue_deleted'))
         {
             $this->issue_deleted = framework\Context::getMessageAndClear('issue_deleted');
@@ -199,6 +190,15 @@ class Main extends framework\Action
         elseif (framework\Context::hasMessage('issue_message'))
         {
             $this->issue_message = framework\Context::getMessageAndClear('issue_message');
+        }
+        elseif (!framework\Context::hasMessage('issue_deleted'))
+        {
+            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
+            if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
+            {
+                return $this->forward($request_referer);
+            }
         }
 
         $this->issue = $issue;
