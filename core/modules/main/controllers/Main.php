@@ -193,7 +193,7 @@ class Main extends framework\Action
         }
         elseif (!framework\Context::hasMessage('issue_deleted'))
         {
-            $request_referer = $request['referer'] ?: (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+            $request_referer = isset($request['referer']) ? urldecode(html_entity_decode($request['referer'])) : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
             if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
             {
@@ -2778,7 +2778,7 @@ class Main extends framework\Action
      */
     public function runDeleteIssue(framework\Request $request)
     {
-        $request_referer = $request['referer'] ?: (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+        $request_referer = isset($request['referer']) ? urldecode(html_entity_decode($request['referer'])) : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
         if ($issue_id = $request['issue_id'])
         {
@@ -2816,7 +2816,7 @@ class Main extends framework\Action
         $issue->save();
 
         framework\Context::setMessage('issue_deleted', true);
-        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
+        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . urlencode($request_referer));
     }
 
     /**
