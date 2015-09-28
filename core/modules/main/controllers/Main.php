@@ -193,7 +193,7 @@ class Main extends framework\Action
         }
         elseif (!framework\Context::hasMessage('issue_deleted'))
         {
-            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+            $request_referer = $request['referer'] ?: (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
             if ($request_referer && (!$issue instanceof entities\Issue || $issue->isDeleted()))
             {
@@ -2778,7 +2778,7 @@ class Main extends framework\Action
      */
     public function runDeleteIssue(framework\Request $request)
     {
-        $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+        $request_referer = $request['referer'] ?: (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
         if ($issue_id = $request['issue_id'])
         {
