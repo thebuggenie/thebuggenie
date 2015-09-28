@@ -14,9 +14,9 @@
                     <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
                         <li>
                             <?php if ($transition->hasTemplate()): ?>
-                                <?php echo javascript_link_tag($transition->getName(), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID()))."&project_key=".$issue->getProject()->getKey()."&issue_id=".$issue->getID()."');")); ?>
+                                <?php echo javascript_link_tag($transition->getName(), array('onclick' => "TBG.Issues.showWorkflowTransition(".$transition->getID().");")); ?>
                             <?php else: ?>
-                                <?php echo javascript_link_tag(image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')).$transition->getName(), array('onclick' => "TBG.Search.interactiveWorkflowTransition('".make_url('transition_issues', array('project_key' => $issue->getProject()->getKey(), 'transition_id' => $transition->getID()))."&issue_ids[]=".$issue->getID()."', ".$transition->getID().");")); ?>
+                                <?php echo link_tag(make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())), image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')).$transition->getName()); ?>
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
