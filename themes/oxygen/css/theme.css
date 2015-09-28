@@ -297,7 +297,7 @@ header #header_userinfo { float: right; }
 header #header_userinfo li { margin-right: 0 !important; }
 header #header_userinfo li.temporarily_switched { background-color: rgb(228, 156, 109); }
 header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: rgb(252, 240, 233); }
-#header_avatar { margin: -2px 5px 0 0; border-radius: 5px; }
+#header_avatar { margin: -2px 5px 0 0; border-radius: 12px; }
 
 .userlink { font-weight: normal; margin-left: 5px; }
 .userlink:hover { text-decoration: none; border: none; font-weight: normal; }
@@ -731,7 +731,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commit_right { margin-top: 10px; margin-bottom: 0px;}
 .commit_right ul { margin: 0; }
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
-.commits_next { clear: both; }
+.commits_next { clear: both; margin-left: 45px; }
 .commit_left td { border: none !important; }
 .commit_left table { font-size: 1.1em; }
 .commit_left table b { font-weight: normal; }
@@ -11532,7 +11532,8 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: 2px;
 }
 
-#vcs_integration_getcommit_backdrop_box a.comment_hash
+#vcs_integration_getcommit_backdrop_box a.comment_hash,
+#project_commits a.comment_hash
 {
     font-size: 1.8em;
     margin-top: 2px;
