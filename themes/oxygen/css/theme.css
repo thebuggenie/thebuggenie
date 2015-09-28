@@ -727,16 +727,17 @@ footer img { margin: 4px 3px -6px 0; }
 .commit_header { font-size: larger; }
 .commit_expander { display: block; }
 .commit_expander img { vertical-align: text-bottom; }
-.commit_left { margin-top: 10px; margin-bottom: 20px; }
-.commit_right { float: right; margin-top: -5px; margin-bottom: 0px;}
+.commit_left { margin-top: 10px; margin-bottom: 10px; }
+.commit_right { margin-top: 10px; margin-bottom: 0px;}
 .commit_right ul { margin: 0; }
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
 .commits_next { clear: both; }
 .commit_left td { border: none !important; }
+.commit_left table { font-size: 1.1em; }
 .commit_left table b { font-weight: normal; }
 .commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 6px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 9px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -11496,42 +11497,52 @@ div[id^='wiki_'][id$='_no_links']
     border-bottom: none;
 }
 
-.commit_main {
+.commit_main
+{
     line-height: 1.6;
 }
 
-#vcs_integration_getcommit_backdrop_box .comment {
+#vcs_integration_getcommit_backdrop_box .comment
+{
     padding: 0;
     border-top: 0;
     margin-top: 0;
 }
 
-#vcs_integration_getcommit_backdrop_box .commentheader {
+#vcs_integration_getcommit_backdrop_box .commentheader
+{
     padding: 0;
     margin-top: -5px;
 }
 
-#vcs_integration_getcommit_backdrop_box .commentbody {
+#vcs_integration_getcommit_backdrop_box .commentbody
+{
     padding: 10px 0 0 0;
 }
 
-#viewissue_vcs_integration_commits .commenttitle .userlink {
+#viewissue_vcs_integration_commits .commenttitle .userlink
+{
     font-size: 1em;
 }
 
-#viewissue_vcs_integration_commits .commentdate {
+#viewissue_vcs_integration_commits .commentdate
+{
     margin-left: -40px;
     margin-top: 4px;
     margin-bottom: 2px;
 }
 
-#vcs_integration_getcommit_backdrop_box a.comment_hash {
+#vcs_integration_getcommit_backdrop_box a.comment_hash
+{
     font-size: 1.8em;
     margin-top: 2px;
 }
 
-#vcs_integration_getcommit_backdrop_box .commitbranch {
+#vcs_integration_getcommit_backdrop_box .commitbranch,
+#project_commits .commitbranch
+{
     font-size: 1em;
+    margin: 6px 5px 0 0;
 }
 
 .commitauthor
@@ -11539,19 +11550,27 @@ div[id^='wiki_'][id$='_no_links']
     margin-top: 5px;
 }
 
-#vcs_integration_getcommit_backdrop_box div.userdropdown {
+#vcs_integration_getcommit_backdrop_box div.userdropdown,
+#project_commits div.userdropdown
+{
     margin-left: 37px;
 }
 
-#vcs_integration_getcommit_backdrop_box .userlink {
+#vcs_integration_getcommit_backdrop_box .userlink,
+#project_commits .userlink
+{
     font-size: 1em;
 }
 
-#vcs_integration_getcommit_backdrop_box img.avatar {
+#vcs_integration_getcommit_backdrop_box img.avatar,
+#project_commits img.avatar
+{
     left: -30px;
     top: -1px;
 }
 
-#vcs_integration_getcommit_backdrop_box .commentdate {
+#vcs_integration_getcommit_backdrop_box .commentdate,
+#project_commits .commentdate
+{
     margin-top: 7px;
 }
