@@ -302,7 +302,7 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown { background
 .userlink { font-weight: normal; margin-left: 5px; }
 .userlink:hover { text-decoration: none; border: none; font-weight: normal; }
 img.userstate { width: 12px; height: 12px; display: inline-block; margin: 1px 2px 2px 0; vertical-align: middle; }
-img.avatar { border-radius: 5px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
+img.avatar { border-radius: 12px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
 .avatar.small {width:16px; height:16px;}
 
 header nav > ul { position: relative !important; display: inline-block; margin-right: 5px; }
@@ -698,11 +698,11 @@ footer img { margin: 4px 3px -6px 0; }
 .dropper_container .dropper:hover { opacity: 1; }
 .project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
 .commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
-#issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
+#issue_details .commenttitle img.avatar { top: 3px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
 .comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; text-align: center; }
 .comment_hash a { color: #B1B8E9; }
-#issue_details .comment_hash { font-size: 1.3em; margin-top: 3px; }
+#issue_details .comment_hash { font-size: 1.3em; margin-top: 5px; }
 .comments_none { font-weight: normal; }
 .comment_restricted { position: absolute; left: 7px; top: 35px; }
 .commentdate { color: #AAA; font-weight: normal; font-size: 0.9em; display: inline-block; margin-left: 5px; }
@@ -11485,6 +11485,7 @@ div[id^='wiki_'][id$='_no_links']
     padding: 0;
     border-top: 0;
     margin-top: 0;
+    border-bottom: 1px dashed #EAEAEA;
 }
 
 #viewissue_vcs_integration_commits > div[id^='commit_'] a:hover
@@ -11504,8 +11505,24 @@ div[id^='wiki_'][id$='_no_links']
 
 #vcs_integration_getcommit_backdrop_box .commentheader {
     padding: 0;
+    margin-top: -5px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commentbody {
     padding: 10px 0 0 0;
+}
+
+#viewissue_vcs_integration_commits .commenttitle .userlink {
+    font-size: 1em;
+}
+
+#viewissue_vcs_integration_commits .commentdate {
+    margin-left: -40px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+#vcs_integration_getcommit_backdrop_box a.comment_hash {
+    font-size: 1.8em;
+    margin-top: 2px;
 }
