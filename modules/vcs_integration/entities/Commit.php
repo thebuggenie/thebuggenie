@@ -77,6 +77,12 @@
         protected $_data = null;
 
         /**
+         * Misc data array
+         * @var array
+         */
+        protected $_data_array = null;
+
+        /**
          * Affected files
          * @var array
          */
@@ -122,6 +128,38 @@
             {
                 $this->_addNotifications();
             }
+        }
+
+        protected function _parseMiscDataToArray() {
+            if (is_null($this->_data)) return array();
+
+            $array = array();
+            $misc_data = explode('|', $this->_data);
+
+            foreach ($misc_data as $data)
+            {
+                $key_value = explode(':', $data);
+
+                if (count($key_value) == 2)
+                {
+                    $array[$key_value[0]] = $key_value[1];
+                }
+            }
+
+            return $array;
+        }
+
+        protected function _parseMiscDataFromArray() {
+            if (is_null($this->_data_array) || ! count($this->_data_array)) return null;
+
+            $string = '';
+
+            foreach ($this->_data_array as $key => $value)
+            {
+                $string .= "{$key}:{$value}|";
+            }
+
+            return rtrim($string, '|');
         }
 
         /**
@@ -202,6 +240,21 @@
         public function getMiscData()
         {
             return $this->_data;
+        }
+
+        /**
+         * Get any other data for this comment, is parsed to array
+         *
+         * @return array
+         */
+        public function getMiscDataArray()
+        {
+            if (is_null($this->_data_array))
+            {
+                $this->_data_array = $this->_parseMiscDataToArray();
+            }
+
+            return $this->_data_array;
         }
 
         /**
@@ -294,6 +347,17 @@
         public function setMiscData($data)
         {
             $this->_data = $data;
+        }
+
+        /**
+         * Set misc data array for this commit (see other docs)
+         *
+         * @param array $data
+         */
+        public function setMiscDataArray(array $data)
+        {
+            $this->_data_array = $data;
+            $this->_data = $this->_parseMiscDataFromArray();
         }
 
         /**

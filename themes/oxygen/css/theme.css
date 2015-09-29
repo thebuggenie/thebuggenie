@@ -297,12 +297,12 @@ header #header_userinfo { float: right; }
 header #header_userinfo li { margin-right: 0 !important; }
 header #header_userinfo li.temporarily_switched { background-color: rgb(228, 156, 109); }
 header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: rgb(252, 240, 233); }
-#header_avatar { margin: -2px 5px 0 0; border-radius: 5px; }
+#header_avatar { margin: -2px 5px 0 0; border-radius: 12px; }
 
 .userlink { font-weight: normal; margin-left: 5px; }
 .userlink:hover { text-decoration: none; border: none; font-weight: normal; }
 img.userstate { width: 12px; height: 12px; display: inline-block; margin: 1px 2px 2px 0; vertical-align: middle; }
-img.avatar { border-radius: 5px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
+img.avatar { border-radius: 12px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
 .avatar.small {width:16px; height:16px;}
 
 header nav > ul { position: relative !important; display: inline-block; margin-right: 5px; }
@@ -674,7 +674,7 @@ footer img { margin: 4px 3px -6px 0; }
 .imgtd { width: 22px; text-align: center; vertical-align: middle; }
 
 /* frontpage article layout styling */
-.article { font-size: 1em; color: #666; width: auto; padding: 5px; position: relative; }
+.article { font-size: 1.01em; color: #666; width: auto; padding: 5px; position: relative; }
 .main_area.article { padding: 5px 5px 5px 15px; }
 .main_area.frontpage .article { padding-top: 0; }
 .main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 {
@@ -694,14 +694,15 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-weight: bold; display: inline-block; }
 .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
-.dropper_container .dropper, .dropper_container .dropper:hover { cursor: pointer; margin-left: 5px; opacity: 1; }
+.dropper_container .dropper { cursor: pointer; margin-left: 5px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.dropper_container .dropper:hover { opacity: 1; }
 .project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
 .commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
-#issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
+#issue_details .commenttitle img.avatar { top: 3px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
 .comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; text-align: center; }
 .comment_hash a { color: #B1B8E9; }
-#issue_details .comment_hash { font-size: 1.4em; margin-top: 0; }
+#issue_details .comment_hash { font-size: 1.3em; margin-top: 5px; }
 .comments_none { font-weight: normal; }
 .comment_restricted { position: absolute; left: 7px; top: 35px; }
 .commentdate { color: #AAA; font-weight: normal; font-size: 0.9em; display: inline-block; margin-left: 5px; }
@@ -719,20 +720,24 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editsave, .comment_addsave { font-weight: bold; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 100%; margin-bottom: 8px; }
-.system_comment .comment_main { background-color: #EBEBEB; border: 1px solid #DDD; }
+.system_comment .comment_main { background-color: #F7F7F7; border: 1px solid #DDD; }
 .private_comment .comment_main { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
-.commit_header { font-weight: bold; font-size: larger; }
+.commit_header { font-size: larger; }
 .commit_expander { display: block; }
 .commit_expander img { vertical-align: text-bottom; }
-.commit_left { min-width: 650px; float: left; margin-top: 10px; margin-bottom: 20px; }
-.commit_right { width: 200px; float: right; margin-top: 10px; margin-bottom: 20px;}
+.commit_left { margin-top: 10px; margin-bottom: 10px; }
+.commit_right { margin-top: 10px; margin-bottom: 0px;}
+.commit_right ul { margin: 0; }
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
-.commits_next { clear: both; }
+.commits_next { clear: both; margin-left: 45px; }
 .commit_left td { border: none !important; }
+.commit_left table { font-size: 1.1em; }
+.commit_left table b { font-weight: normal; }
+.commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 2px; font-size: 0.6em; margin: 7px 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 9px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -1549,7 +1554,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 
 /* project list, client/team dashboard and overview */
 ul.project_list { margin-bottom: 30px; text-align: left; }
-.project_list .button-group.project-config-buttons .project-quick-edit, .project_list .button-group.project-config-buttons .project-quick-edit:hover, .project_list .button-group.project-config-buttons .project-settings, .project_list .button-group.project-config-buttons .project-settings:hover { font-size: 0.85em !important; padding: 0 3px !important; float: none; }
+.project_list .button-group.project-config-buttons .project-quick-edit, .project_list .button-group.project-config-buttons .project-quick-edit:hover, .project_list .button-group.project-config-buttons .project-settings, .project_list .button-group.project-config-buttons .project-settings:hover { font-size: 0.85em !important; padding: 0 5px !important; float: none; }
 ul.project_list > li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .client_dashboard, .project_overview { clear: both; }
 .client_dashboard .header, .project_overview .header { padding: 5px 5px 5px 2px; margin-bottom: 8px; border-bottom: 1px dotted #DDD; font-size: 1.1em; text-transform: uppercase; font-weight: normal }
@@ -1755,9 +1760,27 @@ a.friend { color: #277CBA; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions .button, .workflow_actions .button:hover, .button-group .button, .button-group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 4px 8px; }
-.workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover, .button-group .button.first, .button-group .button.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
-.workflow_actions .button.last, .button-group .button:last-child, .button-group .button:last-of-type, .button-group .button.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
+.workflow_actions .button,
+.workflow_actions .button:hover,
+.button-group > .button,
+.button-group > .button:hover,
+.button-group > .button-dropdown,
+.button-group > .button-dropdown:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 4px 8px; }
+.workflow_actions .button.first,
+.workflow_actions .button.first:hover,
+.button-group > .button:first-child,
+.button-group > .button:first-child:hover,
+.button-group > .button.first,
+.button-group > .button.first:hover,
+.button-group > .button-dropdown:first-child,
+.button-group > .button-dropdown:first-child:hover,
+.button-group > .button-dropdown.first,
+.button-group > .button-dropdown.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
+.workflow_actions .button.last,
+.button-group > .button:last-child,
+.button-group > .button.last,
+.button-group > .button-dropdown:last-child,
+.button-group > .button-dropdown.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .button-group .button.lefthugging { border-left: none; }
 .button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
@@ -1765,7 +1788,14 @@ a.friend { color: #277CBA; }
 .workflow_actions li.workflow { position: relative; }
 .workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 34px; width: auto; white-space: nowrap; transition-delay: 1s; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
-.button-group .button { float: left; }
+.button-group .button,
+.button-group > .button-dropdown { float: left; }
+.button-group > .button-dropdown { position: relative; border: 1px solid rgba(0, 0, 0, 0.2); border-left: none; }
+.button-group > .button-dropdown, .button-group > .button-dropdown:hover { padding: 0; }
+.button-group > .button-dropdown .button { border-radius: 3px; box-shadow: none; border: none; background: none; }
+.button-group > .button-dropdown .button:hover { box-shadow: none; border: none; background: none; }
+.button-group > .button-dropdown .dropper, .button-group > .button-dropdown .dropper:hover { border-left: 1px solid transparent; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.button-group > .button-dropdown .dropper:hover { border-left-color: rgba(0, 0, 0, 0.2); }
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 8px; font-size: 1em; font-weight: normal; }
 .project_header_right .button.reportissue_dropdown_button, .project_header_right .button.reportissue_dropdown_button:hover { padding-left: 0px !important; }
 .button-group.inset .button, .button-group.inset .button:last-child, .button-group.inset .button:first-child, .button-group.inset .button:hover { border: none; font-size: 1.1em; padding: 8px 12px; color: #555; box-shadow: none; font-weight: normal; }
@@ -1837,7 +1867,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 .milestone_virtual_status .milestonename { position: absolute; width: 100%; left: 6px; top: 7px; font-size: 0.9em; line-height: 1em; padding: 0; }
 .milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
-#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; }
+#project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; z-index: 1012; }
 #issue_details fieldset a.dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
 #issue_details fieldset .userdropdown { position: inherit; }
@@ -2938,8 +2968,10 @@ table.issue_affects td img { vertical-align: bottom; }
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
 }
 
-#planning_board_settings_gear { margin-left: 5px; margin-right: 0; cursor: pointer; padding: 4px; }
-.project_header .planning_board_settings_gear, .project_header .planning_board_settings_gear:hover { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; }
+#planning_board_settings_gear { margin-left: 5px; margin-right: 0; cursor: pointer; padding: 4px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+#planning_board_settings_gear:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.project_header .planning_board_settings_gear { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.project_header .planning_board_settings_gear:hover { margin-top: 6px; margin-right: -5px; margin-left: 10px; display: inline-block; float: right; cursor: pointer; border: none; padding: 4px; opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .project_header .planning_board_settings_gear.button-pressed + ul { margin-top: 32px; font-size: 1.1em; margin-right: -5px; }
 
 #no_milestones {
@@ -2995,6 +3027,8 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
 .milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
+.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
 .milestone_box .header .draggable { display: none; }
 #project_planning.milestone-sort .milestone_box { cursor: move; }
@@ -4042,7 +4076,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue.ui-draggable-dragging,
 .whiteboard-issue.gs-draggable {
     box-shadow: 0 0 5px rgba(200, 200, 200, 0.3);
-    z-index: 2;
+    z-index: 1011 !important;
 }
 .whiteboard-issue .issue_header, .whiteboard-issue .issue_header:hover {
     color: #555;
@@ -5182,7 +5216,12 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     vertical-align: middle;
     text-align: center;
 }
-.button:hover, input[type=submit]:hover, input[type=button]:hover, button:hover, .button-silver:hover, input.button-silver[type=submit]:hover {
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover, button:hover,
+.button-silver:hover,
+input.button-silver[type=submit]:hover,
+.button-dropdown:hover {
     box-shadow: 0 0 2px rgba(0,0,0,0.3);
     -moz-box-shadow: 0 0 2px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3);
@@ -5198,7 +5237,22 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 .button-icon img, .button-icon:hover img { margin: 1px; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; }
 
-.button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover, button, input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit], input[type=submit]:hover, .button-green.disabled, .button-green.disabled:hover, input[type=submit].button-green[disabled], input[type=submit].button-green[disabled]:hover, input[type=submit].button-green[disabled]:active, .button-green[disabled], .button-green[disabled]:hover {
+.button-silver, .button.disabled,
+.button.disabled:active,
+.button.disabled:hover,
+button,
+input[type=submit][disabled],
+input[type=submit][disabled]:hover,
+input[type=submit],
+input[type=submit]:hover,
+.button-green.disabled,
+.button-green.disabled:hover,
+input[type=submit].button-green[disabled],
+input[type=submit].button-green[disabled]:hover,
+input[type=submit].button-green[disabled]:active,
+.button-green[disabled],
+.button-green[disabled]:hover,
+.button-dropdown {
     background: #c5c5c5;
     background: -moz-linear-gradient(top, #F5F5F5 0%, #E5E5E5 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#F5F5F5), color-stop(100%,#E5E5E5)); /* Chrome,Safari4+ */
@@ -8136,7 +8190,7 @@ form > .config_header
 #publish_tab_import_pane .bluebox
 {
     height: 25px;
-    padding: 10px 10px 5px 10px;
+    padding: 10px 10px 5px 10px !important;
 }
 
 #publish_tab_settings_pane > form > table
@@ -9411,14 +9465,11 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     line-height: 1.4 !important;
 }
 
-.project_strip .button-group .button-wiki
-{
-    border-right: none;
-}
-
 .project_strip .button-group .button-report-issue
 {
     border-left: 1px solid #438739;
+    margin-left: -1px;
+    position: relative;
 }
 
 .legendColorBox > div
@@ -11262,13 +11313,13 @@ li#header_usermenu_link > div
 /* Frontpage & Wiki */
 
 #attach_link_main_menu_0_url,
-#attach_link_wiki_1_url
+input[id^='attach_link_wiki_'][id$='_url']
 {
     margin-bottom: 9px;
 }
 
 #attach_link_main_menu_0_form > div:last-child > br,
-#attach_link_wiki_1_form > div:last-child > br
+form[id^='attach_link_wiki_'][id$='_form'] > div:last-child > br
 {
     display: block;
     content: "";
@@ -11276,15 +11327,23 @@ li#header_usermenu_link > div
 }
 
 #attach_link_main_menu_0_form,
-#attach_link_wiki_1_form
+form[id^='attach_link_wiki_'][id$='_form']
 {
     margin-bottom: -7px;
 }
 
 #attach_link_main_menu_0_form div:last-child input[type=submit],
-#attach_link_wiki_1 div:last-child input[type=submit]
+div[id^='attach_link_wiki_'] div:last-child input[type=submit]
 {
     padding: 4px 9px;
+}
+
+.side_bar li hr, .side_bar .content hr
+{
+    border: none;
+    height: 1px;
+    border-bottom: 1px dotted #CCC;
+    margin-top: 8px;
 }
 
 
@@ -11389,7 +11448,7 @@ div[id^='wiki_'][id$='_no_links']
 
 .article .content
 {
-    line-height: 1.65;
+    line-height: 1.7;
 }
 
 .wiki-find-articles-button
@@ -11420,4 +11479,99 @@ div[id^='wiki_'][id$='_no_links']
 .main_area.article .content ol
 {
     padding-left: 30px;
+}
+
+
+/* VCS integration */
+
+#viewissue_vcs_integration_commits > div[id^='commit_']
+{
+    padding: 0;
+    border-top: 0;
+    margin-top: 0;
+    border-bottom: 1px dashed #EAEAEA;
+}
+
+#viewissue_vcs_integration_commits > div[id^='commit_'] a:hover
+{
+    border-bottom: none;
+}
+
+.commit_main
+{
+    line-height: 1.6;
+}
+
+#vcs_integration_getcommit_backdrop_box .comment
+{
+    padding: 0;
+    border-top: 0;
+    margin-top: 0;
+}
+
+#vcs_integration_getcommit_backdrop_box .commentheader
+{
+    padding: 0;
+    margin-top: -5px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commentbody
+{
+    padding: 10px 0 0 0;
+}
+
+#viewissue_vcs_integration_commits .commenttitle .userlink
+{
+    font-size: 1em;
+}
+
+#viewissue_vcs_integration_commits .commentdate
+{
+    margin-left: -40px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+#vcs_integration_getcommit_backdrop_box a.comment_hash,
+#project_commits a.comment_hash
+{
+    font-size: 1.8em;
+    margin-top: 2px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commitbranch,
+#project_commits .commitbranch
+{
+    font-size: 1em;
+    margin: 6px 5px 0 0;
+}
+
+.commitauthor
+{
+    margin-top: 5px;
+}
+
+#vcs_integration_getcommit_backdrop_box div.userdropdown,
+#project_commits div.userdropdown
+{
+    margin-left: 37px;
+}
+
+#vcs_integration_getcommit_backdrop_box .userlink,
+#project_commits .userlink
+{
+    font-size: 1em;
+}
+
+#vcs_integration_getcommit_backdrop_box img.avatar,
+#project_commits img.avatar
+{
+    left: -30px;
+    top: -1px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commentdate,
+#project_commits .commentdate
+{
+    margin-top: 7px;
 }

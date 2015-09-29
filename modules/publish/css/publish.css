@@ -184,7 +184,7 @@
 .article .details { color: #AAA; padding-bottom: 15px; }
 
 .article .toc { float: right; margin: 3px 0 15px 25px; width: 350px; box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(247, 247, 247, 0.85); }
-.article .toc.fixed { position: fixed; top: 159px; right: 10px; }
+.article .toc.fixed { position: fixed; right: 10px; }
 .article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; margin-bottom: 10px; }
 .article .toc .header .button-group { float: right; }
 .article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: normal !important; padding: 2px !important; width: 22px; }

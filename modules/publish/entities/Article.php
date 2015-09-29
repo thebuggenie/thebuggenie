@@ -710,7 +710,7 @@
         {
             foreach ($this->getFiles() as $file_id => $file)
             {
-                if (mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
+                if (mb_strtolower($filename) == mb_strtolower($file->getRealFilename()) || mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
                 {
                     return $file;
                 }

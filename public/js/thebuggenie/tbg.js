@@ -448,7 +448,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }, 1000);
         };
 
-        TBG.Core.Pollers.Callbacks.dataPoller = function () {
+        TBG.Core.Pollers.Callbacks.dataPoller = function (toggled_notification_id) {
             if (!TBG.Core.Pollers.Locks.datapoller) {
                 TBG.Core.Pollers.Locks.datapoller = true;
                 TBG.Main.Helpers.ajax(TBG.data_url, {
@@ -457,15 +457,32 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         callback: function (json) {
                             var unc = $('user_notifications_count');
                             if (unc) {
-                                if (parseInt(json.unread_notifications) != parseInt(unc.innerHTML)) {
-                                    unc.update(json.unread_notifications);
-                                    if (parseInt(json.unread_notifications) > 0) {
+                                if (parseInt(json.unread_notifications_count) != parseInt(unc.innerHTML)) {
+                                    unc.update(json.unread_notifications_count);
+                                    if (parseInt(json.unread_notifications_count) > 0) {
                                         unc.addClassName('unread');
                                     } else {
                                         unc.removeClassName('unread');
                                     }
                                 }
                                 TBG.Main.Notifications.loadMore(undefined, true);
+                            }
+                            var un = $('user_notifications');
+                            if (un) {
+                                for (uni = 0; uni < json.unread_notifications.length; uni++) {
+                                    var read_notification_is_unread = jQuery('.read[data-notification-id='+json.unread_notifications[uni]+']', un);
+
+                                    if (read_notification_is_unread != null && ((toggled_notification_id != null && toggled_notification_id != read_notification_is_unread.data('notification_id')) || toggled_notification_id == null)) {
+                                        read_notification_is_unread.removeClass('read');
+                                        read_notification_is_unread.addClass('unread');
+                                    }
+                                }
+                                un.select('.unread').each(function (li) {
+                                    if (((toggled_notification_id != null && toggled_notification_id != li.dataset.notificationId) || toggled_notification_id == null) && json.unread_notifications.indexOf(li.dataset.notificationId) == -1) {
+                                        li.removeClassName('unread');
+                                        li.addClassName('read');
+                                    }
+                                });
                             }
                             TBG.Core.Pollers.Locks.datapoller = false;
                             if (TBG.Core.Pollers.datapoller != null)
@@ -7337,7 +7354,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         ['toggling', 'read', 'unread'].each(function (cn) {
                             nc.toggleClassName(cn);
                         });
-                        TBG.Core.Pollers.Callbacks.dataPoller();
+                        TBG.Core.Pollers.Callbacks.dataPoller(notification_id);
                     }
                 }
             });
@@ -7349,37 +7366,40 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 if (! loadToTop) TBG.Main.Notifications.loadingLocked = true;
                 var unl = $('user_notifications_list'),
                     unl_data = unl.dataset;
-                if (! unl) return;
-                if (loadToTop) {
-                    var url_url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
-                }
-                else {
-                    var url_url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:last-child")[0].dataset.notificationId;
-                }
-                TBG.Main.Helpers.ajax(url_url, {
-                    url_method: 'get',
-                    loading: {
-                        indicator: 'user_notifications_loading_indicator'
-                    },
-                    success: {
-                        update: { element: '', insertion: true },
-                        callback: function (json) {
-                            if (loadToTop) {
-                                $('user_notifications_list').insert({top: json.content});
-                            }
-                            else {
-                                $('user_notifications_list').insert({bottom: json.content});
-                            }
-                            jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
-                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
-                        }
-                    },
-                    exception: {
-                        callback: function () {
-                            if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
-                        }
+                if (unl) {
+                    if (loadToTop && unl.down('li') != undefined) {
+                        var url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
                     }
-                });
+                    else if (! loadToTop && unl.select("li:last-child") != undefined && unl.select("li:last-child")[0] != undefined) {
+                        var url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:last-child")[0].dataset.notificationId;
+                    }
+                    if (url != undefined) {
+                        TBG.Main.Helpers.ajax(url, {
+                            url_method: 'get',
+                            loading: {
+                                indicator: 'user_notifications_loading_indicator'
+                            },
+                            success: {
+                                update: { element: '', insertion: true },
+                                callback: function (json) {
+                                    if (loadToTop) {
+                                        unl.insert({top: json.content});
+                                    }
+                                    else {
+                                        unl.insert({bottom: json.content});
+                                    }
+                                    if ($('user_notifications_list_wrapper_nano')) jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
+                                    if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
+                                }
+                            },
+                            exception: {
+                                callback: function () {
+                                    if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
+                                }
+                            }
+                        });
+                    }
+                }
             }
         }
 
@@ -7624,7 +7644,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 },
                 failure: {
                     callback: function (response) {
-                        console.log(response);
                     }
                 }
             });

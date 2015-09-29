@@ -510,7 +510,12 @@ class Main extends framework\Action
                         $data['mentionables'] = array_values($mentionables);
                         break;
                     default:
-                        $data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+                        $data['unread_notifications_count'] = $this->getUser()->getNumberOfUnreadNotifications();
+                        $data['unread_notifications'] = array();
+                        foreach ($this->getUser()->getUnreadNotifications() as $unread_notification)
+                        {
+                                $data['unread_notifications'][] = $unread_notification->getID();
+                        }
                         $data['poll_interval'] = framework\Settings::getNotificationPollInterval();
                 }
             }

@@ -12,6 +12,11 @@ githubcheckin:
   action: addCommitGithub
   anonymous_route: true
 
+gitlabcheckin:
+  route: /vcs_integration/report/:project_id/gitlab
+  action: addCommitGitlab
+  anonymous_route: true
+
 bitbucketcheckin:
   route: /vcs_integration/report/:project_id/bitbucket
   action: addCommitBitbucket
