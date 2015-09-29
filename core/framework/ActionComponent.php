@@ -56,6 +56,13 @@
             {
                 $template_basepath = (Context::isInternalModule($module_file['module'])) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
                 $template_name = $template_basepath . $module_file['module'] . DS . 'templates' . DS . "_{$module_file['file']}.inc.php";
+                if (mb_strpos($module_file['file'], '/') !== FALSE)
+                {
+                    // if component path contains subdirectory
+                    $file_parts = explode('/', $module_file['file']);
+                    $filename = array_pop($file_parts);
+                    $template_name = $template_basepath . $module_file['module'] . DS . 'templates' . DS . implode(DS, $file_parts) . DS . "_{$filename}.inc.php";
+                }
             }
             return $template_name;
         }
