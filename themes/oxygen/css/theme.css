@@ -297,13 +297,13 @@ header #header_userinfo { float: right; }
 header #header_userinfo li { margin-right: 0 !important; }
 header #header_userinfo li.temporarily_switched { background-color: rgb(228, 156, 109); }
 header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: rgb(252, 240, 233); }
-#header_avatar { margin: -2px 5px 0 0; border-radius: 12px; }
+#header_avatar { margin: -5px 5px 0 0; border-radius: 15px; }
 
 .userlink { font-weight: normal; margin-left: 5px; }
 .userlink:hover { text-decoration: none; border: none; font-weight: normal; }
 img.userstate { width: 12px; height: 12px; display: inline-block; margin: 1px 2px 2px 0; vertical-align: middle; }
-img.avatar { border-radius: 12px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
-.avatar.small {width:16px; height:16px;}
+img.avatar { border-radius: 15px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:28px; height:28px;}
+.avatar.small {width:18px; height:18px;}
 
 header nav > ul { position: relative !important; display: inline-block; margin-right: 5px; }
 #usermenu_changestate_toggler { float: right; margin-left: 5px; padding: 1px 3px !important; font-size: 1em !important; border: 1px solid rgba(0, 0, 0, 0.2) !important; }
@@ -697,7 +697,7 @@ footer img { margin: 4px 3px -6px 0; }
 .dropper_container .dropper { cursor: pointer; margin-left: 5px; opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .dropper_container .dropper:hover { opacity: 1; }
 .project_overview .header .dropper_container .more_actions_dropdown { left: 5px; margin-top: 3px; right: auto; font-size: 0.9em; text-transform: none; }
-.commenttitle img.avatar { position: absolute; left: -35px; top: 2px; }
+.commenttitle img.avatar { position: absolute; left: -40px; top: 2px; }
 #issue_details .commenttitle img.avatar { top: 3px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
 .comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; text-align: center; }
@@ -2188,7 +2188,6 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 
 .typeahead.dropdown-menu {
     list-style: none;
-    padding: 1px;
     border: 1px solid rgba(100, 100, 100, 0.3);
     border-radius: 2px;
     font-size: 1.1em;
@@ -2203,9 +2202,10 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     z-index: 10000;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .typeahead.dropdown-menu li {
-    padding: 3px;
+    padding: 4px;
     display: block;
     font-size: 1em;
     -o-transition: background-color 0.3s ease;
@@ -2222,11 +2222,11 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
     color: #333;
 }
 .typeahead.dropdown-menu li.active {
-    background-color: rgba(100, 100, 100, 0.2);
+    background-color: #F1F1F1;
 }
 .typeahead.dropdown-menu li img {
     margin-right: 5px;
-    border-radius: 5px;
+    border-radius: 12px;
 }
 
 /* left hand dropdown boxes */
@@ -2320,7 +2320,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 #viewissue_log_items ul { list-style: none; margin: 0 0 10px 0; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
 #viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
-#viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; display: inline-block; min-width: 120px; }
+#viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; display: inline-block; min-width: 150px; }
 .comment_log_items { list-style: none; margin: 5px 10px; padding: 0; }
 .comment_log_items span.date { display: none; }
 .comment_log_items img { margin: 3px 5px -3px 5px; }
@@ -11057,6 +11057,13 @@ div[id^='comment_reply_indicator_']
     margin-right: -3px;
 }
 
+#whiteboard .tbody .status_badge
+{
+    width: 19px;
+    height: 19px;
+    padding: 0;
+}
+
 
 /* Menu */
 
@@ -11520,11 +11527,6 @@ div[id^='wiki_'][id$='_no_links']
     padding: 10px 0 0 0;
 }
 
-#viewissue_vcs_integration_commits .commenttitle
-{
-    float: left;
-}
-
 #viewissue_vcs_integration_commits .commenttitle .userlink
 {
     font-size: 1em;
@@ -11533,10 +11535,8 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentdate
 {
     margin-left: -40px;
-    margin-top: 11px;
+    margin-top: 4px;
     margin-bottom: 2px;
-    display: inline;
-    float: left;
 }
 
 #vcs_integration_getcommit_backdrop_box a.comment_hash,
@@ -11544,31 +11544,6 @@ div[id^='wiki_'][id$='_no_links']
 {
     font-size: 1.8em;
     margin-top: 2px;
-}
-
-#viewissue_vcs_integration_commits .commit_repos_branch
-{
-    float: right;
-    display: inline;
-    margin-left: -40px;
-    margin-bottom: 2px;
-    width: auto;
-    clear: both;
-}
-
-#viewissue_vcs_integration_commits .commitrepos
-{
-    color: #AAA;
-}
-
-#viewissue_vcs_integration_commits .commitbranch
-{
-    font-size: 1em;
-}
-
-#viewissue_vcs_integration_commits .commentbody
-{
-    clear: both;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,
