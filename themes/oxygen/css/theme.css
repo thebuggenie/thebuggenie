@@ -4435,16 +4435,35 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     -webkit-box-sizing: border-box;
     margin: 0;
 }
-.dashboard_view_issues tr:hover {
-    background-color: #F8F8F8;
+.dashboard_view_issues .tr .td {
+    border-bottom: 1px dashed #EAEAEA;
+    padding: 10px 5px 15px;
 }
-.dashboard_view_issues td {
+.dashboard_view_issues .tr:last-child .td {
+    border-bottom: 0;
+}
+.dashboard_view_issues .tr .td.issue_type_cell {
+    width: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+.dashboard_view_issues .issue_comments_count_cell, .dashboard_view_issues .issue_files_count_cell {
+    width: 50px;
+    vertical-align: middle;
+}
+.dashboard_view_issues .issue_comments_count_cell img, .dashboard_view_issues .issue_files_count_cell img {
+    vertical-align: middle;
+}
+.dashboard_view_issues .td {
     padding: 5px;
 }
-.dashboard_view_issues td:first-child {
+.dashboard_view_issues .td .issue_link {
+    margin-bottom: 5px;
+}
+.dashboard_view_issues .td:first-child {
     width: auto;
 }
-.dashboard_view_issues td:last-child {
+.dashboard_view_issues .td:last-child {
     width: 40px;
     text-align: center;
     vertical-align: middle;
