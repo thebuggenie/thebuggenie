@@ -826,61 +826,70 @@
             {
                 $matched_issue_data = array(); // All data from regexp
 
-                // If any match is found using the current regular expression, extract
-                // the information.
-                if (preg_match_all($issue_match_regex, $text, $matched_issue_data))
+                $lines = explode("\n", $text);
+                foreach ($lines as $line)
                 {
-
-                    // Identified issues are kept inside of named regex group.
-                    foreach ($matched_issue_data["issues"] as $key => $issue_number)
+                    if (mb_substr($line, -1) == "\r")
                     {
-                        // Get the matched transitions for the issue.
-                        $matched_issue_transitions = $matched_issue_data["transitions"][$key];
-
-                        // Create an empty array to store transitions for an issue. Don't
-                        // overwrite it. Use issue number as key for transitions.
-                        if (!array_key_exists($issue_number, $transitions))
-                        {
-                            $transitions[$issue_number] = array();
-                        }
-
-                        // Add the transition information (if any) for an issue.
-                        if ($matched_issue_transitions )
-                        {
-                            // Parse the transition information. Each transition string is in
-                            // format:
-                            // 'TRANSITION1: PARAM1_1=VALUE1_1 PARAM1_2=VALUE1_2; TRANSITION2: PARAM2_1=VALUE2_1 PARAM2_2=VALUE2_2'
-                            foreach (explode("; ", $matched_issue_transitions) as $transition)
-                            {
-                                // Split command from its parameters.
-                                $transition_data = explode(": ", $transition);
-                                $transition_command = $transition_data[0];
-                                // Set-up array that will contain parameters
-                                $transition_parameters = array();
-
-                                // Process parameters if they were present.
-                                if (count($transition_data) == 2)
-                                {
-                                    // Split into induvidual parameters.
-                                    foreach (explode(" ", $transition_data[1]) as $parameter)
-                                    {
-                                        // Only process proper parameters (of format 'PARAM=VALUE')
-                                        if (mb_strpos($parameter, '='))
-                                        {
-                                            list($param_key, $param_value) = explode('=', $parameter);
-                                            $transition_parameters[$param_key] = $param_value;
-                                        }
-                                    }
-                                }
-                                // Append the transition information for the current issue number.
-                                $transitions[$issue_number][] = array($transition_command, $transition_parameters);
-                            }
-                        }
-
-                        // Add the issue number to the list.
-                        $issue_numbers[] = $issue_number;
+                        $line = mb_substr($line, 0, -1);
                     }
 
+                    // If any match is found using the current regular expression, extract
+                    // the information.
+                    if (preg_match_all($issue_match_regex, $line, $matched_issue_data))
+                    {
+
+                        // Identified issues are kept inside of named regex group.
+                        foreach ($matched_issue_data["issues"] as $key => $issue_number)
+                        {
+                            // Get the matched transitions for the issue.
+                            $matched_issue_transitions = $matched_issue_data["transitions"][$key];
+
+                            // Create an empty array to store transitions for an issue. Don't
+                            // overwrite it. Use issue number as key for transitions.
+                            if (!array_key_exists($issue_number, $transitions))
+                            {
+                                $transitions[$issue_number] = array();
+                            }
+
+                            // Add the transition information (if any) for an issue.
+                            if ($matched_issue_transitions )
+                            {
+                                // Parse the transition information. Each transition string is in
+                                // format:
+                                // 'TRANSITION1: PARAM1_1=VALUE1_1 PARAM1_2=VALUE1_2; TRANSITION2: PARAM2_1=VALUE2_1 PARAM2_2=VALUE2_2'
+                                foreach (explode("; ", $matched_issue_transitions) as $transition)
+                                {
+                                    // Split command from its parameters.
+                                    $transition_data = explode(": ", $transition);
+                                    $transition_command = $transition_data[0];
+                                    // Set-up array that will contain parameters
+                                    $transition_parameters = array();
+
+                                    // Process parameters if they were present.
+                                    if (count($transition_data) == 2)
+                                    {
+                                        // Split into induvidual parameters.
+                                        foreach (explode(" ", $transition_data[1]) as $parameter)
+                                        {
+                                            // Only process proper parameters (of format 'PARAM=VALUE')
+                                            if (mb_strpos($parameter, '='))
+                                            {
+                                                list($param_key, $param_value) = explode('=', $parameter);
+                                                $transition_parameters[$param_key] = $param_value;
+                                            }
+                                        }
+                                    }
+                                    // Append the transition information for the current issue number.
+                                    $transitions[$issue_number][] = array($transition_command, $transition_parameters);
+                                }
+                            }
+
+                            // Add the issue number to the list.
+                            $issue_numbers[] = $issue_number;
+                        }
+
+                    }
                 }
             }
 

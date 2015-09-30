@@ -3940,6 +3940,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Project.toggleCommitsFilters = function (branch) {
+            if (branch != null) {
+                jQuery('.commit.branch_'+branch, $('project_commits_center')).show();
+                jQuery('.commit', $('project_commits_center')).filter(':not(.branch_'+branch+')').hide();
+            }
+            else {
+                jQuery('.commit', $('project_commits_center')).show();
+            }
+        };
+
         TBG.Project.showRoadmap = function () {
             $('milestone_details_overview').hide();
             $('project_roadmap').show();
