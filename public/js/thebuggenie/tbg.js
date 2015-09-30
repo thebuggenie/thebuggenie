@@ -5878,8 +5878,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             parameters += '&offset=' + offset;
             TBG.Main.Helpers.ajax(url, {
                 params: parameters,
-                loading: {indicator: 'paging_spinning'},
-                success: {update: 'search_results'}
+                loading: {
+                    callback: function() {
+                        jQuery('.paging_spinning').show();
+                    }
+                },
+                success: {
+                    update: 'search_results',
+                    callback: function() {
+                        jQuery('.paging_spinning').hide();
+                    }
+                }
             });
         };
 
