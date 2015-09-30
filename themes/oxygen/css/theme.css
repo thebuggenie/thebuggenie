@@ -11527,6 +11527,11 @@ div[id^='wiki_'][id$='_no_links']
     padding: 10px 0 0 0;
 }
 
+#viewissue_vcs_integration_commits .commenttitle
+{
+    float: left;
+}
+
 #viewissue_vcs_integration_commits .commenttitle .userlink
 {
     font-size: 1em;
@@ -11535,8 +11540,10 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentdate
 {
     margin-left: -40px;
-    margin-top: 4px;
+    margin-top: 11px;
     margin-bottom: 2px;
+    display: inline;
+    float: left;
 }
 
 #vcs_integration_getcommit_backdrop_box a.comment_hash,
@@ -11544,6 +11551,31 @@ div[id^='wiki_'][id$='_no_links']
 {
     font-size: 1.8em;
     margin-top: 2px;
+}
+
+#viewissue_vcs_integration_commits .commit_repos_branch
+{
+    float: right;
+    display: inline;
+    margin-left: -40px;
+    margin-bottom: 2px;
+    width: auto;
+    clear: both;
+}
+
+#viewissue_vcs_integration_commits .commitrepos
+{
+    color: #AAA;
+}
+
+#viewissue_vcs_integration_commits .commitbranch
+{
+    font-size: 1em;
+}
+
+#viewissue_vcs_integration_commits .commentbody
+{
+    clear: both;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,

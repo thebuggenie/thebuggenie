@@ -297,7 +297,7 @@
 
                 if ($request['quicksearch'])
                 {
-                    $this->setSortFields(array(tables\Issues::LAST_UPDATED => 'asc'));
+                    $this->setSortFields(array(tables\Issues::LAST_UPDATED => 'desc'));
 
                     if ($request['term'])
                     {
@@ -627,7 +627,7 @@
             {
                 if (!strlen($this->_sortfields))
                 {
-                    $this->_sortfields = array(tables\Issues::LAST_UPDATED => 'asc');
+                    $this->_sortfields = array(tables\Issues::LAST_UPDATED => 'desc');
                 }
                 else
                 {

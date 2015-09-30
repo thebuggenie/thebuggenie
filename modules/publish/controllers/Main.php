@@ -342,7 +342,7 @@
                     if ($this->article->getArticleType() == Article::TYPE_MANUAL && !$this->article->getName())
                     {
                         $article_name_prefix = ($this->article->getParentArticle() instanceof Article) ? $this->article->getParentArticle()->getName() . ':' : $request['parent_article_name'];
-                        $this->article->setName(str_replace(' ', '', $article_name_prefix . $this->article->getManualName()));
+                        $this->article->setName($article_name_prefix . $this->article->getManualName());
                     }
                     $this->article->setContentSyntax($request['article_content_syntax']);
                     $this->article->setContent($request->getRawParameter('article_content'));

@@ -5,9 +5,9 @@
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Project commits')));
 
 ?>
-<div id="project_release_center" class="project_info_container">
+<div id="project_commits_center" class="project_info_container">
     <div class="project_right_container">
-        <div class="project_right" id="project_release_center_container">
+        <div class="project_right" id="project_commits_center_container">
             <div id="project_commits" style="width: 790px;">
                 <?php
                 if ($commits == false)
@@ -38,6 +38,38 @@
     </div>
     <div class="project_left_container">
         <div class="project_left">
+            <h3><?php echo __('Branch filters'); ?></h3>
+            <ul class="simple_list">
+                <?php $branches = array(); ?>
+                <?php foreach ($commits as $commit): ?>
+                    <?php
+
+                    $misc_data = explode('|', $commit->getMiscData());
+
+                    $branchname = null;
+
+                    foreach ($misc_data as $data)
+                    {
+                        if (mb_strstr($data, 'branch'))
+                        {
+                            $branch = explode(':', $data);
+                            if (count($branch) == 2)
+                            {
+                                $branchname = $branch[1];
+                            }
+                        }
+                    }
+
+                    if (! is_null($branchname))
+                    {
+                        $branches[$branchname] = $branchname;
+                    } ?>
+                <?php endforeach; ?>
+                <li class="selected"><a href="javascript:void(0);" onclick="TBG.Project.toggleCommitsFilters();TBG.Project.toggleLeftSelection(this);"><?php echo __('All branches'); ?></a></li>
+                <?php foreach (array_unique($branches) as $branchname): ?>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.toggleCommitsFilters('<?php echo $branchname; ?>');TBG.Project.toggleLeftSelection(this);"><?php echo $branchname; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
     </div>
     <br style="clear: both;">

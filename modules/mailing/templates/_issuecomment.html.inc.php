@@ -5,7 +5,7 @@
     </h3>
     <br>
     <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername()));?></h4>
-    <p><?php echo $comment->getParsedContent(); ?></p>
+    <p><?php echo $comment->getParsedContent(array('in_email' => true)); ?></p>
     <br>
     <div style="color: #888;">
         <?php echo __('Show issue:') . ' ' . link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()))); ?><br>

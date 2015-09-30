@@ -395,7 +395,7 @@
                                     }
 
                                     // Run the transition.
-                                    $possible_transition->transitionIssueToOutgoingStepWithoutRequest($issue);
+                                    $possible_transition->transitionIssueToOutgoingStepFromRequest($issue, framework\Context::getRequest());
 
                                     // Log an informative message about the transition.
                                     $output .= '[VCS ' . $project->getKey() . '] Ran transition ' . $possible_transition->getName() . ' with parameters \'' . $parameters_string . '\' on issue ' . $issue->getFormattedIssueNo() . "\n";

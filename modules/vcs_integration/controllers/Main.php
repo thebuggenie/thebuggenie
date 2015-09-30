@@ -201,7 +201,7 @@
             $parts = explode('/', $ref);
             if (count($parts) == 3)
             {
-                $branch = $parts[2];
+                $branch = implode('/', array_slice($parts, 2));
             }
             else
             {
@@ -332,9 +332,9 @@
             // Branch is stored in the ref
             $ref = $entries->ref;
             $parts = explode('/', $ref);
-            if (count($parts) == 3)
+            if (count($parts) >= 3)
             {
-                $branch = $parts[2];
+                $branch = implode('/', array_slice($parts, 2));
             }
             else
             {
@@ -560,7 +560,7 @@
 
             if (count($parts) == 3)
             {
-                $branch = $parts[2];
+                $branch = implode('/', array_slice($parts, 2));
             }
             else
             {
