@@ -11520,6 +11520,11 @@ div[id^='wiki_'][id$='_no_links']
     padding: 10px 0 0 0;
 }
 
+#viewissue_vcs_integration_commits .commenttitle
+{
+    float: left;
+}
+
 #viewissue_vcs_integration_commits .commenttitle .userlink
 {
     font-size: 1em;
