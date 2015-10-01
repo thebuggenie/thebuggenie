@@ -9445,6 +9445,10 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
     margin-top: 12px;
 }
 
+.dashboard_view_content .dashboard_subprojects .project_strip { padding-right: 0; }
+.dashboard_view_content .dashboard_subprojects .project_strip .button-group { margin-right: 0; }
+.dashboard_view_content .dashboard_subprojects .project_strip .button-dropdown { float: left; }
+
 .dashboard_view_content .release_item
 {
     font-size: 0.8em;

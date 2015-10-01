@@ -987,28 +987,28 @@
             {
                 case ":(":
                 case ":-(":
-                    return image_tag('smileys/4.png');
+                    return image_tag('smileys/4.png', array('class' => 'smiley'));
                 case ":)":
                 case ":-)":
-                    return image_tag('smileys/2.png');
+                    return image_tag('smileys/2.png', array('class' => 'smiley'));
                 case "8)":
                 case "8-)":
-                    return image_tag('smileys/3.png');
+                    return image_tag('smileys/3.png', array('class' => 'smiley'));
                 case "B)":
                 case "B-)":
-                    return image_tag('smileys/3.png');
+                    return image_tag('smileys/3.png', array('class' => 'smiley'));
                 case ":-/":
-                    return image_tag('smileys/10.png');
+                    return image_tag('smileys/10.png', array('class' => 'smiley'));
                 case ":D":
                 case ":-D":
-                    return image_tag('smileys/5.png');
+                    return image_tag('smileys/5.png', array('class' => 'smiley'));
                 case ":P":
                 case ":-P":
-                    return image_tag('smileys/6.png');
+                    return image_tag('smileys/6.png', array('class' => 'smiley'));
                 case "(!)":
-                    return image_tag('smileys/8.png');
+                    return image_tag('smileys/8.png', array('class' => 'smiley'));
                 case "(?)":
-                    return image_tag('smileys/9.png');
+                    return image_tag('smileys/9.png', array('class' => 'smiley'));
             }
         }
 
