@@ -1792,9 +1792,6 @@ a.friend { color: #277CBA; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
 .workflow_actions .button,
 .workflow_actions .button:hover,
-.dashboard_view_content .button-group { margin-right: 0; }
-.dashboard.layout_standard .dashboard_view_content .project_strip { padding-right: 0; }
-.dashboard.layout_standard .dashboard_view_content li.button-dropdown { float: left; }
 .button-group > .button,
 .button-group > .button:hover,
 .button-group > .button-dropdown,
