@@ -174,7 +174,7 @@
         <?php \thebuggenie\core\framework\Event::createNew('core', 'layout.php::header-ends')->trigger(); ?>
     </head>
     <body id="body">
-        <div id="main_container" class="page-<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>" data-url="<?php echo make_url('userdata'); ?>">
+        <div id="main_container" class="page-<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?> cf" data-url="<?php echo make_url('userdata'); ?>">
             <?php if (!in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), array('login_page', 'elevated_login_page', 'reset_password'))): ?>
                 <?php \thebuggenie\core\framework\Logging::log('Rendering header'); ?>
                 <?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>

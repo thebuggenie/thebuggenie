@@ -3,7 +3,9 @@
         <?php $date = tbg_formatTime($timestamp, 5); ?>
             <?php if ($date != $prev_date): ?>
             <tr>
-                <td class="latest_action_dates" colspan="2"><?php echo tbg_formatTime($timestamp, 5); ?></td>
+                <td class="latest_action_dates_cell" colspan="2">
+                    <div class="latest_action_dates"><?php echo tbg_formatTime($timestamp, 5); ?></div>
+                </td>
             </tr>
         <?php endif; ?>
         <?php foreach ($activities as $activity): ?>

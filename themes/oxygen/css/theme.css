@@ -4166,7 +4166,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     display: table;
     table-layout: fixed;
     background-color: #FFF;
-    z-index: 2;
+    z-index: 1013;
     box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
 }
 #whiteboard.fixedheader #whiteboard-headers-placeholder {
@@ -4643,6 +4643,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .timeline_actions a { font-weight: bold; }
 .timeline_actions .content { padding-top: 5px; }
 .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 10px; border-left: 2px solid #EFEFEF; font-size: 0.9em; }
+.dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions { margin-right: -10px; margin-left: -10px; }
+.dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; margin-bottom: 20px; }
+.dashboard_project_recent_activities .recent_activities .latest_action_dates, .dashboard_recent_comments .recent_activities .latest_action_dates, .dashboard_logged_actions .recent_activities .latest_action_dates { background-color: #ECF0F4; padding-top: 10px; padding-bottom: 10px; }
+.dashboard_project_recent_activities .recent_activities .latest_action_dates_cell, .dashboard_recent_comments .recent_activities .latest_action_dates_cell, .dashboard_logged_actions .recent_activities .latest_action_dates_cell { padding-top: 15px; }
 /* end timeline */
 
 /* project roadmap styling */
@@ -9382,6 +9386,7 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled
 .dashboard_view_content .button.button-silver.dash {
     padding: 3px 7px;
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .dashboard_view_content .userdropdown .user_popup .header
@@ -11643,4 +11648,16 @@ div[id^='wiki_'][id$='_no_links']
 {
     margin-left: 15px;
     margin-top: 47px;
+}
+
+/* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */
+
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
 }
