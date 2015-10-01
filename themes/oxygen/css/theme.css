@@ -372,7 +372,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 #main_container.fullscreen header, #main_container.fullscreen .project_header { display: none; }
 
 /* main page layout dimensions and details */
-#content_container { padding-bottom: 50px; height: auto; }
+#content_container { padding-bottom: 20px; height: auto; }
 .page-project_settings #content_container,
 .page-project_release_center #content_container,
 .page-vcs_commitspage #content_container,
@@ -390,6 +390,45 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
     margin-top: 20px;
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
 }
+
+.page-account #content_container { padding-bottom: 50px; }
+
+.page-configure #content_container,
+.page-configure_scopes #content_container,
+.page-configure_settings #content_container,
+.page-configure_scope #content_container,
+.page-configuration_themes #content_container,
+.page-configure_roles #content_container,
+.page-configure_permissions #content_container,
+.page-configure_authentication #content_container,
+.page-configure_files #content_container,
+.page-import_home #content_container,
+.page-configure_projects #content_container,
+.page-configure_issuetypes #content_container,
+.page-configure_issuetypes_schemes #content_container,
+.page-configure_issuetypes_scheme #content_container,
+.page-configure_issuefields #content_container,
+.page-configure_workflow #content_container,
+.page-configure_workflow_workflows #content_container,
+.page-configure_workflow_step #content_container,
+.page-configure_workflow_steps #content_container,
+.page-configure_workflow_transition #content_container,
+.page-configure_workflow_schemes #content_container,
+.page-configure_workflow_scheme #content_container,
+.page-configure_users #content_container,
+.page-configure_modules #content_container,
+.page-configure_module #content_container
+{
+    max-width: 1025px;
+    border: 1px solid #EAEAEA;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
+    padding-top: 18px;
+    padding-bottom: 10px;
+}
+
 .page-project_settings footer,
 .page-project_release_center footer,
 .page-vcs_commitspage footer,
@@ -809,7 +848,7 @@ div.autocomplete ul li .hidden { display: none; }
 /* end autocompleter */
 
 /* tabbed menu styles */
-.tab_menu { padding: 0px; margin: 0px; border: 0px; position: relative; border-bottom: 1px solid #BBB; }
+.tab_menu { padding: 0px; margin: 0px; border: 0px; position: relative; border-bottom: 1px solid #D0D0D0; }
 #project_config_menu_panes .tab_menu { margin-top: 35px; margin-bottom: 10px; }
 .tab_menu ul { position: absolute; bottom: -1px; padding: 0px; margin: 0; list-style: none; }
 .tab_menu ul.right { right: 10px; }
@@ -821,9 +860,9 @@ div.autocomplete ul li .hidden { display: none; }
 .tab_menu li { color: #777; border-bottom: none; border-top: 1px solid #BBB; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; padding: 3px 4px 3px 4px; display: block; }
 .tab_menu li:hover { text-decoration: none; border-bottom: none; display: block; }
 .tab_menu li { float: left; display: block; font-size: 0.9em; border: 1px solid #CCC; border-bottom: 1px solid #BBB; background-color: #EBEBEB; margin: 0 0 0 5px; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; }
-.tab_menu li.selected, .tab_menu li:hover { color: #444; display: block; box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); }
+.tab_menu li.selected, .tab_menu li:hover { color: #444; display: block; box-shadow: 0 -3px 15px -7px rgba(50, 50, 50, 0.4); }
 .tab_menu li.selected, .tab_menu li.selected:hover { border-bottom: none; }
-.tab_menu .selected { font-weight: bold; }
+.tab_menu .selected { font-weight: normal; }
 .tab_menu li:hover { background-color: #EFEFEF; border: 1px solid #BBB; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; }
 .tab_menu li.nohover:hover a, .tab_menu li.nohover a { display: block; }
 .tab_menu li.nohover:hover, .tab_menu li.nohover, .more_actions_dropdown li.nohover:hover, .more_actions_dropdown li.nohover { background-color: transparent; border: 0px; margin: 0; }
@@ -858,11 +897,6 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     margin: 15px 0;
     padding: 10px 5px 0;
     height: 25px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
-    background-color: #F8F8F8;
 }
 .tab_menu.inset ul {
     display: block;
@@ -875,6 +909,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 }
 .tab_menu.inset li.selected {
     border-bottom: 1px solid #FFF;
+    margin-top: -4px;
+    padding: 6px 7px 1px 5px;
 }
 .tab_menu.inset li.selected a {
     padding: 3px 8px 3px 5px;
@@ -901,8 +937,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     -moz-border-radius-topright: 5px;
     -webkit-border-top-right-radius: 5px;
     font-size: 1.1em !important;
-    padding: 3px 5px 3px 3px;
-    box-shadow: inset 0 -3px 3px -3px rgba(0, 0, 0, 0.4);
+    padding: 5px 8px 4px 7px;
 }
 .tab_menu.inset li.modest {
     background: transparent;
@@ -1288,10 +1323,10 @@ table.cleantable th { text-align: center; }
 /* end table styling */
 
 /* configuration section styling */
-.configuration_update_check_container { background-color: rgba(200, 200, 200, 0.1); padding: 5px; margin: 10px; border: 1px solid rgba(100, 100, 100, 0.3); line-height: 21px; }
-#update_button { float: right; margin-left: 5px; font-size: 1em; }
+.configuration_update_check_container { background-color: rgba(200, 200, 200, 0.1); padding: 15px; margin: 10px; border: 1px solid rgba(100, 100, 100, 0.3); line-height: 21px; margin-top: -7px; border-radius: 3px; }
+#update_button { float: right; margin: -4px -4px 0 5px; font-size: 1em; padding: 5px 8px; }
 #update_spinner { float: right; }
-.configuration_container { padding: 0 10px; }
+.configuration_container { padding: 0 10px; margin-bottom: -22px; }
 .configuration_container h1 { margin: 15px 0 5px 0; background-color: transparent; font-weight: normal; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px dotted #CCC; font-size: 1.4em; }
 .configuration_container h1:first-child { margin-top: 5px; }
 
@@ -1305,8 +1340,8 @@ table.cleantable th { text-align: center; }
 .config_buttons li a { display: block; height: 20px; padding: 5px 0 0px 5px; }
 .config_buttons li a:hover { border: 0px; }
 
-.config_badges { margin: 0; }
-.config_badges li { margin: 5px 10px 5px 0; width: 315px; font-size: 0.9em; border: 1px solid #DDD; padding: 0px; background-color: #FFF; display: inline-block; vertical-align: top; box-shadow: 0 0 3px rgba(200, 200, 200, 0.3); }
+.config_badges { margin: 0 -5px; }
+.config_badges li { margin: 6px 5px 6px 5px; width: 324px; font-size: 0.9em; border: 1px solid #DDD; padding: 0px; background-color: #FFF; display: inline-block; vertical-align: top; box-shadow: 0 0 3px rgba(200, 200, 200, 0.3); }
 .config_badges li:hover    { border-color: #CCC; box-shadow: 0 0 4px rgba(200, 200, 200, 0.7); }
 .config_badges li a    { display: block; height: 60px; padding: 7px; }
 .config_badges li a:hover { border: 0px; }
@@ -3240,10 +3275,10 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container { background-color: rgba(200, 240, 200, 0.4); }
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container:hover { background-color: rgba(180, 220, 180, 0.4); }
 
-.story_color { display: block; position: absolute; left: 0; height: 100%; width: 10px; padding: 0; border-right: 1px solid rgba(200, 200, 200, 0.2); opacity: 0.6; }
+.story_color { display: block; position: absolute; left: 0; height: 100%; width: 7px; padding: 0; border-right: 1px solid rgba(200, 200, 200, 0.2); opacity: 0.6; }
 .epic .story_color { border-color: rgba(100, 100, 100, 0.2); }
 .story_color.dropper { cursor: pointer; }
-.story_color_selector { position: absolute; top: 0px; left: 0px; width: 450px; height: auto; z-index: 999; padding: 5px; color: #333; }
+.story_color_selector { position: absolute; top: 10px; left: 15px; width: 260px; height: auto; z-index: 999; padding: 5px; color: #333; }
 .story_color_selector .color_items { margin: 5px; }
 .issue_closed .story_color_selector a, .story_color_selector a { color: #00A400; }
 .story_color_selector_item { cursor: pointer; float: left; width: 15px; height: 15px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border: 1px solid rgba(0, 0, 0, 0.5); margin-right: 5px; opacity: 0.6; }
@@ -3462,7 +3497,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     top: 4px;
 }
 .whiteboard-issue .issue_more_actions_link_container {
-    left: 16px;
+    left: 13px;
     right: initial;
     bottom: 8px;
     top: initial;
@@ -4137,7 +4172,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     display: block;
     border: 0;
     padding: 5px 0 5px 0;
-    margin: 0 57px 0 20px;
+    margin: 0 57px 0 17px;
     text-decoration: none;
     font-size: 1em;
     font-weight: normal;
@@ -4145,7 +4180,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-issue .extra {
     display: none;
-    margin: 0 5px 0 20px;
+    margin: 0 5px 0 17px;
 }
 #whiteboard {
     position: relative;
@@ -4542,7 +4577,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 #project_description {font-size: 1.1em; font-weight: normal; color: #666;}
 #project_description.none {color: #AAA;}
-.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #E6E6E6; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; border-right: 1px solid #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 0; }
 #search_sidebar .container_divs_wrapper {
@@ -4594,13 +4629,13 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar .collapser_link a { padding: 0; }
 .side_bar .collapser_link a:hover { text-decoration: none; border: 0; }
 .project_information_sidebar.collapsed .sidebar_links, .project_information_sidebar.collapsed #project_header_container div { display: none; }
-.project_information_sidebar .sidebar_links a { display: block; padding: 8px; color: #555; border-top: 1px dotted #DDD; border-left: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset; }
+.project_information_sidebar .sidebar_links a { display: block; padding: 8px; color: #555; border-top: 1px dotted #DDD; border-left: 1px dotted #DDD; background-color: #FAFAFA; margin: 0 -1px 0 7px; box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset; }
 .project_information_sidebar .sidebar_links a:first-child { border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 3px; }
 .project_information_sidebar .sidebar_links a:last-child { border-bottom: 1px dotted #DDD; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 3px; }
 .project_information_sidebar .sidebar_links a:hover { border-bottom: none; background-color: #F1F1F1; border-right-color: #CCC; }
 .project_information_sidebar .sidebar_links a:last-child:hover { border-bottom: 1px dotted #DDD; }
-.project_information_sidebar .sidebar_links a.selected { border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-bottom-left-radius: 3px; border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 12px; font-weight: bold; background-color: #FFF; box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.2); }
-.project_information_sidebar .sidebar_links a.selected + a { border-top: none; box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.3) inset; }
+.project_information_sidebar .sidebar_links a.selected { border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-bottom-left-radius: 3px; border: 1px solid #E6E6E6; border-right-color: #FFF; margin-left: 0; padding: 12px; font-weight: bold; background-color: #FFF; box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.1); }
+.project_information_sidebar .sidebar_links a.selected + a { border-top: none; box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.2) inset; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: none; background-color: #F1F1F1; box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.3) inset; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; box-shadow: none; }
@@ -6051,13 +6086,13 @@ table.sortable tr th.nosort {
     background: linear-gradient(-45deg, #e84a21, #f7ad27); /* flipped for updated spec */
 }
 
-.redbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); color: #8C0D0D; background-color: rgba(255, 50, 50, 0.6); padding: 5px; }
-.greybox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(200, 200, 200, 0.1); padding: 5px; }
-.lightyellowbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(249, 245, 178, 0.8); padding: 5px; }
-.yellowbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(249, 245, 178, 1); padding: 5px; }
-.greenbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(177, 210, 143, 0.6); padding: 5px; }
-.bluebox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(212, 229, 255, 0.6); padding: 5px; }
-.redbox, .greybox, .lightyellowbox, .yellowbox, .greenbox, .bluebox { border: 1px solid rgba(50, 50, 50, 0.3); }
+.redbox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); color: #8C0D0D; background-color: rgba(255, 50, 50, 0.15); padding: 10px; border-radius: 3px; }
+.greybox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); background-color: rgba(200, 200, 200, 0.1); padding: 10px; border-radius: 3px; }
+.lightyellowbox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); background-color: rgba(249, 245, 178, 0.4); padding: 10px; border-radius: 3px; }
+.yellowbox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); background-color: rgba(249, 245, 178, 0.6); padding: 10px; border-radius: 3px; }
+.greenbox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); background-color: rgba(177, 210, 143, 0.3); padding: 10px; border-radius: 3px; }
+.bluebox { box-shadow: 0 0 10px rgba(0, 0, 0, 0.07); background-color: rgba(212, 229, 255, 0.5); padding: 10px; border-radius: 3px; }
+.redbox, .greybox, .lightyellowbox, .yellowbox, .greenbox, .bluebox { border: 1px solid rgba(50, 50, 50, 0.15); }
 
 .tutorial-message {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -6289,6 +6324,19 @@ ul#account_tabs li.selected,
 ul#account_tabs li.selected:hover
 {
     background-color: #FFF;
+    position: relative;
+}
+
+.configuration_page .tab_menu li.selected:after,
+ul#account_tabs li.selected:after
+{
+    content: "";
+    width: 100%;
+    height: 7px;
+    position: absolute;
+    background-color: #FFF;
+    bottom: -7px;
+    left: 0;
 }
 
 .config_badges > li > a > span
