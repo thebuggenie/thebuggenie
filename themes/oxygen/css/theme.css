@@ -186,7 +186,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 #user_notifications_list li.faded_out {
     color: #AAA;
-    padding: 8px 5px 8px !important;
+    padding: 8px 5px 2px !important;
     border-bottom: none;
 }
 #user_notifications_list li.faded_out:hover {
@@ -796,7 +796,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commit_left table b { font-weight: normal; }
 .commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 9px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 11px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -11641,10 +11641,11 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentdate
 {
     margin-left: -40px;
-    margin-top: 11px;
-    margin-bottom: 2px;
+    margin-top: 12px;
+    margin-bottom: -10px;
     display: inline;
     float: left;
+    clear: both;
 }
 
 #vcs_integration_getcommit_backdrop_box a.comment_hash,
@@ -11658,13 +11659,9 @@ div[id^='wiki_'][id$='_no_links']
 {
     float: right;
     display: inline;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
     width: auto;
-}
-
-#viewissue_vcs_integration_commits .commentdate
-{
-    clear: both;
+    font-size: 0.9em;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
@@ -11680,10 +11677,11 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentbody
 {
     clear: both;
-}
-
-#project_commits {
-    min-height: 1px;
+    font-family: "DroidSansMono", monospace;
+    background-color: #F3F3F3;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,
