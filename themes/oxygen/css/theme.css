@@ -11634,9 +11634,12 @@ div[id^='wiki_'][id$='_no_links']
 {
     float: right;
     display: inline;
-    margin-left: -40px;
     margin-bottom: 2px;
     width: auto;
+}
+
+#viewissue_vcs_integration_commits .commentdate
+{
     clear: both;
 }
 
