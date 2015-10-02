@@ -186,7 +186,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 #user_notifications_list li.faded_out {
     color: #AAA;
-    padding: 8px 5px 2px !important;
+    padding: 8px 5px 8px !important;
     border-bottom: none;
 }
 #user_notifications_list li.faded_out:hover {
@@ -11680,6 +11680,10 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentbody
 {
     clear: both;
+}
+
+#project_commits {
+    min-height: 1px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,

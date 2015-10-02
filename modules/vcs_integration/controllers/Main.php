@@ -50,14 +50,58 @@
                 return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
             }
 
-            $offset = $request->getParameter('offset', 0);
-
-            $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset);
-
-            if ($offset)
+            if ($request->isPost())
             {
-                return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
+                $offset = $request->getParameter('offset', 0);
+                $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branchname'), $request->getParameter('gitlab_repos_nss'));
+
+                return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommitsbox', array('commits' => $this->commits, 'selected_project' => $this->selected_project, 'branchname' => $request->getParameter('branchname'), 'gitlab_repos_nss' => $request->getParameter('gitlab_repos_nss'))), 'offset' => $offset + 40));
             }
+
+            $branches = array();
+            $gitlab_repos_nss = array();
+
+            foreach (Commit::getByProject($this->selected_project->getID(), null) as $commit)
+            {
+                $misc_data_array = $commit->getMiscDataArray();
+
+                if (array_key_exists('branch', $misc_data_array) && !in_array($misc_data_array['branch'], $branches))
+                {
+                    $branches[] = $misc_data_array['branch'];
+                }
+
+                if (array_key_exists('gitlab_repos_ns', $misc_data_array) && array_key_exists('branch', $misc_data_array))
+                {
+                    if (!isset($gitlab_repos_nss[$misc_data_array['gitlab_repos_ns']]))
+                    {
+                        $gitlab_repos_nss[$misc_data_array['gitlab_repos_ns']] = array();
+                    }
+                    if (!in_array($misc_data_array['branch'], $gitlab_repos_nss[$misc_data_array['gitlab_repos_ns']]))
+                    {
+                        $gitlab_repos_nss[$misc_data_array['gitlab_repos_ns']][] = $misc_data_array['branch'];
+                    }
+                }
+            }
+
+            $this->branches = $branches;
+            $this->gitlab_repos_nss = $gitlab_repos_nss;
+        }
+
+        public function runProjectCommitsMore(framework\Request $request)
+        {
+            $this->forward403unless($request->isPost());
+
+            $this->selected_project = Project::getByKey($request['project_key']);
+            framework\Context::setCurrentProject($this->selected_project);
+
+            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED) {
+                return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
+            }
+
+            $offset = $request->getParameter('offset', 0);
+            $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branchname'), $request->getParameter('gitlab_repos_nss'));
+
+            return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
         }
 
         public function runAddCommit(framework\Request $request)

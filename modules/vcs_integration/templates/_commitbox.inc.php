@@ -48,7 +48,8 @@
 
     if (array_key_exists('gitlab_repos_ns', $misc_data_array))
     {
-        $base_url = rtrim($base_url, '/').'/'.$misc_data_array['gitlab_repos_ns'];
+        $reposname = $misc_data_array['gitlab_repos_ns'];
+        $base_url = rtrim($base_url, '/').'/'.$reposname;
     }
 
     $link_rev = $base_url.str_replace('%revno', $revision, $link_base);
@@ -61,7 +62,11 @@
         <div id="commit_<?php echo $commit->getID(); ?>_header" class="commentheader">
             <a href="<?php echo $link_rev; ?>" class="comment_hash" target="_blank"><?php if (!is_numeric($commit->getRevision())): echo mb_substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
             <div class="commenttitle">
-                <?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?><?php echo __('Revision %rev', array('%rev' => '<a href="'.$link_rev.'" target="_blank">'.$commit->getRevision().'</a>')); ?>
+                <div class="commit_repos_branch">
+                    <?php if ($reposname !== null): ?><span class="commitrepos"><?php echo $reposname; ?>/</span> <?php endif; ?>
+                    <?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?>
+                </div>
+                <div class="commitrev"><?php echo __('Revision %rev', array('%rev' => '<a href="'.$link_rev.'" target="_blank">'.$commit->getRevision().'</a>')); ?></div>
                 <div class="commitauthor"><?php echo __('By %user', array('%user' => get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'large')))); ?></div>
             </div>
             <div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date"><?php echo tbg_formattime($commit->getDate(), 12); ?> - <?php echo __('Preceeded by %prev', array('%prev' => '<a href="'.$link_old.'" target="_blank">'.$commit->getPreviousRevision().'</a>'))?></div>
