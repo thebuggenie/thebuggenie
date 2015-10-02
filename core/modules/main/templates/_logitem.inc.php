@@ -2,13 +2,13 @@
     <tr>
         <td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
-                <?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('style' => 'margin-top: 7px;')); ?>
+                <?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('style' => 'position: absolute; margin-top: -8px; margin-left: -6px;')); ?>
             <?php endif; ?>
         </td>
-        <td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;<?php endif; ?>">
-            <?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_time) && $include_time == true)): ?><span class="time"><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
+        <td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-bottom: <?php echo (isset($extra_padding) && $extra_padding) ? 15 : 10; ?>px;<?php endif; ?>">
+            <?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_time) && $include_time == true)): ?><span class="time "><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
-                <?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
+                <?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller project_key"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getKey()); ?></span><?php endif; ?>
             <?php endif; ?>
             <?php 
 
@@ -27,21 +27,22 @@
                 <span class="user">
                     <?php if (($user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($log_action['user_id'])) instanceof \thebuggenie\core\entities\User): ?>
                         <?php if ($log_action['change_type'] != \thebuggenie\core\entities\tables\Log::LOG_COMMENT): ?>
-                            <?php echo $user->getNameWithUsername(); ?>
+                            <?php echo $user->getNameWithUsername().':'; ?>
                         <?php else: ?>
-                            <?php echo __('%user said', array('%user' => $user->getNameWithUsername())); ?>
+                            <?php echo __('%user said', array('%user' => $user->getNameWithUsername())).':'; ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <?php if ($log_action['change_type'] != \thebuggenie\core\entities\tables\Log::LOG_COMMENT): ?>
-                            <span class="faded"><?php echo __('Unknown user'); ?></span>
+                            <span class="faded"><?php echo __('Unknown user').':'; ?></span>
                         <?php else: ?>
-                            <?php echo __('Unknown user said'); ?>
+                            <?php echo __('Unknown user said').':'; ?>
                         <?php endif; ?>
-                    <?php endif; ?>:
+                    <?php endif; ?>
                 </span>
             <?php elseif (!isset($include_issue_title) || $include_issue_title): ?>
                 <br>
             <?php endif; ?>
+            <div style="line-height: 1.4">
             <?php
 
                 switch ($log_action['change_type'])
@@ -138,6 +139,7 @@
                 }
 
             ?>
+            </div>
         </td>
     </tr>
 <?php endif; ?>
