@@ -335,6 +335,8 @@
                 $this->change_reason = $request['change_reason'];
                 try
                 {
+                    $article_prev_name = $this->article->getName();
+                    $article_prev_manual_name = $this->article->getManualName();
                     $this->article->setArticleType($request['article_type']);
                     $this->article->setName($request['new_article_name']);
                     $this->article->setParentArticle(Articles::getTable()->getArticleByName($request['parent_article_name']));
@@ -343,6 +345,10 @@
                     {
                         $article_name_prefix = ($this->article->getParentArticle() instanceof Article) ? $this->article->getParentArticle()->getName() . ':' : $request['parent_article_name'];
                         $this->article->setName($article_name_prefix . $this->article->getManualName());
+                    }
+                    if ($this->article->getArticleType() == Article::TYPE_MANUAL && !$this->article->getParentArticle() instanceof Article && $article_prev_manual_name == $article_prev_name && $article_prev_manual_name != $this->article->getManualName())
+                    {
+                        $this->article->setName($request['manual_name']);
                     }
                     $this->article->setContentSyntax($request['article_content_syntax']);
                     $this->article->setContent($request->getRawParameter('article_content'));
@@ -364,7 +370,7 @@
 
                     if (!$this->preview)
                     {
-                        $this->article->doSave(array(), $request['change_reason']);
+                        $this->article->doSave(array('article_prev_name' => $article_prev_name), $request['change_reason']);
                         framework\Context::setMessage('publish_article_message', framework\Context::getI18n()->__('The article was saved'));
                         $this->forward(framework\Context::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
                     }
