@@ -11666,6 +11666,10 @@ div[id^='wiki_'][id$='_no_links']
     clear: both;
 }
 
+#project_commits {
+    min-height: 1px;
+}
+
 #vcs_integration_getcommit_backdrop_box .commitbranch,
 #project_commits .commitbranch
 {

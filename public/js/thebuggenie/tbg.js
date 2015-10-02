@@ -2028,10 +2028,28 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
-        TBG.Project.Commits.update = function (url) {
+        TBG.Project.showBranchCommits = function (url, branchname, gitlab_repos_nss) {
+            $$('body')[0].setStyle({'overflow': 'auto'});
+
             TBG.Main.Helpers.ajax(url, {
-                url_method: 'get',
-                additional_params: "offset=" + $('commits_offset').getValue(),
+                url_method: 'post',
+                additional_params: "offset=0" + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
+                loading: {
+                    indicator: 'fullpage_backdrop',
+                    show: 'fullpage_backdrop_indicator',
+                    hide: ['fullpage_backdrop_content', 'project_commits_box']
+                },
+                success: {
+                    show: 'project_commits_box',
+                    update: 'project_commits'
+                }
+            });
+        }
+
+        TBG.Project.Commits.update = function (url, branchname, gitlab_repos_nss) {
+            TBG.Main.Helpers.ajax(url, {
+                url_method: 'post',
+                additional_params: "offset=" + $('commits_offset').getValue() + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
                 loading: {
                     indicator: 'commits_indicator',
                     hide: 'commits_more_link'
@@ -3938,16 +3956,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             ['upcoming', 'past'].each(function (cn) {
                 prp.removeClassName(cn);
             });
-        };
-
-        TBG.Project.toggleCommitsFilters = function (branch) {
-            if (branch != null) {
-                jQuery('.commit.branch_'+branch, $('project_commits_center')).show();
-                jQuery('.commit', $('project_commits_center')).filter(':not(.branch_'+branch+')').hide();
-            }
-            else {
-                jQuery('.commit', $('project_commits_center')).show();
-            }
         };
 
         TBG.Project.showRoadmap = function () {

@@ -50,12 +50,31 @@
          * @param integer $limit
          * @param integer $offset
          */
-        public function getCommitsByProject($id, $limit = 40, $offset = null)
+        public function getCommitsByProject($id, $limit = 40, $offset = null, $branch = null, $gitlab_repos_nss = null)
         {
             $crit = new Criteria();
 
             $crit->addWhere(self::PROJECT_ID, $id);
             $crit->addOrderBy(self::DATE, Criteria::SORT_DESC);
+
+            if ($branch !== null)
+            {
+                if ($gitlab_repos_nss !== null)
+                {
+                    $crit->addWhere(self::DATA, 'branch:'.$branch.'|gitlab_repos_ns:'.$gitlab_repos_nss);
+                }
+                else
+                {
+                    $crit->addWhere(self::DATA, 'branch:'.$branch.'%', Criteria::DB_LIKE);
+                }
+            }
+            else
+            {
+                if ($gitlab_repos_nss !== null)
+                {
+                    $crit->addWhere(self::DATA, '%|gitlab_repos_ns:'.$gitlab_repos_nss, Criteria::DB_LIKE);
+                }
+            }
 
             if ($limit !== null)
             {

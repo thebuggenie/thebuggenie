@@ -402,9 +402,9 @@
          *
          * @return mixed
          */
-        public static function getByProject($id, $limit = 40, $offset = null)
+        public static function getByProject($id, $limit = 40, $offset = null, $branch = null, $gitlab_repos_nss = null)
         {
-            $commits = tables\Commits::getTable()->getCommitsByProject($id, $limit, $offset);
+            $commits = tables\Commits::getTable()->getCommitsByProject($id, $limit, $offset, $branch, $gitlab_repos_nss);
             return $commits;
         }
 
