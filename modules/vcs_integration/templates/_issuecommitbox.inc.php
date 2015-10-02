@@ -54,12 +54,12 @@
             <div class="comment_hash">
                 <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())); ?>');"><?php echo $commit->getRevisionString(); ?></a>
             </div>
+            <div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date">
+                <?php echo tbg_formattime($commit->getDate(), 9); ?>
+            </div>
             <div class="commit_repos_branch">
                 <?php if ($reposname !== null): ?><span class="commitrepos"><?php echo $reposname; ?>/</span> <?php endif; ?>
                 <?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?>
-            </div>
-            <div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date">
-                <?php echo tbg_formattime($commit->getDate(), 9); ?>
             </div>
         </div>
 

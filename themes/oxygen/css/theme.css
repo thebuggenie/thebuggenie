@@ -6351,6 +6351,14 @@ span.config_explanation > span.tooltip.from-above.leftie
     padding-bottom: 10px;
 }
 
+#settings_menu_panes .config_explanation > span.tooltip.from-above.rightie,
+#config_auth .config_explanation > span.tooltip.from-above.rightie,
+#config_uploads .config_explanation > span.tooltip.from-above.rightie {
+    top: 38px;
+    left: auto;
+    right: -23px;
+}
+
 #settings_menu_panes label,
 #config_auth label,
 #config_uploads label
@@ -11643,9 +11651,12 @@ div[id^='wiki_'][id$='_no_links']
 {
     float: right;
     display: inline;
-    margin-left: -40px;
     margin-bottom: 2px;
     width: auto;
+}
+
+#viewissue_vcs_integration_commits .commentdate
+{
     clear: both;
 }
 

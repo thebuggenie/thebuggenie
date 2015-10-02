@@ -533,6 +533,17 @@
             tables\ArticleLinks::getTable()->deleteLinksByArticle($this->_name);
             ArticleCategories::getTable()->deleteCategoriesByArticle($this->_name);
 
+            if ($this->getArticleType() == self::TYPE_MANUAL && isset($options['article_prev_name']) && $this->_name != $options['article_prev_name'])
+            {
+                $manual_articles = Articles::getTable()->getManualSidebarArticles(framework\Context::getCurrentProject(), $options['article_prev_name']);
+
+                foreach ($manual_articles as $manual_article)
+                {
+                    $manual_article->setName(str_replace($options['article_prev_name'], $this->_name, $manual_article->getName()));
+                    $manual_article->doSave();
+                }
+            }
+
             $this->save();
 
             $this->_old_content = $this->_content;
