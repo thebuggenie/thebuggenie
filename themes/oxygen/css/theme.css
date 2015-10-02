@@ -74,6 +74,8 @@ div.image_container.thumb img.image { width: 220px; }
 
 blockquote { border-left: 2px solid rgba(97, 147, 207, 0.5); padding: 0 0 0 5px; margin: 5px 0 5px 15px; font-style: italic; color: #888; }
 
+img.smiley { vertical-align: text-bottom; width: 20px; height: 20px; }
+
 /* end general styles */
 
 /* Main header area */
@@ -372,7 +374,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 #main_container.fullscreen header, #main_container.fullscreen .project_header { display: none; }
 
 /* main page layout dimensions and details */
-#content_container { padding-bottom: 20px; height: auto; }
+#content_container { padding-bottom: 20px; height: auto; margin-bottom: 30px; }
 .page-project_settings #content_container,
 .page-project_release_center #content_container,
 .page-vcs_commitspage #content_container,
@@ -389,6 +391,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
     margin-right: auto;
     margin-top: 20px;
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 60px;
 }
 
 .page-account #content_container { padding-bottom: 50px; }
@@ -427,19 +430,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
     padding-top: 18px;
     padding-bottom: 10px;
-}
-
-.page-project_settings footer,
-.page-project_release_center footer,
-.page-vcs_commitspage footer,
-.page-project_timeline footer,
-.page-project_statistics footer,
-.page-project_team footer,
-.page-project_roadmap footer,
-.page-project_releases footer,
-.page-account footer
-{
-    margin-bottom: -60px;
+    margin-bottom: 60px;
 }
 .side_bar {
     width: 310px;
@@ -2600,7 +2591,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard ul.dashboard_column > li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 .dashboard.layout_standard ul.dashboard_column > li table tr.issue_closed td a { color: #88C688; }
 .dashboard.layout_standard ul.dashboard_column > li table tr td .issue_closed { text-decoration: line-through; }
-.dashboard.layout_standard ul.dashboard_column > li .imgtd img {padding: 4px 5px 0 0}
+.dashboard.layout_standard ul.dashboard_column > li .imgtd img {padding: 4px 0 0 0}
 .dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 2px 5px; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1em; border-bottom: 1px dotted #CCC; background-color: #FFF; }
 .dashboard.layout_standard ul.dashboard_column > li .milestone_box .header { margin: 10px 0 0 0; padding: 0; border: none; text-transform: none; }
 .dashboard.layout_standard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
@@ -2609,8 +2600,9 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard .dashboard_view_content .button.dash { float: right; margin-left: 5px; overflow: visible; font-size: 0.9em; }
 .dashboard.layout_standard .dashboard_view_content .project_list { font-size: 0.8em; }
 .dashboard.layout_standard .dashboard_view_header img { margin-right: 2px; }
-.dashboard.layout_standard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 7px; }
+.dashboard.layout_standard .latest_action_dates{ padding: 10px 0 0 7px; }
 .dashboard.layout_standard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
+.dashboard.layout_standard .project_key { background-color: #E8F7DC; padding: 2px 4px; border-radius: 3px; margin-right: 3px; }
 .dashboard.layout_standard .issue_link { display: block; font-size: 1em; }
 .dashboard.layout_standard .issue_link img { float: left; display: block; margin: 7px; vertical-align: middle; }
 .dashboard.layout_standard .issue_link + .status_badge { font-size: 0.8em; }
@@ -3095,7 +3087,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .page-project_dashboard .dashboard_milestones { margin: -5px -10px; }
 .dashboard_milestones > div:last-child { border-bottom: none !important; }
 .milestone_box.unavailable:hover { opacity: 1; -ms-opacity: 1; -webkit-opacity: 1; }
-.milestone_box .status { margin-top: 10px; font-size: 0.8em; display: inline-block; background-color: #D88383; color: #FFF; padding: 2px 5px; border-radius: 3px; }
+.milestone_box .status { margin-top: 10px; font-size: 0.8em; display: inline-block; background-color: #FAEFEF; color: #D88383; padding: 2px 5px; border-radius: 3px; }
 .milestone_box .date { margin-top: 4px; color: #AAA; font-size: 0.9em; }
 .milestone_box .percentage { vertical-align: middle; padding-left: 10px; }
 .milestone_box .percentage .numbers { text-align: center; font-size: 0.8em; margin-bottom: 8px; color: #555555;}
@@ -4579,7 +4571,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_description.none {color: #AAA;}
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #E6E6E6; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; border-right: 1px solid #DDD; font-size: 1.1em; padding-top: 0; }
-#search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 0; }
+#search_sidebar .num_results_badge { vertical-align: middle; float: none; position: absolute; right: 2px; }
 #search_sidebar .container_divs_wrapper {
     width: 294px;
 }
@@ -4595,7 +4587,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     list-style: none;
     margin: 0 0 6px 0;
     font-size: 0.9em;
-    padding: 0;
+    padding: 1px 0;
     transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     -ms-transition: background-color 0.3s ease;
@@ -4663,7 +4655,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end dashboard */
 
 /* project timeline */
-.recent_activities td .time { font-size: 0.9em; }
+.recent_activities td .time { font-size: 0.85em; background-color: #E8F7DC; padding: 2px 4px; border-radius: 3px; margin-right: 3px; color: #549024; }
 #timeline { padding: 5px 0 30px 15px; }
 #timeline .latest_action_dates { font-weight: normal; color: #888; text-transform: uppercase; border-bottom: 1px dotted #CCC; padding: 15px 0 5px; margin-bottom: 5px; }
 .project_timeline_more_button_container { text-align: center; width: 790px; margin: 30px 0; }
@@ -4674,14 +4666,16 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .recent_activities_details { font-size: 0.8em; }
 .recent_activities td.latest_action_dates { font-size: 1.1em; font-weight: bold; padding: 15px 0 0 0; }
 .project_information_main .recent_activities td { padding-bottom: 7px; }
-#timeline .user { font-size: 0.9em; color: #AAA; }
+#timeline .user { font-size: 1em; color: #AAA; margin-bottom: 5px; display: inline-block; }
 .timeline_actions a { font-weight: bold; }
 .timeline_actions .content { padding-top: 5px; }
 .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 10px; border-left: 2px solid #EFEFEF; font-size: 0.9em; }
-.dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions { margin-right: -10px; margin-left: -10px; }
+.dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions { margin-right: -11px; margin-left: -10px; }
 .dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; margin-bottom: 20px; }
-.dashboard_project_recent_activities .recent_activities .latest_action_dates, .dashboard_recent_comments .recent_activities .latest_action_dates, .dashboard_logged_actions .recent_activities .latest_action_dates { background-color: #ECF0F4; padding-top: 10px; padding-bottom: 10px; }
-.dashboard_project_recent_activities .recent_activities .latest_action_dates_cell, .dashboard_recent_comments .recent_activities .latest_action_dates_cell, .dashboard_logged_actions .recent_activities .latest_action_dates_cell { padding-top: 15px; }
+.dashboard_project_recent_activities .recent_activities .latest_action_dates, .dashboard_recent_comments .recent_activities .latest_action_dates, .dashboard_logged_actions .recent_activities .latest_action_dates { background-color: #F7F7F7; padding-top: 7px; padding-bottom: 7px; margin-bottom: 10px; border-bottom: 1px solid #EAEAEA; border-top: 1px solid #EAEAEA; }
+.dashboard_recent_comments .recent_activities .latest_action_dates_cell, .dashboard_logged_actions .recent_activities .latest_action_dates_cell { padding-top: 9px; padding-bottom: 2px; }
+.dashboard_project_recent_activities .recent_activities .latest_action_dates_cell { padding-top: 4px; padding-bottom: 2px; }
+.dashboard_project_recent_activities .user { display: inline-block; margin-bottom: 5px; color: #AAA; }
 /* end timeline */
 
 /* project roadmap styling */
@@ -5130,7 +5124,7 @@ li.filtervalue .hidden { display: none; }
 }
 
 #find_issues .results_header .searchterm { font-weight: normal; font-style: italic; }
-#find_issues .results_header .faded_out, .num_results_badge { font-weight: normal; font-size: 0.8em; background-color: rgba(200, 200, 200, 0.3); color: rgba(50, 50, 50, 0.6); margin-left: 5px; padding: 2px 5px; border-radius: 3px; vertical-align: baseline; }
+#find_issues .results_header .faded_out, .num_results_badge { font-weight: bold; font-size: 0.8em; background-color: rgba(200, 200, 200, 0.3); color: rgba(50, 50, 50, 0.6); margin-left: 5px; padding: 2px 5px; border-radius: 3px; vertical-align: baseline; }
 #find_issues .main_content { font-size: 0.9em; font-weight: normal; padding: 3px; }
 #find_issues #no_issues { padding: 4px; }
 #find_issues .search_export_links { float: right; font-size: 0.8em; }
@@ -8990,9 +8984,14 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     margin-top: 10px;
 }
 
-.recent_activities .imgtd > img
+.dashboard_recent_comments .recent_activities .imgtd > img
 {
-    margin-top: 1px !important;
+    margin-top: 0px !important;
+}
+
+.dashboard_logged_actions .recent_activities .imgtd > img
+{
+    margin-top: -3px !important;
 }
 
 #timeline_indicator
@@ -9002,7 +9001,19 @@ img[id^='remove_assignee_team_'][id$='_indicator']
 
 #project_release_center #project_release_center_container #timeline .recent_activities
 {
-    font-size: 1em;
+    font-size: 1.1em;
+}
+
+.page-project_timeline .project_left ul.simple_list li a
+{
+    padding-left: 29px;
+}
+
+.page-project_timeline .project_left ul.simple_list li img
+{
+    position: absolute;
+    left: 3px;
+    margin-top: 1px;
 }
 
 
@@ -9544,11 +9555,6 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     padding: 2px 5px 0 0 !important;
 }
 
-.dashboard_view_content .recent_activities .latest_action_dates
-{
-    padding-top: 15px;
-}
-
 .dashboard_view_content .project_list .project-config-buttons
 {
     font-size: 1em !important;
@@ -9629,12 +9635,6 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 #search_sidebar .collapser_link img
 {
     margin-top: 3px;
-}
-
-#search_sidebar .container_div li > a > img,
-#search_sidebar .container_div li > div > a > img
-{
-    margin-top: 1px;
 }
 
 #search_sidebar #no_user_saved_searches,
@@ -11218,6 +11218,7 @@ div[id^='comment_reply_indicator_']
 #topmenu-container .header_menu li.selected, .header_menu li.selected:hover {
     padding-left: 10px;
     padding-right: 10px;
+    box-shadow: none;
 }
 
 #topmenu-container .header_menu li.selected a
@@ -11253,6 +11254,14 @@ div[id^='comment_reply_indicator_']
 #topmenu-container.active #user_notifications_container:hover
 {
     box-shadow: none;
+}
+
+#user_notifications_container:hover #user_notifications_count {
+    margin-top: 6px !important;
+}
+
+#topmenu-container.active #user_notifications_container:hover #user_notifications_count {
+    color: #555;
 }
 
 li#header_usermenu_link > div
