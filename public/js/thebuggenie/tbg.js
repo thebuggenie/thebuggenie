@@ -7402,10 +7402,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 update: { element: '', insertion: true },
                                 callback: function (json) {
                                     if (loadToTop) {
-                                        unl.insert({top: json.content});
+                                        if (jQuery('.faded_out', unl).length) {
+                                            unl.update(json.content);
+                                        }
+                                        else {
+                                            unl.insert({top: json.content});
+                                        }
                                     }
                                     else {
-                                        unl.insert({bottom: json.content});
+                                        if (jQuery('.faded_out', unl).length) {
+                                            unl.update(json.content);
+                                        }
+                                        else {
+                                            unl.insert({bottom: json.content});
+                                        }
                                     }
                                     if ($('user_notifications_list_wrapper_nano')) jQuery("#user_notifications_list_wrapper_nano").nanoScroller();
                                     if (! loadToTop) TBG.Main.Notifications.loadingLocked = false;
