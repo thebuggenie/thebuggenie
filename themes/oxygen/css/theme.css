@@ -8963,7 +8963,8 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     margin-top: -11px;
 }
 
-.recent_activities .issue_open
+.recent_activities .issue_open,
+.recent_activities .issue_closed
 {
     font-size: 1.1em;
     margin-bottom: 10px;
@@ -8982,6 +8983,7 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     font-size: 13px;
     line-height: 21px;
     margin-top: 10px;
+    padding-right: 10px;
 }
 
 .dashboard_recent_comments .recent_activities .imgtd > img
@@ -9014,6 +9016,11 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     position: absolute;
     left: 3px;
     margin-top: 1px;
+}
+
+.page-project_timeline .issue_closed
+{
+    text-decoration: line-through;
 }
 
 
