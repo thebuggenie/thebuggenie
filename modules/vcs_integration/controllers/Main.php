@@ -83,6 +83,15 @@
                 }
             }
 
+            asort($branches);
+
+            foreach ($gitlab_repos_nss as $gitlab_repos_ns => $grn_branches)
+            {
+                asort($grn_branches);
+
+                $gitlab_repos_nss[$gitlab_repos_ns] = $grn_branches;
+            }
+
             $this->branches = $branches;
             $this->gitlab_repos_nss = $gitlab_repos_nss;
         }

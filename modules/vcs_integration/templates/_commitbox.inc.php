@@ -73,7 +73,7 @@
         </div>
 
         <div class="commentbody article commit_main" id="commit_<?php echo $commit->getID(); ?>_body">
-            <pre><?php echo $commit->getLog(); ?></pre>
+            <pre><?php echo trim($commit->getLog()); ?></pre>
             <div class="commit_expander" style="<?php if (isset($expanded) && $expanded == true) echo 'display: none;'; ?>">
                 <a href="javascript:void(0);" style="padding-right: 5px;" id="checkin_expand_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').show(); $('checkin_expand_<?php echo $commit->getID(); ?>').hide(); $('checkin_collapse_<?php echo $commit->getID(); ?>').show();"><?php echo image_tag('expand.png'); ?> <?php echo __("Show more details"); ?></a>
                 <a href="javascript:void(0);" style="display: none; padding-right: 5px;" id="checkin_collapse_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').hide(); $('checkin_expand_<?php echo $commit->getID(); ?>').show(); $('checkin_collapse_<?php echo $commit->getID(); ?>').hide();"><?php echo image_tag('collapse.png'); ?> <?php echo __("Hide details"); ?></a>
