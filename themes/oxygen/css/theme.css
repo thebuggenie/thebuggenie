@@ -784,7 +784,7 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-size: larger; }
-.commit_expander { display: block; padding: 3px 0 20px 22px; border-bottom: 1px dashed #EAEAEA; }
+.commit_expander { display: block; padding: 3px 0 15px 22px; border-bottom: 1px dashed #EAEAEA; }
 .commit_expander img { position: absolute; margin-left: -21px; margin-top: 2px; }
 .commit_left { margin-top: 10px; margin-bottom: 10px; }
 .commit_right { margin-top: 10px; margin-bottom: 0px;}
@@ -2347,9 +2347,9 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
 .issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
 
-.faded_out .percent_filled { background-color: #BBEDB9; }
-.faded_out .percent_unfilled { background-color: #D8FFD1; }
-.priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #E2FFE1; }
+.faded_out .percent_filled { background-color: #B4DFB4; }
+.faded_out .percent_unfilled { background-color: #DCEFDC; }
+.priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #DCEFDC; }
 .statistics_percentage .hover_highlight > td:first-child {font-weight: normal; font-size: 13px !important; padding-left: 3px;}
 .statistics_percentage .hover_highlight > td:nth-child(2) {text-align: right; font-weight: bold !important; padding-right: 5px; vertical-align: middle;}
 .statistics_percentage .hover_highlight > td:last-child {width: 50%; vertical-align: middle;}
@@ -3383,24 +3383,16 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     margin-top: 1px;
 }
 .whiteboard-issue .issue_estimates {
-    display: block;
     padding: 0;
     color: #AAA;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: normal;
     border: none;
-    vertical-align: middle;
     text-shadow: none;
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    text-align: right;
     padding-left: 17px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
+    margin-top: 4px;
+    margin-right: 4px;
+    float: right;
 }
 .whiteboard-issue .issue_estimate {
     display: inline-block;
@@ -4163,8 +4155,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     color: #555;
     display: block;
     border: 0;
-    padding: 5px 0 5px 0;
-    margin: 0 57px 0 17px;
+    padding: 7px 0 5px 0;
+    margin: 0 5px 0 17px;
     text-decoration: none;
     font-size: 1em;
     font-weight: normal;
@@ -4218,11 +4210,10 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .description {
     display: block;
     white-space: nowrap;
-    color: #888;
+    color: #AAA;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    font-size: 0.95em;
 }
 .whiteboard-issue .issue_info {
     display: block;
@@ -11222,9 +11213,13 @@ div[id^='comment_reply_indicator_']
     margin-top: 2px;
 }
 
-#topmenu-container .header_menu li.selected, .header_menu li.selected:hover {
+#topmenu-container .header_menu li.selected, #topmenu-container .header_menu li.selected:hover {
     padding-left: 10px;
     padding-right: 10px;
+    box-shadow: none;
+}
+
+#topmenu-container .header_menu li, #topmenu-container .header_menu li:hover {
     box-shadow: none;
 }
 
@@ -11744,10 +11739,22 @@ div[id^='wiki_'][id$='_no_links']
     margin-top: -4px;
 }
 
-#vcs_integration_getcommit_backdrop_box .commit .commenttitle .commitrepos
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle .commitrepos,
+#project_commits .commit .commenttitle .commitrepos
 {
     color: #AAA;
 }
+
+.commit_expander > a
+{
+    color: rgb(85, 85, 85);
+}
+
+#project_commits .comment
+{
+    margin-top: -90px;
+}
+
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */
 
