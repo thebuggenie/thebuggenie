@@ -784,8 +784,8 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-size: larger; }
-.commit_expander { display: block; }
-.commit_expander img { vertical-align: text-bottom; }
+.commit_expander { display: block; padding: 3px 0 20px 22px; border-bottom: 1px dashed #EAEAEA; }
+.commit_expander img { position: absolute; margin-left: -21px; margin-top: 2px; }
 .commit_left { margin-top: 10px; margin-bottom: 10px; }
 .commit_right { margin-top: 10px; margin-bottom: 0px;}
 .commit_right ul { margin: 0; }
@@ -11725,16 +11725,28 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: -5px;
 }
 
+#project_commits .commentdate
+{
+    margin-bottom: 3px;
+}
+
 #project_commits .faded_out
 {
     margin-left: 15px;
     margin-top: 47px;
 }
 
-#vcs_integration_getcommit_backdrop_box .commit .commenttitle {
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle,
+#project_commits .commit .commenttitle
+{
     font-weight: normal;
     line-height: 1.9em;
     margin-top: -4px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle .commitrepos
+{
+    color: #AAA;
 }
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */
