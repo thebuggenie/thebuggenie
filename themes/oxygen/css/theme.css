@@ -1262,7 +1262,7 @@ label[for=profile_prefer_wiki_markdown] { font-weight: normal; }
 .rounded_box.iceblue .percent_unfilled { background-color: #DEDEFF; }
 .rounded_box.red .percent_unfilled { background-color: #FFE3E3; }
 .rounded_box.yellow .percent_unfilled { background-color: #EFEFBE; }
-.rounded_box.lightgreen .percent_unfilled, .rounded_box.green .percent_unfilled { background-color: #CFC; }
+.rounded_box.lightgreen .percent_unfilled, .rounded_box.green .percent_unfilled { background-color: #DCEFDC; }
 
 .rounded_box.red .faded_out { color: #B77; }
 .rounded_box.iceblue .faded_out { color: #99C; }
@@ -2343,7 +2343,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .header_div.light { border-color: #EEE; }
 .no_items { color: #AAA; font-size: 1em; padding: 5px 0; }
 .percent_filled { background-color: #8C8; }
-.percent_unfilled { background-color: #aFa; }
+.percent_unfilled { background-color: #DCEFDC; }
 .issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
 .issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
 
@@ -4671,7 +4671,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .timeline_actions .content { padding-top: 5px; }
 .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 10px; border-left: 2px solid #EFEFEF; font-size: 0.9em; }
 .dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions { margin-right: -11px; margin-left: -10px; }
-.dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; margin-bottom: 20px; }
+.dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; }
 .dashboard_project_recent_activities .recent_activities .latest_action_dates, .dashboard_recent_comments .recent_activities .latest_action_dates, .dashboard_logged_actions .recent_activities .latest_action_dates { background-color: #F7F7F7; padding-top: 7px; padding-bottom: 7px; margin-bottom: 10px; border-bottom: 1px solid #EAEAEA; border-top: 1px solid #EAEAEA; }
 .dashboard_recent_comments .recent_activities .latest_action_dates_cell, .dashboard_logged_actions .recent_activities .latest_action_dates_cell { padding-top: 9px; padding-bottom: 2px; }
 .dashboard_project_recent_activities .recent_activities .latest_action_dates_cell { padding-top: 4px; padding-bottom: 2px; }
@@ -11689,11 +11689,12 @@ div[id^='wiki_'][id$='_no_links']
 {
     font-size: 1em;
     margin: 6px 5px 0 0;
+    padding: 0px 4px 0px 4px;
 }
 
 .commitauthor
 {
-    margin-top: 5px;
+    margin-top: 1px;
 }
 
 #vcs_integration_getcommit_backdrop_box div.userdropdown,
@@ -11711,20 +11712,29 @@ div[id^='wiki_'][id$='_no_links']
 #vcs_integration_getcommit_backdrop_box img.avatar,
 #project_commits img.avatar
 {
-    left: -30px;
+    left: -32px;
     top: -1px;
+    width: 24px;
+    height: 24px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commentdate,
 #project_commits .commentdate
 {
-    margin-top: 7px;
+    margin-top: 5px;
+    margin-bottom: -5px;
 }
 
 #project_commits .faded_out
 {
     margin-left: 15px;
     margin-top: 47px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle {
+    font-weight: normal;
+    line-height: 1.9em;
+    margin-top: -4px;
 }
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */
