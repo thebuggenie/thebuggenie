@@ -125,7 +125,7 @@
             return $this->select($crit);
         }
 
-        public function getByUserID($user_id, $limit = null)
+        public function getByUserID($user_id, $limit = null, $offset = null, $limit_to_target = false)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $user_id);
@@ -134,17 +134,33 @@
             {
                 $crit->setLimit($limit);
             }
+            if ($offset !== null)
+            {
+                $crit->setOffset($offset);
+            }
+
+            if ($limit_to_target === true)
+            {
+                $limit_to_target = array();
+            }
 
             $ret_arr = array();
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
                 {
+                    if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                    {
+                        $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                    }
+
                     $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+
+                    if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
                 }
             }
 
-            return $ret_arr;
+            return is_array($limit_to_target) ? array($ret_arr, $limit_to_target) : $ret_arr;
 
         }
 

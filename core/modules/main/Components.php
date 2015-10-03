@@ -675,7 +675,23 @@
 
         public function componentDashboardViewLoggedActions()
         {
-            $this->actions = $this->getUser()->getLatestActions();
+            list($actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, null, true);
+
+            if (count($limit_to_target) != 10)
+            {
+                $i = 0;
+                while (true)
+                {
+                    list($more_actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, 10 * $i + 10, $limit_to_target);
+                    $i++;
+
+                    $actions = array_merge($actions, $more_actions);
+
+                    if (count($limit_to_target) >= 10) break;
+                }
+            }
+
+            $this->actions = $actions;
         }
 
         public function componentDashboardViewUserProjects()
