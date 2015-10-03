@@ -186,7 +186,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 #user_notifications_list li.faded_out {
     color: #AAA;
-    padding: 8px 5px 8px !important;
+    padding: 8px 5px 2px !important;
     border-bottom: none;
 }
 #user_notifications_list li.faded_out:hover {
@@ -784,8 +784,8 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-size: larger; }
-.commit_expander { display: block; }
-.commit_expander img { vertical-align: text-bottom; }
+.commit_expander { display: block; padding: 3px 0 20px 22px; border-bottom: 1px dashed #EAEAEA; }
+.commit_expander img { position: absolute; margin-left: -21px; margin-top: 2px; }
 .commit_left { margin-top: 10px; margin-bottom: 10px; }
 .commit_right { margin-top: 10px; margin-bottom: 0px;}
 .commit_right ul { margin: 0; }
@@ -796,7 +796,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commit_left table b { font-weight: normal; }
 .commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 6px 3px 6px; font-size: 0.7em; margin: 9px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 11px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -1262,7 +1262,7 @@ label[for=profile_prefer_wiki_markdown] { font-weight: normal; }
 .rounded_box.iceblue .percent_unfilled { background-color: #DEDEFF; }
 .rounded_box.red .percent_unfilled { background-color: #FFE3E3; }
 .rounded_box.yellow .percent_unfilled { background-color: #EFEFBE; }
-.rounded_box.lightgreen .percent_unfilled, .rounded_box.green .percent_unfilled { background-color: #CFC; }
+.rounded_box.lightgreen .percent_unfilled, .rounded_box.green .percent_unfilled { background-color: #DCEFDC; }
 
 .rounded_box.red .faded_out { color: #B77; }
 .rounded_box.iceblue .faded_out { color: #99C; }
@@ -2343,7 +2343,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .header_div.light { border-color: #EEE; }
 .no_items { color: #AAA; font-size: 1em; padding: 5px 0; }
 .percent_filled { background-color: #8C8; }
-.percent_unfilled { background-color: #aFa; }
+.percent_unfilled { background-color: #DCEFDC; }
 .issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
 .issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
 
@@ -4671,7 +4671,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .timeline_actions .content { padding-top: 5px; }
 .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 10px; border-left: 2px solid #EFEFEF; font-size: 0.9em; }
 .dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions { margin-right: -11px; margin-left: -10px; }
-.dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; margin-bottom: 20px; }
+.dashboard_project_recent_activities .recent_activities, .dashboard_recent_comments .recent_activities, .dashboard_logged_actions .recent_activities { width: 100%; border-spacing: 0; margin-top: -10px; }
 .dashboard_project_recent_activities .recent_activities .latest_action_dates, .dashboard_recent_comments .recent_activities .latest_action_dates, .dashboard_logged_actions .recent_activities .latest_action_dates { background-color: #F7F7F7; padding-top: 7px; padding-bottom: 7px; margin-bottom: 10px; border-bottom: 1px solid #EAEAEA; border-top: 1px solid #EAEAEA; }
 .dashboard_recent_comments .recent_activities .latest_action_dates_cell, .dashboard_logged_actions .recent_activities .latest_action_dates_cell { padding-top: 9px; padding-bottom: 2px; }
 .dashboard_project_recent_activities .recent_activities .latest_action_dates_cell { padding-top: 4px; padding-bottom: 2px; }
@@ -8963,7 +8963,8 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     margin-top: -11px;
 }
 
-.recent_activities .issue_open
+.recent_activities .issue_open,
+.recent_activities .issue_closed
 {
     font-size: 1.1em;
     margin-bottom: 10px;
@@ -8982,6 +8983,7 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     font-size: 13px;
     line-height: 21px;
     margin-top: 10px;
+    padding-right: 10px;
 }
 
 .dashboard_recent_comments .recent_activities .imgtd > img
@@ -9014,6 +9016,11 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     position: absolute;
     left: 3px;
     margin-top: 1px;
+}
+
+.page-project_timeline .issue_closed
+{
+    text-decoration: line-through;
 }
 
 
@@ -11634,10 +11641,11 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentdate
 {
     margin-left: -40px;
-    margin-top: 11px;
-    margin-bottom: 2px;
+    margin-top: 12px;
+    margin-bottom: -10px;
     display: inline;
     float: left;
+    clear: both;
 }
 
 #vcs_integration_getcommit_backdrop_box a.comment_hash,
@@ -11651,13 +11659,9 @@ div[id^='wiki_'][id$='_no_links']
 {
     float: right;
     display: inline;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
     width: auto;
-}
-
-#viewissue_vcs_integration_commits .commentdate
-{
-    clear: both;
+    font-size: 0.9em;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
@@ -11673,10 +11677,11 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentbody
 {
     clear: both;
-}
-
-#project_commits {
-    min-height: 1px;
+    font-family: "DroidSansMono", monospace;
+    background-color: #F3F3F3;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,
@@ -11684,11 +11689,12 @@ div[id^='wiki_'][id$='_no_links']
 {
     font-size: 1em;
     margin: 6px 5px 0 0;
+    padding: 0px 4px 0px 4px;
 }
 
 .commitauthor
 {
-    margin-top: 5px;
+    margin-top: 1px;
 }
 
 #vcs_integration_getcommit_backdrop_box div.userdropdown,
@@ -11706,20 +11712,41 @@ div[id^='wiki_'][id$='_no_links']
 #vcs_integration_getcommit_backdrop_box img.avatar,
 #project_commits img.avatar
 {
-    left: -30px;
+    left: -32px;
     top: -1px;
+    width: 24px;
+    height: 24px;
 }
 
 #vcs_integration_getcommit_backdrop_box .commentdate,
 #project_commits .commentdate
 {
-    margin-top: 7px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+#project_commits .commentdate
+{
+    margin-bottom: 3px;
 }
 
 #project_commits .faded_out
 {
     margin-left: 15px;
     margin-top: 47px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle,
+#project_commits .commit .commenttitle
+{
+    font-weight: normal;
+    line-height: 1.9em;
+    margin-top: -4px;
+}
+
+#vcs_integration_getcommit_backdrop_box .commit .commenttitle .commitrepos
+{
+    color: #AAA;
 }
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */

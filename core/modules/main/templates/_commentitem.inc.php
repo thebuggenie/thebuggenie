@@ -11,11 +11,11 @@
                     $issue_title = tbg_truncateText($issue_title, $pad_length);
                 }            
             ?>
-            <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => 'issue_open')); ?>
+            <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => $issue->isClosed() ? 'issue_closed' : 'issue_open')); ?>
             <br>
             <span class="user">
                 <?php if (($user = $comment->getPostedBy()) instanceof \thebuggenie\core\entities\User): ?>
-                    <?php echo __('%username (%buddy_name) said'.':', array('%username' => $user->getUsername(), '%buddy_name' => $user->getBuddyname())); ?>
+                    <?php echo __('%buddy_name (%username) said'.':', array('%username' => $user->getUsername(), '%buddy_name' => $user->getBuddyname())); ?>
                 <?php else: ?>
                     <?php echo __('Unknown user said').':'; ?>
                 <?php endif; ?>
