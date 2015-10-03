@@ -11677,6 +11677,7 @@ div[id^='wiki_'][id$='_no_links']
     padding: 5px;
     margin-bottom: 5px;
     border-radius: 3px;
+    font-size: 0.9em;
 }
 
 #vcs_integration_getcommit_backdrop_box .commitbranch,
