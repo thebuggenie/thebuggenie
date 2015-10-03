@@ -11672,7 +11672,7 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentbody
 {
     clear: both;
-    font-family: "DroidSansMono", monospace;
+    font-family: "Droid Sans Mono", monospace;
     background-color: #F3F3F3;
     padding: 5px;
     margin-bottom: 5px;
