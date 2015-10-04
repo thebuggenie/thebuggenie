@@ -4155,7 +4155,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     color: #555;
     display: block;
     border: 0;
-    padding: 7px 0 5px 0;
+    padding: 6px 0 5px 0;
     margin: 0 5px 0 17px;
     text-decoration: none;
     font-size: 1em;
@@ -4218,7 +4218,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .issue_info {
     display: block;
     text-align: right;
-    padding: 5px;
+    padding: 5px 5px 2px 5px;
     margin-left: 13px;
     position: inherit;
 }
