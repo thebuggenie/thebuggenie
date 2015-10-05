@@ -7399,6 +7399,7 @@ div[id^='step_'][id$='_transition_add']
 div[id^='step_'][id$='_transition_add']
 {
     margin-left: 3px !important;
+    z-index: 1;
 }
 
 #workflow_steps_container > .rounded_box.shadowed.white > .header,
