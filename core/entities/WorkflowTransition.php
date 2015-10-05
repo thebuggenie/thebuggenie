@@ -329,8 +329,8 @@
         {
             $this->_outgoing_step_id = $step_id;
         }
-        
-        public function deleteTransition($direction)
+
+        public function deleteTransition($direction, $step_id)
         {
             if ($direction == 'incoming')
             {
@@ -338,7 +338,7 @@
             }
             else
             {
-                $this->_preDelete();
+                tables\WorkflowStepTransitions::getTable()->deleteByTransitionAndStepID($this->getID(), $step_id);
             }
         }
         

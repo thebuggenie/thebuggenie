@@ -146,6 +146,15 @@
             $this->_deleteByTypeID('step', $step_id);
         }
 
+        public function deleteByTransitionAndStepID($transition_id, $step_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addWhere(self::TRANSITION_ID, $transition_id);
+            $crit->addWhere(self::FROM_STEP_ID, $step_id);
+            return $this->doDelete($crit);
+        }
+
         public function reMapStepIDsByWorkflowID($workflow_id, $mapper_array)
         {
             foreach ($mapper_array as $old_step_id => $new_step_id)
