@@ -24,23 +24,25 @@
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
-    <div class="issue_info">
-        <?php foreach ($issue->getBuilds() as $details): ?>
-            <div class="issue_release"><?php echo $details['build']->getVersion(); ?></div>
-        <?php endforeach; ?>
-        <?php foreach ($issue->getComponents() as $details): ?>
-            <div class="issue_component"><?php echo $details['component']->getName(); ?></div>
-        <?php endforeach; ?>
-        <?php if (isset($swimlane)): ?>
-            <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
-                <?php foreach ($issue->getParentIssues() as $parent): ?>
-                    <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
-                        <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>; color: <?php echo $parent->getAgileTextColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+    <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))): ?>
+        <div class="issue_info">
+            <?php foreach ($issue->getBuilds() as $details): ?>
+                <div class="issue_release"><?php echo $details['build']->getVersion(); ?></div>
+            <?php endforeach; ?>
+            <?php foreach ($issue->getComponents() as $details): ?>
+                <div class="issue_component"><?php echo $details['component']->getName(); ?></div>
+            <?php endforeach; ?>
+            <?php if (isset($swimlane)): ?>
+                <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
+                    <?php foreach ($issue->getParentIssues() as $parent): ?>
+                        <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
+                            <div class="epic_badge" style="background-color: <?php echo $parent->getAgileColor(); ?>; color: <?php echo $parent->getAgileTextColor(); ?>" data-parent-epic-id="<?php echo $parent->getID(); ?>"><?php echo $parent->getShortname(); ?></div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
     <div class="issue_info">
         <?php echo image_tag('icon_block.png', array('class' => 'blocking', 'title' => __('This issue is marked as a blocker'))); ?>
         <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
