@@ -472,6 +472,10 @@
                     $this->_validation_errors[$action->getActionType()] = true;
                 }
             }
+            if ($this->getOutgoingStep()->hasLinkedStatus() && $this->getOutgoingStep()->getLinkedStatus() instanceof Status && !$this->getOutgoingStep()->getLinkedStatus()->canUserSet(framework\Context::getUser()))
+            {
+                $this->_validation_errors[WorkflowTransitionAction::ACTION_SET_STATUS] = true;
+            }
             return empty($this->_validation_errors);
         }
         
@@ -487,11 +491,19 @@
          */
         public function transitionIssueToOutgoingStepWithoutRequest(\thebuggenie\core\entities\Issue $issue)
         {
-            $this->getOutgoingStep()->applyToIssue($issue);
-            if (!empty($this->_validation_errors)) return false;
-
             // Pass new Request object so that functions like getParameter can be called.
             $request = new \thebuggenie\core\framework\Request;
+
+            if (! $this->validateFromRequest($request))
+            {
+                framework\Context::setMessage('issue_error', 'transition_error');
+                framework\Context::setMessage('issue_workflow_errors', $this->getValidationErrors());
+
+                return false;
+            }
+
+            $this->getOutgoingStep()->applyToIssue($issue);
+            if (!empty($this->_validation_errors)) return false;
             
             foreach ($this->getActions() as $action)
             {
