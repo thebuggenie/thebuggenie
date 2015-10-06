@@ -2420,7 +2420,7 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; }
 .imagepreview { display: block; margin: 0; padding: 0; border: 4px solid #FFF; transition: box-shadow 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
 .imagepreview:hover { box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
-.imagepreview img { display: block; width: 100%; margin: 0; padding: 0; }
+.imagepreview img { display: block; max-width: 100%; margin: 0 auto; padding: 0; }
 
 .popup_box li.separator {
     margin: 5px 0px;
@@ -10878,13 +10878,15 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 
 #issue_main .commentcontent .image_container.thumb
 {
-    width: 500px;
+    max-width: 500px;
     padding: 6px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     float: none !important;
     clear: none !important;
     margin: 10px 0 15px 0;
     background-color: #FFF;
+    display: table;
+    text-align: center;
 }
 
 #issue_main .commentcontent .image_container.thumb img
@@ -10894,7 +10896,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 
 #issue_main .commentcontent .image_container.thumb img.image
  {
-     width: 500px;
+    max-width: 500px;
+    width: initial;
     vertical-align: inherit;
  }
 
