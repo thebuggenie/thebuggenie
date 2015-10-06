@@ -150,9 +150,17 @@
             if ($module !== null)
             {
                 if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.xlf"))
+                {
                     $filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.xlf";
+                }
+                else if (file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.xlf"))
+                {
+                    $filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.xlf";
+                }
                 else
+                {
                     $filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "strings.xlf";
+                }
             }
             else
             {
