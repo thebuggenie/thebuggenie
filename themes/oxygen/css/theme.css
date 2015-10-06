@@ -4218,7 +4218,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .issue_info {
     display: block;
     text-align: right;
-    padding: 5px 5px 2px 5px;
+    padding: 5px 5px 7px 5px;
     margin-left: 13px;
     position: inherit;
 }
@@ -11145,7 +11145,7 @@ div[id^='comment_reply_indicator_']
 .whiteboard-issue .issue_component,
 .whiteboard-issue .issue_release
 {
-    margin: 1px 0 0 1px;
+    margin: 1px 0 3px 1px;
 }
 
 .transition .button.button-silver
