@@ -5937,11 +5937,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Search.checkToggledCheckboxes = function () {
-            var num_checked = 0;
-            $('search_results').select('input[type=checkbox]').each(function (elm) {
-                if (elm.checked)
-                    num_checked++;
-            });
+            var num_checked = 0,
+                sr = $('search_results');
+
+            if (sr) {
+                sr.select('input[type=checkbox]').each(function (elm) {
+                    if (elm.checked)
+                        num_checked++;
+                });
+            }
 
             if (num_checked == 0) {
                 $('search_bulk_container_top').addClassName('unavailable');
