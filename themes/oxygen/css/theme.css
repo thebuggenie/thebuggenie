@@ -4227,6 +4227,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 }
 .whiteboard-issue .issue_info + .issue_info {
     padding-top: 0;
+    padding-bottom: 2px;
 }
 .table { display: table; }
 .table, .td { height: 100%; }
