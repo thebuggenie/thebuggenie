@@ -666,6 +666,12 @@ asset_css:
     action: Asset::resolve
     anonymous_route: true
 
+asset_module_css:
+    route: '/css/modules/:module_name/:css'
+    module: main
+    action: Asset::resolve
+    anonymous_route: true
+
 asset_css_unthemed:
     route: '/css/:css'
     module: main

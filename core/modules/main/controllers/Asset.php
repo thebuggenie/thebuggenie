@@ -21,7 +21,11 @@ class Asset extends framework\Action
         $theme = isset($request['theme_name']) ? $request['theme_name'] : framework\Settings::getThemeName();
         if ($request->hasParameter('css')) {
             $this->getResponse()->setContentType('text/css');
-            if (!$request->hasParameter('theme_name')) {
+            if ($request->hasParameter('module_name') && framework\Context::isModuleLoaded($request['module_name'])) {
+                $module_path = (framework\Context::isInternalModule($request['module_name'])) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
+                $basepath = $module_path . $request['module_name'].DS.'css';
+                $asset = $module_path . $request['module_name'].DS.'css'.DS.$request->getParameter('css');
+            } elseif (!$request->hasParameter('theme_name')) {
                 $basepath = THEBUGGENIE_PATH . 'public'.DS.'css';
                 $asset = THEBUGGENIE_PATH . 'public'.DS.'css'.DS.$request->getParameter('css');
             } else {
