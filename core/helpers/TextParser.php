@@ -114,7 +114,7 @@
                 // (#)ISSUE_NUMBER (TRANSITIONS)" (parenthesis means optional). For
                 // example:
                 // "Resolves issue #2 (Resolve issue)"
-                $regex[] = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(?P<issues>([A-Z0-9]+\-)?\d+))( \((?P<transitions>.*?)\))?#i';
+                $regex[] = '#( |\(|^)(?<!\!)(('.$issue_string.')\s\#?(?P<issues>([A-Z0-9]+\-)?\d+))( \((?P<transitions>.*?)\))?#i';
                 // This regex will match messages that contain template at the beginning
                 // of message in format "ISSUE_NUMBER: (TRANSITIONS)".
                 $regex[] = '#^(?<!\!)((?P<issues>([A-Z0-9]+\-)?\d+)):( \((?P<transitions>.*?)\))?#i';
@@ -330,7 +330,7 @@
 
         protected function _wiki_link($topic)
         {
-            return ucfirst(str_replace(' ', '_', $topic));
+            return $topic;
         }
 
         protected function _parse_image($href,$title,$options)
@@ -987,28 +987,28 @@
             {
                 case ":(":
                 case ":-(":
-                    return image_tag('smileys/4.png');
+                    return image_tag('smileys/4.png', array('class' => 'smiley'));
                 case ":)":
                 case ":-)":
-                    return image_tag('smileys/2.png');
+                    return image_tag('smileys/2.png', array('class' => 'smiley'));
                 case "8)":
                 case "8-)":
-                    return image_tag('smileys/3.png');
+                    return image_tag('smileys/3.png', array('class' => 'smiley'));
                 case "B)":
                 case "B-)":
-                    return image_tag('smileys/3.png');
+                    return image_tag('smileys/3.png', array('class' => 'smiley'));
                 case ":-/":
-                    return image_tag('smileys/10.png');
+                    return image_tag('smileys/10.png', array('class' => 'smiley'));
                 case ":D":
                 case ":-D":
-                    return image_tag('smileys/5.png');
+                    return image_tag('smileys/5.png', array('class' => 'smiley'));
                 case ":P":
                 case ":-P":
-                    return image_tag('smileys/6.png');
+                    return image_tag('smileys/6.png', array('class' => 'smiley'));
                 case "(!)":
-                    return image_tag('smileys/8.png');
+                    return image_tag('smileys/8.png', array('class' => 'smiley'));
                 case "(?)":
-                    return image_tag('smileys/9.png');
+                    return image_tag('smileys/9.png', array('class' => 'smiley'));
             }
         }
 

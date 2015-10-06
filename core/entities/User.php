@@ -1849,7 +1849,7 @@
                 {
                     $url = (framework\Context::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
                     $url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
-                    $url .= ($small) ? 22 : 48;
+                    $url .= ($small) ? 28 : 48;
                 }
                 else
                 {

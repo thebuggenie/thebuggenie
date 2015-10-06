@@ -72,7 +72,7 @@
     {
         return sprintf('<span class="config_explanation" style="position: relative;">
                 %s
-                <span class="tooltip from-above leftie">%s</span>
+                <span class="tooltip from-above rightie">%s</span>
             </span>',
             image_tag($image, array('style' => 'margin: 0 5px; vertical-align: middle; cursor: pointer;')),
             $tooltipText

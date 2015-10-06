@@ -15,6 +15,7 @@
                 $milestoneheader = ($milestone->getId()) ? __('Edit sprint details') : __('Add new sprint');
                 $milestonenamelabel = __e('Sprint name');
                 $milestoneincludeissues_text = __e('The %number selected issue(s) will be automatically added to the new sprint', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                $milestone_type = Milestone::TYPE_SCRUMSPRINT;
                 break;
             case AgileBoard::TYPE_GENERIC:
             default:
@@ -23,11 +24,12 @@
                 $milestoneheader = ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
                 $milestonenamelabel = __e('Milestone name');
                 $milestoneincludeissues_text = __e('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+                $milestone_type = Milestone::TYPE_REGULAR;
                 break;
         }
     }
 
     $action_url = make_url('project_milestone', array('project_key' => $milestone->getProject() instanceof Project ? $milestone->getProject()->getKey() : 0, 'board_id' => isset($board) ? $board->getID() : '0', 'milestone_id' => (int) $milestone->getID()));
     
-    include_component('project/milestone', compact('starthidden', 'includeform', 'milestone', 'action_url', 'savebuttonlabel', 'milestoneplaceholder', 'milestoneheader', 'milestonenamelabel'));
+    include_component('project/milestone', compact('starthidden', 'includeform', 'milestone', 'action_url', 'savebuttonlabel', 'milestoneplaceholder', 'milestoneheader', 'milestonenamelabel', 'milestone_type'));
     

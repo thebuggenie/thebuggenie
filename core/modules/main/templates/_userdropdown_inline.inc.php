@@ -7,7 +7,7 @@
         <?php if ((isset($in_email) && ! $in_email) && (!isset($userstate) || $userstate)): ?><span class="userstate"><?php echo tbg_get_userstate_image($user); ?></span><?php endif; ?>
         <?php if ($show_avatar): ?>
             <?php $extraClass = (!isset($size) || $size == 'small') ? "small" : ""; ?>
-            <?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar '.$extraClass, 'style' => 'vertical-align: text-bottom'), true); ?>
+            <?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar '.$extraClass, 'style' => (isset($in_email) && $in_email) ? 'vertical-align: text-bottom' : ''), true); ?>
         <?php endif; ?>
         <?php echo (isset($displayname)) ? $displayname : $user->getNameWithUsername(); ?>
     </a>

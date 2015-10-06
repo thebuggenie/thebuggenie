@@ -1,7 +1,13 @@
 <div <?php if (!isset($fake) || !$fake): ?> id="whiteboard_issue_<?php echo $issue->getID(); ?>"<?php endif; ?> class="whiteboard-issue <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?>" data-issue-id="<?php echo $issue->getID(); ?>" data-status-id="<?php echo $issue->getStatus()->getID(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>" data-valid-status-ids="<?php echo join(',', array_keys($issue->getAvailableStatuses())); ?>" data-column-id="<?php echo $column->getID(); ?>">
     <div class="planning_indicator" id="issue_<?php echo $issue->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
     <?php include_component('agile/colorpicker', array('issue' => $issue)); ?>
+    <div>
+        <div class="issue_estimates">
+            <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
+            <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
+        </div>
     <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
+    </div>
     <?php if (isset($swimlane)): ?>
         <div class="issue_more_actions_link_container">
             <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo image_tag('action_dropdown_small.png'); ?></a>
@@ -47,10 +53,6 @@
                 <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee(), 'size' => 'large', 'displayname' => '')); ?>
             <?php endif; ?>
         <?php endif; ?>
-    </div>
-    <div class="issue_estimates">
-        <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
-        <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
     </div>
     <div class="issue_percentage" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
         <div class="filler" id="issue_<?php echo $issue->getID(); ?>_percentage_filler" style="width: <?php echo $issue->getPercentCompleted(); ?>%;" title="<?php echo __('%percentage completed', array('%percentage' => $issue->getPercentCompleted().'%')); ?>"></div>

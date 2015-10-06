@@ -3,36 +3,38 @@
         <?php $date = tbg_formatTime($timestamp, 5); ?>
             <?php if ($date != $prev_date): ?>
             <tr>
-                <td class="latest_action_dates" colspan="2"><?php echo tbg_formatTime($timestamp, 5); ?></td>
+                <td class="latest_action_dates_cell" colspan="2">
+                    <div class="latest_action_dates"><?php echo tbg_formatTime($timestamp, 5); ?></div>
+                </td>
             </tr>
         <?php endif; ?>
         <?php foreach ($activities as $activity): ?>
             <?php if ($activity['change_type'] == 'build_release'): ?>
                 <tr>
-                    <td class="imgtd" style="padding-top: 10px;"><?php echo image_tag('icon_build.png'); ?></td>
-                    <td style="clear: both; padding-top: 10px;">
-                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i>
+                    <td class="imgtd" style="position: absolute; margin-top: -1px; margin-left: 4px;"><?php echo image_tag('icon_build.png'); ?></td>
+                    <td style="clear: both;">
+                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<span style="font-size: 1.1em"><?php echo $activity['info']; ?></span><br><span style="display: inline-block; margin-top: 4px; margin-bottom: 15px;"><i><?php echo __('New version released'); ?></i></span>
                     </td>
                 </tr>
             <?php elseif ($activity['change_type'] == 'sprint_start'): ?>
                 <tr>
-                    <td class="imgtd" style="padding-top: 10px;"><?php echo image_tag('icon_sprint.png'); ?></td>
-                    <td style="clear: both; padding-top: 10px;">
-                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('A new sprint has started'); ?></i>
+                    <td class="imgtd" style="position: absolute; margin-top: -1px; margin-left: 4px;"><?php echo image_tag('icon_sprint.png'); ?></td>
+                    <td style="clear: both;">
+                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<span style="font-size: 1.1em"><?php echo $activity['info']; ?></span><br><span style="display: inline-block; margin-top: 4px; margin-bottom: 15px;"><i><?php echo __('A new sprint has started'); ?></i></span>
                     </td>
                 </tr>
             <?php elseif ($activity['change_type'] == 'sprint_end'): ?>
                 <tr>
-                    <td class="imgtd" style="padding-top: 10px;"><?php echo image_tag('icon_sprint.png'); ?></td>
-                    <td style="clear: both; padding-top: 10px;">
-                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('The sprint has ended'); ?></i>
+                    <td class="imgtd" style="position: absolute; margin-top: -1px; margin-left: 4px;"><?php echo image_tag('icon_sprint.png'); ?></td>
+                    <td style="clear: both;">
+                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<span style="font-size: 1.1em"><?php echo $activity['info']; ?></span><br><span style="display: inline-block; margin-top: 4px; margin-bottom: 15px;"><i><?php echo __('The sprint has ended'); ?></i></span>
                     </td>
                 </tr>
             <?php elseif ($activity['change_type'] == 'milestone_release'): ?>
                 <tr>
-                    <td class="imgtd" style="padding-top: 10px;"><?php echo image_tag('icon_milestone.png'); ?></td>
-                    <td style="clear: both; padding-top: 10px;">
-                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('A new milestone has been reached'); ?></i>
+                    <td class="imgtd" style="position: absolute; margin-top: -1px; margin-left: 4px;"><?php echo image_tag('icon_milestone.png'); ?></td>
+                    <td style="clear: both;">
+                        <span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<span style="font-size: 1.1em"><?php echo $activity['info']; ?></span><br><span style="display: inline-block; margin-top: 4px; margin-bottom: 15px;"><i><?php echo __('A new milestone has been reached'); ?></i></span>
                     </td>
                 </tr>
             <?php else: ?>
