@@ -898,6 +898,12 @@ class Main extends helpers\ProjectActions
             {
                 framework\Context::setMessage('issue_error', 'transition_error');
                 framework\Context::setMessage('issue_workflow_errors', $transition->getValidationErrors());
+
+                if ($request->isAjaxCall())
+                {
+                    $this->getResponse()->setHttpStatus(400);
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('There was an error trying to move this issue to the next step in the workflow'), 'message' => preg_replace('/\s+/', ' ', $this->getComponentHTML('main/issue_transition_error'))));
+                }
             }
             $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
         }

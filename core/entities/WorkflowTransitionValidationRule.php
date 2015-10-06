@@ -369,7 +369,7 @@
                             $assignee = $input->getAssignee();
                         }
                     }
-                    else
+                    if (! isset($assignee))
                     {
                         $assignee = framework\Context::getUser();
                     }

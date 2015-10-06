@@ -10404,9 +10404,22 @@ li.header div.user_avatar
 }
 
 #issue_info_container #viewissue_unsaved,
-#issue_info_container #viewissue_merge_errors
+#issue_info_container #viewissue_merge_errors,
+#issue_info_container #viewissue_error
 {
     padding-top: 6px;
+}
+
+#issue_info_container #viewissue_error ul
+{
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding-left: 30px;
+}
+
+#issue_info_container #viewissue_error ul li
+{
+    margin-bottom: 7px;
 }
 
 #issue_info_container #viewissue_merge_errors
@@ -10414,11 +10427,17 @@ li.header div.user_avatar
     padding-bottom: 9px;
 }
 
-#issue_info_container #viewissue_merge_errors .content
+#issue_info_container #viewissue_merge_errors .content,
+#issue_info_container #viewissue_error .content
 {
     color: #6E6E6E;
     margin-top: 5px;
     font-size: 1em;
+}
+
+#issue_info_container #viewissue_error .content
+{
+    padding-bottom: 0;
 }
 
 #issue_info_container #viewissue_changed
@@ -11768,4 +11787,17 @@ div[id^='wiki_'][id$='_no_links']
 
 .cf:after {
     clear: both;
+}
+
+#thebuggenie_failuremessage_content ul
+{
+    margin-top: 5px;
+    padding: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+#thebuggenie_failuremessage_content ul li
+{
+    margin-bottom: 3px;
 }
