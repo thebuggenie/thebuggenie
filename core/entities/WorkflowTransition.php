@@ -339,6 +339,11 @@
             else
             {
                 tables\WorkflowStepTransitions::getTable()->deleteByTransitionAndStepID($this->getID(), $step_id);
+
+                if (tables\WorkflowStepTransitions::getTable()->countByTransitionID($this->getID()) == 0)
+                {
+                    $this->delete();
+                }
             }
         }
         
