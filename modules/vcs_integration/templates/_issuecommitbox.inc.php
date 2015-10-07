@@ -38,6 +38,7 @@
     }
 
     $misc_data_array = $commit->getMiscDataArray();
+    $reposname = null;
 
     if (array_key_exists('gitlab_repos_ns', $misc_data_array))
     {
