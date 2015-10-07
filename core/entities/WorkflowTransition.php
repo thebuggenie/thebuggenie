@@ -516,6 +516,8 @@
             }
             
             $issue->save();
+
+            return true;
         }
         
         /**
