@@ -929,6 +929,10 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     -webkit-border-top-right-radius: 5px;
     font-size: 1.1em !important;
     padding: 5px 8px 4px 7px;
+    max-width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .tab_menu.inset li.modest {
     background: transparent;
