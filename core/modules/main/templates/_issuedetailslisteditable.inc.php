@@ -223,17 +223,9 @@
         </li>
     </ul>
 </fieldset>
-<fieldset id="viewissue_affected_container">
-    <legend>
-        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'issue_affected_indicator')) . __('Affected by this issue (%count)', array('%count' => '<span id="viewissue_affects_count">'.$affected_count.'</span>')); ?>
-    </legend>
-    <div id="viewissue_affected">
-        <?php include_component('main/issueaffected', array('issue' => $issue)); ?>
-    </div>
-</fieldset>
 <fieldset>
     <legend onclick="$('issue_details_fieldslist_people').toggle();"><?php echo __('People involved'); ?></legend>
-    <ul class="issue_details simple_list" id="issue_details_fieldslist_people">
+    <ul class="issue_details simple_list" id="issue_details_fieldslist_people" style="display:none">
         <li id="posted_by_field" class="issue_detail_field<?php if ($issue->isPostedByChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
             <dl class="viewissue_list">
                 <dt id="posted_by_header"><?php echo __('Posted by'); ?></dt>
@@ -335,7 +327,7 @@
 </fieldset>
 <fieldset id="issue_timetracking_container">
     <legend onclick="$('issue_details_fieldslist_time').toggle();"><?php echo __('Times and dates'); ?></legend>
-    <ul class="issue_details simple_list" id="issue_details_fieldslist_time">
+    <ul class="issue_details simple_list" id="issue_details_fieldslist_time" style="display:none">
         <li id="posted_at_field" class="issue_detail_field primary">
             <dl class="viewissue_list">
                 <dt id="posted_at_header">
@@ -390,7 +382,7 @@
 </fieldset>
 <fieldset>
     <legend onclick="$('issue_details_fieldslist').toggle();"><?php echo __('Issue details'); ?></legend>
-    <ul class="issue_details simple_list" id="issue_details_fieldslist">
+    <ul class="issue_details simple_list" id="issue_details_fieldslist" style="display:none">
         <?php foreach ($fields_list as $field => $info): ?>
             <?php include_component('main/issuedetailslistfield', compact('field', 'info', 'issue')); ?>
         <?php endforeach; ?>
@@ -633,11 +625,19 @@
         <?php endforeach; ?>
     </ul>
 </fieldset>
+<fieldset id="viewissue_affected_container">
+    <legend onclick="$('viewissue_affected').toggle();">
+        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'issue_affected_indicator')) . __('Affected by this issue (%count)', array('%count' => '<span id="viewissue_affects_count">'.$affected_count.'</span>')); ?>
+    </legend>
+    <div id="viewissue_affected" style="display:none">
+        <?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+    </div>
+</fieldset>
 <fieldset id="viewissue_attached_information_container">
-    <legend>
+    <legend onclick="$('viewissue_attached_information').toggle();">
         <?php echo __('Attachments (%count)', array('%count' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')); ?>
     </legend>
-    <div id="viewissue_attached_information">
+    <div id="viewissue_attached_information" style="display:none">
         <div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
         <ul class="attached_items" id="viewissue_uploaded_links">
             <?php foreach ($issue->getLinks() as $link_id => $link): ?>
@@ -660,18 +660,18 @@
 </fieldset>
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_after_attachments', $issue)->trigger(); ?>
 <fieldset id="viewissue_related_information_container">
-    <legend>
+    <legend onclick="$('viewissue_related_information').toggle();">
         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getChildIssues()).'</span>')); ?>
     </legend>
-    <div id="viewissue_related_information">
+    <div id="viewissue_related_information" style="display:none">
         <?php include_component('main/relatedissues', array('issue' => $issue)); ?>
     </div>
 </fieldset>
 <fieldset id="viewissue_duplicate_issues_container">
-    <legend>
+    <legend onclick="$('viewissue_duplicate_issues').toggle();">
         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'duplicate_issues_indicator')) . __('Duplicate issues (%count)', array('%count' => '<span id="viewissue_duplicate_issues_count">'.$issue->getNumberOfDuplicateIssues().'</span>')); ?>
     </legend>
-    <div id="viewissue_duplicate_issues">
+    <div id="viewissue_duplicate_issues" style="display:none">
         <?php include_component('main/duplicateissues', array('issue' => $issue)); ?>
     </div>
 </fieldset>
