@@ -369,12 +369,14 @@
                             $assignee = $input->getAssignee();
                         }
                     }
-                    else
+                    if (! isset($assignee))
                     {
                         $assignee = framework\Context::getUser();
                     }
                     if ($assignee instanceof \thebuggenie\core\entities\User)
                     {
+                        if (count($valid_items) == 1 && reset($valid_items) == '') return true;
+
                         foreach ($valid_items as $team_id)
                         {
                             if ($assignee->isMemberOfTeam($teams[$team_id]))

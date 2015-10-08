@@ -219,7 +219,11 @@
                             return $this->renderJSON(array('component' => $this->getComponentHTML('main/issue_workflow_transition', compact('issue')), 'transition_id' => $transitions[0]->getID()));
                         }
 
-                        $transitions[0]->transitionIssueToOutgoingStepWithoutRequest($issue);
+                        if (! $transitions[0]->transitionIssueToOutgoingStepWithoutRequest($issue))
+                        {
+                            $this->getResponse()->setHttpStatus(400);
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__('There was an error trying to move this issue to the next step in the workflow'), 'message' => preg_replace('/\s+/', ' ', $this->getComponentHTML('main/issue_transition_error'))));
+                        }
                     }
                     else
                     {
@@ -240,7 +244,11 @@
                         if (count($available_statuses) > 1 || (count($available_statuses) == 1 && count($transitions[reset($available_statuses)]) > 1))
                             return $this->renderJSON(array('component' => $this->getComponentHTML('agile/whiteboardtransitionselector', array('issue' => $issue, 'transitions' => $transitions, 'statuses' => $available_statuses, 'new_column' => $column, 'board' => $column->getBoard(), 'swimlane_identifier' => $request['swimlane_identifier']))));
 
-                        $transitions[reset($available_statuses)][0]->transitionIssueToOutgoingStepWithoutRequest($issue);
+                        if (! $transitions[reset($available_statuses)][0]->transitionIssueToOutgoingStepWithoutRequest($issue))
+                        {
+                            $this->getResponse()->setHttpStatus(400);
+                            return $this->renderJSON(array('error' => framework\Context::getI18n()->__('There was an error trying to move this issue to the next step in the workflow'), 'message' => preg_replace('/\s+/', ' ', $this->getComponentHTML('main/issue_transition_error'))));
+                        }
                     }
 
                     return $this->renderJSON(array('transition' => 'ok', 'issue' => $this->getComponentHTML('agile/whiteboardissue', array('issue' => $issue, 'column' => $column, 'swimlane' => $swimlane))));

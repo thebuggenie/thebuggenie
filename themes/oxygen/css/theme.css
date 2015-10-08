@@ -929,6 +929,10 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     -webkit-border-top-right-radius: 5px;
     font-size: 1.1em !important;
     padding: 5px 8px 4px 7px;
+    max-width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .tab_menu.inset li.modest {
     background: transparent;
@@ -2420,7 +2424,7 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; }
 .imagepreview { display: block; margin: 0; padding: 0; border: 4px solid #FFF; transition: box-shadow 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
 .imagepreview:hover { box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
-.imagepreview img { display: block; width: 100%; margin: 0; padding: 0; }
+.imagepreview img { display: block; max-width: 100%; margin: 0 auto; padding: 0; }
 
 .popup_box li.separator {
     margin: 5px 0px;
@@ -4218,15 +4222,16 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
 .whiteboard-issue .issue_info {
     display: block;
     text-align: right;
-    padding: 5px 5px 2px 5px;
+    padding: 5px 5px 7px 5px;
     margin-left: 13px;
     position: inherit;
 }
 .whiteboard-columns.transition-selector .whiteboard-issue .issue_info {
     display: none;
 }
-.whiteboard-issue .issue_info + .issue_info {
+.whiteboard-issue > div:nth-last-child(2) {
     padding-top: 0;
+    padding-bottom: 2px;
 }
 .table { display: table; }
 .table, .td { height: 100%; }
@@ -10404,9 +10409,22 @@ li.header div.user_avatar
 }
 
 #issue_info_container #viewissue_unsaved,
-#issue_info_container #viewissue_merge_errors
+#issue_info_container #viewissue_merge_errors,
+#issue_info_container #viewissue_error
 {
     padding-top: 6px;
+}
+
+#issue_info_container #viewissue_error ul
+{
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding-left: 30px;
+}
+
+#issue_info_container #viewissue_error ul li
+{
+    margin-bottom: 7px;
 }
 
 #issue_info_container #viewissue_merge_errors
@@ -10414,11 +10432,17 @@ li.header div.user_avatar
     padding-bottom: 9px;
 }
 
-#issue_info_container #viewissue_merge_errors .content
+#issue_info_container #viewissue_merge_errors .content,
+#issue_info_container #viewissue_error .content
 {
     color: #6E6E6E;
     margin-top: 5px;
     font-size: 1em;
+}
+
+#issue_info_container #viewissue_error .content
+{
+    padding-bottom: 0;
 }
 
 #issue_info_container #viewissue_changed
@@ -10859,13 +10883,15 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 
 #issue_main .commentcontent .image_container.thumb
 {
-    width: 500px;
+    max-width: 500px;
     padding: 6px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     float: none !important;
     clear: none !important;
     margin: 10px 0 15px 0;
     background-color: #FFF;
+    display: table;
+    text-align: center;
 }
 
 #issue_main .commentcontent .image_container.thumb img
@@ -10875,7 +10901,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 
 #issue_main .commentcontent .image_container.thumb img.image
  {
-     width: 500px;
+    max-width: 500px;
+    width: initial;
     vertical-align: inherit;
  }
 
@@ -11126,7 +11153,7 @@ div[id^='comment_reply_indicator_']
 .whiteboard-issue .issue_component,
 .whiteboard-issue .issue_release
 {
-    margin: 1px 0 0 1px;
+    margin: 1px 0 3px 1px;
 }
 
 .transition .button.button-silver
@@ -11768,4 +11795,17 @@ div[id^='wiki_'][id$='_no_links']
 
 .cf:after {
     clear: both;
+}
+
+#thebuggenie_failuremessage_content ul
+{
+    margin-top: 5px;
+    padding: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+#thebuggenie_failuremessage_content ul li
+{
+    margin-bottom: 3px;
 }

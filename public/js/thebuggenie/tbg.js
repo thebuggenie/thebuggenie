@@ -774,6 +774,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 },
                 onFailure: function (response) {
+                    if (response.responseJSON == null && JSON != null) {
+                        response.responseJSON = JSON.parse(response.responseText);
+                    }
                     var json = (response.responseJSON) ? response.responseJSON : undefined;
                     if (response.responseJSON && (json.error || json.message)) {
                         TBG.Main.Helpers.Message.error(json.error, json.message);
