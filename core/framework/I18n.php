@@ -259,7 +259,7 @@
                 }
             }
 
-            $retstring = $this->applyTextReplacements($text, $replacements);
+            $retstring = $this->applyTextReplacements($retstring, $replacements);
 
             if ($html_decode) {
                 $retstring = html_entity_decode($retstring);
