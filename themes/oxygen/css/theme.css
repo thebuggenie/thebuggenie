@@ -473,7 +473,7 @@ footer {
     left: 0;
     width: 100%;
     vertical-align: middle;
-    height: 35px;
+    height: 20px;
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
@@ -489,7 +489,7 @@ footer {
     padding: 5px 0;
     text-shadow: 1px 1px 0px #FFF;
 }
-footer img { margin: 4px 3px -6px 0; }
+footer img { margin: 0 3px 0 0; }
 /* footer section */
 
 /* login and registration page styling */
