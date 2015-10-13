@@ -21,6 +21,19 @@ class Main extends helpers\ProjectActions
      * @property $selected_client
      */
 
+    public function getAuthenticationMethodForAction($action)
+    {
+        switch ($action)
+        {
+            case 'listIssues':
+                return framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
+                break;
+            default:
+                return framework\Action::AUTHENTICATION_METHOD_CORE;
+                break;
+        }
+    }
+
     /**
      * The project dashboard
      *
@@ -563,18 +576,18 @@ class Main extends helpers\ProjectActions
 
     public function runListIssues(framework\Request $request)
     {
-        $filters = array('project_id' => array('operator' => '=', 'value' => $this->selected_project->getID()));
-        $filter_state = $request->getParameter('state', 'all');
+        $filters = array('project_id' => array('o' => '=', 'v' => $this->selected_project->getID()));
+        $filter_state = $request->getParameter('state', 'open');
         $filter_issuetype = $request->getParameter('issuetype', 'all');
         $filter_assigned_to = $request->getParameter('assigned_to', 'all');
 
         if (mb_strtolower($filter_state) != 'all')
         {
-            $filters['state'] = array('operator' => '=', 'value' => '');
+            $filters['state'] = array('o' => '=', 'v' => '');
             if (mb_strtolower($filter_state) == 'open')
-                $filters['state']['value'] = entities\Issue::STATE_OPEN;
+                $filters['state']['v'] = entities\Issue::STATE_OPEN;
             elseif (mb_strtolower($filter_state) == 'closed')
-                $filters['state']['value'] = entities\Issue::STATE_CLOSED;
+                $filters['state']['v'] = entities\Issue::STATE_CLOSED;
         }
 
         if (mb_strtolower($filter_issuetype) != 'all')
@@ -582,7 +595,7 @@ class Main extends helpers\ProjectActions
             $issuetype = entities\Issuetype::getByKeyish($filter_issuetype);
             if ($issuetype instanceof entities\Issuetype)
             {
-                $filters['issuetype'] = array('operator' => '=', 'value' => $issuetype->getID());
+                $filters['issuetype'] = array('o' => '=', 'v' => $issuetype->getID());
             }
         }
 
@@ -611,10 +624,10 @@ class Main extends helpers\ProjectActions
                     break;
             }
 
-            $filters['assignee_user'] = array('operator' => '=', 'value' => $user_id);
+            $filters['assignee_user'] = array('o' => '=', 'v' => $user_id);
         }
 
-        list ($this->issues, $this->count) = entities\Issue::findIssues($filters, 0);
+        list ($this->issues, $this->count) = entities\Issue::findIssues($filters, 50);
         $this->return_issues = array();
     }
 

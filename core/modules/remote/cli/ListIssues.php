@@ -41,7 +41,7 @@
 
             $this->cliEcho("Filters:\n", 'white', 'bold');
             $options = array('format' => 'json');
-            $options["state"] = $this->getProvidedArgument("state", "all");
+            $options["state"] = $this->getProvidedArgument("state", "open");
             $this->cliEcho("State: ");
             $this->cliEcho($options["state"], "yellow", "bold");
             $this->cliEcho("\n");
