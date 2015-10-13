@@ -237,7 +237,7 @@
                     var issueDescriptions = {
                     <?php foreach ($issuetypes as $issuetype): ?>
                         <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-                        "<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
+                        "<?php echo $issuetype->getKey(); ?>" : "<?php echo addslashes(html_entity_decode($issuetype->getDescription(),ENT_QUOTES)); ?>",
                     <?php endforeach; ?>
                     };
 
