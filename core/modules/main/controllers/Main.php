@@ -1102,6 +1102,8 @@ class Main extends framework\Action
                 $user->setJoined();
                 $user->save();
 
+                $_SESSION['activation_number'] = tbg_printRandomNumber();
+
                 if ($user->isActivated())
                 {
                     framework\Context::setMessage('auto_password', $password);
