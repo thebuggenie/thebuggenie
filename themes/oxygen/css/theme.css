@@ -236,7 +236,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 #user_notifications_list li .notification_status_toggler {
     display: block;
     position: absolute;
-    left: 374px;
+    left: 365px;
     top: 5px;
     opacity: 1;
     -webkit-transition: opacity 0.3s ease;
