@@ -2378,6 +2378,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .userdropdown { display: inline-block; position: relative; }
 #viewissue_affected { margin: 5px 0 0 0; }
 #viewissue_log_loading_indicator { display: inline-block; vertical-align: middle; margin-left: 5px; }
+#viewissue_log_items { min-height: 36px; }
 #viewissue_log_items ul { list-style: none; margin: 0 0 10px 0; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
 #viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
