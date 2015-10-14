@@ -536,7 +536,9 @@
 
         public function componentCaptcha()
         {
-
+            if (!isset($_SESSION['activation_number'])) {
+                $_SESSION['activation_number'] = tbg_printRandomNumber();
+            }
         }
 
         public function componentIssueadditem()

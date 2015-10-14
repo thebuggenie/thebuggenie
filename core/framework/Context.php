@@ -2249,13 +2249,19 @@ class Context
     {
         $basepath = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS;
         $theme = \thebuggenie\core\framework\Settings::getThemeName();
+        $themepath = THEBUGGENIE_PATH . 'themes' . DS . $theme . DS;
         foreach (self::getModules() as $module)
         {
-            if (file_exists($basepath . 'css' . DS . $theme . DS . "{$module->getName()}.css")) {
-                self::getResponse()->addStylesheet(self::getRouting()->generate('asset_css', array('theme_name' => $theme, 'css' => "{$module->getName()}.css")));
+            $module_path = (self::isInternalModule($module->getName())) ? THEBUGGENIE_INTERNAL_MODULES_PATH : THEBUGGENIE_MODULES_PATH;
+            $module_name = $module->getName();
+            if (file_exists($module_path . $module_name . DS . 'css' . DS . "{$module_name}.css")) {
+                self::getResponse()->addStylesheet(self::getRouting()->generate('asset_module_css', array('module_name' => $module_name, 'css' => "{$module_name}.css")));
             }
-            if (file_exists($basepath . 'js' . DS . "{$module->getName()}.js")) {
-                self::getResponse()->addJavascript(self::getRouting()->generate('asset_js_unthemed', array('js' => "{$module->getName()}.js")));
+            if (file_exists($themepath . 'css' . DS . "{$module_name}.css")) {
+                self::getResponse()->addStylesheet(self::getRouting()->generate('asset_css', array('theme_name' => $theme, 'css' => "{$module_name}.css")));
+            }
+            if (file_exists($basepath . 'js' . DS . "{$module_name}.js")) {
+                self::getResponse()->addJavascript(self::getRouting()->generate('asset_js_unthemed', array('js' => "{$module_name}.js")));
             }
         }
 

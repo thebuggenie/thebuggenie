@@ -1,10 +1,11 @@
 <footer>
     <?php echo image_tag('footer_logo.png'); ?>
-    <?php echo __('%thebuggenie, <b>friendly</b> issue tracking since 2002', array('%thebuggenie' => link_tag(make_url('about'), 'The Bug Genie')), true); ?><br>
-        <a href="http://opensource.org/licenses/MPL-2.0"><?php echo __('Read the license (MPL 2.0)'); ?></a>
+    <?php echo link_tag(make_url('about'), 'The Bug Genie').'&nbsp;'.\thebuggenie\core\framework\Settings::getVersion(); ?>
     <?php if ($tbg_user->canAccessConfigurationPage()): ?>
         | <b><?php echo link_tag(make_url('configure'), __('Configure %thebuggenie_name', array('%thebuggenie_name' => \thebuggenie\core\framework\Settings::getSiteHeaderName()))); ?></b>
     <?php endif; ?>
+    | <a href="http://www.thebuggenie.com/support">Support</a>
+    | <a href="http://www.thebuggenie.com/feedback">Feedback</a>
     <?php if (\thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Logging::isEnabled()): ?>
         <script>
             function tbg_debug_show_menu_tab(tab, clicked) {

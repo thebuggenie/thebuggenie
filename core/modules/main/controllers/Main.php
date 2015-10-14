@@ -1102,6 +1102,8 @@ class Main extends framework\Action
                 $user->setJoined();
                 $user->save();
 
+                $_SESSION['activation_number'] = tbg_printRandomNumber();
+
                 if ($user->isActivated())
                 {
                     framework\Context::setMessage('auto_password', $password);
@@ -3586,17 +3588,21 @@ class Main extends framework\Action
                     $options['project'] = $this->selected_project;
                     break;
                 case 'reportissue':
-                    $template_name = 'main/reportissuecontainer';
                     $this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
-                    $options['selected_project'] = $this->selected_project;
-                    $options['selected_issuetype'] = $this->selected_issuetype;
-                    $options['locked_issuetype'] = $this->locked_issuetype;
-                    $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
-                    $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
-                    $options['board'] = $this->_getBoardFromRequest($request);
-                    $options['selected_build'] = $this->_getBuildFromRequest($request);
-                    $options['issuetypes'] = $this->issuetypes;
-                    $options['errors'] = array();
+                    if ($this->selected_project instanceof entities\Project && !$this->selected_project->isLocked() && $tbg_user->canReportIssues($this->selected_project)) {
+                        $template_name = 'main/reportissuecontainer';
+                        $options['selected_project'] = $this->selected_project;
+                        $options['selected_issuetype'] = $this->selected_issuetype;
+                        $options['locked_issuetype'] = $this->locked_issuetype;
+                        $options['selected_milestone'] = $this->_getMilestoneFromRequest($request);
+                        $options['parent_issue'] = $this->_getParentIssueFromRequest($request);
+                        $options['board'] = $this->_getBoardFromRequest($request);
+                        $options['selected_build'] = $this->_getBuildFromRequest($request);
+                        $options['issuetypes'] = $this->issuetypes;
+                        $options['errors'] = array();
+                    } else {
+                        throw new \Exception($this->getI18n()->__('You are not allowed to do this'));
+                    }
                     break;
                 case 'move_issue':
                     $template_name = 'main/moveissue';
