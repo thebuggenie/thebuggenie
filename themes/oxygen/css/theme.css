@@ -489,7 +489,7 @@ footer {
     padding: 5px 0;
     text-shadow: 1px 1px 0px #FFF;
 }
-footer img { margin: 0 3px 0 0; }
+footer img { margin: 0 3px -3px 0; }
 /* footer section */
 
 /* login and registration page styling */
