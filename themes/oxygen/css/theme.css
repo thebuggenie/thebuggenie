@@ -1700,7 +1700,7 @@ a.friend { color: #277CBA; }
     font-size: 2em;
     font-weight: normal;
     text-align: center;
-    border: 3px rgba(100, 100, 100, 0.2) dashed;
+    border: 2px rgba(100, 100, 100, 0.2) dashed;
     border-radius: 5px;
     -webkit-transition: background-color 0.3s ease;
     -moz-transition: background-color 0.3s ease;
@@ -11686,6 +11686,7 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: 6px;
     width: auto;
     font-size: 0.9em;
+    margin-left: -40px;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
