@@ -561,8 +561,6 @@
          */
         protected $_subscribers = null;
 
-        protected $_new_subscribers = array();
-
         /**
          * All custom data type properties
          *
@@ -5238,28 +5236,6 @@
             $notification->save();
         }
 
-        protected function _addNotificationIfNotNotified($type, $user, $updated_by)
-        {
-            if (! $this->shouldUserBeNotified($user, $updated_by)) return;
-
-            $this->_addNotification($type, $user, $updated_by);
-        }
-
-        public function shouldUserBeNotified($user, $updated_by) {
-            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
-
-            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
-
-            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $this->getID(), false)->isOff())
-            {
-                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $this->getID(), true)->save();
-
-                return true;
-            }
-
-            return false;
-        }
-
         /**
          * Returns an array with everyone related to this project
          *
@@ -5366,12 +5342,7 @@
 
             foreach ($users as $user)
             {
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
-                {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory()->getID() == $subscribed_category_id)) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
-                }
+                $this->_addNotification(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
             }
         }
 
@@ -5379,16 +5350,7 @@
         {
             foreach ($this->getRelatedUsers() as $user)
             {
-                if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
-
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
-                {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory()->getID() == $subscribed_category_id))  $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
-                }
-
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS, false)->isOn() && ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == 0 || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == $this->getCategory()->getID())) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
+                $this->_addNotification(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
         }
 
@@ -5409,17 +5371,6 @@
             $this->_addUpdateNotifications($updated_by);
             $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
             $event->trigger();
-        }
-
-        public function shouldAutomaticallySubscribeUser($user)
-        {
-            if ($this->isSubscriber($user)) return false;
-
-            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1) return false;
-
-            $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-            return $subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory()->getID() == $subscribed_category_id);
         }
 
         protected function _postSave($is_new)
@@ -5451,8 +5402,7 @@
                     foreach ($_description_parser->getMentions() as $user)
                     {
                         if ($user->getID() == framework\Context::getUser()->getID()) continue;
-
-                        if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
                     }
                 }
                 if (! is_null($_reproduction_steps_parser) && $_reproduction_steps_parser->hasMentions())
@@ -5460,19 +5410,15 @@
                     foreach ($_reproduction_steps_parser->getMentions() as $user)
                     {
                         if ($user->getID() == framework\Context::getUser()->getID()) continue;
-
-                        if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
+                        $this->_addNotification(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
                     }
                 }
                 $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
-
-                if ($this->shouldAutomaticallySubscribeUser(framework\Context::getUser())) $this->addSubscriber(framework\Context::getUser()->getID());
-
                 $this->_addCreateNotifications($this->getPostedBy());
                 \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
             }
 
-            if (framework\Context::getUser() instanceof \thebuggenie\core\entities\User && framework\Context::getUser()->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, false)->isOn() && !$this->isSubscriber(framework\Context::getUser()))
+            if (in_array(\thebuggenie\core\framework\Settings::getUserSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, framework\Context::getUser()->getID()), array(null, true)))
             {
                 $this->addSubscriber(framework\Context::getUser()->getID());
             }
@@ -5977,7 +5923,6 @@
         public function addSubscriber($user_id)
         {
             tables\UserIssues::getTable()->addStarredIssue($user_id, $this->getID());
-            $this->_new_subscribers[] = $user_id;
         }
 
         /**
@@ -6055,17 +6000,6 @@
                 $this->getParsedReproductionSteps(array());
             }
             return $this->_reproduction_steps_parser;
-        }
-
-        public function isSubscriber($user)
-        {
-            if (!$user instanceof User) return false;
-
-            $user_id = (string) $user->getID();
-            $subscribers = (array) $this->getSubscribers();
-            $new_subscribers = (array) $this->_new_subscribers;
-
-            return (bool) in_array($user_id, $new_subscribers) || (bool) array_key_exists($user_id, $subscribers);
         }
 
     }

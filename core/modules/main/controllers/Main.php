@@ -136,8 +136,6 @@ class Main extends framework\Action
 
             $this->getUser()->markNotificationsRead('issue', $issue->getID());
 
-            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false)->save();
-
             \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         }
 
@@ -1167,9 +1165,12 @@ class Main extends framework\Action
     public function runMyAccount(framework\Request $request)
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
-        $subscriptionssettings = framework\Settings::getSubscriptionsSettings();
-        $this->subscriptionssettings = $subscriptionssettings;
-        $notificationsettings = framework\Settings:: getNotificationSettings();
+        $notificationsettings = array();
+        $i18n = $this->getI18n();
+        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I get involved in');
+        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I get involved in');
+        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
+        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
         $this->notificationsettings = $notificationsettings;
         $this->has_autopassword = framework\Context::hasMessage('auto_password');
         if ($this->has_autopassword)
@@ -1212,36 +1213,11 @@ class Main extends framework\Action
                     $this->getUser()->setPreferredIssuesSyntax($request['syntax_issues']);
                     $this->getUser()->setPreferredCommentsSyntax($request['syntax_comments']);
                     $this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
-                    foreach ($subscriptionssettings as $setting => $description)
-                    {
-                        if ($request->hasParameter('core_' . $setting))
-                        {
-                            if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
-                        }
-                        else
-                        {
-                            $this->getUser()->setNotificationSetting($setting, false)->save();
-                        }
-                    }
                     foreach ($notificationsettings as $setting => $description)
                     {
                         if ($request->hasParameter('core_' . $setting))
                         {
-                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
+                            $this->getUser()->setNotificationSetting($setting, true)->save();
                         }
                         else
                         {
@@ -3613,7 +3589,7 @@ class Main extends framework\Action
                     break;
                 case 'reportissue':
                     $this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
-                    if ($this->selected_project instanceof entities\Project && !$this->selected_project->isLocked() && $this->getUser()->canReportIssues($this->selected_project)) {
+                    if ($this->selected_project instanceof entities\Project && !$this->selected_project->isLocked() && $tbg_user->canReportIssues($this->selected_project)) {
                         $template_name = 'main/reportissuecontainer';
                         $options['selected_project'] = $this->selected_project;
                         $options['selected_issuetype'] = $this->selected_issuetype;

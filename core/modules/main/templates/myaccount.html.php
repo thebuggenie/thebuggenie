@@ -299,62 +299,19 @@
                             </td>
                         </tr>
                     </table>
-                    <h3><?php echo __('Subscriptions'); ?></h3>
-                    <p><?php echo __('Please select when you would like The Bug Genie to subscribe you.'); ?></p>
+                    <h3><?php echo __('Update notifications'); ?></h3>
+                    <p><?php echo __('You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to, and The Bug Genie will automatically subscribe to certain issues and articles for you. Please select when you would like The Bug Genie to subscribe and / or notify you.'); ?></p>
                     <table class="padded_table" cellpadding=0 cellspacing=0>
-                        <?php foreach ($subscriptionssettings as $key => $description): ?>
-                            <tr>
-                                <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes"><?php echo $description ?></label></td>
-                                <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
-                                    <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <select name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes">
-                                            <option value="0"><?php echo __('All categories'); ?></option>
-                                            <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
-                                                <?php if (!$category->canUserSet($tbg_user)) continue; ?>
-                                                <option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                <?php else: ?>
-                                    <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>>
-                                    </td>
-                                <?php endif; ?>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
-                    <h3><?php echo __('Notifications'); ?></h3>
-                    <p><?php echo __('You can receive notifications based on system actions or your subscriptions. By default notifications can be receieved in notifications box (visible next to your avatar in top menu) and also via email using Email communication module.'); ?></p>
-                    <table class="padded_table" cellpadding=0 cellspacing=0>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th><?php echo __('Notifications box'); ?></th>
-                                <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_thead')->trigger(); ?>
-                            </tr>
-                        </thead>
                         <?php foreach ($notificationsettings as $key => $description): ?>
                             <tr>
                                 <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes"><?php echo $description ?></label></td>
-                                <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
-                                    <td colspan="2" style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <select name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes">
-                                            <option value="0"><?php echo __('All categories'); ?></option>
-                                            <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
-                                                <?php if (!$category->canUserSet($tbg_user)) continue; ?>
-                                                <option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                <?php else: ?>
-                                    <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, false, 'core')->isOn()): ?> checked<?php endif; ?>>
-                                    </td>
-                                    <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_cell')->trigger(compact('key')); ?>
-                                <?php endif; ?>
+                                <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
+                                    <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
+                    <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings')->trigger(); ?>
                     <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
                         <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
                         <input type="submit" id="submit_notificationsettings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">

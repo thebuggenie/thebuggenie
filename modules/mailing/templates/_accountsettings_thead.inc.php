@@ -1,1 +1,0 @@
-<th><?php echo __('Email'); ?></th>

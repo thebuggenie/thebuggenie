@@ -117,22 +117,10 @@
         const SETTING_USER_LANGUAGE = 'language';
         const SETTING_USER_ACTIVATION_KEY = 'activation_key';
         const SETTING_USER_NOTIFICATION_TIMEOUT = 'notifications_timeout';
-
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES = 'subscribe_posted_updated_commented_issues';
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES = 'subscribe_created_updated_commented_articles';
         const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS = 'subscribe_new_issues_project';
-        const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY = 'subscribe_new_issues_project_category';
         const SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS = 'subscribe_new_articles_project';
-
-        const SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS = 'notify_new_issues_my_projects';
-        const SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY = 'notify_new_issues_my_projects_category';
-        const SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS = 'notify_new_articles_my_projects';
-        const SETTINGS_USER_NOTIFY_ITEM_ONCE = 'notify_issue_once';
-        const SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES = 'notify_subscribed_issues';
-        const SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES = 'notify_subscribed_articles';
-        const SETTINGS_USER_NOTIFY_UPDATED_SELF = 'notify_updated_self';
-        const SETTINGS_USER_NOTIFY_MENTIONED = 'notify_mentioned';
-
         const SETTING_AUTH_BACKEND = 'auth_backend';
         const SETTING_MAINTENANCE_MODE = 'offline';
         const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
@@ -305,11 +293,6 @@
         public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
         {
             return self::get($name, $module, $scope, $user_id);
-        }
-
-        public static function hasUserSetting($user_id, $name, $module = 'core', $scope = null)
-        {
-            return self::getUserSetting($name, $module, $scope, $user_id) !== null;
         }
 
         public static function saveUserSetting($user_id, $name, $value, $module = 'core', $scope = 0)
@@ -945,33 +928,6 @@
         {
             $seconds = self::get(self::SETTING_NOTIFICATION_POLL_INTERVAL);
             return $seconds == null ? 10 : $seconds;
-        }
-
-        public static function getNotificationSettings()
-        {
-            $i18n = Context::getI18n();
-            $notificationsettings = array();
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES] = $i18n->__('Notify when there are updates to my subscribed issues');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES] = $i18n->__('Notify when there are updates to my subscribed articles');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Notify when new issues are created in my project(s)');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('New created issues have category');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify when new articles are created in my project(s)');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_ITEM_ONCE] = $i18n->__('Only notify once per issue or article until I view the issue or article in my browser');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
-            return $notificationsettings;
-        }
-
-        public static function getSubscriptionsSettings()
-        {
-            $i18n = Context::getI18n();
-            $subscriptionssettings = array();
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I posted');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I posted');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('New created issues have category');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
-            return $subscriptionssettings;
         }
 
         /**

@@ -495,7 +495,7 @@ var PeriodicalExecuter = Class.create({
   },
 
   execute: function() {
-    //this.callback(this);
+    this.callback(this);
   },
 
   stop: function() {
