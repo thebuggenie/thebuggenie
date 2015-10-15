@@ -236,7 +236,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 #user_notifications_list li .notification_status_toggler {
     display: block;
     position: absolute;
-    left: 365px;
+    left: 374px;
     top: 5px;
     opacity: 1;
     -webkit-transition: opacity 0.3s ease;
@@ -473,7 +473,7 @@ footer {
     left: 0;
     width: 100%;
     vertical-align: middle;
-    height: 20px;
+    height: 35px;
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* FF3.6+ */
     background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F1F1F1)); /* Chrome,Safari4+ */
@@ -489,7 +489,7 @@ footer {
     padding: 5px 0;
     text-shadow: 1px 1px 0px #FFF;
 }
-footer img { margin: 0 3px 0 0; }
+footer img { margin: 0px 3px -3px 0; }
 /* footer section */
 
 /* login and registration page styling */
@@ -1700,7 +1700,7 @@ a.friend { color: #277CBA; }
     font-size: 2em;
     font-weight: normal;
     text-align: center;
-    border: 2px rgba(100, 100, 100, 0.2) dashed;
+    border: 3px rgba(100, 100, 100, 0.2) dashed;
     border-radius: 5px;
     -webkit-transition: background-color 0.3s ease;
     -moz-transition: background-color 0.3s ease;
@@ -11686,7 +11686,6 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: 6px;
     width: auto;
     font-size: 0.9em;
-    margin-left: -40px;
 }
 
 #viewissue_vcs_integration_commits .commitrepos

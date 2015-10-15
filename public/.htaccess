@@ -6,20 +6,26 @@
 	php_flag register_globals	off
 </IfModule>
 
+# Follow symlinks
+Options +FollowSymlinks
+
 # rewrite rules
 <IfModule mod_rewrite.c>
-    RewriteEngine On
+  RewriteEngine On
+  RewriteBase /Projekti/GitHub/thebuggenie/public/
+# Example:
+# RewriteBase /
+# or
+# RewriteBase /dev/thebuggenie
 
-    # Examples:
-    # RewriteBase /public
-    # RewriteBase /thebuggenie/public
-    RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} -s [OR]
+  RewriteCond %{REQUEST_FILENAME} -l [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^.*$ - [NC,L]
 
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule .? - [L]
+  # redirect to front controller
+  RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
 
-    # redirect to front controller
-    RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
 </IfModule>
 
 # Stop people accessing directories they shouldn't have access to

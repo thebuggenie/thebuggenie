@@ -105,6 +105,9 @@
 
         public function setValue($value)
         {
+            if ($value === true) $value = 1;
+            if ($value === false) $value = 0;
+
             $this->_value = $value;
         }
 
