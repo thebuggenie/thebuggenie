@@ -3483,13 +3483,13 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .issue_more_actions_link_container {
     position: absolute;
     right: -21px;
-    top: 4px;
+    top: 8px;
 }
 .whiteboard-issue .issue_more_actions_link_container {
     left: 13px;
     right: initial;
     bottom: 8px;
-    top: initial;
+    top: 4px;
 }
 .milestone_issue .more_actions_dropdown {
     margin-top: 2px;
