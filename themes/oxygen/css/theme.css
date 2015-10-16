@@ -3489,7 +3489,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     left: 13px;
     right: initial;
     bottom: 8px;
-    top: 4px;
+    top: initial;
 }
 .milestone_issue .more_actions_dropdown {
     margin-top: 2px;
