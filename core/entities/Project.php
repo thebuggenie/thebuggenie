@@ -2021,6 +2021,11 @@
             return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
         }
 
+        public function getTotalPercentageByMilestone($milestone)
+        {
+            return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone) / $this->countIssuesByMilestone($milestone);
+        }
+
         /**
          * Whether or not this project is visible in the frontpage summary
          *

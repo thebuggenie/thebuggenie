@@ -533,6 +533,37 @@
             }
         }
 
+        public function getTotalPercentCompleteByProjectIDAndMilestoneID($project_id, $milestone_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::DELETED, false);
+            $crit->addSelectionColumn(self::PERCENT_COMPLETE, 'percent_complete', Criteria::DB_SUM);
+            if (!$project_id)
+            {
+                $crit->addWhere(self::PROJECT_ID, null);
+            }
+            else
+            {
+                $crit->addWhere(self::PROJECT_ID, $project_id);
+            }
+            if (!$milestone_id)
+            {
+                $crit->addWhere(self::MILESTONE, null);
+            }
+            else
+            {
+                $crit->addWhere(self::MILESTONE, $milestone_id);
+            }
+            if ($res = $this->doSelectOne($crit))
+            {
+                return $res->get('percent_complete');
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public function getTotalHoursByMilestoneID($milestone_id)
         {
             $crit = $this->getCriteria();

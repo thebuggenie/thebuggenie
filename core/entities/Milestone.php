@@ -31,6 +31,10 @@
         const TYPE_REGULAR = 1;
         const TYPE_SCRUMSPRINT = 2;
 
+        const PERCENTAGE_TYPE_REGULAR = 1;
+        const PERCENTAGE_TYPE_SCRUMSPRINT = 2;
+        const PERCENTAGE_TYPE_PERCENT_COMPLETED = 3;
+
         /**
          * This milestone's project
          *
@@ -175,6 +179,14 @@
          * @Column(type="integer", length=10)
          */
         protected $_sort_order = null;
+
+        /**
+         * Percent complete type
+         *
+         * @var string
+         * @Column(type="string", length=200)
+         */
+        protected $_percentage_type;
 
         protected function _construct(\b2db\Row $row, $foreign_key = null)
         {
@@ -412,6 +424,16 @@
         }
 
         /**
+         * Set the milestone percentage type
+         *
+         * @param integer $type
+         */
+        public function setPercentageType($percentage_type)
+        {
+            $this->_percentage_type = $percentage_type;
+        }
+
+        /**
          * Get the milestone type
          *
          * @return integer
@@ -464,6 +486,16 @@
         public function getReachedDate()
         {
             return $this->_reacheddate;
+        }
+
+        /**
+         * Return percent complete type
+         *
+         * @return integer
+         */
+        public function getPercentageType()
+        {
+            return $this->_percentage_type;
         }
 
         /**
@@ -636,6 +668,16 @@
             return date("j", $this->_reacheddate);
         }
 
+        public static function getPercentageTypes()
+        {
+            $i18n = framework\Context::getI18n();
+            return array(
+                self::PERCENTAGE_TYPE_REGULAR => $i18n->__('Based on closed / opened issues'),
+                self::PERCENTAGE_TYPE_SCRUMSPRINT => $i18n->__('Based on spent / estimated points'),
+                self::PERCENTAGE_TYPE_PERCENT_COMPLETED => $i18n->__('Based on issues percent completed')
+            );
+        }
+
         /**
          * Returns the milestones progress
          *
@@ -643,22 +685,30 @@
          */
         public function getPercentComplete()
         {
-            if ($this->getType() == self::TYPE_REGULAR)
+            switch ($this->getPercentageType())
             {
-                return $this->getProject()->getClosedPercentageByMilestone($this->getID());
-            }
-            else
-            {
-                if ($this->getPointsEstimated() > 0)
-                {
-                    $multiplier = 100 / $this->getPointsEstimated();
-                    $pct = $this->getPointsSpent() * $multiplier;
-                }
-                else
-                {
+                case self::PERCENTAGE_TYPE_REGULAR:
+                    $pct = $this->getProject()->getClosedPercentageByMilestone($this->getID());
+                    break;
+                case self::PERCENTAGE_TYPE_SCRUMSPRINT:
+                    if ($this->getPointsEstimated() > 0)
+                    {
+                        $multiplier = 100 / $this->getPointsEstimated();
+                        $pct = $this->getPointsSpent() * $multiplier;
+                    }
+                    else
+                    {
+                        $pct = 0;
+                    }
+                    break;
+                case self::PERCENTAGE_TYPE_PERCENT_COMPLETED:
+                    $pct = $this->getProject()->getTotalPercentageByMilestone($this->getID());
+                    break;
+                default:
                     $pct = 0;
-                }
+                    break;
             }
+
             return (int) $pct;
         }
 

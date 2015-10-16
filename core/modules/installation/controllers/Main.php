@@ -547,6 +547,15 @@ class Main extends framework\Action
         $this->upgrade_complete = true;
     }
 
+    protected function _upgradeFrom4dot1(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_41\Milestone::getB2DBTable());
+
+        $this->upgrade_complete = true;
+    }
+
     public function runUpgrade(framework\Request $request)
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -574,6 +583,9 @@ class Main extends framework\Action
             switch ($this->current_version) {
                 case '3.2':
                     $this->_upgradeFrom3dot2($request);
+                    break;
+                case '4.1':
+                    $this->_upgradeFrom4dot1($request);
                     break;
                 default:
                     $this->upgrade_complete = true;
