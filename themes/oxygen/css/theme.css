@@ -3370,7 +3370,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 }
 .milestone_issue .issue_estimate {
     display: inline-block;
-    padding: 3px 7px 2px;
+    padding: 3px 7px;
     border-radius: 2px;
     background: rgba(50, 50, 50, 0.8);
     color: #FFF;
@@ -3381,6 +3381,11 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     line-height: 1.25em;
     text-shadow: none;
     margin-top: 1px;
+}
+@-moz-document url-prefix() {
+    .milestone_issue .issue_estimate {
+        padding: 3px 7px 2px;
+    }
 }
 .whiteboard-issue .issue_estimates {
     padding: 0;
