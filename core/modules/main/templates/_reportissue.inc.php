@@ -744,6 +744,7 @@
                             <select name="category_id" id="category_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
+                                    <?php if (!$category->hasAccess()) continue; ?>
                                     <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Datatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>

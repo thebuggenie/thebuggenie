@@ -1520,7 +1520,18 @@ class Main extends framework\Action
                 $errors['component'] = true;
 
             if ($category_id = (int) $request['category_id'])
-                $this->selected_category = entities\Category::getB2DBTable()->selectById($category_id);
+            {
+                $category = entities\Category::getB2DBTable()->selectById($category_id);
+
+                if (! $category->hasAccess())
+                {
+                    $errors['category'] = true;
+                }
+                else
+                {
+                    $this->selected_category = $category;
+                }
+            }
 
             if ($status_id = (int) $request['status_id'])
                 $this->selected_status = entities\Status::getB2DBTable()->selectById($status_id);
@@ -1571,8 +1582,8 @@ class Main extends framework\Action
                     $selected_customdatatype[$customdatatype->getKey()] = null;
                     if ($request->hasParameter($customdatatype_id))
                     {
-                        $$customdatatype_id = (int) $request->getParameter($customdatatype_id);
-                        $selected_customdatatype[$customdatatype->getKey()] = new entities\CustomDatatypeOption($$customdatatype_id);
+                        $customdatatype_id = (int) $request->getParameter($customdatatype_id);
+                        $selected_customdatatype[$customdatatype->getKey()] = new entities\CustomDatatypeOption($customdatatype_id);
                     }
                 }
                 else
