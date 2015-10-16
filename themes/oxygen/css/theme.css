@@ -382,6 +382,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 .page-project_statistics #content_container,
 .page-project_team #content_container,
 .page-project_roadmap #content_container,
+.page-project_milestone_details #content_container,
 .page-project_releases #content_container,
 .page-account #content_container
 {
@@ -3113,6 +3114,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
 .milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
+.page-project_roadmap #content_container .milestone_box .header .settings_container, .page-project_milestone_details #content_container .milestone_box .header .settings_container { margin-right: -10px; }
 .milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; z-index: 1; }
 .milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
@@ -3334,8 +3336,8 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     line-height: 1em;
     box-sizing: border-box;
     transition: background-color 0.3s ease 0s;
-    margin-top: -5px;
-    padding: 2px 2px 2px 17px;
+    margin-top: -4px;
+    padding: 2px 2px 2px 3px;
 }
 .milestone_box .milestone_issues li .issue_container.blocking .issue_info {
     background: linear-gradient(to right, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
@@ -3368,7 +3370,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 }
 .milestone_issue .issue_estimate {
     display: inline-block;
-    padding: 3px 7px;
+    padding: 3px 7px 2px;
     border-radius: 2px;
     background: rgba(50, 50, 50, 0.8);
     color: #FFF;
