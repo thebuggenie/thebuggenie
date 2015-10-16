@@ -797,7 +797,7 @@ footer img { margin: 0 3px -3px 0; }
 .commit_left table b { font-weight: normal; }
 .commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 11px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -11687,6 +11687,7 @@ div[id^='wiki_'][id$='_no_links']
     width: auto;
     font-size: 0.9em;
     margin-left: -40px;
+    margin-top: 12px;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
