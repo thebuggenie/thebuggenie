@@ -3113,7 +3113,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
 .milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
-.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; z-index: 1; }
 .milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
 .milestone_box .header .draggable { display: none; }
@@ -3305,44 +3305,37 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     display: block;
     float: none;
     clear: both;
-    padding: 4px 2px 5px 40px;
-    margin: 0;
+    padding: 8px 2px 5px 40px;
+    margin: 0px;
+    overflow: hidden;
 }
 .milestone_box .milestone_issues li .issue_link a, .milestone_box .milestone_issues li .issue_link a:hover {
     border: none;
     text-decoration: none;
+    line-height: 1.7em;
 }
-.milestone_box .milestone_issues li .issue_link img {
+.milestone_box .milestone_issues li .issue_link > a > img {
+    margin-bottom: -3px;
+    margin-right: 5px;
+}
+.milestone_box .milestone_issues li .issue_link > img {
     vertical-align: middle;
     display: inline-block;
     margin-right: 5px;
 }
 .milestone_box .milestone_issues li .issue_info {
     display: block;
-    position: absolute;
-    right: 0;
+    float: right;
     height: 100%;
     width: auto;
-    padding: 2px 2px 2px 17px;
-    top: 0;
+    top: 0px;
     text-shadow: none;
     vertical-align: middle;
     line-height: 1em;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
     box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    transition: background-color 0.3s ease;
-    -o-transition: background-color 0.3s ease;
-    -ms-transition: background-color 0.3s ease;
-    -moz-transition: background-color 0.3s ease;
-    -webkit-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease 0s;
+    margin-top: -5px;
+    padding: 2px 2px 2px 17px;
 }
 .milestone_box .milestone_issues li .issue_container.blocking .issue_info {
     background: linear-gradient(to right, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
@@ -4321,7 +4314,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin-left: 0;
 }
 #project_planning.project_info_container .project_right_container .project_right {
-    margin-left: 451px;
+    margin-left: 551px;
 }
 .project_save_container {
     display: block;
@@ -4374,7 +4367,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     display: block;
 }
 #project_planning.project_info_container .project_left_container {
-    width: 430px;
+    width: 530px;
     overflow: visible;
 }
 #project_planning.project_info_container.left_toggled .project_left_container {
@@ -4399,10 +4392,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     transition: width 0.3s ease, margin 0.3s ease;
 }
 #project_planning.project_info_container .project_left_container .project_left {
-    width: 430px;
+    width: 530px;
 }
 #project_planning.project_info_container.left_toggled .project_left_container .project_left {
-    margin-left: -390px;
+    margin-left: -490px;
 }
 .project_info_container h1, .project_info_container h2, .project_info_container h3, .project_info_container h4 {
     font-weight: normal;
