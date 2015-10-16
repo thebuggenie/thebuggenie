@@ -1849,7 +1849,25 @@
                 {
                     $url = (framework\Context::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
                     $url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
-                    $url .= ($small) ? 28 : 48;
+
+                    $size_event = \thebuggenie\core\framework\Event::createNew('core', 'self::getGravatarSize', $this)->trigger(compact('small'));
+                    $size = $size_event->getReturnValue();
+
+                    if ($size === null)
+                    {
+                        if (is_bool($small))
+                        {
+                            $url .= ($small === true) ? 28 : 48;
+                        }
+                        else if (is_numeric($small))
+                        {
+                            $url .= $small;
+                        }
+                    }
+                    else
+                    {
+                        $url .= $size;
+                    }
                 }
                 else
                 {
