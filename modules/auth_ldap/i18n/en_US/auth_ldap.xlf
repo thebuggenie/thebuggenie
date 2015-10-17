@@ -6,19 +6,48 @@
 
 <!-- Number of Sections: 3 -->
 <!-- Number of Strings: 63 -->
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="Auth_ldap.php">
         <body>
             <trans-unit id="a9a70cd6177209344c8eab46cf98610f">
                 <source>Failed to connect to server</source>
             </trans-unit>
+            <trans-unit id="25449aa6a64ea74062a2a49801822d09">
+                <source>Failed to bind:</source>
+            </trans-unit>
             <trans-unit id="4baed660575ea555f8f63b3e894ecb08">
                 <source>Search failed:</source>
             </trans-unit>
+            <trans-unit id="5824791e3431518112d466b295500320">
+                <source>User does not exist in the directory</source>
+            </trans-unit>
+            <trans-unit id="e612e804607a524cc7605a4fb22f570e">
+                <source>This user was found multiple times in the directory, please contact your administrator</source>
+            </trans-unit>
+            <trans-unit id="a4d1777659ac28e5510a35353f7b087d">
+                <source>Search failed</source>
+            </trans-unit>
+            <trans-unit id="e136ad8fb96223ed34fa6d7dc20d5de4">
+                <source>You are not a member of a group allowed to log in</source>
+            </trans-unit>
+            <trans-unit id="4d740b89622d6457825c310d67818969">
+                <source>Your password was not accepted by the server</source>
+            </trans-unit>
+            <trans-unit id="646cb7f774c1e16d0309706de3e0b389">
+                <source>HTTP authentication internal error.</source>
+            </trans-unit>
+            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
+                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="controllers/Main.php">
+        <body>
             <trans-unit id="cb8d5c7c914be3251488798536b30992">
                 <source>Failed to validate groups</source>
             </trans-unit>
@@ -48,35 +77,6 @@
             </trans-unit>
             <trans-unit id="3a464e174e79360cb900340d88add8a5">
                 <source>Import successful! %imp users imported, %upd users updated from LDAP</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="Auth_ldap.php">
-        <body>
-            <trans-unit id="25449aa6a64ea74062a2a49801822d09">
-                <source>Failed to bind:</source>
-            </trans-unit>
-            <trans-unit id="5824791e3431518112d466b295500320">
-                <source>User does not exist in the directory</source>
-            </trans-unit>
-            <trans-unit id="e612e804607a524cc7605a4fb22f570e">
-                <source>This user was found multiple times in the directory, please contact your administrator</source>
-            </trans-unit>
-            <trans-unit id="a4d1777659ac28e5510a35353f7b087d">
-                <source>Search failed</source>
-            </trans-unit>
-            <trans-unit id="e136ad8fb96223ed34fa6d7dc20d5de4">
-                <source>You are not a member of a group allowed to log in</source>
-            </trans-unit>
-            <trans-unit id="4d740b89622d6457825c310d67818969">
-                <source>Your password was not accepted by the server</source>
-            </trans-unit>
-            <trans-unit id="646cb7f774c1e16d0309706de3e0b389">
-                <source>HTTP authentication internal error.</source>
-            </trans-unit>
-            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
-                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
             </trans-unit>
         </body>
     </file>

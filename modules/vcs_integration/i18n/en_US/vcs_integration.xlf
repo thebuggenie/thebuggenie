@@ -4,14 +4,14 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 12 -->
-<!-- Number of Strings: 69 -->
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
+<!-- Number of Sections: 13 -->
+<!-- Number of Strings: 72 -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="controllers/Main.php">
         <body>
             <trans-unit id="d830f533ad8d4207b9efaaaf64296d3b">
                 <source>VCS Integration has been disabled for this project</source>
@@ -35,8 +35,11 @@
 
     <file source-language="en" datatype="php" original="templates/_commitbox.inc.php">
         <body>
-            <trans-unit id="508a1181a66b7aa2fa3d64269eecbc0a">
-                <source>Revision %rev by %user</source>
+            <trans-unit id="63780c03b426a44faa461e65d09de634">
+                <source>Revision %rev</source>
+            </trans-unit>
+            <trans-unit id="e3a5812e651901de503a749e32d92ff0">
+                <source>By %user</source>
             </trans-unit>
             <trans-unit id="1e7978209afd6fec92d42e5c5cb314c3">
                 <source>Preceeded by %prev</source>
@@ -74,9 +77,6 @@
             <trans-unit id="a3b8c541bcaeaccf19233c39c4d0e51d">
                 <source>This commit affects no issues</source>
             </trans-unit>
-            <trans-unit id="1f3f27b7cbfff27988b677036d4fb6f5">
-                <source>This commit only affects issues you do not have access to</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -95,6 +95,17 @@
         <body>
             <trans-unit id="dbd18caed4e4cae3606abfec03efc046">
                 <source>%user_name mentioned you in commit %rev</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_projectcommitsbox.inc.php">
+        <body>
+            <trans-unit id="118abc26b32479243422657f3f0496ae">
+                <source>No commits have been found for this project</source>
+            </trans-unit>
+            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
+                <source>Show more</source>
             </trans-unit>
         </body>
     </file>
@@ -261,11 +272,14 @@
             <trans-unit id="cfd0756cb223f8c7587d4e3a6b272c0d">
                 <source>Project commits</source>
             </trans-unit>
-            <trans-unit id="118abc26b32479243422657f3f0496ae">
-                <source>No commits have been found for this project</source>
+            <trans-unit id="c62aaa93a21121edf22a73248515721b">
+                <source>Choose branch on the left to filter commits for this project</source>
             </trans-unit>
-            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
-                <source>Show more</source>
+            <trans-unit id="9c343084c54e1d387ead36d270cf4827">
+                <source>All branches</source>
+            </trans-unit>
+            <trans-unit id="649fdfc207df25011ea7cb22bbcdb2c5">
+                <source>Branch filters</source>
             </trans-unit>
         </body>
     </file>
