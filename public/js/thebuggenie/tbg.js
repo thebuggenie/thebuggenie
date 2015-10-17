@@ -3964,7 +3964,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Project.showRoadmap = function () {
             $('milestone_details_overview').hide();
             $('project_roadmap').show();
-            jQuery('#project_planning_action_strip .more_actions_dropdown, #planning_board_settings_gear').show();
+            jQuery('#planning_board_settings_gear').show();
         }
 
         TBG.Project.showMilestoneDetails = function (url, milestone_id, force) {
