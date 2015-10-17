@@ -4940,7 +4940,7 @@
                             case '_assignee_user':
                                 if (!$is_saved_assignee)
                                 {
-                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getName() : framework\Context::getI18n()->__('Not assigned');
+                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getNameWithUsername() : framework\Context::getI18n()->__('Not assigned');
 
                                     if ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
                                     {
