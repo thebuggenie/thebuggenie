@@ -3964,7 +3964,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Project.showRoadmap = function () {
             $('milestone_details_overview').hide();
             $('project_roadmap').show();
-            jQuery('.roadmap_sort_milestones_action').show();
+            jQuery('#project_planning_action_strip .more_actions_dropdown, #planning_board_settings_gear').show();
         }
 
         TBG.Project.showMilestoneDetails = function (url, milestone_id, force) {
@@ -3976,7 +3976,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('milestone_details_' + milestone_id).remove();
             }
 
-            jQuery('.roadmap_sort_milestones_action').hide();
+            jQuery('#project_planning_action_strip .more_actions_dropdown, #planning_board_settings_gear').hide();
 
             if (!$('milestone_details_' + milestone_id)) {
                 window.location.hash = 'roadmap_milestone_' + milestone_id;
