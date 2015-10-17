@@ -223,33 +223,33 @@
                 <?php endif; ?>
             </div>
         </div>
-        <div id="workflow_actions">
-            <ul class="workflow_actions simple_list">
-                <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-                    <?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
-                    <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-                        <li class="workflow">
-                            <div class="tooltip from-above rightie">
-                                <?php echo $transition->getDescription(); ?>
-                            </div>
-                            <?php if ($transition->hasTemplate()): ?>
-                                <input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
-                            <?php else: ?>
-                                <form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
-                                    <input type="submit" class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" value="<?php echo $transition->getName(); ?>">
-                                </form>
-                            <?php endif; ?>
-                        </li>
-                        <?php $cc++; ?>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                <li class="more_actions">
-                    <input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
-                    <?php include_component('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
-                </li>
-            </ul>
-        </div>
         <div id="viewissue_left_box_top">
+          <div id="workflow_actions">
+            <ul class="workflow_actions simple_list">
+              <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+                <?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
+                <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+                  <li class="workflow">
+                    <div class="tooltip from-above rightie">
+                      <?php echo $transition->getDescription(); ?>
+                    </div>
+                    <?php if ($transition->hasTemplate()): ?>
+                      <input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
+                    <?php else: ?>
+                      <form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
+                        <input type="submit" class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" value="<?php echo $transition->getName(); ?>">
+                      </form>
+                    <?php endif; ?>
+                  </li>
+                  <?php $cc++; ?>
+                <?php endforeach; ?>
+              <?php endif; ?>
+              <li class="more_actions">
+                <input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
+                <?php include_component('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
+              </li>
+            </ul>
+          </div>
             <div id="issue_view">
                 <div id="issue_main_container">
                     <div class="issue_main" id="issue_main">
