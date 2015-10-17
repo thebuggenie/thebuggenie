@@ -11686,8 +11686,9 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: 6px;
     width: auto;
     font-size: 0.9em;
-    margin-left: -40px;
+    margin-left: 5px;
     margin-top: 12px;
+    text-align: right;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
