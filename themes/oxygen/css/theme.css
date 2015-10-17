@@ -61,7 +61,7 @@ label > input[type="checkbox"] { margin: 0 3px; position: relative; }
 
 .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; display: inline-block; margin: 0 5px; }
 
-div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin: 10px 0 15px 0; padding: 6px; background-color: #FFF; text-align: center; }
+div.image_container { border: 1px solid #CCC; width: auto; float: right; clear: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin: 10px 10px 15px 0; padding: 6px; background-color: #FFF; text-align: center; }
 div.image_container .icleft { float: left; clear: left; }
 div.image_container .icright { float: right; clear: right; }
 div.image_container.thumb img.image { width: 220px; }
@@ -10885,8 +10885,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 #issue_main .commentcontent .image_container.thumb
 {
     max-width: 500px;
-    float: none !important;
-    clear: none !important;
     display: table;
 }
 
@@ -10899,7 +10897,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
  {
     max-width: 500px;
     width: initial;
-    vertical-align: inherit;
  }
 
 #comment_add_indicator,
