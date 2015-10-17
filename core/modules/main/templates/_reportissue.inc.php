@@ -435,6 +435,7 @@
                             <select name="category_id" id="category_id" style="width: 100%;">
                                 <option value=""<?php if (!$selected_category instanceof \thebuggenie\core\entities\Category) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
+                                    <?php if (!$category->hasAccess()) continue; ?>
                                     <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Category && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
