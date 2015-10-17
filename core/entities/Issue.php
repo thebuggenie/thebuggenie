@@ -4217,7 +4217,7 @@
          *
          * @return \thebuggenie\core\entities\Comment
          */
-        public function addSystemComment($text, $uid)
+        public function addSystemComment($text, $uid, $module = 'core')
         {
             $comment = new Comment();
             $comment->setContent($text);
@@ -4225,6 +4225,7 @@
             $comment->setTargetID($this->getID());
             $comment->setTargetType(Comment::TYPE_ISSUE);
             $comment->setSystemComment();
+            $comment->setModuleName($module);
             if (!\thebuggenie\core\framework\Settings::isCommentTrailClean())
             {
                 $comment->save();

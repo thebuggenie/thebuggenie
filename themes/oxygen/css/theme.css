@@ -11812,3 +11812,15 @@ div[id^='wiki_'][id$='_no_links']
 {
     margin-bottom: 3px;
 }
+
+.system_comment .commit_main {
+    clear: both;
+    font-family: "Droid Sans Mono",monospace;
+    padding: 5px;
+    margin-bottom: -10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    background-color: rgb(241, 241, 241);
+    margin-top: 10px;
+    border: 1px dotted rgb(170, 170, 170);
+}
