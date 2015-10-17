@@ -61,9 +61,9 @@ label > input[type="checkbox"] { margin: 0 3px; position: relative; }
 
 .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; display: inline-block; margin: 0 5px; }
 
-div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; }
-div.image_container icleft { float: left; clear: left; }
-div.image_container icright { float: right; clear: right; }
+div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin: 10px 0 15px 0; padding: 6px; background-color: #FFF; text-align: center; }
+div.image_container .icleft { float: left; clear: left; }
+div.image_container .icright { float: right; clear: right; }
 div.image_container.thumb img.image { width: 220px; }
 
 .offline_msg { padding: 10px; }
@@ -772,7 +772,7 @@ footer img { margin: 0 3px -3px 0; }
 .commentbody { padding: 1px 5px 5px 40px; font-size: 1em; overflow: hidden; }
 #issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { display: block; margin-top: 10px; font-size: 0.9em; text-align: left; }
+.commenttools { display: block; margin-top: 10px; font-size: 0.9em; text-align: left; clear: left; }
 .commenttools a { color: #AAA; text-transform: uppercase; display: inline-block; margin: 0 10px 0 0; border-bottom: 1px dotted transparent; }
 .commenttools a:hover { border-bottom-color: #AAA; }
 .comment_controls { margin-top: 10px; font-size: 1em; }
@@ -10885,17 +10885,12 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 #issue_main .commentcontent .image_container.thumb
 {
     max-width: 500px;
-    padding: 6px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     float: none !important;
     clear: none !important;
-    margin: 10px 0 15px 0;
-    background-color: #FFF;
     display: table;
-    text-align: center;
 }
 
-#issue_main .commentcontent .image_container.thumb img
+#issue_main .commentcontent .image_container img
 {
     vertical-align: text-top;
 }
