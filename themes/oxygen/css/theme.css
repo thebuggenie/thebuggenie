@@ -4706,11 +4706,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .release_item .button-group { float: right; margin: 5px 5px 0 0; }
 .release_item .button-group .button { font-size: 1.1em; padding: 5px 10px; }
 .release_item .release_name { font-size: 1.2em; }
-.release_item.active .release_name { font-size: 1.4em; }
-.release_item .release_version { font-size: 0.9em; background-color: rgba(245, 245, 245, 0.7); display: inline-block; margin: -2px 5px 0 5px; padding: 3px 6px; vertical-align: middle; border-radius: 2px; }
+.release_item.active .release_name { font-size: 1.3em; }
+.release_item .release_version { font-size: 0.9em; background-color: #ECF0F4; display: inline-block; margin: -2px 5px 0 5px; padding: 3px 6px; vertical-align: middle; border-radius: 2px; }
 .release_item .release_icon { float: left; margin: 8px 8px 5px 5px; }
-.release_item .release_date { display: block; color: #888;  font-size: 13px; }
+.release_item .release_date { display: block; color: #888;  font-size: 13px; margin-top: 2px; }
 .release_item .release_date span { font-size: 13px; }
+.rounded_box.invisible:hover .release_version { background-color: white; }
 /* end project releases */
 
 /* statistics page */
