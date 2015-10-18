@@ -3102,14 +3102,17 @@ table.issue_affects td img { vertical-align: bottom; }
     display: inline-block;
     vertical-align: middle;
     width: auto;
-    margin-right: 15px;
+    margin-right: 5px;
+}
+.milestone_box .milestone_counts_container {
+    margin-top: -20px;
 }
 .milestone_counts_container table, .milestone_box .milestone_counts_container tr { border: 0; padding: 0; margin: 0; width: auto; color: #555; background-color: #FFF; font-size: 0.8em; }
-.milestone_counts_container td { padding: 0 10px; text-align: center; font-weight: normal; }
+.milestone_counts_container td { padding: 0; text-align: center; font-weight: normal; min-width: 75px; }
 .milestone_counts_container tr:first-child td { font-size: 1.9em; line-height: 1.1em; }
-.milestone_counts_container tr:nth-child(2) td { font-size: 1em; line-height: 1.1em; text-transform: uppercase; color: #AAA; }
+.milestone_counts_container tr:nth-child(2) td { font-size: 1.1em; line-height: 1.5em; text-transform: uppercase; color: #AAA; }
 .milestone_box .milestone_name { font-weight: normal; font-size: 1.2em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
-.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 400px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
+.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 390px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
 .milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
