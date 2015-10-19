@@ -822,13 +822,25 @@
                 {
                     $spent_times['hours'][$key] = round($spent_times['hours'][$key] / 100, 2);
                 }
+                $total_estimations_hours = array_sum($estimations['hours']);
                 foreach ($estimations['hours'] as $key => $val)
                 {
-                    $burndown['hours'][$key] = (array_key_exists($key, $spent_times['hours'])) ? $val - $spent_times['hours'][$key] : $val;
+                    if ((array_key_exists($key, $spent_times['hours'])))
+                    {
+                        $total_estimations_hours -= $spent_times['hours'][$key];
+                    }
+
+                    $burndown['hours'][$key] = $total_estimations_hours;
                 }
+                $total_estimations_points = array_sum($estimations['points']);
                 foreach ($estimations['points'] as $key => $val)
                 {
-                    $burndown['points'][$key] = (array_key_exists($key, $spent_times['points'])) ? $val - $spent_times['points'][$key] : $val;
+                    if ((array_key_exists($key, $spent_times['points'])))
+                    {
+                        $total_estimations_points -= $spent_times['points'][$key];
+                    }
+
+                    $burndown['points'][$key] = $total_estimations_points;
                 }
 
                 $this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);

@@ -98,15 +98,35 @@
                         {
                             $sd = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
                             $date = mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd));
-                            foreach ($points_retarr as $key => &$details)
+                            $points_retarr_keys = array_keys($points_retarr);
+                            foreach ($points_retarr_keys as $k => $key)
                             {
                                 if ($key < $date) continue;
-                                $details[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
+                                if (array_key_exists($k + 1, $points_retarr_keys))
+                                {
+                                    if ($sd >= $key && $sd < $points_retarr_keys[$k + 1])
+                                        $points_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
+                                }
+                                else
+                                {
+                                    if ($sd >= $key)
+                                        $points_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
+                                }
                             }
-                            foreach ($hours_retarr as $key => &$details)
+                            $hours_retarr_keys = array_keys($hours_retarr);
+                            foreach ($hours_retarr_keys as $k => $key)
                             {
                                 if ($key < $date) continue;
-                                $details[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
+                                if (array_key_exists($k + 1, $hours_retarr_keys))
+                                {
+                                    if ($sd >= $key && $sd < $hours_retarr_keys[$k + 1])
+                                        $hours_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
+                                }
+                                else
+                                {
+                                    if ($sd >= $key)
+                                        $hours_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
+                                }
                             }
                         }
                         else
