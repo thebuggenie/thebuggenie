@@ -6,12 +6,12 @@
 
 <!-- Number of Sections: 34 -->
 <!-- Number of Strings: 218 -->
-<!-- Keys extracted from sources on: 2015 Feb 22. -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="controllers/Main.php">
         <body>
             <trans-unit id="271a2ede29e65409778d6043f2e107dc">
                 <source>You don't have access to read this article</source>
@@ -141,9 +141,6 @@
             </trans-unit>
             <trans-unit id="8c38776925f7cf41c090646a43157024">
                 <source>Categories:</source>
-            </trans-unit>
-            <trans-unit id="21d83605e16958e68f8a4fa4cd762bc6">
-                <source>This article is not in any categories</source>
             </trans-unit>
         </body>
     </file>
@@ -458,8 +455,8 @@
             <trans-unit id="7eb90ad98c7ad3ba773475f440f7548d">
                 <source>Note: This page lists all dead end articles for "%project_name". For a list of global articles with no links, see %dead_end_pages</source>
             </trans-unit>
-            <trans-unit id="228210f534a81c6924b59f9a7b671d10">
-                <source>Below is a listing of all pages that has no links to other pages.</source>
+            <trans-unit id="860b33bd8b15ac47ab09b0462518cd4d">
+                <source>Below is a listing of pages that have no links to other pages.</source>
             </trans-unit>
         </body>
     </file>
@@ -754,26 +751,11 @@
             <trans-unit id="eb83a44a3b561b4f826bb414ecf4ecbc">
                 <source>Manual entry name</source>
             </trans-unit>
-            <trans-unit id="def49213b1e98cbd6e604738b1885bb0">
-                <source>Saving article</source>
-            </trans-unit>
-            <trans-unit id="d10adc0387b5967e6e1d18525ab9fdcf">
-                <source>Change reason</source>
-            </trans-unit>
-            <trans-unit id="ebb061953c0454b2c8ee7b0ac615ebcd">
-                <source>Optional</source>
-            </trans-unit>
-            <trans-unit id="fb0d5e54de7da0cfa16fedc1cf496b66">
-                <source>Enter a short reason summarizing your changes (max. 255 characters)</source>
+            <trans-unit id="d0ed74e46fefedd2d068a81d9a1df71a">
+                <source>Reason for the change (max. 255 characters)</source>
             </trans-unit>
             <trans-unit id="ea4788705e6873b424c65e91c2846b19">
                 <source>Cancel</source>
-            </trans-unit>
-            <trans-unit id="daa6b483e9f6ca081ec7e0b4a352f9e9">
-                <source>Save changes</source>
-            </trans-unit>
-            <trans-unit id="dc68535336760bbca9ae1c45a43988b0">
-                <source>Create article</source>
             </trans-unit>
             <trans-unit id="fda863c316c576a38e87e64218bc50e3">
                 <source>Preview changes</source>
@@ -781,8 +763,20 @@
             <trans-unit id="ff7b6e10f4d999b0b0b7c41127dd1779">
                 <source>Preview article</source>
             </trans-unit>
+            <trans-unit id="daa6b483e9f6ca081ec7e0b4a352f9e9">
+                <source>Save changes</source>
+            </trans-unit>
+            <trans-unit id="dc68535336760bbca9ae1c45a43988b0">
+                <source>Create article</source>
+            </trans-unit>
             <trans-unit id="4cfa6c981549e990fe2344e4c805405e">
                 <source>Find</source>
+            </trans-unit>
+            <trans-unit id="fd2fdd52d8765b304e81b3505b5301c3">
+                <source>Comment required</source>
+            </trans-unit>
+            <trans-unit id="458385af278a025015eef5d82c7a806e">
+                <source>Please provide a comment describing the edit.</source>
             </trans-unit>
         </body>
     </file>
@@ -823,6 +817,12 @@
             </trans-unit>
             <trans-unit id="5f94404bf7a236db3599df0135a590ac">
                 <source>Post comment</source>
+            </trans-unit>
+            <trans-unit id="eb2c92dbbe71df490cc55e095f48b3fd">
+                <source>This article can not be displayed</source>
+            </trans-unit>
+            <trans-unit id="8945896a0827d4dbee2eac7137a71394">
+                <source>This article either does not exist, has been deleted or you do not have permission to view it.</source>
             </trans-unit>
         </body>
     </file>
