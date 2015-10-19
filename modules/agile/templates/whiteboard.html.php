@@ -32,9 +32,9 @@
                     <span id="selected_milestone_status_details" style="display: none;"></span>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'selected_milestone_status_indicator')); ?>
                 </a>
-                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof \thebuggenie\core\entities\Milestone) ? $selected_milestone->getID() : 0; ?>" data-status-url="<?php echo make_url('agile_whiteboardmilestonestatus', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
+                <ul id="selected_milestone_input" class="fancydropdown-list" data-selected-value="<?php echo ($selected_milestone instanceof \thebuggenie\core\entities\Milestone) ? $selected_milestone->getID() : 0; ?>" data-selected-board-value="<?php echo ($board instanceof AgileBoard) ? $board->getID() : 0; ?>" data-status-url="<?php echo make_url('agile_whiteboardmilestonestatus', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID(), 'mode' => 'getmilestonestatus')); ?>">
                     <?php foreach ($board->getMilestones() as $milestone): ?>
-                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="window.location='#<?php echo $milestone->getID(); ?>';">
+                        <li data-input-value="<?php echo $milestone->getID(); ?>" data-board-value="<?php echo $board->getID(); ?>" data-display-name="<?php echo $milestone->getName(); ?>" class="fancydropdown-item <?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()) echo 'selected'; ?>" onclick="window.location='#<?php echo $milestone->getID(); ?>';">
                             <h1><?php echo $milestone->getName(); ?></h1>
                             <?php echo image_tag('icon_milestone_issues.png'); ?>
                             <dl class="info">

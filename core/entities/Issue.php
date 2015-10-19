@@ -2198,11 +2198,11 @@
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__("A file was uploaded.%link_to_file \n\nThis comment was attached: %comment", array('%comment' => "\n\n".$file_comment, '%link_to_file' => "\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 else
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded.%link_to_file', array('%link_to_file' => "\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 $comment->save();
                 if ($this->_files !== null)
@@ -4940,11 +4940,12 @@
                             case '_assignee_user':
                                 if (!$is_saved_assignee)
                                 {
-                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getNameWithUsername() : framework\Context::getI18n()->__('Not assigned');
+                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getName() : framework\Context::getI18n()->__('Not assigned');
 
                                     if ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
                                     {
                                         $this->startWorkingOnIssue($this->getAssignee());
+                                        $new_name = $this->getAssignee()->getNameWithUsername();
                                     }
 
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_ASSIGNED, $new_name);

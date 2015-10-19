@@ -388,7 +388,7 @@
         </li>
     </ul>
 </fieldset>
-<?php if (! count($fields_list) && ! count($customfields_list)): ?>
+<?php if (count($fields_list) || count($customfields_list)): ?>
     <fieldset>
         <legend onclick="$('issue_details_fieldslist').toggle();"><?php echo __('Issue details'); ?></legend>
         <ul class="issue_details simple_list" id="issue_details_fieldslist">

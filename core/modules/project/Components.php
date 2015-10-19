@@ -24,8 +24,9 @@
         public function componentMilestoneVirtualStatusDetails()
         {
             $this->statuses = \thebuggenie\core\entities\Status::getAll();
+            $allowed_status_ids = isset($this->allowed_status_ids) ? $this->allowed_status_ids : array();
             if ($this->milestone instanceof \thebuggenie\core\entities\Milestone)
-                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID());
+                $this->status_details = \thebuggenie\core\entities\tables\Issues::getTable()->getMilestoneDistributionDetails($this->milestone->getID(), $allowed_status_ids);
         }
 
         public function componentRecentActivities()

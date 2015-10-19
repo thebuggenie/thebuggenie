@@ -276,7 +276,13 @@
         public function runWhiteboardMilestoneStatus(framework\Request $request)
         {
             $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', array('milestone' => $milestone))));
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $allowed_status_ids = array();
+            foreach ($board->getColumns() as $column)
+            {
+                $allowed_status_ids = array_merge($allowed_status_ids, $column->getStatusIds());
+            }
+            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', compact('milestone', 'allowed_status_ids'))));
         }
 
         /**

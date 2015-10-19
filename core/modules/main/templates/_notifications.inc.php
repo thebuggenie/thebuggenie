@@ -4,11 +4,11 @@
         <?php foreach ($notifications as $notification): ?>
         <?php
 
-            if (!$notification->getTarget() instanceof \thebuggenie\core\entities\common\Identifiable)
-            {
-                $notification->delete();
-                continue;
-            }
+            //if (!$notification->getTarget() instanceof \thebuggenie\core\entities\common\Identifiable)
+            //{
+            //    $notification->delete();
+            //    continue;
+            //}
 
         ?>
         <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container" data-notification-id="<?php echo $notification->getID(); ?>">
@@ -64,6 +64,14 @@
                         <h1>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
                             <?php echo __('%user_name posted a %comment on %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())), $notification->getTarget()->getTarget()->getName()))); ?>
+                        </h1>
+                        <?php
+                        break;
+                    case \thebuggenie\core\entities\Notification::TYPE_ARTICLE_CREATED:
+                        ?>
+                        <h1>
+                            <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+                            <?php echo __('%user_name created %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
                         </h1>
                         <?php
                         break;

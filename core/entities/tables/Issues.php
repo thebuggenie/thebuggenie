@@ -176,11 +176,12 @@
             return $retarr;
         }
 
-        public function getMilestoneDistributionDetails($milestone_id)
+        public function getMilestoneDistributionDetails($milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
+            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             $total = $this->doCount($crit);
 
             $crit = $this->getCriteria();
@@ -188,6 +189,7 @@
             $crit->addSelectionColumn(self::ID, 'counts', Criteria::DB_COUNT);
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
+            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             $crit->addGroupBy(self::STATUS);
 
             $res = $this->doSelect($crit);

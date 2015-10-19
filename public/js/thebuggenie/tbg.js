@@ -2566,8 +2566,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
             var mi = $('selected_milestone_input');
             var milestone_id = (event) ? $(item).dataset.inputValue : mi.dataset.selectedValue;
+            var board_id = (event) ? $(item).dataset.boardValue : mi.dataset.selectedBoardValue;
             TBG.Main.Helpers.ajax(mi.dataset.statusUrl, {
-                additional_params: '&milestone_id=' + parseInt(milestone_id),
+                additional_params: '&milestone_id=' + parseInt(milestone_id) + '&board_id=' + parseInt(board_id),
                 url_method: 'get',
                 loading: {
                     hide: 'selected_milestone_status_details',
