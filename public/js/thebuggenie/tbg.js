@@ -3508,9 +3508,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 TBG.Project.Planning.initializeDragDropSorting();
                             }
                         }
+                        TBG.Project.Milestone.selectFromHash();
                     }
                 }
             });
+        }
+
+        TBG.Project.Milestone.selectFromHash = function () {
+            var hash = window.location.hash;
+
+            if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
+                jQuery(hash + '_details_link').eq(0).find('> a:first-child').trigger('click');
+            }
         }
 
         TBG.Project.Milestone.remove = function (url, milestone_id) {
@@ -3960,6 +3969,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             ['upcoming', 'past'].each(function (cn) {
                 prp.removeClassName(cn);
             });
+
+            var hash = window.location.hash;
+
+            if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
+                window.location.hash = '';
+            }
         };
 
         TBG.Project.showRoadmap = function () {
