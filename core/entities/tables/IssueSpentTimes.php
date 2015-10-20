@@ -59,7 +59,10 @@
             {
                 $crit = $this->getCriteria();
                 if ($startdate && $enddate)
+                {
+                    $crit->addWhere(self::EDITED_AT, $startdate, Criteria::DB_GREATER_THAN_EQUAL);
                     $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
+                }
 
                 $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
                 $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
@@ -70,7 +73,7 @@
                     {
                         if ($startdate && $enddate)
                         {
-                            $sd = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
+                            $sd = $row->get(self::EDITED_AT);
                             $date = mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd));
                             $points_retarr_keys = array_keys($points_retarr);
                             foreach ($points_retarr_keys as $k => $key)
@@ -79,12 +82,12 @@
                                 if (array_key_exists($k + 1, $points_retarr_keys))
                                 {
                                     if ($sd >= $key && $sd < $points_retarr_keys[$k + 1])
-                                        $points_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+                                        $points_retarr[$key][] = $row->get(self::SPENT_POINTS);
                                 }
                                 else
                                 {
                                     if ($sd >= $key)
-                                        $points_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+                                        $points_retarr[$key][] = $row->get(self::SPENT_POINTS);
                                 }
                             }
                             $hours_retarr_keys = array_keys($hours_retarr);
@@ -94,12 +97,12 @@
                                 if (array_key_exists($k + 1, $hours_retarr_keys))
                                 {
                                     if ($sd >= $key && $sd < $hours_retarr_keys[$k + 1])
-                                        $hours_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_HOURS);
+                                        $hours_retarr[$key][] = $row->get(self::SPENT_HOURS);
                                 }
                                 else
                                 {
                                     if ($sd >= $key)
-                                        $hours_retarr[$key][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_HOURS);
+                                        $hours_retarr[$key][] = $row->get(self::SPENT_HOURS);
                                 }
                             }
                         }
