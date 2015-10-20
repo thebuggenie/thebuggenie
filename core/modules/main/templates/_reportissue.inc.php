@@ -497,6 +497,7 @@
                                 <select name="milestone_id" id="milestone_id" style="width: 100%;">
                                     <option value=""<?php if (!$selected_milestone instanceof \thebuggenie\core\entities\Milestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                     <?php foreach ($milestones as $milestone): ?>
+                                        <?php if ($milestone->isClosed()) continue; ?>
                                         <option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -564,7 +565,7 @@
                         </td>
                     </tr>
                 </table>
-                <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $customdatatype): ?>
+                <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $field => $customdatatype): ?>
                     <table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;" class="additional_information<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> reportissue_error<?php endif; ?>">
                         <tr>
                             <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
@@ -641,6 +642,24 @@
                                         case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                             ?>
                                             <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'hide_hint' => true, 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+                                            <?php
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                            ?>
+                                            <li id="customfield_<?php echo $field; ?>_calendar_container"></li>
+                                            <script type="text/javascript">
+                                                require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                                                    domReady(function () {
+                                                        Calendar.setup({
+                                                            dateField: '<?php echo $field; ?>_name',
+                                                            parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
+                                                            valueCallback: function(element, date) {
+                                                                var value = Math.floor(date.getTime() / 1000);
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
                                             <?php
                                             break;
                                     }

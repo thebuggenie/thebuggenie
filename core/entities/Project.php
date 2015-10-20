@@ -1284,7 +1284,7 @@
         public function getMilestonesForIssues()
         {
             $milestones = array();
-            foreach ($this->getMilestones() as $milestone)
+            foreach ($this->getOpenMilestones() as $milestone)
             {
                 if (!$milestone->isVisibleIssues()) continue;
 
@@ -2323,7 +2323,7 @@
                             {
                                 $retval[$key]['values'] = array();
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
-                                foreach ($this->getMilestones() as $milestone)
+                                foreach ($this->getOpenMilestones() as $milestone)
                                 {
                                     $retval[$key]['values'][$milestone->getID()] = $milestone->getName();
                                 }
