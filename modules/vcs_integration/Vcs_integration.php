@@ -215,8 +215,9 @@
             if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == self::MODE_DISABLED)
                 return;
 
-            $links = IssueLink::getCommitsByIssue($event->getSubject());
-            include_component('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
+            $links = IssueLink::getCommitsByIssue($event->getSubject(), 3);
+            $links_total_count = IssueLinks::getTable()->countByIssueID($event->getSubject()->getID());
+            include_component('vcs_integration/viewissue_commits', array('issue' => $event->getSubject(), 'links' => $links, 'links_total_count' => $links_total_count, 'selected_project' => $event->getSubject()->getProject()));
         }
 
         public static function processCommit(\thebuggenie\core\entities\Project $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null, \Closure $callback = null)

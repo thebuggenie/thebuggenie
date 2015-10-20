@@ -6,7 +6,9 @@
         thebuggenie\core\entities\Project,
         thebuggenie\modules\vcs_integration\Vcs_integration,
         thebuggenie\modules\vcs_integration\entities,
-        thebuggenie\modules\vcs_integration\entities\Commit;
+        thebuggenie\modules\vcs_integration\entities\Commit,
+        thebuggenie\modules\vcs_integration\entities\IssueLink,
+        thebuggenie\core\entities\tables\Issues;
 
     /**
      * Module actions, vcs_integration
@@ -111,6 +113,23 @@
             $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branchname'), $request->getParameter('gitlab_repos_nss'));
 
             return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
+        }
+
+        public function runProjectIssueCommitsMore(framework\Request $request)
+        {
+            $this->forward403unless($request->isPost());
+
+            $this->selected_project = Project::getByKey($request['project_key']);
+            framework\Context::setCurrentProject($this->selected_project);
+
+            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == Vcs_integration::MODE_DISABLED) {
+                return $this->return404(framework\Context::getI18n()->__('VCS Integration has been disabled for this project'));
+            }
+
+            $issue = Issues::getTable()->getByProjectIDAndIssueNo($this->selected_project->getID(), $request['issue_no']);
+            $links = IssueLink::getCommitsByIssue($issue, $request->getParameter('limit', 0), $request->getParameter('offset', 0));
+
+            return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/issuecommits', array("projectId" => $this->selected_project->getID(), "links" => $links))));
         }
 
         public function runAddCommit(framework\Request $request)

@@ -2067,6 +2067,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Project.Commits.viewIssueUpdate = function (url) {
+            TBG.Main.Helpers.ajax(url, {
+                url_method: 'post',
+                additional_params: "offset=" + $('commits_offset').getValue() + "&limit=" + $('commits_limit').getValue(),
+                loading: {
+                    indicator: 'commits_indicator',
+                    hide: 'commits_more_link'
+                },
+                success: {
+                    update: {element: 'viewissue_vcs_integration_commits', insertion: true}
+                }
+            });
+        };
+
         TBG.Project.Scrum.Sprint.add = function (url, assign_url)
         {
             TBG.Main.Helpers.ajax(url, {
