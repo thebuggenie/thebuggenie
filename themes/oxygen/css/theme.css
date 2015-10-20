@@ -3104,6 +3104,13 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .milestone_counts_container {
     margin-top: -20px;
 }
+#new_backlog_milestone_marker .milestone_counts_container {
+    margin-top: 0;
+}
+.header.backlog .milestone_counts_container
+{
+    margin-top: -10px;
+}
 .milestone_counts_container table, .milestone_box .milestone_counts_container tr { border: 0; padding: 0; margin: 0; width: auto; color: #555; background-color: #FFF; font-size: 0.8em; }
 .milestone_counts_container td { padding: 0; text-align: center; font-weight: normal; min-width: 75px; }
 .milestone_counts_container tr:first-child td { font-size: 1.9em; line-height: 1.1em; }
@@ -3270,14 +3277,14 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .milestone_box .milestone_issues li.milestone_issue .child_issues_container { padding: 0 0 0 15px; list-style: none; margin: 0; }
 .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container, .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container:hover { box-shadow: 0 0 3px rgba(100, 100, 100, 0.2); border: 1px solid rgba(100, 100, 100, 0.2) !important; background-color: #FFF; display: block; }
 .milestone_box .milestone_issues li.milestone_issue .issue_container:hover { background-color: rgba(240, 240, 240, 0.4); }
-.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking:hover { background-color: rgba(250, 180, 180, 0.4); }
+.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking:hover { background-color: #FDF4F4; }
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container { background-color: rgba(200, 240, 200, 0.4); }
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container:hover { background-color: rgba(180, 220, 180, 0.4); }
 
 .story_color { display: block; position: absolute; left: 0; height: 100%; width: 7px; padding: 0; border-right: 1px solid rgba(200, 200, 200, 0.2); opacity: 0.6; }
 .epic .story_color { border-color: rgba(100, 100, 100, 0.2); }
 .story_color.dropper { cursor: pointer; }
-.story_color_selector { position: absolute; top: 10px; left: 15px; width: 260px; height: auto; z-index: 999; padding: 5px; color: #333; }
+.story_color_selector { position: absolute; top: 10px; left: 15px; width: 260px; height: auto; z-index: 999; padding: 5px; color: #333; white-space: initial; }
 .story_color_selector .color_items { margin: 5px; }
 .issue_closed .story_color_selector a, .story_color_selector a { color: #00A400; }
 .story_color_selector_item { cursor: pointer; float: left; width: 15px; height: 15px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border: 1px solid rgba(0, 0, 0, 0.5); margin-right: 5px; opacity: 0.6; }
@@ -3309,7 +3316,6 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     clear: both;
     padding: 8px 2px 5px 40px;
     margin: 0px;
-    overflow: hidden;
 }
 .milestone_box .milestone_issues li .issue_link a, .milestone_box .milestone_issues li .issue_link a:hover {
     border: none;
@@ -3339,12 +3345,12 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     margin-top: -4px;
     padding: 2px 2px 2px 3px;
 }
-.milestone_box .milestone_issues li .issue_container.blocking .issue_info {
-    background: linear-gradient(to right, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -o-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -ms-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
+.milestone_box .milestone_issues li .issue_container.blocking .issue_link {
+    background: linear-gradient(to right, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -o-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -ms-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
 }
 .milestone_issue .issue_release, .milestone_issue .issue_component, .whiteboard-issue .issue_release, .whiteboard-issue .issue_component, .whiteboard-issue .epic_badge {
     display: inline-block;
@@ -3447,7 +3453,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .epic .status_badge {
     display: inline-block;
     vertical-align: middle;
-    margin: 0 5px 0 0;
+    margin: -3px 5px 0 0;
     padding: 0;
     border-radius: 2px;
     width: 13px;
@@ -4226,6 +4232,15 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     padding: 5px 5px 7px 5px;
     margin-left: 13px;
     position: inherit;
+}
+.whiteboard-issue .issue_info .user_popup
+{
+    text-align: initial;
+}
+.whiteboard-issue .issue_info .userdropdown .user_popup
+{
+    margin-left: -23px;
+    margin-top: 13px;
 }
 .whiteboard-columns.transition-selector .whiteboard-issue .issue_info {
     display: none;
@@ -9587,13 +9602,22 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 
 .legendColorBox > div
 {
-    margin-top: 1px;
+    margin-top: 3px;
     margin-right: 2px;
+    width: 10px;
+    height: 10px;
+    border: none !important;
 }
 
 .legendColorBox > div > div
 {
-    width: 1px !important;
+    width: 0px !important;
+    border-radius: 6px;
+}
+
+td.legendLabel
+{
+    font-size: 1.1em;
 }
 
 #dashboard_lefthand .collapser_link
@@ -10981,6 +11005,16 @@ div[id^='comment_reply_indicator_']
     opacity: 1;
 }
 
+#issue_details .commits_next
+{
+    margin-left: 0;
+}
+
+#issue_details .commits_next img
+{
+    margin-top: 4px;
+}
+
 
 /* Your account */
 
@@ -11140,6 +11174,23 @@ div[id^='comment_reply_indicator_']
     opacity: 1;
 }
 
+.milestone_issue .user_popup
+{
+    margin-left: -263px;
+    margin-top: 13px;
+}
+
+.milestone_issue .user_popup .user_realname
+{
+    line-height: 20px;
+}
+
+.milestone_issue .user_popup.leftie:before,
+.milestone_issue .user_popup.leftie:after
+{
+    left: 90%;
+}
+
 .whiteboard-issue .issue_more_actions_link_container .dynamic_menu_link
 {
     z-index: 1;
@@ -11157,6 +11208,21 @@ div[id^='comment_reply_indicator_']
     width: 21px;
     height: 21px;
     border-radius: 4px;
+}
+
+.whiteboard-issue img.avatar.team-avatar,
+.milestone_issue img.avatar.team-avatar
+{
+    width: 16px;
+    height: 16px;
+    background-color: rgba(39, 124, 186, 0.05);
+    padding: 1.5px;
+    border: 1px solid rgba(39, 124, 186, 0.4);
+}
+
+.whiteboard-issue .userlink
+{
+    margin-left: 0;
 }
 
 .whiteboard-issue .epic_badge,
