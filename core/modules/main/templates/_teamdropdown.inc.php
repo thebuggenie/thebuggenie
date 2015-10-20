@@ -3,7 +3,7 @@
 <?php else: ?>
 <div class="userdropdown">
     <a href="javascript:void(0);" class="dropper userlink<?php if ($tbg_user->isMemberOfTeam($team)) echo ' friend'; ?>">
-        <?php echo image_tag('icon_team.png', array('class' => "avatar small")); ?>
+        <?php echo image_tag('icon_team.png', array('class' => "avatar small team-avatar")); ?>
         <?php echo isset($displayname) && is_string($displayname) ? $displayname : $team->getName(); ?>
     </a>
     <div id="team_<?php echo $team->getID() . '_' . $rnd_no; ?>" style="display: none;" class="rounded_box white shadowed user_popup popup_box dropdown_box leftie">
