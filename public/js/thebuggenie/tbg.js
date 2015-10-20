@@ -1073,6 +1073,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 $('viewissue_no_uploaded_files').hide();
                             }
                         }
+                        $('comments_box').insert({top: json.comments});
                     }
                 },
                 complete: {
@@ -1710,8 +1711,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: ['comment_add_indicator', 'comment_add'],
                     show: ['comment_add_button', 'comment_add_controls'],
                     clear: 'comment_bodybox',
-                    update: {element: 'comments_box', insertion: true, from: 'comment_data'},
                     callback: function (json) {
+                        $('comments_box').insert({top: json.comment_data});
                         if ($('comment_form').serialize(true).comment_save_changes == '1') {
                             window.location = json.continue_url;
                         } else if ($('comments_box').childElements().size() != 0) {

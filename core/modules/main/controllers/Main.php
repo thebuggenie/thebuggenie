@@ -2962,6 +2962,7 @@ class Main extends framework\Action
         }
         $saved_file_ids = $request['files'];
         $files = $image_files = array();
+        $comments = '';
         foreach ($request['file_description'] ?: array() as $file_id => $description)
         {
             $file = entities\File::getB2DBTable()->selectById($file_id);
@@ -2972,7 +2973,16 @@ class Main extends framework\Action
             $file->save();
             if (in_array($file_id, $saved_file_ids))
             {
-                $target->attachFile($file);
+                if ($target instanceof entities\Issue)
+                {
+                    $comment = $target->attachFile($file, '', '', true);
+
+                    if ($comment instanceof entities\Comment) $comments = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $target)) . $comments;
+                }
+                else
+                {
+                    $target->attachFile($file);
+                }
             }
             else
             {
@@ -2987,7 +2997,7 @@ class Main extends framework\Action
         }
         $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount));
+        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
     }
 
     public function runUploadFile(framework\Request $request)

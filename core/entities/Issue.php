@@ -2187,7 +2187,7 @@
          *
          * @param \thebuggenie\core\entities\File $file The file to attach
          */
-        public function attachFile(\thebuggenie\core\entities\File $file, $file_comment = '', $file_description = '')
+        public function attachFile(\thebuggenie\core\entities\File $file, $file_comment = '', $file_description = '', $return_comment = false)
         {
             $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
             if (!$existed)
@@ -2198,18 +2198,20 @@
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
                 {
-                    $comment->setContent(framework\Context::getI18n()->__("A file was uploaded.%link_to_file \n\nThis comment was attached: %comment", array('%comment' => "\n\n".$file_comment, '%link_to_file' => "\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__("A file was uploaded.%link_to_file \n\nThis comment was attached: %comment", array('%comment' => "\n\n".$file_comment, '%link_to_file' => "\n\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 else
                 {
-                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded.%link_to_file', array('%link_to_file' => "\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
+                    $comment->setContent(framework\Context::getI18n()->__('A file was uploaded.%link_to_file', array('%link_to_file' => "\n\n[[File:{$file->getRealFilename()}|thumb|{$file_description}]]")));
                 }
                 $comment->save();
                 if ($this->_files !== null)
                 {
                     $this->_files[$file->getID()] = $file;
                 }
+                if ($return_comment) return $comment;
             }
+            if ($return_comment) return null;
         }
 
         /**
