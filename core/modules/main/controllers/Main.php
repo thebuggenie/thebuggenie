@@ -4871,7 +4871,7 @@ class Main extends framework\Action
                     if ($event->isProcessed()) {
                         $component = $event->getReturnValue();
                     } else {
-                        $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone));
+                        $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone, 'include_counts' => true));
                     }
                     $message = framework\Context::getI18n()->__('Milestone saved');
                     return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
