@@ -473,6 +473,7 @@
                     $file = null;
                     $file_link = $filename;
                     $caption = $filename;
+                    $in_email = isset($this->options['in_email']) ? $this->options['in_email'] : false;
 
                     if ($issuemode)
                     {
@@ -486,7 +487,7 @@
                     {
                         $caption = (!empty($options)) ? array_pop($options) : htmlentities($file->getDescription(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
                         $caption = ($caption != '') ? $caption : htmlentities($file->getOriginalFilename(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                        $file_link = make_url('showfile', array('id' => $file->getID()));
+                        $file_link = make_url('showfile', array('id' => $file->getID()), !$in_email);
                     }
                     else
                     {
@@ -531,7 +532,7 @@
                             $divclasses[] = 'icright';
                         }
                         $retval = '<div class="'.join(' ', $divclasses).'"';
-                        if ($issuemode)
+                        if ($issuemode && !$in_email)
                         {
                             $retval .= ' style="float: left; clear: left;"';
                         }
