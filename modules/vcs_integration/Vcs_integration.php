@@ -406,7 +406,7 @@
                     }
                 }
 
-                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.<div class="commit_main">%commit_msg</div>', array('%commit_msg' => $commit_msg)), $user->getID(), $this->_name);
+                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.<div class="commit_main">%commit_msg</div>', array('%commit_msg' => $commit_msg)), $user->getID(), 'vcs_integration');
                 $output .= '[VCS ' . $project->getKey() . '] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
             }
 
