@@ -3589,7 +3589,7 @@ class Main extends framework\Action
                     break;
                 case 'reportissue':
                     $this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
-                    if ($this->selected_project instanceof entities\Project && !$this->selected_project->isLocked() && $tbg_user->canReportIssues($this->selected_project)) {
+                    if ($this->selected_project instanceof entities\Project && !$this->selected_project->isLocked() && $this->getUser()->canReportIssues($this->selected_project)) {
                         $template_name = 'main/reportissuecontainer';
                         $options['selected_project'] = $this->selected_project;
                         $options['selected_issuetype'] = $this->selected_issuetype;
