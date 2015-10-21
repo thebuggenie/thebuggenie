@@ -3205,15 +3205,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
             var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
             var visible_issues = list_issues.filter(':visible');
-            var sum_points = 0;
-            var sum_hours = 0;
+            var sum_estimated_points = 0;
+            var sum_estimated_hours = 0;
+            var sum_spent_points = 0;
+            var sum_spent_hours = 0;
             visible_issues.each(function (index) {
                 var elm = $(this);
                 if (!elm.hasClassName('child_issue')) {
                     if (elm.dataset.estimatedPoints !== undefined)
-                        sum_points += parseInt(elm.dataset.estimatedPoints);
+                        sum_estimated_points += parseInt(elm.dataset.estimatedPoints);
                     if (elm.dataset.estimatedHours !== undefined)
-                        sum_hours += parseInt(elm.dataset.estimatedHours);
+                        sum_estimated_hours += parseInt(elm.dataset.estimatedHours);
+                    if (elm.dataset.spentPoints !== undefined)
+                        sum_spent_points += parseInt(elm.dataset.spentPoints);
+                    if (elm.dataset.spentHours !== undefined)
+                        sum_spent_hours += parseInt(elm.dataset.spentHours);
                 }
             });
             var num_visible_issues = visible_issues.size();
@@ -3244,8 +3250,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             } else {
                 $('milestone_' + milestone_id + '_issues_count').update(num_visible_issues);
             }
-            $('milestone_' + milestone_id + '_points_count').update(sum_points);
-            $('milestone_' + milestone_id + '_hours_count').update(sum_hours);
+            $('milestone_' + milestone_id + '_points_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
+            $('milestone_' + milestone_id + '_hours_count').update(sum_spent_points + ' / ' + sum_estimated_hours);
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
