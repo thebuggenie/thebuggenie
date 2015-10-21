@@ -3250,8 +3250,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             } else {
                 $('milestone_' + milestone_id + '_issues_count').update(num_visible_issues);
             }
-            $('milestone_' + milestone_id + '_points_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
-            $('milestone_' + milestone_id + '_hours_count').update(sum_spent_points + ' / ' + sum_estimated_hours);
+            $('milestone_' + milestone_id + '_points_count').update(sum_spent_points + ' / ' + sum_estimated_points);
+            $('milestone_' + milestone_id + '_hours_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
