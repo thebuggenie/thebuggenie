@@ -252,7 +252,7 @@ class Main extends helpers\ProjectActions
                 case 'color':
                     $issue->setAgileColor($request['color']);
                     $issue->save();
-                    return $this->renderJSON(array('failed' => false));
+                    return $this->renderJSON(array('failed' => false, 'text_color' => $issue->getAgileTextColor()));
                     break;
             }
         }
