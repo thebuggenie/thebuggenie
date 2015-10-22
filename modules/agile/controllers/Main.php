@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\agile\controllers;
 
+    use thebuggenie\core\entities\Issue;
     use thebuggenie\core\framework,
         thebuggenie\modules\agile\entities,
         thebuggenie\core\helpers;
@@ -736,7 +737,7 @@
             $last_refreshed = $request['last_refreshed'];
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
-            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch)
             {
                 $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
             }
@@ -755,7 +756,7 @@
             $backlog_ids = array();
             if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {
-                foreach ($search_object->getIssues() as $backlog_issue)
+                foreach ($search_object->getIssues(true) as $backlog_issue)
                 {
                     foreach ($ids as $id_issue) {
                         if ($id_issue['issue_id'] == $backlog_issue->getID()) continue 2;

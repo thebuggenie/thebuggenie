@@ -1501,7 +1501,18 @@
 
             if (framework\Context::isProjectContext())
             {
-                $project_assigned_teams = framework\Context::getCurrentProject()->getAssignedTeams();
+                $project = framework\Context::getCurrentProject();
+            }
+            else if (framework\Context::getRequest()->hasParameter('issue_id'))
+            {
+                $issue = Issue::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('issue_id'));
+
+                if ($issue instanceof Issue && $issue->getProject() instanceof Project) $project = $issue->getProject();
+            }
+
+            if (isset($project))
+            {
+                $project_assigned_teams = $project->getAssignedTeams();
 
                 foreach ($teams as $team_id => $team)
                 {

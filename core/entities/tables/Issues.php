@@ -665,10 +665,10 @@
             }
         }
 
-        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'))
+        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'), $include_deleted = false)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
+            if (!$include_deleted) $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             if (count($filters) > 0)
             {
