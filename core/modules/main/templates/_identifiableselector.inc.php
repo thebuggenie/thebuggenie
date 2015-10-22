@@ -36,7 +36,13 @@
     </li>
     <?php if ($include_users): ?>
         <li class="separator"></li>
-        <li class="nohover"><label><?php echo __('Select yourself or a friend below'); ?></label></li>
+        <li class="nohover">
+            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                <label><?php echo __('Select yourself or a project assigned friend below'); ?></label>
+            <?php else: ?>
+                <label><?php echo __('Select yourself or a friend below'); ?></label>
+            <?php endif; ?>
+        </li>
         <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a></li>
         <?php if (count($tbg_user->getFriends()) == 0): ?>
             <li class="disabled"><?php echo __("Your friends will appear here"); ?></li>
@@ -48,7 +54,11 @@
         <li class="separator"></li>
         <li class="nohover">
             <?php if ($include_users): ?>
-                <label><?php echo __('%select_yourself_or_a_friend or select one of your teams', array('%select_yourself_or_a_friend' => '')); ?></label>
+                <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                    <label><?php echo __('%select_yourself_or_a_friend or select one of your project assigned teams', array('%select_yourself_or_a_friend' => '')); ?></label>
+                <?php else: ?>
+                    <label><?php echo __('%select_yourself_or_a_friend or select one of your teams', array('%select_yourself_or_a_friend' => '')); ?></label>
+                <?php endif; ?>
             <?php else: ?>
                 <label><?php echo __('Select one of your teams'); ?></label>
             <?php endif; ?>
