@@ -1720,6 +1720,7 @@ a.friend { color: #277CBA; }
 #file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 5px 0; padding: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.5); background-color: #7777CC; }
 #file_upload_list .progress.completed { background-color: #00CC33; opacity: 0.5; }
 #issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
+#viewissue_vcs_integration_commits pre { padding: 0; background-color: initial; border: none; }
 .textarea_save_container { display: block; margin: 0; padding: 7px; box-sizing: border-box; background-color: rgb(245, 245, 245); border: 1px solid rgba(100, 100, 100, 0.5); border-top: 0; text-align: right; }
 .textarea_save_container .button, .textarea_save_container .button:hover { padding: 7px 10px; font-weight: normal; font-size: 1.1em; }
 #issue_view { position: relative; z-index: 100; overflow: auto; }
