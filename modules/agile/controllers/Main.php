@@ -443,6 +443,7 @@
                     return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
                 }
 
+                $text['milestone_percent_complete'] = $issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone ? $issue->getMilestone()->getPercentComplete() : 0;
                 $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
             }
 

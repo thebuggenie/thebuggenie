@@ -16,7 +16,7 @@
         </dl>
         <?php if ($milestone->getID() && isset($board)): ?>
             <div class="milestone_percentage">
-                <div class="filler" id="milestone_<?php echo $milestone->getID(); ?>_percentage_filler" style="<?php if ($include_counts) echo 'width: '. $milestone->getPercentComplete() . '%'; ?>"></div>
+                <div class="filler" id="milestone_<?php echo $milestone->getID(); ?>_percentage_filler" style="<?php echo 'width: '. $milestone->getPercentComplete() . '%'; ?>"></div>
             </div>
         <?php endif; ?>
     </div>

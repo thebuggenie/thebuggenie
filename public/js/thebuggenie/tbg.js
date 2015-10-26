@@ -3144,6 +3144,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 }
                             }
                         }
+                        if (json.issue_details.milestone && json.issue_details.milestone.id && json.milestone_percent_complete != null) {
+                            $('milestone_' + json.issue_details.milestone.id + '_percentage_filler').setStyle({width: json.milestone_percent_complete + '%'});
+                        }
                     }
                 }
             });
@@ -3224,12 +3227,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
             var num_visible_issues = visible_issues.size();
             var milestone_id = $(list).up('.milestone_box').dataset.milestoneId;
-
-            if (milestone_id != 0) {
-                var multiplier = 100 / list_issues.size();
-                var pct = Math.floor(closed_issues.size() * multiplier);
-                $('milestone_' + milestone_id + '_percentage_filler').setStyle({width: pct + '%'});
-            }
 
             if (num_visible_issues === 0 && !$(list).hasClassName('collapsed')) {
                 if (list_issues.size() > 0) {
