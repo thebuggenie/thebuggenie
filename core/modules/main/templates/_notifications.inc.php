@@ -4,11 +4,11 @@
         <?php foreach ($notifications as $notification): ?>
         <?php
 
-            //if (!$notification->getTarget() instanceof \thebuggenie\core\entities\common\Identifiable)
-            //{
-            //    $notification->delete();
-            //    continue;
-            //}
+            if (!$notification->getTarget() instanceof \thebuggenie\core\entities\common\Identifiable)
+            {
+                $notification->delete();
+                continue;
+            }
 
         ?>
         <li class="<?php echo ($notification->isRead()) ? 'read' : 'unread'; ?>" id="notification_<?php echo $notification->getID(); ?>_container" data-notification-id="<?php echo $notification->getID(); ?>">
