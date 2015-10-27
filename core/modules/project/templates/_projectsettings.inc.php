@@ -138,8 +138,8 @@
             <td style="width: 580px;">
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                     <select name="issues_lock_type" id="issues_lock_type" style="width: 400px;">
-                        <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' selected'; ?>><?php echo __('Available to anyone with access to project and category'); ?></option>
                         <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' selected'; ?>><?php echo __('Available to anyone with access to project'); ?></option>
+                        <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' selected'; ?>><?php echo __('Available to anyone with access to project and category'); ?></option>
                         <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED) echo ' selected'; ?>><?php echo __('Available only to issue\'s poster'); ?></option>
                     </select>
                 <?php else: ?>
