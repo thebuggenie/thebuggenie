@@ -5756,15 +5756,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         }
 
-        TBG.Issues.ACL.toggle_checkboxes = function (element, issue_id) {
-            var val = element.getValue();
-            var opp_val = (val == 'restricted') ? 'public' : 'restricted';
-            if ($(element).checked) {
-                $('acl_' + issue_id + '_' + val).show();
-                $('acl_' + issue_id + '_' + opp_val).hide();
-            } else {
-                $('acl_' + issue_id + '_' + val).hide();
-                $('acl_' + issue_id + '_' + opp_val).show();
+        TBG.Issues.ACL.toggle_checkboxes = function (element, issue_id, val) {
+            switch (val) {
+                case 'public':
+                    $('acl_' + issue_id + '_public').show();
+                    $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_access_public_category_input').disable();
+                    break;
+                case 'public_category':
+                    $('acl_' + issue_id + '_public').show();
+                    $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_access_public_category_input').enable();
+                    break;
+                case 'restricted':
+                    $('acl_' + issue_id + '_public').hide();
+                    $('acl_' + issue_id + '_restricted').show();
+                    break;
             }
         };
 

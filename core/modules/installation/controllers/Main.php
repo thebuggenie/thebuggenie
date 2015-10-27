@@ -556,6 +556,16 @@ class Main extends framework\Action
         $this->upgrade_complete = true;
     }
 
+    protected function _upgradeFrom4dot1dot1(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Issue::getB2DBTable());
+        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Project::getB2DBTable());
+
+        $this->upgrade_complete = true;
+    }
+
     public function runUpgrade(framework\Request $request)
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -569,7 +579,7 @@ class Main extends framework\Action
             $scope->setEnabled();
             framework\Context::setScope($scope);
 
-            if ($this->current_version == '3.2') {
+            if ($this->current_version == '3.2.0') {
                 $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
                 $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
             }
@@ -581,11 +591,14 @@ class Main extends framework\Action
             $this->upgrade_complete = false;
 
             switch ($this->current_version) {
-                case '3.2':
+                case '3.2.0':
                     $this->_upgradeFrom3dot2($request);
                     break;
-                case '4.1':
+                case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
+                    break;
+                case '4.1.1':
+                    $this->_upgradeFrom4dot1dot1($request);
                     break;
                 default:
                     $this->upgrade_complete = true;
@@ -594,7 +607,7 @@ class Main extends framework\Action
             if ($this->upgrade_complete)
             {
                 $existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
-                file_put_contents(THEBUGGENIE_PATH . 'installed', framework\Settings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
+                file_put_contents(THEBUGGENIE_PATH . 'installed', framework\Settings::getVersion(false, true) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
                 $this->current_version = framework\Settings::getVersion(false, false);
                 $this->upgrade_available = false;
             }

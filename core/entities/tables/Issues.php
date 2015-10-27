@@ -78,6 +78,7 @@
         const DELETED = 'issues.deleted';
         const BLOCKING = 'issues.blocking';
         const LOCKED = 'issues.locked';
+        const LOCKED_CATEGORY = 'issues.locked_category';
         const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
         const MILESTONE = 'issues.milestone';
         const VOTES_TOTAL = 'issues.votes_total';
@@ -92,6 +93,14 @@
             $this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
             $this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
             $this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
+        }
+
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            $crit = $this->getCriteria();
+            $crit->addUpdate('issues.locked_category', true);
+
+            $this->doUpdate($crit);
         }
 
         public function getCountsByProjectID($project_id)

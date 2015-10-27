@@ -513,6 +513,14 @@
         protected $_locked;
 
         /**
+         * Whether the issue is locked for changes to category
+         *
+         * @var boolean
+         * @Column(type="boolean")
+         */
+        protected $_locked_category;
+
+        /**
          * The issues current step in the associated workflow
          *
          * @var \thebuggenie\core\entities\WorkflowStep
@@ -993,7 +1001,7 @@
                     return false;
                 }
             }
-            if ($this->getCategory() instanceof \thebuggenie\core\entities\Category)
+            if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
             {
                 if (!$this->getCategory()->hasAccess())
                 {
@@ -1363,6 +1371,17 @@
         }
 
         /**
+         * Returns whether or not this item is locked to category
+         *
+         * @return boolean
+         * @access public
+         */
+        public function isLockedCategory()
+        {
+            return $this->_locked_category;
+        }
+
+        /**
          * Returns whether or not this item is locked
          *
          * @return boolean
@@ -1374,6 +1393,17 @@
         }
 
         /**
+         * Returns whether or not this item is locked to category
+         *
+         * @return boolean
+         * @access public
+         */
+        public function isUnlockedCategory()
+        {
+            return !$this->isLockedCategory();
+        }
+
+        /**
          * Specify whether or not this item is locked
          *
          * @param boolean $locked [optional]
@@ -1381,6 +1411,40 @@
         public function setLocked($locked = true)
         {
             $this->_locked = (bool) $locked;
+        }
+
+        /**
+         * Specify whether or not this item is locked / locked to category based on project new issues lock type
+         *
+         * @param Project $project
+         */
+        public function setLockedFromProject(Project $project)
+        {
+            switch ($project->getIssuesLockType())
+            {
+                case Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY:
+                    $this->setLocked(false);
+                    $this->setLockedCategory(true);
+                    break;
+                case Project::ISSUES_LOCK_TYPE_PUBLIC:
+                    $this->setLocked(false);
+                    $this->setLockedCategory(false);
+                    break;
+                case Project::ISSUES_LOCK_TYPE_RESTRICTED:
+                    $this->setLocked(true);
+                    $this->setLockedCategory(false);
+                    break;
+            }
+        }
+
+        /**
+         * Specify whether or not this item is locked to category
+         *
+         * @param boolean $locked [optional]
+         */
+        public function setLockedCategory($locked = true)
+        {
+            $this->_locked_category = (bool) $locked;
         }
 
         public function isEditable()

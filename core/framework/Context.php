@@ -414,7 +414,7 @@ class Context
                 throw new exceptions\ConfigurationException("Version information not present", exceptions\ConfigurationException::NO_VERSION_INFO);
 
             $current_version = $version_info[0];
-            if ($current_version != Settings::getVersion(false, false))
+            if ($current_version != Settings::getVersion(false, true))
                 throw new exceptions\ConfigurationException("You are trying to use a newer version of The Bug Genie than the one you installed", exceptions\ConfigurationException::UPGRADE_REQUIRED);
 
             self::$_installmode = false;

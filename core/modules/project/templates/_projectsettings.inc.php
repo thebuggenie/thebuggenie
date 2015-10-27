@@ -134,6 +134,32 @@
             </td>
         </tr>
         <tr>
+            <td style="width: 300px;"><label for="issues_lock_type"><?php echo __('New issues access policy'); ?></label></td>
+            <td style="width: 580px;">
+                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                    <select name="issues_lock_type" id="issues_lock_type" style="width: 400px;">
+                        <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' selected'; ?>><?php echo __('Available to anyone with access to project and category'); ?></option>
+                        <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' selected'; ?>><?php echo __('Available to anyone with access to project'); ?></option>
+                        <option value="<?php echo \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED; ?>"<?php if ($project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED) echo ' selected'; ?>><?php echo __('Available only to issue\'s poster'); ?></option>
+                    </select>
+                <?php else: ?>
+                <?php
+                    switch ($project->getIssuesLockType()) {
+                        case \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY:
+                            echo __('Available to anyone with access to project and category');
+                            break;
+                        case \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC:
+                            echo __('Available to anyone with access to project');
+                            break;
+                        case \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED:
+                            echo __('Available only to issue\'s poster');
+                            break;
+                    }
+                ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
             <td><label for="issuetype_scheme"><?php echo __('Issuetype scheme'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
@@ -183,3 +209,5 @@
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 </form>
 <?php endif; ?>
+
+}

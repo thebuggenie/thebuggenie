@@ -26,6 +26,26 @@
      */
     class Project extends QaLeadable implements MentionableProvider
     {
+        /**
+         * New issues lock type project and category access
+         *
+         * @static integer
+         */
+        const ISSUES_LOCK_TYPE_PUBLIC_CATEGORY = 0;
+
+        /**
+         * New issues lock type project access
+         *
+         * @static integer
+         */
+        const ISSUES_LOCK_TYPE_PUBLIC = 1;
+
+        /**
+         * New issues lock type restricted access to poster
+         *
+         * @static integer
+         */
+        const ISSUES_LOCK_TYPE_RESTRICTED = 2;
 
         /**
          * Project list cache
@@ -68,6 +88,15 @@
          * @Column(type="boolean")
          */
         protected $_locked = null;
+
+        /**
+         * New issues lock type
+         *
+         * @var integer
+         * @access protected
+         * @Column(type="integer", length=10)
+         */
+        protected $_issues_lock_type = null;
 
         /**
          * Whether or not the project uses sprint planning
@@ -3078,6 +3107,27 @@
         public function setLocked($locked = true)
         {
             $this->_locked = (bool) $locked;
+        }
+
+        /**
+         * Returns new issues lock type
+         *
+         * @access public
+         * @return integer
+         */
+        public function getIssuesLockType()
+        {
+            return $this->_issues_lock_type;
+        }
+
+        /**
+         * Set new issues lock type
+         *
+         * @param boolean $lock_type [optional]
+         */
+        public function setIssuesLockType($lock_type)
+        {
+            $this->_issues_lock_type = $lock_type;
         }
 
         protected function _generateKey()

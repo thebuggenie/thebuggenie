@@ -62,6 +62,7 @@
         const QA = 'projects.qa_responsible';
         const QA_TYPE = 'projects.qa_responsible_type';
         const LOCKED = 'projects.locked';
+        const ISSUES_LOCK_TYPE = 'projects.issues_lock_type';
         const DELETED = 'projects.deleted';
         const SMALL_ICON = 'projects.small_icon';
         const LARGE_ICON = 'projects.large_icon';

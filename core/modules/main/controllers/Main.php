@@ -1729,6 +1729,8 @@ class Main extends framework\Action
             }
         }
 
+        $issue->setLockedFromProject($this->selected_project);
+
         $issue->save();
 
         if (isset($this->parent_issue))
@@ -2654,6 +2656,7 @@ class Main extends framework\Action
                 if (!$issue->canEditIssueDetails())
                     return $this->forward403();
                 $issue->setLocked(false);
+                $issue->setLockedCategory($request->hasParameter('public_category'));
                 $issue->save();
                 tables\Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
             }

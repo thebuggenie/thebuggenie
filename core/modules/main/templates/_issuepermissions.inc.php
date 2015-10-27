@@ -1,12 +1,14 @@
 <div class="backdrop_box medium" id="viewissue_add_item_div">
     <div class="backdrop_detail_header"><?php echo __('Issue access policy'); ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="public"<?php if($issue->isUnlocked()): ?> checked<?php endif; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access'); ?></label><br>
-        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="restricted"<?php if($issue->isLocked()): ?> checked<?php endif; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
+        <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>, 'public_category');" value="public_category"<?php if($issue->isUnlocked() && $issue->isLockedCategory()): ?> checked<?php endif; ?>><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project and category'); ?></label><br>
+        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>, 'public');" value="public"<?php if($issue->isUnlocked() && $issue->isUnlockedCategory()): ?> checked<?php endif; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
+        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>, 'restricted');" value="restricted"<?php if($issue->isLocked()): ?> checked<?php endif; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
         <?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_'.$issue->getID(), 'style' => '')); ?>
         <div id="acl_<?php echo $issue->getID(); ?>_public" style="<?php if($issue->isLocked()): ?> display: none;<?php endif; ?>">
             <form action="<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>" onsubmit="TBG.Issues.ACL.set('<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'public');return false;" method="post" id="acl_<?php echo $issue->getID(); ?>_publicform">
                 <div style="text-align: right;">
+                    <input id="issue_access_public_category_input" type="hidden" name="public_category"<?php if($issue->isUnlocked() && $issue->isUnlockedCategory()): ?> disabled<?php endif; ?>>
                     <input type="submit" value="<?php echo __('Save changes'); ?>" class="button button-green">
                 </div>
             </form>

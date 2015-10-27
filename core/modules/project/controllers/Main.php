@@ -1404,6 +1404,9 @@ class Main extends helpers\ProjectActions
             if ($request->hasParameter('locked'))
                 $this->selected_project->setLocked((bool) $request['locked']);
 
+            if ($request->hasParameter('issues_lock_type'))
+                $this->selected_project->setIssuesLockType($request['issues_lock_type']);
+
             if ($request->hasParameter('enable_builds'))
                 $this->selected_project->setBuildsEnabled((bool) $request['enable_builds']);
 
