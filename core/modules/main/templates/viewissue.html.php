@@ -13,8 +13,8 @@
             <?php echo __('Please wait while updating issue type'); ?>...
         </div>
     </div>
-    <div id="issue_<?php echo $issue->getID(); ?>" class="viewissue_container <?php if ($issue->isBlocking()) echo ' blocking'; ?>">
-        <div id="viewissue_header_container">
+    <div id="issue_<?php echo $issue->getID(); ?>" class="viewissue_container cf <?php if ($issue->isBlocking()) echo ' blocking'; ?>">
+        <div id="viewissue_header_container" class="cf">
             <table cellpadding=0 cellspacing=0 class="title_area">
                 <tr>
                     <td class="issue_navigation" id="go_previous_open_issue">

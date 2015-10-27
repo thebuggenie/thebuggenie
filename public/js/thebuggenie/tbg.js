@@ -212,7 +212,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var y = document.viewport.getScrollOffsets().top;
                 var vihc = $('viewissue_header_container');
                 var vihcl = vihc.getLayout();
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihc.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 8 : vihc.offsetTop;
                 if (y >= compare_coord) {
                     $('issue_main_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
                     $('issue_details_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
