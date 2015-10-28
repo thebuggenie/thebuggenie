@@ -198,10 +198,10 @@
         {
             if (!$condition)
             {
-                $message = ($message === null) ? Context::getI18n()->__("You are not allowed to access this page") : htmlentities($message);
+                $message = ($message === null) ? Context::getI18n()->__("You are either not allowed to access this page or don't have access to perform this action") : $message;
                 if (Context::getUser()->isGuest())
                 {
-                    Context::setMessage('login_message_err', $message);
+                    Context::setMessage('login_message_err', htmlentities($message));
                     Context::setMessage('login_force_redirect', true);
                     Context::setMessage('login_referer', Context::getRouting()->generate(Context::getRouting()->getCurrentRouteName(), Context::getRequest()->getParameters()));
                     $this->forward(Context::getRouting()->generate('login_page'), 403);
@@ -209,11 +209,11 @@
                 elseif (Context::getRequest()->isAjaxCall())
                 {
                     $this->getResponse()->setHttpStatus(403);
-                    throw new \Exception(Context::getI18n()->__("You don't have access to perform this action"));
+                    throw new \Exception($message);
                 }
                 else
                 {
-                    throw new \thebuggenie\core\framework\exceptions\ActionNotAllowedException(Context::getI18n()->__("You don't have access to perform this action"));
+                    throw new \thebuggenie\core\framework\exceptions\ActionNotAllowedException($message);
                 }
             }
         }
