@@ -11213,6 +11213,30 @@ div[id^='comment_reply_indicator_']
     border: none;
 }
 
+.whiteboard-issue .comments-badge,
+.whiteboard-issue .attachments-badge
+{
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.45);
+    margin-top: 1px;
+    vertical-align: middle;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.whiteboard-issue .comments-badge img, .whiteboard-issue .comments-badge span,
+.whiteboard-issue .attachments-badge img, .whiteboard-issue .attachments-badge span
+{
+    display: inline;
+    vertical-align: middle;
+}
+
+.whiteboard-issue .comments-badge img,
+.whiteboard-issue .attachments-badge img
+{
+    margin-right: 3px;
+}
+
 #selected_milestone_status_indicator
 {
     margin-top: -6px !important;
