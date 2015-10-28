@@ -2273,6 +2273,7 @@
                 {
                     $this->_files[$file->getID()] = $file;
                 }
+                $this->touch();
                 if ($return_comment) return $comment;
             }
             if ($return_comment) return null;
@@ -4416,6 +4417,7 @@
                 unset($this->_files[$file->getID()]);
             }
             $file->delete();
+            $this->touch();
         }
 
         /**
