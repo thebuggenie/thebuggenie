@@ -600,6 +600,7 @@
             $this->resolutions = entities\Resolution::getAll();
             $this->statuses = entities\Status::getAll();
             $this->milestones = framework\Context::getCurrentProject()->getMilestonesForIssues();
+            $this->al_items = array();
         }
 
         public function componentReportIssue()

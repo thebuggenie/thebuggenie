@@ -1651,7 +1651,7 @@ class Main extends framework\Action
         return !(bool) (count($errors) + count($permission_errors));
     }
 
-    protected function _postIssue()
+    protected function _postIssue(framework\Request $request)
     {
         $fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
         $issue = new entities\Issue();
@@ -1729,7 +1729,24 @@ class Main extends framework\Action
             }
         }
 
-        $issue->setLockedFromProject($this->selected_project);
+        if ($request->hasParameter('custom_issue_access'))
+        {
+            switch ($request->getParameter('issue_access'))
+            {
+                case 'public':
+                case 'public_category':
+                    $issue->setLocked(false);
+                    $issue->setLockedCategory($request->hasParameter('public_category'));
+                    break;
+                case 'restricted':
+                    $issue->setLocked();
+                    break;
+            }
+        }
+        else
+        {
+            $issue->setLockedFromProject($this->selected_project);
+        }
 
         $issue->save();
 
@@ -1742,7 +1759,19 @@ class Main extends framework\Action
         if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
             $issue->addAffectedComponent($this->selected_component);
 
-
+        if ($request->hasParameter('custom_issue_access'))
+        {
+            switch ($request->getParameter('issue_access'))
+            {
+                case 'public':
+                case 'public_category':
+                    $this->_unlockIssueAfter($request, $issue);
+                    break;
+                case 'restricted':
+                    $this->_lockIssueAfter($request, $issue);
+                    break;
+            }
+        }
 
         return $issue;
     }
@@ -1822,7 +1851,8 @@ class Main extends framework\Action
             {
                 try
                 {
-                    $issue = $this->_postIssue();
+                    $issue = $this->_postIssue($request);
+                    //dd($issue);
                     if ($request->hasParameter('files') && $request->hasParameter('file_description'))
                     {
                         $files = $request['files'];
@@ -2658,39 +2688,7 @@ class Main extends framework\Action
                 $issue->setLocked(false);
                 $issue->setLockedCategory($request->hasParameter('public_category'));
                 $issue->save();
-
-                tables\Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
-
-                $al_users = $request->getParameter('access_list_users', array());
-                $al_teams = $request->getParameter('access_list_teams', array());
-                $i_al = $issue->getAccessList();
-                foreach ($i_al as $k => $item)
-                {
-                    if ($item['target'] instanceof entities\Team)
-                    {
-                        $tid = $item['target']->getID();
-                        if (array_key_exists($tid, $al_teams))
-                        {
-                            unset($i_al[$k]);
-                        }
-                    }
-                    elseif ($item['target'] instanceof entities\User)
-                    {
-                        $uid = $item['target']->getID();
-                        if (array_key_exists($uid, $al_users))
-                        {
-                            unset($i_al[$k]);
-                        }
-                    }
-                }
-                foreach ($al_users as $uid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
-                }
-                foreach ($al_teams as $tid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
-                }
+                $this->_unlockIssueAfter($request, $issue);
             }
             catch (\Exception $e)
             {
@@ -2726,47 +2724,7 @@ class Main extends framework\Action
                 }
                 $issue->setLocked();
                 $issue->save();
-                framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
-                framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()->getID(), 0, 0, true);
-
-                $al_users = $request->getParameter('access_list_users', array());
-                $al_teams = $request->getParameter('access_list_teams', array());
-                $i_al = $issue->getAccessList();
-                foreach ($i_al as $k => $item)
-                {
-                    if ($item['target'] instanceof entities\Team)
-                    {
-                        $tid = $item['target']->getID();
-                        if (array_key_exists($tid, $al_teams))
-                        {
-                            unset($i_al[$k]);
-                        }
-                        else
-                        {
-                            framework\Context::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
-                        }
-                    }
-                    elseif ($item['target'] instanceof entities\User)
-                    {
-                        $uid = $item['target']->getID();
-                        if (array_key_exists($uid, $al_users))
-                        {
-                            unset($i_al[$k]);
-                        }
-                        elseif ($uid != $this->getUser()->getID())
-                        {
-                            framework\Context::removePermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0);
-                        }
-                    }
-                }
-                foreach ($al_users as $uid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
-                }
-                foreach ($al_teams as $tid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
-                }
+                $this->_lockIssueAfter($request, $issue);
             }
             catch (\Exception $e)
             {
@@ -4925,6 +4883,98 @@ class Main extends framework\Action
         {
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array('error' => $e->getMessage()));
+        }
+    }
+
+    /**
+     * @param framework\Request $request
+     * @param                   $issue
+     */
+    protected function _lockIssueAfter(framework\Request $request, $issue) {
+        framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
+        framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()
+          ->getID(), 0, 0, true);
+
+        $al_users = $request->getParameter('access_list_users', array());
+        $al_teams = $request->getParameter('access_list_teams', array());
+        $i_al     = $issue->getAccessList();
+        foreach ($i_al as $k => $item)
+        {
+            if ($item['target'] instanceof entities\Team)
+            {
+                $tid = $item['target']->getID();
+                if (array_key_exists($tid, $al_teams))
+                {
+                    unset($i_al[$k]);
+                }
+                else
+                {
+                    framework\Context::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
+                }
+            }
+            elseif ($item['target'] instanceof entities\User)
+            {
+                $uid = $item['target']->getID();
+                if (array_key_exists($uid, $al_users))
+                {
+                    unset($i_al[$k]);
+                }
+                elseif ($uid != $this->getUser()
+                    ->getID()
+                )
+                {
+                    framework\Context::removePermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0);
+                }
+            }
+        }
+        foreach ($al_users as $uid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+        }
+        foreach ($al_teams as $tid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
+        }
+    }
+
+    /**
+     * @param framework\Request $request
+     * @param                   $issue
+     */
+    protected function _unlockIssueAfter(framework\Request $request, $issue)
+    {
+        tables\Permissions::getTable()
+          ->deleteByPermissionTargetIDAndModule('canviewissue', $issue->getID());
+
+        $al_users = $request->getParameter('access_list_users', array());
+        $al_teams = $request->getParameter('access_list_teams', array());
+        $i_al     = $issue->getAccessList();
+        foreach ($i_al as $k => $item)
+        {
+            if ($item['target'] instanceof entities\Team)
+            {
+                $tid = $item['target']->getID();
+                if (array_key_exists($tid, $al_teams))
+                {
+                    unset($i_al[$k]);
+                }
+            }
+            elseif ($item['target'] instanceof entities\User)
+            {
+                $uid = $item['target']->getID();
+                if (array_key_exists($uid, $al_users))
+                {
+                    unset($i_al[$k]);
+                }
+            }
+        }
+        foreach ($al_users as $uid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+        }
+        foreach ($al_teams as $tid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
     }
 }

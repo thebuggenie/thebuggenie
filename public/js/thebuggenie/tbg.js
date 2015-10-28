@@ -5785,6 +5785,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         };
 
+        TBG.Issues.ACL.toggle_custom_access = function (element) {
+            if (jQuery(element).is(':checked')) {
+                jQuery('.report-issue-custom-access-container').show();
+            }
+            else {
+                jQuery('.report-issue-custom-access-container').hide();
+            }
+        };
+
         TBG.Issues.ACL.addTarget = function (url, issue_id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {

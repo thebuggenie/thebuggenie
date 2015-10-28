@@ -21,7 +21,7 @@
     <?php endif; ?>
     <?php if ($include_teams): ?>
         <li class="nohover"><label><?php echo __('Teams found'); ?></label></li>
-        <?php if (count($teams) > 0): ?>
+        <?php if (isset($teams) && count($teams) > 0): ?>
             <?php foreach ($teams as $team): ?>
                 <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($team->getID(), $team->getID(), 'team', "'team'"), (isset($team_callback)) ? $team_callback : $callback); ?>"><?php echo $team->getName(); ?></a></li>
             <?php endforeach; ?>

@@ -1681,6 +1681,29 @@ a.friend { color: #277CBA; }
 .backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
 .backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
 .backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 0px 7px 9px 7px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
+.backdrop_detail_content .report-issue-custom-access-container {
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 10px 7px 9px 7px;
+    background-color: #F5F5F5;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.report-issue-custom-access-check img
+{
+    margin-bottom: -3px;
+}
+.report-issue-custom-access-check input[type=checkbox],
+.report-issue-custom-access-container input[type=radio]
+{
+    margin-top: -2px;
+}
+.report-issue-custom-access-check input[type=checkbox]
+{
+    margin-left: 2px;
+    margin-right: 4px;
+}
 #report_form table.additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
 .backdrop_detail_content .additional_information .report_issue_help { /*display: none;*/ }
 #report_form table.additional_information { margin-top: 10px; width: 986px; }
