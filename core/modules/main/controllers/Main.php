@@ -1729,7 +1729,7 @@ class Main extends framework\Action
             }
         }
 
-        if ($request->hasParameter('custom_issue_access'))
+        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
         {
             switch ($request->getParameter('issue_access'))
             {
@@ -1759,7 +1759,7 @@ class Main extends framework\Action
         if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
             $issue->addAffectedComponent($this->selected_component);
 
-        if ($request->hasParameter('custom_issue_access'))
+        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
         {
             switch ($request->getParameter('issue_access'))
             {
@@ -2683,18 +2683,22 @@ class Main extends framework\Action
             try
             {
                 $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                if (!$issue->canEditIssueDetails())
-                    return $this->forward403();
-                $issue->setLocked(false);
-                $issue->setLockedCategory($request->hasParameter('public_category'));
-                $issue->save();
-                $this->_unlockIssueAfter($request, $issue);
             }
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('message' => framework\Context::getI18n()->__('This issue does not exist')));
             }
+
+            if (!$issue->canEditAccessPolicy())
+            {
+                $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
+                return;
+            }
+            $issue->setLocked(false);
+            $issue->setLockedCategory($request->hasParameter('public_category'));
+            $issue->save();
+            $this->_unlockIssueAfter($request, $issue);
         }
         else
         {
@@ -2717,20 +2721,21 @@ class Main extends framework\Action
             try
             {
                 $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                if (!$issue->canEditIssueDetails())
-                {
-                    $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
-                    return;
-                }
-                $issue->setLocked();
-                $issue->save();
-                $this->_lockIssueAfter($request, $issue);
             }
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('message' => framework\Context::getI18n()->__('This issue does not exist')));
             }
+
+            if (!$issue->canEditAccessPolicy())
+            {
+                $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
+                return;
+            }
+            $issue->setLocked();
+            $issue->save();
+            $this->_lockIssueAfter($request, $issue);
         }
         else
         {
