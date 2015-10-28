@@ -9157,13 +9157,12 @@ img[id^='remove_assignee_team_'][id$='_indicator']
 
 #attach_file #file_upload_list li .progress
 {
-
     position: inherit;
-    transition: width 0.3s ease;
-    -o-transition: width 0.3s ease;
-    -ms-transition: width 0.3s ease;
-    -moz-transition: width 0.3s ease;
-    -webkit-transition: width 0.3s ease;
+    transition: width 0.1s;
+    -o-transition: width 0.1s;
+    -ms-transition: width 0.1s;
+    -moz-transition: width 0.1s;
+    -webkit-transition: width 0.1s;
 }
 
 #attach_file #file_upload_list li .filename
@@ -10063,11 +10062,11 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
 #reportissue_content #file_upload_list .progress
 {
     float: left;
-    transition: width 0.3s ease;
-    -o-transition: width 0.3s ease;
-    -ms-transition: width 0.3s ease;
-    -moz-transition: width 0.3s ease;
-    -webkit-transition: width 0.3s ease;
+    transition: width 0.1s;
+    -o-transition: width 0.1s;
+    -ms-transition: width 0.1s;
+    -moz-transition: width 0.1s;
+    -webkit-transition: width 0.1s;
 }
 
 #reportissue_container #report_issue_report_another_button
