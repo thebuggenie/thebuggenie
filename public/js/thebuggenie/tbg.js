@@ -5766,16 +5766,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 case 'public':
                     $('acl_' + issue_id + '_public').show();
                     $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_' + issue_id + '_public_category_access_list').hide();
                     $('issue_access_public_category_input').disable();
+                    $('acl-users-teams-selector').hide();
                     break;
                 case 'public_category':
                     $('acl_' + issue_id + '_public').show();
                     $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_' + issue_id + '_public_category_access_list').show();
                     $('issue_access_public_category_input').enable();
+                    $('acl-users-teams-selector').show();
                     break;
                 case 'restricted':
                     $('acl_' + issue_id + '_public').hide();
                     $('acl_' + issue_id + '_restricted').show();
+                    $('acl-users-teams-selector').show();
                     break;
             }
         };
@@ -5786,8 +5791,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     indicator: 'popup_find_acl_' + issue_id + '_spinning'
                 },
                 success: {
-                    update: {element: 'issue_' + issue_id + '_access_list', insertion: true},
-                    hide: ['popup_find_acl_' + issue_id, 'issue_' + issue_id + '_access_list_none']
+                    update: {},
+                    callback: function(json) {
+                        $('issue_' + issue_id + '_restricted_access_list').insert({bottom: json.content});
+                        $('issue_' + issue_id + '_public_category_access_list').insert({bottom: json.content});
+                        $('issue_' + issue_id + '_restricted_access_list_none').hide();
+                        $('issue_' + issue_id + '_public_category_access_list_none').hide();
+                    },
+                    hide: 'popup_find_acl_' + issue_id
                 }
             });
         };

@@ -2658,7 +2658,39 @@ class Main extends framework\Action
                 $issue->setLocked(false);
                 $issue->setLockedCategory($request->hasParameter('public_category'));
                 $issue->save();
+
                 tables\Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
+
+                $al_users = $request->getParameter('access_list_users', array());
+                $al_teams = $request->getParameter('access_list_teams', array());
+                $i_al = $issue->getAccessList();
+                foreach ($i_al as $k => $item)
+                {
+                    if ($item['target'] instanceof entities\Team)
+                    {
+                        $tid = $item['target']->getID();
+                        if (array_key_exists($tid, $al_teams))
+                        {
+                            unset($i_al[$k]);
+                        }
+                    }
+                    elseif ($item['target'] instanceof entities\User)
+                    {
+                        $uid = $item['target']->getID();
+                        if (array_key_exists($uid, $al_users))
+                        {
+                            unset($i_al[$k]);
+                        }
+                    }
+                }
+                foreach ($al_users as $uid)
+                {
+                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+                }
+                foreach ($al_teams as $tid)
+                {
+                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
+                }
             }
             catch (\Exception $e)
             {

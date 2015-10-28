@@ -9357,7 +9357,7 @@ div[id^='acl_'][id$='_restricted'] h4
     font-weight: normal;
 }
 
-div[id^='acl_'][id$='_restricted'] .faded_out
+.issue_access_list > .faded_out
 {
     margin-left: -6px;
 }
@@ -9414,11 +9414,15 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled
     color: #AAA;
 }
 
-ul[id^='issue_'][id$='_access_list'] > li
+.issue_access_list
+{
+    padding: 5px;
+}
+
+.issue_access_list > li
 {
     margin-bottom: 5px;
 }
-
 
 /* Manage issue subscribers */
 
