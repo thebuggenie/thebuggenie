@@ -2227,7 +2227,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 update: TBG.Project.Planning.sortMilestoneIssues,
                 receive: TBG.Project.Planning.moveIssue,
                 sort: TBG.Project.Planning.calculateNewBacklogMilestoneDetails,
-                tolerance: 'pointer'
+                tolerance: 'pointer',
+                helper: function(event, ui){
+                    var $clone =  $(ui).clone();
+                    $clone .css('position','absolute');
+                    return $clone.get(0);
+                }
             });
         };
 
