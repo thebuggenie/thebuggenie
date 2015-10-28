@@ -3307,23 +3307,30 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     line-height: 1em;
 }
 .whiteboard-issue .priority {
-    height: 12px;
+    height: 13px;
     width: 15px;
     text-align: center;
-    padding: 0px 2px;
+    padding: 0;
     font-size: 1em;
     font-weight: bold;
     text-transform: uppercase;
     vertical-align: middle;
     line-height: 1em;
     float: left;
-    margin: 9px 2px 3px 12px;
+    margin: 10px 4px 3px 16px;
+    border-radius: 3px;
 }
 .issue_container .priority.priority_1, .whiteboard-issue .priority.priority_1 { color: #BF0303; font-style: normal; }
-.issue_container .priority.priority_2, .whiteboard-issue .priority.priority_2, .issue_container .priority_3 { color: #C39500; }
+.issue_container .priority.priority_2, .whiteboard-issue .priority.priority_2, .issue_container .priority_3, .whiteboard-issue .priority.priority_3 { color: #C39500; }
 .issue_container .priority.priority_4, .whiteboard-issue .priority.priority_4 { color: #00892C; font-weight: normal; }
 .issue_container .priority.priority_5, .whiteboard-issue .priority.priority_5, .issue_container .priority.priority_6 , .whiteboard-issue .priority.priority_6 { color: #888; font-weight: normal; }
 .issue_container .priority.priority_0, .whiteboard-issue .priority.priority_0 { color: #DDD; font-weight: normal; }
+
+.whiteboard-issue .priority.priority_1 { background-color: rgba(191, 3, 3, 0.15); }
+.whiteboard-issue .priority.priority_2, .whiteboard-issue .priority.priority_3 { background-color: rgba(195, 149, 0, 0.15); }
+.whiteboard-issue .priority.priority_4 { background-color: rgba(0, 137, 44, 0.15); }
+.whiteboard-issue .priority.priority_5, .whiteboard-issue .priority.priority_6 { background-color: rgba(136, 136, 136, 0.15); }
+.whiteboard-issue .priority.priority_0 { background-color: rgba(221, 221, 221, 0.2); }
 
 .milestone_box .milestone_issues li .issue_link, .milestone_box .milestone_issues li .issue_link:hover {
     display: block;
