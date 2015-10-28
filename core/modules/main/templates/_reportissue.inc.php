@@ -683,7 +683,7 @@
             <div class="rounded_box report_issue_submit_container report_issue_desc green borderless">
                 <div><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
                 <input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
-                <?php echo image_tag('spinning_20.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
+                <?php echo image_tag('spinning_20_bg_green.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
             </div>
             <div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px;">
                 <strong><?php echo __('Add more information to your issue'); ?></strong><br>
