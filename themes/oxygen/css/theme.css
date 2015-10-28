@@ -1715,9 +1715,9 @@ a.friend { color: #277CBA; }
 #file_upload_list li .filename { font-style: italic; }
 #file_upload_list li .filesize { color: #AAA; display: inline-block; margin-left: 10px; }
 #file_upload_list li label { width: 180px; display: inline-block; font-size: 1.1em; font-weight: normal; }
-#file_upload_list li label:first-of-type { font-weight: bold; }
+#file_upload_list li label:first-of-type { float: left; margin-top: -3px; }
 #file_upload_list li input[type="text"] { width: 619px; }
-#file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 5px 0; padding: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.5); background-color: #7777CC; }
+#file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 0; padding: 0; background-color: #8C8; }
 #file_upload_list .progress.completed { background-color: #00CC33; opacity: 0.5; }
 #issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
 #viewissue_vcs_integration_commits pre { padding: 0; background-color: initial; border: none; }
@@ -2421,7 +2421,7 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #viewissue_attached_information .attached_item.file_image:hover .removelink, #article_attachments .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
 #file_upload_list { display: block; clear: both; }
 #file_upload_list li { clear: both; }
-#file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; }
+#file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; margin-top: -3px; }
 .imagepreview { display: block; margin: 0; padding: 0; border: 4px solid #FFF; transition: box-shadow 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
 .imagepreview:hover { box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
 .imagepreview img { display: block; max-width: 100%; margin: 0 auto; padding: 0; }
@@ -9140,12 +9140,23 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     width: 585px !important;
 }
 
-#attach_file #file_upload_list li .progress
+.progress_container
 {
     width: 595px !important;
     float: left;
-    margin-top: 5px;
+    margin-top: 10px;
+    background-color: #DCEFDC;
+}
+
+#attach_file #file_upload_list li .progress
+{
+
     position: inherit;
+    transition: width 0.3s ease;
+    -o-transition: width 0.3s ease;
+    -ms-transition: width 0.3s ease;
+    -moz-transition: width 0.3s ease;
+    -webkit-transition: width 0.3s ease;
 }
 
 #attach_file #file_upload_list li .filename
@@ -9159,6 +9170,7 @@ img[id^='remove_assignee_team_'][id$='_indicator']
 #attach_file #file_upload_list li .filesize
 {
     float: right;
+    margin-right: 3px;
 }
 
 
@@ -10040,6 +10052,11 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
 #reportissue_content #file_upload_list .progress
 {
     float: left;
+    transition: width 0.3s ease;
+    -o-transition: width 0.3s ease;
+    -ms-transition: width 0.3s ease;
+    -moz-transition: width 0.3s ease;
+    -webkit-transition: width 0.3s ease;
 }
 
 #reportissue_container #report_issue_report_another_button
@@ -10204,8 +10221,8 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     font-size: 1em;
 }
 
-#reportissue_content #file_upload_list li:last-of-type .progress,
-#reportissue_container #file_upload_list li:last-of-type .progress
+#reportissue_content #file_upload_list li:last-of-type .progress_container,
+#reportissue_container #file_upload_list li:last-of-type .progress_container
 {
     margin-bottom: 20px;
 }
@@ -10215,15 +10232,25 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     margin-top: 0px;
 }
 
-#report_issue_form #file_upload_list .progress
+#report_issue_form #file_upload_list .progress_container
 {
     width: 805px !important;
+}
+
+#report_issue_form #file_upload_list .progress_container
+{
     margin-top: 20px;
 }
 
 #report_issue_form #file_upload_list li
 {
     overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#report_issue_form #file_upload_list li:last-child
+{
+    margin-bottom: 0px;
 }
 
 #report_issue_form #file_upload_list li br
