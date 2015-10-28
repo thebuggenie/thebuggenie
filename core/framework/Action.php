@@ -213,8 +213,7 @@
                 }
                 else
                 {
-                    $this->getResponse()->setHttpStatus(403);
-                    $this->getResponse()->setTemplate('main/forbidden');
+                    throw new \thebuggenie\core\framework\exceptions\ActionNotAllowedException(Context::getI18n()->__("You don't have access to perform this action"));
                 }
             }
         }

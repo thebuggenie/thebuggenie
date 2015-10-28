@@ -35,6 +35,17 @@ class Common extends framework\Action
     }
 
     /**
+     * 403 forbidden page
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runForbidden(framework\Request $request)
+    {
+        $this->getResponse()->setHttpStatus(403);
+        $this->getResponse()->setTemplate('main/forbidden');
+    }
+
+    /**
      * Logs the user out
      *
      * @param \thebuggenie\core\framework\Request $request

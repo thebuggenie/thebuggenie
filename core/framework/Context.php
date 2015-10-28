@@ -2616,6 +2616,12 @@ class Context
             header("HTTP/1.0 404 Not Found", true, 404);
             throw $e;
 
+        } catch (\thebuggenie\core\framework\exceptions\ActionNotAllowedException $e) {
+            $actionObject = new \thebuggenie\core\modules\main\controllers\Common();
+            $actionObject['message'] = $e->getMessage();
+
+            self::performAction($actionObject, 'main', 'forbidden');
+
         } catch (\thebuggenie\core\framework\exceptions\CSRFFailureException $e) {
             \b2db\Core::closeDBLink();
             if (self::isDebugMode())

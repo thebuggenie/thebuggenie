@@ -2848,6 +2848,7 @@ class Main extends framework\Action
         }
 
         $this->forward403unless($issue->canDeleteIssue());
+        dd(1, $issue->canDeleteIssue());
         $issue->deleteIssue();
         $issue->save();
 
