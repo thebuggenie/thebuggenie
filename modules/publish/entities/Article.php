@@ -440,7 +440,7 @@
 
         public function getSpacedName()
         {
-            return preg_replace('/(?<=[a-z])(?=[A-Z])/', ' ', $this->getName());
+            return get_spaced_name($this->getName());
         }
 
         public function getCategoryName()

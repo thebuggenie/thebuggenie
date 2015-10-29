@@ -101,7 +101,7 @@
                 array_shift($namespaces);
                 echo '<span>', \thebuggenie\core\framework\Context::getCurrentProject()->getName(), ':</span>';
             }
-            echo get_spaced_name(implode(':', $namespaces));
+            echo \thebuggenie\core\framework\Settings::get('allow_camelcase_links', 'publish', \thebuggenie\core\framework\Context::getScope()->getID(), 0) ? get_spaced_name(implode(':', $namespaces)) : implode(':', $namespaces);
         }
     ?>
     <?php endif; ?>
