@@ -783,6 +783,7 @@ footer img { margin: 0 3px -3px 0; }
 .system_comment .comment_main { background-color: #F7F7F7; border: 1px solid #DDD; }
 .private_comment .comment_main { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
+.comment_editor .typeahead.dropdown-menu { overflow-y: scroll; max-height: 100px; }
 
 .commit_header { font-size: larger; }
 .commit_expander { display: block; padding: 3px 0 15px 22px; border-bottom: 1px dashed #EAEAEA; }
