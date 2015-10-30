@@ -684,7 +684,7 @@
             <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.prefile')->trigger(); ?>
             <?php if ($selected_project instanceof \thebuggenie\core\entities\Project && $selected_project->permissionCheck('canlockandeditlockedissues')): ?>
                 <div class="report-issue-custom-access-check">
-                    <?php echo image_tag('icon_locked.png'); ?>
+                    <?php echo image_tag('action_update_access_policy.png'); ?>
                     <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?php echo __('Custom access policy'); ?></label>
                     <div class="report-issue-custom-access-container" style="display:none;">
                         <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
