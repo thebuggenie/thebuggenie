@@ -1,4 +1,4 @@
-<div class="backdrop_box medium" id="viewissue_add_item_div">
+<div class="backdrop_box medium issue_access_policy_box" id="viewissue_add_item_div">
     <div class="backdrop_detail_header"><?php echo __('Issue access policy'); ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>, 'public');" value="public"<?php if($issue->isUnlocked() && $issue->isUnlockedCategory()): ?> checked<?php endif; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>

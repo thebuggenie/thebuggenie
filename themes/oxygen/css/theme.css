@@ -1682,7 +1682,7 @@ a.friend { color: #277CBA; }
 .backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
 .backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
 .backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 0px 7px 9px 7px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
-.backdrop_detail_content .report-issue-custom-access-container {
+.backdrop_detail_content .report-issue-custom-access-check {
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -1690,6 +1690,10 @@ a.friend { color: #277CBA; }
     background-color: #F5F5F5;
     margin-top: 10px;
     margin-bottom: 0;
+    clear: both;
+}
+.backdrop_detail_content .report-issue-custom-access-container {
+    margin-top: 10px;
 }
 .report-issue-custom-access-check img
 {

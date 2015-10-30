@@ -686,46 +686,46 @@
                 <div class="report-issue-custom-access-check">
                     <?php echo image_tag('icon_locked.png'); ?>
                     <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?php echo __('Custom access policy'); ?></label>
-                </div>
-                <div class="report-issue-custom-access-container" style="display:none;">
-                <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
-                <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project, category and those listed below'); ?></label><br>
-                <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'restricted');" value="restricted"><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
-                <?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_', 'style' => '')); ?>
-                <div id="acl-users-teams-selector" style="display: none;">
-                    <h4 style="margin-top: 10px;">
-                        <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
-                        <?php echo __('Users or teams who can see this issue'); ?>
-                    </h4>
-                    <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_",
-                                                                              'header'             => __('Give someone access to this issue'),
-                                                                              'callback'             => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', '');",
-                                                                              'team_callback'     => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', '');",
-                                                                              'base_id'            => "popup_find_acl_",
-                                                                              'include_teams'        => true,
-                                                                              'allow_clear'        => false,
-                                                                              'absolute'            => true)); ?>
-                </div>
-                <div id="acl__public" style="display: none;">
-                    <ul class="issue_access_list simple_list" id="issue__public_category_access_list" style="display: none;">
-                        <li id="issue__public_category_access_list_none" class="faded_out" style="display: none; padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
-                        <?php foreach ($al_items as $item): ?>
-                            <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
-                        <?php endforeach; ?>
-                    </ul>
-                    <div style="text-align: right;">
-                        <input id="issue_access_public_category_input" type="hidden" name="public_category" disabled>
+                    <div class="report-issue-custom-access-container" style="display:none;">
+                        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project, category and those listed below'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'restricted');" value="restricted"><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
+                        <?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_', 'style' => '')); ?>
+                        <div id="acl-users-teams-selector" style="display: none;">
+                            <h4 style="margin-top: 10px;">
+                                <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
+                                <?php echo __('Users or teams who can see this issue'); ?>
+                            </h4>
+                            <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_",
+                                                                                      'header'             => __('Give someone access to this issue'),
+                                                                                      'callback'             => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', '');",
+                                                                                      'team_callback'     => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', '');",
+                                                                                      'base_id'            => "popup_find_acl_",
+                                                                                      'include_teams'        => true,
+                                                                                      'allow_clear'        => false,
+                                                                                      'absolute'            => true)); ?>
+                        </div>
+                        <div id="acl__public" style="display: none;">
+                            <ul class="issue_access_list simple_list" id="issue__public_category_access_list" style="display: none;">
+                                <li id="issue__public_category_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
+                                <?php foreach ($al_items as $item): ?>
+                                    <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
+                                <?php endforeach; ?>
+                            </ul>
+                            <div style="text-align: right;">
+                                <input id="issue_access_public_category_input" type="hidden" name="public_category" disabled>
+                            </div>
+                        </div>
+                        <div id="acl__restricted" style="display: none;">
+                            <ul class="issue_access_list simple_list" id="issue__restricted_access_list">
+                                <li id="issue__restricted_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
+                                <?php foreach ($al_items as $item): ?>
+                                    <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div id="acl__restricted" style="display: none;">
-                    <ul class="issue_access_list simple_list" id="issue__restricted_access_list">
-                        <li id="issue__restricted_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
-                        <?php foreach ($al_items as $item): ?>
-                            <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
             <?php endif; ?>
             <div class="rounded_box report_issue_submit_container report_issue_desc green borderless">
                 <div><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
