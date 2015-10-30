@@ -1196,7 +1196,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 },
                 success: {
-                    update: 'fullpage_backdrop_content'
+                    update: 'fullpage_backdrop_content',
+                    callback: function () {
+                        $('reportissue_container').removeClassName('large');
+                        $('reportissue_container').removeClassName('huge');
+                    }
                 },
                 complete: {
                     callback: function () {
@@ -5073,6 +5077,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('report_form').hide();
                 $('report_more_here').show('block');
                 $('issuetype_list').show('block');
+                $('reportissue_container').addClassName('large');
+                $('reportissue_container').removeClassName('huge');
             }
 
         }
