@@ -209,5 +209,3 @@
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 </form>
 <?php endif; ?>
-
-}
