@@ -1,0 +1,26 @@
+# .htaccess file for The Bug Genie
+
+# make sure that magic_quotes and register_globals is always off
+<IfModule mod_php5.c>
+	php_flag magic_quotes_gpc	off
+	php_flag register_globals	off
+</IfModule>
+
+# rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Examples:
+    # RewriteBase /public
+    # RewriteBase /thebuggenie/public
+    RewriteBase /
+
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
+
+    # redirect to front controller
+    RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
+</IfModule>
+
+# Stop people accessing directories they shouldn't have access to
+RedirectMatch 403 ^/\.svn(/|$)

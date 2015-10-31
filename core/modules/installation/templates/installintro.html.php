@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <h2>We value your feedback</h2>
     The key to success for any open source project is listening to feedback from users - both positive feedback <b>and</b> constructive criticism.<br>
@@ -16,9 +16,9 @@
     <form accept-charset="utf-8" action="index.php" method="post">
         <input type="hidden" name="step" value="1">
         <input type="checkbox" name="agree_license" id="agree_license" onclick="($('agree_license').checked) ? $('start_installation').enable() : $('start_installation').disable();">
-        <label for="agree_license">I agree to be bound by the terms in the MPL 1.1 license</label>&nbsp;&nbsp;<br>
+        <label for="agree_license">I agree to be bound by the terms in the MPL 2.0 license</label>&nbsp;&nbsp;<br>
         <input type="submit" style="margin-top: 15px;" value="Continue" id="start_installation" disabled="disabled">
     </form>
 </div>
 
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

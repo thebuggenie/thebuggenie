@@ -1,7 +1,7 @@
 <ul class="simple_list">
 <?php if (count($role->getPermissions())): ?>
     <?php foreach ($role->getPermissions() as $permission): ?>
-        <?php $permission_details = ($permission->getModule() == 'core') ? TBGContext::getPermissionDetails($permission->getPermission()) : TBGContext::getModule($permission->getModule())->getPermissionDetails($permission->getPermission()); ?>
+        <?php $permission_details = ($permission->getModule() == 'core') ? \thebuggenie\core\framework\Context::getPermissionDetails($permission->getPermission()) : \thebuggenie\core\framework\Context::getModule($permission->getModule())->getPermissionDetails($permission->getPermission()); ?>
         <li>
             <?php echo image_tag('action_ok.png', array('style' => 'margin: 2px 5px -2px 0;')); ?><?php echo (array_key_exists('description', $permission_details)) ? $permission_details['description'] : $permission; ?>
         </li>

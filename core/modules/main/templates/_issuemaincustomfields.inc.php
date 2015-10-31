@@ -5,7 +5,7 @@
                                 }
                                 switch ($info['type'])
                                 {
-                                    case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+                                    case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                                         ?>
                                         <div id="<?php echo $field;?>_field">
                                             <fieldset id="<?php echo $field; ?>_header" class="hoverable viewissue_customfield<?php if ($info['changed']): ?> issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
@@ -25,7 +25,7 @@
                                                 </div>
                                                 <div id="<?php echo $field; ?>_change" class="resizable" style="display: none;">
                                                     <form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
-                                                        <?php include_template('main/textarea', array('area_name' => $field.'_value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => htmlentities($info['name'], ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
+                                                        <?php include_component('main/textarea', array('area_name' => $field.'_value', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => htmlentities($info['name'], ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()))); ?>
                                                         <br>
                                                         <input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save or %cancel', array('%save' => '', '%cancel' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('{$field}_change').hide();".(($info['name'] != '') ? "$('{$field}_name').show();" : "$('no_{$field}').show();")."return false;")))); ?>                                                    </form>
                                                     <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field.'_spinning')); ?>

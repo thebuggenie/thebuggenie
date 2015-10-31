@@ -1,5 +1,5 @@
 <?php foreach ($search_object->getIssues() as $issue): ?>
-    <?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $search_object->getGroupby(), $cc, $prevgroup_id); ?>
+    <?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupby(), $cc, $prevgroup_id); ?>
     <?php if ($showtablestart && $cc > 1): ?>
         <?php echo '</tbody></table>'; ?>
     <?php endif; ?>
@@ -54,8 +54,8 @@
                         <?php endif; ?>
                     </td>
                     <td style="padding: 3px;">
-                        <?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                        <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
                         <?php else: ?>
                             -
                         <?php endif; ?>

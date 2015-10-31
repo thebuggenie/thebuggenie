@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <?php if (isset($error)): ?>
     <div class="installation_box">
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -25,9 +25,9 @@
             <input type="hidden" name="step" value="6">
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
-                <input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 40px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
+                <input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 45px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
             </div>
         </form>
     </div>
 <?php endif; ?>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

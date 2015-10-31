@@ -1,0 +1,463 @@
+configure_project_settings:
+    route: /configure/project/:project_id/settings
+    module: project
+    action: configureProjectSettings
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_developers:
+    route: /configure/project/:project_id/developers
+    module: project
+    action: configureProjectDevelopers
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_set_leadby:
+    route: '/configure/project/:project_id/set/:field/*'
+    module: project
+    action: setItemLead
+    parameters:
+      config_module: core
+      section: 10
+      item_type: project
+    csrf_enabled: false
+
+configure_project_get_updated_key:
+    route: /configure/project/:project_id/get/updated/key
+    module: project
+    action: getUpdatedProjectKey
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_find_assignee:
+    route: '/configure/project/:project_id/find/assignee/by/*'
+    module: project
+    action: findAssignee
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_add_assignee:
+    route: '/configure/project/:project_id/add/:assignee_type/:assignee_id/*'
+    module: project
+    action: assignToProject
+    parameters:
+      config_module: core
+      section: 10
+      mode: user
+    csrf_enabled: false
+
+configure_project_remove_assignee:
+    route: '/configure/project/:project_id/remove/assignee/:assignee_type/:assignee_id/*'
+    module: project
+    action: unassignFromProject
+    parameters:
+      config_module: core
+      section: 10
+      mode: user
+    csrf_enabled: false
+
+configure_projects_add_edition:
+    route: /configure/project/:project_id/add/edition
+    module: project
+    action: addEdition
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_projects_add_component:
+    route: /configure/project/:project_id/add/component
+    module: project
+    action: addComponent
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_projects_build:
+    route: /configure/project/:project_id/build
+    module: project
+    action: projectBuild
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_projects_icons:
+    route: /configure/project/:project_id/icons
+    module: project
+    action: projectIcons
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_projects_workflow:
+    route: /configure/project/:project_id/workflow
+    module: project
+    action: projectWorkflow
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_projects_workflow_table:
+    route: /configure/project/:project_id/workflow/get/table
+    module: project
+    action: projectWorkflowTable
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_build_delete:
+    route: /configure/project/:project_id/:build_id/delete
+    module: project
+    action: deleteBuild
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_edition_set_leadby:
+    route: '/configure/project/:project_id/edition/:edition_id/set/:field/*'
+    module: project
+    action: setItemLead
+    parameters:
+      config_module: core
+      section: 10
+      item_type: edition
+    csrf_enabled: false
+
+configure_edition_add_build:
+    route: /configure/project/:project_id/edition/:edition_id/add/build
+    module: project
+    action: addBuild
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_edition_add_component:
+    route: /configure/project/:project_id/edition/:edition_id/add/component/:component_id
+    module: project
+    action: editEditionComponent
+    parameters:
+      config_module: core
+      section: 10
+      mode: add
+    csrf_enabled: false
+
+configure_edition_remove_component:
+    route: /configure/project/:project_id/edition/:edition_id/remove/component/:component_id
+    module: project
+    action: editEditionComponent
+    parameters:
+      config_module: core
+      section: 10
+      mode: remove
+    csrf_enabled: false
+
+configure_update_component:
+    route: /configure/project/:project_id/component/:component_id/update
+    module: project
+    action: editComponent
+    parameters:
+      config_module: core
+      section: 10
+      mode: update
+    csrf_enabled: false
+
+configure_component_set_assignedto:
+    route: '/configure/project/:project_id/component/:component_id/set/:field/*'
+    module: project
+    action: setItemLead
+    parameters:
+      config_module: core
+      section: 10
+      item_type: component
+    csrf_enabled: false
+
+configure_delete_component:
+    route: /configure/project/:project_id/component/:component_id/delete
+    module: project
+    action: editComponent
+    parameters:
+      config_module: core
+      section: 10
+      mode: delete
+    csrf_enabled: false
+
+configure_delete_edition:
+    route: /configure/project/:project_id/edition/:edition_id/delete
+    module: project
+    action: deleteEdition
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_editions_components:
+    route: /configure/project/:project_id/editions_and_components
+    module: project
+    action: configureProjectEditionsAndComponents
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_other:
+    route: /configure/project/:project_id/other
+    module: project
+    action: configureProjectOther
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_updateother:
+    route: /configure/project/:project_id/update/other
+    module: project
+    action: configureProjectUpdateOther
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_project_edition:
+    route: /configure/project/:project_id/edition/:edition_id
+    module: project
+    action: configureProjectEdition
+    parameters:
+      config_module: core
+      section: 10
+      format: json
+    csrf_enabled: false
+
+configure_project_component:
+    route: /configure/project/:project_id/component/:component_id
+    module: project
+    action: editComponent
+    parameters:
+      config_module: core
+      section: 10
+      format: json
+    csrf_enabled: false
+
+configure_project:
+    route: /configure/project/:project_id/hierarchy
+    module: project
+    action: configureProject
+    parameters:
+      config_module: core
+      section: 10
+      format: json
+    csrf_enabled: false
+
+project_getmenulinks:
+    route: /:project_key/menulinks
+    module: project
+    action: menuLinks
+    parameters: [ ]
+    csrf_enabled: false
+
+transition_issue:
+    route: /:project_key/:issue_id/transition/:transition_id
+    module: project
+    action: transitionIssue
+    parameters: [ ]
+    csrf_enabled: false
+
+transition_issues:
+    route: /:project_key/transition/:transition_id
+    module: project
+    action: transitionIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+project_settings:
+    route: /:project_key/settings
+    module: project
+    action: settings
+    parameters: [ ]
+    csrf_enabled: false
+
+project_create_role:
+    route: /:project_key/roles/new
+    module: project
+    action: addRole
+    parameters: [ ]
+    csrf_enabled: false
+
+project_releases:
+    route: /:project_key/releases
+    module: project
+    action: releases
+    parameters: [ ]
+    csrf_enabled: false
+
+project_release_center:
+    route: /:project_key/release_center
+    module: project
+    action: releaseCenter
+    parameters: [ ]
+    csrf_enabled: false
+
+project_milestone_details:
+    route: /:project_key/milestone/:milestone_id
+    module: project
+    action: roadmap
+    parameters:
+      mode: milestone
+    csrf_enabled: false
+
+project_scrum_release_burndown:
+    route: /:project_key/scrum/burndown/release
+    module: project
+    action: scrumShowBurndown
+    parameters:
+      mode: release
+    csrf_enabled: false
+
+project_scrum_sprint_burndown_image:
+    route: '/:project_key/scrum/burndown/sprint/image/*'
+    module: project
+    action: scrumShowBurndownImage
+    parameters:
+      mode: sprint
+    csrf_enabled: false
+
+project_scrum_release_burndown_image:
+    route: '/:project_key/scrum/burndown/release/image/*'
+    module: project
+    action: scrumShowBurndownImage
+    parameters:
+      mode: release
+    csrf_enabled: false
+
+project_scrum_add_sprint:
+    route: /:project_key/scrum/add/sprint
+    module: project
+    action: scrumAddSprint
+    parameters: [ ]
+    csrf_enabled: false
+
+project_scrum_story_setcolor:
+    route: /:project_key/scrum/set/color/for/story/:story_id
+    module: project
+    action: scrumSetStoryDetail
+    parameters:
+      detail: color
+    csrf_enabled: false
+
+project_scrum_story_setestimates:
+    route: /:project_key/scrum/set/estimates/for/story/:story_id
+    module: project
+    action: scrumSetStoryDetail
+    parameters:
+      detail: estimates
+    csrf_enabled: false
+
+project_scrum_story_addtask:
+    route: '/:project_key/scrum/add/task/for/story/:story_id/*'
+    module: project
+    action: scrumAddTask
+    parameters: [ ]
+    csrf_enabled: false
+
+project_team:
+    route: /:project_key/team
+    module: project
+    action: team
+    parameters: [ ]
+    csrf_enabled: false
+
+project_statistics:
+    route: /:project_key/statistics
+    module: project
+    action: statistics
+    parameters: [ ]
+    csrf_enabled: false
+
+project_statistics_last_15:
+    route: /:project_key/statistics/last/15
+    module: project
+    action: statisticsLast15
+    parameters: [ ]
+    csrf_enabled: false
+
+project_statistics_imagesets:
+    route: /:project_key/statistics/imagesets/:set
+    module: project
+    action: statisticsImagesets
+    parameters: [ ]
+    csrf_enabled: false
+
+project_statistics_image:
+    route: '/:project_key/statistics/image/:key/:mode/:image_number/*'
+    module: project
+    action: statisticsGetImage
+    parameters: [ ]
+    csrf_enabled: false
+
+project_timeline:
+    route: '/:project_key/timeline/*'
+    module: project
+    action: timeline
+    parameters: [ ]
+    csrf_enabled: false
+
+project_timeline_important:
+    route: '/:project_key/timeline/show/important/*'
+    module: project
+    action: timeline
+    parameters: [ ]
+    csrf_enabled: false
+
+project_files:
+    route: /:project_key/files
+    module: project
+    action: files
+    parameters: [ ]
+    csrf_enabled: false
+
+project_roadmap_upcoming:
+    route: /:project_key/roadmap/upcoming
+    module: project
+    action: roadmap
+    parameters:
+      mode: upcoming
+    csrf_enabled: false
+
+project_roadmap_all:
+    route: /:project_key/roadmap/all
+    module: project
+    action: roadmap
+    parameters:
+      mode: all
+    csrf_enabled: false
+
+project_roadmap:
+    route: '/:project_key/roadmap/*'
+    module: project
+    action: roadmap
+    parameters: [ ]
+    csrf_enabled: false
+
+project_roadmap_milestone_details:
+    route: /:project_key/milestone/:milestone_id/details
+    module: project
+    action: milestoneDetails
+    parameters: [ ]
+    csrf_enabled: false
+
+project_roadmap_milestone_issues:
+    route: /:project_key/milestone/:milestone_id/get/issues
+    module: project
+    action: getMilestoneRoadmapIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+project_list_issues:
+    route: '/:project_key/list/issues/:format/*'
+    module: project
+    action: listIssues
+    parameters: [ ]
+    csrf_enabled: false
+
+project_update_issuedetails:
+    route: '/:project_key/update/issue/:issue_no/:format/*'
+    module: project
+    action: updateIssueDetails
+    parameters: [ ]
+    csrf_enabled: false
+
+project_list_workflowtransitions:
+    route: '/:project_key/list/workflowtransitions/:issue_no/:format/*'
+    module: project
+    action: listWorkflowTransitions
+    parameters: [ ]
+    csrf_enabled: false
+
+project_dashboard_specific:
+    route: /:project_key/dashboard/:dashboard_id
+    module: project
+    action: dashboard
+    parameters: [ ]
+    csrf_enabled: false

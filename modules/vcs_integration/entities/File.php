@@ -7,7 +7,7 @@
      *
      * @author Philip Kent <kentphilip@gmail.com>
      * @version 3.2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage vcs_integration
      */
@@ -18,9 +18,9 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      *
-     * @Table(name="\thebuggenie\modules\vcs_integration\entities\b2db\Files")
+     * @Table(name="\thebuggenie\modules\vcs_integration\entities\tables\Files")
      */
-    class File extends \TBGIdentifiableScopedClass
+    class File extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
@@ -39,7 +39,8 @@
 
         /**
          * Associated commit
-         * @var TBGVCSIntegrationCommit
+         * @var Commit
+         *
          * @Column(type="integer", name="commit_id")
          * @Relates(class="\thebuggenie\modules\vcs_integration\entities\Commit")
          */

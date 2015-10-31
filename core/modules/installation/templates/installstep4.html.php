@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <?php if (isset($error)): ?>
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -29,13 +29,6 @@
         <div class="ok">
             All settings were stored. Default data and settings loaded successfully
         </div>
-        <h2 style="margin-top: 10px;">The Bug Genie modules</h2>
-        The Bug Genie is written using a flexible, module-based architecture. Extra functionality such as VCS (version control system) integration and email communication is provided using modules, and can be enabled / disabled from the configuration panel.<br>
-        <br>
-        <div class="feature">
-            You can find even more functionality at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
-        </div>
-        <br>
         <h2 style="margin-top: 10px;">Default user information</h2>
         To help you get started, please fill in some information about the default administrator user, here.
         <form accept-charset="utf-8" action="index.php" method="post" id="tbg_settings">
@@ -72,12 +65,19 @@
                     <input type="password" id="admin_password_repeat" class="password small" value="admin" name="password_repeat">
                 </dd>
             </dl>
+        <br>
+        <h2 style="margin-top: 10px;">The Bug Genie modules</h2>
+        The Bug Genie is written using a flexible, module-based architecture, that lets you easily add extra functionality. Even core functionality such as version control integration, email communication and the agile sections are provided using modules, and can be enabled / disabled from the configuration panel.<br>
+        <br>
+        <div class="feature">
+            Find additional modules online, at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
+        </div>
             <div style="padding-top: 20px; clear: both; text-align: center;">
-                <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and enable the selected modules</label>
-                <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+                <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and set up the default user and default modules</label>
+                <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
                 <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
             </div>
         </form>
     <?php endif; ?>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

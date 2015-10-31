@@ -2,13 +2,14 @@
 
     namespace thebuggenie\modules\vcs_integration\entities;
 
-    use TBGTextParser,
-        TBGNotification,
-        TBGProject,
-        TBGUser,
-        thebuggenie\modules\vcs_integration\entities\b2db\Commits,
-        thebuggenie\modules\vcs_integration\entities\b2db\Files,
-        thebuggenie\modules\vcs_integration\entities\b2db\IssueLinks,
+    use thebuggenie\core\entities\Issue;
+    use thebuggenie\core\helpers\TextParser,
+        \thebuggenie\core\entities\Notification,
+        \thebuggenie\core\entities\Project,
+        \thebuggenie\core\entities\User,
+        thebuggenie\modules\vcs_integration\entities\tables\Commits,
+        thebuggenie\modules\vcs_integration\entities\tables\Files,
+        thebuggenie\modules\vcs_integration\entities\tables\IssueLinks,
         thebuggenie\modules\vcs_integration\Vcs_integration;
 
     /**
@@ -16,7 +17,7 @@
      *
      * @author Philip Kent <kentphilip@gmail.com>
      * @version 3.2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage vcs_integration
      */
@@ -27,9 +28,9 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      *
-     * @Table(name="\thebuggenie\modules\vcs_integration\entities\b2db\Commits")
+     * @Table(name="\thebuggenie\modules\vcs_integration\entities\tables\Commits")
      */
-    class Commit extends \TBGIdentifiableScopedClass
+    class Commit extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
@@ -55,8 +56,8 @@
 
         /**
          * Commit author
-         * @var \TBGUser
-         * @Relates(class="\TBGUser")
+         * @var \thebuggenie\core\entities\User
+         * @Relates(class="\thebuggenie\core\entities\User")
          * @Column(type="integer")
          */
         protected $_author = null;
@@ -76,6 +77,12 @@
         protected $_data = null;
 
         /**
+         * Misc data array
+         * @var array
+         */
+        protected $_data_array = null;
+
+        /**
          * Affected files
          * @var array
          */
@@ -89,15 +96,15 @@
 
         /**
          * Project
-         * @var TBGProject
-         * @Relates(class="\TBGProject")
+         * @var \thebuggenie\core\entities\Project
+         * @Relates(class="\thebuggenie\core\entities\Project")
          *  @Column(type="integer", name="project_id")
          */
         protected $_project = null;
 
         public function _addNotifications()
         {
-            $parser = new TBGTextParser($this->_log);
+            $parser = new TextParser($this->_log);
             $parser->setOption('plain', true);
             $parser->doParse();
             foreach ($parser->getMentions() as $user)
@@ -105,7 +112,7 @@
                 if (!$this->getAuthor() || $user->getID() == $this->getAuthor())
                     continue;
 
-                $notification = new TBGNotification();
+                $notification = new \thebuggenie\core\entities\Notification();
                 $notification->setTarget($this);
                 $notification->setTriggeredByUser($this->getAuthor());
                 $notification->setUser($user);
@@ -123,8 +130,41 @@
             }
         }
 
+        protected function _parseMiscDataToArray() {
+            if (is_null($this->_data)) return array();
+
+            $array = array();
+            $misc_data = explode('|', $this->_data);
+
+            foreach ($misc_data as $data)
+            {
+                $key_value = explode(':', $data);
+
+                if (count($key_value) == 2)
+                {
+                    $array[$key_value[0]] = $key_value[1];
+                }
+            }
+
+            return $array;
+        }
+
+        protected function _parseMiscDataFromArray() {
+            if (is_null($this->_data_array) || ! count($this->_data_array)) return null;
+
+            $string = '';
+
+            foreach ($this->_data_array as $key => $value)
+            {
+                $string .= "{$key}:{$value}|";
+            }
+
+            return rtrim($string, '|');
+        }
+
         /**
          * Get the commit log for this commit
+         * 
          * @return string
          */
         public function getLog()
@@ -134,7 +174,8 @@
 
         /**
          * Get this commit's revision number or hash
-         * @return string/integer
+         * 
+         * @return mixed
          */
         public function getRevision()
         {
@@ -148,7 +189,8 @@
 
         /**
          * Get the preceeding commit's revision number or hash
-         * @return string/integer
+         *
+         * @return mixed
          */
         public function getPreviousRevision()
         {
@@ -162,16 +204,18 @@
 
         /**
          * Get the previous commit
-         * @return Vcs_integrationCommit
+         *
+         * @return Commit
          */
         public function getPreviousCommit()
         {
-            return Commits::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
+            return tables\Commits::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
         }
 
         /**
          * Get the author of this commit
-         * @return \TBGUser
+         *
+         * @return \thebuggenie\core\entities\User
          */
         public function getAuthor()
         {
@@ -180,6 +224,7 @@
 
         /**
          * Get the POSIX timestamp of this comment
+         *
          * @return integer
          */
         public function getDate()
@@ -189,6 +234,7 @@
 
         /**
          * Get any other data for this comment, will need parsing
+         *
          * @return string
          */
         public function getMiscData()
@@ -197,7 +243,23 @@
         }
 
         /**
+         * Get any other data for this comment, is parsed to array
+         *
+         * @return array
+         */
+        public function getMiscDataArray()
+        {
+            if (is_null($this->_data_array))
+            {
+                $this->_data_array = $this->_parseMiscDataToArray();
+            }
+
+            return $this->_data_array;
+        }
+
+        /**
          * Get an array of Vcs_integrationFiles affected by this commit
+         *
          * @return array
          */
         public function getFiles()
@@ -207,8 +269,9 @@
         }
 
         /**
-         * Get an array of TBGIssues affected by this commit
-         * @return array|\TBGIssue
+         * Get an array of \thebuggenie\core\entities\Issues affected by this commit
+         *
+         * @return array|\thebuggenie\core\entities\Issue
          */
         public function getIssues()
         {
@@ -218,7 +281,8 @@
 
         /**
          * Get the project this commit applies to
-         * @return \TBGProject
+         *
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
@@ -227,15 +291,17 @@
 
         /**
          * Set a new commit author
-         * @param \TBGUser $user
+         *
+         * @param \thebuggenie\core\entities\User $user
          */
-        public function setAuthor(TBGUser $user)
+        public function setAuthor(\thebuggenie\core\entities\User $user)
         {
             $this->_author = $user;
         }
 
         /**
          * Set a new date for the commit
+         *
          * @param integer $date
          */
         public function setDate($date)
@@ -245,6 +311,7 @@
 
         /**
          * Set a new log for the commit. This will not affect the issues which are affected
+         *
          * @param string $log
          */
         public function setLog($log)
@@ -254,6 +321,7 @@
 
         /**
          * Set a new parent revision
+         *
          * @param integer $revno
          */
         public function setPreviousRevision($revno)
@@ -263,6 +331,7 @@
 
         /**
          * Set THIS revisions revno
+         *
          * @param integer $revno
          */
         public function setRevision($revno)
@@ -272,6 +341,7 @@
 
         /**
          * Set misc data for this commit (see other docs)
+         *
          * @param string $data
          */
         public function setMiscData($data)
@@ -280,41 +350,61 @@
         }
 
         /**
-         * Set the project this commit applies to
-         * @param \TBGProject $project
+         * Set misc data array for this commit (see other docs)
+         *
+         * @param array $data
          */
-        public function setProject(TBGProject $project)
+        public function setMiscDataArray(array $data)
+        {
+            $this->_data_array = $data;
+            $this->_data = $this->_parseMiscDataFromArray();
+        }
+
+        /**
+         * Set the project this commit applies to
+         *
+         * @param \thebuggenie\core\entities\Project $project
+         */
+        public function setProject(\thebuggenie\core\entities\Project $project)
         {
             $this->_project = $project;
         }
 
         private function _populateAffectedFiles()
         {
-            if ($this->_files == null)
+            if ($this->_files === null)
             {
-                $this->_files = Files::getTable()->getByCommitID($this->_id);
+                $this->_files = tables\Files::getTable()->getByCommitID($this->_id);
             }
         }
 
         private function _populateAffectedIssues()
         {
-            if ($this->_issues == null)
+            if ($this->_issues === null)
             {
-                $this->_issues = IssueLinks::getTable()->getByCommitID($this->_id);
+                $issuelinks = tables\IssueLinks::getTable()->getByCommitID($this->_id);
+                $issues = array();
+                foreach ($issuelinks as $issuelink) {
+                    if ($issuelink->getIssue() instanceof Issue) {
+                        $issues[$issuelink->getIssue()->getId()] = $issuelink->getIssue();
+                    }
+                }
+                $this->_issues = $issues;
             }
         }
 
         /**
          * Get all commits relating to issues inside a project
+         *
          * @param integer $id
          * @param integer $limit
          * @param integer $offset
          *
-         * @return array/false
+         * @return mixed
          */
-        public static function getByProject($id, $limit = 40, $offset = null)
+        public static function getByProject($id, $limit = 40, $offset = null, $branch = null, $gitlab_repos_nss = null)
         {
-            $commits = Commits::getTable()->getCommitsByProject($id, $limit, $offset);
+            $commits = tables\Commits::getTable()->getCommitsByProject($id, $limit, $offset, $branch, $gitlab_repos_nss);
             return $commits;
         }
 

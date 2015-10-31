@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Authenticate extends \TBGCliRemoteCommand
+    class Authenticate extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()
@@ -52,7 +52,7 @@
             }
 
             $this->cliEcho('Authenticating as user: ');
-            $username = $this->getProvidedArgument('username', TBGContext::getCurrentCLIusername());
+            $username = $this->getProvidedArgument('username', \thebuggenie\core\framework\Context::getCurrentCLIusername());
             $this->cliEcho($username, 'white', 'bold');
             $this->cliEcho("\n");
             file_put_contents($path . '.remote_username', $username);
@@ -67,7 +67,7 @@
             $response = $this->getRemoteResponse($this->getRemoteURL('api_authenticate', array('username' => $username)), array('password' => $password));
             if (!is_object($response))
             {
-                throw new Exception('An error occured when receiving authentication response from the server');
+                throw new \Exception('An error occured when receiving authentication response from the server');
             }
             file_put_contents($path . '.remote_token', sha1($response->token));
             $this->cliEcho("Authentication successful!\n", 'white', 'bold');

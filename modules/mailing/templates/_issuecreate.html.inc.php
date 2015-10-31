@@ -1,11 +1,11 @@
-<?php if ($issue instanceof TBGIssue): ?>
+<?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
-        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Created by %name', array('%name' =>  $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?></span>
+        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Created by %name', array('%name' =>  $issue->getPostedBy()->getNameWithUsername())); ?></span>
     </h3>
     <br>
     <h4><?php echo __('Description:');?></h4>
-    <p><?php echo tbg_parse_text($issue->getDescription()); ?></p>
+    <p><?php echo tbg_parse_text($issue->getDescription(), false, null, array('in_email' => true)); ?></p>
     <br>
     <?php if ($issue->getReproductionSteps()): ?>
         <h4><?php echo __('Reproduction steps') . ':';?></h4>

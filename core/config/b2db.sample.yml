@@ -1,0 +1,6 @@
+b2db:
+    username: "<username>"
+    password: "<password>"
+    dsn: "<dbtype>:host=<hostname>;dbname=<dbname>"
+    tableprefix: '<prefix>'
+    cacheclass: '\thebuggenie\core\framework\Cache'

@@ -1,6 +1,6 @@
 <?php
 
-    TBGContext::loadLibrary('ui');
+    \thebuggenie\core\framework\Context::loadLibrary('ui');
 
 ?>
 <div id="login_backdrop">
@@ -11,12 +11,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    <?php if (TBGContext::hasMessage('login_message')): ?>
-        TBG.Main.Helpers.Message.success('<?php echo TBGContext::getMessageAndClear('login_message'); ?>');
-    <?php elseif (TBGContext::hasMessage('login_message_err')): ?>
-        TBG.Main.Helpers.Message.error('<?php echo TBGContext::getMessageAndClear('login_message_err'); ?>');
-    <?php endif; ?>
-    document.observe('dom:loaded', function() {
-        $('tbg3_username').focus();
+    require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, TBG, jquery) {
+        domReady(function () {
+        <?php if (\thebuggenie\core\framework\Context::hasMessage('login_message')): ?>
+            TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message'); ?>');
+        <?php elseif (\thebuggenie\core\framework\Context::hasMessage('login_message_err')): ?>
+            TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message_err'); ?>');
+        <?php endif; ?>
+            jquery('#tbg3_username').focus();
+        });
     });
 </script>

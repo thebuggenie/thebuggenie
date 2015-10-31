@@ -3,7 +3,7 @@
         <?php echo ($build->getId()) ? __('Edit release details') : __('Add new release'); ?>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
                     <td style="width: 200px;"><label for="build_name"><?php echo __('Release name:'); ?></label></td>
@@ -34,6 +34,25 @@
                             <option value=1<?php if ($build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
                             <option value=0<?php if (!$build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
                         </select>
+                        <script type="text/javascript">
+                            require(['domReady', 'jquery'], function (domReady, jQuery) {
+                                domReady(function () {
+                                    jQuery('#has_release_date').on('change', function (ev) {
+                                        if (this.value == 0) return false;
+
+                                        if (jQuery('#release_month').val() == 1
+                                            && jQuery('#release_day').val() == 1
+                                            && jQuery('#release_year').val() == 1990) {
+                                            var d = new Date();
+
+                                            jQuery('#release_month').val(d.getMonth() + 1);
+                                            jQuery('#release_day').val(d.getDate());
+                                            jQuery('#release_year').val(d.getFullYear());
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                         <select style="width: 85px;" name="release_month" id="release_month"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
                         <?php for($cc = 1;$cc <= 12;$cc++): ?>
                             <option value=<?php print $cc; ?><?php print (($build->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
@@ -58,21 +77,21 @@
                     <td><label for="build_milestone_dropdown"><?php echo __('Milestone release'); ?></label></td>
                     <td>
                         <select name="milestone" id="build_milestone_dropdown">
-                            <option value="0"<?php if (!$build->getMilestone() instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('This release is not related to a milestone'); ?></option>
+                            <option value="0"<?php if (!$build->getMilestone() instanceof \thebuggenie\core\entities\Milestone) echo ' selected'; ?>><?php echo __('This release is not related to a milestone'); ?></option>
                             <?php foreach ($project->getAvailableMilestones() as $milestone): ?>
-                                <option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof TBGMilestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name', array('%milestone_name' => $milestone->getName())); ?></option>
+                                <option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof \thebuggenie\core\entities\Milestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name', array('%milestone_name' => $milestone->getName())); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
                 </tr>
-                <?php if ($build->getProject()->isEditionsEnabled() || $build->getEdition() instanceof TBGEdition): ?>
+                <?php if ($build->getProject()->isEditionsEnabled() || $build->getEdition() instanceof \thebuggenie\core\entities\Edition): ?>
                     <tr>
                         <td><label for="build_edition_dropdown"><?php echo __('Edition release'); ?></label></td>
                         <td>
                             <select name="edition" id="build_edition_dropdown">
-                                <option value="0"<?php if (!$build->getEdition() instanceof TBGEdition) echo ' selected'; ?>><?php echo __('This release is not related to a edition'); ?></option>
+                                <option value="0"<?php if (!$build->getEdition() instanceof \thebuggenie\core\entities\Edition) echo ' selected'; ?>><?php echo __('This release is not related to a edition'); ?></option>
                                 <?php foreach ($project->getEditions() as $edition): ?>
-                                    <option value="<?php echo $edition->getID(); ?>"<?php if ($build->getEdition() instanceof TBGEdition && $build->getEdition()->getID() == $edition->getID()) echo ' selected'; ?>><?php echo __('This is a release of edition %edition_name', array('%edition_name' => $edition->getName())); ?></option>
+                                    <option value="<?php echo $edition->getID(); ?>"<?php if ($build->getEdition() instanceof \thebuggenie\core\entities\Edition && $build->getEdition()->getID() == $edition->getID()) echo ' selected'; ?>><?php echo __('This is a release of edition %edition_name', array('%edition_name' => $edition->getName())); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -88,7 +107,7 @@
                             <?php if ($build->hasFile()): ?>
                                 <li><input type="radio" id="download_leave_file" name="download" value="leave_file" checked><label for="download_leave_file"><?php echo __('Use existing file %filename', array('%filename' => '<span class="faded_out" style="font-weight: normal;">('.$build->getFile()->getOriginalFilename().')</span>')); ?></label></li>
                             <?php endif; ?>
-                            <?php if (TBGSettings::isUploadsEnabled()): ?>
+                            <?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?>
                                 <li><input type="radio" id="download_upload" name="download" value="upload_file"><label for="download_upload"><?php echo __('Upload file for download'); ?>:</label>&nbsp;<input type="file" name="upload_file"></li>
                             <?php else: ?>
                                 <li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload file for download'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
@@ -111,7 +130,7 @@
                         <?php if ($build->getID()): ?>
                             <input type="hidden" name="build_id" value="<?php echo $build->getID(); ?>">
                         <?php endif; ?>
-                        <?php if (!$build->getProject()->isEditionsEnabled() && !$build->getEdition() instanceof TBGEdition): ?>
+                        <?php if (!$build->getProject()->isEditionsEnabled() && !$build->getEdition() instanceof \thebuggenie\core\entities\Edition): ?>
                             <input type="hidden" name="edition" value="0">
                         <?php endif; ?>
                             <input class="button button-green" style="float: right;" type="submit" value="<?php echo ($build->getId()) ? __('Update release') : __('Add release'); ?>">

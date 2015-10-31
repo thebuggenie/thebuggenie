@@ -15,12 +15,12 @@
                     <div class="votes"><?php echo $issue->getVotes(); ?></div>
                 </div>
             </td>
-            <td class="result_issue"<?php if (TBGContext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
+            <td class="result_issue"<?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
                 <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true, true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>', array('class' => 'issue_link')); ?>
             </td>
-            <td<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> class="faded_out"<?php endif; ?>>
-                <?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-                    <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+            <td<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> class="faded_out"<?php endif; ?>>
+                <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                    <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
                 <?php else: ?>
                     -
                 <?php endif; ?>

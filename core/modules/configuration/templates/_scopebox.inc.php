@@ -19,7 +19,7 @@
         <?php if (!$scope->isDefault()): ?>
             <?php echo __('%num_projects project(s), %num_issues issue(s)', array('%num_projects' => $scope->getNumberOfProjects(), '%num_issues' => $scope->getNumberOfIssues())); ?>
         <?php endif; ?>
-        <?php if ($scope->isDefault() || !strlen(trim($scope->getDescription()))): ?>
+        <?php if ($scope->isDefault() || strlen(trim($scope->getDescription()))): ?>
             <div class="faded_out scope_description">
                 <?php if (!$scope->isDefault()): ?>
                     <?php echo $scope->getDescription(); ?>

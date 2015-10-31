@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Help extends \TBGCliCommand
+    class Help extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -45,7 +45,7 @@
                     $this->cliEcho("\n");
                     $class = $commands[$module_name][$command];
                     $this->cliEcho("Usage: ", 'white', 'bold');
-                    $this->cliEcho(\TBGCliCommand::getCommandLineName() . " ");
+                    $this->cliEcho(\thebuggenie\core\framework\cli\Command::getCommandLineName() . " ");
                     if ($module_name != 'main')
                     {
                         $this->cliEcho($module_name.':', 'green', 'bold');
@@ -106,7 +106,7 @@
                 {
                     $this->cliEcho("\n");
                     $this->cliEcho("Unknown command\n", 'red', 'bold');
-                    $this->cliEcho("Type " . \TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+                    $this->cliEcho("Type " . \thebuggenie\core\framework\cli\Command::getCommandLineName() . ' ', 'white', 'bold');
                     $this->cliEcho('help', 'green', 'bold');
                     $this->cliEcho(" for more information about the cli tool.\n\n");
                 }
@@ -115,7 +115,7 @@
             {
                 $this->cliEcho("Below is a list of available commands:\n");
                 $this->cliEcho("Type ");
-                $this->cliEcho(\TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+                $this->cliEcho(\thebuggenie\core\framework\cli\Command::getCommandLineName() . ' ', 'white', 'bold');
                 $this->cliEcho('help', 'green', 'bold');
                 $this->cliEcho(' command', 'magenta');
                 $this->cliEcho(" for more information about a specific command.\n\n");

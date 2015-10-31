@@ -2,7 +2,7 @@
     <tr>
         <td class="project_information_sidebar" id="project_information_sidebar">
             <div class="sidebar_links">
-                <?php include_template('project/projectinfolinks'); ?>
+                <?php include_component('project/projectinfolinks'); ?>
             </div>
         </td>
         <td class="project_information_main">

@@ -8,39 +8,38 @@
      * Run the I18n translation function
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
+     * @param array $replacements [optional] replacements
      *
      * @return string
      */
     function __($text, $replacements = array(), $html_decode = false)
     {
-        return TBGContext::getI18n()->__($text, $replacements, $html_decode);
+        return \thebuggenie\core\framework\Context::getI18n()->__($text, $replacements, $html_decode);
     }
 
     /**
      * Template escaping translation function
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
+     * @param array $replacements [optional] replacements
      *
      * @return string
      */
     function __e($text, $replacements = array())
     {
-        return htmlspecialchars(TBGContext::getI18n()->__($text, $replacements), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+        return \thebuggenie\core\framework\Context::getI18n()->__e($text, $replacements);
     }
 
     /**
      * Template escaping function without translation
      *
      * @param string $text the text to translate
-     * @param array $replacements[optional] replacements
      *
      * @return string
      */
     function tbg_template_escape($text)
     {
-        return htmlspecialchars($text, ENT_COMPAT, TBGContext::getI18n()->getCharset());
+        return htmlentities($text, ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset());
     }
 
     /**
@@ -48,17 +47,15 @@
      *
      * @param string $text
      * @param integer $length
-     * @param boolean $add_dots[optional] defaults to true
      *
      * @return string The truncated string
      */
-    function tbg_truncateText($text, $length, $add_dots = true, $ignore_linebreaks = false)
+    function tbg_truncateText($text, $length = 300)
     {
         if (mb_strlen($text) > $length)
         {
             $string = wordwrap($text, $length - 3, '|||WORDWRAP|||');
-            $text = mb_substr($string, 0, mb_strpos($string, "|||WORDWRAP|||"));
-            if ($add_dots) $text .= '...';
+            $text = mb_substr($string, 0, mb_strpos($string, "|||WORDWRAP|||")) . '...';
         }
         return $text;
     }
@@ -81,161 +78,175 @@
         return $randomNumber;
     }
 
+    function day_delta($tstamp, $tzoffset)
+    {
+        $mdy = explode(':', date('m:d:Y', time() + $tzoffset));
+        $midnight = mktime(0, 0, 0, $mdy[0], $mdy[1], $mdy[2]);
+        return floor(($tstamp - $midnight) / 24 / 60 / 60);
+    }
+
     /**
      * Returns a formatted string of the given timestamp
      *
      * @param integer $tstamp the timestamp to format
-     * @param integer $format[optional] the format
-     * @param integer $skipusertimestamp ignore user timestamp
+     * @param integer $format [optional] the format
+     * @param boolean $skipusertimestamp ignore user timestamp
+     * @param boolean $skiptimestamp ignore rebasing timestamp
      */
     function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false, $skiptimestamp = false)
     {
+        $tzoffset = 0;
         // offset the timestamp properly
         if (!$skiptimestamp)
         {
-            $tstamp += tbg_get_timezone_offset($skipusertimestamp);
+            $tzoffset = tbg_get_timezone_offset($skipusertimestamp);
+            $tstamp += $tzoffset;
         }
 
         switch ($format)
         {
             case 1:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(1), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(1), $tstamp);
                 break;
             case 2:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(2), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(2), $tstamp);
                 break;
             case 3:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(3), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(3), $tstamp);
                 break;
             case 4:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(4), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(4), $tstamp);
                 break;
             case 5:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(5), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(5), $tstamp);
                 break;
             case 6:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(6), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(6), $tstamp);
                 break;
             case 7:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(7), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(7), $tstamp);
                 break;
             case 8:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(8), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(8), $tstamp);
                 break;
             case 9:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(9), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(9), $tstamp);
                 break;
             case 10:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(10), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(10), $tstamp);
                 break;
             case 11:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(9), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(9), $tstamp);
                 break;
             case 12:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ', ';
                 }
                 else
                 {
-                    $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
                 }
-                $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
+                $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(14), $tstamp);
                 break;
             case 13:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     //$tstring .= __('Today') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ', ';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ', ';
                 }
                 else
                 {
-                    $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
                 }
-                $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
+                $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(14), $tstamp);
                 break;
             case 14:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow');
                 }
                 else
                 {
-                    $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12), $tstamp);
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(12), $tstamp);
                 }
                 break;
             case 15:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(11), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(11), $tstamp);
                 break;
             case 16:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(12), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(12), $tstamp);
                 break;
             case 17:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(13), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(13), $tstamp);
                 break;
             case 18:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(16), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(16), $tstamp);
                 break;
             case 19:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(14), $tstamp);
                 break;
             case 20:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
                 }
                 else
                 {
-                    $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(15), $tstamp);
                 }
                 break;
             case 21:
                 $tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
-//                if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+//                if (!$skipusertimestamp && \thebuggenie\core\framework\Settings::getUserTimezone() != 'sys')
 //                {
-//                    if (TBGSettings::getUserTimezone() != 0)
+//                    if (\thebuggenie\core\framework\Settings::getUserTimezone() != 0)
 //                    {
-//                        $offset = TBGSettings::getUserTimezone() * 100;
+//                        $offset = \thebuggenie\core\framework\Settings::getUserTimezone() * 100;
 //                    }
 //                }
-//                elseif (TBGSettings::getGMToffset() != 0)
+//                elseif (\thebuggenie\core\framework\Settings::getGMToffset() != 0)
 //                {
-//                    $offset = TBGSettings::getGMToffset() * 100;
+//                    $offset = \thebuggenie\core\framework\Settings::getGMToffset() * 100;
 //                }
 //
 //                if (!isset($offset))
@@ -275,52 +286,69 @@
                 return ($tstring);
                 break;
             case 22:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(15), $tstamp);
                 break;
             case 23:
                 $tstring = '';
-                if (date('dmY', $tstamp) == date('dmY'))
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
                 {
                     $tstring .= __('Today');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+                elseif ($days == -1)
                 {
                     $tstring .= __('Yesterday');
                 }
-                elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+                elseif ($days == 1)
                 {
                     $tstring .= __('Tomorrow');
                 }
                 else
                 {
-                    $tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(15), $tstamp);
                 }
                 break;
             case 24:
-                $tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(18), $tstamp);
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(18), $tstamp);
                 break;
             default:
                 return $tstamp;
         }
-        return htmlentities($tstring, ENT_NOQUOTES+ENT_IGNORE, TBGContext::getI18n()->getCharset());
+        return $tstring;
     }
 
-    function tbg_parse_text($text, $toc = false, $article_id = null, $options = array(), $syntax = TBGSettings::SYNTAX_MW)
+    /**
+     * Return parsed text, based on provided syntax and options
+     *
+     * @param string $text The text that should be parsed
+     * @param boolean $toc [optional] Whether a TOC should be generated and included
+     * @param mixed $article_id [optional] An article id to use as an element id prefix
+     * @param array $options [optional] Parser options
+     * @param integer $syntax [optional] Which parser syntax to use
+     *
+     * @return string
+     */
+    function tbg_parse_text($text, $toc = false, $article_id = null, $options = array(), $syntax = \thebuggenie\core\framework\Settings::SYNTAX_MW)
     {
         switch ($syntax)
         {
-            case TBGSettings::SYNTAX_PT:
+            default:
+            case \thebuggenie\core\framework\Settings::SYNTAX_PT:
                 $options = array('plain' => true);
-            case TBGSettings::SYNTAX_MW:
-                $wiki_parser = new TBGTextParser($text, $toc, 'article_' . $article_id);
+            case \thebuggenie\core\framework\Settings::SYNTAX_MW:
+                $wiki_parser = new \thebuggenie\core\helpers\TextParser($text, $toc, 'article_' . $article_id);
                 foreach ($options as $option => $value)
                 {
                     $wiki_parser->setOption($option, $value);
                 }
                 $text = $wiki_parser->getParsedText();
                 break;
-            case TBGSettings::SYNTAX_MD:
-                $parser = new TBGTextParserMarkdown();
+            case \thebuggenie\core\framework\Settings::SYNTAX_MD:
+                $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
+                foreach ($options as $option => $value)
+                {
+                    $parser->setOption($option, $value);
+                }
                 $text = $parser->transform($text);
                 break;
         }
@@ -338,14 +366,14 @@
      */
     function tbg_decodeUTF8($str, $htmlentities = false)
     {
-        if (tbg_isUTF8($str) && !mb_stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
+        if (tbg_isUTF8($str) && !mb_stristr(\thebuggenie\core\framework\Context::getI18n()->getCharset(), 'UTF-8'))
         {
             $str = utf8_decode($str);
         }
 
         if ($htmlentities)
         {
-            $str = htmlentities($str, ENT_NOQUOTES+ENT_IGNORE, TBGContext::getI18n()->getCharset());
+            $str = htmlentities($str, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
         }
         return $str;
     }
@@ -414,90 +442,43 @@
 
     function tbg_get_breadcrumblinks($type, $project = null)
     {
-        return TBGContext::getResponse()->getPredefinedBreadcrumbLinks($type, $project);
+        return \thebuggenie\core\framework\Context::getResponse()->getPredefinedBreadcrumbLinks($type, $project);
     }
 
     function tbg_get_pagename($page)
     {
-        $links = tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject());
+        $links = tbg_get_breadcrumblinks('project_summary', \thebuggenie\core\framework\Context::getCurrentProject());
         return (isset($links[$page]) && $page != 'project_issues') ? $links[$page]['title'] : __('Dashboard');
     }
 
     function tbg_get_javascripts()
     {
-        $tbg_response = TBGContext::getResponse();
-        $tbg_response->addJavascript('prototype.js', true, true);
-        $tbg_response->addJavascript('jquery-1.8.3.min.js', true, true);
-        $tbg_response->addJavascript('builder.js');
-        $tbg_response->addJavascript('effects.js');
-        $tbg_response->addJavascript('dragdrop.js');
-        $tbg_response->addJavascript('controls.js');
-        $tbg_response->addJavascript('jquery.markitup.js');
-        $tbg_response->addJavascript('bootstrap-typeahead.js');
-        $tbg_response->addJavascript('mention.js');
-        $tbg_response->addJavascript('scriptaculous.js');
-        $tbg_response->addJavascript('slider.js');
-        $tbg_response->addJavascript('thebuggenie.js');
-        $tbg_response->addJavascript('tablekit.js');
-        $tbg_response->addJavascript('/js/jquery-ui.min.js');
-
-        $jsstrings = array();
-        $sepjs = array();
-
-        // Add scripts to minify and non-minify lists
-        foreach ($tbg_response->getJavascripts() as $script => $minify)
-        {
-            if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
-                $jsstrings[] = 'js/'.$script;
-            else
-                $sepjs[] = $script;
-        }
-
-        $jsstrings = join(',', $jsstrings);
-
-        return array($jsstrings, $sepjs);
+        return \thebuggenie\core\framework\Context::getResponse()->getJavascripts();
     }
 
     function tbg_get_stylesheets()
     {
-        $tbg_response = TBGContext::getResponse();
-        $cssstrings = array();
-        $sepcss = array();
-
-        // Add stylesheets to minify and non-minify lists
-        foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
-        {
-            if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR .$stylesheet))
-                $cssstrings[] = 'themes/'.TBGSettings::getThemeName().'/'.$stylesheet;
-            else
-                $sepcss[] = $stylesheet;
-        }
-
-        $cssstrings = join(',', $cssstrings);
-
-        return array($cssstrings, $sepcss);
+        return \thebuggenie\core\framework\Context::getResponse()->getStylesheets();
     }
 
     function tbg_get_timezone_offset($skipusertimestamp = false)
     {
-        $tstamp = 0;
-
         // offset the timestamp properly
         if (!$skipusertimestamp)
         {
-            $tz = TBGContext::getUser()->getTimezone();
-            $tstamp = $tz->getOffset(new DateTime(null, TBGSettings::getServerTimezone()));
+            $tz = \thebuggenie\core\framework\Context::getUser()->getTimezone();
+            $tstamp = $tz->getOffset(new DateTime(null, \thebuggenie\core\framework\Settings::getServerTimezone()));
         }
         else
         {
-            $tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTime('GMT'));
+            $tstamp = \thebuggenie\core\framework\Settings::getServerTimezone()->getOffset(new DateTime('GMT'));
         }
         return $tstamp;
     }
 
     function tbg_get_timezones()
     {
-        return TBGI18n::getTimezones();
+        return \thebuggenie\core\framework\I18n::getTimezones();
     }
 
     function tbg_hex_to_rgb($hex)
@@ -524,7 +505,7 @@
         return $rgb;
     }
 
-    function tbg_get_userstate_image(TBGUser $user)
+    function tbg_get_userstate_image(\thebuggenie\core\entities\User $user)
     {
         switch (true)
         {

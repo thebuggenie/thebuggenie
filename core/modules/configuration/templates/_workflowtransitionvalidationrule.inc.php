@@ -3,7 +3,7 @@
 
         switch ($rule->getRule())
         {
-            case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
                 ?>
                 <td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
                     <?php echo __('Current user can have no more than %number issues already assigned', array('%number' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? (int) $rule->getRuleValue() : __('Unlimited')) . '</span>')); ?>
@@ -24,23 +24,26 @@
                 <?php endif; ?>
                 <?php
                 break;
-            case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
-            case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
-            case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
-            case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
-            case TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+            default:
                 ?>
                 <td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
-                    <?php if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
+                    <?php if ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
                         <?php echo __('Status is any of these values: %statuses', array('%statuses' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
-                    <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
+                    <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
                         <?php echo __('Priority is any of these values: %priorities', array('%priorities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
-                    <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID): ?>
+                    <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID): ?>
                         <?php echo __('Resolution is any of these values: %resolutions', array('%resolutions' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
-                    <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
+                    <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
                         <?php echo __('Reproducability is any of these values: %reproducabilities', array('%reproducabilities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
-                    <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID): ?>
+                    <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID): ?>
                         <?php echo __('Assignee is member of any of these teams: %teams', array('%teams' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+                    <?php elseif ($rule->isCustom()): ?>
+                        <?php echo __('Custom field %customfield is any of these values: %values', array('%customfield' => $rule->getCustomFieldname(), '%values' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
                     <?php endif; ?>
                 </td>
                 <?php if (!$rule->getTransition()->isCore()): ?>
@@ -48,36 +51,36 @@
                         <form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.update('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
                             <input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
                             <label>
-                                <?php if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
+                                <input type="checkbox" onclick="var set_checked = $(this).checked; $(this).up('form').select('input[type=checkbox]').each(function (chk) { chk.checked = set_checked; } );">
+                                <?php if ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
                                     <?php echo __('Status must be any of these values'); ?>
-                                <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
                                     <?php echo __('Priority must be any of these values'); ?>
-                                <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID): ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID): ?>
                                     <?php echo __('Resolution must be any of these values'); ?>
-                                <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
                                     <?php echo __('Reproducability must be any of these values'); ?>
-                                <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPost()): ?>
+                                <?php elseif ($rule->isCustom()): ?>
+                                    <?php echo __('Custom field %customfield must be any of these values', array('%customfield' => $rule->getCustomFieldname())); ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPost()): ?>
                                     <?php echo __('Assignee must be member of any of these teams'); ?>
-                                <?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPre()): ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPre()): ?>
                                     <?php echo __('User must be member of any of these teams'); ?>
                                 <?php endif; ?>
                             </label>
-                            <?php
-
-                                if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID)
-                                    $options = TBGStatus::getAll();
-                                elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)
-                                    $options = TBGPriority::getAll();
-                                elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID)
-                                    $options = TBGResolution::getAll();
-                                elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID)
-                                    $options = TBGReproducability::getAll();
-                                elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID)
-                                    $options = TBGTeam::getAll();
-
-                            ?>
-                            <?php foreach ($options as $option): ?>
-                            <br><input type="checkbox" style="margin-left: 25px;" name="rule_value[<?php echo $option->getID(); ?>]" value="<?php echo $option->getID(); ?>"<?php if ($rule->isValueValid($option->getID())) echo ' checked'; ?> id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>"><label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>" style="font-weight: normal;"><?php echo $option->getName(); ?></label>
+                            <?php foreach ($rule->getRuleOptions() as $option): ?>
+                                <br><input type="checkbox" style="margin-left: 25px;" name="rule_value[<?php echo $option->getID(); ?>]" value="<?php echo $option->getID(); ?>"<?php if ($rule->isValueValid($option->getID())) echo ' checked'; ?> id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>">
+                                <label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>" style="font-weight: normal;">
+                                    <?php if ($option instanceof \thebuggenie\core\entities\User): ?>
+                                        <?php echo $option->getNameWithUsername(); ?>
+                                    <?php elseif ($option instanceof \thebuggenie\core\entities\Milestone || $option instanceof \thebuggenie\core\entities\Build || $option instanceof \thebuggenie\core\entities\Component): ?>
+                                        <?php echo $option->getProject()->getName() . ' - ' . $option->getName(); ?>
+                                    <?php elseif ($option instanceof \thebuggenie\core\entities\common\Identifiable): ?>
+                                        <?php echo $option->getName(); ?>
+                                    <?php else: ?>
+                                        <?php echo $option; ?>
+                                    <?php endif; ?>
+                                </label>
                             <?php endforeach; ?>
                             <?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionvalidationrule_' . $rule->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
                         </form>

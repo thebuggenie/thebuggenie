@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,13 +18,14 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Install extends \TBGCliCommand
+    class Install extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
         {
             $this->_command_name = 'install';
             $this->_description = "Run the installation routine";
+            $this->_b2db_config_file = \THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml";
             $this->addOptionalArgument('accept_license', 'Set to "yes" to auto-accept license');
             $this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
             $this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
@@ -65,13 +66,13 @@
             {
                 $this->cliEcho("License information\n", 'green', 'bold');
                 $this->cliEcho("This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n");
-                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n");
-                $this->cliEcho("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
+                $this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 2.0. You can read the full license here:\n");
+                $this->cliEcho("http://opensource.org/licenses/MPL-2.0\n\n", 'blue', 'underline');
 
                 if ($this->getProvidedArgument('accept_license') != 'yes')
                 {
                     $this->cliEcho("Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n");
-                    $this->cliEcho("Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
+                    $this->cliEcho("Do you agree to be bound by the terms in the MPL 2.0 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
                     if (!$this->askToAccept()) throw new \Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
                 }
                 else
@@ -81,7 +82,7 @@
                 }
 
                 $not_well = array();
-                if (!is_writable('core/B2DB/'))
+                if (!is_writable(\THEBUGGENIE_CONFIGURATION_PATH))
                 {
                     $not_well[] = 'b2db_perm';
                 }
@@ -100,7 +101,7 @@
                             case 'b2db_perm':
                                 $this->cliEcho("Could not write to the B2DB directory\n", 'red', 'bold');
                                 $this->cliEcho('The folder ');
-                                $this->cliEcho('include/B2DB', 'white', 'bold');
+                                $this->cliEcho(\THEBUGGENIE_CONFIGURATION_PATH, 'white', 'bold');
                                 $this->cliEcho(' folder needs to be writable');
                                 break;
                             case 'root':
@@ -115,7 +116,7 @@
                 else
                 {
                     $this->cliEcho("Step 1 - database information\n");
-                    if (file_exists('core/b2db_bootstrap.inc.php'))
+                    if (file_exists($this->_b2db_config_file))
                     {
                         $this->cliEcho("You seem to already have completed this step successfully.\n");
                         if ($this->getProvidedArgument('use_existing_db_info') == 'yes')
@@ -192,12 +193,7 @@
                             \b2db\Core::setUname($db_username);
                             \b2db\Core::setPasswd($db_password);
                             \b2db\Core::setDBtype($db_type);
-                            \b2db\Core::initialize();
-                            $engine_path = \b2db\Core::getEngineClassPath();
-                            if ($engine_path !== null)
-                                \TBGContext::addAutoloaderClassPath($engine_path);
-                            else
-                                throw new \Exception("Cannot initialize the B2DB engine");
+                            \b2db\Core::setTablePrefix('tbg_');
 
                             \b2db\Core::doConnect();
                             \b2db\Core::createDatabase($db_name);
@@ -215,19 +211,32 @@
                         $this->cliEcho("\n");
                         $this->cliEcho("Saving database connection information ... ", 'white', 'bold');
                         $this->cliEcho("\n");
-                        \b2db\Core::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+                        \b2db\Core::saveConnectionParameters($this->_b2db_config_file);
                         $this->cliEcho("Successfully saved database connection information.\n", 'green');
                         $this->cliEcho("\n");
                     }
                     else
                     {
-                        \b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-                        $this->cliEcho("Successfully connected to the database.\n", 'green');
-                        if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
+                        $b2db_config = \Spyc::YAMLLoad($this->_b2db_config_file);
+
+                        if (!array_key_exists("b2db", $b2db_config))
                         {
-                            $this->cliEcho("Press ENTER to continue ... ");
-                            $this->pressEnterToContinue();
+                            throw new \Exception("Could not find database configuration in file " . $this->_b2db_config_file);
                         }
+
+                        try
+                        {
+                            \b2db\Core::initialize($b2db_config["b2db"], \thebuggenie\core\framework\Context::getCache());
+                            \b2db\Core::doConnect();
+                        }
+                        catch (\Exception $e)
+                        {
+                            throw new \Exception("Could not connect to the database:\n" .
+                                                 $e->getMessage() . "\nPlease check your configuration file " .
+                                                 $this->_b2db_config_file);
+                        }
+
+                        $this->cliEcho("Successfully connected to the database.\n", 'green');
                     }
                     $this->cliEcho("\nThe Bug Genie needs some server settings to function properly...\n\n");
 
@@ -256,7 +265,7 @@
                         else
                         {
                             $this->cliEcho('Start and end this with a forward slash', 'white', 'bold');
-                            $this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at the root directory, just type \"/\" (without the quotes)\n\n");
+                            $this->cliEcho(". (ex: \"/public/\")\nIf The Bug Genie is running at the root directory, just type \"/\" (without the quotes)\n\n");
                             $this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
                             $url_subdir = $this->getInput();
                         }
@@ -282,7 +291,7 @@
 
                     if ($this->getProvidedArgument('setup_htaccess') != 'yes')
                     {
-                        $this->cliEcho("Setup can autoconfigure your .htaccess and .user.ini files (located in the thebuggenie/ subfolder), so you don't have to.\n");
+                        $this->cliEcho("Setup can autoconfigure your .htaccess and .user.ini files (located in the public/ subfolder), so you don't have to.\n");
                         $this->cliEcho('Would you like setup to auto-generate those files for you?');
                         $this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess and .user.ini files: ");
                         $htaccess_ok = $this->askToDecline();
@@ -297,9 +306,9 @@
 
                     if ($htaccess_ok)
                     {
-                        if (!is_writable(THEBUGGENIE_PATH . 'thebuggenie/') || (file_exists(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') && !is_writable(THEBUGGENIE_PATH . 'thebuggenie/.htaccess')))
+                        if (!is_writable(THEBUGGENIE_PATH . 'public/') || (file_exists(THEBUGGENIE_PATH . 'public/.htaccess') && !is_writable(THEBUGGENIE_PATH . 'public/.htaccess')))
                         {
-                            $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
+                            $this->cliEcho("Permission denied when trying to save the [main folder]/public/.htaccess\n", 'red', 'bold');
                             $this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
                             $this->cliEcho('Please note: ', 'white', 'bold');
                             $this->cliEcho("The Bug Genie will not function properly until the .htaccess file is properly set up!\n");
@@ -307,10 +316,10 @@
                         else
                         {
                             $content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template'));
-                            file_put_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess', $content);
-                            if (file_get_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') != $content)
+                            file_put_contents(THEBUGGENIE_PATH . 'public/.htaccess', $content);
+                            if (file_get_contents(THEBUGGENIE_PATH . 'public/.htaccess') != $content)
                             {
-                                $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
+                                $this->cliEcho("Permission denied when trying to save the [main folder]/public/.htaccess\n", 'red', 'bold');
                                 $this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
                                 $this->cliEcho('Please note: ', 'white', 'bold');
                                 $this->cliEcho("The Bug Genie will not function properly until the .htaccess file is properly set up!\n");
@@ -321,9 +330,9 @@
                             }
                         }
 
-                    	if (!is_writable(THEBUGGENIE_PATH . 'thebuggenie/') || (file_exists(THEBUGGENIE_PATH . 'thebuggenie/.user.ini') && !is_writable(THEBUGGENIE_PATH . 'thebuggenie/.user.ini')))
+                    	if (!is_writable(THEBUGGENIE_PATH . 'public/') || (file_exists(THEBUGGENIE_PATH . 'public/.user.ini') && !is_writable(THEBUGGENIE_PATH . 'public/.user.ini')))
                         {
-                            $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.user.ini\n", 'red', 'bold');
+                            $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
                             $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
                             $this->cliEcho('Please note: ', 'white', 'bold');
                             $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");
@@ -331,10 +340,10 @@
                         else
                         {
                             $content = file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template');
-                            file_put_contents(THEBUGGENIE_PATH . 'thebuggenie/.user.ini', $content);
-                            if (file_get_contents(THEBUGGENIE_PATH . 'thebuggenie/.user.ini') != $content)
+                            file_put_contents(THEBUGGENIE_PATH . 'public/.user.ini', $content);
+                            if (file_get_contents(THEBUGGENIE_PATH . 'public/.user.ini') != $content)
                             {
-                                $this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.user.ini\n", 'red', 'bold');
+                                $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
                                 $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
                                 $this->cliEcho('Please note: ', 'white', 'bold');
                                 $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");
@@ -356,62 +365,50 @@
                         $this->pressEnterToContinue();
                         $this->cliEcho("\n");
                     }
-
-                    $enable_modules = array();
-
-                    if ($this->getProvidedArgument('enable_all_modules') != 'yes')
-                    {
-                        $this->cliEcho("You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n");
-                    }
-
-                    $this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-                    $enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-                    if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-                    $this->cliEcho("Enable communication with version control systems (i.e. svn)? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-                    $enable_modules['vcs_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-                    if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-
-                    $enable_modules['publish'] = true;
-
                     $this->cliEcho("\n");
                     $this->cliEcho("Creating tables ...\n", 'white', 'bold');
-                    $tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-                    \TBGContext::addAutoloaderClassPath($tables_path);
-                    $tables_path_handle = opendir($tables_path);
+                    $b2db_entities_path = THEBUGGENIE_CORE_PATH . 'entities' . DS . 'tables' . DS;
                     $tables_created = array();
-                    while ($table_class_file = readdir($tables_path_handle))
+                    foreach (scandir($b2db_entities_path) as $tablefile)
                     {
-                        if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
+                        if (in_array($tablefile, array('.', '..')))
+                            continue;
+
+                        if (($tablename = mb_substr($tablefile, 0, mb_strpos($tablefile, '.'))) != '')
                         {
-                            \b2db\Core::getTable($tablename)->create();
-                            $this->cliEcho("Creating table {$tablename}\n", 'white', 'bold');
+                            $tablename = "\\thebuggenie\\core\\entities\\tables\\{$tablename}";
+                            $reflection = new \ReflectionClass($tablename);
+                            $docblock = $reflection->getDocComment();
+                            $annotationset = new \b2db\AnnotationSet($docblock);
+                            if ($annotationset->hasAnnotation('Table'))
+                            {
+                                \b2db\Core::getTable($tablename)->create();
+                                \b2db\Core::getTable($tablename)->createIndexes();
+                                $tables_created[] = $tablename;
+                            }
                         }
                     }
 
                     $this->cliEcho("\n");
                     $this->cliEcho("All tables successfully created...\n\n", 'green', 'bold');
                     $this->cliEcho("Setting up initial scope... \n", 'white', 'bold');
-                    \TBGContext::reinitializeI18n('en_US');
-                    $scope = new \TBGScope();
+                    \thebuggenie\core\framework\Context::reinitializeI18n('en_US');
+                    $scope = new \thebuggenie\core\entities\Scope();
                     $scope->setName('The default scope');
                     $scope->addHostname('*');
                     $scope->setEnabled();
-                    \TBGContext::setScope($scope);
+                    \thebuggenie\core\framework\Context::setScope($scope);
                     $scope->save();
-                    \TBGSettings::saveSetting('language', 'en_US');
+                    \thebuggenie\core\framework\Settings::saveSetting('language', 'en_US');
                     $this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
 
                     $this->cliEcho("Setting up modules... \n", 'white', 'bold');
                     try
                     {
-                        foreach ($enable_modules as $module => $install)
+                        foreach (array('publish', 'mailing', 'vcs_integration') as $module)
                         {
-                            if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
-                            {
-                                $this->cliEcho("Installing {$module}... \n");
-                                \TBGModule::installModule($module);
-                                $this->cliEcho("Module {$module} installed successfully...\n", 'green');
-                            }
+                            $this->cliEcho("Installing {$module}... \n");
+                            \thebuggenie\core\entities\Module::installModule($module);
                         }
 
                         $this->cliEcho("\n");
@@ -419,7 +416,7 @@
                         $this->cliEcho("\n");
 
                         $this->cliEcho("Finishing installation... \n", 'white', 'bold');
-                        $installed_string = \TBGSettings::getMajorVer() . '.' . \TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+                        $installed_string = \thebuggenie\core\framework\Settings::getMajorVer() . '.' . \thebuggenie\core\framework\Settings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
                         if ((file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH . 'installed')) ||
                             (!file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH)))
                         {

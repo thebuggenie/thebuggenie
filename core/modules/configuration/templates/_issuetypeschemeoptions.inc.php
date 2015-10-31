@@ -1,5 +1,5 @@
 <?php if (!$scheme->isCore()): ?>
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Issuetype.Choices.update('<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Issuetype.Choices.update('<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
 <?php endif; ?>
     <div class="rounded_box white borderless" style="margin: 5px; font-size: 12px;">
         <div class="header_div" style="margin-top: 0;">
@@ -17,11 +17,11 @@
             </thead>
             <tbody id="<?php echo $issuetype->getID(); ?>_list">
                 <?php foreach ($builtinfields as $item): ?>
-                    <?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+                    <?php include_component('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
                 <?php endforeach; ?>
                 <?php if (count($customtypes) > 0): ?>
                     <?php foreach ($customtypes as $key => $item): ?>
-                        <?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+                        <?php include_component('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>

@@ -2,15 +2,15 @@
 
     namespace thebuggenie\modules\vcs_integration\entities;
 
-    use TBGIssue,
-        thebuggenie\modules\vcs_integration\entities\b2db\IssueLinks;
+    use \thebuggenie\core\entities\Issue,
+        thebuggenie\modules\vcs_integration\entities\tables\IssueLinks;
 
     /**
      * Issue to Commit link class, vcs_integration
      *
      * @author Philip Kent <kentphilip@gmail.com>
      * @version 3.2
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage vcs_integration
      */
@@ -21,16 +21,16 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      *
-     * @Table(name="\thebuggenie\modules\vcs_integration\entities\b2db\IssueLinks")
+     * @Table(name="\thebuggenie\modules\vcs_integration\entities\tables\IssueLinks")
      */
-    class IssueLink extends \TBGIdentifiableScopedClass
+    class IssueLink extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
          * Affected issue
-         * @var \TBGIssue
+         * @var \thebuggenie\core\entities\Issue
          * @Column(type="integer", name="issue_no")
-         * @Relates(class="\TBGIssue")
+         * @Relates(class="\thebuggenie\core\entities\Issue")
          */
         protected $_issue = null;
 
@@ -44,7 +44,7 @@
 
         /**
          * Get the issue for this link
-         * @return \TBGIssue
+         * @return \thebuggenie\core\entities\Issue
          */
         public function getIssue()
         {
@@ -62,9 +62,9 @@
 
         /**
          * Set the issue in this link
-         * @param \TBGIssue $issue
+         * @param \thebuggenie\core\entities\Issue $issue
          */
-        public function setIssue(TBGIssue $issue)
+        public function setIssue(\thebuggenie\core\entities\Issue $issue)
         {
             $this->_issue = $issue;
         }
@@ -80,12 +80,12 @@
 
         /**
          * Return all commits for a given issue
-         * @param \TBGIssue $issue
-         * @return array|\TBGIssue
+         * @param \thebuggenie\core\entities\Issue $issue
+         * @return array|\thebuggenie\core\entities\Issue
          */
-        public static function getCommitsByIssue(TBGIssue $issue)
+        public static function getCommitsByIssue(\thebuggenie\core\entities\Issue $issue)
         {
-            return IssueLinks::getTable()->getByIssueID($issue->getID());
+            return tables\IssueLinks::getTable()->getByIssueID($issue->getID());
         }
 
         /**
@@ -95,7 +95,7 @@
          */
         public static function getIssuesByCommit(Commit $commit)
         {
-            return IssueLinks::getTable()->getByCommitID($commit->getID());
+            return tables\IssueLinks::getTable()->getByCommitID($commit->getID());
         }
 
     }

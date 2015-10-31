@@ -25,8 +25,8 @@
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                    <tr class="hover_highlight <?php if (!$user->isScopeConfirmed()): ?>faded_out<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
-                        <?php include_template('finduser_row', array('user' => $user)); ?>
+                    <tr class="hover_highlight <?php if (!$user->isScopeConfirmed()): ?>faded_out<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>">
+                        <?php include_component('finduser_row', array('user' => $user)); ?>
                     </tr>
                     <?php if ($user->isScopeConfirmed()): ?>
                         <tr id="user_<?php echo $user->getID(); ?>_edit_spinning" class="selected_green" style="display: none;">
@@ -35,15 +35,13 @@
                             </td>
                         </tr>
                         <tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
-                            <td style="padding: 3px;" colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td">
-                                &nbsp;
-                            </td>
+                            <td colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td"></td>
                         </tr>
                     <?php endif; ?>
                     <tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;" class="fullpage_backdrop">
                         <td id="users_results_user_<?php echo $user->getID(); ?>_permissions_container" colspan="7" class="fullpage_backdrop_content backdrop_box large">
                             <div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %username', array('%username' => $user->getNameWithUsername())); ?></div>
-                            <?php include_template('configuration/permissionswarning'); ?>
+                            <?php include_component('configuration/permissionswarning'); ?>
                             <?php echo image_tag('spinning_16.gif', array('id' => 'permissions_'.$user->getID().'_indicator', 'style' => 'display: none;')); ?>
                             <div class="backdrop_detail_content config_permissions" id="users_results_user_<?php echo $user->getID(); ?>_permissions"></div>
                             <div class="backdrop_detail_footer"><?php echo javascript_link_tag(__('Close'), array('onclick' => "TBG.Config.User.getPermissionsBlock('".make_url('configure_permissions_get_configurator', array('user_id' => $user->getID(), 'base_id' => $user->getID())). "', ".$user->getID().");")); ?></div>
@@ -56,12 +54,7 @@
 <?php endif; ?>
 <?php if (isset($more_available)): ?>
     <script type="text/javascript">
-        <?php if (!$more_available): ?>
-            $('adduser_div').hide();
-        <?php else: ?>
-            $('adduser_div').show();
-        <?php endif; ?>
-        <?php if (TBGContext::getScope()->getMaxUsers()): ?>
+        <?php if (\thebuggenie\core\framework\Context::getScope()->getMaxUsers()): ?>
             $('current_user_num_count').update(<?php echo $total_count; ?>);
         <?php endif; ?>
     </script>

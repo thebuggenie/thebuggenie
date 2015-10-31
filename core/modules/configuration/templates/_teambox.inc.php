@@ -5,7 +5,7 @@
             <button class="button button-silver dropper" id="team_<?php echo $team->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
             <ul id="team_<?php echo $team->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
                 <li>
-                    <?php echo javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle();')); ?>
+                    <?php echo javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle(\'block\');')); ?>
                 </li>
                 <li>
                     <?php echo javascript_link_tag(__('List users in this team'), array('onclick' => 'TBG.Config.Team.showMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');')); ?>
@@ -26,7 +26,7 @@
         <div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_team_<?php echo $team->getID(); ?>">
             <div class="dropdown_header"><?php echo __('Please specify what parts of this team you want to clone'); ?></div>
             <div class="dropdown_content copy_team_link">
-                <form id="clone_team_<?php echo $team->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Team.clone('<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>');return false;">
+                <form id="clone_team_<?php echo $team->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Settings::getCharset(); ?>" onsubmit="TBG.Config.Team.clone('<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>');return false;">
                     <div id="add_team">
                         <label for="clone_team_<?php echo $team->getID(); ?>_new_name"><?php echo __('New team name'); ?></label>
                         <input type="text" id="clone_team_<?php echo $team->getID(); ?>_new_name" name="team_name"><br />
@@ -70,8 +70,8 @@
 </div>
 <div id="team_<?php echo $team->getID(); ?>_permissions_container" style="display: none;" class="fullpage_backdrop">
     <div class="fullpage_backdrop_content backdrop_box large">
-        <div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %teamname', array('%team' => $team->getName())); ?></div>
-        <?php echo image_tag('spinning_16.gif', array('id' => 'team_'.$team->getID().'_permissions_indicator', 'style' => 'display: none;')); ?>
+        <div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %teamname', array('%teamname' => $team->getName())); ?></div>
+        <?php echo image_tag('spinning_32.gif', array('id' => 'team_'.$team->getID().'_permissions_indicator', 'style' => 'display: none;')); ?>
         <div class="backdrop_detail_content config_permissions" id="team_<?php echo $team->getID(); ?>_permissions"></div>
         <div class="backdrop_detail_footer"><?php echo javascript_link_tag(__('Close'), array('onclick' => "$('team_".$team->getID()."_permissions_container').toggle();")); ?></div>
     </div>

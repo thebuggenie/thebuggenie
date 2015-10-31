@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ShowIssue extends \TBGCliRemoteCommand
+    class ShowIssue extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()
@@ -53,10 +53,10 @@
             
             $issue = $this->getRemoteResponse($this->getRemoteURL('viewissue', $url_options));
 
-            TBGContext::loadLibrary('common');
+            \thebuggenie\core\framework\Context::loadLibrary('common');
             $this->cliEcho($print_issue_number, 'green', 'bold');
             $this->cliEcho(" - ");
-            $state = ($issue->state == TBGIssue::STATE_OPEN) ? 'OPEN' : 'CLOSED';
+            $state = ($issue->state == \thebuggenie\core\entities\Issue::STATE_OPEN) ? 'OPEN' : 'CLOSED';
             $this->cliEcho("[{$state}] ", 'cyan');
             $this->cliEcho(html_entity_decode($issue->title), 'white', 'bold');
             $this->cliEcho("\n");

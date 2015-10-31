@@ -14,7 +14,7 @@
             <?php endif; ?>
             <?php if (array_key_exists('details', $permission) && is_array($permission['details']) && !empty($permission['details'])): ?>
                 <ul id="role_<?php echo $role->getID(); ?>_permission_<?php echo $permission_key; ?>_sublist" style="display: none; width: auto;">
-                    <?php include_template('configuration/rolepermissionseditlist', array('permissions_list' => $permission['details'], 'role' => $role, 'disabled' => (isset($disabled)) ? $disabled : $is_checked, 'module' => $module, 'target_id' => $target_id)); ?>
+                    <?php include_component('configuration/rolepermissionseditlist', array('permissions_list' => $permission['details'], 'role' => $role, 'disabled' => (isset($disabled)) ? $disabled : $is_checked, 'module' => $module, 'target_id' => $target_id)); ?>
                 </ul>
             <?php endif; ?>
         </li>

@@ -1,7 +1,7 @@
 <?php
 
-    include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
-    TBGContext::loadLibrary('publish/publish');
+    include_component('publish/wikibreadcrumbs', array('article_name' => $article_name));
+    \thebuggenie\core\framework\Context::loadLibrary('publish/publish');
     $tbg_response->setTitle(__('%article_name history', array('%article_name' => $article_name)));
 
 ?>
@@ -13,7 +13,7 @@
         <td class="main_area article">
             <a name="top"></a>
             <div class="article" style="width: auto; padding: 5px; position: relative;">
-                <?php include_template('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
+                <?php include_component('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
                 <?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
                     <?php if ($history_action == 'list'): ?>
                         <form action="<?php echo make_url('publish_article_diff', array('article_name' => $article->getName())); ?>" method="post">
@@ -26,7 +26,7 @@
                                         <th><?php echo __('Comment'); ?></th>
                                         <?php if ($revision_count > 1): ?>
                                             <th style="width: 60px;" colspan="2"><?php echo __('Compare'); ?></th>
-                                            <?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
+                                            <?php if (\thebuggenie\core\framework\Context::getModule('publish')->canUserEditArticle($article_name)): ?>
                                                 <th style="width: 150px;"><?php echo __('Actions'); ?></th>
                                             <?php endif; ?>
                                         <?php endif; ?>
@@ -37,7 +37,7 @@
                                         <tr>
                                             <td style="text-align: center;"><b><?php echo ($revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $revision)), $revision) : $revision; ?></b></td>
                                             <td style="text-align: center;"><?php echo tbg_formatTime($history_item['updated'], 20); ?></td>
-                                            <td><i><?php echo ($history_item['author'] instanceof TBGUser) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $history_item['author']->getID())) . '\');">' . $history_item['author']->getName() . '</a>' : __('Initial import'); ?></i></td>
+                                            <td><i><?php echo ($history_item['author'] instanceof \thebuggenie\core\entities\User) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $history_item['author']->getID())) . '\');">' . $history_item['author']->getName() . '</a>' : __('Initial import'); ?></i></td>
                                             <td><?php echo $history_item['change_reason']; ?></td>
                                             <?php if ($revision_count > 1): ?>
                                                 <td style="width: 30px; text-align: center;">
@@ -82,7 +82,7 @@
                         </form>
                     <?php elseif ($history_action == 'diff'): ?>
                         <p style="padding: 0 5px 10px 10px; font-size: 13px;">
-                            <?php echo '<b>'.__('Showing the difference between revisions: %from_revision &rArr; %to_revision', array('&rArr;' => '<b>&rArr;</b>', '%from_revision' => '</b><i>'.__('%revision_number, by %author [%date]', array('%revision_number' => link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $from_revision)), $from_revision, array('style' => 'font-weight: bold;')), '%author' => $from_revision_author, '%date' => tbg_formatTime($from_revision_date, 20))).'</i>', '%to_revision' => '<i>'.__('%revision_number, by %author [%date]', array('%revision_number' => (($to_revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $to_revision)), $to_revision, array('style' => 'font-weight: bold;')) : $to_revision)."/{$revision_count}</b>", '%author' => $to_revision_author, '%date' => tbg_formatTime($to_revision_date, 20))).'</i>')); ?><br />
+                            <?php echo '<b>'.__('Showing the difference between revisions: %from_revision &rArr; %to_revision', array('&rArr;' => '<b>&rarr;</b>', '%from_revision' => '</b><i>'.__('%revision_number, by %author [%date]', array('%revision_number' => link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $from_revision)), $from_revision, array('style' => 'font-weight: bold;')), '%author' => $from_revision_author, '%date' => tbg_formatTime($from_revision_date, 20))).'</i>', '%to_revision' => '<i>'.__('%revision_number, by %author [%date]', array('%revision_number' => (($to_revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $to_revision)), $to_revision, array('style' => 'font-weight: bold;')) : $to_revision)."/{$revision_count}</b>", '%author' => $to_revision_author, '%date' => tbg_formatTime($to_revision_date, 20))).'</i>'), true); ?><br />
                             <?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), '&lt;&lt; '.__('Back to history')); ?>
                         </p>
                         <?php $cc = 1; ?>
@@ -99,7 +99,7 @@
                         </table>
                     <?php endif; ?>
                 <?php else: ?>
-                    <?php include_template('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
+                    <?php include_component('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
                 <?php endif; ?>
             </div>
         </td>

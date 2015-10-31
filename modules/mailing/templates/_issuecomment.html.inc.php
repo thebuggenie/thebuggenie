@@ -1,11 +1,11 @@
-<?php if ($issue instanceof TBGIssue && $comment instanceof TBGComment): ?>
+<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $comment instanceof \thebuggenie\core\entities\Comment): ?>
     <h3>
         <?php echo $issue->getFormattedTitle(true); ?><br>
-        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?></span>
+        <span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getNameWithUsername())); ?></span>
     </h3>
     <br>
-    <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' ' . $comment->getPostedBy()->getUsername() . ')';?></h4>
-    <p><?php echo $comment->getParsedContent(); ?></p>
+    <h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getNameWithUsername()));?></h4>
+    <p><?php echo $comment->getParsedContent(array('in_email' => true)); ?></p>
     <br>
     <div style="color: #888;">
         <?php echo __('Show issue:') . ' ' . link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()))); ?><br>

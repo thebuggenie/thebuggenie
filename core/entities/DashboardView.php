@@ -2,19 +2,21 @@
 
     namespace thebuggenie\core\entities;
 
-    use TBGContext,
-        TBGProject,
-        TBGUser,
-        TBGTeam,
-        TBGClient,
-        TBGIssuetype;
+    use thebuggenie\core\entities\common\IdentifiableScoped;
+
+    use thebuggenie\core\framework as framework,
+        \thebuggenie\core\entities\Project,
+        \thebuggenie\core\entities\User,
+        \thebuggenie\core\entities\Team,
+        \thebuggenie\core\entities\Client,
+        \thebuggenie\core\entities\Issuetype;
 
     /**
      * Dashboard class
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage main
      */
@@ -25,9 +27,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\DashboardViews")
+     * @Table(name="\thebuggenie\core\entities\tables\DashboardViews")
      */
-    class DashboardView extends \TBGIdentifiableScopedClass
+    class DashboardView extends IdentifiableScoped
     {
 
         const VIEW_PREDEFINED_SEARCH = 1;
@@ -108,31 +110,32 @@
 
         public static function getAvailableViews($target_type)
         {
-            $i18n = TBGContext::getI18n();
+            $i18n = framework\Context::getI18n();
+            $searches = array('info' => array(), 'searches' => array());
             switch ($target_type)
             {
                 case self::TYPE_USER:
-                    $searches = array('info' => array(), 'searches' => array());
                     $searches['info'][self::VIEW_LOGGED_ACTIONS] = array(0 => array('title' => $i18n->__("What you've done recently"), 'description' => $i18n->__('A widget that shows your most recent actions, such as issue edits, wiki edits and more')));
-                    if (TBGContext::getUser()->canViewComments())
+                    if (framework\Context::getUser()->canViewComments())
                     {
                         $searches['info'][self::VIEW_RECENT_COMMENTS] = array(0 => array('title' => $i18n->__('Recent comments'), 'description' => $i18n->__('Shows a list of your most recent comments')));
                     }
-                    $searches['searches'][self::VIEW_PREDEFINED_SEARCH] = array(TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => array('title' => $i18n->__('Issues reported by me'), 'description' => $i18n->__('Shows a list of all issues you have reported, across all projects')),
-                        TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to me'), 'description' => $i18n->__('Shows a list of all issues assigned to you')),
-                        TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues owned by me'), 'description' => $i18n->__('Shows a list of all issues owned by you')),
-                        TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to my teams'), 'description' => $i18n->__('Shows all issues assigned to any of your teams')));
+                    $searches['searches'][self::VIEW_PREDEFINED_SEARCH] = array(\thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => array('title' => $i18n->__('Issues reported by me'), 'description' => $i18n->__('Shows a list of all issues you have reported, across all projects')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to me'), 'description' => $i18n->__('Shows a list of all issues assigned to you')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues owned by me'), 'description' => $i18n->__('Shows a list of all issues owned by you')),
+                        \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => array('title' => $i18n->__('Open issues assigned to my teams'), 'description' => $i18n->__('Shows all issues assigned to any of your teams')));
                     $searches['info'][self::VIEW_PROJECTS] = array(0 => array('title' => $i18n->__("Your projects"), 'description' => $i18n->__('A widget that shows projects you are involved in')));
                     $searches['info'][self::VIEW_MILESTONES] = array(0 => array('title' => $i18n->__("Upcoming milestones / sprints"), 'description' => $i18n->__('A widget that shows all upcoming milestones or sprints for any projects you are involved in')));
                     break;
                 case self::TYPE_PROJECT:
+                    $searches['statistics'] = array();
+
                     $issuetype_icons = array();
-                    foreach (TBGIssuetype::getAll() as $id => $issuetype)
+                    foreach (Issuetype::getAll() as $id => $issuetype)
                     {
                         $issuetype_icons[$id] = array('title' => $i18n->__('Recent issues: %issuetype', array('%issuetype' => $issuetype->getName())), 'description' => $i18n->__('Show recent issues of type %issuetype', array('%issuetype' => $issuetype->getName())));
                     }
 
-                    $searches = array('info' => array(), 'statistics' => array(), 'searches' => array());
                     $searches['info'][self::VIEW_PROJECT_INFO] = array(0 => array('title' => $i18n->__('About this project'), 'description' => $i18n->__('Basic project information widget, showing project name, important people and links')));
                     $searches['info'][self::VIEW_PROJECT_TEAM] = array(0 => array('title' => $i18n->__('Project team'), 'description' => $i18n->__('A widget with information about project developers and the project team and their respective project roles')));
                     $searches['info'][self::VIEW_PROJECT_CLIENT] = array(0 => array('title' => $i18n->__('Project client'), 'description' => $i18n->__('Shows information about the associated project client (if any)')));
@@ -199,44 +202,24 @@
             return $this->getProject()->getID();
         }
 
-        public function setProjectID($pid)
-        {
-            $this->_pid = $pid;
-        }
-
         /**
-         * @return \TBGProject
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
             return $this->getDashboard()->getProject();
         }
 
-        public function getTargetID()
-        {
-            return $this->_tid;
-        }
-
-        public function setTargetID($tid)
-        {
-            $this->_tid = $tid;
-        }
-
         public function getTargetType()
         {
-            if ($this->getDashboard()->getUser() instanceof TBGUser)
+            if ($this->getDashboard()->getUser() instanceof \thebuggenie\core\entities\User)
                 return self::TYPE_USER;
-            if ($this->getDashboard()->getProject() instanceof TBGProject)
+            if ($this->getDashboard()->getProject() instanceof \thebuggenie\core\entities\Project)
                 return self::TYPE_PROJECT;
-            if ($this->getDashboard()->getTeam() instanceof TBGTeam)
+            if ($this->getDashboard()->getTeam() instanceof \thebuggenie\core\entities\Team)
                 return self::TYPE_TEAM;
-            if ($this->getDashboard()->getClient() instanceof TBGClient)
+            if ($this->getDashboard()->getClient() instanceof \thebuggenie\core\entities\Client)
                 return self::TYPE_CLIENT;
-        }
-
-        public function setTargetType($target_type)
-        {
-            $this->_target_type = $target_type;
         }
 
         public function isSearchView()
@@ -265,7 +248,7 @@
 
         public function getJS()
         {
-            return array(TBGContext::getRouting()->generate('home') . 'js/excanvas.js', TBGContext::getRouting()->generate('home') . 'js/jquery.flot.min.js', TBGContext::getRouting()->generate('home') . 'js/jquery.flot.resize.min.js');
+            return array('excanvas', 'jquery.flot', 'jquery.flot.resize', 'jquery.flot.time');
         }
 
         public function getRSSUrl()
@@ -274,10 +257,10 @@
             {
                 case self::VIEW_PREDEFINED_SEARCH:
                 case self::VIEW_SAVED_SEARCH:
-                    return TBGContext::getRouting()->generate('search', $this->getSearchParameters(true));
+                    return framework\Context::getRouting()->generate('search', $this->getSearchParameters(true));
                     break;
                 case self::VIEW_PROJECT_RECENT_ACTIVITIES:
-                    return TBGContext::getRouting()->generate('project_timeline', array('project_key' => $this->getProject()->getKey(), 'format' => 'rss'));
+                    return framework\Context::getRouting()->generate('project_timeline', array('project_key' => $this->getProject()->getKey(), 'format' => 'rss'));
                     break;
             }
         }
@@ -316,7 +299,7 @@
                     break;
                 }
             }
-            return (isset($title)) ? $title : TBGContext::getI18n()->__('Unknown dashboard item');
+            return (isset($title)) ? $title : framework\Context::getI18n()->__('Unknown dashboard item');
         }
 
         public function setDashboard($dashboard)

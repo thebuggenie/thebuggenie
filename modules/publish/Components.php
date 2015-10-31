@@ -2,16 +2,16 @@
 
     namespace thebuggenie\modules\publish;
 
-    use TBGContext,
+    use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\Article,
-        thebuggenie\modules\publish\entities\b2db\Articles;
+        thebuggenie\modules\publish\entities\tables\Articles;
 
-    class Components extends \TBGActionComponent
+    class Components extends framework\ActionComponent
     {
 
         public function componentLatestArticles()
         {
-            $this->latest_articles = TBGContext::getModule('publish')->getLatestArticles(TBGContext::getCurrentProject());
+            $this->latest_articles = framework\Context::getModule('publish')->getLatestArticles(framework\Context::getCurrentProject());
         }
 
         public function componentWhatlinkshere()
@@ -68,9 +68,8 @@
         public function componentLeftmenu()
         {
             $this->show_article_options = (bool) ($this->article instanceof Article);
-            $this->links_target_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
-            $this->links = TBGContext::getModule('publish')->getMenuItems($this->links_target_id);
-            $this->user_drafts = TBGContext::getModule('publish')->getUserDrafts();
+            $this->links_target_id = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getID() : 0;
+            $this->links = framework\Context::getModule('publish')->getMenuItems($this->links_target_id);
         }
 
         public function componentManualSidebar()
@@ -99,37 +98,37 @@
 
         public function componentSpecialDeadEndPages()
         {
-            $this->articles = Articles::getTable()->getDeadEndArticles(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getDeadEndArticles(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialOrphanedPages()
         {
-            $this->articles = Articles::getTable()->getUnlinkedArticles(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getUnlinkedArticles(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialUncategorizedPages()
         {
-            $this->articles = Articles::getTable()->getUncategorizedArticles(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getUncategorizedArticles(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialAllPages()
         {
-            $this->articles = Articles::getTable()->getAllArticlesSpecial(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getAllArticlesSpecial(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialAllCategories()
         {
-            $this->articles = Articles::getTable()->getAllCategories(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getAllCategories(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialAllTemplates()
         {
-            $this->articles = Articles::getTable()->getAllTemplates(TBGContext::getCurrentProject());
+            $this->articles = Articles::getTable()->getAllTemplates(framework\Context::getCurrentProject());
         }
 
         public function componentSpecialWhatLinksHere()
         {
-            $this->linked_article_name = TBGContext::getRequest()->getParameter('linked_article_name');
+            $this->linked_article_name = framework\Context::getRequest()->getParameter('linked_article_name');
             $this->articles = Articles::getTable()->getAllByLinksToArticleName($this->linked_article_name);
         }
 

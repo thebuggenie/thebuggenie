@@ -2,14 +2,12 @@
 
     namespace thebuggenie\modules\mailing\entities;
 
-    use TBGContext,
-        TBGIssuetype,
-        \thebuggenie\modules\mailing\entities\b2db\IncomingEmailAccounts;
+    use thebuggenie\modules\mailing\entities\tables\IncomingEmailAccounts;
 
     /**
-     * @Table(name="\thebuggenie\modules\mailing\entities\b2db\IncomingEmailAccounts")
+     * @Table(name="\thebuggenie\modules\mailing\entities\tables\IncomingEmailAccounts")
      */
-    class IncomingEmailAccount extends \TBGIdentifiableScopedClass
+    class IncomingEmailAccount extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         const SERVER_IMAP = 0;
@@ -72,16 +70,16 @@
         protected $_connection;
 
         /**
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGProject")
+         * @Relates(class="\thebuggenie\core\entities\Project")
          */
         protected $_project;
 
         /**
-         * @var \TBGIssuetype
+         * @var \thebuggenie\core\entities\Issuetype
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGIssuetype")
+         * @Relates(class="\thebuggenie\core\entities\Issuetype")
          */
         protected $_issuetype;
 
@@ -97,12 +95,12 @@
 
         public static function getAll()
         {
-            return IncomingEmailAccounts::getTable()->getAll();
+            return tables\IncomingEmailAccounts::getTable()->getAll();
         }
 
         public static function getAllByProjectID($project_id)
         {
-            return IncomingEmailAccounts::getTable()->getAllByProjectID($project_id);
+            return tables\IncomingEmailAccounts::getTable()->getAllByProjectID($project_id);
         }
 
         /**
@@ -277,13 +275,13 @@
                 if ($this->usesPlaintextAuthentication())
                     $options['DISABLE_AUTHENTICATOR'] = 'GSSAPI';
 
-                $this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), $options);
+                $this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), 0, 0, $options);
             }
             if (!is_resource($this->_connection))
             {
                 $error = imap_last_error();
-                $error = ($error === false) ? TBGContext::getI18n()->__('No error message provided') : $error;
-                throw new \Exception(TBGContext::getI18n()->__('Could not connect to the specified email server(%connection_string): %error_message', array('%connection_string' => $this->getConnectionString(), '%error_message' => $error)));
+                $error = ($error === false) ? \thebuggenie\core\framework\Context::getI18n()->__('No error message provided') : $error;
+                throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__('Could not connect to the specified email server(%connection_string): %error_message', array('%connection_string' => $this->getConnectionString(), '%error_message' => $error)));
             }
         }
 
@@ -335,7 +333,7 @@
          * Sets the message for deletion when chosen to do not keep emails
          *
          * @param stdObject $email
-         * @return TBGIncomingEmailMessage the message
+         * @return \thebuggenie\modules\mailing\entities\IncomingEmailMessage the message
          */
         public function getMessage($email)
         {
@@ -363,7 +361,7 @@
         /**
          * Returns the project associated with this account
          *
-         * @return TBGProject
+         * @return \thebuggenie\core\entities\Project
          */
         public function getProject()
         {
@@ -373,7 +371,7 @@
         /**
          * Returns the issuetype associated with this account
          *
-         * @return TBGIssuetype
+         * @return \thebuggenie\core\entities\Issuetype
          */
         public function getIssuetype()
         {
@@ -383,7 +381,7 @@
         public function getIssuetypeID()
         {
             $issuetype = $this->getIssuetype();
-            return ($issuetype instanceof TBGIssuetype) ? $issuetype->getID() : null;
+            return ($issuetype instanceof \thebuggenie\core\entities\Issuetype) ? $issuetype->getID() : null;
         }
 
         public function setIgnoreCertificateValidation($value = true)

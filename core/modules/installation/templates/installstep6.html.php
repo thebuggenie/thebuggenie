@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <?php if (isset($error)): ?>
     <div class="installation_box">
         <div class="error"><?php echo nl2br($error); ?></div>
@@ -22,8 +22,8 @@
         <input type="hidden" name="tbg3_password" value="admin">
         <input type="hidden" name="tbg3_referer" value="<?php echo make_url('about'); ?>">
         <div style="font-size: 15px; text-align: center; padding: 25px;">
-            <input type="submit" value="Got it!" style="font-size: 15px; margin-top: 10px; padding: 8px; height: 35px; font-weight: normal;">
+            <input type="submit" value="Got it!" style="font-size: 15px; margin-top: 10px; padding: 8px; height: 40px; font-weight: normal;">
         </div>
     </form>
 <?php endif; ?>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

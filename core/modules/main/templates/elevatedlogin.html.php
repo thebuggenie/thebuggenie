@@ -1,13 +1,13 @@
 <?php
 
-    TBGContext::loadLibrary('ui');
+    \thebuggenie\core\framework\Context::loadLibrary('ui');
 
 ?>
 <div id="login_backdrop">
     <div class="backdrop_box login_page login_popup" id="login_popup">
         <div id="backdrop_detail_content" class="backdrop_detail_content rounded_top login_content">
             <div class="logindiv regular active" id="regular_login_container">
-                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('elevated_login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.elevatedLogin('<?php echo make_url('elevated_login'); ?>'); return false;">
+                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('elevated_login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.elevatedLogin('<?php echo make_url('elevated_login'); ?>'); return false;">
                     <h2 class="login_header"><?php echo __('Authentication required'); ?></h2>
                     <div class="article">
                         <?php echo __('This page requires an extra authentication step. Please re-enter your password to continue'); ?>
@@ -39,12 +39,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    <?php if (TBGContext::hasMessage('elevated_login_message')): ?>
-        TBG.Main.Helpers.Message.success('<?php echo TBGContext::getMessageAndClear('elevated_login_message'); ?>');
-    <?php elseif (TBGContext::hasMessage('elevated_login_message_err')): ?>
-        TBG.Main.Helpers.Message.error('<?php echo TBGContext::getMessageAndClear('elevated_login_message_err'); ?>');
-    <?php endif; ?>
-    document.observe('dom:loaded', function() {
-        $('tbg3_password').focus();
+    require(['domReady', 'thebuggenie/tbg', 'prototype'], function (domReady, TBG, prototype) {
+        domReady(function () {
+        <?php if (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message')): ?>
+            TBG.Main.Helpers.Message.success('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message'); ?>');
+        <?php elseif (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message_err')): ?>
+            TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message_err'); ?>');
+        <?php endif; ?>
+            $('tbg3_password').focus();
+        });
     });
 </script>

@@ -2,7 +2,7 @@
 
     switch ($notification->getNotificationType())
     {
-        case TBGVCSIntegration::NOTIFICATION_COMMIT_MENTIONED:
+        case \thebuggenie\modules\vcs_integration\Vcs_integration::NOTIFICATION_COMMIT_MENTIONED:
             ?>
             <h1>
                 <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>

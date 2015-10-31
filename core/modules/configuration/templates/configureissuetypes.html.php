@@ -7,7 +7,7 @@
     <tr>
         <?php include_component('leftmenu', array('selected_section' => 6)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <div style="width: 730px;" id="config_issuetypes">
+            <div style="width: 780px;" id="config_issuetypes">
                 <h3><?php echo __('Configure issue types'); ?></h3>
                 <div class="content faded_out">
                     <p>
@@ -31,7 +31,7 @@
                                 <?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes tab to get it to show up for users.', array('%issue_type_schemes' => link_tag(make_url('configure_issuetypes_schemes'), __('Issue type schemes')))); ?>
                             </div>
                             <div class="lightyellowbox" style="margin: 5px 0 0 0;">
-                                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
+                                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
                                     <label for="new_issuetype_name"><?php echo __('Add new issue type'); ?>:</label>
                                     <input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
                                     <label for="new_issuetype_icon"><?php echo __('Type'); ?></label>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     <?php elseif ($mode == 'schemes'): ?>
-                        <div id="tab_schemes_pane" style="padding-top: 0; width: 730px;">
+                        <div id="tab_schemes_pane" style="padding-top: 0; width: 780px;">
                             <div class="content">
                                 <?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?><br>
                                 <br>
@@ -64,7 +64,7 @@
                             </ul>
                         </div>
                     <?php elseif ($mode == 'scheme'): ?>
-                        <div id="tab_scheme_pane" style="padding-top: 0; width: 730px;">
+                        <div id="tab_scheme_pane" style="padding-top: 0; width: 780px;">
                             <div class="content">
                                 <?php echo __('In this tab you can edit issue type associations for this issue type scheme. Enable/disable available issue types, and set options such as reportable issue types and reportable/visible/required issue details.'); ?>
                             </div>

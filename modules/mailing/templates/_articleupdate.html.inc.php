@@ -1,6 +1,6 @@
 <?php if ($article instanceof \thebuggenie\modules\publish\entities\Article): ?>
     <h3><?php echo __('%article updated', array('%article' => $article->getTitle())); ?></h3>
-    <h4><?php echo __('The article has been updated by %name', array('%name' => $user->getBuddyname())) .' ( ' . $user->getUsername() . '):'; ?></h4>
+    <h4><?php echo __('The article has been updated by %name', array('%name' => $user->getNameWithUsername())); ?></h4>
     <?php if (trim($change_reason) != ''): ?>
         <pre><?php echo $change_reason; ?></pre><br>
     <?php else: ?>

@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class License extends \TBGCliCommand
+    class License extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -37,9 +37,9 @@
             }
             else
             {
-                $this->cliEcho("The Bug Genie is released under the MPL 1.1 only.\n", 'white', 'bold');
+                $this->cliEcho("The Bug Genie is released under the MPL 2.0.\n", 'white', 'bold');
                 $this->cliEcho("Read the full license at:\n");
-                $this->cliEcho("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
+                $this->cliEcho("http://opensource.org/licenses/MPL-2.0\n\n", 'blue', 'underline');
                 $this->cliEcho('or type: ');
                 $this->cliEcho($this->getCommandLineName(), 'white', 'bold') . $this->cliEcho(' license', 'green', 'bold') . $this->cliEcho(' print', 'magenta');
             }

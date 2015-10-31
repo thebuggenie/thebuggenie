@@ -1,4 +1,4 @@
-<?php if (!$user instanceof TBGUser || $user->getID() == 0 || $user->isDeleted()): ?>
+<?php if (!$user instanceof \thebuggenie\core\entities\User || $user->getID() == 0 || $user->isDeleted()): ?>
     <span class="faded_out"><?php echo __('No such user'); ?></span>
 <?php elseif (!$user->isScopeConfirmed()): ?>
     <span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
@@ -26,8 +26,8 @@
                 <?php endif; ?>
             </div>
         </li>
-        <?php TBGEvent::createNew('core', 'useractions_top', $user)->trigger(); ?>
-        <?php if (TBGUser::isThisGuest() == false && $user->getID() != $tbg_user->getID()): ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'useractions_top', $user)->trigger(); ?>
+        <?php if (\thebuggenie\core\entities\User::isThisGuest() == false && $user->getID() != $tbg_user->getID()): ?>
             <li style="<?php if ($tbg_user->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
                 <?php echo javascript_link_tag(__('Become friends'), array('onclick' => "TBG.Main.Profile.addFriend('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
             </li>
@@ -36,10 +36,12 @@
                 <?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "TBG.Main.Profile.removeFriend('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
             </li>
         <?php endif; ?>
-        <?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
-            <li>
-                <a href="<?php echo make_url('configure_users'); ?>?finduser=<?php echo $user->getUsername(); ?>"><?php echo __('Edit this user'); ?></a>
-            </li>
+        <?php if ($tbg_user->canAccessConfigurationPage(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)): ?>
+            <?php if ($tbg_routing->getCurrentRouteName() != 'configure_users_find_user'): ?>
+                <li>
+                    <a href="<?php echo make_url('configure_users'); ?>?finduser=<?php echo $user->getUsername(); ?>"><?php echo __('Edit this user'); ?></a>
+                </li>
+            <?php endif; ?>
             <?php if (!$tbg_request->hasCookie('tbg3_original_username')): ?>
                 <li><?php echo link_tag(make_url('switch_to_user', array('user_id' => $user->getID())), __('Switch to this user')); ?></li>
             <?php else: ?>
@@ -49,7 +51,7 @@
         <li>
             <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').hide();"><?php echo __('Show user details'); ?></a>
         </li>
-        <?php TBGEvent::createNew('core', 'useractions_bottom', $user)->trigger(); ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'useractions_bottom', $user)->trigger(); ?>
     </ul>
 </div>
 <?php endif; ?>

@@ -1,4 +1,4 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <script type="text/javascript">
 
     function updateURLPreview()
@@ -15,15 +15,15 @@
             $('continue_error').show();
             $('continue_error').update('The subdirectory url <i>must start and end with a forward slash</i>');
         }
-        else 
-        { 
+        else
+        {
             $('continue_button').show();
             $('continue_error').hide();
             $('url_preview').update($('url_subdir').value);
         }
-        
+
         var new_url = $('url_subdir').value;
-        
+
         if (new_url.endsWith('//'))
         {
             $('continue_button').hide();
@@ -62,8 +62,8 @@
                     <label for="apache_autosetup_yes">Auto-configure apache</label>
                 </dt>
                 <dd>
-                    <input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" onclick="$('server_autosetup_info').show();" <?php if ($server_type == 'apache') echo "checked"; ?>><label for="apache_autosetup_yes">Yes</label>&nbsp;
-                    <input type="radio" name="apache_autosetup" id="apache_autosetup_no" value="0" onclick="$('server_autosetup_info').hide();" <?php if ($server_type != 'apache') echo "checked"; ?>><label for="apache_autosetup_no">No</label>
+                    <input type="radio" style="vertical-align: text-top;" name="apache_autosetup" id="apache_autosetup_yes" value="1" onclick="$('server_autosetup_info').show();" <?php if ($server_type == 'apache') echo "checked"; ?>><label for="apache_autosetup_yes">Yes</label>&nbsp;
+                    <input type="radio" style="vertical-align: text-top;" name="apache_autosetup" id="apache_autosetup_no" value="0" onclick="$('server_autosetup_info').hide();" <?php if ($server_type != 'apache') echo "checked"; ?>><label for="apache_autosetup_no">No</label>
                 </dd>
             </dl>
             <div style="<?php if ($server_type != 'apache') echo "display: none;"; ?>" id="server_autosetup_info">
@@ -86,10 +86,10 @@
             <br style="clear: both;">
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and load the necessary default settings</label>
-                <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+                <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
                 <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
             </div>
         </form>
     <?php endif; ?>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

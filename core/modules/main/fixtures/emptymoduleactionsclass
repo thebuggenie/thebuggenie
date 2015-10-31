@@ -1,14 +1,18 @@
 <?php
 
-	/**
-	 * actions for the module_key module
-	 */
-	class module_keyActions extends TBGAction
-	{
+    namespace thebuggenie\modules\module_key;
 
-		public function runIndex(TBGRequest $request)
-		{
-		}
+    use thebuggenie\core\framework;
 
-	}
+    /**
+     * actions for the module_key module
+     */
+    class Actions extends framework\Action
+    {
+
+        public function runIndex(framework\Request $request)
+        {
+        }
+
+    }
 

@@ -1,6 +1,6 @@
 <?php
 
-    TBGContext::loadLibrary('ui');
+    \thebuggenie\core\framework\Context::loadLibrary('ui');
     $assigned_users = $project->getAssignedUsers();
     $assigned_teams = $project->getAssignedTeams();
 
@@ -22,7 +22,7 @@
                     <?php $roles = $project->getRolesForUser($user); ?>
                     <?php $role_names = array(); ?>
                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                    <?php echo join(',', $role_names); ?>
+                    <?php echo join(', ', $role_names); ?>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -45,7 +45,7 @@
                     <?php $roles = $project->getRolesForTeam($team); ?>
                     <?php $role_names = array(); ?>
                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                    <?php echo join(',', $role_names); ?>
+                    <?php echo join(', ', $role_names); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -1,11 +1,11 @@
-<?php include_template('installation/header'); ?>
+<?php include_component('installation/header'); ?>
 <div class="installation_box">
     <h2 style="margin-top: 0px;">Pre-installation checks</h2>
     <p style="margin-bottom: 10px;">
     Before we can start the installation, we need to check a few things.<br>
     Please look through the list of prerequisites below, and take the necessary steps to correct any errors that may have been highlighted.</p>
     <div id="installation_main_box">
-        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 1.1 accepted ...</div>
+        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 2.0 accepted ...</div>
         <?php if ($php_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
         <?php else: ?>
@@ -97,7 +97,9 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-        <?php if (!$b2db_param_file_ok && !$b2db_param_folder_ok): ?>
+        <?php if ($b2db_param_file_ok && $b2db_param_folder_ok): ?>
+            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
+        <?php elseif (!$b2db_param_file_ok): ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
             The folder that contains the SQL settings is not writable
@@ -107,9 +109,6 @@
             touch <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml<br>
             chmod a+w <?php echo realpath(THEBUGGENIE_CONFIGURATION_PATH) . DS; ?>b2db.yml
             </div>
-        <?php endif; ?>
-        <?php if ($b2db_param_file_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
@@ -132,7 +131,7 @@
                 <form accept-charset="utf-8" action="index.php" method="post">
                     <input type="hidden" name="step" value="2">
                     <label for="start_install">Start the installation by pressing this button</label>
-                    <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+                    <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;" >
                     <input type="submit" onclick="$('start_install').hide();$('next_indicator').show();" id="start_install" value="Start installation" style="margin-left: 10px;">
                 </form>
             </div>
@@ -148,4 +147,4 @@
         <?php endif; ?>
     </div>
 </div>
-<?php include_template('installation/footer'); ?>
+<?php include_component('installation/footer'); ?>

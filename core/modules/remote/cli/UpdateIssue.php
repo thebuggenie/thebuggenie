@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class UpdateIssue extends \TBGCliRemoteCommand
+    class UpdateIssue extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()
@@ -62,7 +62,7 @@
 
             if (!$message)
             {
-                throw new Exception("Please enter a valid message with your changes");
+                throw new \Exception("Please enter a valid message with your changes");
             }
 
             $url_options = array('project_key' => $this->project_key, 'issue_no' => $this->issue_number);
@@ -101,7 +101,7 @@
                 $response = $this->getRemoteResponse($this->getRemoteURL('project_update_issuedetails', $url_options), $post_data);
 
                 if (!is_object($response))
-                    throw new Exception('Could not parse the return value from the server. Please re-check the command run.');
+                    throw new \Exception('Could not parse the return value from the server. Please re-check the command run.');
 
                 if (array_key_exists('workflow_transition', $url_options))
                 {

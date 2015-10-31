@@ -1,8 +1,8 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Release center'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Release center'), make_url('project_release_center', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" release center', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Release center')));
 
 ?>
 <div id="project_release_center" class="project_info_container">
@@ -49,10 +49,10 @@
         <div class="project_left">
             <h3><?php echo __('Filters'); ?></h3>
             <ul class="simple_list">
-                <li class="selected"><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_active');TBG.Project.toggleLeftSelection(this);"><?php echo __('Active releases'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_archived');TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_downloads');TBG.Project.toggleLeftSelection(this);"><?php echo __('With downloads'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); TBG.Project.toggleLeftSelection(this);"><?php echo __('Show all releases'); ?></a></li>
+                <li class="selected"><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_active');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Active releases'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_archived');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_downloads');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('With downloads'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Show all releases'); ?></a></li>
             </ul>
         </div>
     </div>
@@ -60,8 +60,10 @@
 </div>
 <?php if ($build_error): ?>
     <script type="text/javascript">
-        document.observe('dom:loaded', function() {
-            TBG.Main.Helpers.Message.error(__('An error occured when adding or updating the release'), $build_error);
+        require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+            domReady(function () {
+                TBG.Main.Helpers.Message.error(__('An error occured when adding or updating the release'), $build_error);
+            });
         });
     </script>
 <?php endif; ?>

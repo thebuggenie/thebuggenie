@@ -9,4 +9,4 @@
 <p><?php echo link_tag(make_url('home'), __('Continue')); ?></p>
 </center>
 
-<?php TBGContext::logout(); ?>
+<?php \thebuggenie\core\framework\Context::logout(); ?>

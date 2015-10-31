@@ -1,8 +1,8 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Releases'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Releases'), make_url('project_releases', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" releases', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Releases')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Releases')));
 
 ?>
 <div id="project_releases" class="project_info_container">
@@ -13,7 +13,7 @@
                 <?php if (count($active_builds[0])): ?>
                     <ul class="simple_list">
                     <?php foreach ($active_builds[0] as $build): ?>
-                        <?php include_template('project/release', array('build' => $build)); ?>
+                        <?php include_component('project/release', array('build' => $build)); ?>
                     <?php endforeach; ?>
                     </ul>
                 <?php else: ?>
@@ -25,7 +25,7 @@
                         <?php if (count($active_builds[$edition_id])): ?>
                             <ul class="simple_list">
                             <?php foreach ($active_builds[$edition_id] as $build): ?>
-                                <?php include_template('project/release', array('build' => $build)); ?>
+                                <?php include_component('project/release', array('build' => $build)); ?>
                             <?php endforeach; ?>
                             </ul>
                         <?php else: ?>
@@ -39,7 +39,7 @@
                 <?php if (count($archived_builds[0])): ?>
                     <ul class="simple_list">
                     <?php foreach ($archived_builds[0] as $build): ?>
-                        <?php include_template('project/release', array('build' => $build)); ?>
+                        <?php include_component('project/release', array('build' => $build)); ?>
                     <?php endforeach; ?>
                     </ul>
                 <?php else: ?>
@@ -51,7 +51,7 @@
                         <?php if (count($archived_builds[$edition_id])): ?>
                             <ul class="simple_list">
                             <?php foreach ($archived_builds[$edition_id] as $build): ?>
-                                <?php include_template('project/release', array('build' => $build)); ?>
+                                <?php include_component('project/release', array('build' => $build)); ?>
                             <?php endforeach; ?>
                             </ul>
                         <?php else: ?>

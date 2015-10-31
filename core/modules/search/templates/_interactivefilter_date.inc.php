@@ -55,11 +55,13 @@
                 </ul>
             </div>
             <script type="text/javascript">
-                document.observe('dom:loaded', function () {
-                    Calendar.setup({
-                        dateField: 'filter_<?php echo $key; ?>_value_input',
-                        parentElement: 'filter_<?php echo $key; ?>_calendar_container',
-                        valueCallback: TBG.Search.setInteractiveDate
+                require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                    domReady(function () {
+                        Calendar.setup({
+                            dateField: 'filter_<?php echo $key; ?>_value_input',
+                            parentElement: 'filter_<?php echo $key; ?>_calendar_container',
+                            valueCallback: tbgjs.Search.setInteractiveDate
+                        });
                     });
                 });
             </script>

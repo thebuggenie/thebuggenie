@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage publish
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage publish
      */
-    class Extract extends \TBGCliCommand
+    class Extract extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -31,7 +31,7 @@
         public function do_execute()
         {
             $this->cliEcho("Extracting articles ... \n", 'white', 'bold');
-            $articles = Articles::getTable()->getAllArticles();
+            $articles = tables\Articles::getTable()->getAllArticles();
 
             $this->cliEcho("Articles found: ");
             $this->cliEcho(count($articles)."\n", 'green', 'bold');

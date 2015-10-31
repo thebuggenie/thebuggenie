@@ -1,8 +1,8 @@
 <?php
 
-    $tbg_response->addBreadcrumb(__('Team overview'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
+    $tbg_response->addBreadcrumb(__('Team overview'), make_url('project_team', array('project_key' => $selected_project->getKey())));
     $tbg_response->setTitle(__('"%project_name" project team', array('%project_name' => $selected_project->getName())));
-    include_template('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
+    include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Team')));
 
 ?>
 <div id="project_team" class="project_info_container">
@@ -22,7 +22,7 @@
                                 <div class="user_realname">
                                     <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');"><?php echo $user->getRealname(); ?> <span class="user_username"><?php echo $user->getUsername(); ?></span></a>
                                     <div class="user_status"><?php echo tbg_get_userstate_image($user) . __($user->getState()->getName()); ?></div>
-                                    <?php if ($user->isEmailPublic() || $tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+                                    <?php if ($user->isEmailPublic() || $tbg_user->canAccessConfigurationPage(\thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)): ?>
                                         <div class="user_email"><?php echo link_tag('mailto:'.$user->getEmail(), $user->getEmail()); ?></div>
                                     <?php endif; ?>
                                 </div>
@@ -30,7 +30,7 @@
                                     <?php $roles = $selected_project->getRolesForUser($user); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>
@@ -50,7 +50,7 @@
                                     <?php $roles = $selected_project->getRolesForTeam($team); ?>
                                     <?php $role_names = array(); ?>
                                     <?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
-                                    <?php echo join(',', $role_names); ?>
+                                    <?php echo join(', ', $role_names); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

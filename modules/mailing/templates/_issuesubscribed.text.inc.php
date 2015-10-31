@@ -1,13 +1,16 @@
 * <?php echo $issue->getFormattedTitle(true); ?> *
-Created by <?php echo $issue->getPostedBy()->getBuddyname(); ?> (<?php echo $issue->getPostedBy()->getUsername(); ?>)
+<?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getNameWithUsername()))."\n"; ?>
 
-You have been subscribed to this issue and will be notified if and when it changes in the future.
-To unsubscribe from this issue, open the issue in your web browser and click the "star" icon in the top left corner, next to the issue title.
+<?php echo __('You have been subscribed to this issue and will be notified if and when it changes in the future.')."\n"; ?>
+<?php echo __('To unsubscribe from this issue, open the issue in your web browser and click the "star" icon in the top left corner, next to the issue title.')."\n"; ?>
+
+<?php echo __('Show issue:') . ' ' . $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>
+
+<?php echo __('Show %project project dashboard:', array('%project' => $issue->getProject()->getName())) . ' ' . $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
 
 
-Show issue: <?php echo $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>
-Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
+<?php echo __('You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.'); ?>
 
-You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.
-Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.
-To change when and how often we send these emails, update your account settings: <?php echo link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
+<?php echo __('Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.'); ?>
+
+<?php echo __('To change when and how often we send these emails, update your account settings:') . ' ' . $module->generateURL('account'); ?>

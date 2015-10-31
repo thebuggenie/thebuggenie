@@ -1,53 +1,25 @@
 <?php
 
-    use thebuggenie\core\entities\AgileBoard;
+    use thebuggenie\core\entities\Milestone;
 
-    switch ($board->getType())
-    {
-        case AgileBoard::TYPE_SCRUM:
-        case AgileBoard::TYPE_KANBAN:
-            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save sprint');
-            $milestoneplaceholder = __e('Give the sprint a name such as "Sprint 2", or similar');
-            break;
-        case AgileBoard::TYPE_GENERIC:
-        default:
-            if (!isset($savebuttonlabel)) $savebuttonlabel = __('Save milestone');
-            $milestoneplaceholder = __e('Enter a milestone name');
-            break;
+    $savebuttonlabel = (isset($savebuttonlabel)) ? $savebuttonlabel : __e('Save milestone');
+    $milestonenamelabel = (isset($milestonenamelabel)) ? $milestonenamelabel : __e('Milestone name');
+    $milestoneplaceholder = (isset($milestoneplaceholder)) ? $milestoneplaceholder : __e('Enter a milestone name');
+    if (!isset($milestoneheader)) {
+        $milestoneheader = ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
     }
+    $milestone_type = (isset($milestone_type)) ? $milestone_type : $milestone->getType();
+    $milestoneincludeissues_text = (isset($milestoneincludeissues_text)) ? $milestoneincludeissues_text : __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
+    $action_url = (isset($action_url)) ? $action_url : make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => (int) $milestone->getID()));
 
 ?>
 <div class="backdrop_box large sectioned" id="edit_milestone_container" style="<?php if (isset($starthidden) && $starthidden) echo 'display: none;'; ?>">
-    <div class="backdrop_detail_header"><?php
-            switch ($board->getType())
-            {
-                case AgileBoard::TYPE_SCRUM:
-                case AgileBoard::TYPE_KANBAN:
-                    echo ($milestone->getId()) ? __('Edit sprint details') : __('Add new sprint');
-                    break;
-                case AgileBoard::TYPE_GENERIC:
-                default:
-                    echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
-                    break;
-            }
-        ?></div>
+    <div class="backdrop_detail_header"><?php echo $milestoneheader; ?></div>
     <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php if (!isset($includeform) || $includeform): ?>
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo $action_url; ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
             <?php endif; ?>
-            <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php
-                            switch ($board->getType())
-                            {
-                                case AgileBoard::TYPE_SCRUM:
-                                case AgileBoard::TYPE_KANBAN:
-                                    echo __('Sprint name');
-                                    break;
-                                case AgileBoard::TYPE_GENERIC:
-                                default:
-                                    echo __('Milestone name');
-                                    break;
-                            }
-                        ?></label>
+            <label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo $milestonenamelabel; ?></label>
             <input type="text" class="milestone_input_name primary" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>" placeholder="<?php echo $milestoneplaceholder; ?>">
             <label for="milestone_description_<?php echo $milestone->getID(); ?>"><?php echo __('Description'); ?></label>
             <input type="text" class="milestone_input_description secondary" value="<?php echo $milestone->getDescription(); ?>" name="description" id="milestone_description_<?php echo $milestone->getID(); ?>">
@@ -114,28 +86,19 @@
                 </tr>
             </table>
             <div id="milestone_include_issues" class="milestone_include_issues" style="display: none;">
-                <?php
-                                    switch ($board->getType())
-                                    {
-                                        case AgileBoard::TYPE_SCRUM:
-                                        case AgileBoard::TYPE_KANBAN:
-                                            echo __('The %number selected issue(s) will be automatically added to the new sprint', array('%number' => '<span id="milestone_include_num_issues"></span>'));
-                                            break;
-                                        case AgileBoard::TYPE_GENERIC:
-                                        default:
-                                            echo __('The %number selected issue(s) will be automatically assigned to the new milestone', array('%number' => '<span id="milestone_include_num_issues"></span>'));
-                                            break;
-                                    }
-                                ?>
+                <?php echo $milestoneincludeissues_text; ?>
                 <input id="include_selected_issues" value="0" name="include_selected_issues" type="hidden">
             </div>
+            <?php if (isset($milestone_type)): ?>
+                <input id="milestone_type" value="<?php echo $milestone_type; ?>" name="milestone_type" type="hidden">
+            <?php endif; ?>
             <div class="backdrop_details_submit">
-                            <?php if ($milestone->getID()): ?>
-                                    <input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
-                            <?php endif; ?>
-                            <?php echo __('%cancel or %save_milestone', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%save_milestone' => '')); ?>
-                            <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                            <input class="button button-silver" type="submit" value="<?php echo $savebuttonlabel; ?>">
+                <?php if ($milestone->getID()): ?>
+                        <input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
+                <?php endif; ?>
+                <?php echo __('%cancel or %save_milestone', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%save_milestone' => '')); ?>
+                <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+                <input class="button button-silver" type="submit" value="<?php echo $savebuttonlabel; ?>">
             </div>
             <?php if (!isset($includeform) || $includeform): ?>
         </form>

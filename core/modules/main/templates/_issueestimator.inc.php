@@ -1,4 +1,4 @@
-<?php use thebuggenie\core\entities\AgileBoard; ?>
+<?php use thebuggenie\modules\agile\entities\AgileBoard; ?>
 <ul class="<?php if (isset($mode) && $mode == 'inline'): ?>borderless<?php else: ?>popup_box <?php endif; ?> more_actions_dropdown" id="<?php echo $field . '_' . $issue_id; ?>_change" style="<?php if (isset($mode) && $mode == 'inline'): ?>position: relative;<?php endif; ?> <?php echo (isset($mode) && $mode == 'left') ? 'left' : 'right'; ?>: 0; text-align: left;">
     <?php if (!isset($headers) || $headers == true): ?>
         <li class="header">
@@ -17,7 +17,7 @@
     <li class="separator"></li>
     <li class="dropdown_content nohover form_container">
 <?php if (!isset($save) || $save == true): ?>
-    <form id="<?php echo $field . '_' . $issue_id; ?>_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.setTime('<?php echo make_url('issue_setfield', array('project_key' => $project_key, 'issue_id' => $issue_id, 'field' => $field)); ?>', '<?php echo $field; ?>', <?php echo $issue_id; ?>);return false;">
+    <form id="<?php echo $field . '_' . $issue_id; ?>_form" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.setTime('<?php echo make_url('issue_setfield', array('project_key' => $project_key, 'issue_id' => $issue_id, 'field' => $field)); ?>', '<?php echo $field; ?>', <?php echo $issue_id; ?>);return false;">
         <input type="hidden" name="do_save" value="<?php echo (integer) (isset($instant_save) && $instant_save); ?>">
 <?php endif; ?>
         <label for="<?php echo $field . '_' . $issue_id; ?>_input">
@@ -100,6 +100,7 @@
 <?php if (!isset($save) || $save == true): ?>
     </form>
     </li>
+    <li id="<?php echo $field ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
     <li id="<?php echo $field . '_' . $issue_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
     <li id="<?php echo $field . '_' . $issue_id; ?>_change_error" class="error_message" style="display: none;"></li>
 <?php endif; ?>

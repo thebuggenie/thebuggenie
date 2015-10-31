@@ -1,7 +1,7 @@
 <?php
 
     $tbg_response->setTitle('Your account details');
-    $tbg_response->addBreadcrumb(__('Account details'), make_url('account'), tbg_get_breadcrumblinks('main_links'));
+    $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
     
 ?>
 <?php if ($tbg_user->canChangePassword()): ?>
@@ -9,10 +9,10 @@
         <div class="backdrop_box login_page login_popup">
             <div class="backdrop_detail_content login_content">
                 <div class="logindiv regular active" id="change_password_container">
-                    <?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
-                        <?php echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true)); ?>
+                    <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
+                        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changepw_message'), false, null, array('embedded' => true)); ?>
                     <?php else: ?>
-                        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
+                        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
                             <h2><?php echo __('Changing your password'); ?></h2>
                             <div class="article"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes). Press the "%change_password" button to change your password.', array('%change_password' => __('Change password'))); ?></div>
                             <ul class="login_formlist">
@@ -52,7 +52,7 @@
         <div class="backdrop_box login_page login_popup">
             <div class="backdrop_detail_content login_content">
                 <div class="logindiv regular active" id="add_application_password_container">
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
                         <h2><?php echo __('Picking a username'); ?></h2>
                         <div class="article">
                             <p><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><p>
@@ -67,7 +67,6 @@
                                 <?php echo __('This username is not available'); ?>
                             </li>
                         </ul>
-                        <?php echo csrf_tag(); ?>
                         <div class="login_button_container">
                             <?php echo image_tag('spinning_20.gif', array('id' => 'pick_username_indicator', 'style' => 'display: none;')); ?>
                             <input type="submit" class="button button-silver" value="<?php echo __('Check availability'); ?>">
@@ -83,7 +82,7 @@
     <div class="backdrop_box login_page login_popup">
         <div class="backdrop_detail_content login_content">
             <div class="logindiv regular active" id="add_application_password_container">
-                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_add_application_password'); ?>" onsubmit="TBG.Main.Profile.addApplicationPassword('<?php echo make_url('account_add_application_password'); ?>'); return false;" method="post" id="add_application_password_form">
+                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_add_application_password'); ?>" onsubmit="TBG.Main.Profile.addApplicationPassword('<?php echo make_url('account_add_application_password'); ?>'); return false;" method="post" id="add_application_password_form">
                     <h2><?php echo __('Add application-specific password'); ?></h2>
                     <div class="article"><?php echo __('Please enter the name of the application or computer which will be using this password. Examples include "Toms computer", "Work laptop", "My iPhone" and similar.'); ?></div>
                     <ul class="account_popupform">
@@ -118,16 +117,15 @@
             <?php endif; ?>
         </span>
     </div>
-    <?php //include_template('main/profilebuttons'); ?>
     <div style="margin: 30px 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
         <div style="clear: both;" class="tab_menu inset">
             <ul id="account_tabs">
                 <li <?php if ($selected_tab == 'profile'): ?> class="selected"<?php endif; ?> id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_profilesettings.png').__('Profile'); ?></a></li>
                 <li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png').__('Settings'); ?></a></li>
-                <?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
-                <?php foreach (TBGContext::getModules() as $module_name => $module): ?>
+                <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
+                <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
                     <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
+                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array(), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_security.png').__('Security'); ?></a></li>
@@ -138,10 +136,10 @@
         </div>
         <div id="account_tabs_panes">
             <div id="tab_profile_pane" style="<?php if ($selected_tab != 'profile'): ?> display: none;<?php endif; ?>">
-                <?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
-                    <?php echo tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true)); ?>
+                <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
+                    <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changedetails_message'), false, null, array('embedded' => true)); ?>
                 <?php else: ?>
-                    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
+                    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
                         <h3><?php echo __('About yourself'); ?></h3>
                         <p><?php echo __('Edit your profile details here, including additional information (Required fields are marked with a little star). Keep in mind that some of this information may be seen by other users.'); ?></p>
                         <table class="padded_table" cellpadding=0 cellspacing=0>
@@ -213,9 +211,9 @@
                                 <td ><label for="profile_timezone"><?php echo __('Language'); ?></label></td>
                                 <td>
                                     <select name="profile_language" id="profile_language" style="width: 300px;">
-                                        <option value="sys"<?php if ($tbg_user->getLanguage() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting - %lang', array('%lang' => TBGSettings::getLanguage())); ?></option>
+                                        <option value="sys"<?php if ($tbg_user->getLanguage() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting - %lang', array('%lang' => \thebuggenie\core\framework\Settings::getLanguage())); ?></option>
                                     <?php foreach ($languages as $lang_code => $lang_desc): ?>
-                                        <option value="<?php echo $lang_code; ?>" <?php if ($tbg_user->getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?><?php if (TBGSettings::getLanguage() == $lang_code): ?> <?php echo __('(site default)'); endif;?></option>
+                                        <option value="<?php echo $lang_code; ?>" <?php if ($tbg_user->getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?><?php if (\thebuggenie\core\framework\Settings::getLanguage() == $lang_code): ?> <?php echo __('(site default)'); endif;?></option>
                                     <?php endforeach; ?>
                                     </select>
                                 </td>
@@ -246,7 +244,7 @@
                 <?php endif; ?>
             </div>
             <div id="tab_settings_pane" style="display: none;">
-                <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
+                <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
                     <h3><?php echo __('Navigation'); ?></h3>
                     <p><?php echo __('These settings apply to all areas of The Bug Genie, and lets you customize your experience to fit your own style.'); ?></p>
                     <table class="padded_table" cellpadding=0 cellspacing=0>
@@ -280,21 +278,21 @@
                                     <tbody>
                                         <tr>
                                             <td><label for="syntax_issues_md"><?php echo __('Preferred syntax when creating issues'); ?></label></td>
-                                            <td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_issues_mw" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_issues_md" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_issues_pt" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_issues" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MW; ?>" id="syntax_issues_mw" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MW) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_issues" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MD; ?>" id="syntax_issues_md" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MD) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_issues" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_PT; ?>" id="syntax_issues_pt" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_PT) echo 'checked'; ?>></td>
                                         </tr>
                                         <tr>
                                             <td><label for="syntax_articles_mw"><?php echo __('Preferred syntax when creating articles'); ?></label></td>
-                                            <td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_articles_mw" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_articles_md" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_articles_pt" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_articles" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MW; ?>" id="syntax_articles_mw" <?php if ($tbg_user->getPreferredWikiSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MW) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_articles" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MD; ?>" id="syntax_articles_md" <?php if ($tbg_user->getPreferredWikiSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MD) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_articles" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_PT; ?>" id="syntax_articles_pt" <?php if ($tbg_user->getPreferredWikiSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_PT) echo 'checked'; ?>></td>
                                         </tr>
                                         <tr>
                                             <td><label for="syntax_comments_md"><?php echo __('Preferred syntax when posting comments'); ?></label></td>
-                                            <td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_comments_mw" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_comments_md" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
-                                            <td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_comments_pt" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_comments" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MW; ?>" id="syntax_comments_mw" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MW) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_comments" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_MD; ?>" id="syntax_comments_md" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_MD) echo 'checked'; ?>></td>
+                                            <td><input type="radio" name="syntax_comments" value="<?php echo \thebuggenie\core\framework\Settings::SYNTAX_PT; ?>" id="syntax_comments_pt" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == \thebuggenie\core\framework\Settings::SYNTAX_PT) echo 'checked'; ?>></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -313,7 +311,7 @@
                             </tr>
                         <?php endforeach; ?>
                     </table>
-                    <?php TBGEvent::createNew('core', 'account_pane_notificationsettings')->trigger(); ?>
+                    <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings')->trigger(); ?>
                     <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
                         <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
                         <input type="submit" id="submit_notificationsettings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
@@ -325,7 +323,7 @@
                 <h3 style="position: relative;">
                     <?php echo __('Passwords and keys'); ?>
                     <a class="button button-silver dropper" id="password_actions" href="javascript:void(0);"><?php echo __('Actions'); ?></a>
-                    <ul id="password_more_actions" style="width: 300px; font-size: 0.8em; text-align: right; top: 23px; margin-top: 0; right: 3px; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="jQuery(this).prev().toggleClass('button-pressed');$(this).toggle();">
+                    <ul id="password_more_actions" style="width: 300px; font-size: 0.8em; text-align: right; top: 29px; margin-top: 0; right: 3px; z-index: 1000;" class="more_actions_dropdown popup_box dropper">
                         <?php if ($tbg_user->canChangePassword() && !$tbg_user->isOpenIdLocked()): ?>
                             <li><a href="javascript:void(0);" onclick="$('change_password_div').toggle();"><?php echo __('Change my password'); ?></a></li>
                         <?php elseif ($tbg_user->isOpenIdLocked()): ?>
@@ -339,19 +337,19 @@
                 <p><?php echo __("When authenticating with The Bug Genie you only use your main password on the website - other applications and RSS feeds needs specific access tokens that you can enable / disable on an individual basis. You can control all your passwords and keys from here."); ?></p>
                 <ul class="access_keys_list">
                     <li>
-                        <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Regenerate your RSS key?'); ?>', '<?php echo __('Do you really want to regenerate your RSS access key? By doing this all your previously bookmarked or linked RSS feeds will stop working and you will have to get the link from inside The Bug Genie again.'); ?>', {yes: {href: '<?php echo make_url('account_regenerate_rss_key', array('csrf_token' => TBGContext::generateCSRFtoken())); ?>'}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Reset'); ?></button>
+                        <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Regenerate your RSS key?'); ?>', '<?php echo __('Do you really want to regenerate your RSS access key? By doing this all your previously bookmarked or linked RSS feeds will stop working and you will have to get the link from inside The Bug Genie again.'); ?>', {yes: {href: '<?php echo make_url('account_regenerate_rss_key', array('csrf_token' => \thebuggenie\core\framework\Context::generateCSRFtoken())); ?>'}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Reset'); ?></button>
                         <h4><?php echo __('RSS feeds access key'); ?></h4>
                         <p><?php echo __('Automatically used as part of RSS feed URLs. Regenerating this key prevents your previous RSS feed links from working.'); ?></p>
                     </li>
                     <?php foreach ($tbg_user->getApplicationPasswords() as $password): ?>
                         <li id="application_password_<?php echo $password->getID(); ?>">
-                            <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this application-specific password?'); ?>', '<?php echo __('Do you really want to remove this application-specific password? By doing this, that application will no longer have access, and you will have to generate a new application password for the application to regain access.'); ?>', {yes: {click: function() {TBG.Main.Profile.removeApplicationPassword('<?php echo make_url('account_remove_application_password', array('id' => $password->getID(), 'csrf_token' => TBGContext::generateCSRFtoken())); ?>', <?php echo $password->getID(); ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
+                            <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this application-specific password?'); ?>', '<?php echo __('Do you really want to remove this application-specific password? By doing this, that application will no longer have access, and you will have to generate a new application password for the application to regain access.'); ?>', {yes: {click: function() {TBG.Main.Profile.removeApplicationPassword('<?php echo make_url('account_remove_application_password', array('id' => $password->getID(), 'csrf_token' => \thebuggenie\core\framework\Context::generateCSRFtoken())); ?>', <?php echo $password->getID(); ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
                             <h4><?php echo __('Application password: %password_name', array('%password_name' => $password->getName())); ?></h4>
                             <p><?php echo __('Last used: %last_used_time, created at: %created_at_time', array('%last_used_time' => ($password->getLastUsedAt()) ? tbg_formatTime($password->getLastUsedAt(), 20) : __('never used'), '%created_at_time' => tbg_formatTime($password->getCreatedAt(), 20))); ?></p>
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <?php if (TBGSettings::isOpenIDavailable()): ?>
+                <?php if (\thebuggenie\core\framework\Settings::isOpenIDavailable()): ?>
                     <h3>
                         <?php echo __('Linked OpenID accounts'); ?>
                         <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Link an OpenID account'); ?></button>
@@ -363,7 +361,7 @@
                         <?php foreach ($tbg_user->getOpenIDAccounts() as $identity => $details): ?>
                             <li id="openid_account_<?php echo $details['id']; ?>">
                                 <?php if (count($tbg_user->getOpenIDAccounts()) > 1 || !$tbg_user->isOpenIDLocked()): ?>
-                                    <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => TBGContext::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
+                                    <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => \thebuggenie\core\framework\Context::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
                                 <?php endif; ?>
                                 <?php echo image_tag('openid_providers.small/'.$details['type'].'.ico.png'); ?>
                                 <span class="openid_provider_name">
@@ -387,11 +385,11 @@
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-            <?php TBGEvent::createNew('core', 'account_tab_panes')->trigger(); ?>
-            <?php foreach (TBGContext::getModules() as $module_name => $module): ?>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tab_panes')->trigger(); ?>
+            <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
                 <?php if ($module->hasAccountSettings()): ?>
                     <div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
-                        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
+                        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
                             <div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
                                 <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
                             </div>
@@ -409,14 +407,14 @@
                     <h3><?php echo __('Pending memberships'); ?></h3>
                     <ul class="simple_list" id="pending_scope_memberships">
                         <?php foreach ($tbg_user->getUnconfirmedScopes() as $scope): ?>
-                            <?php include_template('main/userscope', array('scope' => $scope)); ?>
+                            <?php include_component('main/userscope', array('scope' => $scope)); ?>
                         <?php endforeach; ?>
                     </ul>
                     <span id="no_pending_scope_memberships" class="faded_out" style="<?php if (count($tbg_user->getUnconfirmedScopes())): ?>display: none;<?php endif; ?>"><?php echo __('You have no pending scope memberships'); ?></span>
                     <h3 style="margin-top: 20px;"><?php echo __('Confirmed memberships'); ?></h3>
                     <ul class="simple_list" id="confirmed_scope_memberships">
                         <?php foreach ($tbg_user->getConfirmedScopes() as $scope_id => $scope): ?>
-                            <?php include_template('main/userscope', array('scope' => $scope)); ?>
+                            <?php include_component('main/userscope', array('scope' => $scope)); ?>
                         <?php endforeach; ?>
                     </ul>
                 </div>

@@ -1,5 +1,5 @@
 core/config/b2db.yml
-core/cache
+cache
 files/
 .settings/
 thebuggenie/.htaccess

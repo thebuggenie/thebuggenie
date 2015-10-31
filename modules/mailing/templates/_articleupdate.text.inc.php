@@ -1,6 +1,6 @@
 * <?php echo __('%article updated', array('%article' => $article->getTitle())); ?> *
 
-<?php echo __('The article has been updated by %name', array('%name' => $user->getBuddyname())) .' (' . $user->getUsername() . '):'; ?>
+<?php echo __('The article has been updated by %name', array('%name' => $user->getNameWithUsername())); ?>
 
 <?php echo (trim($change_reason) != '') ? '"'.$change_reason.'"' : '(' . __('No change reason provided') .')'; echo "\n"; ?>
 

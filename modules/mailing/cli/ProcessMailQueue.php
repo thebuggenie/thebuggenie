@@ -2,14 +2,14 @@
 
     namespace thebuggenie\modules\mailing\cli;
 
-    use thebuggenie\modules\mailing\entities\b2db\MailQueueTable;
+    use thebuggenie\modules\mailing\entities\tables\MailQueueTable;
 
     /**
      * CLI command class, main -> help
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ProcessMailQueue extends \TBGCliCommand
+    class ProcessMailQueue extends \thebuggenie\core\framework\cli\Command
     {
         
         protected function _setup()
@@ -35,7 +35,7 @@
         public function do_execute()
         {
 
-            $mailing = \TBGContext::getModule('mailing');
+            $mailing = \thebuggenie\core\framework\Context::getModule('mailing');
             if (!$mailing->isOutgoingNotificationsEnabled())
             {
                 $this->cliEcho("Outgoing email notifications are disabled.\n", 'red', 'bold');
@@ -66,7 +66,7 @@
                     {
                         foreach ($messages as $message_id => $message)
                         {
-                            $retval = $mailing->send($message);
+                            $retval = $mailing->getMailer()->send($message);
                             $processed_messages[] = $message_id;
                             if (!$retval) $failed_messages++;
                         }

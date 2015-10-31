@@ -21,12 +21,12 @@
     </thead>
     <tbody>
         <tr class="hover_highlight">
-            <td style="padding: 2px; border-bottom: 1px solid #EAEAEA;"><?php echo __('<b>Global </b>(Everyone with access)'); ?></td>
+            <td style="padding: 2px; border-bottom: 1px solid #EAEAEA;"><?php echo __('<b>Global </b>(Everyone with access)', array(), true); ?></td>
             <td style="padding: 2px; border-bottom: 1px solid #EAEAEA; text-align: center;">
                 <?php include_component('configuration/permissionsinfoitem', array('key' => $key, 'target_id' => $target_id, 'type' => 'everyone', 'mode' => $mode, 'item_id' => 0, 'module' => $module, 'access_level' => $access_level)); ?>
             </td>
         </tr>
-        <?php $groups = TBGGroup::getAll(); ?>
+        <?php $groups = \thebuggenie\core\entities\Group::getAll(); ?>
         <?php $gcount = count($groups); $cc = 1; ?>
         <?php foreach ($groups as $group): ?>
             <tr class="hover_highlight">
@@ -37,7 +37,7 @@
             </tr>
             <?php $cc++; ?>
         <?php endforeach; ?>
-        <?php $teams = TBGTeam::getAll(); ?>
+        <?php $teams = \thebuggenie\core\entities\Team::getAll(); ?>
         <?php foreach ($teams as $team): ?>
             <tr class="hover_highlight">
                 <td style="padding: 2px;"><?php echo '<b>'.__('Team: %team_name', array('%team_name' => '</b>'.$team->getName())); ?></td>

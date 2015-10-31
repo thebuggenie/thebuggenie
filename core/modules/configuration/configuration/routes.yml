@@ -1,0 +1,964 @@
+configure:
+    route: /configure
+    module: configuration
+    action: index
+    parameters:
+      section: 0
+    csrf_enabled: false
+
+configure_update_check:
+    route: /configure/check/updates
+    module: configuration
+    action: checkUpdates
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_authentication:
+    route: /configure/authentication
+    module: configuration
+    action: configureAuthentication
+    parameters:
+      config_module: core
+      section: 17
+    csrf_enabled: false
+
+configure_authentication_pt2:
+    route: /configure/authentication/save
+    module: configuration
+    action: saveAuthentication
+    parameters:
+      config_module: core
+      section: 17
+    csrf_enabled: false
+
+configure_projects:
+    route: /configure/projects
+    module: configuration
+    action: configureProjects
+    parameters:
+      config_module: core
+      section: 10
+    csrf_enabled: false
+
+configure_projects_add_project:
+    route: /configure/projects/add/new
+    module: configuration
+    action: addProject
+    parameters:
+      config_module: core
+      section: 10
+    csrf_enabled: false
+
+configure_project_archive:
+    route: /configure/project/:project_id/archive
+    module: configuration
+    action: archiveProject
+    parameters:
+      config_module: core
+      section: 10
+    csrf_enabled: false
+
+configure_project_unarchive:
+    route: /configure/project/:project_id/unarchive
+    module: configuration
+    action: unarchiveProject
+    parameters:
+      config_module: core
+      section: 10
+    csrf_enabled: false
+
+configure_project_delete:
+    route: /configure/project/:project_id/delete
+    module: configuration
+    action: deleteProject
+    parameters:
+      config_module: core
+      section: 10
+    csrf_enabled: false
+
+configure_settings:
+    route: /configure/settings
+    module: configuration
+    action: settings
+    parameters:
+      config_module: core
+      section: 12
+    csrf_enabled: false
+
+configure_scopes:
+    route: /configure/scopes
+    module: configuration
+    action: scopes
+    parameters:
+      config_module: core
+      section: 14
+    csrf_enabled: false
+
+configure_scope:
+    route: /configure/scope/:id
+    module: configuration
+    action: scope
+    parameters:
+      config_module: core
+      section: 14
+    csrf_enabled: false
+
+configure_workflow:
+    route: /configure/workflow
+    module: configuration
+    action: configureWorkflows
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_copy_workflow:
+    route: /configure/workflow/copy/workflow/:workflow_id
+    module: configuration
+    action: configureWorkflowSteps
+    parameters:
+      config_module: core
+      section: 1
+      mode: copy_workflow
+      format: json
+    csrf_enabled: false
+
+configure_workflow_delete_workflow:
+    route: /configure/workflow/delete/workflow/:workflow_id
+    module: configuration
+    action: configureWorkflowSteps
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete_workflow
+      format: json
+    csrf_enabled: false
+
+configure_workflow_schemes:
+    route: /configure/workflow/schemes
+    module: configuration
+    action: configureWorkflowSchemes
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_copy_scheme:
+    route: /configure/workflow/copy/scheme/:scheme_id
+    module: configuration
+    action: configureWorkflowScheme
+    parameters:
+      config_module: core
+      section: 1
+      mode: copy_scheme
+      format: json
+    csrf_enabled: false
+
+configure_workflow_delete_scheme:
+    route: /configure/workflow/delete/scheme/:scheme_id
+    module: configuration
+    action: configureWorkflowScheme
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete_scheme
+      format: json
+    csrf_enabled: false
+
+configure_workflow_scheme:
+    route: /configure/workflow/scheme/:scheme_id
+    module: configuration
+    action: configureWorkflowScheme
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_steps:
+    route: /configure/workflow/:workflow_id/steps
+    module: configuration
+    action: configureWorkflowSteps
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_step:
+    route: /configure/workflow/:workflow_id/step/:step_id
+    module: configuration
+    action: configureWorkflowStep
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_add_step:
+    route: /configure/workflow/:workflow_id/add/step
+    module: configuration
+    action: configureWorkflowStep
+    parameters:
+      config_module: core
+      section: 1
+      mode: edit
+    csrf_enabled: false
+
+configure_workflow_delete_step_transitions:
+    route: /configure/workflow/:workflow_id/delete/all/outgoing/transitions/from/step/:step_id
+    module: configuration
+    action: configureWorkflowStep
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete_outgoing_transitions
+    csrf_enabled: false
+
+configure_workflow_delete_step:
+    route: /configure/workflow/:workflow_id/delete/step/:step_id
+    module: configuration
+    action: configureWorkflowStep
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete
+    csrf_enabled: false
+
+configure_workflow_transition:
+    route: /configure/workflow/:workflow_id/transition/:transition_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_edit_transition:
+    route: /configure/workflow/:workflow_id/transition/edit/:transition_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: edit
+    csrf_enabled: false
+
+configure_workflow_delete_transition:
+    route: /configure/workflow/:workflow_id/transition/delete/:transition_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete
+    csrf_enabled: false
+
+configure_workflow_add_transition:
+    route: /configure/workflow/:workflow_id/step/:step_id/add/transition
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_workflow_transition_add_validation_rule:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/add/:postorpre/validationrule/:rule
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: new_validation_rule
+    csrf_enabled: false
+
+configure_workflow_transition_update_validation_rule:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/validationrule/:rule_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: update_validation_rule
+    csrf_enabled: false
+
+configure_workflow_transition_delete_validation_rule:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/delete/validationrule/:rule_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete_validation_rule
+    csrf_enabled: false
+
+configure_workflow_transition_add_action:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/add/action/:action_type
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: new_action
+    csrf_enabled: false
+
+configure_workflow_transition_update_action:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/action/:action_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: update_action
+    csrf_enabled: false
+
+configure_workflow_transition_delete_action:
+    route: /configure/workflow/:workflow_id/transition/:transition_id/delete/action/:action_id
+    module: configuration
+    action: configureWorkflowTransition
+    parameters:
+      config_module: core
+      section: 1
+      mode: delete_action
+    csrf_enabled: false
+
+configure_workflow_workflows:
+    route: /configure/workflow/workflows
+    module: configuration
+    action: configureWorkflows
+    parameters:
+      config_module: core
+      section: 1
+    csrf_enabled: false
+
+configure_files:
+    route: /configure/files
+    module: configuration
+    action: configureUploads
+    parameters:
+      config_module: core
+      section: 3
+    csrf_enabled: false
+
+configure_roles:
+    route: '/configure/roles/*'
+    module: configuration
+    action: configureRoles
+    parameters:
+      config_module: core
+      section: 5
+    csrf_enabled: false
+
+configure_role:
+    route: /configure/role/:role_id/:mode
+    module: configuration
+    action: configureRole
+    parameters: [ ]
+    csrf_enabled: false
+
+configure_permissions:
+    route: /configure/permissions
+    module: configuration
+    action: configurePermissions
+    parameters:
+      config_module: core
+      section: 5
+    csrf_enabled: false
+
+configure_permissions_get_configurator:
+    route: '/configure/permissions/get/configurator/*'
+    module: configuration
+    action: getPermissionsConfigurator
+    parameters:
+      config_module: core
+      section: 5
+    csrf_enabled: false
+
+configure_permissions_get_permissions:
+    route: '/configure/permissions/get/permissions/*'
+    module: configuration
+    action: getPermissionsInfo
+    parameters:
+      config_module: core
+      section: 5
+    csrf_enabled: false
+
+permissions_set_denied:
+    route: /configure/permissions/set/permission/denied/for/:target_module/:key/:target_id/:target_type/:item_id/:template_mode
+    module: configuration
+    action: setPermission
+    parameters:
+      config_module: core
+      section: 5
+      mode: denied
+    csrf_enabled: false
+
+permissions_set_allowed:
+    route: /configure/permissions/set/permission/allowed/for/:target_module/:key/:target_id/:target_type/:item_id/:template_mode
+    module: configuration
+    action: setPermission
+    parameters:
+      config_module: core
+      section: 5
+      mode: allowed
+    csrf_enabled: false
+
+permissions_set_unset:
+    route: /configure/permissions/unset/permission/for/:target_module/:key/:target_id/:target_type/:item_id/:template_mode
+    module: configuration
+    action: setPermission
+    parameters:
+      config_module: core
+      section: 5
+      mode: unset
+    csrf_enabled: false
+
+configure_issuetypes:
+    route: /configure/issuetypes
+    module: configuration
+    action: configureIssuetypes
+    parameters:
+      config_module: core
+      section: 6
+    csrf_enabled: false
+
+configure_issuetypes_add:
+    route: /configure/issuefields/add/issuetype
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: add
+    csrf_enabled: false
+
+configure_issuetypes_delete:
+    route: /configure/issuefields/delete/issuetype/:id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: delete
+    csrf_enabled: false
+
+configure_issuetypes_getoptions_for_scheme:
+    route: /configure/issuetypes/get/options/for/:id/and/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypesGetOptionsForScheme
+    parameters:
+      config_module: core
+      section: 6
+    csrf_enabled: false
+
+configure_issuetypes_update_choices_for_scheme:
+    route: /configure/issuetypes/update/choices/for/:id/and/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: updatechoices
+    csrf_enabled: false
+
+configure_issuetypes_disable_issuetype_for_scheme:
+    route: /configure/issuetypes/disable/:id/for/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: toggletype
+      state: disable
+    csrf_enabled: false
+
+configure_issuetypes_enable_issuetype_for_scheme:
+    route: /configure/issuetypes/enable/:id/for/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: toggletype
+      state: enable
+    csrf_enabled: false
+
+configure_issuetypes_update_issuetype:
+    route: /configure/issuefields/update/issuetype/:id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: update
+    csrf_enabled: false
+
+configure_issuetypes_update_issuetype_for_scheme:
+    route: /configure/issuefields/update/issuetype/:id/for/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypesAction
+    parameters:
+      config_module: core
+      section: 6
+      mode: update
+    csrf_enabled: false
+
+configure_issuetypes_schemes:
+    route: /configure/issuetypes/schemes
+    module: configuration
+    action: configureIssuetypes
+    parameters:
+      config_module: core
+      section: 6
+      mode: schemes
+    csrf_enabled: false
+
+configure_issuetypes_scheme:
+    route: /configure/issuetypes/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypes
+    parameters:
+      config_module: core
+      section: 6
+      mode: scheme
+    csrf_enabled: false
+
+configure_issuetypes_copy_scheme:
+    route: /configure/issuetypes/copy/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypes
+    parameters:
+      config_module: core
+      section: 6
+      mode: copy_scheme
+      format: json
+    csrf_enabled: false
+
+configure_issuetypes_delete_scheme:
+    route: /configure/issuetypes/delete/scheme/:scheme_id
+    module: configuration
+    action: configureIssuetypes
+    parameters:
+      config_module: core
+      section: 6
+      mode: delete_scheme
+      format: json
+    csrf_enabled: false
+
+configure_issuefields:
+    route: /configure/issuefields
+    module: configuration
+    action: configureIssuefields
+    parameters:
+      config_module: core
+      section: 4
+    csrf_enabled: false
+
+configure_issuefields_getoptions:
+    route: /configure/issuefields/get/options/for/:type
+    module: configuration
+    action: configureIssuefieldsGetOptions
+    parameters:
+      config_module: core
+      section: 4
+    csrf_enabled: false
+
+configure_issuefields_saveorder:
+    route: /configure/issuefields/save/options/order/for/:type
+    module: configuration
+    action: configureIssuefieldsAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: saveorder
+    csrf_enabled: false
+
+configure_issuefields_edit:
+    route: /configure/issuefields/edit/:type/:id
+    module: configuration
+    action: configureIssuefieldsAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: edit
+    csrf_enabled: false
+
+configure_issuefields_add:
+    route: /configure/issuefields/add/:type
+    module: configuration
+    action: configureIssuefieldsAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: add
+    csrf_enabled: false
+
+configure_issuefields_delete:
+    route: /configure/issuefields/delete/:type/:id
+    module: configuration
+    action: configureIssuefieldsAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: delete
+    csrf_enabled: false
+
+configure_issuefields_getpermissions:
+    route: /configure/issuefields/get/permissions/for/:type/:id
+    module: configuration
+    action: configureIssuefieldsGetPermissions
+    parameters:
+      config_module: core
+      section: 4
+    csrf_enabled: false
+
+configure_issuefields_add_customtype:
+    route: /configure/issuefields/add/custom/type
+    module: configuration
+    action: configureIssuefieldsCustomTypeAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: add
+    csrf_enabled: false
+
+configure_issuefields_update_customtype:
+    route: /configure/issuefields/update/custom/type/:type
+    module: configuration
+    action: configureIssuefieldsCustomTypeAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: update
+    csrf_enabled: false
+
+configure_issuefields_delete_customtype:
+    route: /configure/issuefields/delete/custom/type/:type
+    module: configuration
+    action: configureIssuefieldsCustomTypeAction
+    parameters:
+      config_module: core
+      section: 4
+      mode: delete
+    csrf_enabled: false
+
+configure_users_find_user:
+    route: '/configure/users/find/users/*'
+    module: configuration
+    action: findUsers
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users_add_user:
+    route: /configure/users/add/user
+    module: configuration
+    action: addUser
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users_edit_user_form:
+    route: /configure/users/edit/user/:user_id/form
+    module: configuration
+    action: getUserEditForm
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users_add_group:
+    route: /configure/users/add/group
+    module: configuration
+    action: addGroup
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: new
+    csrf_enabled: false
+
+configure_users_clone_group:
+    route: /configure/users/clone/group/:group_id
+    module: configuration
+    action: addGroup
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: clone
+    csrf_enabled: false
+
+configure_users_delete_group:
+    route: /configure/users/delete/group/:group_id
+    module: configuration
+    action: deleteGroup
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_get_group_members:
+    route: /configure/users/get/members/in/group/:group_id
+    module: configuration
+    action: getGroupMembers
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_add_team:
+    route: /configure/users/add/team
+    module: configuration
+    action: addTeam
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: new
+    csrf_enabled: false
+
+configure_users_clone_team:
+    route: /configure/users/clone/team/:team_id
+    module: configuration
+    action: addTeam
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: clone
+    csrf_enabled: false
+
+configure_users_delete_team:
+    route: /configure/users/delete/team/:team_id
+    module: configuration
+    action: deleteTeam
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_get_team_members:
+    route: /configure/users/get/members/in/team/:team_id
+    module: configuration
+    action: getTeamMembers
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_remove_team_member:
+    route: /configure/users/remove/:user_id/from/team/:team_id
+    module: configuration
+    action: removeTeamMember
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_add_team_member:
+    route: /configure/users/add/user/:user_id/to/team/:team_id
+    module: configuration
+    action: addTeamMember
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_add_client:
+    route: /configure/users/add/client
+    module: configuration
+    action: addClient
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: new
+    csrf_enabled: false
+
+configure_users_edit_client:
+    route: /configure/users/edit/client/:client_id
+    module: configuration
+    action: editClient
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+      mode: edit
+    csrf_enabled: false
+
+configure_users_delete_client:
+    route: /configure/users/delete/client/:client_id
+    module: configuration
+    action: deleteClient
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_get_client_members:
+    route: /configure/users/get/members/in/client/:client_id
+    module: configuration
+    action: getClientMembers
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_remove_client_member:
+    route: /configure/users/remove/:user_id/from/client/:client_id
+    module: configuration
+    action: removeClientMember
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_add_client_member:
+    route: /configure/users/add/user/:user_id/to/client/:client_id
+    module: configuration
+    action: addClientMember
+    parameters:
+      config_module: core
+      section: 2
+      format: json
+    csrf_enabled: false
+
+configure_users_update_user:
+    route: /configure/users/update/user/:user_id
+    module: configuration
+    action: updateUser
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users_update_user_scopes:
+    route: /configure/users/update/userscopes/:user_id
+    module: configuration
+    action: updateUserScopes
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users_delete_user:
+    route: /configure/users/delete/user/:user_id
+    module: configuration
+    action: deleteUser
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_users:
+    route: '/configure/users/*'
+    module: configuration
+    action: configureUsers
+    parameters:
+      config_module: core
+      section: 2
+    csrf_enabled: false
+
+configure_modules:
+    route: /configure/modules
+    module: configuration
+    action: configureModules
+    parameters:
+      config_module: core
+      section: 15
+    csrf_enabled: false
+
+configure_disable_module:
+    route: /configure/modules/disable/:module_key
+    module: configuration
+    action: moduleAction
+    parameters:
+      config_module: core
+      section: 15
+      mode: disable
+    csrf_enabled: false
+
+configure_enable_module:
+    route: /configure/modules/enable/:module_key
+    module: configuration
+    action: moduleAction
+    parameters:
+      config_module: core
+      section: 15
+      mode: enable
+    csrf_enabled: false
+
+configure_uninstall_module:
+    route: /configure/modules/uninstall/:module_key
+    module: configuration
+    action: moduleAction
+    parameters:
+      config_module: core
+      section: 15
+      mode: uninstall
+    csrf_enabled: false
+
+configure_install_module:
+    route: /configure/modules/install/:module_key
+    module: configuration
+    action: moduleAction
+    parameters:
+      config_module: core
+      section: 15
+      mode: install
+    csrf_enabled: false
+
+configure_update_module:
+    route: /configure/modules/update
+    module: configuration
+    action: moduleAction
+    parameters:
+      config_module: core
+      section: 15
+      mode: update
+    csrf_enabled: false
+
+configure_module:
+    route: /configure/module/:config_module
+    module: configuration
+    action: configureModule
+    parameters:
+      config_module: core
+      section: 15
+    csrf_enabled: false
+
+configure_get_permissions:
+    route: /configure/permissions/:permissions_type/for/:permissions_target_type/:permissions_target
+    module: configuration
+    action: getPermissions
+    parameters:
+      config_module: core
+      section: 5
+    csrf_enabled: false
+
+configure_users_import_user:
+    route: /configure/users/import/user
+    module: configuration
+    action: addUser
+    parameters:
+      config_module: core
+      mode: import
+      section: 2
+    csrf_enabled: false
+
+configure_site_icons:
+    route: /configure/settings/icons
+    module: configuration
+    action: siteIcons
+    parameters: [ ]
+    csrf_enabled: false

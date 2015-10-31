@@ -1,10 +1,10 @@
 <?php
 
-    $tbg_response->addJavascript('calendarview.js');
+    $tbg_response->addJavascript('calendarview');
 
 ?>
 <div class="interactive_searchbuilder" id="search_builder">
-    <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-history-url="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-history-url="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search'); ?>" data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
         <div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
@@ -12,7 +12,7 @@
             <?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
             <input type="hidden" name="sortfields" value="<?php echo $search_object->getSortFieldsAsString(); ?>" id="search_sortfields_input">
             <input type="hidden" name="fs[text][o]" value="=">
-            <input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
+            <input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo htmlentities($search_object->getSearchTerm(), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
             <div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
                 <div class="interactive_plus_button" id="interactive_plus_button"><?php echo image_tag('icon-mono-add.png'); ?></div>
                 <div class="interactive_filters_list <?php echo (count($nondatecustomfields)) ? 'three_columns' : 'two_columns'; ?>">
@@ -37,7 +37,7 @@
                     <div class="column">
                         <h1><?php echo __('Project detail filters'); ?></h1>
                         <ul>
-                            <?php if (TBGContext::isProjectContext()): ?>
+                            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                                 <li data-filter="subprojects" id="additional_filter_subprojects_link"><?php echo __('Including subproject(s)'); ?></li>
                             <?php else: ?>
                                 <li class="disabled">
@@ -73,7 +73,7 @@
             </div>
             <div style="display: inline-block; position: relative;">
                 <input type="image" src="<?php echo image_url('icon-mono-search.png'); ?>">
-                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;">
+                <div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;transition-delay: 1s;">
                     <?php echo __("Press the search button to trigger a search if it doesn't happen automatically"); ?>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                         <div class="search_template_list">
                             <ul>
                                 <?php foreach ($templates as $template_name => $template_details): ?>
-                                    <li data-template-name="<?php echo $template_name; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
+                                    <li data-template-name="<?php echo $template_name; ?>" data-parameter="<?php echo (int) $template_details['parameter']; ?>" data-parameter-text="<?php echo ($template_details['parameter']) ? __e($template_details['parameter_text']) : ''; ?>" data-grouping="<?php echo (int) $template_details['grouping']; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
                                         <?php echo image_tag('search_template_'.$template_name.'.png'); ?>
                                         <h1><?php echo $template_details['title']; ?></h1>
                                         <?php echo $template_details['description']; ?>
@@ -120,32 +120,42 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="column" id="search_grouping_container">
+                    <div class="column <?php if (!$templates[$search_object->getTemplateName()]['grouping']) echo 'nogrouping'; ?> <?php if ($templates[$search_object->getTemplateName()]['parameter']) echo 'parameter'; ?>" id="search_grouping_container">
                         <h1><?php echo __('Search result grouping'); ?></h1>
-                        <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
-                        <div class="interactive_values_container">
-                            <ul class="interactive_menu_values" id="filter_grouping_options">
-                                <?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
-                                    <li data-sort-order="<?php echo $dir; ?>" data-value="<?php echo $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1" style="<?php if (!$search_object->getGroupby()) echo 'display: none;'; ?>">
+                        <div class="nogrouping">
+                            <?php echo __('This search template does not support grouping'); ?>
+                        </div>
+                        <div class="parameterdetails">
+                            <h1><?php echo __('Special search parameters'); ?></h1>
+                            <label for="search_filter_parameter_input" id="search_filter_parameter_description"><?php echo ($templates[$search_object->getTemplateName()]['parameter']) ? $templates[$search_object->getTemplateName()]['parameter_text'] : ''; ?></label>
+                            <input type="text" id="search_filter_parameter_input" class="interactive_menu_filter filter_searchfield" data-maxlength="0" placeholder="" value="<?php echo $search_object->getTemplateParameter(); ?>" name="template_parameter">
+                        </div>
+                        <div class="groupingdetails">
+                            <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
+                            <div class="interactive_values_container">
+                                <ul class="interactive_menu_values" id="filter_grouping_options">
+                                    <?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
+                                        <li data-sort-order="<?php echo $dir; ?>" data-value="<?php echo $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1" style="<?php if (!$search_object->getGroupby()) echo 'display: none;'; ?>">
+                                            <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                            <input type="radio" value="<?php echo $dir; ?>" name="grouporder" data-text="<?php echo $dir_desc; ?>" id="search_grouping_grouporder_<?php echo $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
+                                            <?php echo $dir_desc; ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                    <li class="separator"></li>
+                                    <li data-groupby="" data-value="" class="groupby filtervalue unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
                                         <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                        <input type="radio" value="<?php echo $dir; ?>" name="grouporder" data-text="<?php echo $dir_desc; ?>" id="search_grouping_grouporder_<?php echo $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
-                                        <?php echo $dir_desc; ?>
+                                        <input type="radio" value="" name="groupby" data-text="<?php echo __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
+                                        <?php echo __('No grouping'); ?>
                                     </li>
-                                <?php endforeach; ?>
-                                <li class="separator"></li>
-                                <li data-groupby="" data-value="" class="groupby filtervalue unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                    <input type="radio" value="" name="groupby" data-text="<?php echo __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
-                                    <?php echo __('No grouping'); ?>
-                                </li>
-                                <?php foreach ($groupoptions as $grouping => $group_desc): ?>
-                                    <li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                        <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                        <input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
-                                        <?php echo $group_desc; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
+                                    <?php foreach ($groupoptions as $grouping => $group_desc): ?>
+                                        <li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
+                                            <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                            <input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
+                                            <?php echo $group_desc; ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <h1><?php echo __('Select how many issues to show per page'); ?></h1>
@@ -164,8 +174,11 @@
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values" id="filter_export_options">
                                 <li onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon_savedsearch.png', array('class' => 'icon')) . __('Save search filters'); ?></li>
-                                <li onclick="TBG.Search.download('csv');">
-                                    <?php echo image_tag('icon_csv.png', array('class' => 'icon')) . __('Download as CSV file'); ?>
+                                <li onclick="TBG.Search.download('ods');">
+                                    <?php echo image_tag('icon_ods.png', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
+                                </li>
+                                <li onclick="TBG.Search.download('xlsx');">
+                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
                                     <?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>
@@ -189,21 +202,21 @@
         </div>
     </form>
     <div id="searchbuilder_filter_hiddencontainer" style="display: none;">
-        <?php if (TBGContext::isProjectContext()): ?>
-            <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
+        <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+            <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter('subprojects'))); ?>
         <?php endif; ?>
         <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking') as $key): ?>
-            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
+            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key))); ?>
         <?php endforeach; ?>
         <?php foreach (array('posted', 'last_updated') as $key): ?>
-            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
+            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
         <?php foreach ($nondatecustomfields as $customtype): ?>
-            <?php if ($customtype->getType() == TBGCustomDatatype::DATE_PICKER) continue; ?>
-            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey()))); ?>
+            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) continue; ?>
+            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey()))); ?>
         <?php endforeach; ?>
         <?php foreach ($datecustomfields as $customtype): ?>
-            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
+            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
     </div>
     <?php if (!$tbg_user->isGuest()): ?>
@@ -212,8 +225,8 @@
                 <div class="backdrop_detail_header"><?php echo __('Save this search'); ?></div>
                 <div class="backdrop_detail_content">
                     <form id="save_search_form" action="<?php echo make_url('search_save'); ?>" method="post" onsubmit="TBG.Search.saveSearch();return false;">
-                        <?php if (TBGContext::isProjectContext()): ?>
-                            <input type="hidden" name="project_id" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>">
+                        <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                            <input type="hidden" name="project_id" value="<?php echo \thebuggenie\core\framework\Context::getCurrentProject()->getID(); ?>">
                             <p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead', array('%find_issues' => link_tag(make_url('search'), __('Find issues')))); ?></p>
                         <?php endif; ?>
                         <?php if ($search_object->getID()): ?>

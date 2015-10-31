@@ -5,12 +5,12 @@
     /**
      * Main action components
      */
-    class Components extends \TBGActionComponent
+    class Components extends \thebuggenie\core\framework\ActionComponent
     {
 
         public function componentForgotPasswordPane()
         {
-            $this->forgottenintro = \thebuggenie\modules\publish\entities\b2db\Articles::getTable()->getArticleByName('ForgottenPasswordIntro');
+            $this->forgottenintro = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->getArticleByName('ForgottenPasswordIntro');
         }
 
         public function componentForgotPasswordLink()
@@ -20,7 +20,6 @@
 
         public function componentSettings()
         {
-
         }
 
         public function componentAccountSettings()
@@ -35,7 +34,7 @@
 
         public function componentEditIncomingEmailAccount()
         {
-            $this->project = TBGContext::getCurrentProject();
+            $this->project = \thebuggenie\core\framework\Context::getCurrentProject();
         }
 
     }

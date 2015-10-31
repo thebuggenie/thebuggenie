@@ -13,7 +13,7 @@
             <?php if (array_key_exists('choices', $info) && count($info['choices']) && $issue->$canEditField()): ?>
                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
-                <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+                <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                 <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
                     <li class="header"><?php echo $info['change_header']; ?></li>
                     <li>
@@ -22,7 +22,7 @@
                     <?php if (count($info['choices'])): ?>
                         <li class="separator"></li>
                         <?php foreach ($info['choices'] as $choice): ?>
-                            <?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
+                            <?php if ($choice instanceof \thebuggenie\core\entities\DatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo image_tag('icon_' . $field . '.png').__($choice->getName()); ?></a>
                             </li>
@@ -35,7 +35,7 @@
                 </ul>
             <?php endif; ?>
             <?php if (array_key_exists('url', $info) && $info['url']): ?>
-                <a id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?> target="_new" href="<?php echo $info['current_url']; ?>"><?php echo __($info['name']); ?></a>
+                <a id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?> target="_new" href="<?php echo $info['current_url']; ?>"><?php echo $info['name']; ?></a>
             <?php else: ?>
                 <span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __($info['name']); ?></span>
             <?php endif; ?>

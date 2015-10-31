@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ManageModules extends \TBGCliCommand
+    class ManageModules extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -32,7 +32,7 @@
         protected function _listInstalled()
         {
             $this->cliEcho("\nInstalled modules:\n", 'green', 'bold');
-            foreach (\TBGContext::getModules() as $module_key => $module)
+            foreach (\thebuggenie\core\framework\Context::getModules() as $module_key => $module)
             {
                 $this->cliEcho("{$module_key}: ", 'white', 'bold');
                 $this->cliEcho($module->getDescription());
@@ -45,12 +45,12 @@
         {
             $this->cliEcho("\nAvailable modules:\n", 'green', 'bold');
             $this->cliEcho("To install a module, use the name in bold as the parameter for the install module task\n\n");
-            if (count(\TBGContext::getUninstalledModules()) > 0)
+            if (count(\thebuggenie\core\framework\Context::getUninstalledModules()) > 0)
             {
-                foreach (\TBGContext::getUninstalledModules() as $module_key => $description)
+                foreach (\thebuggenie\core\framework\Context::getUninstalledModules() as $module_key => $module)
                 {
                     $this->cliEcho("{$module_key}: ", 'white', 'bold');
-                    $this->cliEcho($description);
+                    $this->cliEcho($module->getLongName());
                     $this->cliEcho("\n");
                 }
             }
@@ -66,18 +66,18 @@
             $this->cliEcho("Install module\n", 'green', 'bold');
             try
             {
-                if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
+                if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . ucfirst($module_name).'.php'))
                 {
                     throw new \Exception("Please provide a valid module name");
                 }
-                elseif (\TBGContext::isModuleLoaded($module_name))
+                elseif (\thebuggenie\core\framework\Context::isModuleLoaded($module_name))
                 {
                     throw new \Exception("This module is already installed");
                 }
                 else
                 {
                     $this->cliEcho("Installing {$module_name} ...");
-                    \TBGModule::installModule($module_name);
+                    \thebuggenie\core\entities\Module::installModule($module_name);
                     $this->cliEcho(' ok!', 'green', 'bold');
                     $this->cliEcho("\n");
                 }
@@ -93,18 +93,18 @@
             $this->cliEcho("Uninstall module\n", 'green', 'bold');
             try
             {
-                if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
+                if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . ucfirst($module_name).'.php'))
                 {
                     throw new \Exception("Please provide a valid module name");
                 }
-                elseif (!\TBGContext::isModuleLoaded($module_name))
+                elseif (!\thebuggenie\core\framework\Context::isModuleLoaded($module_name))
                 {
                     throw new \Exception("This module is not installed");
                 }
                 else
                 {
                     $this->cliEcho("Removing {$module_name} ...");
-                    \TBGContext::getModule($module_name)->uninstall();
+                    \thebuggenie\core\framework\Context::getModule($module_name)->uninstall();
                     $this->cliEcho(' ok!', 'green', 'bold');
                     $this->cliEcho("\n");
                 }
@@ -117,7 +117,7 @@
 
         public function do_execute()
         {
-            if (\TBGContext::isInstallmode())
+            if (\thebuggenie\core\framework\Context::isInstallmode())
             {
                 $this->cliEcho("Manage modules\n", 'white', 'bold');
                 $this->cliEcho("The Bug Genie is not installed\n", 'red');

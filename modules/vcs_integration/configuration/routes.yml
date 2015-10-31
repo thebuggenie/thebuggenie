@@ -1,22 +1,35 @@
 vcs_commitspage:
   route: /:project_key/commits
   action: projectCommits
+
+vcs_commitspage_more:
+  route: /:project_key/commits/more
+  action: projectCommitsMore
     
 normalcheckin:
-  route: /vcs_integration/report/:project_id/
+  route: /vcs_integration/report/:project_id
   action: addCommit
+  anonymous_route: true
 
 githubcheckin:
-  route: /vcs_integration/report/:project_id/github/
+  route: /vcs_integration/report/:project_id/github
   action: addCommitGithub
+  anonymous_route: true
+
+gitlabcheckin:
+  route: /vcs_integration/report/:project_id/gitlab
+  action: addCommitGitlab
+  anonymous_route: true
 
 bitbucketcheckin:
-  route: /vcs_integration/report/:project_id/bitbucket/
+  route: /vcs_integration/report/:project_id/bitbucket
   action: addCommitBitbucket
+  anonymous_route: true
 
 gitoriouscheckin:
-  route: /vcs_integration/report/:project_id/gitorious/
+  route: /vcs_integration/report/:project_id/gitorious
   action: addCommitGitorious
+  anonymous_route: true
 
 configure_vcs_settings:
   route: /configure/project/:project_id/vcs

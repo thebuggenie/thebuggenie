@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class ListWorkflowTransitions extends \TBGCliRemoteCommand
+    class ListWorkflowTransitions extends \thebuggenie\core\framework\cli\RemoteCommand
     {
 
         protected function _setup()
@@ -91,16 +91,16 @@
                             {
                                 switch ($validation_action->name)
                                 {
-                                    case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
+                                    case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
                                         $print_name = "Status";
                                         break;
-                                    case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+                                    case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
                                         $print_name = "Resolution";
                                         break;
-                                    case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+                                    case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
                                         $print_name = "Priority";
                                         break;
-                                    case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+                                    case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
                                         $print_name = "Reproducability";
                                         break;
                                     default:

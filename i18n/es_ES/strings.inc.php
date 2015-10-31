@@ -352,7 +352,7 @@
   $strings['Settings'] = 'Opciones';
   $strings['Release center'] = 'Centro de liberación';
 
-// First occurrence is in: .\core\classes\TBGTextParser.class.php
+// First occurrence is in: .\core\classes\\thebuggenie\core\helpers\TextParser.class.php
 // ----------------------------------------------------------------------------
   $strings['top'] = 'arriba';
   $strings['Open image in new window'] = 'Abrir imagen en una nueva pantalla';
@@ -1528,7 +1528,7 @@
   $strings['E-mail'] = 'Correo';
   $strings['Actv.'] = 'Actv.';
 
-// First occurrence is in: .\modules\configuration\templates\import.html.php
+// First occurrence is in: .\modules\configuration\templates\index.html.php
 // ----------------------------------------------------------------------------
   $strings['CSV'] = 'CSV';
   $strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2';

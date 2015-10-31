@@ -7,7 +7,7 @@
             <span class="single" style="display: none;"><?php echo __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
         </div>
         <div class="upload_file_listing">
-            <ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>">
+            <ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-preview-src="<?php echo image_url('icon_file_generic.png'); ?>">
                 <?php if (isset($existing_files)): ?>
                     <?php foreach ($existing_files as $file): ?>
                         <li>
@@ -24,16 +24,20 @@
                 <?php endif; ?></ul>
         </div>
         <script>
-            var upload_container = $('upload_drop_zone');
-            if ('ondrop' in document.createElement('span')) {
-                upload_container.addEventListener('dragover', TBG.Main.dragOverFiles, false);
-                upload_container.addEventListener('dragleave', TBG.Main.dragOverFiles, false);
-                upload_container.addEventListener('drop', TBG.Main.dropFiles, false);
-                upload_container.addEventListener('click', function () {$('file_upload_dummy').click();}, false);
-            } else {
-                upload_container.down('.double').hide();
-                upload_container.down('.single').show();
-            }
+            require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                domReady(function () {
+                    var upload_container = $('upload_drop_zone');
+                    if ('ondrop' in document.createElement('span')) {
+                        upload_container.addEventListener('dragover', TBG.Main.dragOverFiles, false);
+                        upload_container.addEventListener('dragleave', TBG.Main.dragOverFiles, false);
+                        upload_container.addEventListener('drop', TBG.Main.dropFiles, false);
+                        upload_container.addEventListener('click', function () {$('file_upload_dummy').click();}, false);
+                    } else {
+                        upload_container.down('.double').hide();
+                        upload_container.down('.single').show();
+                    }
+                });
+            });
         </script>
 <?php if (isset($target)): ?>
     </div>

@@ -1,21 +1,21 @@
-<?php 
+<?php
 
-    $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
-    if ($client instanceof TBGClient)
+    $tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('client_list'));
+    if ($client instanceof \thebuggenie\core\entities\Client)
     {
         $tbg_response->setTitle(__('Client dashboard for %client_name', array('%client_name' => $client->getName())));
         $tbg_response->setPage('client');
-        $tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())), tbg_get_breadcrumblinks('client_list'));
+        $tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())));
     }
     else
     {
         $tbg_response->setTitle(__('Client dashboard'));
         $tbg_response->addBreadcrumb(__('Client dashboard'));
     }
-    
+
 ?>
 
-<?php if ($client instanceof TBGClient): ?>
+<?php if ($client instanceof \thebuggenie\core\entities\Client): ?>
     <div class="client_dashboard">
         <div class="dashboard_client_info">
             <span class="dashboard_client_header"><?php echo $client->getName(); ?></span>
@@ -44,19 +44,19 @@
                         <?php echo __('Projects for %client', array('%client' => $client->getName())); ?>
                         <a style="float: right;" class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $client->getID())); ?>');"><?php echo __('Show archived projects'); ?></a>
                     </div>
-        
+
                     <?php if (count($projects) > 0): ?>
                         <ul class="project_list simple_list">
                         <?php foreach ($projects as $aProject): ?>
                             <li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
                         <?php endforeach; ?>
                         </ul>
-                        <div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
+                        <div class="header" style="margin: 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
                         <?php $milestone_cc = 0; ?>
                         <?php foreach ($projects as $project): ?>
                             <?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
                                 <?php if ($milestone->isScheduled()): ?>
-                                    <?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
+                                    <?php include_component('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
                                     <?php $milestone_cc++; ?>
                                 <?php endif; ?>
                             <?php endforeach; ?>

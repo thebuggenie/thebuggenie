@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class FixTimesSpent extends \TBGCliCommand
+    class FixTimesSpent extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -29,14 +29,14 @@
 
         public function do_execute()
         {
-            if (TBGContext::isInstallmode())
+            if (\thebuggenie\core\framework\Context::isInstallmode())
             {
                 $this->cliEcho("The Bug Genie is not installed\n", 'red');
             }
             else
             {
                 $this->cliEcho("Finding times to fix\n", 'white', 'bold');
-                $issuetimes = TBGIssueSpentTimesTable::getTable()->getAllSpentTimesForFixing();
+                $issuetimes = \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->getAllSpentTimesForFixing();
                 $error_issues = array();
                 foreach ($issuetimes as $issue_id => $times)
                 {
@@ -46,34 +46,34 @@
                         $prev_times = array('hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0, 'points' => 0);
                         foreach ($times as $k => $row)
                         {
-                            if ($row[TBGIssueSpentTimesTable::SPENT_DAYS] < $prev_times['days'] ||
-                                $row[TBGIssueSpentTimesTable::SPENT_HOURS] < $prev_times['hours'] ||
-                                $row[TBGIssueSpentTimesTable::SPENT_WEEKS] < $prev_times['weeks'] ||
-                                $row[TBGIssueSpentTimesTable::SPENT_MONTHS] < $prev_times['months'] ||
-                                $row[TBGIssueSpentTimesTable::SPENT_POINTS] < $prev_times['points'])
+                            if ($row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_DAYS] < $prev_times['days'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_HOURS] < $prev_times['hours'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_WEEKS] < $prev_times['weeks'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_MONTHS] < $prev_times['months'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS] < $prev_times['points'])
                             {
                                 $error_issues[] = $issue_id;
                             }
                             else
                             {
-                                TBGIssueSpentTimesTable::getTable()->fixRow($row, $prev_times);
-                                $prev_times['points'] += $row[TBGIssueSpentTimesTable::SPENT_POINTS];
-                                $prev_times['hours'] += $row[TBGIssueSpentTimesTable::SPENT_HOURS];
-                                $prev_times['days'] += $row[TBGIssueSpentTimesTable::SPENT_DAYS];
-                                $prev_times['weeks'] += $row[TBGIssueSpentTimesTable::SPENT_WEEKS];
-                                $prev_times['months'] += $row[TBGIssueSpentTimesTable::SPENT_MONTHS];
+                                \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->fixRow($row, $prev_times);
+                                $prev_times['points'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS];
+                                $prev_times['hours'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_HOURS];
+                                $prev_times['days'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_DAYS];
+                                $prev_times['weeks'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_WEEKS];
+                                $prev_times['months'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_MONTHS];
                             }
                         }
                     }
 
                 }
-                foreach (TBGIssueSpentTimesTable::getTable()->getAllSpentTimesForFixing() as $issue_id => $times)
+                foreach (\thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->getAllSpentTimesForFixing() as $issue_id => $times)
                 {
                     foreach ($times as $row)
                     {
-                        TBGIssueSpentTimesTable::getTable()->fixHours($row);
+                        \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->fixHours($row);
                     }
-                    TBGIssuesTable::getTable()->fixHours($issue_id);
+                    \thebuggenie\core\entities\tables\Issues::getTable()->fixHours($issue_id);
                 }
                 if (count($error_issues) > 0)
                 {

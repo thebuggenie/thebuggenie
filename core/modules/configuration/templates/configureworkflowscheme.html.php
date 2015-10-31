@@ -1,6 +1,6 @@
 <?php
 
-    if ($workflow_scheme instanceof TBGWorkflowScheme)
+    if ($workflow_scheme instanceof \thebuggenie\core\entities\WorkflowScheme)
     {
         $tbg_response->setTitle(__('Configure workflow scheme "%workflow_scheme_name"', array('%workflow_scheme_name' => $workflow_scheme->getName())));
     }
@@ -12,11 +12,11 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
-        <?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
+        <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_WORKFLOW)); ?>
         <td valign="top" style="padding-left: 15px;">
-            <?php include_template('configuration/workflowmenu', array('selected_tab' => 'scheme', 'scheme' => $workflow_scheme)); ?>
+            <?php include_component('configuration/workflowmenu', array('selected_tab' => 'scheme', 'scheme' => $workflow_scheme)); ?>
             <div class="content" style="width: 730px;" id="workflow_steps_container">
-                <?php if ($workflow_scheme instanceof TBGWorkflowScheme): ?>
+                <?php if ($workflow_scheme instanceof \thebuggenie\core\entities\WorkflowScheme): ?>
                     <div class="greybox workflow_steps_intro">
                         <div class="header"><?php echo __('Workflow scheme "%workflow_scheme_name"', array('%workflow_scheme_name' => $workflow_scheme->getName())); ?></div>
                         <div class="content">
@@ -41,7 +41,7 @@
                                             <?php if (!$workflow_scheme->isCore()): ?>
                                                 <select name="workflow_id[<?php echo $issuetype->getID(); ?>]">
                                                     <option value=""<?php if (!$workflow_scheme->hasWorkflowAssociatedWithIssuetype($issuetype)): ?> selected<?php endif; ?>><?php echo __('No workflow selected - will use default workflow'); ?></option>
-                                                    <?php foreach (TBGWorkflow::getAll() as $workflow): ?>
+                                                    <?php foreach (\thebuggenie\core\entities\Workflow::getAll() as $workflow): ?>
                                                         <option value="<?php echo $workflow->getID(); ?>"<?php if ($workflow_scheme->hasWorkflowAssociatedWithIssuetype($issuetype) && $workflow_scheme->getWorkflowForIssuetype($issuetype)->getID() == $workflow->getID()): ?> selected<?php endif; ?>><?php echo $workflow->getName(); ?></option>
                                                     <?php endforeach; ?>
                                                 </select>

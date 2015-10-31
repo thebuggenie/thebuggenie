@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage main
      */
@@ -20,15 +20,15 @@
      *
      * @Table(name="\thebuggenie\core\modules\installation\upgrade_32\TBGMilestonesTable")
      */
-    class TBGMilestone extends \TBGIdentifiableScopedClass
+    class TBGMilestone extends \thebuggenie\core\entities\common\IdentifiableScoped
     {
 
         /**
          * This milestone's project
          *
-         * @var \TBGProject
+         * @var \thebuggenie\core\entities\Project
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGProject")
+         * @Relates(class="\thebuggenie\core\entities\Project")
          */
         protected $_project;
 

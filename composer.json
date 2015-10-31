@@ -6,6 +6,12 @@
             "email" : "zegenie@gmail.com"
         }
     ],
+    "support" : {
+        "email" : "support@thebuggenie.com",
+        "forum" : "http://forum.thebuggenie.org",
+        "issues" : "http://issues.thebuggenie.com",
+        "irc" : "irc://irc.freenode.org/thebuggenie"
+    },
     "license" : [
         "MPL 1.1"
     ],
@@ -19,6 +25,8 @@
         "lightopenid/lightopenid": "dev-master",
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
+        "phpoffice/phpexcel": "~1.8",
+        "kriswallsmith/assetic": "~1.2",
         "ext-gd" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
@@ -27,11 +35,13 @@
         "ext-mbstring" : "*",
         "ext-pcre" : "*",
         "ext-Reflection" : "*",
-        "lib-pcre" : "8.*"
+        "lib-pcre" : "8.*",
+        "net/http" : "dev-master"
     },
     "require-dev" : {
-        "symfony/finder" : "dev-master",
-        "phpunit/phpunit": "4.2.*"
+        "symfony/finder" : "~2.7",
+        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit-skeleton-generator": "*"
     },
     "suggest" : {
         "ext-apc" : "Enables APC caching of configuration files and table class definitions"
@@ -40,9 +50,13 @@
         "psr-4" : {
             "thebuggenie\\modules\\" : "modules/",
             "thebuggenie\\core\\" : "core/"
-        },
-        "classmap" : [ "core/classes/", "core/classes/B2DB/" ]
+        }
     },
     "minimum-stability" : "dev",
-        "prefer-stable" : true
+    "prefer-stable" : true,
+	"scripts": {
+        "post-install-cmd": [
+            "thebuggenie\\core\\modules\\installation\\controllers\\Main::createCacheFolder"
+		]
+	}
 }

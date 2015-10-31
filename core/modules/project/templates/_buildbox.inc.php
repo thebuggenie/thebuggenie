@@ -9,16 +9,25 @@
     <?php echo image_tag('icon_build_medium.png', array('class' => 'release_icon')); ?>
     <span id="build_<?php echo $b_id; ?>name" class="release_name"><?php print $build->getName(); ?></span>
     <span class="release_version" id="build_<?php echo $b_id; ?>_version"><?php print $build->getVersion(); ?></span>
-    <div class="release_date <?php if ($build->isReleased()) echo 'released'; ?>">
+    <div class="release_date <?php if ($build->isReleased()) echo 'released'; ?>" id="build_<?php echo $b_id; ?>_release_date">
         <?php if ($build->isReleased()): ?>
-            <?php echo __('Released %release_date', array('%release_date' => '<span id="build_'.$b_id.'_release_date">'.tbg_formatTime($build->getReleaseDate(), 7, true, true).'</span>')); ?>
+            <?php $release_date_text = $build->hasReleaseDate() ? __('Released %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))) : __('Released'); ?>
         <?php else: ?>
-            <span id="build_<?php echo $b_id; ?>_not_released"><?php echo __('Not released yet'); ?></span>
+            <?php if ($build->hasReleaseDate()): ?>
+                <?php $release_date_text = __('Not released yet, scheduled for %release_date', array('%release_date' => tbg_formatTime($build->getReleaseDate(), 7, true, true))); ?>
+            <?php else: ?>
+                <?php $release_date_text = __('Not released yet'); ?>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if ($build->hasDownload()): ?>
-            <?php echo __('%release_date, download: %download_filename', array('%release_date' => '', '%download_filename' => ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), $build->getFile()->getOriginalFilename()) : link_tag($build->getFileURL()))); ?>
+            <?php $release_date_text = __('%release_date, download: %download_filename', array('%release_date' => $release_date_text, '%download_filename' => ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), $build->getFile()->getOriginalFilename()) : link_tag($build->getFileURL()))); ?>
         <?php else: ?>
-            <span id="build_<?php echo $b_id; ?>_not_released"><?php echo __('%release_date, no download available', array('%release_date' => '')); ?></span>
+            <?php $release_date_text = __('%release_date, no download available', array('%release_date' => $release_date_text)); ?>
+        <?php endif; ?>
+        <?php if (! $build->isReleased()): ?>
+            <div id="build_<?php echo $b_id; ?>_not_released"><?php echo $release_date_text; ?></div>
+        <?php else: ?>
+            <?php echo $release_date_text; ?>
         <?php endif; ?>
     </div>
 </li>

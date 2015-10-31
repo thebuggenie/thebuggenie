@@ -2,10 +2,10 @@
 <?php foreach ($milestone->getIssues() as $issue): ?>
     <?php if ($issue->hasAccess()): ?>
         <div class="roadmap_issue<?php if ($issue->isClosed()): ?> faded_out issue_closed<?php elseif ($issue->isBlocking()): ?> blocking<?php endif; ?>">
-            <div class="issue_status"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : ''; ?>">&nbsp;</div></div>
+            <div class="issue_status"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Status) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Status) ? $issue->getStatus()->getName() : ''; ?>">&nbsp;</div></div>
             <?php if ($issue->isAssigned()): ?>
                 <span class="faded_out">
-                    <?php if ($issue->getAssignee() instanceof TBGUser): ?>
+                    <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
                         (<?php echo __('Assigned to %assignee', array('%assignee' => get_component_html('main/userdropdown', array('user' => $issue->getAssignee(), 'show_avatar' => false)))); ?>)
                     <?php else: ?>
                         (<?php echo __('Assigned to %assignee', array('%assignee' => get_component_html('main/teamdropdown', array('team' => $issue->getAssignee())))); ?>)

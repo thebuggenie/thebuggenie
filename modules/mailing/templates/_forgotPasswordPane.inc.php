@@ -1,8 +1,8 @@
 <div id="forgot_password_container" class="logindiv regular">
-    <?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
-        <?php echo tbg_parse_text(TBGSettings::get('forgot_message'), null, null, array('embedded' => true)); ?>
+    <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
+        <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('forgot_message'), false, null, array('embedded' => true)); ?>
     <?php else: ?>
-        <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" method="post" id="forgot_password_form" onsubmit="TBG.Main.Login.resetForgotPassword('<?php echo make_url('forgot'); ?>'); return false;">
+        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_forgot'); ?>" method="post" id="forgot_password_form" onsubmit="TBG.Main.Login.resetForgotPassword('<?php echo make_url('mailing_forgot'); ?>'); return false;">
             <?php if ($forgottenintro instanceof \thebuggenie\modules\publish\entities\Article): ?>
                 <?php include_component('publish/articledisplay', array('article' => $forgottenintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
             <?php endif; ?>

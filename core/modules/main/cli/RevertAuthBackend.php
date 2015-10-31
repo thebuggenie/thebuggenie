@@ -7,7 +7,7 @@
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.1
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage core
      */
@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class RevertAuthBackend extends \TBGCliCommand
+    class RevertAuthBackend extends \thebuggenie\core\framework\cli\Command
     {
 
         protected function _setup()
@@ -35,7 +35,7 @@
             $this->cliEcho("This command is useful if you've managed to lock yourself.\n");
             $this->cliEcho("out due to an authentication backend change gone bad.\n\n");
 
-            if (TBGSettings::getAuthenticationBackend() == 'tbg' || TBGSettings::getAuthenticationBackend() == null)
+            if (\thebuggenie\core\framework\Settings::getAuthenticationBackend() == 'tbg' || \thebuggenie\core\framework\Settings::getAuthenticationBackend() == null)
             {
                 $this->cliEcho("You are currently using the default authentication backend.\n\n");
             }
@@ -45,7 +45,7 @@
                 $this->cliEcho("\n");
                 if ($this->getInput() == 'yes')
                 {
-                    TBGSettings::saveSetting(TBGSettings::SETTING_AUTH_BACKEND, 'tbg');
+                    \thebuggenie\core\framework\Settings::saveSetting(\thebuggenie\core\framework\Settings::SETTING_AUTH_BACKEND, 'tbg');
                     $this->cliEcho("Authentication backend reverted.\n\n");
                 }
                 else

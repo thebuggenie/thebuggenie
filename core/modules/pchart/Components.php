@@ -5,7 +5,7 @@
     defined('PIE_VALUES') || define("PIE_VALUES", 4);
     defined('PIE_PERCENTAGE_AND_VALUES') || define("PIE_PERCENTAGE_AND_VALUES", 5);
 
-    class Components extends \TBGActionComponent
+    class Components extends \thebuggenie\core\framework\ActionComponent
     {
 
         public function componentLineGraph()
@@ -18,6 +18,7 @@
                 $maxvals[] = max($dataset['values']);
                 if (isset($dataset['burndown']))
                 {
+                    $burndownValues = array();
                     $amount = (count($dataset['values']) > 1) ? $dataset['burndown']['maxEstimation'] / (count($dataset['values']) - 1) : 0;
                     for ($i = 0; $i < count($dataset['values']); $i++)
                         $burndownValues[] = $dataset['burndown']['maxEstimation'] - ($i * $amount);

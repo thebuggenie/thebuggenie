@@ -2,12 +2,14 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\common\Identifiable;
+
     /**
      * Notification setting class
      *
      * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
      * @version 3.3
-     * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
      * @package thebuggenie
      * @subpackage main
      */
@@ -18,9 +20,9 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\entities\b2db\NotificationSettings")
+     * @Table(name="\thebuggenie\core\entities\tables\NotificationSettings")
      */
-    class NotificationSetting extends \TBGIdentifiableClass
+    class NotificationSetting extends Identifiable
     {
 
         /**
@@ -50,9 +52,9 @@
         /**
          * Who the notification is for
          *
-         * @var \TBGUser
+         * @var \thebuggenie\core\entities\User
          * @Column(type="integer", length=10)
-         * @Relates(class="\TBGUser")
+         * @Relates(class="\thebuggenie\core\entities\User")
          */
         protected $_user_id;
 
