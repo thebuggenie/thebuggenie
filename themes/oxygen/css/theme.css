@@ -1691,6 +1691,7 @@ a.friend { color: #277CBA; }
     margin-top: 10px;
     margin-bottom: 0;
     clear: both;
+    line-height: 1.7;
 }
 .backdrop_detail_content .report-issue-custom-access-container {
     margin-top: 10px;
@@ -1698,6 +1699,7 @@ a.friend { color: #277CBA; }
 .report-issue-custom-access-check img
 {
     margin-bottom: -3px;
+    margin-left: 3px;
 }
 .report-issue-custom-access-check input[type=checkbox],
 .report-issue-custom-access-container input[type=radio]
@@ -2427,6 +2429,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 #uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
 
 #viewissue_add_relation_div, #viewissue_add_item_div { text-align: left; padding: 10px; }
+#viewissue_add_item_div .backdrop_detail_header .button.button-silver { padding: 3px 8px; margin-top: -3px; }
 #viewissue_find_issue_form div { text-align: left; font-size: 0.9em; margin-top: 10px; }
 #viewissue_find_issue_form input[type="text"] { width: 300px; }
 #viewissue_relation_results table { margin-top: 5px; }
@@ -2667,7 +2670,7 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 .dashboard_add_view_container { display: none; }
 .dashboard.layout_standard.editable .dashboard_add_view_container { display: block; cursor: pointer; }
-.dashboard_add_view_container > div { font-size: 2.1em; font-weight: normal; border: 2px dotted #DDD; padding: 50px 0; text-align: center; background-color: #FAFAFA; color: rgba(100, 100, 100, 0.4); margin: 0 5px 10px 5px; }
+.dashboard_add_view_container > div { font-size: 1.7em; font-weight: normal; border: 1px dashed #DDD; padding: 50px 0; text-align: center; background-color: #FAFAFA; color: rgba(100, 100, 100, 0.4); margin: 0 5px 10px 5px; }
 .dashboard_indicator, .planning_indicator { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.6); z-index: 11; }
 #whiteboard_indicator { z-index: 1011; }
 #planning_indicator { position: fixed; }
@@ -9401,11 +9404,46 @@ ul[id^='popup_find_acl_'].more_actions_dropdown
     margin-right: 8px;
 }
 
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown
+{
+    font-size: 1.2em;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown
+{
+    margin-right: 15px;
+    margin-top: -7px;
+}
+
 ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input']
 {
     padding: 3px !important;
     margin-left: 2px;
     width: 235px !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input']
+{
+    padding: 2px !important;
+    font-size: 1em !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label
+{
+    padding: 6px !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label[for=popup_find_acl__input]
+{
+    margin-left: -4px;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled,
+.issue_access_policy_box ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled
+{
+    font-size: 0.9em;
+    padding: 2px 8px;
+    color: #AAA;
 }
 
 ul[id^='popup_find_acl_'] input[type=submit]
@@ -9449,6 +9487,20 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled
 .issue_access_list > li
 {
     margin-bottom: 5px;
+}
+
+.issue_access_policy_box #acl-users-teams-selector h4,
+.report-issue-custom-access-check #acl-users-teams-selector h4
+{
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.issue_access_policy_box #acl-users-teams-selector h4 .button,
+.report-issue-custom-access-check #acl-users-teams-selector h4 .button
+{
+    padding: 3px 7px;
+    margin-top: -2px;
 }
 
 /* Manage issue subscribers */
@@ -11004,7 +11056,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
     margin-bottom: -6px;
 }
 
-#issue_main .commentcontent .image_container a img
+#issue_main .commentcontent .image_container a img,
+#issue_main .commentcontent a img
 {
     vertical-align: text-top;
 }
@@ -11525,7 +11578,7 @@ li#header_usermenu_link > div
 #user_notifications_list > li > h1
 {
     font-size: 1em;
-    margin: 0 25px 0px 5px;
+    margin: 0 35px 0px 5px;
     line-height: 1.8;
 }
 
