@@ -1447,7 +1447,10 @@ class Context
                         {
                             if ($permission['role_id'] == 0)
                             {
-                                return $permission['allowed'];
+                                return (bool) array_sum(array_map(function($permission)
+                                {
+                                    return $permission['role_id'] == 0 ? (int) $permission['allowed'] : 0;
+                                }, $permissions));
                             }
 
                             if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
