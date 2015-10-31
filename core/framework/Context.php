@@ -1447,9 +1447,9 @@ class Context
                         {
                             if ($permission['role_id'] == 0)
                             {
-                                return (bool) array_sum(array_map(function($permission)
+                                return (bool) array_sum(array_map(function($permission) use($tid)
                                 {
-                                    return $permission['role_id'] == 0 ? (int) $permission['allowed'] : 0;
+                                    return ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid) && $permission['role_id'] == 0 ? (int) $permission['allowed'] : 0;
                                 }, $permissions));
                             }
 
