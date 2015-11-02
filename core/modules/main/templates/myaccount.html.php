@@ -348,7 +348,7 @@
                                     </td>
                                 <?php elseif ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS): ?>
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="text" name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes" value="<?php echo $tbg_user->getNotificationSetting($key, false, 'core')->getValue(); ?>">
+                                        <input type="text" name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes" value="<?php echo $tbg_user->getNotificationSetting($key, false, 'core')->getValue(); ?>" style="width:30px;">
                                     </td>
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle"></td>
                                 <?php else: ?>
