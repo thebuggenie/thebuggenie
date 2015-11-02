@@ -29,7 +29,7 @@
             parent::_setup(self::B2DBNAME, self::ID);
             parent::_addVarchar(self::SUBJECT, 255);
             parent::_addVarchar(self::FROM, 255);
-            parent::_addVarchar(self::TO, 255);
+            parent::_addText(self::TO);
             parent::_addText(self::MESSAGE);
             parent::_addText(self::MESSAGE_HTML);
             parent::_addInteger(self::DATE, 10);
