@@ -132,6 +132,7 @@
         const SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES = 'notify_subscribed_articles';
         const SETTINGS_USER_NOTIFY_UPDATED_SELF = 'notify_updated_self';
         const SETTINGS_USER_NOTIFY_MENTIONED = 'notify_mentioned';
+        const SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS = 'notify_grouped_notifications';
 
         const SETTING_AUTH_BACKEND = 'auth_backend';
         const SETTING_MAINTENANCE_MODE = 'offline';
@@ -959,6 +960,7 @@
             $notificationsettings[self::SETTINGS_USER_NOTIFY_ITEM_ONCE] = $i18n->__('Only notify once per issue or article until I view the issue or article in my browser');
             $notificationsettings[self::SETTINGS_USER_NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
             $notificationsettings[self::SETTINGS_USER_NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS] = $i18n->__('Show notifications about issue updates that are grouped as one notification based on interval in minutes:');
             return $notificationsettings;
         }
 

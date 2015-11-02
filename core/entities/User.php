@@ -2740,9 +2740,9 @@
             }
             if (!is_array($this->_notifications))
             {
-                $this->_notifications = Notifications::getTable()->getByUserID($this->getID());
+                $this->_notifications = Notifications::getTable()->getByUserIDAndGroupableMinutes($this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
-                $db_notifcations = array_reverse($this->_notifications);
+                $db_notifcations = $this->_notifications;
                 foreach ($db_notifcations as $notification)
                 {
                     if ($filter_first_notification && $notification->getID() <= $first_notification_id) break;
@@ -2798,7 +2798,7 @@
         {
             if ($this->_unread_notifications_count === null)
             {
-                list ($this->_unread_notifications_count, $this->_read_notifications_count) = tables\Notifications::getTable()->getCountsByUserID($this->getID());
+                list ($this->_unread_notifications_count, $this->_read_notifications_count) = tables\Notifications::getTable()->getCountsByUserIDAndGroupableMinutes($this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
             }
         }
 

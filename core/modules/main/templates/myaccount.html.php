@@ -346,6 +346,10 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
+                                <?php elseif ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS): ?>
+                                    <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
+                                        <input type="text" name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes" value="<?php echo $tbg_user->getNotificationSetting($key, false, 'core')->getValue(); ?>">
+                                    </td>
                                 <?php else: ?>
                                     <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
                                         <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, false, 'core')->isOn()): ?> checked<?php endif; ?>>

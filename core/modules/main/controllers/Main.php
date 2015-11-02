@@ -1238,6 +1238,10 @@ class Main extends framework\Action
                             {
                                 $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
                             }
+                            else if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS)
+                            {
+                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                            }
                             else
                             {
                                 $this->getUser()->setNotificationSetting($setting, true)->save();
@@ -1852,7 +1856,6 @@ class Main extends framework\Action
                 try
                 {
                     $issue = $this->_postIssue($request);
-                    //dd($issue);
                     if ($request->hasParameter('files') && $request->hasParameter('file_description'))
                     {
                         $files = $request['files'];
@@ -2853,7 +2856,6 @@ class Main extends framework\Action
         }
 
         $this->forward403unless($issue->canDeleteIssue());
-        dd(1, $issue->canDeleteIssue());
         $issue->deleteIssue();
         $issue->save();
 
