@@ -253,6 +253,11 @@ header #user_notifications_count.unread + img { opacity: 1; }
 #user_notifications_list li.read .notification_status_toggler {
     opacity: 0.6;
 }
+#user_notifications_list li .notification-project-logo {
+    margin: -3px 5px 0 0;
+    width: 16px;
+    height: 16px;
+}
 #user_notifications_list li time {
     font-size: 0.85em;
     color: #888;
@@ -264,7 +269,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
     border-radius: 2px;
     text-align: center;
     background-color: rgba(219, 219, 219, 0.5);
-    padding: 3px;
+    padding: 4.5px 3px;
     line-height: 1.2;
 }
 #user_notifications_list li.read time {
