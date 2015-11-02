@@ -109,6 +109,7 @@
             $crit->addWhere(self::USER_ID, $user_id);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->addWhere(self::TRIGGERED_BY_UID, $user_id, Criteria::DB_NOT_EQUALS);
+            $crit->addOrderBy(self::ID, 'DESC');
 
             return $this->select($crit);
         }
