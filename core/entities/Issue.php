@@ -1003,7 +1003,7 @@
             }
             if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
             {
-                if (!$this->getCategory()->hasAccess())
+                if (!$this->getCategory()->hasAccess($user))
                 {
                     \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
                     return false;
@@ -5316,7 +5316,7 @@
         }
 
         public function shouldUserBeNotified($user, $updated_by) {
-            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
+            if (!$this->hasAccess($user) || ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID())) return false;
 
             if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
 
@@ -5483,9 +5483,7 @@
 
         public function shouldAutomaticallySubscribeUser($user)
         {
-            if ($this->isSubscriber($user)) return false;
-
-            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1) return false;
+            if (!$this->hasAccess($user) || $this->isSubscriber($user) || (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1)) return false;
 
             $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
 
