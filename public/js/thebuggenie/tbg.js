@@ -1742,9 +1742,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 success: {
                     hide: ['comment_reply_' + reply_comment_id],
                     clear: 'comment_reply_bodybox_' + reply_comment_id,
-                    update: {element: 'comments_box', insertion: true, from: 'comment_data'},
                     show: ['comment_reply_controls_' + reply_comment_id, 'comment_add_button'],
                     callback: function (json) {
+                        $('comments_box').insert({top: json.comment_data});
                         $('comment_reply_visibility_' + reply_comment_id).setValue(1);
                     }
                 },
