@@ -133,6 +133,7 @@
         const SETTINGS_USER_NOTIFY_UPDATED_SELF = 'notify_updated_self';
         const SETTINGS_USER_NOTIFY_MENTIONED = 'notify_mentioned';
         const SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS = 'notify_grouped_notifications';
+        const SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE = 'notify_only_in_box_when_active';
 
         const SETTING_AUTH_BACKEND = 'auth_backend';
         const SETTING_MAINTENANCE_MODE = 'offline';
@@ -961,6 +962,7 @@
             $notificationsettings[self::SETTINGS_USER_NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
             $notificationsettings[self::SETTINGS_USER_NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
             $notificationsettings[self::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS] = $i18n->__('Show notifications about issue updates that are grouped as one notification based on interval in minutes:');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE] = $i18n->__('Notify only to notifications box when I am active on system');
             return $notificationsettings;
         }
 
