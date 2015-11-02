@@ -12,9 +12,9 @@
             </div>
             <div class="commentdate" id="comment_<?php echo $comment->getID(); ?>_date">
                 <?php if ($comment->isReply()): ?>
-                    <?php echo image_tag('icon_reply.png', array('style' => 'margin-right: 5px; vertical-align: middle;')).__('%comment_date, in reply to comment %replied_comment_number', array('%comment_date' => tbg_formattime($comment->getPosted(), 12), '%replied_comment_number' => link_tag("#comment_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
+                    <?php echo image_tag('icon_reply.png', array('style' => 'margin-right: 5px; vertical-align: middle;')).__('%comment_date, in reply to comment %replied_comment_number', array('%comment_date' => tbg_formattime($comment->getPosted(), 20), '%replied_comment_number' => link_tag("#comment_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
                 <?php else: ?>
-                    <?php echo tbg_formattime($comment->getPosted(), 9); ?>
+                    <?php echo tbg_formattime($comment->getPosted(), 20); ?>
                 <?php endif; ?>
             </div>
         </div>
