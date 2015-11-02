@@ -687,9 +687,14 @@
                     <?php echo image_tag('action_update_access_policy.png'); ?>
                     <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?php echo __('Custom access policy'); ?></label>
                     <div class="report-issue-custom-access-container" style="display:none;">
-                        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
-                        <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project, category and those listed below'); ?></label><br>
-                        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'restricted');" value="restricted"><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' checked'; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' checked'; ?>><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project, category and those listed below'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'restricted');" value="restricted"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED) echo ' checked'; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
+                        <script>
+                            require(['domReady', 'jquery'], function (domReady, jQuery) {
+                                domReady(function () { jQuery('input[name=issue_access]').trigger('change'); });
+                            });
+                        </script>
                         <?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_', 'style' => '')); ?>
                         <div id="acl-users-teams-selector" style="display: none;">
                             <h4 style="margin-top: 10px;">
