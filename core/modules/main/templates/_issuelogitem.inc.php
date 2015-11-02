@@ -124,8 +124,8 @@
                         echo image_tag('icon_user.png');
                         if ($item->hasChangeDetails())
                         {
-                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
-                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
+                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
+                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
                             echo __("Posted by changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
                         }
                         break;
@@ -260,8 +260,8 @@
                         echo image_tag('icon_user.png');
                         if ($item->hasChangeDetails())
                         {
-                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
-                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
+                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
+                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
                             echo __("User working on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
                         }
                         break;

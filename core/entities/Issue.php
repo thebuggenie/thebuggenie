@@ -5008,7 +5008,7 @@
                             case '_assignee_user':
                                 if (!$is_saved_assignee)
                                 {
-                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getName() : framework\Context::getI18n()->__('Not assigned');
+                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getNameWithUsername() : framework\Context::getI18n()->__('Not assigned');
 
                                     if ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
                                     {
@@ -5022,8 +5022,8 @@
                                 break;
                             case '_posted_by':
                                 $old_identifiable = ($original_value) ? \thebuggenie\core\entities\User::getB2DBTable()->selectById($original_value) : framework\Context::getI18n()->__('Unknown');
-                                $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getName() : framework\Context::getI18n()->__('Unknown');
-                                $new_name = $this->getPostedBy()->getName();
+                                $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
+                                $new_name = $this->getPostedBy()->getNameWithUsername();
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
@@ -5031,13 +5031,13 @@
                                 if ($original_value != 0)
                                 {
                                     $old_identifiable = \thebuggenie\core\entities\User::getB2DBTable()->selectById($original_value);
-                                    $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
                                     $old_name = framework\Context::getI18n()->__('Not being worked on');
                                 }
-                                $new_name = ($this->getUserWorkingOnIssue() instanceof \thebuggenie\core\entities\User) ? $this->getUserWorkingOnIssue()->getName() : framework\Context::getI18n()->__('Not being worked on');
+                                $new_name = ($this->getUserWorkingOnIssue() instanceof \thebuggenie\core\entities\User) ? $this->getUserWorkingOnIssue()->getNameWithUsername() : framework\Context::getI18n()->__('Not being worked on');
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
@@ -5045,7 +5045,7 @@
                             case '_owner_user':
                                 if (!$is_saved_owner)
                                 {
-                                    $new_name = ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getOwner()->getName() : framework\Context::getI18n()->__('Not owned by anyone');
+                                    $new_name = ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getOwner()->getNameWithUsername() : framework\Context::getI18n()->__('Not owned by anyone');
 
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_OWNED, $new_name);
                                     $is_saved_owner = true;

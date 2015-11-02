@@ -241,6 +241,16 @@
         }
 
         /**
+         * Alias for getName
+         *
+         * @return string
+         */
+        public function getNameWithUsername()
+        {
+            return $this->getName();
+        }
+
+        /**
          * Set the edition name
          *
          * @param string $name
