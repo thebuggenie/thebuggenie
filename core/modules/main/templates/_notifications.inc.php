@@ -78,7 +78,7 @@
                         <h1>
                             <?php echo image_tag($notification->getTarget()->getProject()->getSmallIconName(), array('class' => 'notification-project-logo'), $notification->getTarget()->getProject()->hasSmallIcon()); ?>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
-                            <?php echo __('%user_name created %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
+                            <?php echo __('%user_name created a new article %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
                         </h1>
                         <?php
                         break;
