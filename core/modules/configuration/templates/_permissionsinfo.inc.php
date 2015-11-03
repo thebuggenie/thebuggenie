@@ -37,7 +37,7 @@
             </tr>
             <?php $cc++; ?>
         <?php endforeach; ?>
-        <?php $teams = \thebuggenie\core\entities\Team::getAll(); ?>
+        <?php $teams = \thebuggenie\core\framework\Context::isProjectContext() ? \thebuggenie\core\framework\Context::getCurrentProject()->getAssignedTeams() : \thebuggenie\core\entities\Team::getAll(); ?>
         <?php foreach ($teams as $team): ?>
             <tr class="hover_highlight">
                 <td style="padding: 2px;"><?php echo '<b>'.__('Team: %team_name', array('%team_name' => '</b>'.$team->getName())); ?></td>
