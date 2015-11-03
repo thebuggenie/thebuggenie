@@ -6393,14 +6393,17 @@ button:focus, input:focus, select:focus {outline:0;}
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,
 ul#account_tabs li.selected,
-ul#account_tabs li.selected:hover
+ul#account_tabs li.selected:hover,
+ul#editions_menu li.selected,
+ul#editions_menu li.selected:hover
 {
     background-color: #FFF;
     position: relative;
 }
 
 .configuration_page .tab_menu li.selected:after,
-ul#account_tabs li.selected:after
+ul#account_tabs li.selected:after,
+ul#editions_menu li.selected:after
 {
     content: "";
     width: 100%;
