@@ -1116,6 +1116,10 @@
             if ($this->_editions === null)
             {
                 $this->_b2dbLazyload('_editions');
+                foreach ($this->_editions as $key => $component)
+                {
+                    if (!$component->hasAccess()) unset($this->_editions[$key]);
+                }
             }
         }
 
@@ -1222,6 +1226,10 @@
             if ($this->_components === null)
             {
                 $this->_b2dbLazyload('_components');
+                foreach ($this->_components as $key => $component)
+                {
+                    if (!$component->hasAccess()) unset($this->_components[$key]);
+                }
             }
         }
 
@@ -1315,7 +1323,7 @@
             $milestones = array();
             foreach ($this->getOpenMilestones() as $milestone)
             {
-                if (!$milestone->isVisibleIssues()) continue;
+                if (!$milestone->hasAccess() || !$milestone->isVisibleIssues()) continue;
 
                 $milestones[$milestone->getID()] = $milestone;
             }
@@ -2354,6 +2362,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getOpenMilestones() as $milestone)
                                 {
+                                    if (!$milestone->hasAccess()) continue;
                                     $retval[$key]['values'][$milestone->getID()] = $milestone->getName();
                                 }
                                 if (empty($retval[$key]['values']))

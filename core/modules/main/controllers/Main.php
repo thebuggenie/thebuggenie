@@ -1544,7 +1544,18 @@ class Main extends framework\Action
                 $this->selected_reproducability = entities\Reproducability::getB2DBTable()->selectById($reproducability_id);
 
             if ($milestone_id = (int) $request['milestone_id'])
-                $this->selected_milestone = entities\Milestone::getB2DBTable()->selectById($milestone_id);
+            {
+                $milestone = $this->_getMilestoneFromRequest($request);
+
+                if (!$milestone instanceof entities\Milestone)
+                {
+                    $errors['milestone'] = true;
+                }
+                else
+                {
+                    $this->selected_milestone = $milestone;
+                }
+            }
 
             if ($parent_issue_id = (int) $request['parent_issue_id'])
                 $this->parent_issue = entities\Issue::getB2DBTable()->selectById($parent_issue_id);
@@ -1787,6 +1798,7 @@ class Main extends framework\Action
             try
             {
                 $milestone = entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+                if (!$milestone->hasAccess()) $milestone = null;
                 return $milestone;
             }
             catch (\Exception $e) { }
