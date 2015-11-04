@@ -2,6 +2,10 @@
 
     use thebuggenie\modules\agile\entities\AgileBoard;
 
+
+// shows only issues with permissions, useful when if we're including subprojects
+if (isset($issues) && !empty($issues) && !current($issues)->hasAccess())
+    return;
 ?>
 <div class="tbody <?php if (!count($issues)) echo 'collapsed'; ?>" data-swimlane-identifier="<?php echo $swimlane->getIdentifier(); ?>"<?php if ($swimlane->getBoard()->usesSwimlanes() && $swimlane->hasIdentifiables() && $swimlane->getBoard()->getSwimlaneType() == AgileBoard::SWIMLANES_ISSUES): ?> id="whiteboard_issue_<?php echo $swimlane->getIdentifierIssue()->getID(); ?>" data-issue-id="<?php echo $swimlane->getIdentifierIssue()->getID(); ?>" data-last-updated="<?php echo $swimlane->getIdentifierIssue()->getLastUpdatedTime(); ?>"<?php endif; ?>>
     <?php if ($swimlane->getBoard()->usesSwimlanes() && $swimlane->hasIdentifiables()): ?>

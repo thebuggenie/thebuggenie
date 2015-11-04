@@ -70,7 +70,7 @@
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
-                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_related.png').__('Add an existing issue as a child issue'); ?></a></li>
+                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_related.png').__('Add a relation for this issue'); ?></a></li>
                 <?php endif; ?>
             <?php else: ?>
                 <?php if ($issue->canAddRelatedIssues() && $tbg_user->canReportIssues($issue->getProject())): ?>
