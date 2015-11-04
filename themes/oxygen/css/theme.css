@@ -11064,8 +11064,7 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
     margin-bottom: -6px;
 }
 
-#issue_main .commentcontent .image_container a img,
-#issue_main .commentcontent a img
+#issue_main .commentcontent .image_container a img
 {
     vertical-align: text-top;
 }
