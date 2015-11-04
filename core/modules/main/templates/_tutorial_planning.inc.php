@@ -7,7 +7,7 @@
 
             TBG.Tutorial.Stories.planning = {
                 1: {
-                    message: "<h2><?php echo __('The Bug Genie interactive planning'); ?></h2><?php echo __("This is the the interactive project planning board. From this page you can manage all your releases, milestones, epics, tasks and issues."); ?><br><br><?php echo __("We'll just quickly go over the most important elements on this page to help you get going."); ?>",
+                    message: "<h2><?php echo __('The Bug Genie interactive planning'); ?></h2><?php echo __("This is the interactive project planning board. From this page you can manage all your releases, milestones, epics, tasks and issues."); ?><br><br><?php echo __("We'll just quickly go over the most important elements on this page to help you get going."); ?>",
                     messageSize: 'large',
                     button: "<?php echo __('Next'); ?>"
                 },
