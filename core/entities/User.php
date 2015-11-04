@@ -2300,9 +2300,20 @@
          *
          * @return boolean
          */
-        public function canEditMainMenu()
+        public function canEditMainMenu($target_type = null)
         {
-            $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
+            if (is_null($target_type))
+            {
+                $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
+            }
+            else if ($target_type == 'wiki')
+            {
+                $retval = $this->hasPermission('editwikimenu', 0, 'publish');
+            }
+            else
+            {
+                $retval = false;
+            }
             return ($retval !== null) ? $retval : false;
         }
 

@@ -1798,7 +1798,7 @@ class Main extends framework\Action
             try
             {
                 $milestone = entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
-                if (!$milestone->hasAccess()) $milestone = null;
+                if ($milestone instanceof entities\Milestone && !$milestone->hasAccess()) $milestone = null;
                 return $milestone;
             }
             catch (\Exception $e) { }
@@ -3278,7 +3278,7 @@ class Main extends framework\Action
 
     public function runRemoveLink(framework\Request $request)
     {
-        if (!$this->getUser()->canEditMainMenu())
+        if (!$this->getUser()->canEditMainMenu($request['target_type']))
         {
             $this->getResponse()->setHttpStatus(403);
             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You do not have access to removing links')));

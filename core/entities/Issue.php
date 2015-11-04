@@ -1076,7 +1076,7 @@
          */
         public function getAvailableWorkflowTransitions()
         {
-            return ($this->getWorkflowStep() instanceof \thebuggenie\core\entities\WorkflowStep) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
+            return ($this->getWorkflowStep() instanceof \thebuggenie\core\entities\WorkflowStep && $this->isWorkflowTransitionsAvailable()) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
         }
 
         /**
@@ -1090,6 +1090,8 @@
             $transitions = array();
             $available_statuses = Status::getAll();
             $rule_status_valid = false;
+
+            if (!$this->isWorkflowTransitionsAvailable()) return array($status_ids, $transitions, $rule_status_valid);
 
             foreach ($this->getAvailableWorkflowTransitions() as $transition)
             {
@@ -1129,6 +1131,9 @@
         public function getAvailableStatuses()
         {
             $statuses = array();
+
+            if (!$this->isWorkflowTransitionsAvailable()) return $statuses;
+
             $available_statuses = Status::getAll();
             foreach ($this->getAvailableWorkflowTransitions() as $transition)
             {
@@ -1490,8 +1495,7 @@
 
         public function isWorkflowTransitionsAvailable()
         {
-            if ($this->getProject()->isArchived()) return false;
-            return (bool) $this->_permissionCheck('caneditissue', true);
+            return $this->getProject()->isArchived() ? false : $this->_canPermissionOrEditIssue('cantransitionissue');
         }
 
         public function isInvolved()
@@ -1524,9 +1528,8 @@
             if ($retval !== null) return $retval;
 
             $retval = $this->_permissionCheck('caneditissuebasic');
-            $retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
+            $retval = ($retval === null) ? $this->_permissionCheck('cancreateandeditissues') : $retval;
             $retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
-
             $retval = ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
 
             return $retval;
@@ -1562,7 +1565,7 @@
          */
         public function canEditUserPain()
         {
-            return $this->canEditIssueDetails();
+            return $this->_canPermissionOrEditIssue('caneditissueuserpain');
         }
 
         /**
@@ -6134,6 +6137,16 @@
             $new_subscribers = (array) $this->_new_subscribers;
 
             return (bool) in_array($user_id, $new_subscribers) || (bool) array_key_exists($user_id, $subscribers);
+        }
+
+        /**
+         * Return if the user can edit scrum color
+         *
+         * @return boolean
+         */
+        public function canEditColor()
+        {
+            return $this->_canPermissionOrEditIssue('caneditissuecolor');
         }
 
     }

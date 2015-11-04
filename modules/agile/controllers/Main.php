@@ -102,7 +102,7 @@
          */
         public function runBoard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_only_planning'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
             
             if (!$this->board instanceof entities\AgileBoard) {
@@ -189,7 +189,7 @@
          */
         public function runWhiteboardIssues(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);
@@ -295,7 +295,7 @@
          */
         public function runWhiteboard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);

@@ -245,16 +245,26 @@ class Main extends helpers\ProjectActions
         $this->forward403if(framework\Context::getCurrentProject()->isArchived());
         $this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
         $issue = entities\Issue::getB2DBTable()->selectById((int) $request['story_id']);
-        if ($issue instanceof entities\Issue)
+        try
         {
-            switch ($request['detail'])
+            if ($issue instanceof entities\Issue)
             {
-                case 'color':
-                    $issue->setAgileColor($request['color']);
-                    $issue->save();
-                    return $this->renderJSON(array('failed' => false, 'text_color' => $issue->getAgileTextColor()));
-                    break;
+                switch ($request['detail'])
+                {
+                    case 'color':
+                        $this->forward403unless($issue->canEditColor());
+                        $issue->setAgileColor($request['color']);
+                        $issue->save();
+                        return $this->renderJSON(array('failed' => false, 'text_color' => $issue->getAgileTextColor()));
+                        break;
+                }
             }
+
+        }
+        catch (\Exception $e)
+        {
+            $this->getResponse()->setHttpStatus(400);
+            return $this->renderJSON(array('error' => $e->getMessage()));
         }
         return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid user story')));
     }

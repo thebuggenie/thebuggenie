@@ -8,7 +8,8 @@
         thebuggenie\modules\vcs_integration\entities,
         thebuggenie\modules\vcs_integration\entities\Commit,
         thebuggenie\modules\vcs_integration\entities\IssueLink,
-        thebuggenie\core\entities\tables\Issues;
+        thebuggenie\core\entities\tables\Issues,
+        thebuggenie\core\helpers;
 
     /**
      * Module actions, vcs_integration
@@ -26,7 +27,7 @@
      * @package thebuggenie
      * @subpackage vcs_integration
      */
-    class Main extends framework\Action
+    class Main extends helpers\ProjectActions
     {
 
         public function getAuthenticationMethodForAction($action)
@@ -45,6 +46,7 @@
 
         public function runProjectCommits(framework\Request $request)
         {
+            $this->forward403unless($this->_checkProjectPageAccess('project_commits'));
             $this->selected_project = Project::getByKey($request['project_key']);
             framework\Context::setCurrentProject($this->selected_project);
 
@@ -100,7 +102,7 @@
 
         public function runProjectCommitsMore(framework\Request $request)
         {
-            $this->forward403unless($request->isPost());
+            $this->forward403unless($this->_checkProjectPageAccess('project_commits') || $request->isPost());
 
             $this->selected_project = Project::getByKey($request['project_key']);
             framework\Context::setCurrentProject($this->selected_project);
