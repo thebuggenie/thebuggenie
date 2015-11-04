@@ -588,7 +588,7 @@ class Main extends framework\Action
             $scope->setEnabled();
             framework\Context::setScope($scope);
 
-            if ($this->current_version == '3.2.0') {
+            if (in_array($this->current_version, array('3.2.0', '3.2'))) {
                 $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
                 $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
             }
@@ -601,14 +601,14 @@ class Main extends framework\Action
 
             switch ($this->current_version) {
                 case '3.2.0':
+                case '3.2':
                     $this->_upgradeFrom3dot2($request);
                     break;
+                case '4.1':
                 case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
-                    break;
                 case '4.1.1':
                     $this->_upgradeFrom4dot1dot1($request);
-                    break;
                 case '4.1.2':
                     $this->_upgradeFrom4dot1dot2($request);
                     break;
