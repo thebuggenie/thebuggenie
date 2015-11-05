@@ -323,9 +323,11 @@
                                         <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
                                     </ul>
                                 </div>
-                                <ul class="simple_list button_container" id="add_comment_button_container">
-                                    <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
-                                </ul>
+                                <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
+                                    <ul class="simple_list button_container" id="add_comment_button_container">
+                                        <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
+                                    </ul>
+                                <?php endif; ?>
                             </legend>
                             <div id="viewissue_comments">
                                 <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
