@@ -11308,7 +11308,7 @@ div[id^='comment_reply_indicator_']
 .whiteboard-issue .attachments-badge
 {
     display: inline-block;
-    color: rgba(0, 0, 0, 0.45);
+    color: #555;
     margin-top: 1px;
     vertical-align: middle;
     margin-left: 2px;
