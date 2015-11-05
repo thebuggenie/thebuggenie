@@ -316,7 +316,7 @@
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
                         <fieldset class="comments" id="viewissue_comments_container">
                             <legend class="viewissue_comments_header">
-                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count">'.$issue->countUserComments().'</span>')); ?>
+                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?>
                                 <div class="dropper_container">
                                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
                                     <ul class="more_actions_dropdown dropdown_box popup_box leftie">
@@ -332,6 +332,11 @@
                             <div id="viewissue_comments">
                                 <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
                             </div>
+                            <script type="text/javascript">
+                                require(['prototype'], function (prototype) {
+                                    $('viewissue_comment_count').update($('comments_box').select('.comment').size());
+                                });
+                            </script>
                         </fieldset>
                         <fieldset class="viewissue_history">
                             <legend class="viewissue_history_header">
