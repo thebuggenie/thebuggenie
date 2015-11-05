@@ -2543,6 +2543,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 if (swimlane_rows.size() != 2) return;
 
                 swimlane_rows[0].down('.swimlane_count').update(swimlane_rows[1].select('.whiteboard-issue').size());
+
+                if (swimlane_rows[1].select('.whiteboard-issue').size() == 0) swimlane.addClassName('collapsed');
             });
         }
 
@@ -3214,6 +3216,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails = function (list) {
+            console.log('TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails');
             var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
             var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
             var visible_issues = list_issues.filter(':visible');
@@ -3261,6 +3264,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
+            console.log('TBG.Project.Planning.calculateAllMilestonesVisibilityDetails');
             jQuery('.milestone_box.initialized').find('.milestone_issues').each(function (index) {
                 var was_collapsed = $(this).hasClassName('collapsed');
                 $(this).removeClassName('collapsed');
@@ -6801,6 +6805,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Search.liveUpdate = function (force) {
+            console.log('TBG.Search.liveUpdate');
             var fif = $('find_issues_form');
             var url = fif.action;
             var parameters = fif.serialize();
