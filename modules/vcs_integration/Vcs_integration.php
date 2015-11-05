@@ -175,7 +175,8 @@
 
         public function listen_project_links(framework\Event $event)
         {
-            $event->addToReturnList(array('url' => framework\Context::getRouting()->generate('vcs_commitspage', array('project_key' => framework\Context::getCurrentProject()->getKey())), 'title' => framework\Context::getI18n()->__('Commits')));
+            if (framework\Context::getUser()->hasProjectPageAccess('project_commits', framework\Context::getCurrentProject()))
+                $event->addToReturnList(array('url' => framework\Context::getRouting()->generate('vcs_commitspage', array('project_key' => framework\Context::getCurrentProject()->getKey())), 'title' => framework\Context::getI18n()->__('Commits')));
         }
 
         public function listen_projectheader(framework\Event $event)
