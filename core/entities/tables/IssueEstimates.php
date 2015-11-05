@@ -89,7 +89,6 @@
                 $crit = $this->getCriteria();
                 if ($startdate && $enddate)
                 {
-                    $crit->addWhere(self::EDITED_AT, $startdate, Criteria::DB_GREATER_THAN_EQUAL);
                     $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
                 }
 

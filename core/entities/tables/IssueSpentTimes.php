@@ -58,14 +58,29 @@
             if (count($issue_ids))
             {
                 $crit = $this->getCriteria();
+                $crit2 = $this->getCriteria();
+                $points_retarr_keys = array_keys($points_retarr);
+                $hours_retarr_keys = array_keys($hours_retarr);
+
+                $crit2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
+                $crit2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
+
                 if ($startdate && $enddate)
                 {
                     $crit->addWhere(self::EDITED_AT, $startdate, Criteria::DB_GREATER_THAN_EQUAL);
                     $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
+                    $crit2->addWhere(self::EDITED_AT, $startdate, Criteria::DB_LESS_THAN);
                 }
 
                 $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
                 $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
+                $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
+
+                if ($res2 = $this->doSelectOne($crit2))
+                {
+                    $points_retarr[$points_retarr_keys[0]][] = $res2->get('spent_points');
+                    $hours_retarr[$hours_retarr_keys[0]][] = $res2->get('spent_hours');
+                }
 
                 if ($res = $this->doSelect($crit))
                 {
@@ -75,7 +90,6 @@
                         {
                             $sd = $row->get(self::EDITED_AT);
                             $date = mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd));
-                            $points_retarr_keys = array_keys($points_retarr);
                             foreach ($points_retarr_keys as $k => $key)
                             {
                                 if ($key < $date) continue;
@@ -90,7 +104,6 @@
                                         $points_retarr[$key][] = $row->get(self::SPENT_POINTS);
                                 }
                             }
-                            $hours_retarr_keys = array_keys($hours_retarr);
                             foreach ($hours_retarr_keys as $k => $key)
                             {
                                 if ($key < $date) continue;
