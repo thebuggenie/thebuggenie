@@ -2060,6 +2060,8 @@
 
         public function getTotalPercentageByMilestone($milestone)
         {
+            if ($this->countIssuesByMilestone($milestone) == 0) return 0;
+
             return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone) / $this->countIssuesByMilestone($milestone);
         }
 
