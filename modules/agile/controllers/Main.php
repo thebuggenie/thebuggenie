@@ -366,7 +366,7 @@
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
 
-            $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
+            if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess()) return $this->renderJSON(array('child_issue' => 0, 'issue_details' => array(), 'deleted' => 1));
 
             $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON(), 'deleted' => $issue->isDeleted() ? 1 : 0);
 
