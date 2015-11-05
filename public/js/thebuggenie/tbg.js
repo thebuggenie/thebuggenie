@@ -1536,7 +1536,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.Dashboard.initializeSorting = function ($) {
             $('.dashboard_column.jsortable').sortable({
                 handle: '.dashboardhandle',
-                connectWith: '.dashboard_column'
+                connectWith: '.dashboard_column',
+                helper: function(event, ui){
+                    var $clone =  $(ui).clone();
+                    $clone .css('position','absolute');
+                    return $clone.get(0);
+                }
             }).bind('sortupdate', TBG.Main.Dashboard.sort);
         };
 
