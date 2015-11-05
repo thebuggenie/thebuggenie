@@ -3,7 +3,8 @@
     namespace thebuggenie\modules\vcs_integration\entities\tables;
 
     use thebuggenie\core\entities\tables\ScopedTable;
-    use \thebuggenie\core\entities\Context;
+    use \thebuggenie\core\entities\Context,
+        b2db\Criteria;
 
     /**
      * B2DB Table, vcs_integration -> VCSIntegrationIssueLinksTable
@@ -69,7 +70,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, $scope);
             $crit->addWhere(self::ISSUE_NO, $id);
-            $crit->addOrderBy(self::ID, 'desc');
+            $crit->addOrderBy(Commits::DATE, Criteria::SORT_DESC);
 
             if ($limit !== null)
                 $crit->setLimit($limit);
