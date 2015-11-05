@@ -2627,11 +2627,23 @@
             if ($this->_recentactivities === null)
             {
                 $this->_recentactivities = array();
+                foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
+                {
+                    if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
+                    {
+                        $this->_recentactivities[$log_item['timestamp']] = array();
+                    }
+                    $this->_recentactivities[$log_item['timestamp']][] = $log_item;
+                }
+
+                ksort($this->_recentactivities, SORT_NUMERIC);
+                reset($this->_recentactivities);
+                $min_timestamp = key($this->_recentactivities);
+
                 foreach ($this->getBuilds() as $build)
                 {
-                    if ($build->isReleased() && $build->getReleaseDate() <= NOW)
+                    if ($build->isReleased() && $build->getReleaseDate() <= NOW && $build->getReleaseDate() >= $min_timestamp)
                     {
-                        if ($build->getReleaseDate() > NOW) continue;
                         if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
                         {
                             $this->_recentactivities[$build->getReleaseDate()] = array();
@@ -2643,7 +2655,7 @@
                 {
                     if ($milestone->isStarting() && $milestone->isSprint())
                     {
-                        if ($milestone->getStartingDate() > NOW) continue;
+                        if ($milestone->getStartingDate() > NOW || $milestone->getStartingDate() < $min_timestamp) continue;
                         if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
                         {
                             $this->_recentactivities[$milestone->getStartingDate()] = array();
@@ -2652,22 +2664,13 @@
                     }
                     if ($milestone->isScheduled() && $milestone->isReached())
                     {
-                        if ($milestone->getReachedDate() > NOW) continue;
+                        if ($milestone->getReachedDate() > NOW || $milestone->getReachedDate() < $min_timestamp) continue;
                         if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
                         {
                             $this->_recentactivities[$milestone->getReachedDate()] = array();
                         }
                         $this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
                     }
-                }
-
-                foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
-                {
-                    if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
-                    {
-                        $this->_recentactivities[$log_item['timestamp']] = array();
-                    }
-                    $this->_recentactivities[$log_item['timestamp']][] = $log_item;
                 }
 
                 krsort($this->_recentactivities, SORT_NUMERIC);
