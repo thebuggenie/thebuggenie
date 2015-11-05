@@ -62,7 +62,7 @@
 
         public function getCountsByUserIDAndGroupableMinutes($user_id, $minutes = 0)
         {
-            if ($minutes <= 0) return $this->getCountsByUserID($user_id);
+            if ($minutes <= 0 || !is_numeric($minutes)) return $this->getCountsByUserID($user_id);
 
             $notification_type_col = \b2db\Core::getTablePrefix() . self::NOTIFICATION_TYPE;
             $created_at_col = \b2db\Core::getTablePrefix() . self::CREATED_AT;
@@ -116,7 +116,7 @@
 
         public function getByUserIDAndGroupableMinutes($user_id, $minutes = 0)
         {
-            if ($minutes <= 0) return $this->getByUserID($user_id);
+            if ($minutes <= 0 || !is_numeric($minutes)) return $this->getByUserID($user_id);
 
             $notification_type_issue_updated_col = \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED;
             $seconds = $minutes * 60;
