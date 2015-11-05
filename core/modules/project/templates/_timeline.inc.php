@@ -39,10 +39,10 @@
                     </td>
                 </tr>
             <?php else: ?>
-                <?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'include_user' => true, 'include_details' => true, 'include_issue_title' => !($prev_timestamp == $activity['timestamp'] && $prev_issue == $activity['target']))); ?>
+                <?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'include_user' => true, 'include_details' => true, 'include_issue_title' => !($prev_timestamp == $activity['timestamp'] && isset($activity['target']) && $prev_issue == $activity['target']))); ?>
             <?php endif; ?>
             <?php $prev_timestamp = $timestamp; ?>
-            <?php $prev_issue = $activity['target']; ?>
+            <?php $prev_issue = isset($activity['target']) ? $activity['target'] : null; ?>
         <?php endforeach; ?>
         <?php $prev_date = $date; ?>
     <?php endforeach; ?>
