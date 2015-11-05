@@ -43,7 +43,9 @@
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 
-            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParserMarkdown::transform', $this);
+            $parameters = array();
+            if (isset($this->options['target'])) $parameters['target'] = $this->options['target'];
+            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParserMarkdown::transform', $this, $parameters);
             $event->trigger();
 
             foreach ($event->getReturnList() as $regex) {
