@@ -13,7 +13,7 @@
                         </td>
                     </tr>
                 <?php endif; ?>
-                <?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'include_issue_title' => !($prev_timestamp == $action['timestamp'] && $prev_issue == $action['target']))); ?>
+                <?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'include_issue_title' => !($prev_timestamp == $action['timestamp'] && $prev_issue == $action['target']), 'include_time' => true)); ?>
                 <?php $prev_date = $date; ?>
                 <?php $prev_timestamp = $action['timestamp']; ?>
                 <?php $prev_issue = $action['target']; ?>
