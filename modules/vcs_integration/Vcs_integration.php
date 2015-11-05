@@ -128,7 +128,7 @@
         {
             $event->addToReturnList(array(array('/([a-f0-9]{40})/'), array($this, '_parse_commit')));
 
-            if (framework\Context::getModule('vcs_integration')->getSetting('browser_type_'.framework\Context::getCurrentProject()->getID()) === 'gitlab')
+            if (framework\Context::isProjectContext() && framework\Context::getModule('vcs_integration')->getSetting('browser_type_'.framework\Context::getCurrentProject()->getID()) === 'gitlab')
             {
               $event->addToReturnList(array(
                 array('/(\![0-9])/'), function ($matches) use ($event)
