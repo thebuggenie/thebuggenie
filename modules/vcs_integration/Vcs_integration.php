@@ -127,6 +127,18 @@
         public function listen_thebuggenie_core_helpers_textparser_char_regexes(framework\Event $event)
         {
             $event->addToReturnList(array(array('/([a-f0-9]{40})/'), array($this, '_parse_commit')));
+
+            if (framework\Context::getModule('vcs_integration')->getSetting('browser_type_'.framework\Context::getCurrentProject()->getID()) === 'gitlab')
+            {
+              $event->addToReturnList(array(
+                array('/(\![0-9])/'), function ($matches) use ($event)
+                  {
+                    if (!$event->getParameter('target') instanceof Commit) return $matches[0];
+
+                    return link_tag($event->getParameter('target')->getGitlabUrlForMergeRequestID(substr($matches[0], 1)), $matches[0], array('target' => '_blank'));
+                  }
+              ));
+            }
         }
 
         protected function _getCommitLink($commit)
