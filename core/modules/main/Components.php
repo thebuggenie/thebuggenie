@@ -688,6 +688,8 @@
                     list($more_actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, 10 * $i + 10, $limit_to_target);
                     $i++;
 
+                    if (!count($more_actions)) break;
+
                     $actions = array_merge($actions, $more_actions);
 
                     if (count($limit_to_target) >= 10) break;

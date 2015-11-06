@@ -2420,6 +2420,8 @@
                             list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
                             $i++;
 
+                            if (!count($more_res)) break;
+
                             $res = array_merge($res, $more_res);
 
                             if (count($limit_to_target) >= $limit) break;
@@ -2437,6 +2439,8 @@
                         {
                             list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
                             $i++;
+
+                            if (!count($more_res)) break;
 
                             $res = array_merge($res, $more_res);
 
