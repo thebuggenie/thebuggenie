@@ -2541,7 +2541,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
-        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function() {
+        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function(new_issue_retrieved) {
+            var new_issue_retrieved = new_issue_retrieved || false;
+
             $$('#whiteboard .tbody').each(function (swimlane) {
                 swimlane_rows = swimlane.select('.tr');
 
@@ -2549,7 +2551,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
                 swimlane_rows[0].down('.swimlane_count').update(swimlane_rows[1].select('.whiteboard-issue').size());
 
-                if (swimlane_rows[1].select('.whiteboard-issue').size() == 0) swimlane.addClassName('collapsed');
+                if (swimlane_rows[1].select('.whiteboard-issue').size() == 0) {
+                    swimlane.addClassName('collapsed');
+                }
+                else if (new_issue_retrieved && swimlane_rows[1].select('.whiteboard-issue').size() > 0) {
+                    swimlane.removeClassName('collapsed');
+                }
             });
         }
 
@@ -2850,7 +2857,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
-                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
+                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts(true);
                                     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                                 }
                             }
