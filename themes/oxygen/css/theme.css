@@ -9777,9 +9777,15 @@ td.legendLabel
     margin-top: 9px;
 }
 
-.dashboard_view_container > .container_div > .header {
+.dashboard_view_container > .container_div > .header
+{
     margin: 0 !important;
     padding: 10px !important;
+}
+
+.issuelog-project-logo
+{
+    margin-bottom: -3px;
 }
 
 
@@ -12066,5 +12072,3 @@ div[id^='wiki_'][id$='_no_links']
     margin-top: 10px;
     border: 1px dotted rgb(170, 170, 170);
 }
-
-.issuelog-project-logo { margin-bottom: -4.5px; }
