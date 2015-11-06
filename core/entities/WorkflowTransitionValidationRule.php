@@ -402,14 +402,21 @@
                     return false;
                 case self::RULE_ISSUE_IN_MILESTONE_VALID:
                     $valid_items = explode(',', $this->getRuleValue());
-
                     if ($input instanceof \thebuggenie\core\entities\Issue)
                     {
-                        if (!$input->getMilestone() instanceof \thebuggenie\core\entities\Milestone) return false;
+                        $issue = $input;
+                    }
+                    else if ($input->hasParameter('issue_id'))
+                    {
+                        $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectByID((int) $input->getParameter('issue_id'));
+                    }
+                    if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue)
+                    {
+                        if (!$issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) return false;
 
                         if (count($valid_items) == 1 && reset($valid_items) == '') return true;
 
-                        return in_array($input->getMilestone()->getID(), $valid_items);
+                        return in_array($issue->getMilestone()->getID(), $valid_items);
                     }
                     return false;
                 case self::RULE_STATUS_VALID:
