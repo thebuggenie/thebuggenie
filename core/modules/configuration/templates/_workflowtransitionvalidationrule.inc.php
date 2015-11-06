@@ -29,6 +29,7 @@
             case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
             case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
             case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+            case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID:
             default:
                 ?>
                 <td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
@@ -42,6 +43,8 @@
                         <?php echo __('Reproducability is any of these values: %reproducabilities', array('%reproducabilities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
                     <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID): ?>
                         <?php echo __('Assignee is member of any of these teams: %teams', array('%teams' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+                    <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID): ?>
+                        <?php echo __('Issue is in any of these milestones: %milestones', array('%milestones' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
                     <?php elseif ($rule->isCustom()): ?>
                         <?php echo __('Custom field %customfield is any of these values: %values', array('%customfield' => $rule->getCustomFieldname(), '%values' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
                     <?php endif; ?>
@@ -66,6 +69,8 @@
                                     <?php echo __('Assignee must be member of any of these teams'); ?>
                                 <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPre()): ?>
                                     <?php echo __('User must be member of any of these teams'); ?>
+                                <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID && $rule->isPre()): ?>
+                                    <?php echo __('Issue must be in any of these milestones'); ?>
                                 <?php endif; ?>
                             </label>
                             <?php foreach ($rule->getRuleOptions() as $option): ?>

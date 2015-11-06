@@ -418,7 +418,7 @@
 
         public function componentLogitem()
         {
-            if ($this->log_action['target_type'] == 1)
+            if ($this->log_action['target_type'] == tables\Log::TYPE_ISSUE)
             {
                 try
                 {
