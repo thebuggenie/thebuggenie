@@ -37,9 +37,15 @@
                     <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;">&nbsp;</td>
                 </tr>
                 <tr>
+                    <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;"><?php echo __('Previous effort'); ?></td>
+                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_previous_spent_points"><?php echo isset($burndown_data['spent_times']['points_spent_before']) ? $burndown_data['spent_times']['points_spent_before'] : 0; ?></td>
+                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_previous_spent_hours"><?php echo isset($burndown_data['spent_times']['hours_spent_before']) ? $burndown_data['spent_times']['hours_spent_before'] : 0; ?></td>
+                    <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;">&nbsp;</td>
+                </tr>
+                <tr>
                     <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;"><?php echo __('Current effort'); ?></td>
-                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_points"><?php echo $milestone->getPointsSpent(); ?></td>
-                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_hours"><?php echo $milestone->getHoursSpent(); ?></td>
+                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_points"><?php echo isset($burndown_data['spent_times']['points_spent_before']) ? $milestone->getPointsSpent() - $burndown_data['spent_times']['points_spent_before'] : $milestone->getPointsSpent(); ?></td>
+                    <td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_hours"><?php echo isset($burndown_data['spent_times']['hours_spent_before']) ? $milestone->getHoursSpent() - $burndown_data['spent_times']['hours_spent_before'] : $milestone->getHoursSpent(); ?></td>
                     <td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;">&nbsp;</td>
                 </tr>
                 <tr>
