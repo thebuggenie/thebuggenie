@@ -1445,7 +1445,7 @@ class Context
                         }
                         elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
                         {
-                            if ($target_id == 0 && $permission['role_id'] == 0)
+                            if ($permission['role_id'] == 0)
                             {
                                 return (bool) array_sum(array_map(function($permission) use($tid)
                                 {
