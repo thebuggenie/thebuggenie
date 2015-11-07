@@ -2925,7 +2925,7 @@
             {
                 return (bool) ($this->permissionCheck('canadd'.$field) || $this->permissionCheck('canaddextrainformationtoissues'));
             }
-            elseif (in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')))
+            elseif (in_array($field, array('user_pain', 'pain_bug_type', 'pain_likelihood', 'pain_effect')))
             {
                 return (bool) ($this->permissionCheck('caneditissueuserpain') || $this->permissionCheck('caneditissue'));
             }
