@@ -1,5 +1,5 @@
 <?php if ($tbg_user->hasProjectPageAccess('project_planning', $project) || $tbg_user->hasProjectPageAccess('project_only_planning', $project)): ?>
-    <li class="button-dropdown cf">
+    <li class="button-dropdown">
         <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), __('Agile'), array('class' => 'button button-silver righthugging')); ?>
         <a class="dropper button button-silver lefthugging" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>
         <ul class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
