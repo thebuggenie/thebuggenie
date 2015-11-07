@@ -308,10 +308,10 @@
                                 <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
                                     <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
                                         <select name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes">
-                                            <option value="0"><?php echo __('All categories'); ?></option>
+                                            <option value="0"<?php if ($tbg_user->getNotificationSetting($key, 0)->getValue() == 0): ?> selected<?php endif; ?>><?php echo __('All categories'); ?></option>
                                             <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
                                                 <?php if (!$category->canUserSet($tbg_user)) continue; ?>
-                                                <option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
+                                                <option value="<?php echo $category_id; ?>"<?php if ($tbg_user->getNotificationSetting($key, 0)->getValue() == $category_id): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
@@ -339,10 +339,10 @@
                                 <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
                                     <td colspan="2" style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
                                         <select name="core_<?php echo $key; ?>" id="<?php echo $key; ?>_yes">
-                                            <option value="0"><?php echo __('All categories'); ?></option>
+                                            <option value="0"<?php if ($tbg_user->getNotificationSetting($key, 0)->getValue() == 0): ?> selected<?php endif; ?>><?php echo __('All categories'); ?></option>
                                             <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
                                                 <?php if (!$category->canUserSet($tbg_user)) continue; ?>
-                                                <option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
+                                                <option value="<?php echo $category_id; ?>"<?php if ($tbg_user->getNotificationSetting($key, 0)->getValue() == $category_id): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </td>

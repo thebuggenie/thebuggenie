@@ -1234,7 +1234,7 @@ class Main extends framework\Action
                     {
                         if ($request->hasParameter('core_' . $setting))
                         {
-                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS)
+                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY)
                             {
                                 $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
                             }

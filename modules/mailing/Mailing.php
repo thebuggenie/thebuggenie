@@ -803,6 +803,7 @@ EOT;
         {
             $request = $event->getParameter('request');
             $notificationsettings = $this->_getNotificationSettings();
+
             foreach ($notificationsettings as $setting => $description)
             {
                 if ($request->hasParameter('mailing_' . $setting))
@@ -813,6 +814,16 @@ EOT;
                 {
                     framework\Context::getUser()->setNotificationSetting($setting, false, 'mailing')->save();
                 }
+            }
+
+            // Currently you can only select one category of new issues to be notified regardless of multiple modules implementing notifications. However in this module's code local constant "NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY" will be referenced and that's why code below update its value based on core module's notifications settings.
+            if ($request->hasParameter('core_' . framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY))
+            {
+                framework\Context::getUser()->setNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, $request->getParameter('core_' . framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY), 'mailing')->save();
+            }
+            else
+            {
+                framework\Context::getUser()->setNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->save();
             }
         }
 
