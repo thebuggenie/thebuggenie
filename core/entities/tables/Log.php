@@ -130,18 +130,21 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::UID, $user_id);
             $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
-            if ($limit !== null)
-            {
-                $crit->setLimit($limit);
-            }
-            if ($offset !== null)
-            {
-                $crit->setOffset($offset);
-            }
 
             if ($limit_to_target === true)
             {
                 $limit_to_target = array();
+                $crit->addWhere(self::TIME, strtotime('-1 month'), Criteria::DB_GREATER_THAN);
+            }
+            else {
+                if ($limit !== null)
+                {
+                    $crit->setLimit($limit);
+                }
+                if ($offset !== null)
+                {
+                    $crit->setOffset($offset);
+                }
             }
 
             $ret_arr = array();
@@ -149,14 +152,26 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                    $should_add_row = true;
+
+                    if ($row->get(self::TARGET_TYPE) == self::TYPE_ISSUE)
                     {
-                        $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        $issue = Issues::getTable()->selectById($row->get(self::TARGET));
+
+                        $should_add_row = $issue instanceof \thebuggenie\core\entities\Issue && !($issue->isDeleted()) && $issue->hasAccess();
                     }
 
-                    $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+                    if ($should_add_row)
+                    {
+                        if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                        {
+                            $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        }
 
-                    if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                        $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+
+                        if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                    }
                 }
             }
 
@@ -170,35 +185,50 @@
             $crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
             $crit->addWhere(Issues::PROJECT_ID, $project_id);
             $crit->addWhere(Issues::DELETED, false);
-            if ($limit !== null)
-            {
-                $crit->setLimit($limit);
-            }
-            if ($offset !== null)
-            {
-                $crit->setOffset($offset);
-            }
-
-            $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
 
             if ($limit_to_target === true)
             {
                 $limit_to_target = array();
+                $crit->addWhere(self::TIME, strtotime('-1 month'), Criteria::DB_GREATER_THAN);
             }
+            else {
+                if ($limit !== null)
+                {
+                    $crit->setLimit($limit);
+                }
+                if ($offset !== null)
+                {
+                    $crit->setOffset($offset);
+                }
+            }
+
+            $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
 
             $ret_arr = array();
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
                 {
-                    if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                    $should_add_row = true;
+
+                    if ($row->get(self::TARGET_TYPE) == self::TYPE_ISSUE)
                     {
-                        $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        $issue = Issues::getTable()->selectById($row->get(self::TARGET));
+
+                        $should_add_row = $issue instanceof \thebuggenie\core\entities\Issue && !($issue->isDeleted()) && $issue->hasAccess();
                     }
 
-                    $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+                    if ($should_add_row)
+                    {
+                        if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                        {
+                            $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        }
 
-                    if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                        $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+
+                        if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                    }
                 }
             }
 
@@ -213,35 +243,50 @@
             $crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), Criteria::DB_IN);
             $crit->addWhere(Issues::PROJECT_ID, $project_id);
             $crit->addWhere(Issues::DELETED, false);
-            if ($limit !== null)
-            {
-                $crit->setLimit($limit);
-            }
-            if ($offset !== null)
-            {
-                $crit->setOffset($offset);
-            }
-
-            $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
 
             if ($limit_to_target === true)
             {
                 $limit_to_target = array();
+                $crit->addWhere(self::TIME, strtotime('-1 month'), Criteria::DB_GREATER_THAN);
             }
+            else {
+                if ($limit !== null)
+                {
+                    $crit->setLimit($limit);
+                }
+                if ($offset !== null)
+                {
+                    $crit->setOffset($offset);
+                }
+            }
+
+            $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
 
             $ret_arr = array();
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
                 {
-                    if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                    $should_add_row = true;
+
+                    if ($row->get(self::TARGET_TYPE) == self::TYPE_ISSUE)
                     {
-                        $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        $issue = Issues::getTable()->selectById($row->get(self::TARGET));
+
+                        $should_add_row = $issue instanceof \thebuggenie\core\entities\Issue && !($issue->isDeleted()) && $issue->hasAccess();
                     }
 
-                    $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+                    if ($should_add_row)
+                    {
+                        if (is_array($limit_to_target) && ! in_array($row->get(self::TARGET).'.'.$row->get(self::TIME), $limit_to_target))
+                        {
+                            $limit_to_target[] = $row->get(self::TARGET).'.'.$row->get(self::TIME);
+                        }
 
-                    if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                        $ret_arr[$row->get(self::ID)] = array('change_type' => $row->get(self::CHANGE_TYPE), 'text' => $row->get(self::TEXT), 'previous_value' => $row->get(self::PREVIOUS_VALUE), 'current_value' => $row->get(self::CURRENT_VALUE), 'timestamp' => $row->get(self::TIME), 'user_id' => $row->get(self::UID), 'target' => $row->get(self::TARGET), 'target_type' => $row->get(self::TARGET_TYPE));
+
+                        if (is_array($limit_to_target) && count($limit_to_target) >= $limit) break;
+                    }
                 }
             }
 
