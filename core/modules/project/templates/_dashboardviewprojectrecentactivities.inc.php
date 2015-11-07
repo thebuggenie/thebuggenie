@@ -2,8 +2,10 @@
     <?php if (count($recent_activities) > 0): ?>
         <?php include_component('project/timeline', array('activities' => $recent_activities)); ?>
         <div style="margin-right: 10px;">
-        <?php echo link_tag(make_url('project_timeline', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Show complete timeline'), array('class' => 'button button-silver dash', 'title' => __('Show more'))); ?>
-        <?php echo link_tag(make_url('project_timeline_important', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Show timeline for important events'), array('class' => 'button button-silver dash', 'title' => __('Show more'))); ?>
+            <?php if ($tbg_user->hasProjectPageAccess('project_timeline', \thebuggenie\core\framework\Context::getCurrentProject())): ?>
+                <?php echo link_tag(make_url('project_timeline', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Show complete timeline'), array('class' => 'button button-silver dash', 'title' => __('Show more'))); ?>
+                <?php echo link_tag(make_url('project_timeline_important', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Show timeline for important events'), array('class' => 'button button-silver dash', 'title' => __('Show more'))); ?>
+            <?php endif; ?>
         </div>
         <br style="clear: both;">
     <?php else: ?>
