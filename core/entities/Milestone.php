@@ -831,6 +831,14 @@
                     {
                         $total_estimations_hours -= $spent_times['hours'][$prev_key];
                     }
+                    else
+                    {
+                        if (isset($spent_times['hours_spent_before']))
+                        {
+                            $spent_times['hours_spent_before'] = round($spent_times['hours_spent_before'] / 100, 2);
+                            $total_estimations_hours -= $spent_times['hours_spent_before'];
+                        }
+                    }
 
                     $burndown['hours'][$key] = $total_estimations_hours;
                     $prev_key = $key;
@@ -843,6 +851,13 @@
                     if (! is_null($prev_key) && (array_key_exists($prev_key, $spent_times['points'])))
                     {
                         $total_estimations_points -= $spent_times['points'][$prev_key];
+                    }
+                    else
+                    {
+                        if (isset($spent_times['points_spent_before']))
+                        {
+                            $total_estimations_points -= $spent_times['points_spent_before'];
+                        }
                     }
 
                     $burndown['points'][$key] = $total_estimations_points;

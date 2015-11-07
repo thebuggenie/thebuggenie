@@ -76,12 +76,6 @@
                 $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
                 $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
 
-                if ($res2 = $this->doSelectOne($crit2))
-                {
-                    $points_retarr[$points_retarr_keys[0]][] = $res2->get('spent_points');
-                    $hours_retarr[$hours_retarr_keys[0]][] = $res2->get('spent_hours');
-                }
-
                 if ($res = $this->doSelect($crit))
                 {
                     while ($row = $res->getNextRow())
@@ -137,7 +131,15 @@
                     $hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
             }
 
-            return array('points' => $points_retarr, 'hours' => $hours_retarr);
+            $returnarr = array('points' => $points_retarr, 'hours' => $hours_retarr);
+
+            if ($res2 = $this->doSelectOne($crit2))
+            {
+                $returnarr['points_spent_before'] = $res2->get('spent_points');
+                $returnarr['hours_spent_before'] = $res2->get('spent_hours');
+            }
+
+            return $returnarr;
         }
         
         public function getAllSpentTimesForFixing()
