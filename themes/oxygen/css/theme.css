@@ -1130,7 +1130,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .user_popup {z-index: 100; width: 300px; margin-top: 10px; display: none; position: absolute; }
 .user_popup, #user_details_popup { font-size: 0.9em; color: #555; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0; width: 240px; float: left; }
-#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 10px; float: left; line-height: 1.2; }
+#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 0; float: left; line-height: 1.2; }
 .account_details { margin: 10px 0px 10px 10px; padding: 10px; font-size: 1em; }
 .account_details .user_realname { font-size: 1.2em; font-weight: bold; line-height: 1.3; padding-bottom: 2px; }
 .account_details .user_username { font-size: 0.9em; line-height: 1.2; }
@@ -1223,11 +1223,14 @@ label[for=profile_prefer_wiki_markdown] { font-weight: normal; }
     margin: 0 auto;
     text-align: center;
 }
-.usercard .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }
+.usercard .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; display: block; margin-top: 3px; }
 .usercard .user_id { float: right; font-size: 2.3em; font-weight: normal; color: #C4CAE9; }
 .user_popup .user_realname .user_status, .usercard .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
-.usercard .user_realname .user_email { font-size: 0.6em; font-weight: normal; color: #AAA; }
-.usercard .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
+.usercard .user_realname .user_email { font-size: 0.7em; font-weight: normal; color: #AAA; display: block; margin-top: 7px;}
+.usercard .user_realname .edit_user { font-size: 0.75em; display: block; margin-top: 10px; }
+.usercard .user_realname .friends_link { font-size: 0.75em; display: block; margin-top: 10px; margin-left: -2px; }
+.usercard .user_details { font-size: 1.1em; line-height: 1.7; font-weight: normal; padding: 5px 15px; clear: both; width: 455px; float: right; border-left: 1px solid #DDD; box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8); }
+.usercard .user_profile { font-size: 1.0em; font-weight: normal; padding: 3px; width: 180px; float: left; }
 .user_popup .user_avatar { padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; margin-right: 6px; display: inline-block; }
 .user_popup .user_details { font-size: 0.8em; width: 230px; font-weight: normal; padding: 3px 0; display: inline-block; clear: none; color: #666; line-height: 1.3em;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; vertical-align: top; }
 .user_popup .user_details:first-line { font-size: 1.7em; font-weight: normal; }
@@ -6371,10 +6374,9 @@ div.calendar tr.days td.otherDay
 
 img[id^='toggle_friend_'][id$='_indicator']
 {
-    margin-left: 5px;
-    margin-top: 4px;
-    margin-bottom: 3px;
-    margin-right: 3px;
+    margin-left: 2px;
+    margin-top: -1px;
+    margin-bottom: -3px;
 }
 tr[id^='users_results_user_'] > td > img[id^='toggle_friend_'][id$='_indicator']
 {
@@ -7763,39 +7765,15 @@ input[type=checkbox][name=send_login_details]
 #user_details_popup .user_realname
 {
     font-weight: normal;
-    margin-top: 3px;
-}
-
-#user_details_popup .user_username:before
-{
-    content: "(";
-}
-
-#user_details_popup .user_username:after
-{
-    content: ")";
-}
-
-#user_details_popup .user_status:before
-{
-    display: block;
-    content: "";
-    margin-top: 3px;
+    margin-top: 5px;
+    clear: both;
 }
 
 #user_details_popup .user_status
 {
-    display: inline;
-}
-
-#user_details_popup .user_email
-{
-    display: inline;
-}
-
-#user_details_popup .user_details
-{
-    padding: 5px 0px;
+    display: block;
+    margin-top: 10px;
+    font-size: 0.7em;
 }
 
 #user_details_popup .user_details i:after
@@ -7809,16 +7787,19 @@ input[type=checkbox][name=send_login_details]
 {
     margin: 10px 0 0 0;
     padding: 0;
+    font-size: 1.1em;
 }
 
 #user_details_popup .user_details ul > li
 {
     margin-bottom: 5px;
+    margin-left: 7px;
 }
 
 #user_details_popup .teamlist
 {
     padding: 0;
+    margin-top: 5px;
 }
 
 #user_details_popup .teamlist .userdropdown > div > div > div:nth-child(3)
