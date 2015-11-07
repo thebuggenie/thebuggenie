@@ -4584,6 +4584,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     -webkit-box-sizing: border-box;
     margin: 0;
 }
+.dashboard_view_issues .issue_user_avatar_cell .user_popup
+ {
+     left: -14px;
+ }
 .dashboard_view_issues .tr .td {
     border-bottom: 1px dashed #EAEAEA;
     padding: 10px 5px 15px;
