@@ -2107,12 +2107,18 @@
          *
          * @return boolean
          */
-        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core')
+        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $check_global_role = null)
         {
             framework\Logging::log('Checking permission '.$permission_type);
             $group_id = (int) $this->getGroupID();
-            $has_associated_project = is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true;
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $has_associated_project);
+            $has_associated_project = is_bool($check_global_role) ? $check_global_role : (is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true);
+            $teams = $this->getTeams();
+
+            if ($target_id != 0 && Project::getB2DBTable()->selectById($target_id) instanceof \thebuggenie\core\entities\Project)
+            {
+                $teams = array_intersect_key($teams, Project::getB2DBTable()->selectById($target_id)->getAssignedTeams());
+            }
+            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $teams, $target_id, $module_name, $has_associated_project);
             if ($retval !== null)
             {
                 framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
@@ -2278,9 +2284,9 @@
                 if ($project_id->isArchived()) return false;
 
                 $project_id = ($project_id instanceof \thebuggenie\core\entities\Project) ? $project_id->getID() : $project_id;
-                $retval = $this->_dualPermissionsCheck('cancreateissues', $project_id, 'cancreateandeditissues', $project_id, null);
+                $retval = $this->hasPermission('cancreateissues', $project_id);
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id);
             }
-            $retval = ($retval !== null) ? $retval : $this->_dualPermissionsCheck('cancreateissues', 0, 'cancreateandeditissues', 0, null);
 
             return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }

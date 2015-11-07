@@ -1445,7 +1445,7 @@ class Context
                         }
                         elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
                         {
-                            if ($permission['role_id'] == 0)
+                            if ($target_id == 0 && $permission['role_id'] == 0)
                             {
                                 return (bool) array_sum(array_map(function($permission) use($tid)
                                 {
@@ -1607,7 +1607,7 @@ class Context
 
             if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
             {
-                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, $target_id);
+                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, 0, $target_id);
             }
 
             if (is_array($retval)) return true;
