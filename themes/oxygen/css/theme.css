@@ -1503,7 +1503,7 @@ table.cleantable th { text-align: center; }
 #users_more_actions_container { float: right; }
 #users_more_actions_container button { float: left; }
 #tab_users_pane > strong { font-weight: bold; display: block; }
-.project_list nav .more_actions_dropdown li.finduser_container { padding: 5px; height: auto; }
+.project_list nav .more_actions_dropdown li.finduser_container { padding: 5px; height: auto; width: 247px; }
 .project_list nav .more_actions_dropdown li.finduser_container:hover { background-color: #FFF; }
 #users_more_actions_container .more_actions_dropdown li.separator { height: 1px; }
 .finduser_container #findusers { width: 300px; }
