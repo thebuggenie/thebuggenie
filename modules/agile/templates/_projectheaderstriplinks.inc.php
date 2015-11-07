@@ -11,7 +11,9 @@
         <?php endif; ?>
     <?php endif; ?>
     <div class="project_header_right button-group inset">
-        <?php echo link_tag(make_url('agile_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())), __('Planning'), array('class' => 'button'.(($tbg_response->getPage() == 'agile_board') ? ' button-pressed' : ''))); ?>
+        <?php if ($tbg_user->hasProjectPageAccess('project_only_planning', $board->getProject())): ?>
+            <?php echo link_tag(make_url('agile_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())), __('Planning'), array('class' => 'button'.(($tbg_response->getPage() == 'agile_board') ? ' button-pressed' : ''))); ?>
+        <?php endif; ?>
         <?php echo link_tag(make_url('agile_whiteboard', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())), __('Whiteboard'), array('class' => 'button'.(($tbg_response->getPage() == 'agile_whiteboard') ? ' button-pressed' : ''))); ?>
         <?php if ($tbg_response->getPage() == 'agile_board'): ?>
             <?php if ($tbg_user->canManageProject(\thebuggenie\core\framework\Context::getCurrentProject())): ?>
