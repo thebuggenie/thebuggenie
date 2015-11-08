@@ -47,6 +47,19 @@
                             break;
                         case 'reassign':
                             $new_milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
+                            if ($request['assign_issues_milestone_id'] === '' || !$new_milestone instanceof \thebuggenie\core\entities\Milestone || $new_milestone->isClosed())
+                            {
+                                switch ($board->getType())
+                                {
+                                    case entities\AgileBoard::TYPE_GENERIC:
+                                        throw new \Exception($this->getI18n()->__('You must select an existing, unfinished milestone'));
+                                        break;
+                                    case entities\AgileBoard::TYPE_SCRUM:
+                                    case entities\AgileBoard::TYPE_KANBAN:
+                                        throw new \Exception($this->getI18n()->__('You must select an existing, unfinished sprint'));
+                                        break;
+                                }
+                            }
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                         case 'addnew':
@@ -558,6 +571,12 @@
             }
         }
 
+        /**
+         * @param framework\Request $request
+         * @param null $milestone
+         * @return null|\thebuggenie\core\entities\Milestone
+         * @throws \Exception
+         */
         protected function _saveMilestoneDetails(framework\Request $request, $milestone = null)
         {
             if (!$request['name'])
@@ -589,6 +608,7 @@
                 $milestone->setStartingDate(0);
 
             $milestone->save();
+            return $milestone;
         }
 
         /**

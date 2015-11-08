@@ -99,6 +99,18 @@
                         ?></option>
                     </select>
                     <select id="reassign_select" name="assign_issues_milestone_id" style="display: none;">
+                        <option value=""><?php
+                            switch ($board->getType())
+                            {
+                                case AgileBoard::TYPE_GENERIC:
+                                    echo __('Select milestone...');
+                                    break;
+                                case AgileBoard::TYPE_SCRUM:
+                                case AgileBoard::TYPE_KANBAN:
+                                    echo __('Select sprint...');
+                                    break;
+                            }
+                            ?></option>
                         <?php foreach ($board->getMilestones() as $upcoming_milestone): ?>
                             <?php if ($upcoming_milestone->getID() == $milestone->getID()) continue; ?>
                             <option value="<?php echo $upcoming_milestone->getID(); ?>"><?php echo $upcoming_milestone->getName(); ?></option>
@@ -110,7 +122,7 @@
                 <?php echo __('%cancel or %mark_milestone_finished', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%mark_milestone_finished' => '')); ?>
                 <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
                 <input class="button button-silver" id="mark_milestone_finished_submit" type="submit" value="<?php echo $savelabel; ?>">
-                <input class="button button-silver" id="mark_milestone_finished_next" type="button" value="<?php echo __('Next'); ?>" style="display: none;" onclick="['milestone_finish_container', 'edit_milestone_container'].each(Element.toggle);">
+                <input class="button button-silver" id="mark_milestone_finished_next" type="button" value="<?php echo __('Next'); ?>" style="display: none;" onclick="$('milestone_finish_container').hide();$('edit_milestone_container').show();">
             </div>
         </div>
     </div>
