@@ -11484,11 +11484,6 @@ div[id^='comment_reply_indicator_']
     box-shadow: none;
 }
 
-#topmenu-container .header_menu li.selected a
-{
-    color: rgb(74, 100, 121);
-}
-
 #topmenu-container.active .header_menu li:hover > div:first-child {
     background-color: white;
     height: 100%;
