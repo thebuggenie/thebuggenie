@@ -3437,10 +3437,10 @@ class Main extends framework\Action
 
                     framework\Context::setCurrentProject($issue->getProject());
 
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue));
+                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue, 'mentionable_target_type' => 'issue'));
                     break;
                 case entities\Comment::TYPE_ARTICLE:
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
+                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'mentionable_target_type' => 'article'));
                     break;
                 default:
                     $comment_html = 'OH NO!';
