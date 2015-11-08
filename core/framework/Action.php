@@ -110,7 +110,7 @@
             $this->getResponse()->setContentType('application/json');
             $this->getResponse()->setDecoration(Response::DECORATE_NONE);
 
-            if (array_key_exists('error', $text)) $this->getResponse()->setHttpStatus(400);
+            if (is_array($text) && array_key_exists('error', $text)) $this->getResponse()->setHttpStatus(400);
 
             if (is_array($text))
                 array_walk_recursive($text , function(&$item) { $item = iconv('UTF-8', 'UTF-8//IGNORE', $item); });
