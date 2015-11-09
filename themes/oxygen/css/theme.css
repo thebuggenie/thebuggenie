@@ -258,6 +258,11 @@ header #user_notifications_count.unread + img { opacity: 1; }
     width: 16px;
     height: 16px;
 }
+#user_notifications_list li.read .notification-project-logo,
+#user_notifications_list li.read .avatar.small
+{
+    opacity: 0.4;
+}
 #user_notifications_list li time {
     font-size: 0.85em;
     color: #888;
