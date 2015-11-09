@@ -1,7 +1,6 @@
 <tr class="hover_highlight" id="item_<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>">
     <td style="padding: 2px; font-size: 12px;" id="<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>_name">
         <?php
-
             if (is_object($item))
             {
                 echo $item->getDescription();
@@ -77,7 +76,7 @@
             <?php endif; ?>
         <?php endif; ?>
     <td style="padding: 2px; text-align: center;">
-        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee'))): ?>
+        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee')) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER)): ?>
             <input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> -
         <?php else: ?>
             <?php if (!$scheme->isCore()): ?>

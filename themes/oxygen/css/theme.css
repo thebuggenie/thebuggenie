@@ -1907,18 +1907,18 @@ a.friend { color: #277CBA; }
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
-#issue_details fieldset .popup_box { font-size: 1em; left: 0; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
+#issue_details fieldset .popup_box, #report_form .reportissue_additional_information_container td.report_issue_help > ul.popup_box { font-size: 1em; left: 0; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
 a.dropper.dropdown_link { position: absolute; right: 2px; top: 50%; margin-top: -11px; line-height: 1em; }
 a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
-#issue_details fieldset img.dropdown { float: none; margin: 3px; }
-#issue_details fieldset dl:hover img.dropdown { display: inline; }
+#issue_details fieldset img.dropdown, #report_form .reportissue_additional_information_container td.report_issue_help > a > img.dropdown { float: none; margin: 3px; }
+#issue_details fieldset dl:hover img.dropdown, #report_form .reportissue_additional_information_container tr:hover > td.report_issue_help > a > img.dropdown { display: inline; }
 #issue_details fieldset dl { padding: 3px; }
 #issue_details fieldset dt, #issue_details fieldset dd { float: none; display: inline-block; vertical-align: middle; padding: 0; line-height: 1em; }
 #issue_details fieldset #issue_percent_complete { width: 160px; float: right; display: inline; }
 
 #project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
 #project_planning.milestone-sort #milestone-sort-actions { display: block; }
-.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, #report_form .reportissue_additional_information_container td.report_issue_help > .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown {
     width: 360px;
@@ -1965,7 +1965,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 .milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
 #project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; z-index: 1012; }
-#issue_details fieldset a.dropper.button-pressed img { display: inline; }
+#issue_details fieldset a.dropper.button-pressed img, .reportissue_additional_information_container td.report_issue_help > .dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
 #issue_details fieldset .userdropdown { position: inherit; }
 .issue_detail_field { font-size: 1.1em; margin-bottom: 2px; }

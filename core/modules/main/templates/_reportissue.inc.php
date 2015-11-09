@@ -570,8 +570,41 @@
                 <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $field => $customdatatype): ?>
                     <table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;" class="additional_information<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> reportissue_error<?php endif; ?>">
                         <tr>
-                            <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
-                            <td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+                            <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                                <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
+                                <td style="width: 326px;position: relative;" class="report_issue_help faded_out dark">
+                                    <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
+                                    <ul class="popup_box more_actions_dropdown" id="<?php echo $customdatatype->getKey(); ?>_change">
+                                        <li class="header"><?php echo __($customdatatype->getDescription()); ?></li>
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_name').hide();$('<?php echo $customdatatype->getKey(); ?>_value').value = '';$('no_<?php echo $customdatatype->getKey(); ?>').show();"><?php echo __('Clear this field'); ?></a>
+                                        </li>
+                                        <li class="separator"></li>
+                                        <li id="customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container" style="padding: 0;"></li>
+                                        <script type="text/javascript">
+                                            require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                                                domReady(function () {
+                                                    Calendar.setup({
+                                                        dateField: '<?php echo $customdatatype->getKey(); ?>_name',
+                                                        parentElement: 'customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container',
+                                                        valueCallback: function(element, date) {
+                                                            var value = Math.floor(date.getTime() / 1000);
+                                                            $('<?php echo $customdatatype->getKey(); ?>_name').show();
+                                                            $('<?php echo $customdatatype->getKey(); ?>_value').value = value;
+                                                            $('no_<?php echo $customdatatype->getKey(); ?>').hide();
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                    </ul>
+                                    <span id="<?php echo $customdatatype->getKey(); ?>_name" style="display: none;"><?php echo __('Not set'); ?></span><span class="faded_out" id="no_<?php echo $customdatatype->getKey(); ?>"><?php echo __('Not set'); ?></span>
+                                    <input type="hidden" name="<?php echo $customdatatype->getKey(); ?>_value" id="<?php echo $customdatatype->getKey(); ?>_value" />
+                                </td>
+                            <?php else: ?>
+                                <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
+                                <td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+                            <?php endif; ?>
                         <tr>
                             <td colspan="2" style="padding-top: 5px;" class="editor_container">
                                 <?php
@@ -648,20 +681,7 @@
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
                                             ?>
-                                            <li id="customfield_<?php echo $field; ?>_calendar_container"></li>
-                                            <script type="text/javascript">
-                                                require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
-                                                    domReady(function () {
-                                                        Calendar.setup({
-                                                            dateField: '<?php echo $field; ?>_name',
-                                                            parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
-                                                            valueCallback: function(element, date) {
-                                                                var value = Math.floor(date.getTime() / 1000);
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            </script>
+
                                             <?php
                                             break;
                                     }
