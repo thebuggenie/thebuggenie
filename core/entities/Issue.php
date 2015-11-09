@@ -1564,7 +1564,7 @@
             return $retval;
         }
         
-        protected function _canIssueFieldEdit($type)
+        protected function _canEditIssueField($type)
         {
             return $this->_canPermissionOrEditIssue('caneditissue'.$type) || ( $this->isInvolved() &&  $this->_permissionCheck("set_datatype_".$type));
         }
@@ -1607,7 +1607,7 @@
          */
         public function canEditStatus()
         {
-            return $this->_canIssueFieldEdit("status");
+            return $this->_canEditIssueField("status");
         }
 
         /**
@@ -1617,7 +1617,7 @@
          */
         public function canEditCategory()
         {
-            return $this->_canIssueFieldEdit("category");
+            return $this->_canEditIssueField("category");
         }
 
         /**
@@ -1627,7 +1627,7 @@
          */
         public function canEditResolution()
         {
-            return $this->_canIssueFieldEdit("resolution");
+            return $this->_canEditIssueField("resolution");
         }
 
         /**
@@ -1637,7 +1637,7 @@
          */
         public function canEditReproducability()
         {
-            return $this->_canIssueFieldEdit("reproducability");
+            return $this->_canEditIssueField("reproducability");
         }
 
         /**
@@ -1647,7 +1647,7 @@
          */
         public function canEditSeverity()
         {
-            return $this->_canIssueFieldEdit("severity");
+            return $this->_canEditIssueField("severity");
         }
 
         /**
@@ -1657,7 +1657,7 @@
          */
         public function canEditPriority()
         {
-            return $this->_canIssueFieldEdit("priority");
+            return $this->_canEditIssueField("priority");
         }
 
         /**
