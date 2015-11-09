@@ -164,6 +164,14 @@
                     $this->board->clearSwimlaneIdentifier();
                     $this->board->clearSwimlaneFieldValues();
                 }
+                $details = $request['issue_field_details'];
+                if (isset($details['issuetype']))
+                {
+                    $this->board->setIssueFieldValues(explode(',', $details['issuetype']));
+                }
+                else {
+                    $this->board->clearIssueFieldValues();
+                }
                 $this->board->save();
 
                 return $this->renderJSON(array('component' => $this->getComponentHTML('agile/boardbox', array('board' => $this->board)), 'id' => $this->board->getID(), 'private' => $this->board->isPrivate(), 'backlog_search' => $this->board->getBacklogSearchIdentifier(), 'saved' => 'ok'));

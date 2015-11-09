@@ -575,6 +575,15 @@ class Main extends framework\Action
         $this->upgrade_complete = true;
     }
 
+    protected function _upgradeFrom4dot1dot3(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\modules\agile\entities\tables\AgileBoards::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_413\AgileBoard::getB2DBTable());
+
+        $this->upgrade_complete = true;
+    }
+
     public function runUpgrade(framework\Request $request)
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -607,13 +616,19 @@ class Main extends framework\Action
                 case '4.1':
                 case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
+                    break;
                 case '4.1.1':
                     $this->_upgradeFrom4dot1dot1($request);
+                    break;
                 case '4.1.2':
                     $this->_upgradeFrom4dot1dot2($request);
                     break;
+                case '4.1.3':
+                    $this->_upgradeFrom4dot1dot3($request);
+                    break;
                 default:
                     $this->upgrade_complete = true;
+                    break;
             }
 
             if ($this->upgrade_complete)

@@ -1778,9 +1778,16 @@
          *
          * @return boolean
          */
-        public function canEditCustomFields()
+        public function canEditCustomFields($key = null)
         {
-            return (bool) $this->_permissionCheck('caneditissuecustomfields');
+            $retval = null;
+
+            if (!is_null($key))
+            {
+                $retval = $this->_permissionCheck('caneditissuecustomfields'.$key);
+            }
+
+            return ($retval !== null) ? $retval : (bool)    $this->_permissionCheck('caneditissuecustomfields');
         }
 
         /**
@@ -2794,6 +2801,19 @@
             $retarr = array();
             foreach (CustomDatatype::getAll() as $key => $customdatatype)
             {
+                $var_name = '_customfield'.$key;
+                $retarr[$key] = $this->$var_name;
+            }
+            return $retarr;
+        }
+
+        public function getCustomFieldsOfType($type)
+        {
+            $retarr = array();
+            foreach (CustomDatatype::getAll() as $key => $customdatatype)
+            {
+                if ($customdatatype->getType() != $type) continue;
+
                 $var_name = '_customfield'.$key;
                 $retarr[$key] = $this->$var_name;
             }

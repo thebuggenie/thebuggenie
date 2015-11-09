@@ -163,6 +163,14 @@
         protected $_board_columns = null;
 
         /**
+         * Issue field value
+         *
+         * @var array
+         * @Column(type="serializable", length=500)
+         */
+        protected $_issue_field_values = array();
+
+        /**
          * Returns the associated user
          *
          * @return \thebuggenie\core\entities\User
@@ -418,6 +426,11 @@
             return $this->_swimlane_field_values;
         }
 
+        public function getIssueFieldValues()
+        {
+            return $this->_issue_field_values;
+        }
+
         public function setUseSwimlanes($use_swimlanes = true)
         {
             $this->_use_swimlanes = $use_swimlanes;
@@ -458,6 +471,16 @@
             $this->_swimlane_field_values = array();
         }
 
+        public function setIssueFieldValues($issue_field_values)
+        {
+            $this->_issue_field_values = $issue_field_values;
+        }
+
+        public function clearIssueFieldValues()
+        {
+            $this->_issue_field_values = array();
+        }
+
         public function hasSwimlaneFieldValue($value)
         {
             return in_array($value, $this->getSwimlaneFieldValues());
@@ -466,6 +489,16 @@
         public function hasSwimlaneFieldValues()
         {
             return (count($this->getSwimlaneFieldValues()) > 0);
+        }
+
+        public function hasIssueFieldValue($value)
+        {
+            return in_array($value, $this->getIssueFieldValues());
+        }
+
+        public function hasIssueFieldValues()
+        {
+            return (count($this->getIssueFieldValues()) > 0);
         }
 
         /**

@@ -3433,6 +3433,11 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
     background: rgba(225, 225, 100, 0.5);
 }
+.whiteboard-issue .issue_component.issue_date {
+    margin-top: 5px;
+    background-color: #E06363;
+    color: white;
+}
 #project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours { display: none; }
 .milestone_issue .issue_estimates, .whiteboard-issue .issue_estimates {
     margin: 0;
@@ -6286,6 +6291,7 @@ div.calendar table
     background-color: #eee;
     border: none;
     border-collapse: collapse;
+    width: 100%;
 }
 
 div.calendar thead {

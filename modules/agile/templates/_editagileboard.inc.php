@@ -349,6 +349,35 @@
                     </td>
                 </tr>
             </table>
+            <h2><?php echo __('Whiteboard custom issue fields info'); ?></h2>
+            <table class="sectioned_table">
+                <tr>
+                    <td id="issue_field_details_container">
+                        <div id="issue_field_container">
+                            <div class="fancyfilter filter interactive_dropdown" data-filterkey="issue_field_issuetype" data-value="<?php echo join(',', $board->getIssueFieldValues()); ?>" data-no-selection-value="<?php echo __('None selected'); ?>">
+                                <input type="hidden" name="issue_field_details[issuetype]" value="<?php echo join(',', $board->getIssueFieldValues()); ?>" id="filter_issue_field_issuetype_value_input">
+                                <label><?php echo __('Issue field(s)'); ?></label>
+                                <span class="value"><?php if (!$board->hasIssueFieldValues()) echo __('None selected'); ?></span>
+                                <div class="interactive_menu">
+                                    <h1><?php echo __('Select issue field(s)'); ?></h1>
+                                    <div class="interactive_values_container">
+                                        <ul class="interactive_menu_values">
+                                            <?php foreach ($issuefields as $issuefield): ?>
+                                                <li data-value="<?php echo $issuefield->getKey(); ?>" class="filtervalue<?php if ($board->hasIssueFieldValue($issuefield->getKey())) echo ' selected'; ?>">
+                                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                    <input type="checkbox" value="<?php echo $issuefield->getKey(); ?>" name="issue_field_issuefield_<?php echo $issuefield->getKey(); ?>" id="issue_field_issuefield_<?php echo $issuefield->getKey(); ?>" data-text="<?php echo __($issuefield->getName()); ?>" id="filters_issuefield_value_<?php echo $issuefield->getKey(); ?>" <?php if ($board->hasIssueFieldValue($issuefield->getKey())) echo 'checked'; ?>>
+                                                    <label name="issue_field_issuefield_<?php echo $issuefield->getKey(); ?>"><?php echo __($issuefield->getName()); ?></label>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="description"><?php echo __('The whiteboard will have issue fields details for all issues. Specify which custom issue fields should also visible for issue.'); ?></p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <div class="backdrop_details_submit">
                 <?php if ($board->getID()): ?>
                     <input type="hidden" name="board_id" value="<?php echo $board->getID(); ?>">
