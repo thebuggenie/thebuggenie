@@ -27,7 +27,8 @@
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
-    <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); }))) || ($swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); })))): ?>
+    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)); ?>
+    <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); }))) || ($swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue_custom_fields_of_type), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); })))): ?>
         <div class="issue_info">
             <?php foreach ($issue->getBuilds() as $details): ?>
                 <div class="issue_release"><?php echo $details['build']->getVersion(); ?></div>
@@ -45,9 +46,14 @@
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($swimlane->getBoard()->hasIssueFieldValues()): ?>
-                <?php foreach (array_filter($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)) as $key => $value): ?>
+                <?php $custom_fields_break_inserted = false; ?>
+                <?php foreach ($issue_custom_fields_of_type as $key => $value): ?>
                     <?php if (!$swimlane->getBoard()->hasIssueFieldValue($key)) continue; ?>
-                    <div class="issue_component issue_date"><?php echo tbg_formattime( $value, 20); ?></div>
+                    <?php if (!$custom_fields_break_inserted && (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); }))))): ?>
+                        <?php $custom_fields_break_inserted = true; ?>
+                        <br>
+                    <?php endif; ?>
+                    <div class="issue_component issue_date" title="<?php echo \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription(); ?>"><?php echo tbg_formattime( $value, 20); ?></div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

@@ -3437,6 +3437,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     margin-top: 5px;
     background-color: #E06363;
     color: white;
+    font-size: 0.9em;
 }
 #project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours { display: none; }
 .milestone_issue .issue_estimates, .whiteboard-issue .issue_estimates {
