@@ -1646,7 +1646,7 @@ class Main extends framework\Action
                 }
                 else
                 {
-                    if (in_array($field, entities\Datatype::getAvailableFields(true)))
+                    if (in_array($field, entities\Datatype::getAvailableFields(true)) || in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')))
                     {
                         if (!$this->selected_project->fieldPermissionCheck($field))
                         {
