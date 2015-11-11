@@ -4,6 +4,10 @@ $current_count = 0;
 $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 $current_spent_time = $current_estimated_time;
 foreach ($search_object->getIssues() as $issue):
+    // shows only issues with permissions, useful when if we're including subprojects
+    if (!$issue->hasAccess())
+        return;
+    
     list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
     if (($showtablestart || $showheader) && $cc > 1):
                 echo '</tbody></table>';
