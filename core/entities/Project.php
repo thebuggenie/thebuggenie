@@ -1432,12 +1432,18 @@
             if ($assignee instanceof \thebuggenie\core\entities\User)
             {
                 $user_id = $assignee->getID();
-                tables\ProjectAssignedUsers::getTable()->addUserToProject($this->getID(), $user_id, $role->getID());
+                if (tables\ProjectAssignedUsers::getTable()->addUserToProject($this->getID(), $user_id, $role->getID()) && is_array($this->_assigned_users))
+                {
+                    $this->_assigned_users = array_merge($this->_assigned_users, tables\ProjectAssignedUsers::getTable()->getUserByProjectIDUserIDRoleID($this->getID(), $user_id, $role->getID()));
+                }
             }
             elseif ($assignee instanceof \thebuggenie\core\entities\Team)
             {
                 $team_id = $assignee->getID();
-                tables\ProjectAssignedTeams::getTable()->addTeamToProject($this->getID(), $team_id, $role->getID());
+                if (tables\ProjectAssignedTeams::getTable()->addTeamToProject($this->getID(), $team_id, $role->getID()) && is_array($this->_assigned_users))
+                {
+                    $this->_assigned_teams = array_merge($this->_assigned_teams, tables\ProjectAssignedTeams::getTable()->getTeamByProjectIDTeamIDRoleID($this->getID(), $team_id, $role->getID()));
+                }
             }
             if ($role instanceof \thebuggenie\core\entities\Role)
             {
