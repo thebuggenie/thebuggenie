@@ -7639,8 +7639,8 @@
                 <target>Crea una nuova segnalazione correlata</target>
             </trans-unit>
             <trans-unit id="f92f8e280200dd2b3930f90598dca697">
-                <source>Add an existing issue as a child issue</source>
-                <target>Aggiungi una segnalazione esistente come figlia</target>
+                <source>Add a relation for this issue</source>
+                <target>Aggiungi una relazione per questa segnalazione</target>
             </trans-unit>
             <trans-unit id="6b0a3be2f95ef7a8da6b7888940c94d7">
                 <source>This action is not available at this stage in the workflow</source>

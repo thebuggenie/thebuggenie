@@ -1,4 +1,12 @@
-<?php $parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_' : ''; ?>
+<?php 
+
+// shows only issues with permissions, useful when if we're including subprojects
+if (!$issue->hasAccess())
+    return;
+
+$parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_' : ''; 
+
+?>
 <li id="<?php echo $parent_prefix ?>issue_<?php echo $issue->getID(); ?>_top_container" class="milestone_issue <?php if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) echo 'child_issue'; ?> <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->hasChildIssues()) echo 'has_child_issues'; ?>" data-issue-id="<?php echo $parent_prefix . $issue->getID(); ?>"<?php
 
     foreach ($issue->getBuilds() as $details) echo ' data-release-'.$details['build']->getID();
