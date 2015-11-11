@@ -11938,6 +11938,11 @@ div[id^='wiki_'][id$='_no_links']
     text-align: right;
 }
 
+#viewissue_vcs_integration_commits .commentbody li
+{
+    width: 282px;
+}
+
 #viewissue_vcs_integration_commits .commitrepos
 {
     color: #AAA;
