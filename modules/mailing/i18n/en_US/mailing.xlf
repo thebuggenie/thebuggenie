@@ -4,14 +4,14 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 19 -->
-<!-- Number of Strings: 159 -->
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
+<!-- Number of Sections: 21 -->
+<!-- Number of Strings: 174 -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="controllers/Main.php">
         <body>
             <trans-unit id="126835b4ddbba17c4346ccb256c23b7c">
                 <source>Please use the link in the email you received</source>
@@ -121,6 +121,9 @@
             </trans-unit>
             <trans-unit id="51d4eed4d75c73287727a9b1b7b4f362">
                 <source>Notify by email also when I am the one making the changes</source>
+            </trans-unit>
+            <trans-unit id="f9a423410072ceb57e589b01c83fde0d">
+                <source>Notify by email when I am mentioned in issue or article or their comment</source>
             </trans-unit>
         </body>
     </file>
@@ -374,6 +377,28 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="templates/_issuesubscribed.html.inc.php">
+        <body>
+            <trans-unit id="f6f41733bb5dd1a428b7fc5c00f22cf1">
+                <source>You have been subscribed to this issue and will be notified if and when it changes in the future.</source>
+            </trans-unit>
+            <trans-unit id="1d6c3137799f2654ce3c7898a9968a45">
+                <source>To unsubscribe from this issue, open the issue in your web browser and click the "star" icon in the top left corner, next to the issue title.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_issuesubscribed.text.inc.php">
+        <body>
+            <trans-unit id="92bf7458828c777dc2809cd3f1ce5a0b">
+                <source>You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.</source>
+            </trans-unit>
+            <trans-unit id="5c4f523eb63ad1bf5d09d845c68169c9">
+                <source>Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="templates/_issueupdate.html.inc.php">
         <body>
             <trans-unit id="a26084c76447d7f97bace6af4c1a35ac">
@@ -447,12 +472,6 @@
             </trans-unit>
             <trans-unit id="be366b83d6b2939f436725b71870416d">
                 <source>Issue updated</source>
-            </trans-unit>
-            <trans-unit id="92bf7458828c777dc2809cd3f1ce5a0b">
-                <source>You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.</source>
-            </trans-unit>
-            <trans-unit id="5c4f523eb63ad1bf5d09d845c68169c9">
-                <source>Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.</source>
             </trans-unit>
         </body>
     </file>
@@ -538,8 +557,32 @@
             <trans-unit id="83d2b75a792dcf5ffa6edb093f2d4892">
                 <source>If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing</source>
             </trans-unit>
-            <trans-unit id="f912089a98340cf297edcccd32657331">
-                <source>This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration</source>
+            <trans-unit id="f780d429a014ed3e04437a82797add67">
+                <source>Email backend selection</source>
+            </trans-unit>
+            <trans-unit id="e7072ec99654cae5bda63c9a8c3a4f8b">
+                <source>SMTP Transport</source>
+            </trans-unit>
+            <trans-unit id="75edfc64bc88881cd78b0c1079205dae">
+                <source>Sendmail Transport</source>
+            </trans-unit>
+            <trans-unit id="9779e06a846097e40b3cafdb4edfdea3">
+                <source>Fallback PHP mail() transport (not recommended)</source>
+            </trans-unit>
+            <trans-unit id="b9da8133d9ac1e1b7cc2831208793422">
+                <source>For outgoing emails The Bug Genie uses the %swiftmailer library, which supports several different mail transports. Please see the %swiftmailer_configuration for more information.</source>
+            </trans-unit>
+            <trans-unit id="4881de6659354468ac6eeff69cc5de80">
+                <source>Swiftmailer configuration</source>
+            </trans-unit>
+            <trans-unit id="f86b741cca2c5be872031e17ccca38a6">
+                <source>Sendmail command</source>
+            </trans-unit>
+            <trans-unit id="492b83956bcba4d0021fe3178dbf0225">
+                <source>Leave blank for default ('/usr/sbin/sendmail -bs')</source>
+            </trans-unit>
+            <trans-unit id="247841173bf20def5f3a2e951e3e7f60">
+                <source>Please see the %swiftmailer_configuration for more information about the sendmail transport.</source>
             </trans-unit>
             <trans-unit id="c6bc689d6f8659853400bfdf8bb5815e">
                 <source>SMTP server address</source>
@@ -567,6 +610,18 @@
             </trans-unit>
             <trans-unit id="5c4c2af730bc2006787609bcfef6a940">
                 <source>The password used for sending emails</source>
+            </trans-unit>
+            <trans-unit id="a3e00a3a8f10da46b2cdc9418f0db8e7">
+                <source>Connection encryption</source>
+            </trans-unit>
+            <trans-unit id="151adffc209b320ba53a9853aae1eabe">
+                <source>No encryption</source>
+            </trans-unit>
+            <trans-unit id="c4a350b336135acaffba880c7f2c56a9">
+                <source>Use SSL encryption</source>
+            </trans-unit>
+            <trans-unit id="4459d6c4ec7f83a212c6300550128403">
+                <source>Use TLS encryption</source>
             </trans-unit>
             <trans-unit id="e2866ef9d54c66acac724abbbbc7e04d">
                 <source>Click "%save" to save email notification settings</source>

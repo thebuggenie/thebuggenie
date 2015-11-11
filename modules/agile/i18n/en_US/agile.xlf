@@ -4,50 +4,17 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 24 -->
-<!-- Number of Strings: 206 -->
-<!-- Keys extracted from sources on: 2015 Mar 09. -->
+<!-- Number of Sections: 25 -->
+<!-- Number of Strings: 200 -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Actions.php">
+    <file source-language="en" datatype="php" original="Agile.php">
         <body>
-            <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
-                <source>You don't have access to modify milestones</source>
-            </trans-unit>
-            <trans-unit id="9fd74b6ad3c69b699e316d01899d1354">
-                <source>An error occurred when trying to save the milestone order</source>
-            </trans-unit>
-            <trans-unit id="8d484b1a1a4c80e279c610bdfd455cf1">
-                <source>The board has been deleted</source>
-            </trans-unit>
-            <trans-unit id="39c936f51cf83ed9a4ee0bc4bff4d00b">
-                <source>There are no valid transitions to any states in this column</source>
-            </trans-unit>
-            <trans-unit id="0ffe9c59457923822d8b165678988f21">
-                <source>There was an error trying to save column %column</source>
-            </trans-unit>
-            <trans-unit id="a5491609f2b55bf3f2cd374c425f042d">
-                <source>You have to provide a title</source>
-            </trans-unit>
-            <trans-unit id="43cc7d7d4e6b18599229cfb8e5243c43">
-                <source>You have to provide a label</source>
-            </trans-unit>
-            <trans-unit id="41cfbf2d1ffadde035a02128b0cdfda5">
-                <source>You must provide a valid milestone name</source>
-            </trans-unit>
-            <trans-unit id="11bc7c75d7a87dc4829431281e4066a5">
-                <source>This is not a valid issue</source>
-            </trans-unit>
-            <trans-unit id="65fb64192cef876931e0b74b76806298">
-                <source>An error occured when trying to assign the issue to the release</source>
-            </trans-unit>
-            <trans-unit id="f5bc3ca84b166ad42a008a4d171ea0d1">
-                <source>An error occured when trying to assign the issue to the epic</source>
-            </trans-unit>
-            <trans-unit id="0b0bb4cf1efaa6c3d5212f52e4af2190">
-                <source>Milestone saved</source>
+            <trans-unit id="21d28aa03f67eb242b1c95a6a0594ff5">
+                <source>Planning</source>
             </trans-unit>
         </body>
     </file>
@@ -80,6 +47,47 @@
             </trans-unit>
             <trans-unit id="eea46167f99b2f1e56de823a86fe422e">
                 <source>Issue category</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="controllers/Main.php">
+        <body>
+            <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
+                <source>You don't have access to modify milestones</source>
+            </trans-unit>
+            <trans-unit id="8d484b1a1a4c80e279c610bdfd455cf1">
+                <source>The board has been deleted</source>
+            </trans-unit>
+            <trans-unit id="802e7a17f9f1b69fd6dc81698b7c71d2">
+                <source>There was an error trying to move this issue to the next step in the workflow</source>
+            </trans-unit>
+            <trans-unit id="39c936f51cf83ed9a4ee0bc4bff4d00b">
+                <source>There are no valid transitions to any states in this column</source>
+            </trans-unit>
+            <trans-unit id="0ffe9c59457923822d8b165678988f21">
+                <source>There was an error trying to save column %column</source>
+            </trans-unit>
+            <trans-unit id="a5491609f2b55bf3f2cd374c425f042d">
+                <source>You have to provide a title</source>
+            </trans-unit>
+            <trans-unit id="43cc7d7d4e6b18599229cfb8e5243c43">
+                <source>You have to provide a label</source>
+            </trans-unit>
+            <trans-unit id="41cfbf2d1ffadde035a02128b0cdfda5">
+                <source>You must provide a valid milestone name</source>
+            </trans-unit>
+            <trans-unit id="11bc7c75d7a87dc4829431281e4066a5">
+                <source>This is not a valid issue</source>
+            </trans-unit>
+            <trans-unit id="65fb64192cef876931e0b74b76806298">
+                <source>An error occured when trying to assign the issue to the release</source>
+            </trans-unit>
+            <trans-unit id="f5bc3ca84b166ad42a008a4d171ea0d1">
+                <source>An error occured when trying to assign the issue to the epic</source>
+            </trans-unit>
+            <trans-unit id="0b0bb4cf1efaa6c3d5212f52e4af2190">
+                <source>Milestone saved</source>
             </trans-unit>
         </body>
     </file>
@@ -180,6 +188,9 @@
             <trans-unit id="49ee3087348e8d44e1feda1917443987">
                 <source>Name</source>
             </trans-unit>
+            <trans-unit id="94187971fcb4576affdecaee237bdf73">
+                <source>Type a short, descriptive name such as "Project planning board"</source>
+            </trans-unit>
             <trans-unit id="1987cadb51151fbdbd3c84e682d76a29">
                 <source>Board type</source>
             </trans-unit>
@@ -203,6 +214,9 @@
             </trans-unit>
             <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39">
                 <source>Description</source>
+            </trans-unit>
+            <trans-unit id="297dce8af2095f46385f91fb98e728d0">
+                <source>Type a short description to be shown in the board list</source>
             </trans-unit>
             <trans-unit id="be10e45ddb97583c298f1e0786b336ba">
                 <source>Planning mode settings</source>
@@ -323,6 +337,9 @@
             <trans-unit id="710b83fcac12967268bc99b5bab9a093">
                 <source>Column name</source>
             </trans-unit>
+            <trans-unit id="ea1029bedaf489f367b530db860c271a">
+                <source>Column status (ex: New, Done)</source>
+            </trans-unit>
             <trans-unit id="bd762c8aa6ea93a36a578b9cb9400a05">
                 <source>Min workload</source>
             </trans-unit>
@@ -389,8 +406,8 @@
             <trans-unit id="e81989bb4880b2fad170dc8b76620220">
                 <source>Save sprint</source>
             </trans-unit>
-            <trans-unit id="e2dc079981badadef8c7eafc3073b6bd">
-                <source>Save milestone</source>
+            <trans-unit id="47671cfee5e0ce1df7eb2c4ecc1832fb">
+                <source>Give the sprint a name such as "Sprint 2", or similar</source>
             </trans-unit>
             <trans-unit id="68310110d3364ef7de93dcd18ddc8100">
                 <source>Edit sprint details</source>
@@ -398,50 +415,14 @@
             <trans-unit id="1cee55b0c706b598f2f06e400bad6afe">
                 <source>Add new sprint</source>
             </trans-unit>
+            <trans-unit id="e2dc079981badadef8c7eafc3073b6bd">
+                <source>Save milestone</source>
+            </trans-unit>
             <trans-unit id="bb36feee4d1359b49cdad9f44ec8f08e">
                 <source>Edit milestone details</source>
             </trans-unit>
             <trans-unit id="e7480d7aa806b68b3a4e3fb9575fe5e0">
                 <source>Add milestone</source>
-            </trans-unit>
-            <trans-unit id="1604f5f5e3cea4558447efb65c62ee22">
-                <source>Sprint name</source>
-            </trans-unit>
-            <trans-unit id="a54211975c6bba96a5dc4b4dbb5b4cf1">
-                <source>Milestone name</source>
-            </trans-unit>
-            <trans-unit id="ca7baafda6a280d3a4a508488effeec3">
-                <source>Project roadmap visibility</source>
-            </trans-unit>
-            <trans-unit id="f6730d9ed4ce98290a772d1b7658bf7f">
-                <source>Not visible</source>
-            </trans-unit>
-            <trans-unit id="ec24d78ce33048dc73a2b6b1a0690192">
-                <source>Visible</source>
-            </trans-unit>
-            <trans-unit id="399402d5588629f641b0ede08d04404b">
-                <source>Issue availability</source>
-            </trans-unit>
-            <trans-unit id="2d25c72c1b18e562f6654fff8e11711e">
-                <source>Not available</source>
-            </trans-unit>
-            <trans-unit id="78945de8de090e90045d299651a68a9b">
-                <source>Available</source>
-            </trans-unit>
-            <trans-unit id="610b554d147237a70f70e2351195b7cc">
-                <source>Planned start date</source>
-            </trans-unit>
-            <trans-unit id="b6671925e1922de848565d754897af88">
-                <source>Planned end date</source>
-            </trans-unit>
-            <trans-unit id="d81bd42170e93b88c943d4a539a4aceb">
-                <source>The %number selected issue(s) will be automatically added to the new sprint</source>
-            </trans-unit>
-            <trans-unit id="e6f95452e6e4d6200010e2da889e4ef9">
-                <source>The %number selected issue(s) will be automatically assigned to the new milestone</source>
-            </trans-unit>
-            <trans-unit id="a4c02510fdf9fb9bcd1ef4a4a5a10324">
-                <source>%cancel or %save_milestone</source>
             </trans-unit>
         </body>
     </file>
@@ -594,8 +575,14 @@
             <trans-unit id="13974ce136c99bbc104c7b833ecb8c10">
                 <source>This issue is marked as a blocker</source>
             </trans-unit>
+            <trans-unit id="aac5e5c842dba64bccc53857bef07ce7">
+                <source>Spent points</source>
+            </trans-unit>
             <trans-unit id="f772c2ca3b9166d2e3b4e45283352c46">
                 <source>Estimated points</source>
+            </trans-unit>
+            <trans-unit id="5824a84faee1b5dc3e8676d95baba7ec">
+                <source>Spent hours</source>
             </trans-unit>
             <trans-unit id="64393714a3482bce4c534e8f2114735b">
                 <source>Estimated hours</source>
@@ -606,36 +593,13 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="templates/_milestonewhiteboardstatusdetails.inc.php">
-        <body>
-            <trans-unit id="8baebbbb2bf56c7cac55d30348f7c9ad">
-                <source>%status_name - %percentage (%count of %total)</source>
-            </trans-unit>
-            <trans-unit id="59468337d52a54fd6dbde8f39b451f21">
-                <source>Unknown status</source>
-            </trans-unit>
-            <trans-unit id="3e8840a4c791dbdd8cf9ca20ca4b4d78">
-                <source>%percentage % completed</source>
-            </trans-unit>
-            <trans-unit id="a348c30e936ffb9b4df04067f99094c8">
-                <source>%percentage completed</source>
-            </trans-unit>
-            <trans-unit id="619154a2f87fd7bcad9b592de2c8d9ae">
-                <source>No milestones exists</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="templates/_projectheaderstriplinks.inc.php">
         <body>
-            <trans-unit id="21d28aa03f67eb242b1c95a6a0594ff5">
-                <source>Planning</source>
+            <trans-unit id="c90dd092eedeba2b2a72f32e17837b5d">
+                <source>Manage columns</source>
             </trans-unit>
             <trans-unit id="a709f53fbab6855ced85d9d508fce3aa">
                 <source>Whiteboard</source>
-            </trans-unit>
-            <trans-unit id="c90dd092eedeba2b2a72f32e17837b5d">
-                <source>Manage columns</source>
             </trans-unit>
         </body>
     </file>
@@ -645,11 +609,31 @@
             <trans-unit id="9b2d288c7b0c5d6240966cf13bfc6ec8">
                 <source>Release date</source>
             </trans-unit>
+            <trans-unit id="c5aca4d56ff571b170f783b8af2e277c">
+                <source>Released, without date</source>
+            </trans-unit>
             <trans-unit id="e76614490355923d4e26c8a4881527be">
                 <source>Not released yet</source>
             </trans-unit>
+            <trans-unit id="67ee521cc5b504a0f1e8fec8b233ffd9">
+                <source>Scheduled for</source>
+            </trans-unit>
+            <trans-unit id="358732977a13ab1120f0ce0e139373a9">
+                <source>Not scheduled</source>
+            </trans-unit>
             <trans-unit id="34b6cd75171affba6957e308dcbd92be">
                 <source>Version</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_whiteboardissue.inc.php">
+        <body>
+            <trans-unit id="3e8840a4c791dbdd8cf9ca20ca4b4d78">
+                <source>%percentage % completed</source>
+            </trans-unit>
+            <trans-unit id="a348c30e936ffb9b4df04067f99094c8">
+                <source>%percentage completed</source>
             </trans-unit>
         </body>
     </file>
@@ -661,6 +645,9 @@
             </trans-unit>
             <trans-unit id="9c8b48e1273257ce6e65399268dc189c">
                 <source>Please select which transition to apply</source>
+            </trans-unit>
+            <trans-unit id="59a6101b8c4a733b204dbf5790056fa2">
+                <source>Cancel and close this pop-up</source>
             </trans-unit>
         </body>
     </file>
@@ -679,8 +666,8 @@
             <trans-unit id="555ec6672181c8b15a7030c4e4540799">
                 <source>There are no milestones. Why not add one?</source>
             </trans-unit>
-            <trans-unit id="14da4a079723e98a43f59cf0d0c09406">
-                <source>Toggle past, unfinished sprints</source>
+            <trans-unit id="e0e5b4a491cb460b187f69cc6af66627">
+                <source>Toggle hidden sprints</source>
             </trans-unit>
             <trans-unit id="a6176a6ef340b6b3ef139cf7de46987b">
                 <source>There are no active sprints. Why not add one?</source>
