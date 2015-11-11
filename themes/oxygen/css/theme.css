@@ -11941,6 +11941,7 @@ div[id^='wiki_'][id$='_no_links']
 #viewissue_vcs_integration_commits .commentbody li
 {
     width: 282px;
+    word-wrap: break-word;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
