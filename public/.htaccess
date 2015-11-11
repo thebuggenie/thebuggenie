@@ -2,30 +2,24 @@
 
 # make sure that magic_quotes and register_globals is always off
 <IfModule mod_php5.c>
-	php_flag magic_quotes_gpc	off
-	php_flag register_globals	off
+  php_flag magic_quotes_gpc off
+  php_flag register_globals off
 </IfModule>
-
-# Follow symlinks
-Options +FollowSymlinks
 
 # rewrite rules
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /Projekti/GitHub/thebuggenie/public/
-# Example:
-# RewriteBase /
-# or
-# RewriteBase /dev/thebuggenie
+    RewriteEngine On
 
-  RewriteCond %{REQUEST_FILENAME} -s [OR]
-  RewriteCond %{REQUEST_FILENAME} -l [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^.*$ - [NC,L]
+    # Examples:
+    # RewriteBase /public
+    # RewriteBase /thebuggenie/public
+    RewriteBase /
 
-  # redirect to front controller
-  RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
 
+    # redirect to front controller
+    RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
 </IfModule>
 
 # Stop people accessing directories they shouldn't have access to
