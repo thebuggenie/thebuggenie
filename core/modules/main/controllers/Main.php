@@ -3307,7 +3307,7 @@ class Main extends framework\Action
         $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
         if ($comment instanceof entities\Comment)
         {
-            if (!$comment->canUserDeleteComment())
+            if (!$comment->canUserDelete(framework\Context::getUser()))
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
