@@ -3434,7 +3434,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     background: rgba(225, 225, 100, 0.5);
 }
 .whiteboard-issue .issue_component.issue_date {
-    margin-top: 5px;
+    margin-top: 3px;
     background-color: #E06363;
     color: white;
     font-size: 0.9em;
@@ -4305,6 +4305,14 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     margin-left: 13px;
     position: inherit;
 }
+.whiteboard-issue .issue_info.issue_info_top {
+    padding-bottom: 0;
+}
+.whiteboard-issue .issue_info.issue_info_middle {
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
 .whiteboard-issue .issue_info .user_popup
 {
     text-align: initial;
