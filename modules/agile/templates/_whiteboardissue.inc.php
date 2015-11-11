@@ -52,7 +52,7 @@
                             <?php $custom_fields_break_inserted = true; ?>
                             <br>
                         <?php endif; ?>
-                        <div class="issue_component issue_date" title="<?php echo \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription(); ?>"><?php echo tbg_formattime( $value, 20); ?></div>
+                        <div class="issue_component issue_date" title="<?php echo \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription(); ?>"><?php echo tbg_formattime($value, 14); ?></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             <?php endif; ?>
