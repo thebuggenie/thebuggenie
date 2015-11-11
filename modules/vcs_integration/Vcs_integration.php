@@ -127,6 +127,18 @@
         public function listen_thebuggenie_core_helpers_textparser_char_regexes(framework\Event $event)
         {
             $event->addToReturnList(array(array('/([a-f0-9]{40})/'), array($this, '_parse_commit')));
+
+            if (framework\Context::isProjectContext() && framework\Context::getModule('vcs_integration')->getSetting('browser_type_'.framework\Context::getCurrentProject()->getID()) === 'gitlab')
+            {
+              $event->addToReturnList(array(
+                array('/(\![0-9])/'), function ($matches) use ($event)
+                  {
+                    if (!$event->getParameter('target') instanceof Commit) return $matches[0];
+
+                    return link_tag($event->getParameter('target')->getGitlabUrlForMergeRequestID(substr($matches[0], 1)), $matches[0], array('target' => '_blank'));
+                  }
+              ));
+            }
         }
 
         protected function _getCommitLink($commit)
@@ -163,7 +175,8 @@
 
         public function listen_project_links(framework\Event $event)
         {
-            $event->addToReturnList(array('url' => framework\Context::getRouting()->generate('vcs_commitspage', array('project_key' => framework\Context::getCurrentProject()->getKey())), 'title' => framework\Context::getI18n()->__('Commits')));
+            if (framework\Context::getUser()->hasProjectPageAccess('project_commits', framework\Context::getCurrentProject()))
+                $event->addToReturnList(array('url' => framework\Context::getRouting()->generate('vcs_commitspage', array('project_key' => framework\Context::getCurrentProject()->getKey())), 'title' => framework\Context::getI18n()->__('Commits')));
         }
 
         public function listen_projectheader(framework\Event $event)
@@ -215,8 +228,9 @@
             if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == self::MODE_DISABLED)
                 return;
 
-            $links = IssueLink::getCommitsByIssue($event->getSubject());
-            include_component('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
+            $links = IssueLink::getCommitsByIssue($event->getSubject(), 3);
+            $links_total_count = IssueLinks::getTable()->countByIssueID($event->getSubject()->getID());
+            include_component('vcs_integration/viewissue_commits', array('issue' => $event->getSubject(), 'links' => $links, 'links_total_count' => $links_total_count, 'selected_project' => $event->getSubject()->getProject()));
         }
 
         public static function processCommit(\thebuggenie\core\entities\Project $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null, \Closure $callback = null)
@@ -405,7 +419,7 @@
                     }
                 }
 
-                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg</source>', array('%commit_msg' => $commit_msg)), $user->getID());
+                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.<div class="commit_main">%commit_msg</div>', array('%commit_msg' => $commit_msg)), $user->getID(), 'vcs_integration');
                 $output .= '[VCS ' . $project->getKey() . '] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
             }
 

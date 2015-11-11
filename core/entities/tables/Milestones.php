@@ -43,6 +43,7 @@
         const REACHED = 'milestones.reacheddate';
         const STARTING = 'milestones.startingdate';
         const SCHEDULED = 'milestones.scheduleddate';
+        const PERCENTAGE_TYPE = 'milestones.percentage_type';
 
         public function _migrateData(\b2db\Table $old_table)
         {

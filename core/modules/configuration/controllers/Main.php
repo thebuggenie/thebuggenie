@@ -2119,6 +2119,7 @@
                                     case entities\WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
                                     case entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID:
                                     case entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
+                                    case entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID:
                                         $rule->setRuleValue(join(',', $request['rule_value'] ?: array()));
                                         $text = ($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : $this->getI18n()->__('Any valid value');
                                         break;

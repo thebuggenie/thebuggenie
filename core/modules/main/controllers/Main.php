@@ -136,6 +136,8 @@ class Main extends framework\Action
 
             $this->getUser()->markNotificationsRead('issue', $issue->getID());
 
+            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false)->save();
+
             \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         }
 
@@ -1165,12 +1167,9 @@ class Main extends framework\Action
     public function runMyAccount(framework\Request $request)
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
-        $notificationsettings = array();
-        $i18n = $this->getI18n();
-        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I get involved in');
-        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I get involved in');
-        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
-        $notificationsettings[framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
+        $subscriptionssettings = framework\Settings::getSubscriptionsSettings();
+        $this->subscriptionssettings = $subscriptionssettings;
+        $notificationsettings = framework\Settings:: getNotificationSettings();
         $this->notificationsettings = $notificationsettings;
         $this->has_autopassword = framework\Context::hasMessage('auto_password');
         if ($this->has_autopassword)
@@ -1213,11 +1212,40 @@ class Main extends framework\Action
                     $this->getUser()->setPreferredIssuesSyntax($request['syntax_issues']);
                     $this->getUser()->setPreferredCommentsSyntax($request['syntax_comments']);
                     $this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
+                    foreach ($subscriptionssettings as $setting => $description)
+                    {
+                        if ($request->hasParameter('core_' . $setting))
+                        {
+                            if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY)
+                            {
+                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                            }
+                            else
+                            {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                            }
+                        }
+                        else
+                        {
+                            $this->getUser()->setNotificationSetting($setting, false)->save();
+                        }
+                    }
                     foreach ($notificationsettings as $setting => $description)
                     {
                         if ($request->hasParameter('core_' . $setting))
                         {
-                            $this->getUser()->setNotificationSetting($setting, true)->save();
+                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY)
+                            {
+                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                            }
+                            else if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS)
+                            {
+                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                            }
+                            else
+                            {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                            }
                         }
                         else
                         {
@@ -1496,7 +1524,18 @@ class Main extends framework\Action
                 $errors['component'] = true;
 
             if ($category_id = (int) $request['category_id'])
-                $this->selected_category = entities\Category::getB2DBTable()->selectById($category_id);
+            {
+                $category = entities\Category::getB2DBTable()->selectById($category_id);
+
+                if (! $category->hasAccess())
+                {
+                    $errors['category'] = true;
+                }
+                else
+                {
+                    $this->selected_category = $category;
+                }
+            }
 
             if ($status_id = (int) $request['status_id'])
                 $this->selected_status = entities\Status::getB2DBTable()->selectById($status_id);
@@ -1505,7 +1544,18 @@ class Main extends framework\Action
                 $this->selected_reproducability = entities\Reproducability::getB2DBTable()->selectById($reproducability_id);
 
             if ($milestone_id = (int) $request['milestone_id'])
-                $this->selected_milestone = entities\Milestone::getB2DBTable()->selectById($milestone_id);
+            {
+                $milestone = $this->_getMilestoneFromRequest($request);
+
+                if (!$milestone instanceof entities\Milestone)
+                {
+                    $errors['milestone'] = true;
+                }
+                else
+                {
+                    $this->selected_milestone = $milestone;
+                }
+            }
 
             if ($parent_issue_id = (int) $request['parent_issue_id'])
                 $this->parent_issue = entities\Issue::getB2DBTable()->selectById($parent_issue_id);
@@ -1547,8 +1597,8 @@ class Main extends framework\Action
                     $selected_customdatatype[$customdatatype->getKey()] = null;
                     if ($request->hasParameter($customdatatype_id))
                     {
-                        $$customdatatype_id = (int) $request->getParameter($customdatatype_id);
-                        $selected_customdatatype[$customdatatype->getKey()] = new entities\CustomDatatypeOption($$customdatatype_id);
+                        $customdatatype_id = (int) $request->getParameter($customdatatype_id);
+                        $selected_customdatatype[$customdatatype->getKey()] = new entities\CustomDatatypeOption($customdatatype_id);
                     }
                 }
                 else
@@ -1596,7 +1646,7 @@ class Main extends framework\Action
                 }
                 else
                 {
-                    if (in_array($field, entities\Datatype::getAvailableFields(true)))
+                    if (in_array($field, entities\Datatype::getAvailableFields(true)) || in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')))
                     {
                         if (!$this->selected_project->fieldPermissionCheck($field))
                         {
@@ -1616,7 +1666,7 @@ class Main extends framework\Action
         return !(bool) (count($errors) + count($permission_errors));
     }
 
-    protected function _postIssue()
+    protected function _postIssue(framework\Request $request)
     {
         $fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
         $issue = new entities\Issue();
@@ -1694,6 +1744,25 @@ class Main extends framework\Action
             }
         }
 
+        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
+        {
+            switch ($request->getParameter('issue_access'))
+            {
+                case 'public':
+                case 'public_category':
+                    $issue->setLocked(false);
+                    $issue->setLockedCategory($request->hasParameter('public_category'));
+                    break;
+                case 'restricted':
+                    $issue->setLocked();
+                    break;
+            }
+        }
+        else
+        {
+            $issue->setLockedFromProject($this->selected_project);
+        }
+
         $issue->save();
 
         if (isset($this->parent_issue))
@@ -1705,7 +1774,19 @@ class Main extends framework\Action
         if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
             $issue->addAffectedComponent($this->selected_component);
 
-
+        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
+        {
+            switch ($request->getParameter('issue_access'))
+            {
+                case 'public':
+                case 'public_category':
+                    $this->_unlockIssueAfter($request, $issue);
+                    break;
+                case 'restricted':
+                    $this->_lockIssueAfter($request, $issue);
+                    break;
+            }
+        }
 
         return $issue;
     }
@@ -1717,6 +1798,7 @@ class Main extends framework\Action
             try
             {
                 $milestone = entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+                if ($milestone instanceof entities\Milestone && !$milestone->hasAccess()) $milestone = null;
                 return $milestone;
             }
             catch (\Exception $e) { }
@@ -1785,7 +1867,7 @@ class Main extends framework\Action
             {
                 try
                 {
-                    $issue = $this->_postIssue();
+                    $issue = $this->_postIssue($request);
                     if ($request->hasParameter('files') && $request->hasParameter('file_description'))
                     {
                         $files = $request['files'];
@@ -2616,17 +2698,22 @@ class Main extends framework\Action
             try
             {
                 $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                if (!$issue->canEditIssueDetails())
-                    return $this->forward403();
-                $issue->setLocked(false);
-                $issue->save();
-                tables\Permissions::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
             }
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('message' => framework\Context::getI18n()->__('This issue does not exist')));
             }
+
+            if (!$issue->canEditAccessPolicy())
+            {
+                $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
+                return;
+            }
+            $issue->setLocked(false);
+            $issue->setLockedCategory($request->hasParameter('public_category'));
+            $issue->save();
+            $this->_unlockIssueAfter($request, $issue);
         }
         else
         {
@@ -2649,60 +2736,21 @@ class Main extends framework\Action
             try
             {
                 $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                if (!$issue->canEditIssueDetails())
-                {
-                    $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
-                    return;
-                }
-                $issue->setLocked();
-                $issue->save();
-                framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
-                framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()->getID(), 0, 0, true);
-
-                $al_users = $request->getParameter('access_list_users', array());
-                $al_teams = $request->getParameter('access_list_teams', array());
-                $i_al = $issue->getAccessList();
-                foreach ($i_al as $k => $item)
-                {
-                    if ($item['target'] instanceof entities\Team)
-                    {
-                        $tid = $item['target']->getID();
-                        if (array_key_exists($tid, $al_teams))
-                        {
-                            unset($i_al[$k]);
-                        }
-                        else
-                        {
-                            framework\Context::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
-                        }
-                    }
-                    elseif ($item['target'] instanceof entities\User)
-                    {
-                        $uid = $item['target']->getID();
-                        if (array_key_exists($uid, $al_users))
-                        {
-                            unset($i_al[$k]);
-                        }
-                        elseif ($uid != $this->getUser()->getID())
-                        {
-                            framework\Context::removePermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0);
-                        }
-                    }
-                }
-                foreach ($al_users as $uid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
-                }
-                foreach ($al_teams as $tid)
-                {
-                    framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
-                }
             }
             catch (\Exception $e)
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('message' => framework\Context::getI18n()->__('This issue does not exist')));
             }
+
+            if (!$issue->canEditAccessPolicy())
+            {
+                $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
+                return;
+            }
+            $issue->setLocked();
+            $issue->save();
+            $this->_lockIssueAfter($request, $issue);
         }
         else
         {
@@ -2927,6 +2975,7 @@ class Main extends framework\Action
         }
         $saved_file_ids = $request['files'];
         $files = $image_files = array();
+        $comments = '';
         foreach ($request['file_description'] ?: array() as $file_id => $description)
         {
             $file = entities\File::getB2DBTable()->selectById($file_id);
@@ -2937,7 +2986,16 @@ class Main extends framework\Action
             $file->save();
             if (in_array($file_id, $saved_file_ids))
             {
-                $target->attachFile($file);
+                if ($target instanceof entities\Issue)
+                {
+                    $comment = $target->attachFile($file, '', '', true);
+
+                    if ($comment instanceof entities\Comment) $comments = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $target, 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count')) . $comments;
+                }
+                else
+                {
+                    $target->attachFile($file);
+                }
             }
             else
             {
@@ -2952,7 +3010,7 @@ class Main extends framework\Action
         }
         $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount));
+        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
     }
 
     public function runUploadFile(framework\Request $request)
@@ -3220,7 +3278,7 @@ class Main extends framework\Action
 
     public function runRemoveLink(framework\Request $request)
     {
-        if (!$this->getUser()->canEditMainMenu())
+        if (!$this->getUser()->canEditMainMenu($request['target_type']))
         {
             $this->getResponse()->setHttpStatus(403);
             return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You do not have access to removing links')));
@@ -3249,7 +3307,7 @@ class Main extends framework\Action
         $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
         if ($comment instanceof entities\Comment)
         {
-            if (!$comment->canUserDeleteComment())
+            if (!$comment->canUserDelete(framework\Context::getUser()))
             {
                 $this->getResponse()->setHttpStatus(400);
                 return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
@@ -3379,10 +3437,10 @@ class Main extends framework\Action
 
                     framework\Context::setCurrentProject($issue->getProject());
 
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue));
+                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue, 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count'));
                     break;
                 case entities\Comment::TYPE_ARTICLE:
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment));
+                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'mentionable_target_type' => 'article', 'comment_count_div' => 'article_comment_count'));
                     break;
                 default:
                     $comment_html = 'OH NO!';
@@ -4768,6 +4826,7 @@ class Main extends framework\Action
         $milestone->setVisibleRoadmap($request['visibility_roadmap']);
         $milestone->setVisibleIssues($request['visibility_issues']);
         $milestone->setType($request->getParameter('milestone_type', \thebuggenie\core\entities\Milestone::TYPE_REGULAR));
+        $milestone->setPercentageType($request->getParameter('percentage_type', \thebuggenie\core\entities\Milestone::PERCENTAGE_TYPE_REGULAR));
         if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
         {
             $scheduled_date = mktime(23, 59, 59, framework\Context::getRequest()->getParameter('sch_month'), framework\Context::getRequest()->getParameter('sch_day'), framework\Context::getRequest()->getParameter('sch_year'));
@@ -4825,7 +4884,7 @@ class Main extends framework\Action
                     if ($event->isProcessed()) {
                         $component = $event->getReturnValue();
                     } else {
-                        $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone));
+                        $component = $this->getComponentHTML('project/milestonebox', array('milestone' => $milestone, 'include_counts' => true));
                     }
                     $message = framework\Context::getI18n()->__('Milestone saved');
                     return $this->renderJSON(array('message' => $message, 'component' => $component, 'milestone_id' => $milestone->getID()));
@@ -4844,6 +4903,98 @@ class Main extends framework\Action
         {
             $this->getResponse()->setHttpStatus(400);
             return $this->renderJSON(array('error' => $e->getMessage()));
+        }
+    }
+
+    /**
+     * @param framework\Request $request
+     * @param                   $issue
+     */
+    protected function _lockIssueAfter(framework\Request $request, $issue) {
+        framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
+        framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()
+          ->getID(), 0, 0, true);
+
+        $al_users = $request->getParameter('access_list_users', array());
+        $al_teams = $request->getParameter('access_list_teams', array());
+        $i_al     = $issue->getAccessList();
+        foreach ($i_al as $k => $item)
+        {
+            if ($item['target'] instanceof entities\Team)
+            {
+                $tid = $item['target']->getID();
+                if (array_key_exists($tid, $al_teams))
+                {
+                    unset($i_al[$k]);
+                }
+                else
+                {
+                    framework\Context::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
+                }
+            }
+            elseif ($item['target'] instanceof entities\User)
+            {
+                $uid = $item['target']->getID();
+                if (array_key_exists($uid, $al_users))
+                {
+                    unset($i_al[$k]);
+                }
+                elseif ($uid != $this->getUser()
+                    ->getID()
+                )
+                {
+                    framework\Context::removePermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0);
+                }
+            }
+        }
+        foreach ($al_users as $uid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+        }
+        foreach ($al_teams as $tid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
+        }
+    }
+
+    /**
+     * @param framework\Request $request
+     * @param                   $issue
+     */
+    protected function _unlockIssueAfter(framework\Request $request, $issue)
+    {
+        tables\Permissions::getTable()
+          ->deleteByPermissionTargetIDAndModule('canviewissue', $issue->getID());
+
+        $al_users = $request->getParameter('access_list_users', array());
+        $al_teams = $request->getParameter('access_list_teams', array());
+        $i_al     = $issue->getAccessList();
+        foreach ($i_al as $k => $item)
+        {
+            if ($item['target'] instanceof entities\Team)
+            {
+                $tid = $item['target']->getID();
+                if (array_key_exists($tid, $al_teams))
+                {
+                    unset($i_al[$k]);
+                }
+            }
+            elseif ($item['target'] instanceof entities\User)
+            {
+                $uid = $item['target']->getID();
+                if (array_key_exists($uid, $al_users))
+                {
+                    unset($i_al[$k]);
+                }
+            }
+        }
+        foreach ($al_users as $uid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+        }
+        foreach ($al_teams as $tid)
+        {
+            framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
     }
 }

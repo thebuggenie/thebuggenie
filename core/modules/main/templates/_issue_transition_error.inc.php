@@ -11,6 +11,9 @@
         case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
           echo __('Could not process issue transition since assigned user is not member of any of allowed teams');
           break;
+        case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID:
+          echo __('Could not process issue transition since issue is not in of any of allowed milestones');
+          break;
         case \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
           echo __('Could not set priority');
           break;

@@ -14,7 +14,7 @@
     <?php else: ?>
         &nbsp;
     <?php endif; ?>
-    <?php if ($tbg_user->canEditMainMenu()): ?>
+    <?php if ($tbg_user->canEditMainMenu($link['target_type'])): ?>
         <?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'delete-icon', 'style' => 'float: right;', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this link?')."', {yes: {click: function() {TBG.Main.Link.remove('".make_url('remove_link', array('target_type' => $link['target_type'], 'target_id' => $link['target_id'], 'link_id' => $link_id))."', '{$link['target_type']}', '{$link['target_id']}', ".$link_id."); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?>
     <?php endif; ?>
 </li>

@@ -463,7 +463,7 @@
         public function validateFromRequest(\thebuggenie\core\framework\Request $request)
         {
             $this->_request = $request;
-            foreach ($this->getPostValidationRules() as $rule)
+            foreach ($this->getPreValidationRules() as $rule)
             {
                 if (!$rule->isValid($request))
                 {
@@ -514,6 +514,22 @@
             {
                 $action->perform($issue, $request);
             }
+
+            foreach ($this->getPostValidationRules() as $rule)
+            {
+                if (!$rule->isValid($request))
+                {
+                    $this->_validation_errors[$rule->getRule()] = true;
+                }
+            }
+
+            if (count($this->getValidationErrors()))
+            {
+                framework\Context::setMessage('issue_error', 'transition_error');
+                framework\Context::setMessage('issue_workflow_errors', $this->getValidationErrors());
+
+                return false;
+            }
             
             $issue->save();
 
@@ -536,6 +552,16 @@
             {
                 $action->perform($issue, $request);
             }
+
+            foreach ($this->getPostValidationRules() as $rule)
+            {
+                if (!$rule->isValid($request))
+                {
+                    $this->_validation_errors[$rule->getRule()] = true;
+                }
+            }
+
+            if (!empty($this->_validation_errors)) return false;
             
             if ($request->hasParameter('comment_body') && trim($request['comment_body'] != '')) {
                 $comment = new \thebuggenie\core\entities\Comment();

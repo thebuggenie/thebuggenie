@@ -76,6 +76,30 @@
             return false;
         }
 
+        public function getTeamByProjectIDTeamIDRoleID($project_id, $team_id, $role_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::TEAM_ID, 'tid');
+            $crit->addWhere(self::PROJECT_ID, $project_id);
+            $crit->addWhere(self::TEAM_ID, $team_id);
+            $crit->addWhere(self::ROLE_ID, $role_id);
+            $teams = array();
+
+            if ($res = $this->doSelect($crit, 'none'))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $tid = $row['tid'];
+                    if (!array_key_exists($tid, $teams))
+                        $teams[$tid] = new \thebuggenie\core\entities\Team($tid);
+                    // Only one team is needed since only one can be inserted in method "addTeamToProject".
+                    break;
+                }
+            }
+
+            return $teams;
+        }
+
         public function removeTeamFromProject($project_id, $team)
         {
             $crit = $this->getCriteria();

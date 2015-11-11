@@ -1288,7 +1288,26 @@
         public function getFriends()
         {
             $this->_setupFriends();
-            return $this->_friends;
+            $friends = $this->_friends;
+
+            if (framework\Context::isProjectContext())
+            {
+                $project_assigned_users = framework\Context::getCurrentProject()->getAssignedUsers();
+                $project_assigned_teams = framework\Context::getCurrentProject()->getAssignedTeams();
+                $project_assigned_teams_members = array();
+
+                foreach ($project_assigned_teams as $team)
+                {
+                    $project_assigned_teams_members = array_merge($project_assigned_teams_members, $team->getMembers());
+                }
+
+                foreach ($friends as $friend_id => $friend)
+                {
+                    if (! array_key_exists($friend_id, $project_assigned_users) && ! array_key_exists($friend_id, $project_assigned_teams_members)) unset($friends[$friend_id]);
+                }
+            }
+
+            return $friends;
         }
 
         /**
@@ -1478,7 +1497,30 @@
         public function getTeams()
         {
             $this->_populateTeams();
-            return $this->_teams['assigned'];
+            $teams = $this->_teams['assigned'];
+
+            if (framework\Context::isProjectContext())
+            {
+                $project = framework\Context::getCurrentProject();
+            }
+            else if (framework\Context::getRequest()->hasParameter('issue_id'))
+            {
+                $issue = Issue::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('issue_id'));
+
+                if ($issue instanceof Issue && $issue->getProject() instanceof Project) $project = $issue->getProject();
+            }
+
+            if (isset($project))
+            {
+                $project_assigned_teams = $project->getAssignedTeams();
+
+                foreach ($teams as $team_id => $team)
+                {
+                    if (! array_key_exists($team_id, $project_assigned_teams)) unset($teams[$team_id]);
+                }
+            }
+
+            return $teams;
         }
 
         public function hasTeams()
@@ -1849,7 +1891,25 @@
                 {
                     $url = (framework\Context::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
                     $url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
-                    $url .= ($small) ? 28 : 48;
+
+                    $size_event = \thebuggenie\core\framework\Event::createNew('core', 'self::getGravatarSize', $this)->trigger(compact('small'));
+                    $size = $size_event->getReturnValue();
+
+                    if ($size === null)
+                    {
+                        if (is_bool($small))
+                        {
+                            $url .= ($small === true) ? 28 : 48;
+                        }
+                        else if (is_numeric($small))
+                        {
+                            $url .= $small;
+                        }
+                    }
+                    else
+                    {
+                        $url .= $size;
+                    }
                 }
                 else
                 {
@@ -2051,8 +2111,14 @@
         {
             framework\Logging::log('Checking permission '.$permission_type);
             $group_id = (int) $this->getGroupID();
-            $has_associated_project = is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true;
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $has_associated_project);
+            $has_associated_project = is_bool($check_global_role) ? $check_global_role : (is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true);
+            $teams = $this->getTeams();
+
+            if ($target_id != 0 && Project::getB2DBTable()->selectById($target_id) instanceof \thebuggenie\core\entities\Project)
+            {
+                $teams = array_intersect_key($teams, Project::getB2DBTable()->selectById($target_id)->getAssignedTeams());
+            }
+            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $teams, $target_id, $module_name, $has_associated_project);
             if ($retval !== null)
             {
                 framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
@@ -2218,9 +2284,9 @@
                 if ($project_id->isArchived()) return false;
 
                 $project_id = ($project_id instanceof \thebuggenie\core\entities\Project) ? $project_id->getID() : $project_id;
-                $retval = $this->_dualPermissionsCheck('cancreateissues', $project_id, 'cancreateandeditissues', $project_id, null);
+                $retval = $this->hasPermission('cancreateissues', $project_id);
+                $retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id);
             }
-            $retval = ($retval !== null) ? $retval : $this->_dualPermissionsCheck('cancreateissues', 0, 'cancreateandeditissues', 0, null);
 
             return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
@@ -2240,9 +2306,20 @@
          *
          * @return boolean
          */
-        public function canEditMainMenu()
+        public function canEditMainMenu($target_type = null)
         {
-            $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
+            if (is_null($target_type))
+            {
+                $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
+            }
+            else if ($target_type == 'wiki')
+            {
+                $retval = $this->hasPermission('editwikimenu', 0, 'publish');
+            }
+            else
+            {
+                $retval = false;
+            }
             return ($retval !== null) ? $retval : false;
         }
 
@@ -2680,9 +2757,9 @@
             }
             if (!is_array($this->_notifications))
             {
-                $this->_notifications = Notifications::getTable()->getByUserID($this->getID());
+                $this->_notifications = Notifications::getTable()->getByUserIDAndGroupableMinutes($this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
                 $notifications = array('unread' => array(), 'read' => array(), 'all' => array());
-                $db_notifcations = array_reverse($this->_notifications);
+                $db_notifcations = $this->_notifications;
                 foreach ($db_notifcations as $notification)
                 {
                     if ($filter_first_notification && $notification->getID() <= $first_notification_id) break;
@@ -2738,7 +2815,7 @@
         {
             if ($this->_unread_notifications_count === null)
             {
-                list ($this->_unread_notifications_count, $this->_read_notifications_count) = tables\Notifications::getTable()->getCountsByUserID($this->getID());
+                list ($this->_unread_notifications_count, $this->_read_notifications_count) = tables\Notifications::getTable()->getCountsByUserIDAndGroupableMinutes($this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
             }
         }
 

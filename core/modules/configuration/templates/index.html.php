@@ -22,7 +22,7 @@
     <h1><?php echo __('General configuration'); ?></h1>
     <ul class="config_badges">
     <?php foreach ($config_sections['general'] as $section => $info): ?>
-        <li>
+        <li class="rounded_box">
         <?php if (is_array($info['route'])): ?>
             <?php $url = make_url($info['route'][0], $info['route'][1]); ?>
         <?php else: ?>

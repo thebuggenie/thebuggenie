@@ -40,6 +40,7 @@
         const RULE_REPRODUCABILITY_VALID = 'valid_reproducability';
         const RULE_PRIORITY_VALID = 'valid_priority';
         const RULE_TEAM_MEMBERSHIP_VALID = 'valid_team';
+        const RULE_ISSUE_IN_MILESTONE_VALID = 'valid_in_milestone';
 
         const CUSTOMFIELD_VALIDATE_PREFIX = 'customfield_validate_';
 
@@ -82,6 +83,7 @@
             $i18n = framework\Context::getI18n();
             $initial_list[self::RULE_MAX_ASSIGNED_ISSUES] = $i18n->__('Max number of assigned issues');
             $initial_list[self::RULE_TEAM_MEMBERSHIP_VALID] = $i18n->__('User must be member of a certain team');
+            $initial_list[self::RULE_ISSUE_IN_MILESTONE_VALID] = $i18n->__('Issue must be in milestone');
 
             $event = new \thebuggenie\core\framework\Event('core', 'WorkflowTransitionValidationRule::getAvailablePreValidationRules', null, array(), $initial_list);
             $event->trigger();
@@ -181,7 +183,7 @@
 
         public function getRuleValueAsJoinedString()
         {
-            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID));
+            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID, self::RULE_ISSUE_IN_MILESTONE_VALID));
             $is_custom = $this->isCustom();
             $customtype = $this->getCustomType();
 
@@ -204,6 +206,10 @@
             elseif ($this->_name == self::RULE_TEAM_MEMBERSHIP_VALID)
             {
                 $fieldname = '\thebuggenie\core\entities\Team';
+            }
+            elseif ($this->_name == self::RULE_ISSUE_IN_MILESTONE_VALID)
+            {
+                $fieldname = '\thebuggenie\core\entities\Milestone';
             }
 
             if ($is_core || $is_custom)
@@ -324,6 +330,8 @@
                 $options = \thebuggenie\core\entities\Reproducability::getAll();
             } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID) {
                 $options = \thebuggenie\core\entities\Team::getAll();
+            } elseif ($this->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_ISSUE_IN_MILESTONE_VALID) {
+                $options = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectAll();
             } elseif ($this->isCustom()) {
                 $options = $this->getCustomField()->getOptions();
             }
@@ -333,7 +341,7 @@
 
         public function isValueValid($value)
         {
-            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID));
+            $is_core = in_array($this->_name, array(self::RULE_STATUS_VALID, self::RULE_RESOLUTION_VALID, self::RULE_REPRODUCABILITY_VALID, self::RULE_PRIORITY_VALID, self::RULE_TEAM_MEMBERSHIP_VALID, self::RULE_ISSUE_IN_MILESTONE_VALID));
             $is_custom = $this->isCustom();
 
             if ($is_core || $is_custom)
@@ -390,6 +398,25 @@
                             if ($assignee->getID() == $team_id)
                                 return true;
                         }
+                    }
+                    return false;
+                case self::RULE_ISSUE_IN_MILESTONE_VALID:
+                    $valid_items = explode(',', $this->getRuleValue());
+                    if ($input instanceof \thebuggenie\core\entities\Issue)
+                    {
+                        $issue = $input;
+                    }
+                    else if ($input->hasParameter('issue_id'))
+                    {
+                        $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectByID((int) $input->getParameter('issue_id'));
+                    }
+                    if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue)
+                    {
+                        if (!$issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) return false;
+
+                        if (count($valid_items) == 1 && reset($valid_items) == '') return true;
+
+                        return in_array($issue->getMilestone()->getID(), $valid_items);
                     }
                     return false;
                 case self::RULE_STATUS_VALID:

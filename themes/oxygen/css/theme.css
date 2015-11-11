@@ -61,9 +61,9 @@ label > input[type="checkbox"] { margin: 0 3px; position: relative; }
 
 .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; display: inline-block; margin: 0 5px; }
 
-div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; }
-div.image_container icleft { float: left; clear: left; }
-div.image_container icright { float: right; clear: right; }
+div.image_container { border: 1px solid #CCC; width: auto; float: right; clear: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin: 10px 10px 15px 0; padding: 6px; background-color: #FFF; text-align: center; }
+div.image_container .icleft { float: left; clear: left; }
+div.image_container .icright { float: right; clear: right; }
 div.image_container.thumb img.image { width: 220px; }
 
 .offline_msg { padding: 10px; }
@@ -253,6 +253,16 @@ header #user_notifications_count.unread + img { opacity: 1; }
 #user_notifications_list li.read .notification_status_toggler {
     opacity: 0.6;
 }
+#user_notifications_list li .notification-project-logo {
+    margin: -3px 5px 0 0;
+    width: 16px;
+    height: 16px;
+}
+#user_notifications_list li.read .notification-project-logo,
+#user_notifications_list li.read .avatar.small
+{
+    opacity: 0.4;
+}
 #user_notifications_list li time {
     font-size: 0.85em;
     color: #888;
@@ -264,7 +274,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
     border-radius: 2px;
     text-align: center;
     background-color: rgba(219, 219, 219, 0.5);
-    padding: 3px;
+    padding: 4.5px 3px;
     line-height: 1.2;
 }
 #user_notifications_list li.read time {
@@ -382,6 +392,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 .page-project_statistics #content_container,
 .page-project_team #content_container,
 .page-project_roadmap #content_container,
+.page-project_milestone_details #content_container,
 .page-project_releases #content_container,
 .page-account #content_container
 {
@@ -489,7 +500,7 @@ footer {
     padding: 5px 0;
     text-shadow: 1px 1px 0px #FFF;
 }
-footer img { margin: 0 3px 0 0; }
+footer img { margin: 0 3px -3px 0; }
 /* footer section */
 
 /* login and registration page styling */
@@ -771,7 +782,7 @@ footer img { margin: 0 3px 0 0; }
 .commentbody { padding: 1px 5px 5px 40px; font-size: 1em; overflow: hidden; }
 #issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { display: block; margin-top: 10px; font-size: 0.9em; text-align: left; }
+.commenttools { display: block; margin-top: 10px; font-size: 0.9em; text-align: left; clear: left; }
 .commenttools a { color: #AAA; text-transform: uppercase; display: inline-block; margin: 0 10px 0 0; border-bottom: 1px dotted transparent; }
 .commenttools a:hover { border-bottom-color: #AAA; }
 .comment_controls { margin-top: 10px; font-size: 1em; }
@@ -782,6 +793,7 @@ footer img { margin: 0 3px 0 0; }
 .system_comment .comment_main { background-color: #F7F7F7; border: 1px solid #DDD; }
 .private_comment .comment_main { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
 .comment_editor { position: fixed; width: 650px; z-index: 120; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
+.comment_editor .typeahead.dropdown-menu { overflow-y: scroll; max-height: 100px; }
 
 .commit_header { font-size: larger; }
 .commit_expander { display: block; padding: 3px 0 15px 22px; border-bottom: 1px dashed #EAEAEA; }
@@ -796,7 +808,7 @@ footer img { margin: 0 3px 0 0; }
 .commit_left table b { font-weight: normal; }
 .commit_left table img { padding-top: 3px; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 11px 0 0 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #EAF2FF; color: #99C; padding: 0px 4px 2px 4px; font-size: 0.7em; margin: 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
@@ -1123,7 +1135,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .user_popup {z-index: 100; width: 300px; margin-top: 10px; display: none; position: absolute; }
 .user_popup, #user_details_popup { font-size: 0.9em; color: #555; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0; width: 240px; float: left; }
-#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 10px; float: left; line-height: 1.2; }
+#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 0; float: left; line-height: 1.2; }
 .account_details { margin: 10px 0px 10px 10px; padding: 10px; font-size: 1em; }
 .account_details .user_realname { font-size: 1.2em; font-weight: bold; line-height: 1.3; padding-bottom: 2px; }
 .account_details .user_username { font-size: 0.9em; line-height: 1.2; }
@@ -1158,7 +1170,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
     width: auto;
 }
 .profile_syntax_table tbody tr td {
-    border-bottom: 1px dotted #DDD;
+    border-bottom: 1px solid #DDD;
     padding: 3px;
     margin: 0;
     text-align: center;
@@ -1166,10 +1178,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .profile_syntax_table tbody tr td:first-child {
     text-align: left;
 }
-.profile_syntax_table tbody tr:hover td {
-    border-color: #888;
-}
-#account_tabs_panes table { width: 885px; margin-bottom: 25px; }
+#account_tabs_panes table { width: 100%; margin-bottom: 25px; }
 #account_tabs_panes td { padding: 5px 0; }
 #account_tabs_panes label { padding: 0; margin: 0; }
 #account_tabs_panes h3, .configuration_page h3, #project_config_menu_panes h3 {
@@ -1219,11 +1228,14 @@ label[for=profile_prefer_wiki_markdown] { font-weight: normal; }
     margin: 0 auto;
     text-align: center;
 }
-.usercard .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }
+.usercard .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; display: block; margin-top: 3px; }
 .usercard .user_id { float: right; font-size: 2.3em; font-weight: normal; color: #C4CAE9; }
 .user_popup .user_realname .user_status, .usercard .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
-.usercard .user_realname .user_email { font-size: 0.6em; font-weight: normal; color: #AAA; }
-.usercard .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
+.usercard .user_realname .user_email { font-size: 0.7em; font-weight: normal; color: #AAA; display: block; margin-top: 7px;}
+.usercard .user_realname .edit_user { font-size: 0.75em; display: block; margin-top: 10px; }
+.usercard .user_realname .friends_link { font-size: 0.75em; display: block; margin-top: 10px; margin-left: -2px; }
+.usercard .user_details { font-size: 1.1em; line-height: 1.7; font-weight: normal; padding: 5px 15px; clear: both; width: 455px; float: right; border-left: 1px solid #DDD; box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8); }
+.usercard .user_profile { font-size: 1.0em; font-weight: normal; padding: 3px; width: 180px; float: left; }
 .user_popup .user_avatar { padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; margin-right: 6px; display: inline-block; }
 .user_popup .user_details { font-size: 0.8em; width: 230px; font-weight: normal; padding: 3px 0; display: inline-block; clear: none; color: #666; line-height: 1.3em;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; vertical-align: top; }
 .user_popup .user_details:first-line { font-size: 1.7em; font-weight: normal; }
@@ -1499,7 +1511,7 @@ table.cleantable th { text-align: center; }
 #users_more_actions_container { float: right; }
 #users_more_actions_container button { float: left; }
 #tab_users_pane > strong { font-weight: bold; display: block; }
-.project_list nav .more_actions_dropdown li.finduser_container { padding: 5px; height: auto; }
+.project_list nav .more_actions_dropdown li.finduser_container { padding: 5px; height: auto; width: 247px; }
 .project_list nav .more_actions_dropdown li.finduser_container:hover { background-color: #FFF; }
 #users_more_actions_container .more_actions_dropdown li.separator { height: 1px; }
 .finduser_container #findusers { width: 300px; }
@@ -1683,6 +1695,35 @@ a.friend { color: #277CBA; }
 .backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
 .backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
 .backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 0px 7px 9px 7px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
+.backdrop_detail_content .report-issue-custom-access-check {
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 10px 7px 9px 7px;
+    background-color: #F5F5F5;
+    margin-top: 10px;
+    margin-bottom: 0;
+    clear: both;
+    line-height: 1.7;
+}
+.backdrop_detail_content .report-issue-custom-access-container {
+    margin-top: 10px;
+}
+.report-issue-custom-access-check img
+{
+    margin-bottom: -3px;
+    margin-left: 3px;
+}
+.report-issue-custom-access-check input[type=checkbox],
+.report-issue-custom-access-container input[type=radio]
+{
+    margin-top: -2px;
+}
+.report-issue-custom-access-check input[type=checkbox]
+{
+    margin-left: 2px;
+    margin-right: 4px;
+}
 #report_form table.additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
 .backdrop_detail_content .additional_information .report_issue_help { /*display: none;*/ }
 #report_form table.additional_information { margin-top: 10px; width: 986px; }
@@ -1700,7 +1741,7 @@ a.friend { color: #277CBA; }
     font-size: 2em;
     font-weight: normal;
     text-align: center;
-    border: 3px rgba(100, 100, 100, 0.2) dashed;
+    border: 2px rgba(100, 100, 100, 0.2) dashed;
     border-radius: 5px;
     -webkit-transition: background-color 0.3s ease;
     -moz-transition: background-color 0.3s ease;
@@ -1717,14 +1758,15 @@ a.friend { color: #277CBA; }
 #file_upload_list li .filename { font-style: italic; }
 #file_upload_list li .filesize { color: #AAA; display: inline-block; margin-left: 10px; }
 #file_upload_list li label { width: 180px; display: inline-block; font-size: 1.1em; font-weight: normal; }
-#file_upload_list li label:first-of-type { font-weight: bold; }
+#file_upload_list li label:first-of-type { float: left; margin-top: -3px; }
 #file_upload_list li input[type="text"] { width: 619px; }
-#file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 5px 0; padding: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.5); background-color: #7777CC; }
+#file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 0; padding: 0; background-color: #8C8; }
 #file_upload_list .progress.completed { background-color: #00CC33; opacity: 0.5; }
 #issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
+#viewissue_vcs_integration_commits pre { padding: 0; background-color: initial; border: none; }
 .textarea_save_container { display: block; margin: 0; padding: 7px; box-sizing: border-box; background-color: rgb(245, 245, 245); border: 1px solid rgba(100, 100, 100, 0.5); border-top: 0; text-align: right; }
 .textarea_save_container .button, .textarea_save_container .button:hover { padding: 7px 10px; font-weight: normal; font-size: 1.1em; }
-#issue_view { position: relative; z-index: 100; overflow: auto; }
+#issue_view { position: relative; z-index: 100; }
 #issue_main_container { float: left; overflow: hidden; width: 100%; }
 #issue_main {
     margin: 0 10px 0 380px;
@@ -1870,18 +1912,18 @@ a.friend { color: #277CBA; }
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }
-#issue_details fieldset .popup_box { font-size: 1em; left: 0; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
+#issue_details fieldset .popup_box, #report_form .reportissue_additional_information_container td.report_issue_help > ul.popup_box { font-size: 1em; left: 0; right: 2px; top: 50%; margin-top: 14px; z-index: 10001; text-align: left; border-top-right-radius: 0; }
 a.dropper.dropdown_link { position: absolute; right: 2px; top: 50%; margin-top: -11px; line-height: 1em; }
 a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
-#issue_details fieldset img.dropdown { float: none; margin: 3px; }
-#issue_details fieldset dl:hover img.dropdown { display: inline; }
+#issue_details fieldset img.dropdown, #report_form .reportissue_additional_information_container td.report_issue_help > a > img.dropdown { float: none; margin: 3px; }
+#issue_details fieldset dl:hover img.dropdown, #report_form .reportissue_additional_information_container tr:hover > td.report_issue_help > a > img.dropdown { display: inline; }
 #issue_details fieldset dl { padding: 3px; }
 #issue_details fieldset dt, #issue_details fieldset dd { float: none; display: inline-block; vertical-align: middle; padding: 0; line-height: 1em; }
 #issue_details fieldset #issue_percent_complete { width: 160px; float: right; display: inline; }
 
 #project_planning.milestone-sort #project_planning_action_strip, #project_planning #milestone-sort-actions { display: none; }
 #project_planning.milestone-sort #milestone-sort-actions { display: block; }
-.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
+.project_header_right .button-pressed, #issue_details fieldset a.dropper.button-pressed, .milestone_box .header .dropper.button-pressed, #project_planning_action_strip .dropper.button-pressed, #report_form .reportissue_additional_information_container td.report_issue_help > .dropper.button-pressed { box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset; border-radius: 2px; }
 #project_planning_action_strip .more_actions_dropdown { margin-top: -1px; }
 #project_planning_action_strip .fancydropdown {
     width: 360px;
@@ -1928,7 +1970,7 @@ a.dropper.dropdown_link:hover { border: none; text-decoration: none; }
 .milestone_virtual_status .milestone_percentage, .issue_percentage { width: 100%; position: absolute; bottom: -5px; left: 0; }
 .milestone_virtual_status .tooltip { font-size: 0.9em; opacity: 1; }
 #project_planning_action_strip .fancydropdown + ul { left: auto; right: 15px; font-size: 0.9em; z-index: 1012; }
-#issue_details fieldset a.dropper.button-pressed img { display: inline; }
+#issue_details fieldset a.dropper.button-pressed img, .reportissue_additional_information_container td.report_issue_help > .dropper.button-pressed img { display: inline; }
 #issue_details fieldset .more_actions_dropdown li a, #issue_details fieldset ul.more_actions_dropdown li a:hover { font-size: 1em; }
 #issue_details fieldset .userdropdown { position: inherit; }
 .issue_detail_field { font-size: 1.1em; margin-bottom: 2px; }
@@ -2012,7 +2054,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 /* end backdrop styling */
 
 /* main issue view styling */
-.viewissue_container { width: 100%; text-align: left; padding: 0 0 50px 0; margin: 0; line-height: 1.9; }
+.viewissue_container { width: 100%; text-align: left; padding: 0 0 50px 0; margin: 10px 0 0; line-height: 1.9; }
 #viewissue_changed > form > div > input, #viewissue_changed > form > div > button, #viewissue_saved > div > button { line-height: 21px !important; margin-top: -3px; padding: 0.5px 8px; }
 /* issue info boxes */
 #viewissue_menu li { box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -moz-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); }
@@ -2043,7 +2085,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_header_container
 {
     position: relative;
-    margin: 10px; z-index: 1000;
+    margin: 0 10px; z-index: 1000;
     -webkit-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
     -moz-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
     -o-transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
@@ -2213,7 +2255,7 @@ dl { margin: 0; font-size: 0.85em; padding: 0 0 0 0; position: relative; min-hei
 dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
 dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
 
-#viewissue_left_box_top { margin: 0; }
+#viewissue_left_box_top { margin: 10px 0 0; }
 #viewissue_left_box_bottom { margin: 5px; }
 #viewissue_left_box_issuetype, #viewissue_left_box_status { margin: 0 5px 0 2px; }
 #viewissue_left_box_issuetype table tr td { font-size: 1.1em; font-weight: bold; }
@@ -2378,6 +2420,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 .userdropdown { display: inline-block; position: relative; }
 #viewissue_affected { margin: 5px 0 0 0; }
 #viewissue_log_loading_indicator { display: inline-block; vertical-align: middle; margin-left: 5px; }
+#viewissue_log_items { min-height: 36px; }
 #viewissue_log_items ul { list-style: none; margin: 0 0 10px 0; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
 #viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
@@ -2399,6 +2442,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; }
 #uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
 
 #viewissue_add_relation_div, #viewissue_add_item_div { text-align: left; padding: 10px; }
+#viewissue_add_item_div .backdrop_detail_header .button.button-silver { padding: 3px 8px; margin-top: -3px; }
 #viewissue_find_issue_form div { text-align: left; font-size: 0.9em; margin-top: 10px; }
 #viewissue_find_issue_form input[type="text"] { width: 300px; }
 #viewissue_relation_results table { margin-top: 5px; }
@@ -2421,7 +2465,7 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #viewissue_attached_information .attached_item.file_image:hover .removelink, #article_attachments .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
 #file_upload_list { display: block; clear: both; }
 #file_upload_list li { clear: both; }
-#file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; }
+#file_upload_list .imagepreview { display: block; float: left; margin-right: 10px; width: 160px; height: 90px; overflow: hidden; margin-top: -3px; }
 .imagepreview { display: block; margin: 0; padding: 0; border: 4px solid #FFF; transition: box-shadow 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
 .imagepreview:hover { box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
 .imagepreview img { display: block; max-width: 100%; margin: 0 auto; padding: 0; }
@@ -2595,7 +2639,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .dashboard.layout_standard ul.dashboard_column > li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 .dashboard.layout_standard ul.dashboard_column > li table tr.issue_closed td a { color: #88C688; }
 .dashboard.layout_standard ul.dashboard_column > li table tr td .issue_closed { text-decoration: line-through; }
-.dashboard.layout_standard ul.dashboard_column > li .imgtd img {padding: 4px 0 0 0}
+.dashboard.layout_standard ul.dashboard_column > li .imgtd img, #timeline .recent_activities .imgtd img {padding: 4px 0 0 0 !important;}
 .dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 2px 5px; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1em; border-bottom: 1px dotted #CCC; background-color: #FFF; }
 .dashboard.layout_standard ul.dashboard_column > li .milestone_box .header { margin: 10px 0 0 0; padding: 0; border: none; text-transform: none; }
 .dashboard.layout_standard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
@@ -2639,8 +2683,9 @@ table.issue_affects td img { vertical-align: bottom; }
 }
 .dashboard_add_view_container { display: none; }
 .dashboard.layout_standard.editable .dashboard_add_view_container { display: block; cursor: pointer; }
-.dashboard_add_view_container > div { font-size: 2.1em; font-weight: normal; border: 2px dotted #DDD; padding: 50px 0; text-align: center; background-color: #FAFAFA; color: rgba(100, 100, 100, 0.4); margin: 0 5px 10px 5px; }
+.dashboard_add_view_container > div { font-size: 1.7em; font-weight: normal; border: 1px dashed #DDD; padding: 50px 0; text-align: center; background-color: #FAFAFA; color: rgba(100, 100, 100, 0.4); margin: 0 5px 10px 5px; }
 .dashboard_indicator, .planning_indicator { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.6); z-index: 11; }
+#whiteboard_indicator { z-index: 1011; }
 #planning_indicator { position: fixed; }
 .dashboard_indicator img, .milestone_box .planning_indicator img, .planning_indicator img { position: absolute; left: 50%; top: 50%; margin-top: -8px; margin-left: -8px; }
 #planning_indicator.planning_indicator img { top: 200px; }
@@ -3100,19 +3145,30 @@ table.issue_affects td img { vertical-align: bottom; }
     display: inline-block;
     vertical-align: middle;
     width: auto;
-    margin-right: 25px;
+    margin-right: 5px;
+}
+.milestone_box .milestone_counts_container {
+    margin-top: -20px;
+}
+#new_backlog_milestone_marker .milestone_counts_container {
+    margin-top: 0;
+}
+.header.backlog .milestone_counts_container
+{
+    margin-top: -10px;
 }
 .milestone_counts_container table, .milestone_box .milestone_counts_container tr { border: 0; padding: 0; margin: 0; width: auto; color: #555; background-color: #FFF; font-size: 0.8em; }
-.milestone_counts_container td { padding: 0 10px; text-align: center; font-weight: normal; }
-.milestone_counts_container tr:first-child td { font-size: 2.3em; line-height: 1.1em; }
-.milestone_counts_container tr:nth-child(2) td { font-size: 1em; line-height: 1.1em; text-transform: uppercase; color: #AAA; }
+.milestone_counts_container td { padding: 0; text-align: center; font-weight: normal; min-width: 75px; }
+.milestone_counts_container tr:first-child td { font-size: 1.9em; line-height: 1.1em; }
+.milestone_counts_container tr:nth-child(2) td { font-size: 1.1em; line-height: 1.5em; text-transform: uppercase; color: #AAA; }
 .milestone_box .milestone_name { font-weight: normal; font-size: 1.2em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
-.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 400px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
+.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 390px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
 .milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
 .milestone_box .header .button img { display: none; }
 .milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
 .milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
-.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
+.page-project_roadmap #content_container .milestone_box .header .settings_container, .page-project_milestone_details #content_container .milestone_box .header .settings_container { margin-right: -10px; }
+.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; z-index: 1; }
 .milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
 .milestone_box .header .draggable { display: none; }
@@ -3267,14 +3323,14 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .milestone_box .milestone_issues li.milestone_issue .child_issues_container { padding: 0 0 0 15px; list-style: none; margin: 0; }
 .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container, .milestone_box .milestone_issues li.milestone_issue.ui-sortable-helper .issue_container:hover { box-shadow: 0 0 3px rgba(100, 100, 100, 0.2); border: 1px solid rgba(100, 100, 100, 0.2) !important; background-color: #FFF; display: block; }
 .milestone_box .milestone_issues li.milestone_issue .issue_container:hover { background-color: rgba(240, 240, 240, 0.4); }
-.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking:hover { background-color: rgba(250, 180, 180, 0.4); }
+.milestone_box .milestone_issues li.milestone_issue .issue_container.blocking:hover { background-color: #FDF4F4; }
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container { background-color: rgba(200, 240, 200, 0.4); }
 .milestone_box .milestone_issues li.milestone_issue.included .issue_container:hover { background-color: rgba(180, 220, 180, 0.4); }
 
 .story_color { display: block; position: absolute; left: 0; height: 100%; width: 7px; padding: 0; border-right: 1px solid rgba(200, 200, 200, 0.2); opacity: 0.6; }
 .epic .story_color { border-color: rgba(100, 100, 100, 0.2); }
 .story_color.dropper { cursor: pointer; }
-.story_color_selector { position: absolute; top: 10px; left: 15px; width: 260px; height: auto; z-index: 999; padding: 5px; color: #333; }
+.story_color_selector { position: absolute; top: 10px; left: 15px; width: 260px; height: auto; z-index: 999; padding: 5px; color: #333; white-space: initial; }
 .story_color_selector .color_items { margin: 5px; }
 .issue_closed .story_color_selector a, .story_color_selector a { color: #00A400; }
 .story_color_selector_item { cursor: pointer; float: left; width: 15px; height: 15px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border: 1px solid rgba(0, 0, 0, 0.5); margin-right: 5px; opacity: 0.6; }
@@ -3294,61 +3350,73 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     vertical-align: middle;
     line-height: 1em;
 }
-.issue_container .priority.priority_1 { color: #BF0303; font-style: normal; }
-.issue_container .priority.priority_2, .issue_container .priority_3 { color: #C39500; }
-.issue_container .priority.priority_4 { color: #00892C; font-weight: normal; }
-.issue_container .priority.priority_5, .issue_container .priority.priority_6 { color: #888; font-weight: normal; }
-.issue_container .priority.priority_0 { color: #DDD; font-weight: normal; }
+.whiteboard-issue .priority {
+    height: 13px;
+    width: 15px;
+    text-align: center;
+    padding: 0;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    vertical-align: middle;
+    line-height: 1em;
+    float: left;
+    margin: 10px 4px 3px 16px;
+    border-radius: 3px;
+}
+.issue_container .priority.priority_1, .whiteboard-issue .priority.priority_1 { color: #BF0303; font-style: normal; }
+.issue_container .priority.priority_2, .whiteboard-issue .priority.priority_2, .issue_container .priority_3, .whiteboard-issue .priority.priority_3 { color: #C39500; }
+.issue_container .priority.priority_4, .whiteboard-issue .priority.priority_4 { color: #00892C; font-weight: normal; }
+.issue_container .priority.priority_5, .whiteboard-issue .priority.priority_5, .issue_container .priority.priority_6 , .whiteboard-issue .priority.priority_6 { color: #888; font-weight: normal; }
+.issue_container .priority.priority_0, .whiteboard-issue .priority.priority_0 { color: #DDD; font-weight: normal; }
+
+.whiteboard-issue .priority.priority_1 { background-color: rgba(191, 3, 3, 0.15); }
+.whiteboard-issue .priority.priority_2, .whiteboard-issue .priority.priority_3 { background-color: rgba(195, 149, 0, 0.15); }
+.whiteboard-issue .priority.priority_4 { background-color: rgba(0, 137, 44, 0.15); }
+.whiteboard-issue .priority.priority_5, .whiteboard-issue .priority.priority_6 { background-color: rgba(136, 136, 136, 0.15); }
+.whiteboard-issue .priority.priority_0 { background-color: rgba(221, 221, 221, 0.2); }
 
 .milestone_box .milestone_issues li .issue_link, .milestone_box .milestone_issues li .issue_link:hover {
     display: block;
     float: none;
     clear: both;
-    padding: 4px 2px 5px 40px;
-    margin: 0;
+    padding: 8px 2px 5px 40px;
+    margin: 0px;
 }
 .milestone_box .milestone_issues li .issue_link a, .milestone_box .milestone_issues li .issue_link a:hover {
     border: none;
     text-decoration: none;
+    line-height: 1.7em;
 }
-.milestone_box .milestone_issues li .issue_link img {
+.milestone_box .milestone_issues li .issue_link > a > img {
+    margin-bottom: -3px;
+    margin-right: 5px;
+}
+.milestone_box .milestone_issues li .issue_link > img {
     vertical-align: middle;
     display: inline-block;
     margin-right: 5px;
 }
 .milestone_box .milestone_issues li .issue_info {
     display: block;
-    position: absolute;
-    right: 0;
+    float: right;
     height: 100%;
     width: auto;
-    padding: 2px 2px 2px 17px;
-    top: 0;
+    top: 0px;
     text-shadow: none;
     vertical-align: middle;
     line-height: 1em;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 15px);
     box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    transition: background-color 0.3s ease;
-    -o-transition: background-color 0.3s ease;
-    -ms-transition: background-color 0.3s ease;
-    -moz-transition: background-color 0.3s ease;
-    -webkit-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease 0s;
+    margin-top: -4px;
+    padding: 2px 2px 2px 3px;
 }
-.milestone_box .milestone_issues li .issue_container.blocking .issue_info {
-    background: linear-gradient(to right, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -o-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -ms-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
-    background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
+.milestone_box .milestone_issues li .issue_container.blocking .issue_link {
+    background: linear-gradient(to right, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -o-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -ms-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
+    background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 70%, rgba(255, 100, 100, 0.2) 100%);
 }
 .milestone_issue .issue_release, .milestone_issue .issue_component, .whiteboard-issue .issue_release, .whiteboard-issue .issue_component, .whiteboard-issue .epic_badge {
     display: inline-block;
@@ -3364,6 +3432,12 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 }
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
     background: rgba(225, 225, 100, 0.5);
+}
+.whiteboard-issue .issue_component.issue_date {
+    margin-top: 3px;
+    background-color: #E06363;
+    color: white;
+    font-size: 0.9em;
 }
 #project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours { display: none; }
 .milestone_issue .issue_estimates, .whiteboard-issue .issue_estimates {
@@ -3385,6 +3459,11 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
     line-height: 1.25em;
     text-shadow: none;
     margin-top: 1px;
+}
+@-moz-document url-prefix() {
+    .milestone_issue .issue_estimate {
+        padding: 3px 7px 2px;
+    }
 }
 .whiteboard-issue .issue_estimates {
     padding: 0;
@@ -3446,7 +3525,7 @@ dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-sp
 .epic .status_badge {
     display: inline-block;
     vertical-align: middle;
-    margin: 0 5px 0 0;
+    margin: -3px 5px 0 0;
     padding: 0;
     border-radius: 2px;
     width: 13px;
@@ -3482,7 +3561,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .issue_more_actions_link_container {
     position: absolute;
     right: -21px;
-    top: 4px;
+    top: 8px;
 }
 .whiteboard-issue .issue_more_actions_link_container {
     left: 13px;
@@ -4226,6 +4305,23 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.7em; text-transform:
     margin-left: 13px;
     position: inherit;
 }
+.whiteboard-issue .issue_info.issue_info_top {
+    padding-bottom: 0;
+}
+.whiteboard-issue .issue_info.issue_info_middle {
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
+.whiteboard-issue .issue_info .user_popup
+{
+    text-align: initial;
+}
+.whiteboard-issue .issue_info .userdropdown .user_popup
+{
+    margin-left: -23px;
+    margin-top: 13px;
+}
 .whiteboard-columns.transition-selector .whiteboard-issue .issue_info {
     display: none;
 }
@@ -4320,7 +4416,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin-left: 0;
 }
 #project_planning.project_info_container .project_right_container .project_right {
-    margin-left: 451px;
+    margin-left: 551px;
 }
 .project_save_container {
     display: block;
@@ -4373,7 +4469,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     display: block;
 }
 #project_planning.project_info_container .project_left_container {
-    width: 430px;
+    width: 530px;
     overflow: visible;
 }
 #project_planning.project_info_container.left_toggled .project_left_container {
@@ -4398,10 +4494,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     transition: width 0.3s ease, margin 0.3s ease;
 }
 #project_planning.project_info_container .project_left_container .project_left {
-    width: 430px;
+    width: 530px;
 }
 #project_planning.project_info_container.left_toggled .project_left_container .project_left {
-    margin-left: -390px;
+    margin-left: -490px;
 }
 .project_info_container h1, .project_info_container h2, .project_info_container h3, .project_info_container h4 {
     font-weight: normal;
@@ -4510,6 +4606,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     -webkit-box-sizing: border-box;
     margin: 0;
 }
+.dashboard_view_issues .issue_user_avatar_cell .user_popup
+ {
+     left: -14px;
+ }
 .dashboard_view_issues .tr .td {
     border-bottom: 1px dashed #EAEAEA;
     padding: 10px 5px 15px;
@@ -4561,6 +4661,13 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     background: -ms-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
     background: -moz-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
     background: -webkit-linear-gradient(left, rgba(255, 100, 100, 0) 0%, rgba(255, 100, 100, 0.2) 50px);
+}
+.dashboard_view_issues .issue_team_avatar_cell .avatar {
+    border: 1px solid rgba(39, 124, 186, 0.4);
+    height: 16px;
+    width: 16px;
+    background-color: rgba(39, 124, 186, 0.05);
+    padding: 5px;
 }
 
 #project_description {font-size: 1.1em; font-weight: normal; color: #666;}
@@ -4705,11 +4812,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .release_item .button-group { float: right; margin: 5px 5px 0 0; }
 .release_item .button-group .button { font-size: 1.1em; padding: 5px 10px; }
 .release_item .release_name { font-size: 1.2em; }
-.release_item.active .release_name { font-size: 1.4em; }
-.release_item .release_version { font-size: 0.9em; background-color: rgba(245, 245, 245, 0.7); display: inline-block; margin: -2px 5px 0 5px; padding: 3px 6px; vertical-align: middle; border-radius: 2px; }
+.release_item.active .release_name { font-size: 1.3em; }
+.release_item .release_version { font-size: 0.9em; background-color: #ECF0F4; display: inline-block; margin: -2px 5px 0 5px; padding: 3px 6px; vertical-align: middle; border-radius: 2px; }
 .release_item .release_icon { float: left; margin: 8px 8px 5px 5px; }
-.release_item .release_date { display: block; color: #888;  font-size: 13px; }
+.release_item .release_date { display: block; color: #888;  font-size: 13px; margin-top: 2px; }
 .release_item .release_date span { font-size: 13px; }
+.rounded_box.invisible:hover .release_version { background-color: white; }
 /* end project releases */
 
 /* statistics page */
@@ -6192,6 +6300,7 @@ div.calendar table
     background-color: #eee;
     border: none;
     border-collapse: collapse;
+    width: 100%;
 }
 
 div.calendar thead {
@@ -6285,10 +6394,9 @@ div.calendar tr.days td.otherDay
 
 img[id^='toggle_friend_'][id$='_indicator']
 {
-    margin-left: 5px;
-    margin-top: 4px;
-    margin-bottom: 3px;
-    margin-right: 3px;
+    margin-left: 2px;
+    margin-top: -1px;
+    margin-bottom: -3px;
 }
 tr[id^='users_results_user_'] > td > img[id^='toggle_friend_'][id$='_indicator']
 {
@@ -6311,14 +6419,17 @@ button:focus, input:focus, select:focus {outline:0;}
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,
 ul#account_tabs li.selected,
-ul#account_tabs li.selected:hover
+ul#account_tabs li.selected:hover,
+ul#editions_menu li.selected,
+ul#editions_menu li.selected:hover
 {
     background-color: #FFF;
     position: relative;
 }
 
 .configuration_page .tab_menu li.selected:after,
-ul#account_tabs li.selected:after
+ul#account_tabs li.selected:after,
+ul#editions_menu li.selected:after
 {
     content: "";
     width: 100%;
@@ -7674,39 +7785,15 @@ input[type=checkbox][name=send_login_details]
 #user_details_popup .user_realname
 {
     font-weight: normal;
-    margin-top: 3px;
-}
-
-#user_details_popup .user_username:before
-{
-    content: "(";
-}
-
-#user_details_popup .user_username:after
-{
-    content: ")";
-}
-
-#user_details_popup .user_status:before
-{
-    display: block;
-    content: "";
-    margin-top: 3px;
+    margin-top: 5px;
+    clear: both;
 }
 
 #user_details_popup .user_status
 {
-    display: inline;
-}
-
-#user_details_popup .user_email
-{
-    display: inline;
-}
-
-#user_details_popup .user_details
-{
-    padding: 5px 0px;
+    display: block;
+    margin-top: 10px;
+    font-size: 0.7em;
 }
 
 #user_details_popup .user_details i:after
@@ -7720,16 +7807,19 @@ input[type=checkbox][name=send_login_details]
 {
     margin: 10px 0 0 0;
     padding: 0;
+    font-size: 1.1em;
 }
 
 #user_details_popup .user_details ul > li
 {
     margin-bottom: 5px;
+    margin-left: 7px;
 }
 
 #user_details_popup .teamlist
 {
     padding: 0;
+    margin-top: 5px;
 }
 
 #user_details_popup .teamlist .userdropdown > div > div > div:nth-child(3)
@@ -9101,12 +9191,22 @@ img[id^='remove_assignee_team_'][id$='_indicator']
     width: 585px !important;
 }
 
-#attach_file #file_upload_list li .progress
+.progress_container
 {
     width: 595px !important;
     float: left;
-    margin-top: 5px;
+    margin-top: 10px;
+    background-color: #DCEFDC;
+}
+
+#attach_file #file_upload_list li .progress
+{
     position: inherit;
+    transition: width 0.1s;
+    -o-transition: width 0.1s;
+    -ms-transition: width 0.1s;
+    -moz-transition: width 0.1s;
+    -webkit-transition: width 0.1s;
 }
 
 #attach_file #file_upload_list li .filename
@@ -9120,6 +9220,7 @@ img[id^='remove_assignee_team_'][id$='_indicator']
 #attach_file #file_upload_list li .filesize
 {
     float: right;
+    margin-right: 3px;
 }
 
 
@@ -9299,7 +9400,7 @@ div[id^='acl_'][id$='_restricted'] h4
     font-weight: normal;
 }
 
-div[id^='acl_'][id$='_restricted'] .faded_out
+.issue_access_list > .faded_out
 {
     margin-left: -6px;
 }
@@ -9316,11 +9417,46 @@ ul[id^='popup_find_acl_'].more_actions_dropdown
     margin-right: 8px;
 }
 
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown
+{
+    font-size: 1.2em;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown
+{
+    margin-right: 15px;
+    margin-top: -7px;
+}
+
 ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input']
 {
     padding: 3px !important;
     margin-left: 2px;
     width: 235px !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input']
+{
+    padding: 2px !important;
+    font-size: 1em !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label
+{
+    padding: 6px !important;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label[for=popup_find_acl__input]
+{
+    margin-left: -4px;
+}
+
+.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled,
+.issue_access_policy_box ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled
+{
+    font-size: 0.9em;
+    padding: 2px 8px;
+    color: #AAA;
 }
 
 ul[id^='popup_find_acl_'] input[type=submit]
@@ -9356,11 +9492,29 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled
     color: #AAA;
 }
 
-ul[id^='issue_'][id$='_access_list'] > li
+.issue_access_list
+{
+    padding: 5px;
+}
+
+.issue_access_list > li
 {
     margin-bottom: 5px;
 }
 
+.issue_access_policy_box #acl-users-teams-selector h4,
+.report-issue-custom-access-check #acl-users-teams-selector h4
+{
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.issue_access_policy_box #acl-users-teams-selector h4 .button,
+.report-issue-custom-access-check #acl-users-teams-selector h4 .button
+{
+    padding: 3px 7px;
+    margin-top: -2px;
+}
 
 /* Manage issue subscribers */
 
@@ -9554,9 +9708,11 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     margin-left: 5px;
 }
 
-.dashboard_view_content .recent_activities .imgtd img
+.dashboard_view_content .recent_activities .imgtd img,
+#timeline .recent_activities .imgtd img
 {
-    padding: 2px 5px 0 0 !important;
+    padding: 2px 5px 0 0;
+    margin-top: -3px !important;
 }
 
 .dashboard_view_content .project_list .project-config-buttons
@@ -9578,13 +9734,22 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
 
 .legendColorBox > div
 {
-    margin-top: 1px;
+    margin-top: 3px;
     margin-right: 2px;
+    width: 10px;
+    height: 10px;
+    border: none !important;
 }
 
 .legendColorBox > div > div
 {
-    width: 1px !important;
+    width: 0px !important;
+    border-radius: 6px;
+}
+
+td.legendLabel
+{
+    font-size: 1.1em;
 }
 
 #dashboard_lefthand .collapser_link
@@ -9617,9 +9782,15 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a
     margin-top: 9px;
 }
 
-.dashboard_view_container > .container_div > .header {
+.dashboard_view_container > .container_div > .header
+{
     margin: 0 !important;
     padding: 10px !important;
+}
+
+.issuelog-project-logo
+{
+    margin-bottom: -3px;
 }
 
 
@@ -9992,6 +10163,11 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
 #reportissue_content #file_upload_list .progress
 {
     float: left;
+    transition: width 0.1s;
+    -o-transition: width 0.1s;
+    -ms-transition: width 0.1s;
+    -moz-transition: width 0.1s;
+    -webkit-transition: width 0.1s;
 }
 
 #reportissue_container #report_issue_report_another_button
@@ -10156,8 +10332,8 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     font-size: 1em;
 }
 
-#reportissue_content #file_upload_list li:last-of-type .progress,
-#reportissue_container #file_upload_list li:last-of-type .progress
+#reportissue_content #file_upload_list li:last-of-type .progress_container,
+#reportissue_container #file_upload_list li:last-of-type .progress_container
 {
     margin-bottom: 20px;
 }
@@ -10167,15 +10343,25 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr
     margin-top: 0px;
 }
 
-#report_issue_form #file_upload_list .progress
+#report_issue_form #file_upload_list .progress_container
 {
     width: 805px !important;
+}
+
+#report_issue_form #file_upload_list .progress_container
+{
     margin-top: 20px;
 }
 
 #report_issue_form #file_upload_list li
 {
     overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#report_issue_form #file_upload_list li:last-child
+{
+    margin-bottom: 0px;
 }
 
 #report_issue_form #file_upload_list li br
@@ -10884,17 +11070,14 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 #issue_main .commentcontent .image_container.thumb
 {
     max-width: 500px;
-    padding: 6px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    float: none !important;
-    clear: none !important;
-    margin: 10px 0 15px 0;
-    background-color: #FFF;
     display: table;
-    text-align: center;
 }
 
-#issue_main .commentcontent .image_container.thumb img
+#issue_main .commentcontent .image_container img {
+    margin-bottom: -6px;
+}
+
+#issue_main .commentcontent .image_container a img
 {
     vertical-align: text-top;
 }
@@ -10903,7 +11086,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
  {
     max-width: 500px;
     width: initial;
-    vertical-align: inherit;
  }
 
 #comment_add_indicator,
@@ -10974,6 +11156,16 @@ div[id^='comment_reply_indicator_']
 .issue_inline_description h5:hover a, .issue_inline_description h6:hover a
 {
     opacity: 1;
+}
+
+#issue_details .commits_next
+{
+    margin-left: 0;
+}
+
+#issue_details .commits_next img
+{
+    margin-top: 4px;
 }
 
 
@@ -11064,6 +11256,11 @@ div[id^='comment_reply_indicator_']
     margin-top: 3px;
 }
 
+#tab_settings_pane th
+{
+    text-align: center;
+}
+
 
 /* Agile */
 
@@ -11093,12 +11290,12 @@ div[id^='comment_reply_indicator_']
 
 #milestone_finish_container select[id^='reached_month_']
 {
-    width: 100px;
+    width: 100px !important;
 }
 
 #milestone_finish_container select[id^='reached_day_']
 {
-    width: 50px;
+    width: 50px !important;
 }
 
 .milestone_issue .issue_container img.avatar
@@ -11120,6 +11317,30 @@ div[id^='comment_reply_indicator_']
     border: none;
 }
 
+.whiteboard-issue .comments-badge,
+.whiteboard-issue .attachments-badge
+{
+    display: inline-block;
+    color: #555;
+    margin-top: 1px;
+    vertical-align: middle;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.whiteboard-issue .comments-badge img, .whiteboard-issue .comments-badge span,
+.whiteboard-issue .attachments-badge img, .whiteboard-issue .attachments-badge span
+{
+    display: inline;
+    vertical-align: middle;
+}
+
+.whiteboard-issue .comments-badge img,
+.whiteboard-issue .attachments-badge img
+{
+    margin-right: 3px;
+}
+
 #selected_milestone_status_indicator
 {
     margin-top: -6px !important;
@@ -11128,6 +11349,23 @@ div[id^='comment_reply_indicator_']
 .milestone_issue .status_badge
 {
     opacity: 1;
+}
+
+.milestone_issue .user_popup
+{
+    margin-left: -263px;
+    margin-top: 13px;
+}
+
+.milestone_issue .user_popup .user_realname
+{
+    line-height: 20px;
+}
+
+.milestone_issue .user_popup.leftie:before,
+.milestone_issue .user_popup.leftie:after
+{
+    left: 90%;
 }
 
 .whiteboard-issue .issue_more_actions_link_container .dynamic_menu_link
@@ -11147,6 +11385,21 @@ div[id^='comment_reply_indicator_']
     width: 21px;
     height: 21px;
     border-radius: 4px;
+}
+
+.whiteboard-issue img.avatar.team-avatar,
+.milestone_issue img.avatar.team-avatar
+{
+    width: 16px;
+    height: 16px;
+    background-color: rgba(39, 124, 186, 0.05);
+    padding: 1.5px;
+    border: 1px solid rgba(39, 124, 186, 0.4);
+}
+
+.whiteboard-issue .userlink
+{
+    margin-left: 0;
 }
 
 .whiteboard-issue .epic_badge,
@@ -11251,11 +11504,6 @@ div[id^='comment_reply_indicator_']
     box-shadow: none;
 }
 
-#topmenu-container .header_menu li.selected a
-{
-    color: rgb(74, 100, 121);
-}
-
 #topmenu-container.active .header_menu li:hover > div:first-child {
     background-color: white;
     height: 100%;
@@ -11345,7 +11593,7 @@ li#header_usermenu_link > div
 #user_notifications_list > li > h1
 {
     font-size: 1em;
-    margin: 0 25px 0px 5px;
+    margin: 0 35px 0px 5px;
     line-height: 1.8;
 }
 
@@ -11685,6 +11933,15 @@ div[id^='wiki_'][id$='_no_links']
     margin-bottom: 6px;
     width: auto;
     font-size: 0.9em;
+    margin-left: 5px;
+    margin-top: 12px;
+    text-align: right;
+}
+
+#viewissue_vcs_integration_commits .commentbody li
+{
+    width: 282px;
+    word-wrap: break-word;
 }
 
 #viewissue_vcs_integration_commits .commitrepos
@@ -11808,4 +12065,16 @@ div[id^='wiki_'][id$='_no_links']
 #thebuggenie_failuremessage_content ul li
 {
     margin-bottom: 3px;
+}
+
+.system_comment .commit_main {
+    clear: both;
+    font-family: "Droid Sans Mono",monospace;
+    padding: 5px;
+    margin-bottom: -10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    background-color: rgb(241, 241, 241);
+    margin-top: 10px;
+    border: 1px dotted rgb(170, 170, 170);
 }

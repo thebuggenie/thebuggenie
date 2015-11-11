@@ -81,11 +81,13 @@
         /**
          * Return all commits for a given issue
          * @param \thebuggenie\core\entities\Issue $issue
+         * @param integer $limit
+         * @param integer $offset
          * @return array|\thebuggenie\core\entities\Issue
          */
-        public static function getCommitsByIssue(\thebuggenie\core\entities\Issue $issue)
+        public static function getCommitsByIssue(\thebuggenie\core\entities\Issue $issue, $limit = null, $offset = null)
         {
-            return tables\IssueLinks::getTable()->getByIssueID($issue->getID());
+            return tables\IssueLinks::getTable()->getByIssueID($issue->getID(), null, $limit, $offset);
         }
 
         /**

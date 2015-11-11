@@ -33,7 +33,7 @@
         <div style="margin: 5px 0 0 10px;">
             <?php foreach ($users as $user): ?>
                  <div id="assign_user_<?php echo $user->getID(); ?>">
-                    <label for="role_<?php echo $user->getID(); ?>"><?php echo image_tag($user->getAvatarURL(), array('style' => "width: 16px; height: 16px; margin: 2px 5px -2px 0"), true); ?><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
+                    <label for="role_<?php echo $user->getID(); ?>"><?php echo image_tag($user->getAvatarURL(16), array('style' => "width: 16px; height: 16px; margin-right: 5px", 'class' => 'avatar small'), true); ?><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
                     <select name="role" id="role_<?php echo $user->getID(); ?>">
                         <optgroup label="<?php echo __('Globally available roles'); ?>">
                             <?php foreach ($global_roles as $role): ?>

@@ -59,7 +59,7 @@
             \thebuggenie\core\framework\Context::checkInstallMode();
             $this->assertTrue(\thebuggenie\core\framework\Context::isInstallmode());
 
-            file_put_contents($installed_file, \thebuggenie\core\framework\Settings::getMajorVer() . "." . \thebuggenie\core\framework\Settings::getMinorVer() .", installed today");
+            file_put_contents($installed_file, \thebuggenie\core\framework\Settings::getMajorVer() . "." . \thebuggenie\core\framework\Settings::getMinorVer() . "." . \thebuggenie\core\framework\Settings::getRevision() .", installed today");
             \thebuggenie\core\framework\Context::checkInstallMode();
             $this->assertFalse(\thebuggenie\core\framework\Context::isInstallmode());
         }

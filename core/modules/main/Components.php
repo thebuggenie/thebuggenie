@@ -418,7 +418,7 @@
 
         public function componentLogitem()
         {
-            if ($this->log_action['target_type'] == 1)
+            if ($this->log_action['target_type'] == tables\Log::TYPE_ISSUE)
             {
                 try
                 {
@@ -600,6 +600,7 @@
             $this->resolutions = entities\Resolution::getAll();
             $this->statuses = entities\Status::getAll();
             $this->milestones = framework\Context::getCurrentProject()->getMilestonesForIssues();
+            $this->al_items = array();
         }
 
         public function componentReportIssue()
@@ -686,6 +687,8 @@
                 {
                     list($more_actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, 10 * $i + 10, $limit_to_target);
                     $i++;
+
+                    if (!count($more_actions)) break;
 
                     $actions = array_merge($actions, $more_actions);
 

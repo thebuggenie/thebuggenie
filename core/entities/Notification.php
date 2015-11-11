@@ -31,6 +31,7 @@
         const TYPE_ISSUE_UPDATED = 'issue_updated';
         const TYPE_ISSUE_COMMENTED = 'issue_commented';
         const TYPE_ISSUE_MENTIONED = 'issue_mentioned';
+        const TYPE_ARTICLE_CREATED = 'article_created';
         const TYPE_ARTICLE_UPDATED = 'article_updated';
         const TYPE_ARTICLE_COMMENTED = 'article_commented';
         const TYPE_ARTICLE_MENTIONED = 'article_mentioned';
@@ -129,6 +130,7 @@
                         case self::TYPE_ISSUE_MENTIONED:
                             $this->_target = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $this->_target_id);
                             break;
+                        case self::TYPE_ARTICLE_CREATED:
                         case self::TYPE_ARTICLE_UPDATED:
                         case self::TYPE_ARTICLE_MENTIONED:
                             $this->_target = Articles::getTable()->selectById((int) $this->_target_id);

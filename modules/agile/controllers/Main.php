@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\agile\controllers;
 
+    use thebuggenie\core\entities\Issue;
     use thebuggenie\core\framework,
         thebuggenie\modules\agile\entities,
         thebuggenie\core\helpers;
@@ -46,6 +47,19 @@
                             break;
                         case 'reassign':
                             $new_milestone = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($request['assign_issues_milestone_id']);
+                            if ($request['assign_issues_milestone_id'] === '' || !$new_milestone instanceof \thebuggenie\core\entities\Milestone || $new_milestone->isClosed())
+                            {
+                                switch ($board->getType())
+                                {
+                                    case entities\AgileBoard::TYPE_GENERIC:
+                                        throw new \Exception($this->getI18n()->__('You must select an existing, unfinished milestone'));
+                                        break;
+                                    case entities\AgileBoard::TYPE_SCRUM:
+                                    case entities\AgileBoard::TYPE_KANBAN:
+                                        throw new \Exception($this->getI18n()->__('You must select an existing, unfinished sprint'));
+                                        break;
+                                }
+                            }
                             $return_options['new_milestone_id'] = $new_milestone->getID();
                             break;
                         case 'addnew':
@@ -101,7 +115,7 @@
          */
         public function runBoard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_only_planning'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
             
             if (!$this->board instanceof entities\AgileBoard) {
@@ -150,6 +164,14 @@
                     $this->board->clearSwimlaneIdentifier();
                     $this->board->clearSwimlaneFieldValues();
                 }
+                $details = $request['issue_field_details'];
+                if (isset($details['issuetype']))
+                {
+                    $this->board->setIssueFieldValues(explode(',', $details['issuetype']));
+                }
+                else {
+                    $this->board->clearIssueFieldValues();
+                }
                 $this->board->save();
 
                 return $this->renderJSON(array('component' => $this->getComponentHTML('agile/boardbox', array('board' => $this->board)), 'id' => $this->board->getID(), 'private' => $this->board->isPrivate(), 'backlog_search' => $this->board->getBacklogSearchIdentifier(), 'saved' => 'ok'));
@@ -188,7 +210,7 @@
          */
         public function runWhiteboardIssues(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);
@@ -276,7 +298,13 @@
         public function runWhiteboardMilestoneStatus(framework\Request $request)
         {
             $milestone = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
-            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', array('milestone' => $milestone))));
+            $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
+            $allowed_status_ids = array();
+            foreach ($board->getColumns() as $column)
+            {
+                $allowed_status_ids = array_merge($allowed_status_ids, $column->getStatusIds());
+            }
+            return $this->renderJSON(array('content' => $this->getComponentHTML('project/milestonevirtualstatusdetails', compact('milestone', 'allowed_status_ids'))));
         }
 
         /**
@@ -288,7 +316,7 @@
          */
         public function runWhiteboard(framework\Request $request)
         {
-            $this->forward403unless($this->_checkProjectPageAccess('agile_board'));
+            $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
             $this->board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             $this->forward403unless($this->board instanceof entities\AgileBoard);
@@ -359,7 +387,7 @@
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($request['issue_id']);
 
-            $this->forward403unless($issue instanceof \thebuggenie\core\entities\Issue && $issue->hasAccess());
+            if ($issue instanceof \thebuggenie\core\entities\Issue && !$issue->hasAccess()) return $this->renderJSON(array('child_issue' => 0, 'issue_details' => array(), 'deleted' => 1));
 
             $text = array('child_issue' => 0, 'issue_details' => $issue->toJSON(), 'deleted' => $issue->isDeleted() ? 1 : 0);
 
@@ -436,6 +464,7 @@
                     return $this->renderJSON(array('child_issue' => 0, 'epic' => 1, 'component' => $this->getComponentHTML('agile/milestoneepic', array('epic' => $issue, 'board' => $board)), 'issue_details' => $issue->toJSON()));
                 }
 
+                $text['milestone_percent_complete'] = $issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone ? $issue->getMilestone()->getPercentComplete() : 0;
                 $component = $this->getComponentHTML('agile/milestoneissue', compact('issue', 'board'));
             }
 
@@ -550,6 +579,12 @@
             }
         }
 
+        /**
+         * @param framework\Request $request
+         * @param null $milestone
+         * @return null|\thebuggenie\core\entities\Milestone
+         * @throws \Exception
+         */
         protected function _saveMilestoneDetails(framework\Request $request, $milestone = null)
         {
             if (!$request['name'])
@@ -581,6 +616,7 @@
                 $milestone->setStartingDate(0);
 
             $milestone->save();
+            return $milestone;
         }
 
         /**
@@ -730,7 +766,7 @@
             $last_refreshed = $request['last_refreshed'];
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
             $search_object = $board->getBacklogSearchObject();
-            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch)
             {
                 $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
             }
@@ -749,7 +785,7 @@
             $backlog_ids = array();
             if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
             {
-                foreach ($search_object->getIssues() as $backlog_issue)
+                foreach ($search_object->getIssues(true) as $backlog_issue)
                 {
                     foreach ($ids as $id_issue) {
                         if ($id_issue['issue_id'] == $backlog_issue->getID()) continue 2;

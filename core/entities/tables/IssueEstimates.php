@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use thebuggenie\core\framework;
+    use b2db\Criteria;
 
     /**
      * Issue estimates table
@@ -69,7 +70,9 @@
         public function getEstimatesByDateAndIssueIDs($startdate, $enddate, $issue_ids)
         {
             $points_retarr = array();
+            $points_issues_retarr = array();
             $hours_retarr = array();
+            $hours_issues_retarr = array();
             if ($startdate && $enddate)
             {
                 $sd = $startdate;
@@ -85,10 +88,12 @@
             {
                 $crit = $this->getCriteria();
                 if ($startdate && $enddate)
-                    $crit->addWhere(self::EDITED_AT, $enddate, \b2db\Criteria::DB_LESS_THAN_EQUAL);
+                {
+                    $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
+                }
 
-                $crit->addWhere(self::ISSUE_ID, $issue_ids, \b2db\Criteria::DB_IN);
-                $crit->addOrderBy(self::EDITED_AT, \b2db\Criteria::SORT_ASC);
+                $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
+                $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
 
                 if ($res = $this->doSelect($crit))
                 {
@@ -96,18 +101,8 @@
                     {
                         if ($startdate && $enddate)
                         {
-                            $sd = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
-                            $date = mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd));
-                            foreach ($points_retarr as $key => &$details)
-                            {
-                                if ($key < $date) continue;
-                                $details[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
-                            }
-                            foreach ($hours_retarr as $key => &$details)
-                            {
-                                if ($key < $date) continue;
-                                $details[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
-                            }
+                            $points_issues_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
+                            $hours_issues_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
                         }
                         else
                         {
@@ -122,9 +117,13 @@
             {
                 foreach ($points_retarr as $key => $vals)
                     $points_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+                reset($points_retarr);
+                $points_retarr[key($points_retarr)] = array_sum($points_issues_retarr);
 
                 foreach ($hours_retarr as $key => $vals)
                     $hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+                reset($hours_retarr);
+                $hours_retarr[key($hours_retarr)] = array_sum($hours_issues_retarr);
             }
 
             return array('points' => $points_retarr, 'hours' => $hours_retarr);

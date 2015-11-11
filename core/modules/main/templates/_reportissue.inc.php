@@ -175,7 +175,7 @@
         </div>
         <span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
     </div>
-    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list'), $('report_issue_reported_issue_details')].each(function (el) { Element.toggle(el, 'block'); });$('reportissue_container').removeClassName('medium');$('reportissue_container').addClassName('huge');"><?php echo __('Report another issue'); ?></a>
+    <a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list'), $('report_issue_reported_issue_details')].each(function (el) { Element.toggle(el, 'block'); });$('reportissue_container').removeClassName('medium');$('reportissue_container').addClassName('large');"><?php echo __('Report another issue'); ?></a>
 <?php endif; ?>
 <?php if ($tbg_request->isAjaxCall()): ?>
     <form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" onsubmit="TBG.Main.submitIssue('<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey(), 'return_format' => 'planning')); ?>');return false;" id="report_issue_form" style="<?php if (isset($issue) && $issue instanceof \thebuggenie\core\entities\Issue) echo 'display: none;'; ?>">
@@ -250,6 +250,8 @@
                         issueType
                         .click(function() {
                             $('#issuetype_id').val(issueType.attr("data-id") * 1);
+                            $('#reportissue_container').addClass('huge');
+                            $('#reportissue_container').removeClass('large');
                             TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
                         })
                         .mouseover(function() {
@@ -435,6 +437,7 @@
                             <select name="category_id" id="category_id" style="width: 100%;">
                                 <option value=""<?php if (!$selected_category instanceof \thebuggenie\core\entities\Category) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
+                                    <?php if (!$category->hasAccess()) continue; ?>
                                     <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Category && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -496,6 +499,7 @@
                                 <select name="milestone_id" id="milestone_id" style="width: 100%;">
                                     <option value=""<?php if (!$selected_milestone instanceof \thebuggenie\core\entities\Milestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
                                     <?php foreach ($milestones as $milestone): ?>
+                                        <?php if ($milestone->isClosed()) continue; ?>
                                         <option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof \thebuggenie\core\entities\Milestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -563,11 +567,44 @@
                         </td>
                     </tr>
                 </table>
-                <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $customdatatype): ?>
+                <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $field => $customdatatype): ?>
                     <table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;" class="additional_information<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> reportissue_error<?php endif; ?>">
                         <tr>
-                            <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
-                            <td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+                            <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                                <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
+                                <td style="width: 326px;position: relative;" class="report_issue_help faded_out dark">
+                                    <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
+                                    <ul class="popup_box more_actions_dropdown" id="<?php echo $customdatatype->getKey(); ?>_change">
+                                        <li class="header"><?php echo __($customdatatype->getDescription()); ?></li>
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_name').hide();$('<?php echo $customdatatype->getKey(); ?>_value').value = '';$('no_<?php echo $customdatatype->getKey(); ?>').show();"><?php echo __('Clear this field'); ?></a>
+                                        </li>
+                                        <li class="separator"></li>
+                                        <li id="customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container" style="padding: 0;"></li>
+                                        <script type="text/javascript">
+                                            require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
+                                                domReady(function () {
+                                                    Calendar.setup({
+                                                        dateField: '<?php echo $customdatatype->getKey(); ?>_name',
+                                                        parentElement: 'customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container',
+                                                        valueCallback: function(element, date) {
+                                                            var value = Math.floor(date.getTime() / 1000);
+                                                            $('<?php echo $customdatatype->getKey(); ?>_name').show();
+                                                            $('<?php echo $customdatatype->getKey(); ?>_value').value = value;
+                                                            $('no_<?php echo $customdatatype->getKey(); ?>').hide();
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                    </ul>
+                                    <span id="<?php echo $customdatatype->getKey(); ?>_name" style="display: none;"><?php echo __('Not set'); ?></span><span class="faded_out" id="no_<?php echo $customdatatype->getKey(); ?>"><?php echo __('Not set'); ?></span>
+                                    <input type="hidden" name="<?php echo $customdatatype->getKey(); ?>_value" id="<?php echo $customdatatype->getKey(); ?>_value" />
+                                </td>
+                            <?php else: ?>
+                                <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
+                                <td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+                            <?php endif; ?>
                         <tr>
                             <td colspan="2" style="padding-top: 5px;" class="editor_container">
                                 <?php
@@ -642,6 +679,11 @@
                                             <?php include_component('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'target_type' => 'project', 'target_id' => $selected_project->getID(), 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'hide_hint' => true, 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
                                             <?php
                                             break;
+                                        case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                            ?>
+
+                                            <?php
+                                            break;
                                     }
                                 ?>
                             </td>
@@ -660,10 +702,60 @@
                 </script>
             <?php endif; ?>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.prefile')->trigger(); ?>
+            <?php if ($selected_project instanceof \thebuggenie\core\entities\Project && $selected_project->permissionCheck('canlockandeditlockedissues')): ?>
+                <div class="report-issue-custom-access-check">
+                    <?php echo image_tag('action_update_access_policy.png'); ?>
+                    <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?php echo __('Custom access policy'); ?></label>
+                    <div class="report-issue-custom-access-container" style="display:none;">
+                        <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' checked'; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access to project'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' checked'; ?>><label for="issue_access_public_category"><?php echo __('Available to anyone with access to project, category and those listed below'); ?></label><br>
+                        <input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'restricted');" value="restricted"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_RESTRICTED) echo ' checked'; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
+                        <script>
+                            require(['domReady', 'jquery'], function (domReady, jQuery) {
+                                domReady(function () { jQuery('input[name=issue_access]').trigger('change'); });
+                            });
+                        </script>
+                        <?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_', 'style' => '')); ?>
+                        <div id="acl-users-teams-selector" style="display: none;">
+                            <h4 style="margin-top: 10px;">
+                                <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
+                                <?php echo __('Users or teams who can see this issue'); ?>
+                            </h4>
+                            <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_",
+                                                                                      'header'             => __('Give someone access to this issue'),
+                                                                                      'callback'             => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', '');",
+                                                                                      'team_callback'     => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', '');",
+                                                                                      'base_id'            => "popup_find_acl_",
+                                                                                      'include_teams'        => true,
+                                                                                      'allow_clear'        => false,
+                                                                                      'absolute'            => true)); ?>
+                        </div>
+                        <div id="acl__public" style="display: none;">
+                            <ul class="issue_access_list simple_list" id="issue__public_category_access_list" style="display: none;">
+                                <li id="issue__public_category_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
+                                <?php foreach ($al_items as $item): ?>
+                                    <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
+                                <?php endforeach; ?>
+                            </ul>
+                            <div style="text-align: right;">
+                                <input id="issue_access_public_category_input" type="hidden" name="public_category" disabled>
+                            </div>
+                        </div>
+                        <div id="acl__restricted" style="display: none;">
+                            <ul class="issue_access_list simple_list" id="issue__restricted_access_list">
+                                <li id="issue__restricted_access_list_none" class="faded_out" style="<?php if (count($al_items)): ?>display: none; <?php endif; ?>padding: 5px;"><?php echo __('Noone else can see this issue'); ?></li>
+                                <?php foreach ($al_items as $item): ?>
+                                    <?php include_component('main/issueaclformentry', array('target' => $item['target'])); ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
             <div class="rounded_box report_issue_submit_container report_issue_desc green borderless">
                 <div><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
                 <input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
-                <?php echo image_tag('spinning_20.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
+                <?php echo image_tag('spinning_20_bg_green.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
             </div>
             <div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px;">
                 <strong><?php echo __('Add more information to your issue'); ?></strong><br>
@@ -744,6 +836,7 @@
                             <select name="category_id" id="category_id_additional">
                                 <option value=""><?php echo __('Not specified'); ?></option>
                                 <?php foreach ($categories as $category): ?>
+                                    <?php if (!$category->hasAccess()) continue; ?>
                                     <option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Datatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -752,7 +845,7 @@
                     </li>
                     <li id="estimated_time_additional" style="display: none;">
                         <?php echo image_tag('icon_time.png'); ?>
-                        <div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+                        <div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?php echo __('Estimate time'); ?></a></div>
                         <div id="estimated_time_additional_div"<?php if ($selected_estimated_time === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="estimated_time" id="estimated_time_id_additional" style="width: 100px;">
                             <a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>

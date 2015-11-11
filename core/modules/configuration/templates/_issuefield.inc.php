@@ -27,6 +27,15 @@
                             <input data-cancel-text="<?php echo __('Cancel'); ?>" data-choose-text="<?php echo __('Select this color'); ?>" type="hidden" class="color" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" value="<?php echo $item->getColor(); ?>">
                         </td>
                     <?php endif; ?>
+                    <?php if ($type == 'priority'): ?>
+                        <td style="font-size: 14px; width: 70px;">
+                            <select name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input">
+                                <?php foreach (\thebuggenie\core\entities\Priority::getAvailableValues() as $value): ?>
+                                    <option value="<?php echo $value; ?>"<?php if ($item->getItemdata() == $value) echo ' selected'; ?>><?php echo $value; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    <?php endif; ?>
                     <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>
                         <td style="font-size: 14px; width: 70px;">
                             <input type="text" name="value" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_value_input" style="width: 45px;" value="<?php echo $item->getValue(); ?>">

@@ -5,6 +5,10 @@ vcs_commitspage:
 vcs_commitspage_more:
   route: /:project_key/commits/more
   action: projectCommitsMore
+
+vcs_viewissue_more:
+  route: /:project_key/issue/:issue_no/commits/more
+  action: projectIssueCommitsMore
     
 normalcheckin:
   route: /vcs_integration/report/:project_id

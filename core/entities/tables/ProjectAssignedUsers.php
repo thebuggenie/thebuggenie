@@ -77,6 +77,30 @@
             return false;
         }
 
+        public function getUserByProjectIDUserIDRoleID($project_id, $user_id, $role_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::USER_ID, 'uid');
+            $crit->addWhere(self::PROJECT_ID, $project_id);
+            $crit->addWhere(self::USER_ID, $user_id);;
+            $crit->addWhere(self::ROLE_ID, $role_id);
+            $users = array();
+
+            if ($res = $this->doSelect($crit, 'none'))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $uid = $row['uid'];
+                    if (!array_key_exists($uid, $users))
+                        $users[$uid] = new \thebuggenie\core\entities\User($uid);
+                    // Only one user is needed since only one can be inserted in method "addUserToProject".
+                    break;
+                }
+            }
+
+            return $users;
+        }
+
         public function getProjectsByUserID($user_id)
         {
             $crit = $this->getCriteria();

@@ -388,7 +388,7 @@
         </li>
     </ul>
 </fieldset>
-<?php if (! count($fields_list) && ! count($customfields_list)): ?>
+<?php if (count($fields_list) || count($customfields_list)): ?>
     <fieldset>
         <legend onclick="$('issue_details_fieldslist').toggle();"><?php echo __('Issue details'); ?></legend>
         <ul class="issue_details simple_list" id="issue_details_fieldslist">
@@ -403,7 +403,7 @@
                             <?php echo $info['title']; ?>
                         </dt>
                         <dd id="<?php echo $field; ?>_content">
-                            <?php if ($issue->isUpdateable() && $issue->canEditCustomFields() && $info['editable']): ?>
+                            <?php if ($issue->isUpdateable() && $issue->canEditCustomFields($field) && $info['editable']): ?>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
                                 <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
@@ -457,7 +457,7 @@
                                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
                                             </li>
                                             <li class="separator"></li>
-                                            <li id="customfield_<?php echo $field; ?>_calendar_container"></li>
+                                            <li id="customfield_<?php echo $field; ?>_calendar_container" style="padding: 0;"></li>
                                             <script type="text/javascript">
                                                 require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
                                                     domReady(function () {

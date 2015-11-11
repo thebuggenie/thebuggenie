@@ -2,8 +2,8 @@
 
 # make sure that magic_quotes and register_globals is always off
 <IfModule mod_php5.c>
-	php_flag magic_quotes_gpc	off
-	php_flag register_globals	off
+  php_flag magic_quotes_gpc off
+  php_flag register_globals off
 </IfModule>
 
 # rewrite rules

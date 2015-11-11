@@ -1,4 +1,4 @@
-<?php if ($tbg_user->hasProjectPageAccess('project_planning', $project)): ?>
+<?php if ($tbg_user->hasProjectPageAccess('project_planning', $project) || $tbg_user->hasProjectPageAccess('project_only_planning', $project)): ?>
     <li<?php if (in_array($tbg_response->getPage(), array('project_planning', 'agile_board', 'agile_whiteboard'))): ?> class="selected"<?php endif; ?>>
         <div class="menuitem_container">
             <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), image_tag('icon_agile.png') . __('Agile')); ?>
@@ -9,7 +9,7 @@
             <div class="header"><?php echo __('Project boards'); ?></div>
             <?php if (count($boards)): ?>
                 <?php foreach ($boards as $board): ?>
-                    <a href="<?php echo make_url('agile_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" class="<?php if ($tbg_request['board_id'] == $board->getID()) echo ' selected'; ?>"><?php echo $board->getName(); ?></a>
+                    <a href="<?php echo make_url((!$tbg_user->hasProjectPageAccess('project_planning', $project) && $tbg_user->hasProjectPageAccess('project_only_planning', $project) ? 'agile_board' : 'agile_whiteboard'), array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" class="<?php if ($tbg_request['board_id'] == $board->getID()) echo ' selected'; ?>"><?php echo $board->getName(); ?></a>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="disabled"><?php echo __('No project boards available'); ?></div>

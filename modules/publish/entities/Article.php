@@ -161,6 +161,8 @@
          */
         protected $_subscribers = null;
 
+        protected $_new_subscribers = array();
+
         protected $_parser = null;
 
         /**
@@ -438,7 +440,7 @@
 
         public function getSpacedName()
         {
-            return preg_replace('/(?<=[a-z])(?=[A-Z])/', ' ', $this->getName());
+            return get_spaced_name($this->getName());
         }
 
         public function getCategoryName()
@@ -589,6 +591,17 @@
         public function getAuthor()
         {
             return $this->_b2dbLazyload('_author');
+        }
+
+        /**
+         * Return the author id
+         *
+         * @return integer
+         */
+        public function getAuthorID()
+        {
+            $author = $this->getAuthor();
+            return ($author instanceof \thebuggenie\core\entities\common\Identifiable) ? $author->getID() : null;
         }
 
         public function setAuthor($author)
@@ -808,9 +821,11 @@
             if (count($namespaces) > 0)
             {
                 $key = $namespaces[0];
-                $project = Project::getByKey($key);
+                $project = Project::getByKey(strtolower($key));
                 return $project;
             }
+
+            return null;
         }
 
         public function hasAccess()
@@ -917,6 +932,7 @@
         public function addSubscriber($user_id)
         {
             tables\UserArticles::getTable()->addStarredArticle($user_id, $this->getID());
+            $this->_new_subscribers[] = $user_id;
         }
 
         protected function _postSave($is_new)
@@ -928,10 +944,114 @@
                     foreach ($this->_getParser()->getMentions() as $user)
                     {
                         if ($user->getID() == framework\Context::getUser()->getID()) continue;
-                        $this->_addNotification(Notification::TYPE_ARTICLE_MENTIONED, $user, $this->getAuthor());
+
+                        if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_MENTIONED, $user, $this->getAuthor());
                     }
                 }
+                $this->_addCreateNotifications($this->getAuthor());
             }
+
+            if (framework\Context::getUser() instanceof \thebuggenie\core\entities\User && framework\Context::getUser()->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES, false)->isOn() && !$this->isSubscriber(framework\Context::getUser()))
+            {
+                $this->addSubscriber(framework\Context::getUser()->getID());
+            }
+        }
+
+        protected function _addCreateNotifications($updated_by)
+        {
+            foreach ($this->getRelatedUsers() as $user)
+            {
+                if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
+
+                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES, false)->isOn() && $this->isSubscriber($user))
+                {
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_CREATED, $user, $updated_by);
+                }
+
+                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS, false)->isOn())
+                {
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_CREATED, $user, $updated_by);
+                }
+            }
+        }
+
+        public function shouldAutomaticallySubscribeUser($user)
+        {
+            if ($this->isSubscriber($user)) return false;
+
+            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS, null)->getValue() != 1) return false;
+
+            return true;
+        }
+
+        public function isSubscriber($user)
+        {
+            if (!$user instanceof \thebuggenie\core\entities\User) return false;
+
+            $user_id = (string) $user->getID();
+            $subscribers = (array) $this->getSubscribers();
+            $new_subscribers = (array) $this->_new_subscribers;
+
+            return (bool) in_array($user_id, $new_subscribers) || (bool) array_key_exists($user_id, $subscribers);
+        }
+
+        /**
+         * Returns an array with everyone related to this project
+         *
+         * @return array|\thebuggenie\core\entities\User
+         */
+        public function getRelatedUsers()
+        {
+            $uids = array();
+            $teams = array();
+
+            // Add the author
+            $uids[$this->getAuthorID()] = $this->getAuthorID();
+
+            if ($this->getProject() instanceof \thebuggenie\core\entities\Project)
+            {
+                // Add all users in the team who leads the project, if valid
+                // or add the user who leads the project, if valid
+                if ($this->getProject()->getLeader() instanceof \thebuggenie\core\entities\Team)
+                {
+                    $teams[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader();
+                }
+                elseif ($this->getProject()->getLeader() instanceof \thebuggenie\core\entities\User)
+                {
+                    $uids[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader()->getID();
+                }
+
+                // Same for QA
+                if ($this->getProject()->getQaResponsible() instanceof \thebuggenie\core\entities\Team)
+                {
+                    $teams[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible();
+                }
+                elseif ($this->getProject()->getQaResponsible() instanceof \thebuggenie\core\entities\User)
+                {
+                    $uids[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible()->getID();
+                }
+
+                foreach ($this->getProject()->getAssignedTeams() as $team)
+                {
+                    $teams[$team->getID()] = $team;
+                }
+                foreach ($this->getProject()->getAssignedUsers() as $member)
+                {
+                    $uids[$member->getID()] = $member->getID();
+                }
+            }
+
+            foreach ($teams as $team)
+            {
+                foreach ($team->getMembers() as $user)
+                {
+                    $uids[$user->getID()] = $user->getID();
+                }
+            }
+
+            if (isset($uids[framework\Context::getUser()->getID()])) unset($uids[framework\Context::getUser()->getID()]);
+            $users = \thebuggenie\core\entities\tables\Users::getTable()->getByUserIDs($uids);
+            return $users;
         }
 
         protected function _addNotification($type, $user, $updated_by)
@@ -942,6 +1062,28 @@
             $notification->setTriggeredByUser($updated_by);
             $notification->setUser($user);
             $notification->save();
+        }
+
+        protected function _addNotificationIfNotNotified($type, $user, $updated_by)
+        {
+            if (! $this->shouldUserBeNotified($user, $updated_by)) return;
+
+            $this->_addNotification($type, $user, $updated_by);
+        }
+
+        public function shouldUserBeNotified($user, $updated_by) {
+            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
+
+            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
+
+            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_article_' . $this->getID(), false)->isOff())
+            {
+                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_article_' . $this->getID(), true)->save();
+
+                return true;
+            }
+
+            return false;
         }
 
         protected function _parseContent($options = array())

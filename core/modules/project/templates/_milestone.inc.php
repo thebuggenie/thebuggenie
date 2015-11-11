@@ -43,6 +43,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="milestone_percentage_type_<?php echo $milestone->getID(); ?>"><?php echo __('Percentage type'); ?></label></td>
+                    <td>
+                        <select name="percentage_type" id="milestone_percentage_type_<?php echo $milestone->getID(); ?>">
+                            <?php foreach(Milestone::getPercentageTypes() as $percentage_type_key => $percentage_type_text): ?>
+                                <option value="<?php echo $percentage_type_key; ?>"<?php if ($milestone->getPercentageType() == $percentage_type_key): ?> selected<?php endif; ?>><?php echo $percentage_type_text; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="starting_date_<?php echo $milestone->getID(); ?>"><?php echo __('Planned start date'); ?></label></td>
                     <td style="width: auto;">
                         <input type="checkbox" value="1" name="is_starting" id="starting_date_<?php echo $milestone->getID(); ?>" onchange="if ($('starting_date_<?php echo $milestone->getID(); ?>').getValue() == '1') { $('starting_month_<?php echo $milestone->getID(); ?>').enable(); $('starting_day_<?php echo $milestone->getID(); ?>').enable(); $('starting_year_<?php echo $milestone->getID(); ?>').enable(); } else { $('starting_month_<?php echo $milestone->getID(); ?>').disable(); $('starting_day_<?php echo $milestone->getID(); ?>').disable(); $('starting_year_<?php echo $milestone->getID(); ?>').disable(); } " <?php if ($milestone->isStarting()) echo 'checked'; ?>>

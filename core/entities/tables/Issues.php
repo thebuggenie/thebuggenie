@@ -78,6 +78,7 @@
         const DELETED = 'issues.deleted';
         const BLOCKING = 'issues.blocking';
         const LOCKED = 'issues.locked';
+        const LOCKED_CATEGORY = 'issues.locked_category';
         const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
         const MILESTONE = 'issues.milestone';
         const VOTES_TOTAL = 'issues.votes_total';
@@ -92,6 +93,14 @@
             $this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
             $this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
             $this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
+        }
+
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            $crit = $this->getCriteria();
+            $crit->addUpdate('issues.locked_category', true);
+
+            $this->doUpdate($crit);
         }
 
         public function getCountsByProjectID($project_id)
@@ -176,11 +185,12 @@
             return $retarr;
         }
 
-        public function getMilestoneDistributionDetails($milestone_id)
+        public function getMilestoneDistributionDetails($milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
+            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             $total = $this->doCount($crit);
 
             $crit = $this->getCriteria();
@@ -188,6 +198,7 @@
             $crit->addSelectionColumn(self::ID, 'counts', Criteria::DB_COUNT);
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
+            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             $crit->addGroupBy(self::STATUS);
 
             $res = $this->doSelect($crit);
@@ -533,6 +544,37 @@
             }
         }
 
+        public function getTotalPercentCompleteByProjectIDAndMilestoneID($project_id, $milestone_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::DELETED, false);
+            $crit->addSelectionColumn(self::PERCENT_COMPLETE, 'percent_complete', Criteria::DB_SUM);
+            if (!$project_id)
+            {
+                $crit->addWhere(self::PROJECT_ID, null);
+            }
+            else
+            {
+                $crit->addWhere(self::PROJECT_ID, $project_id);
+            }
+            if (!$milestone_id)
+            {
+                $crit->addWhere(self::MILESTONE, null);
+            }
+            else
+            {
+                $crit->addWhere(self::MILESTONE, $milestone_id);
+            }
+            if ($res = $this->doSelectOne($crit))
+            {
+                return $res->get('percent_complete');
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public function getTotalHoursByMilestoneID($milestone_id)
         {
             $crit = $this->getCriteria();
@@ -632,10 +674,10 @@
             }
         }
 
-        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'))
+        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'), $include_deleted = false)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
+            if (!$include_deleted) $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             if (count($filters) > 0)
             {

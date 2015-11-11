@@ -65,7 +65,7 @@
         </div>
 
         <div class="commentbody article commit_main" id="commit_<?php echo $commit->getID(); ?>_body">
-            <?php echo tbg_parse_text(trim($commit->getLog())); ?>
+            <?php echo tbg_parse_text(trim($commit->getLog()), false, null, array('target' => $commit)); ?>
         </div>
     </div>
 </div>

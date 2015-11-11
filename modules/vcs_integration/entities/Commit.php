@@ -174,7 +174,7 @@
 
         /**
          * Get this commit's revision number or hash
-         * 
+         *
          * @return mixed
          */
         public function getRevision()
@@ -406,6 +406,29 @@
         {
             $commits = tables\Commits::getTable()->getCommitsByProject($id, $limit, $offset, $branch, $gitlab_repos_nss);
             return $commits;
+        }
+
+        /**
+         * Get Gitlab url for merge request bz provided id
+         *
+         * @param  integer $merge_request_id
+         * @return string
+         *
+         * @throws \Exception
+         */
+        public function getGitlabUrlForMergeRequestID($merge_request_id)
+        {
+            $base_url = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('browser_url_' . $this->getProject()->getID());
+            $misc_data_array = $this->getMiscDataArray();
+            $reposname = null;
+
+            if (array_key_exists('gitlab_repos_ns', $misc_data_array))
+            {
+                $reposname = $misc_data_array['gitlab_repos_ns'];
+                $base_url = rtrim($base_url, '/').'/'.$reposname;
+            }
+
+            return $base_url.'/merge_requests/'.$merge_request_id;
         }
 
     }

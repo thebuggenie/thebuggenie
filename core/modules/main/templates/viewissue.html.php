@@ -13,8 +13,8 @@
             <?php echo __('Please wait while updating issue type'); ?>...
         </div>
     </div>
-    <div id="issue_<?php echo $issue->getID(); ?>" class="viewissue_container <?php if ($issue->isBlocking()) echo ' blocking'; ?>">
-        <div id="viewissue_header_container">
+    <div id="issue_<?php echo $issue->getID(); ?>" class="viewissue_container cf <?php if ($issue->isBlocking()) echo ' blocking'; ?>">
+        <div id="viewissue_header_container" class="cf">
             <table cellpadding=0 cellspacing=0 class="title_area">
                 <tr>
                     <td class="issue_navigation" id="go_previous_open_issue">
@@ -223,33 +223,33 @@
                 <?php endif; ?>
             </div>
         </div>
-        <div id="workflow_actions">
-            <ul class="workflow_actions simple_list">
-                <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-                    <?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
-                    <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-                        <li class="workflow">
-                            <div class="tooltip from-above rightie">
-                                <?php echo $transition->getDescription(); ?>
-                            </div>
-                            <?php if ($transition->hasTemplate()): ?>
-                                <input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
-                            <?php else: ?>
-                                <form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
-                                    <input type="submit" class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" value="<?php echo $transition->getName(); ?>">
-                                </form>
-                            <?php endif; ?>
-                        </li>
-                        <?php $cc++; ?>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                <li class="more_actions">
-                    <input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
-                    <?php include_component('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
-                </li>
-            </ul>
-        </div>
         <div id="viewissue_left_box_top">
+          <div id="workflow_actions">
+            <ul class="workflow_actions simple_list">
+              <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+                <?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
+                <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+                  <li class="workflow">
+                    <div class="tooltip from-above rightie">
+                      <?php echo $transition->getDescription(); ?>
+                    </div>
+                    <?php if ($transition->hasTemplate()): ?>
+                      <input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
+                    <?php else: ?>
+                      <form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
+                        <input type="submit" class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" value="<?php echo $transition->getName(); ?>">
+                      </form>
+                    <?php endif; ?>
+                  </li>
+                  <?php $cc++; ?>
+                <?php endforeach; ?>
+              <?php endif; ?>
+              <li class="more_actions">
+                <input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
+                <?php include_component('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
+              </li>
+            </ul>
+          </div>
             <div id="issue_view">
                 <div id="issue_main_container">
                     <div class="issue_main" id="issue_main">
@@ -316,20 +316,27 @@
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
                         <fieldset class="comments" id="viewissue_comments_container">
                             <legend class="viewissue_comments_header">
-                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count">'.$issue->countUserComments().'</span>')); ?>
+                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?>
                                 <div class="dropper_container">
                                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
                                     <ul class="more_actions_dropdown dropdown_box popup_box leftie">
                                         <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
                                     </ul>
                                 </div>
-                                <ul class="simple_list button_container" id="add_comment_button_container">
-                                    <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
-                                </ul>
+                                <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
+                                    <ul class="simple_list button_container" id="add_comment_button_container">
+                                        <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
+                                    </ul>
+                                <?php endif; ?>
                             </legend>
                             <div id="viewissue_comments">
                                 <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
                             </div>
+                            <script type="text/javascript">
+                                require(['prototype'], function (prototype) {
+                                    $('viewissue_comment_count').update($('comments_box').select('.comment').size());
+                                });
+                            </script>
                         </fieldset>
                         <fieldset class="viewissue_history">
                             <legend class="viewissue_history_header">

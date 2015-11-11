@@ -212,7 +212,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var y = document.viewport.getScrollOffsets().top;
                 var vihc = $('viewissue_header_container');
                 var vihcl = vihc.getLayout();
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihc.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 8 : vihc.offsetTop;
                 if (y >= compare_coord) {
                     $('issue_main_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
                     $('issue_details_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
@@ -1073,6 +1073,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 $('viewissue_no_uploaded_files').hide();
                             }
                         }
+                        $('comments_box').insert({top: json.comments});
                     }
                 },
                 complete: {
@@ -1101,7 +1102,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             if (file.type.indexOf("image") == 0) {
                 isimage = true;
             }
-            elm += '<label>' + ful.dataset.filenameLabel + '</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>' + ful.dataset.descriptionLabel + '</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <span class="progress"></span></li>';
+            elm += '<label>' + ful.dataset.filenameLabel + '</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>' + ful.dataset.descriptionLabel + '</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <div class="progress_container"><span class="progress"></span></div></li>';
             ful.insert(elm);
             var inserted_elm = $('file_upload_list').childElements().last();
             if (isimage) {
@@ -1195,7 +1196,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 },
                 success: {
-                    update: 'fullpage_backdrop_content'
+                    update: 'fullpage_backdrop_content',
+                    callback: function () {
+                        $('reportissue_container').removeClassName('large');
+                        $('reportissue_container').removeClassName('huge');
+                    }
                 },
                 complete: {
                     callback: function () {
@@ -1531,7 +1536,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.Dashboard.initializeSorting = function ($) {
             $('.dashboard_column.jsortable').sortable({
                 handle: '.dashboardhandle',
-                connectWith: '.dashboard_column'
+                connectWith: '.dashboard_column',
+                helper: function(event, ui){
+                    var $clone =  $(ui).clone();
+                    $clone .css('position','absolute');
+                    return $clone.get(0);
+                }
             }).bind('sortupdate', TBG.Main.Dashboard.sort);
         };
 
@@ -1666,7 +1676,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             $('comment_bodybox').focus();
         }
 
-        TBG.Main.Comment.remove = function (url, comment_id) {
+        TBG.Main.Comment.remove = function (url, comment_id, commentcount_span) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'dialog_indicator'
@@ -1676,6 +1686,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         TBG.Main.Helpers.Dialog.dismiss();
                         if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+                        $(commentcount_span).update($('comments_box').childElements().size());
                     }
                 }
             });
@@ -1710,8 +1721,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: ['comment_add_indicator', 'comment_add'],
                     show: ['comment_add_button', 'comment_add_controls'],
                     clear: 'comment_bodybox',
-                    update: {element: 'comments_box', insertion: true, from: 'comment_data'},
                     callback: function (json) {
+                        $('comments_box').insert({top: json.comment_data});
                         if ($('comment_form').serialize(true).comment_save_changes == '1') {
                             window.location = json.continue_url;
                         } else if ($('comments_box').childElements().size() != 0) {
@@ -1737,9 +1748,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 success: {
                     hide: ['comment_reply_' + reply_comment_id],
                     clear: 'comment_reply_bodybox_' + reply_comment_id,
-                    update: {element: 'comments_box', insertion: true, from: 'comment_data'},
                     show: ['comment_reply_controls_' + reply_comment_id, 'comment_add_button'],
                     callback: function (json) {
+                        $('comments_box').insert({top: json.comment_data});
                         $('comment_reply_visibility_' + reply_comment_id).setValue(1);
                     }
                 },
@@ -2067,6 +2078,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Project.Commits.viewIssueUpdate = function (url) {
+            TBG.Main.Helpers.ajax(url, {
+                url_method: 'post',
+                additional_params: "offset=" + $('commits_offset').getValue() + "&limit=" + $('commits_limit').getValue(),
+                loading: {
+                    indicator: 'commits_indicator',
+                    hide: 'commits_more_link'
+                },
+                success: {
+                    update: {element: 'viewissue_vcs_integration_commits', insertion: true}
+                }
+            });
+        };
+
         TBG.Project.Scrum.Sprint.add = function (url, assign_url)
         {
             TBG.Main.Helpers.ajax(url, {
@@ -2212,7 +2237,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 update: TBG.Project.Planning.sortMilestoneIssues,
                 receive: TBG.Project.Planning.moveIssue,
                 sort: TBG.Project.Planning.calculateNewBacklogMilestoneDetails,
-                tolerance: 'pointer'
+                tolerance: 'pointer',
+                helper: function(event, ui){
+                    var $clone =  $(ui).clone();
+                    $clone .css('position','absolute');
+                    return $clone.get(0);
+                }
             });
         };
 
@@ -2512,13 +2542,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
-        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function() {
+        TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts = function(new_issue_retrieved) {
+            var new_issue_retrieved = new_issue_retrieved || false;
+
             $$('#whiteboard .tbody').each(function (swimlane) {
                 swimlane_rows = swimlane.select('.tr');
 
                 if (swimlane_rows.size() != 2) return;
 
                 swimlane_rows[0].down('.swimlane_count').update(swimlane_rows[1].select('.whiteboard-issue').size());
+
+                if (swimlane_rows[1].select('.whiteboard-issue').size() == 0) {
+                    swimlane.addClassName('collapsed');
+                }
+                else if (new_issue_retrieved && swimlane_rows[1].select('.whiteboard-issue').size() > 0) {
+                    swimlane.removeClassName('collapsed');
+                }
             });
         }
 
@@ -2566,8 +2605,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus = function(event, item) {
             var mi = $('selected_milestone_input');
             var milestone_id = (event) ? $(item).dataset.inputValue : mi.dataset.selectedValue;
+            var board_id = (event) ? $(item).dataset.boardValue : mi.dataset.selectedBoardValue;
             TBG.Main.Helpers.ajax(mi.dataset.statusUrl, {
-                additional_params: '&milestone_id=' + parseInt(milestone_id),
+                additional_params: '&milestone_id=' + parseInt(milestone_id) + '&board_id=' + parseInt(board_id),
                 url_method: 'get',
                 loading: {
                     hide: 'selected_milestone_status_details',
@@ -2818,7 +2858,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     }
                                     TBG.Project.Planning.Whiteboard.initializeDragDrop();
                                     TBG.Project.Planning.Whiteboard.calculateColumnCounts();
-                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts();
+                                    TBG.Project.Planning.Whiteboard.calculateSwimlaneCounts(true);
                                     TBG.Project.Planning.Whiteboard.retrieveMilestoneStatus();
                                 }
                             }
@@ -3080,7 +3120,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 milestone_list.insert({bottom: content});
             } else {
                 milestone_list.insert({top: content});
-                setTimeout(TBG.Project.Planning.sortMilestoneIssues({target: 'milestone_' + milestone_id + '_issues'}), 250);
             }
             if (recalculate == 'all') {
                 TBG.Project.Planning.calculateAllMilestonesVisibilityDetails();
@@ -3088,6 +3127,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 TBG.Project.Planning.calculateMilestoneIssueVisibilityDetails(milestone_list);
             }
             TBG.Project.Planning.calculateNewBacklogMilestoneDetails();
+            if (milestone_id != 0) {
+                setTimeout(TBG.Project.Planning.sortMilestoneIssues({target: 'milestone_' + milestone_id + '_issues'}), 250);
+            }
         };
 
         TBG.Project.Planning.retrieveIssue = function (issue_id, url, existing_element) {
@@ -3127,6 +3169,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     TBG.Project.Planning.insertIntoMilestone(json_milestone_id, json.component, 'all');
                                 }
                             }
+                        }
+                        if (json.issue_details.milestone && json.issue_details.milestone.id && json.milestone_percent_complete != null) {
+                            $('milestone_' + json.issue_details.milestone.id + '_percentage_filler').setStyle({width: json.milestone_percent_complete + '%'});
                         }
                     }
                 }
@@ -3189,25 +3234,25 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             var list_issues = jQuery(list).find('.issue_container').not('.child_issue');
             var closed_issues = jQuery(list).find('.issue_container.issue_closed').not('.child_issue');
             var visible_issues = list_issues.filter(':visible');
-            var sum_points = 0;
-            var sum_hours = 0;
+            var sum_estimated_points = 0;
+            var sum_estimated_hours = 0;
+            var sum_spent_points = 0;
+            var sum_spent_hours = 0;
             visible_issues.each(function (index) {
                 var elm = $(this);
                 if (!elm.hasClassName('child_issue')) {
                     if (elm.dataset.estimatedPoints !== undefined)
-                        sum_points += parseInt(elm.dataset.estimatedPoints);
+                        sum_estimated_points += parseInt(elm.dataset.estimatedPoints);
                     if (elm.dataset.estimatedHours !== undefined)
-                        sum_hours += parseInt(elm.dataset.estimatedHours);
+                        sum_estimated_hours += parseInt(elm.dataset.estimatedHours);
+                    if (elm.dataset.spentPoints !== undefined)
+                        sum_spent_points += parseInt(elm.dataset.spentPoints);
+                    if (elm.dataset.spentHours !== undefined)
+                        sum_spent_hours += parseInt(elm.dataset.spentHours);
                 }
             });
             var num_visible_issues = visible_issues.size();
             var milestone_id = $(list).up('.milestone_box').dataset.milestoneId;
-
-            if (milestone_id != 0) {
-                var multiplier = 100 / list_issues.size();
-                var pct = Math.floor(closed_issues.size() * multiplier);
-                $('milestone_' + milestone_id + '_percentage_filler').setStyle({width: pct + '%'});
-            }
 
             if (num_visible_issues === 0 && !$(list).hasClassName('collapsed')) {
                 if (list_issues.size() > 0) {
@@ -3228,8 +3273,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             } else {
                 $('milestone_' + milestone_id + '_issues_count').update(num_visible_issues);
             }
-            $('milestone_' + milestone_id + '_points_count').update(sum_points);
-            $('milestone_' + milestone_id + '_hours_count').update(sum_hours);
+            $('milestone_' + milestone_id + '_points_count').update(sum_spent_points + ' / ' + sum_estimated_points);
+            $('milestone_' + milestone_id + '_hours_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
@@ -3507,9 +3552,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                 TBG.Project.Planning.initializeDragDropSorting();
                             }
                         }
+                        TBG.Project.Milestone.selectFromHash();
                     }
                 }
             });
+        }
+
+        TBG.Project.Milestone.selectFromHash = function () {
+            var hash = window.location.hash;
+
+            if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
+                jQuery(hash + '_details_link').eq(0).find('> a:first-child').trigger('click');
+            }
         }
 
         TBG.Project.Milestone.remove = function (url, milestone_id) {
@@ -3959,11 +4013,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             ['upcoming', 'past'].each(function (cn) {
                 prp.removeClassName(cn);
             });
+
+            var hash = window.location.hash;
+
+            if (hash != undefined && hash.indexOf('roadmap_milestone_') == 1) {
+                window.location.hash = '';
+            }
         };
 
         TBG.Project.showRoadmap = function () {
             $('milestone_details_overview').hide();
             $('project_roadmap').show();
+            jQuery('#planning_board_settings_gear').show();
         }
 
         TBG.Project.showMilestoneDetails = function (url, milestone_id, force) {
@@ -3974,6 +4035,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             if (force && $('milestone_details_' + milestone_id)) {
                 $('milestone_details_' + milestone_id).remove();
             }
+
+            jQuery('#project_planning_action_strip .more_actions_dropdown, #planning_board_settings_gear').hide();
 
             if (!$('milestone_details_' + milestone_id)) {
                 window.location.hash = 'roadmap_milestone_' + milestone_id;
@@ -5031,6 +5094,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('report_form').hide();
                 $('report_more_here').show('block');
                 $('issuetype_list').show('block');
+                $('reportissue_container').addClassName('large');
+                $('reportissue_container').removeClassName('huge');
             }
 
         }
@@ -5719,15 +5784,36 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         }
 
-        TBG.Issues.ACL.toggle_checkboxes = function (element, issue_id) {
-            var val = element.getValue();
-            var opp_val = (val == 'restricted') ? 'public' : 'restricted';
-            if ($(element).checked) {
-                $('acl_' + issue_id + '_' + val).show();
-                $('acl_' + issue_id + '_' + opp_val).hide();
-            } else {
-                $('acl_' + issue_id + '_' + val).hide();
-                $('acl_' + issue_id + '_' + opp_val).show();
+        TBG.Issues.ACL.toggle_checkboxes = function (element, issue_id, val) {
+            switch (val) {
+                case 'public':
+                    $('acl_' + issue_id + '_public').show();
+                    $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_' + issue_id + '_public_category_access_list').hide();
+                    $('issue_access_public_category_input').disable();
+                    $('acl-users-teams-selector').hide();
+                    break;
+                case 'public_category':
+                    $('acl_' + issue_id + '_public').show();
+                    $('acl_' + issue_id + '_restricted').hide();
+                    $('issue_' + issue_id + '_public_category_access_list').show();
+                    $('issue_access_public_category_input').enable();
+                    $('acl-users-teams-selector').show();
+                    break;
+                case 'restricted':
+                    $('acl_' + issue_id + '_public').hide();
+                    $('acl_' + issue_id + '_restricted').show();
+                    $('acl-users-teams-selector').show();
+                    break;
+            }
+        };
+
+        TBG.Issues.ACL.toggle_custom_access = function (element) {
+            if (jQuery(element).is(':checked')) {
+                jQuery('.report-issue-custom-access-container').show();
+            }
+            else {
+                jQuery('.report-issue-custom-access-container').hide();
             }
         };
 
@@ -5737,8 +5823,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     indicator: 'popup_find_acl_' + issue_id + '_spinning'
                 },
                 success: {
-                    update: {element: 'issue_' + issue_id + '_access_list', insertion: true},
-                    hide: ['popup_find_acl_' + issue_id, 'issue_' + issue_id + '_access_list_none']
+                    update: {},
+                    callback: function(json) {
+                        $('issue_' + issue_id + '_restricted_access_list').insert({bottom: json.content});
+                        $('issue_' + issue_id + '_public_category_access_list').insert({bottom: json.content});
+                        $('issue_' + issue_id + '_restricted_access_list_none').hide();
+                        $('issue_' + issue_id + '_public_category_access_list_none').hide();
+                    },
+                    hide: 'popup_find_acl_' + issue_id
                 }
             });
         };

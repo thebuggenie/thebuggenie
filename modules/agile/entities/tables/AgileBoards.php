@@ -42,4 +42,15 @@
             return $this->select($crit);
         }
 
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            if ($old_table instanceof \thebuggenie\core\modules\installation\upgrade_413\AgileBoardsTable)
+            {
+                $crit = $this->getCriteria();
+                $crit->addUpdate('agileboards.issue_field_values', serialize(array()));
+
+                $this->doUpdate($crit);
+            }
+        }
+
     }

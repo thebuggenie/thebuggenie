@@ -11,7 +11,7 @@
                         </td>
                     </tr>
                 <?php endif; ?>
-                <?php include_component('main/commentitem', array('comment' => $comment, 'include_project' => true)); ?>
+                <?php include_component('main/commentitem', array('comment' => $comment, 'include_project' => true, 'include_time' => true)); ?>
                 <?php $prev_date = $date; ?>
             <?php endforeach; ?>
         </table>

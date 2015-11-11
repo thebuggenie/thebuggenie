@@ -12,9 +12,9 @@
             </div>
             <div class="commentdate" id="comment_<?php echo $comment->getID(); ?>_date">
                 <?php if ($comment->isReply()): ?>
-                    <?php echo image_tag('icon_reply.png', array('style' => 'margin-right: 5px; vertical-align: middle;')).__('%comment_date, in reply to comment %replied_comment_number', array('%comment_date' => tbg_formattime($comment->getPosted(), 12), '%replied_comment_number' => link_tag("#comment_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
+                    <?php echo image_tag('icon_reply.png', array('style' => 'margin-right: 5px; vertical-align: middle;')).__('%comment_date, in reply to comment %replied_comment_number', array('%comment_date' => tbg_formattime($comment->getPosted(), 20), '%replied_comment_number' => link_tag("#comment_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
                 <?php else: ?>
-                    <?php echo tbg_formattime($comment->getPosted(), 9); ?>
+                    <?php echo tbg_formattime($comment->getPosted(), 20); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -31,7 +31,7 @@
                         <a href="javascript:void(0)" onclick="$$('.comment_editor').each(Element.hide);$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo __('Edit'); ?></a>
                     <?php endif; ?>
                     <?php if ($comment->canUserDelete($tbg_user)): ?>
-                        <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this comment?')."', '".__('Please confirm that you want to delete this comment.')."', {yes: {click: function() {TBG.Main.Comment.remove('".make_url('comment_delete', array('comment_id' => $comment->getID()))."', ".$comment->getID()."); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
+                        <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this comment?')."', '".__('Please confirm that you want to delete this comment.')."', {yes: {click: function() {TBG.Main.Comment.remove('".make_url('comment_delete', array('comment_id' => $comment->getID()))."', ".$comment->getID().", '".$comment_count_div."'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -60,7 +60,7 @@
             </select>
             <br />
             <label for="comment_edit_<?php echo $comment->getId(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
-            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
+            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => isset($mentionable_target_type) ? $mentionable_target_type : $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
             <div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
                 <?php echo image_tag('spinning_16.gif'); ?>
             </div>
@@ -79,7 +79,7 @@
                 <option value="0"<?php if (!$comment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for me, developers and administrators only'); ?></option>
             </select>
             <br />
-            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('%user' => ($comment->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $comment->getPostedBy()->getName() : __('Unknown user')))."'''\n>".str_replace("\n", "\n> ", wordwrap(html_entity_decode(strip_tags(tbg_decodeUTF8($comment->getContent(), true)), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
+            <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => isset($mentionable_target_type) ? $mentionable_target_type : $comment->getTargetType(), 'target_id' => $comment->getTargetId(), 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => \thebuggenie\core\framework\Settings::getSyntaxClass($comment->getSyntax()), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('%user' => ($comment->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $comment->getPostedBy()->getName() : __('Unknown user')))."'''\n>".str_replace("\n", "\n> ", wordwrap(html_entity_decode(strip_tags(tbg_decodeUTF8($comment->getContent(), true)), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
             <div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
                 <?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
             </div>

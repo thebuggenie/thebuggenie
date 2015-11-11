@@ -473,6 +473,7 @@
                     $file = null;
                     $file_link = $filename;
                     $caption = $filename;
+                    $in_email = isset($this->options['in_email']) ? $this->options['in_email'] : false;
 
                     if ($issuemode)
                     {
@@ -486,7 +487,7 @@
                     {
                         $caption = (!empty($options)) ? array_pop($options) : htmlentities($file->getDescription(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
                         $caption = ($caption != '') ? $caption : htmlentities($file->getOriginalFilename(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                        $file_link = make_url('showfile', array('id' => $file->getID()));
+                        $file_link = make_url('showfile', array('id' => $file->getID()), !$in_email);
                     }
                     else
                     {
@@ -531,7 +532,7 @@
                             $divclasses[] = 'icright';
                         }
                         $retval = '<div class="'.join(' ', $divclasses).'"';
-                        if ($issuemode)
+                        if ($issuemode && !$in_email)
                         {
                             $retval .= ' style="float: left; clear: left;"';
                         }
@@ -720,10 +721,23 @@
 
         protected function _parse_mention($matches)
         {
-            $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matches[1]);
+            $matched_user = $matches[1];
+            $use_dot = false;
+
+            if (mb_substr($matched_user, -1) === '.')
+            {
+                $matched_user = mb_substr($matched_user, 0, -1);
+                $use_dot = true;
+            }
+
+            $user = \thebuggenie\core\entities\tables\Users::getTable()->getByUsername($matched_user);
+
             if ($user instanceof \thebuggenie\core\entities\User)
             {
-                $output = framework\Action::returnComponentHTML('main/userdropdown_inline', array('user' => $matches[1], 'in_email' => isset($this->options['in_email']) ? $this->options['in_email'] : false));
+                $output = framework\Action::returnComponentHTML('main/userdropdown_inline', array('user' => $matched_user, 'in_email' => isset($this->options['in_email']) ? $this->options['in_email'] : false));
+
+                if ($use_dot) $output .= '.';
+
                 $this->mentions[$user->getID()] = $user;
             }
             else
@@ -1040,7 +1054,9 @@
             $char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/', array($this, '_getsmiley'));
             $char_regexes[] = array('/&amp;([A-Za-z0-9]+|\#[0-9]+|\#[xX][0-9A-Fa-f]+);/', array($this, '_parse_specialchar'));
 
-            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParser::_parse_line::char_regexes', $this, array(), $char_regexes);
+            $parameters = array();
+            if (isset($this->options['target'])) $parameters['target'] = $this->options['target'];
+            $event = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParser::_parse_line::char_regexes', $this, $parameters, $char_regexes);
             $event->trigger();
 
             $char_regexes = $event->getReturnList();

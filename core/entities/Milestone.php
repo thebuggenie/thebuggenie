@@ -31,6 +31,10 @@
         const TYPE_REGULAR = 1;
         const TYPE_SCRUMSPRINT = 2;
 
+        const PERCENTAGE_TYPE_REGULAR = 1;
+        const PERCENTAGE_TYPE_SCRUMSPRINT = 2;
+        const PERCENTAGE_TYPE_PERCENT_COMPLETED = 3;
+
         /**
          * This milestone's project
          *
@@ -176,6 +180,14 @@
          */
         protected $_sort_order = null;
 
+        /**
+         * Percent complete type
+         *
+         * @var string
+         * @Column(type="string", length=200)
+         */
+        protected $_percentage_type;
+
         protected function _construct(\b2db\Row $row, $foreign_key = null)
         {
             $this->_reached = ($this->_reacheddate > 0);
@@ -243,12 +255,10 @@
                 {
                     while ($row = $res->getNextRow())
                     {
-                        $points = ($res->get('state') == Issue::STATE_CLOSED && $res->get('estimated_points') > $res->get('spent_points')) ? $res->get('estimated_points') : $res->get('spent_points');
-                        $hours = ($res->get('state') == Issue::STATE_CLOSED && $res->get('estimated_hours') > $res->get('spent_hours')) ? $res->get('estimated_hours') : $res->get('spent_hours');
                         $this->_points['estimated'] += $res->get('estimated_points');
-                        $this->_points['spent'] += $points;
+                        $this->_points['spent'] += $res->get('spent_points');
                         $this->_hours['estimated'] += $res->get('estimated_hours');
-                        $this->_hours['spent'] += round($hours / 100, 2);
+                        $this->_hours['spent'] += round($res->get('spent_hours') / 100, 2);
                     }
                 }
             }
@@ -412,6 +422,16 @@
         }
 
         /**
+         * Set the milestone percentage type
+         *
+         * @param integer $type
+         */
+        public function setPercentageType($percentage_type)
+        {
+            $this->_percentage_type = $percentage_type;
+        }
+
+        /**
          * Get the milestone type
          *
          * @return integer
@@ -464,6 +484,16 @@
         public function getReachedDate()
         {
             return $this->_reacheddate;
+        }
+
+        /**
+         * Return percent complete type
+         *
+         * @return integer
+         */
+        public function getPercentageType()
+        {
+            return $this->_percentage_type;
         }
 
         /**
@@ -636,6 +666,16 @@
             return date("j", $this->_reacheddate);
         }
 
+        public static function getPercentageTypes()
+        {
+            $i18n = framework\Context::getI18n();
+            return array(
+                self::PERCENTAGE_TYPE_REGULAR => $i18n->__('Based on closed / opened issues'),
+                self::PERCENTAGE_TYPE_SCRUMSPRINT => $i18n->__('Based on spent / estimated points'),
+                self::PERCENTAGE_TYPE_PERCENT_COMPLETED => $i18n->__('Based on issues percent completed')
+            );
+        }
+
         /**
          * Returns the milestones progress
          *
@@ -643,22 +683,30 @@
          */
         public function getPercentComplete()
         {
-            if ($this->getType() == self::TYPE_REGULAR)
+            switch ($this->getPercentageType())
             {
-                return $this->getProject()->getClosedPercentageByMilestone($this->getID());
-            }
-            else
-            {
-                if ($this->getPointsEstimated() > 0)
-                {
-                    $multiplier = 100 / $this->getPointsEstimated();
-                    $pct = $this->getPointsSpent() * $multiplier;
-                }
-                else
-                {
+                case self::PERCENTAGE_TYPE_REGULAR:
+                    $pct = $this->getProject()->getClosedPercentageByMilestone($this->getID());
+                    break;
+                case self::PERCENTAGE_TYPE_SCRUMSPRINT:
+                    if ($this->getPointsEstimated() > 0)
+                    {
+                        $multiplier = 100 / $this->getPointsEstimated();
+                        $pct = $this->getPointsSpent() * $multiplier;
+                    }
+                    else
+                    {
+                        $pct = 0;
+                    }
+                    break;
+                case self::PERCENTAGE_TYPE_PERCENT_COMPLETED:
+                    $pct = $this->getProject()->getTotalPercentageByMilestone($this->getID());
+                    break;
+                default:
                     $pct = 0;
-                }
+                    break;
             }
+
             return (int) $pct;
         }
 
@@ -772,13 +820,46 @@
                 {
                     $spent_times['hours'][$key] = round($spent_times['hours'][$key] / 100, 2);
                 }
+                $total_estimations_hours = array_sum($estimations['hours']);
+                if (array_sum($spent_times['hours']) > $total_estimations_hours) $total_estimations_hours = array_sum($spent_times['hours']);
+                $prev_key = null;
                 foreach ($estimations['hours'] as $key => $val)
                 {
-                    $burndown['hours'][$key] = (array_key_exists($key, $spent_times['hours'])) ? $val - $spent_times['hours'][$key] : $val;
+                    if (! is_null($prev_key) && (array_key_exists($prev_key, $spent_times['hours'])))
+                    {
+                        $total_estimations_hours -= $spent_times['hours'][$prev_key];
+                    }
+                    else
+                    {
+                        if (isset($spent_times['hours_spent_before']))
+                        {
+                            $spent_times['hours_spent_before'] = round($spent_times['hours_spent_before'] / 100, 2);
+                            $total_estimations_hours -= $spent_times['hours_spent_before'];
+                        }
+                    }
+
+                    $burndown['hours'][$key] = $total_estimations_hours;
+                    $prev_key = $key;
                 }
+                $total_estimations_points = array_sum($estimations['points']);
+                if (array_sum($spent_times['points']) > $total_estimations_points) $total_estimations_points = array_sum($spent_times['points']);
+                $prev_key = null;
                 foreach ($estimations['points'] as $key => $val)
                 {
-                    $burndown['points'][$key] = (array_key_exists($key, $spent_times['points'])) ? $val - $spent_times['points'][$key] : $val;
+                    if (! is_null($prev_key) && (array_key_exists($prev_key, $spent_times['points'])))
+                    {
+                        $total_estimations_points -= $spent_times['points'][$prev_key];
+                    }
+                    else
+                    {
+                        if (isset($spent_times['points_spent_before']))
+                        {
+                            $total_estimations_points -= $spent_times['points_spent_before'];
+                        }
+                    }
+
+                    $burndown['points'][$key] = $total_estimations_points;
+                    $prev_key = $key;
                 }
 
                 $this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);

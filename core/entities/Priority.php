@@ -12,6 +12,12 @@
 
         const ITEMTYPE = Datatype::PRIORITY;
 
+        const PRIORITY_1 = 1;
+        const PRIORITY_2 = 2;
+        const PRIORITY_3 = 3;
+        const PRIORITY_4 = 4;
+        const PRIORITY_5 = 5;
+
         protected static $_items = null;
 
         protected $_itemtype = Datatype::PRIORITY;
@@ -21,11 +27,11 @@
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
             $priorities = array();
-            $priorities['Critical'] = 1;
-            $priorities['Needs to be fixed'] = 2;
-            $priorities['Must fix before next release'] = 3;
-            $priorities['Normal'] = 4;
-            $priorities['Low'] = 5;
+            $priorities['Critical'] = self::PRIORITY_1;
+            $priorities['Needs to be fixed'] = self::PRIORITY_2;
+            $priorities['Must fix before next release'] = self::PRIORITY_3;
+            $priorities['Normal'] = self::PRIORITY_4;
+            $priorities['Low'] = self::PRIORITY_5;
 
             foreach ($priorities as $name => $itemdata)
             {
@@ -50,6 +56,11 @@
             }
 
             return $this->_abbreviation;
+        }
+
+        public static function getAvailableValues()
+        {
+            return array(self::PRIORITY_1, self::PRIORITY_2, self::PRIORITY_3, self::PRIORITY_4, self::PRIORITY_5);
         }
 
     }

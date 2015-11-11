@@ -232,6 +232,10 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .icleft { float: left; }
 .article .icright { float: right; }
 .article .iccenter { clear: both; display: inline-block; margin: 10px auto; float: none; }
+.article .image_container img { margin-bottom: -6px; }
+.article .image_container a img { vertical-align: text-top; }
+.article .image_container a { border-bottom: none !important; }
+.article .image_container a:hover { border-bottom: 1px dotted #AAA !important; }
 
 #article_comments, #article_attachments { margin: 20px 0 0 5px; }
 #article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; }

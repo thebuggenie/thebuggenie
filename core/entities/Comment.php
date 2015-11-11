@@ -329,6 +329,12 @@
                         return;
                 }
             }
+            $this->touchTargetIfItsIssue();
+        }
+
+        protected function touchTargetIfItsIssue()
+        {
+            if ($this->getTargetType() === self::TYPE_ISSUE) $this->getTarget()->touch();
         }
 
         protected function _canPermissionOrSeeAndEditAllComments($permission)
@@ -757,6 +763,11 @@
             }
 
             return $users;
+        }
+
+        protected function _postDelete()
+        {
+            $this->touchTargetIfItsIssue();
         }
 
     }

@@ -3,7 +3,8 @@
     namespace thebuggenie\modules\vcs_integration\entities\tables;
 
     use thebuggenie\core\entities\tables\ScopedTable;
-    use \thebuggenie\core\entities\Context;
+    use \thebuggenie\core\entities\Context,
+        b2db\Criteria;
 
     /**
      * B2DB Table, vcs_integration -> VCSIntegrationIssueLinksTable
@@ -58,16 +59,41 @@
         /**
          * Get all rows by issue ID
          * @param integer $id
+         * @param integer $scope
+         * @param integer $limit
+         * @param integer $offset
          * @return \b2db\Row
          */
-        public function getByIssueID($id, $scope = null)
+        public function getByIssueID($id, $scope = null, $limit = null, $offset = null)
+        {
+            $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, $scope);
+            $crit->addWhere(self::ISSUE_NO, $id);
+            $crit->addOrderBy(Commits::DATE, Criteria::SORT_DESC);
+
+            if ($limit !== null)
+                $crit->setLimit($limit);
+
+            if ($offset !== null)
+                $crit->setOffset($offset);
+
+            return $this->select($crit);
+        }
+
+        /**
+         * Count all rows by issue ID
+         * @param integer $id
+         * @return integer
+         */
+        public function countByIssueID($id, $scope = null)
         {
             $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, $scope);
             $crit->addWhere(self::ISSUE_NO, $id);
 
-            return $this->select($crit);
+            return $this->doCount($crit);
         }
 
     }

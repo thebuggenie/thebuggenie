@@ -16,7 +16,7 @@
         </dl>
         <?php if ($milestone->getID() && isset($board)): ?>
             <div class="milestone_percentage">
-                <div class="filler" id="milestone_<?php echo $milestone->getID(); ?>_percentage_filler" style="<?php if ($include_counts) echo 'width: '. $milestone->getPercentComplete() . '%'; ?>"></div>
+                <div class="filler" id="milestone_<?php echo $milestone->getID(); ?>_percentage_filler" style="<?php echo 'width: '. $milestone->getPercentComplete() . '%'; ?>"></div>
             </div>
         <?php endif; ?>
     </div>
@@ -30,8 +30,8 @@
                         -
                     <?php endif; ?>
                 </td>
-                <td id="milestone_<?php echo $milestone->getID(); ?>_points_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getPointsEstimated() : '-'; ?></td>
-                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursEstimated() : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_points_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getPointsSpent() .'/'. $milestone->getPointsEstimated() : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursSpent() .'/'. $milestone->getHoursEstimated() : '-'; ?></td>
             </tr>
             <tr>
                 <td><?php echo __('Issues'); ?></td>

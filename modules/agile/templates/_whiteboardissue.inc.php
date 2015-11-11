@@ -6,6 +6,9 @@
             <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
             <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
         </div>
+        <?php if ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?>
+            <div class="priority priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
+        <?php endif; ?>
     <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
     </div>
     <?php if (isset($swimlane)): ?>
@@ -24,8 +27,9 @@
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
-    <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))): ?>
-        <div class="issue_info">
+    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)); ?>
+    <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))): ?>
+        <div class="issue_info<?php if (isset($swimlane) && $swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue_custom_fields_of_type), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); }))) echo ' issue_info_top'; ?>">
             <?php foreach ($issue->getBuilds() as $details): ?>
                 <div class="issue_release"><?php echo $details['build']->getVersion(); ?></div>
             <?php endforeach; ?>
@@ -43,7 +47,28 @@
             <?php endif; ?>
         </div>
     <?php endif; ?>
+    <?php if (isset($swimlane) && $swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue_custom_fields_of_type), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); }))): ?>
+        <div class="issue_info
+        <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))) echo ' issue_info_middle'; ?>">
+            <?php if ($swimlane->getBoard()->hasIssueFieldValues()): ?>
+                <?php foreach ($issue_custom_fields_of_type as $key => $value): ?>
+                    <?php if (!$swimlane->getBoard()->hasIssueFieldValue($key)) continue; ?>
+                    <div class="issue_component issue_date" title="<?php echo \thebuggenie\core\entities\CustomDatatype::getByKey($key)->getDescription(); ?>"><?php echo tbg_formattime($value, 14); ?></div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     <div class="issue_info">
+        <?php if ($issue->countUserComments()): ?>
+            <div class="comments-badge">
+                <?php echo image_tag('icon_comments.png') .'<span>'. $issue->countUserComments() .'</span>'; ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($issue->countFiles()): ?>
+            <div class="attachments-badge">
+                <?php echo image_tag('icon_attached_information.png') .'<span>'. $issue->countFiles() .'</span>'; ?>
+            </div>
+        <?php endif; ?>
         <?php echo image_tag('icon_block.png', array('class' => 'blocking', 'title' => __('This issue is marked as a blocker'))); ?>
         <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
             <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getName() : __('Unknown'); ?>">&nbsp;&nbsp;&nbsp;</div>

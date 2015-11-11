@@ -110,6 +110,8 @@
             $this->getResponse()->setContentType('application/json');
             $this->getResponse()->setDecoration(Response::DECORATE_NONE);
 
+            if (is_array($text) && array_key_exists('error', $text)) $this->getResponse()->setHttpStatus(400);
+
             if (is_array($text))
                 array_walk_recursive($text , function(&$item) { $item = iconv('UTF-8', 'UTF-8//IGNORE', $item); });
             else
@@ -198,10 +200,10 @@
         {
             if (!$condition)
             {
-                $message = ($message === null) ? Context::getI18n()->__("You are not allowed to access this page") : htmlentities($message);
+                $message = ($message === null) ? Context::getI18n()->__("You are either not allowed to access this page or don't have access to perform this action") : $message;
                 if (Context::getUser()->isGuest())
                 {
-                    Context::setMessage('login_message_err', $message);
+                    Context::setMessage('login_message_err', htmlentities($message));
                     Context::setMessage('login_force_redirect', true);
                     Context::setMessage('login_referer', Context::getRouting()->generate(Context::getRouting()->getCurrentRouteName(), Context::getRequest()->getParameters()));
                     $this->forward(Context::getRouting()->generate('login_page'), 403);
@@ -209,12 +211,11 @@
                 elseif (Context::getRequest()->isAjaxCall())
                 {
                     $this->getResponse()->setHttpStatus(403);
-                    throw new \Exception(Context::getI18n()->__("You don't have access to perform this action"));
+                    throw new \Exception($message);
                 }
                 else
                 {
-                    $this->getResponse()->setHttpStatus(403);
-                    $this->getResponse()->setTemplate('main/forbidden');
+                    throw new \thebuggenie\core\framework\exceptions\ActionNotAllowedException($message);
                 }
             }
         }

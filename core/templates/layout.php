@@ -180,7 +180,7 @@
                 <?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
                 <?php \thebuggenie\core\framework\Logging::log('done (rendering header)'); ?>
             <?php endif; ?>
-            <div id="content_container">
+            <div id="content_container" class="cf">
                 <?php \thebuggenie\core\framework\Logging::log('Rendering content'); ?>
                 <?php echo $content; ?>
                 <?php \thebuggenie\core\framework\Logging::log('done (rendering content)'); ?>
