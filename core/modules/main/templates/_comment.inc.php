@@ -31,7 +31,7 @@
                         <a href="javascript:void(0)" onclick="$$('.comment_editor').each(Element.hide);$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo __('Edit'); ?></a>
                     <?php endif; ?>
                     <?php if ($comment->canUserDelete($tbg_user)): ?>
-                        <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this comment?')."', '".__('Please confirm that you want to delete this comment.')."', {yes: {click: function() {TBG.Main.Comment.remove('".make_url('comment_delete', array('comment_id' => $comment->getID()))."', ".$comment->getID()."); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
+                        <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this comment?')."', '".__('Please confirm that you want to delete this comment.')."', {yes: {click: function() {TBG.Main.Comment.remove('".make_url('comment_delete', array('comment_id' => $comment->getID()))."', ".$comment->getID().", '".$comment_count_div."'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>

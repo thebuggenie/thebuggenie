@@ -1676,7 +1676,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             $('comment_bodybox').focus();
         }
 
-        TBG.Main.Comment.remove = function (url, comment_id) {
+        TBG.Main.Comment.remove = function (url, comment_id, commentcount_span) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {
                     indicator: 'dialog_indicator'
@@ -1686,6 +1686,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         TBG.Main.Helpers.Dialog.dismiss();
                         if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+                        $(commentcount_span).update($('comments_box').childElements().size());
                     }
                 }
             });
