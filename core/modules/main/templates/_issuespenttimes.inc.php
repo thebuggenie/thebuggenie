@@ -25,7 +25,7 @@
             <tbody>
                 <?php foreach ($issue->getSpentTimes() as $spent_time): ?>
                     <tr id="issue_spenttime_<?php echo $spent_time->getID(); ?>">
-                        <td><?php echo tbg_formatTime($spent_time->getEditedAt(), 20); ?></td>
+                        <td><?php echo tbg_formatTime($spent_time->getEditedAt(), 14); ?></td>
                         <td style="font-size: 0.9em;"><?php echo ($spent_time->getActivityType() instanceof \thebuggenie\core\entities\ActivityType) ? $spent_time->getActivityType()->getName() : '-'; ?></td>
                         <td><?php echo include_component('main/userdropdown', array('user' => $spent_time->getUser())); ?></td>
                         <td style="text-align: right;"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($spent_time->getSpentTime()); ?></td>
