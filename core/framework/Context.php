@@ -1589,11 +1589,6 @@ class Context
         if (array_key_exists($module_name, self::$_permissions) &&
                 array_key_exists($permission_type, self::$_permissions[$module_name]))
         {
-            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
-            {
-                $permissions_notarget = self::$_permissions[$module_name][$permission_type][0];
-            }
-
             if (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
             {
                 $permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
@@ -1602,9 +1597,10 @@ class Context
 
             }
 
-            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]) && $target_id != 0)
+            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
             {
-                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid, $retval, $target_id);
+                $global_permissions=self::$_permissions[$module_name][$permission_type][0];
+                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($global_permissions, $uid, $gid, $tid, $retval, 0, $target_id);
             }
 
             if (is_array($retval)) return true;

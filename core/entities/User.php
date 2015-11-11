@@ -2047,7 +2047,7 @@
          *
          * @return boolean
          */
-        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core')
+        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $check_global_role = true)
         {
             framework\Logging::log('Checking permission '.$permission_type);
             $group_id = (int) $this->getGroupID();
