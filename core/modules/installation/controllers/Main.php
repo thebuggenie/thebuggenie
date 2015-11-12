@@ -544,7 +544,8 @@ class Main extends framework\Action
             $module->upgrade();
         }
 
-        $this->upgrade_complete = true;
+        $this->upgrade_complete = true
+        $this->current_version = '4.1.0';
     }
 
     protected function _upgradeFrom4dot1(framework\Request $request)
@@ -554,6 +555,7 @@ class Main extends framework\Action
         \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_41\Milestone::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.1';
     }
 
     protected function _upgradeFrom4dot1dot1(framework\Request $request)
@@ -564,6 +566,7 @@ class Main extends framework\Action
         \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Project::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.2';
     }
 
     protected function _upgradeFrom4dot1dot2(framework\Request $request)
@@ -573,6 +576,7 @@ class Main extends framework\Action
         \thebuggenie\modules\mailing\entities\tables\MailQueueTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_412\MailQueueTable::getTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.3';
     }
 
     protected function _upgradeFrom4dot1dot3(framework\Request $request)
@@ -612,30 +616,15 @@ class Main extends framework\Action
                 case '3.2.0':
                 case '3.2':
                     $this->_upgradeFrom3dot2($request);
-                    $this->_upgradeFrom4dot1($request);
-                    $this->_upgradeFrom4dot1dot1($request);
-                    $this->_upgradeFrom4dot1dot2($request);
-                    $this->_upgradeFrom4dot1dot3($request);
-                    break;
                 case '4.1':
                 case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
-                    $this->_upgradeFrom4dot1dot1($request);
-                    $this->_upgradeFrom4dot1dot2($request);
-                    $this->_upgradeFrom4dot1dot3($request);
-                    break;
                 case '4.1.1':
                     $this->_upgradeFrom4dot1dot1($request);
-                    $this->_upgradeFrom4dot1dot2($request);
-                    $this->_upgradeFrom4dot1dot3($request);
-                    break;
                 case '4.1.2':
                     $this->_upgradeFrom4dot1dot2($request);
-                    $this->_upgradeFrom4dot1dot3($request);
-                    break;
                 case '4.1.3':
                     $this->_upgradeFrom4dot1dot3($request);
-                    break;
                 default:
                     $this->upgrade_complete = true;
                     break;
