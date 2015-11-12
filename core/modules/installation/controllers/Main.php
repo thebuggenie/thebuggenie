@@ -612,16 +612,26 @@ class Main extends framework\Action
                 case '3.2.0':
                 case '3.2':
                     $this->_upgradeFrom3dot2($request);
+                    $this->_upgradeFrom4dot1($request);
+                    $this->_upgradeFrom4dot1dot1($request);
+                    $this->_upgradeFrom4dot1dot2($request);
+                    $this->_upgradeFrom4dot1dot3($request);
                     break;
                 case '4.1':
                 case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
+                    $this->_upgradeFrom4dot1dot1($request);
+                    $this->_upgradeFrom4dot1dot2($request);
+                    $this->_upgradeFrom4dot1dot3($request);
                     break;
                 case '4.1.1':
                     $this->_upgradeFrom4dot1dot1($request);
+                    $this->_upgradeFrom4dot1dot2($request);
+                    $this->_upgradeFrom4dot1dot3($request);
                     break;
                 case '4.1.2':
                     $this->_upgradeFrom4dot1dot2($request);
+                    $this->_upgradeFrom4dot1dot3($request);
                     break;
                 case '4.1.3':
                     $this->_upgradeFrom4dot1dot3($request);
