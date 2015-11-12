@@ -544,7 +544,7 @@ class Main extends framework\Action
             $module->upgrade();
         }
 
-        $this->upgrade_complete = true
+        $this->upgrade_complete = true;
         $this->current_version = '4.1.0';
     }
 
