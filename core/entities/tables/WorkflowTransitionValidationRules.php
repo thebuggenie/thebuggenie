@@ -60,14 +60,4 @@
             return $actions;
         }
 
-        public function getByWorkflowIDAndRule($workflow_id, $rule)
-        {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-            $crit->addWhere(self::RULE, $rule);
-
-            return $this->select($crit, false);
-        }
-
     }

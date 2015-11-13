@@ -131,7 +131,7 @@
             if (framework\Context::isProjectContext() && framework\Context::getModule('vcs_integration')->getSetting('browser_type_'.framework\Context::getCurrentProject()->getID()) === 'gitlab')
             {
               $event->addToReturnList(array(
-                array('/(\![0-9])/'), function ($matches) use ($event)
+                array('/(\![0-9]+)/'), function ($matches) use ($event)
                   {
                     if (!$event->getParameter('target') instanceof Commit) return $matches[0];
 
