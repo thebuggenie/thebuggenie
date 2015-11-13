@@ -84,6 +84,8 @@
                 $this_module_path = THEBUGGENIE_MODULES_PATH . $module_key . DS;
                 mkdir(THEBUGGENIE_MODULES_PATH . $module_key);
                 $this->cliEcho('modules' . DS . "{$module_key}\n");
+                mkdir($this_module_path . 'controllers');
+                $this->cliEcho('modules' . DS . $module_key . DS . "controllers\n");
                 mkdir($this_module_path . 'configuration');
                 $this->cliEcho('modules' . DS . $module_key . DS . "configuration\n");
                 mkdir($this_module_path . 'entities');
@@ -103,8 +105,8 @@
 
                 $module_actions_class_template = file_get_contents(THEBUGGENIE_INTERNAL_MODULES_PATH . "main" . DS . "fixtures" . DS . "emptymoduleactionsclass");
                 $module_actions_class_content = str_replace(array('module_key', 'module_name', 'module_description'), array($module_key, $module_name, $module_description), $module_actions_class_template);
-                file_put_contents($this_module_path . "Actions.php", $module_actions_class_content);
-                $this->cliEcho("modules" . DS . $module_key . DS . "Actions.php\n");
+                file_put_contents($this_module_path . DS . "controllers" . DS . "Main.php", $module_actions_class_content);
+                $this->cliEcho("modules" . DS . $module_key . DS . "Main.php\n");
 
                 $module_actioncomponents_class_template = file_get_contents(THEBUGGENIE_INTERNAL_MODULES_PATH . "main" . DS . "fixtures" . DS . "emptymoduleactioncomponentsclass");
                 $module_actioncomponents_class_content = str_replace(array('module_key', 'module_name', 'module_description'), array($module_key, $module_name, $module_description), $module_actioncomponents_class_template);
