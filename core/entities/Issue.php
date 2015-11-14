@@ -5480,13 +5480,6 @@
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
 
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
-                {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory() instanceof Category && $this->getCategory()->getID() == $subscribed_category_id))  $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
-                }
-
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS, false)->isOn() && ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == 0 || ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == $this->getCategory()->getID()))) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
         }
