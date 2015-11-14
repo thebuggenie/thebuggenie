@@ -132,7 +132,8 @@
                 $crit2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
                 $crit2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
                 $crit2->addWhere(self::EDITED_AT, $startdate, Criteria::DB_LESS_THAN);
-                $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
+
+                if (count($issue_ids)) $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
 
                 if ($res2 = $this->doSelectOne($crit2))
                 {
