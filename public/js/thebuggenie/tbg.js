@@ -2677,7 +2677,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
             if (transition_id) parameters += '&transition_id=' + transition_id;
 
-            TBG.Main.Helpers.ajax(wb.data('whiteboard-url'), {
+            TBG.Main.Helpers.ajax($('whiteboard').dataset.whiteboardUrl, {
                 additional_params: parameters,
                 url_method: 'post',
                 loading: {
@@ -2932,6 +2932,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                             }
 
                             pc.dataset.lastRefreshed = get_current_timestamp();
+                            wb.dataset.whiteboardUrl = json.whiteboard_url;
                             TBG.Core.Pollers.Locks.planningpoller = false;
                         }
                     },

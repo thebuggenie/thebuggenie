@@ -795,7 +795,10 @@
                 }
             }
 
-            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id'));
+            \thebuggenie\core\framework\Context::loadLibrary('ui');
+            $whiteboard_url = make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID()));
+
+            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id', 'whiteboard_url'));
         }
 
     }
