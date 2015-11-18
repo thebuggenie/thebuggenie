@@ -1115,7 +1115,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
             var progress_elm = inserted_elm.down('.progress');
             var formData = new FormData();
-            formData.append(file.name, file);
+            formData.append(file.name.replace('[', '(').replace(']', ')'), file);
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', url, true);

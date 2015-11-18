@@ -3025,6 +3025,7 @@ class Main extends framework\Action
 
         foreach ($request->getUploadedFiles() as $key => $file)
         {
+            $file['name'] = str_replace(array('[', ']'), array('(', ')'), $file['name']);
             $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($file['name']);
             if (framework\Settings::getUploadStorage() == 'files')
             {
