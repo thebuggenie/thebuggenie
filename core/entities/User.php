@@ -2308,7 +2308,7 @@
          */
         public function canEditMainMenu($target_type = null)
         {
-            if (is_null($target_type))
+            if (is_null($target_type) || $target_type == 'main_menu')
             {
                 $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
             }
