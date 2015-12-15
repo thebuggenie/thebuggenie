@@ -62,7 +62,7 @@
             }
             else
             {
-                if (!file_exists(THEBUGGENIE_CACHE_PATH))
+                if (!file_exists(THEBUGGENIE_CACHE_PATH) and !mkdir(THEBUGGENIE_CACHE_PATH))
                     throw new exceptions\CacheException('The cache directory is not writable', exceptions\CacheException::NO_FOLDER);
 
                 if (!is_writable(THEBUGGENIE_CACHE_PATH))
