@@ -139,11 +139,11 @@
 
 			if (!$this->no_dash_f)
 			{
-				$retval = mail($email->getRecipientsAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false, false), '-f'.$email->getFromAddress());
+				$retval = mail($email->getRecipientsAsString(), '=?utf-8?B?'.base64_encode($email->getSubject()).'?=', $email->getBodyAsString(), $email->getHeadersAsString(false, false), '-f'.$email->getFromAddress());
 			}
 			else
 			{
-				$retval = mail($email->getRecipientsAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false, false));
+				$retval = mail($email->getRecipientsAsString(), '=?utf-8?B?'.base64_encode($email->getSubject()).'?=', $email->getBodyAsString(), $email->getHeadersAsString(false, false));
 			}
 			if ($retval)
 			{
