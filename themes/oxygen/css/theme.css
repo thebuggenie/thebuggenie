@@ -3172,7 +3172,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
 .milestone_box .header .draggable { display: none; }
-#project_planning.milestone-sort .milestone_box { cursor: move; }
+#project_planning.milestone-sort .milestone_box { cursor: move; background-color: white; }
 #project_planning.milestone-sort .milestone_box .header .draggable { display: block; }
 #project_planning.milestone-sort .milestone_box .header .settings_container, #project_planning.milestone-sort .milestone_box .header .button-group, #project_planning.milestone-sort .milestone_box .milestone_issues { display: none; }
 dl.info { display: block; white-space: normal; }
