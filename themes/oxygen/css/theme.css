@@ -3136,7 +3136,9 @@ table.issue_affects td img { vertical-align: bottom; }
 .page-project_dashboard .dashboard_milestones { margin: -5px -10px; }
 .dashboard_milestones > div:last-child { border-bottom: none !important; }
 .milestone_box.unavailable:hover { opacity: 1; -ms-opacity: 1; -webkit-opacity: 1; }
-.milestone_box .status { margin-top: 10px; font-size: 0.8em; display: inline-block; background-color: #FAEFEF; color: #D88383; padding: 2px 5px; border-radius: 3px; }
+.milestone_box .status { margin-top: 10px; font-size: 0.8em; display: inline-block; padding: 2px 5px; border-radius: 3px; }
+.milestone_box.red .status { background-color: #FAEFEF; color: #D88383; }
+.milestone_box.green .status { background-color: #DCEFDC; color: #00a400; }
 .milestone_box .date { margin-top: 4px; color: #AAA; font-size: 0.9em; }
 .milestone_box .percentage { vertical-align: middle; padding-left: 10px; }
 .milestone_box .percentage .numbers { text-align: center; font-size: 0.8em; margin-bottom: 8px; color: #555555;}
