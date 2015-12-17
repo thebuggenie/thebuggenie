@@ -546,7 +546,7 @@
             $project = $this->issue->getProject();
             $this->editions = $project->getEditions();
             $this->components = $project->getComponents();
-            $this->builds = $project->getBuilds();
+            $this->builds = $project->getActiveBuilds();
         }
 
         public function componentDashboardview()
