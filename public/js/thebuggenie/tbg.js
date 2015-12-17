@@ -5255,7 +5255,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 additional_params_query += '/milestone_id/' + btn.dataset.milestoneId;
             }
 
-            TBG.Main.Helpers.Backdrop.show(url +  additional_params_query);
+            if (url.indexOf('issuetype') !== -1) {
+                TBG.Main.Helpers.Backdrop.show(url +  additional_params_query, function () {
+                    console.log('asdf');
+                    jQuery('#reportissue_container').addClass('huge');
+                    jQuery('#reportissue_container').removeClass('large');
+                });
+            }
+            else {
+                TBG.Main.Helpers.Backdrop.show(url +  additional_params_query);
+            }
         };
 
         TBG.Issues.relate = function (url) {
