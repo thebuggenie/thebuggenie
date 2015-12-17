@@ -5,11 +5,11 @@
             <div class="date">
                 <?php if ($milestone->getStartingDate()): ?>
                     <?php
-                        echo tbg_formatTime($milestone->getStartingDate(), 20, true, true) . ' - ';
-                        if ($milestone->getScheduledDate() > 0): echo tbg_formatTime($milestone->getScheduledDate(), 20, true, true); else: echo __('No scheduled date specified'); endif;
+                        echo tbg_formatTime($milestone->getStartingDate(), 23, true, true) . ' - ';
+                        if ($milestone->getScheduledDate() > 0): echo tbg_formatTime($milestone->getScheduledDate(), 23, true, true); else: echo __('No scheduled date specified'); endif;
                     ?>
                 <?php else: ?>
-                    <?php if ($milestone->getScheduledDate() > 0): echo __('Scheduled for %scheduled_date', array('%scheduled_date' => tbg_formatTime($milestone->getScheduledDate(), 20, true, true))); else: echo __('No scheduled date specified'); endif; ?>
+                    <?php if ($milestone->getScheduledDate() > 0): echo __('Scheduled for %scheduled_date', array('%scheduled_date' => tbg_formatTime($milestone->getScheduledDate(), 23, true, true))); else: echo __('No scheduled date specified'); endif; ?>
                 <?php endif; ?>
             </div>
 
