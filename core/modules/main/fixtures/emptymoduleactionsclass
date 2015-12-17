@@ -1,13 +1,13 @@
 <?php
 
-    namespace thebuggenie\modules\module_key;
+    namespace thebuggenie\modules\module_key\controllers;
 
     use thebuggenie\core\framework;
 
     /**
-     * actions for the module_key module
+     * Main controller for the module_key module
      */
-    class Actions extends framework\Action
+    class Main extends framework\Action
     {
 
         public function runIndex(framework\Request $request)

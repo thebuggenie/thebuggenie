@@ -1049,7 +1049,7 @@
                 }
             }
 
-            if (isset($uids[framework\Context::getUser()->getID()])) unset($uids[framework\Context::getUser()->getID()]);
+            if (framework\Context::getUser() and isset($uids[framework\Context::getUser()->getID()])) unset($uids[framework\Context::getUser()->getID()]);
             $users = \thebuggenie\core\entities\tables\Users::getTable()->getByUserIDs($uids);
             return $users;
         }
