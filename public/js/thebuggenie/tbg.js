@@ -5257,7 +5257,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
             if (url.indexOf('issuetype') !== -1) {
                 TBG.Main.Helpers.Backdrop.show(url +  additional_params_query, function () {
-                    console.log('asdf');
                     jQuery('#reportissue_container').addClass('huge');
                     jQuery('#reportissue_container').removeClass('large');
                 });
