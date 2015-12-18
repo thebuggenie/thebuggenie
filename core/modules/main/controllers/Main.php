@@ -3218,6 +3218,8 @@ class Main extends framework\Action
                 {
                     if ($isFile && \thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()) {
                         $this->getResponse()->addHeader('X-Sendfile: ' . framework\Settings::getUploadsLocalpath() . $file->getRealFilename());
+                        $this->getResponse()->addHeader('X-Accel-Redirect: /files/' . $file->getRealFilename());
+
                         $this->getResponse()->renderHeaders($disableCache);
                     }
                     else
