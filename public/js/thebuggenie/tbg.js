@@ -5794,6 +5794,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         }
 
         TBG.Issues.ACL.toggle_checkboxes = function (element, issue_id, val) {
+            if (! jQuery(element).is(':checked')) return;
+
             switch (val) {
                 case 'public':
                     $('acl_' + issue_id + '_public').show();
@@ -5820,6 +5822,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Issues.ACL.toggle_custom_access = function (element) {
             if (jQuery(element).is(':checked')) {
                 jQuery('.report-issue-custom-access-container').show();
+                jQuery('.report-issue-custom-access-container input[name=issue_access]').trigger('change');
             }
             else {
                 jQuery('.report-issue-custom-access-container').hide();

@@ -1704,12 +1704,14 @@ a.friend { color: #277CBA; }
     margin-top: 10px;
     margin-bottom: 0;
     clear: both;
-    line-height: 1.7;
 }
 .backdrop_detail_content .report-issue-custom-access-container {
     margin-top: 10px;
 }
-.report-issue-custom-access-check img
+.backdrop_detail_content .report-issue-custom-access-container > label {
+    line-height: 1.7;
+}
+.report-issue-custom-access-check > img
 {
     margin-bottom: -3px;
     margin-left: 3px;
@@ -1723,6 +1725,9 @@ a.friend { color: #277CBA; }
 {
     margin-left: 2px;
     margin-right: 4px;
+}
+.report-issue-custom-access-check .acl-delete-item-link {
+    float: none;
 }
 #report_form table.additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
 .backdrop_detail_content .additional_information .report_issue_help { /*display: none;*/ }
@@ -9516,6 +9521,12 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled
 {
     padding: 3px 7px;
     margin-top: -2px;
+}
+
+.acl-delete-item-link {
+    float: right;
+    margin-bottom: -5px;
+    margin-left: 2px;
 }
 
 /* Manage issue subscribers */
