@@ -2766,52 +2766,50 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Project.Planning.Whiteboard.initializeDragDrop = function () {
-            if (jQuery('.whiteboard-issue').length > 0) {
-                var overlapThreshold = '50%';
-                var droppablesSelector = '.gs-droppable';
-                GSDraggable.create(jQuery('.whiteboard-issue'), {
-                    type: 'x',
-                    bounds: jQuery('#whiteboard'),
-                    onPress: function() {
-                        this.startX = this.x;
-                        this.startY = this.y;
-                    },
-                    onDragStart: function(ev) {
-                        jQuery(this.target).addClass('gs-draggable');
-                        TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, this.target);
-                    },
-                    onDrag: function(ev) {
-                        var droppables = jQuery(droppablesSelector);
-                        var i = droppables.length;
-                        while (--i > -1) {
-                            if (this.hitTest(droppables[i], overlapThreshold)) {
-                                jQuery(droppables[i]).addClass('drop-hover');
-                            } else {
-                                jQuery(droppables[i]).removeClass('drop-hover');
-                            }
+            var overlapThreshold = '50%';
+            var droppablesSelector = '.gs-droppable';
+            GSDraggable.create(jQuery('.whiteboard-issue'), {
+                type: 'x',
+                bounds: jQuery('#whiteboard'),
+                onPress: function() {
+                    this.startX = this.x;
+                    this.startY = this.y;
+                },
+                onDragStart: function(ev) {
+                    jQuery(this.target).addClass('gs-draggable');
+                    TBG.Project.Planning.Whiteboard.detectAvailableDropColumns(ev, this.target);
+                },
+                onDrag: function(ev) {
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            jQuery(droppables[i]).addClass('drop-hover');
+                        } else {
+                            jQuery(droppables[i]).removeClass('drop-hover');
                         }
-                    },
-                    onDragEnd:function(ev) {
-                        jQuery(this.target).removeClass('gs-draggable');
-                        var droppables = jQuery(droppablesSelector);
-                        var i = droppables.length;
-                        var column_found = false;
-                        while (--i > -1) {
-                            if (this.hitTest(droppables[i], overlapThreshold)) {
-                                TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, jQuery(this.target), jQuery(droppables[i]), {x: this.startX, y: this.startY});
-                                column_found = true;
-                            }
+                    }
+                },
+                onDragEnd:function(ev) {
+                    jQuery(this.target).removeClass('gs-draggable');
+                    var droppables = jQuery(droppablesSelector);
+                    var i = droppables.length;
+                    var column_found = false;
+                    while (--i > -1) {
+                        if (this.hitTest(droppables[i], overlapThreshold)) {
+                            TBG.Project.Planning.Whiteboard.updateIssueColumn(ev, jQuery(this.target), jQuery(droppables[i]), {x: this.startX, y: this.startY});
+                            column_found = true;
                         }
-                        if (! column_found) TweenMax.to(this.target, .3, {x: this.startX, y: this.startY});
-                        TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
-                    },
-                    zIndexBoost: false
-                });
-                var highZIndex = 1010;
-                jQuery('#whiteboard .whiteboard-issue').each(function () {
-                    jQuery(this).css('z-index', highZIndex--);
-                });
-            }
+                    }
+                    if (! column_found) TweenMax.to(this.target, .3, {x: this.startX, y: this.startY});
+                    TBG.Project.Planning.Whiteboard.resetAvailableDropColumns(ev);
+                },
+                zIndexBoost: false
+            });
+            var highZIndex = 1010;
+            jQuery('#whiteboard').find('.whiteboard-issue').each(function () {
+                jQuery(this).css('z-index', highZIndex--);
+            });
 
             if (!TBG.Core.Pollers.planningpoller)
                 TBG.Core.Pollers.planningpoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.whiteboardPlanningPoller, 6);
