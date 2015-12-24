@@ -2690,7 +2690,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         if (json.transition_id && json.component) {
                             document.stopObserving('keydown', TBG.Core._escapeWatcher);
                             document.observe('keydown', customEscapeWatcher);
-                            $('moving_issue_workflow_transition').update(json.component);
+                            $('fullpage_backdrop').appear({duration: 0.2});
+                            $('fullpage_backdrop_content').update(json.component);
+                            $('fullpage_backdrop_content').appear({duration: 0.2});
+                            $('fullpage_backdrop_indicator').fade({duration: 0.2});
                             TBG.Issues.showWorkflowTransition(json.transition_id);
                             $('transition_working_' + json.transition_id + '_cancel').observe('click', function (event) {
                                 Event.stop(event);
