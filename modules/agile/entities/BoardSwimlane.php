@@ -153,7 +153,9 @@
                         $this->_search_object->setFilter($this->getBoard()->getSwimlaneIdentifier(), \thebuggenie\core\entities\SearchFilter::createFilter($this->getBoard()->getSwimlaneIdentifier(), array('o' => '=', 'v' => $values)));
                     }
                 }
-                $this->_search_object->setSortFields(array('issues.milestone_order' => \b2db\Criteria::SORT_DESC));
+                $this->_search_object->setIssuesPerPage(0);
+                $this->_search_object->setOffset(0);
+                $this->_search_object->setSortFields(array(\thebuggenie\core\entities\tables\Issues::MILESTONE_ORDER => \b2db\Criteria::SORT_ASC));
                 $this->_search_object->setGroupby(null);
             }
         }
