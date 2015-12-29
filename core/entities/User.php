@@ -2656,6 +2656,7 @@
                 foreach ($scopes as $scope_id => $details)
                 {
                     $scope = \thebuggenie\core\entities\Scope::getB2DBTable()->selectById($scope_id);
+                    if (!$scope instanceof Scope) continue;
                     if (!$details['confirmed'])
                     {
                         $this->_unconfirmed_scopes[$scope_id] = $scope;
@@ -2957,7 +2958,7 @@
          *
          * @param string $setting The setting to retrieve
          * @param string $module The module if not 'core'
-         * 
+         *
          * @return NotificationSetting
          */
         public function getNotificationSetting($setting, $default_value = null, $module = 'core')
