@@ -432,7 +432,7 @@ class Main extends framework\Action
      */
     public function runInstallStep6(framework\Request $request)
     {
-        $installed_string = framework\Settings::getMajorVer() . '.' . framework\Settings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+        $installed_string = framework\Settings::getVersion() . ', installed ' . date('d.m.Y H:i');
 
         if (file_put_contents(THEBUGGENIE_PATH . 'installed', $installed_string) === false)
         {
