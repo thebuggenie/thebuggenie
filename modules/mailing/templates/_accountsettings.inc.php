@@ -10,3 +10,4 @@
         </tr>
     <?php endforeach; ?>
 </table>
+<?php include_component('main/myaccountsettingsformsubmit', array('module' => $module)); ?>

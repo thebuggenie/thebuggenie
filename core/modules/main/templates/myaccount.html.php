@@ -2,7 +2,7 @@
 
     $tbg_response->setTitle('Your account details');
     $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
-    
+
 ?>
 <?php if ($tbg_user->canChangePassword()): ?>
     <div class="fullpage_backdrop" id="change_password_div" style="<?php if (!$has_autopassword) echo 'display: none;'; ?>">
@@ -438,14 +438,7 @@
                 <?php if ($module->hasAccountSettings()): ?>
                     <div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
                         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
-                            <div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
-                                <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
-                            </div>
-                            <div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-                                <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save changes in the "%module_settings_name" category', array('%save' => __('Save'), '%module_settings_name' => $module->getAccountSettingsName())); ?></div>
-                                <input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-                                <span id="profile_<?php echo $module_name; ?>_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                            </div>
+                            <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
                         </form>
                     </div>
                 <?php endif; ?>

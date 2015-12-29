@@ -27,6 +27,13 @@
         const DECORATE_DEFAULT = 3;
         const DECORATE_CUSTOM = 4;
 
+        const HTTP_STATUS_OK = 200;
+        const HTTP_STATUS_FOUND = 302;
+        const HTTP_STATUS_NOT_MODIFIED = 304;
+        const HTTP_STATUS_BAD_REQUEST = 400;
+        const HTTP_STATUS_FORBIDDEN = 403;
+        const HTTP_STATUS_NOT_FOUND = 404;
+
         /**
          * The current page (used to identify the selected tab
          *
@@ -92,7 +99,7 @@
          *
          * @var integer
          */
-        protected $_http_status = 200;
+        protected $_http_status = self::HTTP_STATUS_OK;
 
         /**
          * Response content-type
@@ -380,13 +387,29 @@
             $this->_feeds[$url] = $description;
         }
 
+        public function isModified($timestamp)
+        {
+            $last_modified_string = gmdate('D, d M Y H:i:s ', $timestamp) . 'GMT';
+            $etag = md5($timestamp);
+
+            $if_modified_since = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false;
+            $if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
+            if ((($if_none_match && $if_none_match == $etag) || (!$if_none_match)) &&
+                ($if_modified_since && $if_modified_since == $last_modified_string))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         /**
          * Forward the user to a different URL
          *
          * @param string $url the url to forward to
          * @param integer $code HTTP status code
          */
-        public function headerRedirect($url, $code = 302)
+        public function headerRedirect($url, $code = self::HTTP_STATUS_FOUND)
         {
             Logging::log('Running header redirect function');
             $this->clearHeaders();
@@ -547,7 +570,7 @@
         /**
          * Render current headers
          */
-        public function renderHeaders($disableCache = true)
+        public function renderHeaders($disableCache = false)
         {
             header("HTTP/1.0 ".$this->_http_status);
             if ($disableCache) {

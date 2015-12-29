@@ -5,9 +5,9 @@
     Before we can start the installation, we need to check a few things.<br>
     Please look through the list of prerequisites below, and take the necessary steps to correct any errors that may have been highlighted.</p>
     <div id="installation_main_box">
-        <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Mozilla Public License 2.0 accepted ...</div>
+        <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>Mozilla Public License 2.0 accepted ...</div>
         <?php if ($php_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PHP interpreter version is too old</b><br>
@@ -15,7 +15,7 @@
             </div>
         <?php endif; ?>
         <?php if ($pcre_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PCRE libraries version (<?php echo $pcre_ver; ?>) meets requirements ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PCRE libraries version (<?php echo $pcre_ver; ?>) meets requirements ...</div>
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PCRE libraries version is too old</b><br>
@@ -23,7 +23,7 @@
             </div>
         <?php endif; ?>
         <?php if ($docblock_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>PHP docblocks are not readable</b><br>
@@ -31,7 +31,7 @@
             </div>
         <?php endif; ?>
         <?php if ($base_folder_perm_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>Could not write to The Bug Genie directory</b><br>
@@ -43,7 +43,7 @@
             </div>
         <?php endif; ?>
         <?php if ($thebuggenie_folder_perm_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie public directory ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>Can write to The Bug Genie public directory ...</div>
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>Could not write to The Bug Genie public directory</b><br>
@@ -55,7 +55,7 @@
             </div>
         <?php endif; ?>
         <?php if ($mb_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP mbstring extension is loaded</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP mbstring extension is loaded</div>
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PHP extension "mbstring" is not loaded</b><br>
@@ -64,7 +64,7 @@
             </div>
         <?php endif; ?>
         <?php if ($gd_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
         <?php else: ?>
             <div class="install_progress prereq_warn">
                 <b>PHP GD library not enabled</b><br>
@@ -72,7 +72,7 @@
             </div>
         <?php endif; ?>
         <?php if ($pdo_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
         <?php endif; ?>
         <?php if (!$mysql_ok && !$pgsql_ok): ?>
             <div class="install_progress prereq_fail">
@@ -81,7 +81,7 @@
             </div>
         <?php else: ?>
             <?php if ($mysql_ok): ?>
-                <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP PDO MySQL installed and enabled ...</div>
+                <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP PDO MySQL installed and enabled ...</div>
             <?php elseif (!$mysql_ok && $pgsql_ok): ?>
                 <div class="install_progress prereq_warn">
                 <b>PDO MySQL driver not enabled</b><br>
@@ -89,7 +89,7 @@
                 </div>
             <?php endif; ?>
             <?php if ($pgsql_ok): ?>
-                <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PHP PDO PostgreSQL installed and enabled ...</div>
+                <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP PDO PostgreSQL installed and enabled ...</div>
             <?php elseif ($mysql_ok && !$pgsql_ok): ?>
                 <div class="install_progress prereq_warn">
                 <b>PDO PostgreSQL driver not enabled</b><br>
@@ -98,7 +98,7 @@
             <?php endif; ?>
         <?php endif; ?>
         <?php if ($b2db_param_file_ok && $b2db_param_folder_ok): ?>
-            <div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>Can save database connection details ...</div>
         <?php elseif (!$b2db_param_file_ok): ?>
             <div class="install_progress prereq_fail">
             <b>Could not write the SQL settings file</b><br>
@@ -131,7 +131,7 @@
                 <form accept-charset="utf-8" action="index.php" method="post">
                     <input type="hidden" name="step" value="2">
                     <label for="start_install">Start the installation by pressing this button</label>
-                    <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;" >
+                    <img src="images/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;" >
                     <input type="submit" onclick="$('start_install').hide();$('next_indicator').show();" id="start_install" value="Start installation" style="margin-left: 10px;">
                 </form>
             </div>

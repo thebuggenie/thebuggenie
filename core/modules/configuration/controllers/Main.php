@@ -777,15 +777,15 @@
         {
             $themes = framework\Context::getThemes();
             if (array_key_exists($request['theme_key'], $themes)) {
-                if (framework\Context::getScope()->isDefault())
-                {
-                    $theme_link_path = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'css' . DS . $request['theme_key'];
-                    $theme_path = '..' . DS . '..' . DS . 'themes' . DS . $request['theme_key'] . DS . 'css';
-                    if (file_exists($theme_link_path)) {
-                        unlink($theme_link_path);
-                    }
-                    symlink($theme_path, $theme_link_path);
-                }
+//                if (framework\Context::getScope()->isDefault())
+//                {
+//                    $theme_link_path = THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'css' . DS . $request['theme_key'];
+//                    $theme_path = '..' . DS . '..' . DS . 'themes' . DS . $request['theme_key'] . DS . 'css';
+//                    if (file_exists($theme_link_path)) {
+//                        unlink($theme_link_path);
+//                    }
+//                    symlink($theme_path, $theme_link_path);
+//                }
                 framework\Settings::saveSetting(framework\Settings::SETTING_THEME_NAME, $request['theme_key']);
                 framework\Context::setMessage('theme_message', $this->getI18n()->__('The theme has been enabled'));
             } else {

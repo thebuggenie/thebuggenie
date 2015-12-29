@@ -7151,7 +7151,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             getBoxHTML: function (box_id, provider, box_size, index) {
                 var image_ext = box_size == 'small' ? '.ico.png' : '.png';
                 return '<a title="' + this.image_title.replace('%openid_provider_name', provider["name"]) + '" href="javascript:TBG.OpenID.signin(\'' + box_id + '\');"'
-                    + 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="' + TBG.basepath + 'iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
+                    + 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="' + TBG.basepath + 'images/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
             },
             /**
              * Provider image click
@@ -7247,7 +7247,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 if (provider['name'] == 'OpenID') {
                     id = this.input_id;
                     value = 'http://';
-                    style = 'background: #FFF url(' + TBG.basepath + 'iconsets/oxygen/openid-inputicon.gif) no-repeat scroll 0 50%; padding-left:18px;';
+                    style = 'background: #FFF url(' + TBG.basepath + 'images/openid-inputicon.gif) no-repeat scroll 0 50%; padding-left:18px;';
                 }
                 html = '<input id="' + id + '" type="text" style="' + style + '" name="' + id + '" value="' + value + '" />';
                 if (label) {
@@ -7485,7 +7485,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 }
             });
         };
-        
+
         TBG.Main.Notifications.loadMore = function (event, loadToTop) {
             var loadToTop = loadToTop || false;
             if (TBG.Main.Notifications.loadingLocked !== true || loadToTop) {

@@ -18,7 +18,7 @@
         <meta name="keywords" content="">
         <meta name="author" content="zegenie">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link rel="shortcut icon" href="iconsets/oxygen/favicon.png">
+        <link rel="shortcut icon" href="images/favicon.png">
         <script type="text/javascript" src="js/prototype.js"></script>
         <script type="text/javascript" src="js/scriptaculous.js"></script>
         <script type="text/javascript" src="js/install.js"></script>
@@ -159,13 +159,13 @@
             ul.passwordlist li { margin: 5px 0 15px; }
             ul.passwordlist li .explanation { padding: 5px; font-size: 1em; }
             .installpage ul li input[type=text], input.username {
-                background-image: url('iconsets/oxygen/user_mono.png');
+                background-image: url('images/user_mono.png');
             }
             input[type=email], input.email {
-                background-image: url('iconsets/oxygen/icon-mono-email.png');
+                background-image: url('images/icon-mono-email.png');
             }
             input.password, input.adminpassword {
-                background-image: url('iconsets/oxygen/password_mono.png');
+                background-image: url('images/password_mono.png');
             }
             .installpage ul li input[type=text], input.username, input.email, input.password, input.adminpassword {
                 background-position: 7px 7px;
@@ -184,7 +184,7 @@
             <tr style="height: 60px;">
                 <td valign="top" id="maintd" class="main_header_print">
                     <div id="logo_container" width="100%">
-                           <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" class="logo" alt="The Bug Genie - Installation">
+                           <img width=48 height=48 SRC="images/logo_48.png" class="logo" alt="The Bug Genie - Installation">
                            <div class="logo_name">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
                     </div>
                 </td>

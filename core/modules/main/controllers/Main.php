@@ -2355,7 +2355,7 @@ class Main extends framework\Action
                                 if ($classname == '\\thebuggenie\\core\\entities\\Issuetype')
                                 {
                                     framework\Context::loadLibrary('ui');
-                                    $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
+                                    $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png');
                                 }
 
                                 if (!$issue->$is_changed_function_name())
@@ -2619,7 +2619,7 @@ class Main extends framework\Action
                 break;
             case 'issuetype':
                 $issue->revertIssuetype();
-                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'iconsets/' . framework\Settings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
                 $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
                 return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields));
                 break;
@@ -4628,11 +4628,11 @@ class Main extends framework\Action
         $this->getResponse()->setContentType('image/png');
         $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
         $chain = str_split($_SESSION['activation_number'], 1);
-        $size = getimagesize(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . framework\Settings::getIconsetName() . DS . 'numbers/0.png');
+        $size = getimagesize(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'numbers/0.png');
         $captcha = imagecreatetruecolor($size[0] * sizeof($chain), $size[1]);
         foreach ($chain as $n => $number)
         {
-            $pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . framework\Settings::getIconsetName() . DS . 'numbers/' . $number . '.png');
+            $pic = imagecreatefrompng(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . "numbers/{$number}.png");
             imagecopymerge($captcha, $pic, $size[0] * $n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
             imagedestroy($pic);
         }
