@@ -3701,7 +3701,8 @@ class Main extends framework\Action
                     break;
                 case 'permissions':
                     $options['key'] = $request['permission_key'];
-                    if ($details = framework\Context::getPermissionDetails($options['key']))
+                    $target_module = ($request['target_module'] !== 'core') ? $request['target_module'] : null;
+                    if ($details = framework\Context::getPermissionDetails($options['key'], null, $target_module))
                     {
                         $template_name = 'configuration/permissionspopup';
                         $options['mode'] = $request['mode'];

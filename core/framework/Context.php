@@ -1350,7 +1350,7 @@ class Context
     {
         try
         {
-            if (! is_array($permission_roles_allowed))
+            if (!is_array($permission_roles_allowed))
             {
                 $permission_roles_allowed = array();
             }
@@ -1602,8 +1602,8 @@ class Context
 
             if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
             {
-                $global_permissions=self::$_permissions[$module_name][$permission_type][0];
-                $retval = ($retval !== null && ! is_array($retval)) ? $retval : self::_permissionsCheck($global_permissions, $uid, $gid, $tid, $retval, 0, $target_id);
+                $global_permissions = self::$_permissions[$module_name][$permission_type][0];
+                $retval = ($retval !== null && !is_array($retval)) ? $retval : self::_permissionsCheck($global_permissions, $uid, $gid, $tid, $retval, 0, $target_id);
             }
 
             if (is_array($retval)) return true;
@@ -1620,10 +1620,14 @@ class Context
         return self::$_permissions;
     }
 
-    public static function getPermissionDetails($permission, $permissions_list = null)
+    public static function getPermissionDetails($permission, $permissions_list = null, $module_name = null)
     {
         self::_cacheAvailablePermissions();
-        $permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
+        if ($module_name === null) {
+            $permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
+        } else {
+            $permissions_list = ($permissions_list === null) ? self::getModule($module_name)->getAvailablePermissions() : $permissions_list;
+        }
         foreach ($permissions_list as $permission_key => $permission_info)
         {
             if (is_numeric($permission_key))
@@ -1634,7 +1638,7 @@ class Context
             if (in_array($permission_key, array_keys(self::$_available_permissions)) || (array_key_exists('details', $permission_info) && is_array($permission_info['details']) && count($permission_info['details'])))
             {
                 $p_info = (in_array($permission_key, array_keys(self::$_available_permissions))) ? $permission_info : $permission_info['details'];
-                $retval = self::getPermissionDetails($permission, $p_info);
+                $retval = self::getPermissionDetails($permission, $p_info, $module_name);
                 if ($retval)
                     return $retval;
             }

@@ -53,6 +53,13 @@
             }
         }
 
+        protected function _addAvailablePermissions()
+        {
+            $this->addAvailablePermission(self::PERMISSION_READ_ARTICLE, 'Read all articles');
+            $this->addAvailablePermission(self::PERMISSION_EDIT_ARTICLE, 'Edit all articles');
+            $this->addAvailablePermission(self::PERMISSION_DELETE_ARTICLE, 'Delete any articles');
+        }
+
         protected function _addListeners()
         {
             framework\Event::listen('core', 'index_left', array($this, 'listen_frontpageLeftmenu'));
