@@ -1,8 +1,8 @@
 <?php
 
-    // This code requires PHP 5.3 or newer, so if we don't have it - don't continue
-    if (PHP_VERSION_ID < 50300)
-        die('This software requires PHP 5.3.0 or newer, but you have an older version. Please upgrade.');
+    // Check that we have a sufficiently recent version of php
+    if (PHP_VERSION_ID < 50400)
+        die('This software requires PHP 5.4.0 or newer. Please upgrade to a newer version of php to use The Bug Genie.');
 
     gc_enable();
     date_default_timezone_set('UTC');
