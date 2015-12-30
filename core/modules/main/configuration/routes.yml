@@ -672,6 +672,30 @@ asset_module_css:
     action: Asset::resolve
     anonymous_route: true
 
+asset_module_image:
+    route: '/images/modules/:module_name/:image'
+    module: main
+    action: Asset::resolve
+    anonymous_route: true
+
+asset_image:
+    route: '/images/:image'
+    module: main
+    action: Asset::resolve
+    anonymous_route: true
+
+asset_module_folder_image:
+    route: '/images/modules/:module_name/:folder/:image'
+    module: main
+    action: Asset::resolve
+    anonymous_route: true
+
+asset_folder_image:
+    route: '/images/:folder/:image'
+    module: main
+    action: Asset::resolve
+    anonymous_route: true
+
 asset_css_unthemed:
     route: '/css/:css'
     module: main

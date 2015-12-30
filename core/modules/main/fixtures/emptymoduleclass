@@ -47,7 +47,7 @@
         {
         }
 
-        protected function _addAvailableListeners()
+        protected function _addListeners()
         {
         }
 

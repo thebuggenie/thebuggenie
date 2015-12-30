@@ -77,7 +77,7 @@
         </dl>
         <div style="padding-top: 20px; clear: both; text-align: center;">
             <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to test the database connection details</label>
-            <img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
+            <img src="images/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
             <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
         </div>
     </form>

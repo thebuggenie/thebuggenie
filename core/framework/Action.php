@@ -46,7 +46,7 @@
          * @param string $url The URL to forward to
          * @param integer $code [optional] HTTP status code
          */
-        public function forward($url, $code = 200)
+        public function forward($url, $code = Response::HTTP_STATUS_OK)
         {
             if (Context::getRequest()->isAjaxCall() || Context::getRequest()->getRequestedFormat() == 'json')
             {
@@ -110,7 +110,7 @@
             $this->getResponse()->setContentType('application/json');
             $this->getResponse()->setDecoration(Response::DECORATE_NONE);
 
-            if (is_array($text) && array_key_exists('error', $text)) $this->getResponse()->setHttpStatus(400);
+            if (is_array($text) && array_key_exists('error', $text)) $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_BAD_REQUEST);
 
             if (is_array($text))
                 array_walk_recursive($text , function(&$item) { $item = iconv('UTF-8', 'UTF-8//IGNORE', $item); });
@@ -170,13 +170,23 @@
         {
             if (Context::getRequest()->isAjaxCall() || Context::getRequest()->getRequestedFormat() == 'json')
             {
-                $this->getResponse()->ajaxResponseText(404, $message);
+                $this->getResponse()->ajaxResponseText(Response::HTTP_STATUS_NOT_FOUND, $message);
             }
 
             $this->message = $message;
-            $this->getResponse()->setHttpStatus(404);
+            $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_NOT_FOUND);
             $this->getResponse()->setTemplate('main/notfound');
             return false;
+        }
+
+        /**
+         * Sets the response to 304 (Not modified) and exits
+         */
+        public function return304()
+        {
+            $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_NOT_MODIFIED);
+            $this->getResponse()->renderHeaders();
+            exit();
         }
 
         /**
@@ -206,11 +216,11 @@
                     Context::setMessage('login_message_err', htmlentities($message));
                     Context::setMessage('login_force_redirect', true);
                     Context::setMessage('login_referer', Context::getRouting()->generate(Context::getRouting()->getCurrentRouteName(), Context::getRequest()->getParameters()));
-                    $this->forward(Context::getRouting()->generate('login_page'), 403);
+                    $this->forward(Context::getRouting()->generate('login_page'), Response::HTTP_STATUS_FORBIDDEN);
                 }
                 elseif (Context::getRequest()->isAjaxCall())
                 {
-                    $this->getResponse()->setHttpStatus(403);
+                    $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_FORBIDDEN);
                     throw new \Exception($message);
                 }
                 else

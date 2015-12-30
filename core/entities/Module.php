@@ -112,6 +112,8 @@
             framework\Context::unloadModule($module_key);
         }
 
+        protected function _addAvailablePermissions() { }
+
         protected function _addListeners() { }
 
         abstract protected function _initialize();
@@ -248,7 +250,7 @@
 
         public function addAvailablePermission($permission_name, $description, $target = 0)
         {
-            $this->_availablepermissions[$permission_name] = array('description' => framework\Context::getI18n()->__($description), 'target_id' => $target);
+            $this->_availablepermissions[$permission_name] = array('description' => $description, 'target_id' => $target);
         }
 
         public function getAvailablePermissions()
@@ -356,6 +358,7 @@
             if ($this->isEnabled())
             {
                 $this->_addListeners();
+                $this->_addAvailablePermissions();
             }
         }
 

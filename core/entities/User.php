@@ -1565,6 +1565,7 @@
         {
             $team->addMember($this);
             $this->_teams = null;
+            $this->teams = null;
         }
 
         /**
@@ -2308,7 +2309,7 @@
          */
         public function canEditMainMenu($target_type = null)
         {
-            if (is_null($target_type) || $target_type == 'main_menu')
+            if ($target_type === null || $target_type == 'main_menu')
             {
                 $retval = $this->hasPermission('caneditmainmenu', 0, 'core');
             }
@@ -2656,6 +2657,7 @@
                 foreach ($scopes as $scope_id => $details)
                 {
                     $scope = \thebuggenie\core\entities\Scope::getB2DBTable()->selectById($scope_id);
+                    if (!$scope instanceof Scope) continue;
                     if (!$details['confirmed'])
                     {
                         $this->_unconfirmed_scopes[$scope_id] = $scope;
@@ -2957,7 +2959,7 @@
          *
          * @param string $setting The setting to retrieve
          * @param string $module The module if not 'core'
-         * 
+         *
          * @return NotificationSetting
          */
         public function getNotificationSetting($setting, $default_value = null, $module = 'core')

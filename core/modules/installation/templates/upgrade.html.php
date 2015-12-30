@@ -12,7 +12,7 @@
                     <div class="backdrop_detail_content" style="text-align: center;">
                         <div style="font-size: 1.5em; font-weight: bold;">Upgrading, please wait ...</div>
                         <div style="font-size: 1.2em;">This can take a little while</div>
-                        <img src="iconsets/oxygen/spinning_32.gif" style="margin: 25px auto;">
+                        <img src="images/spinning_32.gif" style="margin: 25px auto;">
                     </div>
                 </div>
             </div>
@@ -45,11 +45,11 @@
                     <br>
                     Before continuing, please make sure you have backed up the following:
                     <ul class="backuplist">
-                        <li style="background-image: url('iconsets/oxygen/backup_database.png');">
+                        <li style="background-image: url('images/backup_database.png');">
                             The Bug Genie database<br>
                             Currently connected to <?php echo b2db\Core::getDBtype(); ?> database <span class="command_box"><?php echo b2db\Core::getDBname(); ?></span> running on <span class="command_box"><?php echo b2db\Core::getHost(); ?></span>
                         </li>
-                        <li style="background-image: url('iconsets/oxygen/backup_uploads.png');" class="<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files') echo 'faded'; ?>">
+                        <li style="background-image: url('images/backup_uploads.png');" class="<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files') echo 'faded'; ?>">
                             Uploaded files<br>
                             <?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files'): ?>
                                 <span class="smaller">When using database file upload storage, this is included in the database backup</span>
@@ -57,7 +57,7 @@
                                 Remember to keep a copy of all files in <span class="command_box"><?php echo \thebuggenie\core\framework\Settings::getUploadsLocalpath(); ?></span>
                             <?php endif; ?>
                         </li>
-                        <li style="background-image: url('iconsets/oxygen/backup_specialfiles.png');">
+                        <li style="background-image: url('images/backup_specialfiles.png');">
                             The Bug Genie special files<br>
                             There are a number of configuration files used by The Bug Genie for its initialization and configuration. You should keep a copy of these files:
                             <ul>

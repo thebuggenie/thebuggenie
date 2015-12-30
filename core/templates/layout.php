@@ -77,6 +77,7 @@
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
                     'thebuggenie/tools': bust('thebuggenie/tools.js'),
                     'TweenMax': bust('greensock/TweenMax.js'),
+                    'TweenLite': bust('greensock/TweenLite.js'),
                     'GSDraggable': bust('greensock/utils/Draggable.js'),
                     'jquery.nanoscroller': bust('jquery.nanoscroller.js')
                 },
@@ -145,26 +146,8 @@
                 }
             };
         </script>
-        <script type="text/javascript">
-        //   function startWorker() {
-        //     if(typeof(Worker) !== "undefined") {
-        //       if(typeof(w) == "undefined") {
-        //         wrker = new Worker("<?php echo make_url('home'); ?>js/workers.js");
-        //         wrker.onmessage = function(e) {
-        //           log("Received: " + e.data);
-        //         }
-        //         wrker.postMessage();
-        //       }
-        //       w.onmessage = function(event) {
-        //         document.getElementById("result").innerHTML = event.data;
-        //       };
-        //     } else {
-        //       document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
-        //     }
-        //   }
-        //   startWorker();
-        </script>
         <script data-main="thebuggenie" src="<?php echo make_url('home'); ?>js/require.js"></script>
+        <script src="<?php echo make_url('home'); ?>js/promise-7.0.4.min.js"></script>
         <?php foreach ($externaljs as $js): ?>
             <script type="text/javascript" src="<?php echo $js; ?>"></script>
         <?php endforeach; ?>
