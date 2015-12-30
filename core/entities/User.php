@@ -1565,6 +1565,7 @@
         {
             $team->addMember($this);
             $this->_teams = null;
+            $this->teams = null;
         }
 
         /**
