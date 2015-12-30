@@ -2074,7 +2074,7 @@ div.dropdown_separator {
 
 .tab_menu.inset li {
     padding: 0;
-    border: 1px rgba(100, 100, 100, 0.2);
+    border: 1px solid rgba(100, 100, 100, 0.2);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
