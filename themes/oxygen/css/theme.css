@@ -4525,18 +4525,62 @@ a.friend {
     margin-left: 2px;
     margin-right: 4px;
 }
+
 .report-issue-custom-access-check .acl-delete-item-link {
     float: none;
 }
-#report_form table.additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
-.backdrop_detail_content .additional_information .report_issue_help { /*display: none;*/ }
-#report_form table.additional_information { margin-top: 10px; width: 986px; }
-#reportissue_additional_information_container .markItUp { display: none; }
-.report_issue_submit_container { font-size: 1.1em; clear: both; vertical-align: middle; margin-top: 10px; padding: 10px; text-align: right; }
-.report_issue_submit_container > div { padding: 7px; vertical-align: middle; display: inline-block; float: left; }
-.report_issue_submit_container .button, .report_issue_submit_container .button:hover { font-size: 1.1em; padding: 7px 10px; vertical-align: middle; }
-.report_issue_submit_container img { float: right; margin-right: 5px; }
-#report_issue_add_extra { margin-top: 15px; color: #333; font-size: 1.1em; }
+
+#report_form table.additional_information {
+    float: left;
+    width: 323px;
+    margin: 0 0 10px 5px;
+}
+
+.backdrop_detail_content .additional_information .report_issue_help { /*display: none;*/
+}
+
+#report_form table.additional_information {
+    margin-top: 10px;
+    width: 986px;
+}
+
+#reportissue_additional_information_container .markItUp {
+    display: none;
+}
+
+.report_issue_submit_container {
+    font-size: 1.1em;
+    clear: both;
+    vertical-align: middle;
+    margin-top: 10px;
+    padding: 10px;
+    text-align: right;
+}
+
+.report_issue_submit_container > div {
+    padding: 7px;
+    vertical-align: middle;
+    display: inline-block;
+    float: left;
+}
+
+.report_issue_submit_container .button, .report_issue_submit_container .button:hover {
+    font-size: 1.1em;
+    padding: 7px 10px;
+    vertical-align: middle;
+}
+
+.report_issue_submit_container img {
+    float: right;
+    margin-right: 5px;
+}
+
+#report_issue_add_extra {
+    margin-top: 15px;
+    color: #333;
+    font-size: 1.1em;
+}
+
 .upload_container {
     padding: 35px 0;
     margin: 20px 10px;
@@ -7904,18 +7948,72 @@ table.issue_affects td img {
     border-bottom-width: 1px;
     padding: 5px 10px;
 }
-.milestone_box.highlighted { background-color: #FFF299; }
-.dashboard_milestones { padding: 0; }
-.page-project_dashboard .dashboard_milestones { margin: -5px -10px; }
-.dashboard_milestones > div:last-child { border-bottom: none !important; }
-.milestone_box.unavailable:hover { opacity: 1; -ms-opacity: 1; -webkit-opacity: 1; }
-.milestone_box .status { margin-top: 10px; font-size: 0.8em; display: inline-block; padding: 2px 5px; border-radius: 3px; }
-.milestone_box.red .status { background-color: #FAEFEF; color: #D88383; }
-.milestone_box.green .status { background-color: #DCEFDC; color: #00a400; }
-.milestone_box .date { margin-top: 4px; color: #AAA; font-size: 0.9em; }
-.milestone_box .percentage { vertical-align: middle; padding-left: 10px; }
-.milestone_box .percentage .numbers { text-align: center; font-size: 0.8em; margin-bottom: 8px; color: #555555;}
-.milestone_box .header { padding: 4px 0; border: none; font-size: 1.1em; font-weight: normal; }
+
+.milestone_box.highlighted {
+    background-color: #FFF299;
+}
+
+.dashboard_milestones {
+    padding: 0;
+}
+
+.page-project_dashboard .dashboard_milestones {
+    margin: -5px -10px;
+}
+
+.dashboard_milestones > div:last-child {
+    border-bottom: none !important;
+}
+
+.milestone_box.unavailable:hover {
+    opacity: 1;
+    -ms-opacity: 1;
+    -webkit-opacity: 1;
+}
+
+.milestone_box .status {
+    margin-top: 10px;
+    font-size: 0.8em;
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.milestone_box.red .status {
+    background-color: #FAEFEF;
+    color: #D88383;
+}
+
+.milestone_box.green .status {
+    background-color: #DCEFDC;
+    color: #00a400;
+}
+
+.milestone_box .date {
+    margin-top: 4px;
+    color: #AAA;
+    font-size: 0.9em;
+}
+
+.milestone_box .percentage {
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+.milestone_box .percentage .numbers {
+    text-align: center;
+    font-size: 0.8em;
+    margin-bottom: 8px;
+    color: #555555;
+}
+
+.milestone_box .header {
+    padding: 4px 0;
+    border: none;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
 .milestone_box .milestone_basic_container, .milestone_box .milestone_counts_container {
     display: inline-block;
     vertical-align: middle;
@@ -7934,40 +8032,209 @@ table.issue_affects td img {
 .header.backlog .milestone_counts_container {
     margin-top: -10px;
 }
-.milestone_counts_container table, .milestone_box .milestone_counts_container tr { border: 0; padding: 0; margin: 0; width: auto; color: #555; background-color: #FFF; font-size: 0.8em; }
-.milestone_counts_container td { padding: 0; text-align: center; font-weight: normal; min-width: 75px; }
-.milestone_counts_container tr:first-child td { font-size: 1.9em; line-height: 1.1em; }
-.milestone_counts_container tr:nth-child(2) td { font-size: 1.1em; line-height: 1.5em; text-transform: uppercase; color: #AAA; }
-.milestone_box .milestone_name { font-weight: normal; font-size: 1.2em; text-transform: uppercase; color: #777; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
-.milestone_box .milestone_name.milestone_virtual_status { height: 30px; width: 390px; padding-bottom: 2px; background-color: #FFF; position: relative; border: 1px solid transparent; }
-.milestone_box .header .button, .milestone_box .header .button:hover { font-size: 0.9em; padding: 2px 5px; }
-.milestone_box .header .button img { display: none; }
-.milestone_box .header .button[disabled] img { display: inline-block; vertical-align: middle; margin-right: 5px; }
-.milestone_box .header .settings_container, .milestone_box .header .draggable { position: relative; float: right; margin: 0 5px; line-height: 1em; }
-.page-project_roadmap #content_container .milestone_box .header .settings_container, .page-project_milestone_details #content_container .milestone_box .header .settings_container { margin-right: -10px; }
-.milestone_box .header .settings_container { opacity: 0.4; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; z-index: 1; }
-.milestone_box .header .settings_container:hover { opacity: 1; transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; -ms-transition: opacity 0.3s ease; -moz-transition: opacity 0.3s ease; -webkit-transition: opacity 0.3s ease; }
-.milestone_box .header .settings_container img, .milestone_box .header .draggable img { padding: 3px 5px; cursor: pointer; }
-.milestone_box .header .draggable { display: none; }
-#project_planning.milestone-sort .milestone_box { cursor: move; background-color: white; }
-#project_planning.milestone-sort .milestone_box .header .draggable { display: block; }
-#project_planning.milestone-sort .milestone_box .header .settings_container, #project_planning.milestone-sort .milestone_box .header .button-group, #project_planning.milestone-sort .milestone_box .milestone_issues { display: none; }
-dl.info { display: block; white-space: normal; }
-.milestone_box .backlog dl.info { display: inline-block; margin-left: 25px; }
-.fancydropdown + ul li dl.info { display: inline-block; margin-left: 0; width: 265px; }
-dl.info dt, dl.info dd { display: inline-block; width: auto; text-align: left; float: none; padding: 2px; vertical-align: middle; font-weight: normal; }
-dl.info dt { margin: 0 5px 0 0; text-transform: uppercase; color: #AAA; white-space: nowrap; }
-.release dl.info dt, .epic dl.info dt { width: 100px; }
-.fancydropdown + ul li dl.info dt { width: 85px; }
-.release dl.info dd, .epic dl.info dd { width: 120px; }
-.fancydropdown + ul li dl.info dd { width: 160px; }
-.milestone_box dl.info dt.milestone_issues_count { margin-right: 0; line-height: 1em; }
-.milestone_box dl.info dt.milestone_issues_count.collapsable, .milestone_box dl.info dt.milestone_issues_count.collapsable + dd { cursor: pointer; }
-.milestone_box dl.info dt.milestone_issues_count img { vertical-align: middle; }
-.milestone_box dl.info dt.milestone_issues_count + dd { margin-left: -5px; min-width: 25px; }
-.milestone_box dl.info dd { margin: 0 20px 0 0; min-width: 90px; }
-.milestone_percentage, .issue_percentage { display: block; height: 3px; background-color: #E7E7E7; padding: 0; width: 100%; margin: 5px 0; position: relative; }
-.issue_percentage { margin: 0 0 2px 0; bottom: -2px; }
+
+.milestone_counts_container table, .milestone_box .milestone_counts_container tr {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    color: #555;
+    background-color: #FFF;
+    font-size: 0.8em;
+}
+
+.milestone_counts_container td {
+    padding: 0;
+    text-align: center;
+    font-weight: normal;
+    min-width: 75px;
+}
+
+.milestone_counts_container tr:first-child td {
+    font-size: 1.9em;
+    line-height: 1.1em;
+}
+
+.milestone_counts_container tr:nth-child(2) td {
+    font-size: 1.1em;
+    line-height: 1.5em;
+    text-transform: uppercase;
+    color: #AAA;
+}
+
+.milestone_box .milestone_name {
+    font-weight: normal;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    color: #777;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+
+.milestone_box .milestone_name.milestone_virtual_status {
+    height: 30px;
+    width: 390px;
+    padding-bottom: 2px;
+    background-color: #FFF;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.milestone_box .header .button, .milestone_box .header .button:hover {
+    font-size: 0.9em;
+    padding: 2px 5px;
+}
+
+.milestone_box .header .button img {
+    display: none;
+}
+
+.milestone_box .header .button[disabled] img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.milestone_box .header .settings_container, .milestone_box .header .draggable {
+    position: relative;
+    float: right;
+    margin: 0 5px;
+    line-height: 1em;
+}
+
+.page-project_roadmap #content_container .milestone_box .header .settings_container, .page-project_milestone_details #content_container .milestone_box .header .settings_container {
+    margin-right: -10px;
+}
+
+.milestone_box .header .settings_container {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.milestone_box .header .settings_container:hover {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+}
+
+.milestone_box .header .settings_container img, .milestone_box .header .draggable img {
+    padding: 3px 5px;
+    cursor: pointer;
+}
+
+.milestone_box .header .draggable {
+    display: none;
+}
+
+#project_planning.milestone-sort .milestone_box {
+    cursor: move;
+    background-color: white;
+}
+
+#project_planning.milestone-sort .milestone_box .header .draggable {
+    display: block;
+}
+
+#project_planning.milestone-sort .milestone_box .header .settings_container, #project_planning.milestone-sort .milestone_box .header .button-group, #project_planning.milestone-sort .milestone_box .milestone_issues {
+    display: none;
+}
+
+dl.info {
+    display: block;
+    white-space: normal;
+}
+
+.milestone_box .backlog dl.info {
+    display: inline-block;
+    margin-left: 25px;
+}
+
+.fancydropdown + ul li dl.info {
+    display: inline-block;
+    margin-left: 0;
+    width: 265px;
+}
+
+dl.info dt, dl.info dd {
+    display: inline-block;
+    width: auto;
+    text-align: left;
+    float: none;
+    padding: 2px;
+    vertical-align: middle;
+    font-weight: normal;
+}
+
+dl.info dt {
+    margin: 0 5px 0 0;
+    text-transform: uppercase;
+    color: #AAA;
+    white-space: nowrap;
+}
+
+.release dl.info dt, .epic dl.info dt {
+    width: 100px;
+}
+
+.fancydropdown + ul li dl.info dt {
+    width: 85px;
+}
+
+.release dl.info dd, .epic dl.info dd {
+    width: 120px;
+}
+
+.fancydropdown + ul li dl.info dd {
+    width: 160px;
+}
+
+.milestone_box dl.info dt.milestone_issues_count {
+    margin-right: 0;
+    line-height: 1em;
+}
+
+.milestone_box dl.info dt.milestone_issues_count.collapsable, .milestone_box dl.info dt.milestone_issues_count.collapsable + dd {
+    cursor: pointer;
+}
+
+.milestone_box dl.info dt.milestone_issues_count img {
+    vertical-align: middle;
+}
+
+.milestone_box dl.info dt.milestone_issues_count + dd {
+    margin-left: -5px;
+    min-width: 25px;
+}
+
+.milestone_box dl.info dd {
+    margin: 0 20px 0 0;
+    min-width: 90px;
+}
+
+.milestone_percentage, .issue_percentage {
+    display: block;
+    height: 3px;
+    background-color: #E7E7E7;
+    padding: 0;
+    width: 100%;
+    margin: 5px 0;
+    position: relative;
+}
+
+.issue_percentage {
+    margin: 0 0 2px 0;
+    bottom: -2px;
+}
+
 .milestone_percentage .filler, .issue_percentage .filler {
     display: block;
     height: 3px;
