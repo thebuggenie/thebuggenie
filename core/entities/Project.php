@@ -1791,7 +1791,10 @@
             }
         }
 
-        protected function _populateIssueCountsByMilestone($milestone_id)
+        /**
+         * @param array $allowed_status_ids
+         */
+        protected function _populateIssueCountsByMilestone($milestone_id, $allowed_status_ids = array())
         {
             if ($this->_issuecounts === null)
             {
@@ -1803,7 +1806,7 @@
             }
             if (!array_key_exists($milestone_id, $this->_issuecounts['milestone']))
             {
-                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
+                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id, $allowed_status_ids);
             }
         }
 
@@ -1919,12 +1922,13 @@
          * Returns the number of issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function countIssuesByMilestone($milestone)
+        public function countIssuesByMilestone($milestone, $allowed_status_ids = array())
         {
-            $this->_populateIssueCountsByMilestone($milestone);
+            $this->_populateIssueCountsByMilestone($milestone, $allowed_status_ids);
             if (!$milestone)
             {
                 return $this->_issuecounts['milestone'][$milestone]['open'];
@@ -2000,12 +2004,13 @@
          * Returns the number of closed issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function countClosedIssuesByMilestone($milestone)
+        public function countClosedIssuesByMilestone($milestone, $allowed_status_ids = array())
         {
-            $this->_populateIssueCountsByMilestone($milestone);
+            $this->_populateIssueCountsByMilestone($milestone, $allowed_status_ids);
             return $this->_issuecounts['milestone'][$milestone]['closed'];
         }
 
@@ -2056,19 +2061,23 @@
          * Returns the percentage of closed issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function getClosedPercentageByMilestone($milestone)
+        public function getClosedPercentageByMilestone($milestone, $allowed_status_ids = array())
         {
-            return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
+            return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone, $allowed_status_ids), $this->countIssuesByMilestone($milestone, $allowed_status_ids));
         }
 
-        public function getTotalPercentageByMilestone($milestone)
+        /**
+         * @param array $allowed_status_ids
+         */
+        public function getTotalPercentageByMilestone($milestone, $allowed_status_ids = array())
         {
             if ($this->countIssuesByMilestone($milestone) == 0) return 0;
 
-            return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone) / $this->countIssuesByMilestone($milestone);
+            return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone, $allowed_status_ids) / $this->countIssuesByMilestone($milestone, $allowed_status_ids);
         }
 
         /**

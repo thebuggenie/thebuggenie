@@ -244,14 +244,17 @@
             return $issues;
         }
 
-        protected function _populatePointsAndTime()
+        /**
+         * @param array $allowed_status_ids
+         */
+        protected function _populatePointsAndTime($allowed_status_ids = array())
         {
             if ($this->_points === null)
             {
                 $this->_points = array('estimated' => 0, 'spent' => 0);
                 $this->_hours = array('estimated' => 0, 'spent' => 0);
 
-                if ($res = tables\Issues::getTable()->getPointsAndTimeByMilestone($this->getID()))
+                if ($res = tables\Issues::getTable()->getPointsAndTimeByMilestone($this->getID(), $allowed_status_ids))
                 {
                     while ($row = $res->getNextRow())
                     {
@@ -267,22 +270,26 @@
         /**
          * Get total estimated points for issues assigned to this milestone
          *
+         * @param array $allowed_status_ids
+         *
          * @return integer
          */
-        public function getPointsEstimated()
+        public function getPointsEstimated($allowed_status_ids = array())
         {
-            $this->_populatePointsAndTime();
+            $this->_populatePointsAndTime($allowed_status_ids);
             return (int) $this->_points['estimated'];
         }
 
         /**
          * Get total spent points for issues assigned to this milestone
          *
+         * @param array $allowed_status_ids
+         *
          * @return integer
          */
-        public function getPointsSpent()
+        public function getPointsSpent($allowed_status_ids = array())
         {
-            $this->_populatePointsAndTime();
+            $this->_populatePointsAndTime($allowed_status_ids);
             return (int) $this->_points['spent'];
         }
 
@@ -679,20 +686,22 @@
         /**
          * Returns the milestones progress
          *
+         * @param array $allowed_status_ids
+         *
          * @return integer
          */
-        public function getPercentComplete()
+        public function getPercentComplete($allowed_status_ids = array())
         {
             switch ($this->getPercentageType())
             {
                 case self::PERCENTAGE_TYPE_REGULAR:
-                    $pct = $this->getProject()->getClosedPercentageByMilestone($this->getID());
+                    $pct = $this->getProject()->getClosedPercentageByMilestone($this->getID(), $allowed_status_ids);
                     break;
                 case self::PERCENTAGE_TYPE_SCRUMSPRINT:
                     if ($this->getPointsEstimated() > 0)
                     {
-                        $multiplier = 100 / $this->getPointsEstimated();
-                        $pct = $this->getPointsSpent() * $multiplier;
+                        $multiplier = 100 / $this->getPointsEstimated($allowed_status_ids);
+                        $pct = $this->getPointsSpent($allowed_status_ids) * $multiplier;
                     }
                     else
                     {
@@ -700,7 +709,7 @@
                     }
                     break;
                 case self::PERCENTAGE_TYPE_PERCENT_COMPLETED:
-                    $pct = $this->getProject()->getTotalPercentageByMilestone($this->getID());
+                    $pct = $this->getProject()->getTotalPercentageByMilestone($this->getID(), $allowed_status_ids);
                     break;
                 default:
                     $pct = 0;

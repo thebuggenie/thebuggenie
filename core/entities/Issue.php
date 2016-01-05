@@ -655,12 +655,13 @@
          *
          * @param integer $project_id The project ID
          * @param integer $milestone_id The milestone ID
-         *
+         * @param array $allowed_status_ids
+         * 
          * @return array
          */
-        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
+        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids = array())
         {
-            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id);
+            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids);
         }
 
         /**

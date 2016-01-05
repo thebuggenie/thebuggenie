@@ -185,12 +185,18 @@
             return $retarr;
         }
 
+        /**
+         * @param array $allowed_status_ids
+         */
         public function getMilestoneDistributionDetails($milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
-            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            if (count($allowed_status_ids))
+            {
+                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            }
             $total = $this->doCount($crit);
 
             $crit = $this->getCriteria();
@@ -198,7 +204,10 @@
             $crit->addSelectionColumn(self::ID, 'counts', Criteria::DB_COUNT);
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::MILESTONE, $milestone_id);
-            if (count($allowed_status_ids)) $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            if (count($allowed_status_ids))
+            {
+                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            }
             $crit->addGroupBy(self::STATUS);
 
             $res = $this->doSelect($crit);
@@ -222,7 +231,10 @@
             return $statuses;
         }
 
-        public function getCountsByProjectIDandMilestone($project_id, $milestone_id)
+        /**
+         * @param array $allowed_status_ids
+         */
+        public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
@@ -238,10 +250,18 @@
             {
                 $crit->addWhere(self::MILESTONE, $milestone_id);
             }
+            if (count($allowed_status_ids))
+            {
+                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            }
 
             $crit2 = clone $crit;
             $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_CLOSED);
             $crit2->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            if (count($allowed_status_ids))
+            {
+                $crit2->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+            }
             return array($this->doCount($crit), $this->doCount($crit2));
         }
 
@@ -394,7 +414,10 @@
             $this->doUpdateById($crit, $issue_id);
         }
 
-        public function getPointsAndTimeByMilestone($milestone_id)
+        /**
+         * @param array $allowed_status_ids
+         */
+        public function getPointsAndTimeByMilestone($milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
@@ -405,6 +428,10 @@
             else
             {
                 $crit->addWhere(self::MILESTONE, $milestone_id);
+            }
+            if (count($allowed_status_ids))
+            {
+                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             }
             $crit->addSelectionColumn(self::STATE, 'state');
             $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
@@ -544,7 +571,10 @@
             }
         }
 
-        public function getTotalPercentCompleteByProjectIDAndMilestoneID($project_id, $milestone_id)
+        /**
+         * @param array $allowed_status_ids
+         */
+        public function getTotalPercentCompleteByProjectIDAndMilestoneID($project_id, $milestone_id, $allowed_status_ids = array())
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::DELETED, false);
@@ -564,6 +594,10 @@
             else
             {
                 $crit->addWhere(self::MILESTONE, $milestone_id);
+            }
+            if (count($allowed_status_ids))
+            {
+                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
             }
             if ($res = $this->doSelectOne($crit))
             {
