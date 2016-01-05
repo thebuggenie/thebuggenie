@@ -1763,6 +1763,7 @@ class Main extends framework\Action
             $issue->setLockedFromProject($this->selected_project);
         }
 
+        framework\Event::listen('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', array($this, 'listen_issueCreate'));
         $issue->save();
 
         if (isset($this->parent_issue))
@@ -1774,21 +1775,22 @@ class Main extends framework\Action
         if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
             $issue->addAffectedComponent($this->selected_component);
 
-        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
-        {
-            switch ($request->getParameter('issue_access'))
-            {
-                case 'public':
-                case 'public_category':
-                    $this->_unlockIssueAfter($request, $issue);
-                    break;
-                case 'restricted':
-                    $this->_lockIssueAfter($request, $issue);
-                    break;
-            }
-        }
-
         return $issue;
+    }
+
+    public function listen_issueCreate(framework\Event $event)
+    {
+        $request = framework\Context::getRequest();
+        $issue = $event->getSubject();
+
+        if ($issue->isUnlocked())
+        {
+            $this->_unlockIssueAfter($request, $issue);
+        }
+        else if ($issue->isLocked())
+        {
+            $this->_lockIssueAfter($request, $issue);
+        }
     }
 
     protected function _getMilestoneFromRequest($request)
@@ -2710,10 +2712,11 @@ class Main extends framework\Action
                 $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
                 return;
             }
+
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueSaveUnlock'));
             $issue->setLocked(false);
             $issue->setLockedCategory($request->hasParameter('public_category'));
             $issue->save();
-            $this->_unlockIssueAfter($request, $issue);
         }
         else
         {
@@ -2722,6 +2725,11 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+    }
+
+    public function listen_issueSaveUnlock(framework\Event $event)
+    {
+        $this->_unlockIssueAfter(framework\Context::getRequest(), $event->getSubject());
     }
 
     /**
@@ -2748,9 +2756,10 @@ class Main extends framework\Action
                 $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
                 return;
             }
+
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueSaveLock'));
             $issue->setLocked();
             $issue->save();
-            $this->_lockIssueAfter($request, $issue);
         }
         else
         {
@@ -2759,6 +2768,11 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+    }
+
+    public function listen_issueSaveLock(framework\Event $event)
+    {
+        $this->_lockIssueAfter(framework\Context::getRequest(), $event->getSubject());
     }
 
     /**

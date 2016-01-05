@@ -2395,13 +2395,15 @@
         }
 
         /**
-         * Whether or not the current user can access the project
+         * Whether or not the current or target user can access the project
          *
+         * @param null $target_user
          * @return boolean
          */
-        public function hasAccess()
+        public function hasAccess($target_user = null)
         {
-            $user = framework\Context::getUser();
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
+
             if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID()) return true;
             if ($this->getLeader() instanceof \thebuggenie\core\entities\User && $this->getLeader()->getID() == $user->getID()) return true;
 

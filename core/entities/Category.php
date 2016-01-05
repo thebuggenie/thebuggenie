@@ -31,6 +31,12 @@
             }
         }
 
+        /**
+         * Whether or not the current or target user can access the category
+         *
+         * @param null $target_user
+         * @return boolean
+         */
         public function hasAccess($target_user = null)
         {
             $user = ($target_user === null) ? framework\Context::getUser() : $target_user;

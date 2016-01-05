@@ -956,8 +956,9 @@
         }
 
         /**
-         * Whether or not the current user can access the issue
+         * Whether or not the current or target user can access the issue
          *
+         * @param null $target_user
          * @return boolean
          */
         public function hasAccess($target_user = null)
@@ -965,41 +966,47 @@
             \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
             $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
-            if (!$user->isGuest() && $user->isAuthenticated())
+            $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
+            if ($specific_access !== null)
             {
-                $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
-                if ($specific_access !== null)
+                if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
                 {
-                    \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
-                    return $specific_access;
+                    if (!$this->getCategory()->hasAccess($user))
+                    {
+                        \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
+                        return false;
+                    }
                 }
-                if ($this->getPostedByID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user posted it');
-                    return true;
-                }
-                if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user owns it');
-                    return true;
-                }
-                if ($this->getAssignee() instanceof \thebuggenie\core\entities\User && $this->getAssignee()->getID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
-                    return true;
-                }
-                if ($user->hasPermission('canseegroupissues', 0, 'core') &&
-                    $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
-                    $this->getPostedBy()->getGroupID() == $user->getGroupID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
-                    return true;
-                }
-                if ($user->hasPermission('canseeallissues', 0, 'core') === false)
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
-                    return false;
-                }
+
+                \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
+                return $specific_access;
+            }
+            if ($this->getPostedByID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user posted it');
+                return true;
+            }
+            if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user owns it');
+                return true;
+            }
+            if ($this->getAssignee() instanceof \thebuggenie\core\entities\User && $this->getAssignee()->getID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
+                return true;
+            }
+            if ($user->hasPermission('canseegroupissues', 0, 'core') &&
+                $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
+                $this->getPostedBy()->getGroupID() == $user->getGroupID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
+                return true;
+            }
+            if ($user->hasPermission('canseeallissues', 0, 'core') === false)
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
+                return false;
             }
             if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
             {
@@ -1009,7 +1016,7 @@
                     return false;
                 }
             }
-            if ($this->getProject()->hasAccess())
+            if ($this->getProject()->hasAccess($user))
             {
                 \thebuggenie\core\framework\Logging::log('done checking, can access project');
                 return true;
@@ -5345,7 +5352,9 @@
         }
 
         public function shouldUserBeNotified($user, $updated_by) {
-            if (!$this->hasAccess($user) || ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID())) return false;
+            if (!$this->hasAccess($user)) return false;
+
+            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
 
             if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
 
@@ -5498,6 +5507,7 @@
                     }
                 }
             }
+            \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
             $this->_addUpdateNotifications($updated_by);
             $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
             $event->trigger();
@@ -5505,7 +5515,9 @@
 
         public function shouldAutomaticallySubscribeUser($user)
         {
-            if (!$this->hasAccess($user) || $this->isSubscriber($user) || (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1)) return false;
+            if (!$this->hasAccess($user) || $this->isSubscriber($user)) return false;
+
+            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1) return false;
 
             $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
 
@@ -5534,6 +5546,7 @@
             }
             else
             {
+                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', $this)->trigger();
                 $_description_parser = $this->_getDescriptionParser();
                 $_reproduction_steps_parser = $this->_getReproductionStepsParser();
                 if (! is_null($_description_parser) && $_description_parser->hasMentions())
