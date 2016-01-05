@@ -1045,8 +1045,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Main.Helpers.Backdrop.show(url);
         };
 
-        TBG.Main.updateAttachments = function (form) {
-            var url = form.action;
+        TBG.Main.updateAttachments = function (form, url) {
+            url = url != null ? url : form.action;
             TBG.Main.Helpers.ajax(url, {
                 form: form,
                 url_method: 'post',
@@ -1086,6 +1086,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 }
             });
 
+        };
+
+        TBG.Main.cancelAttachments = function (form) {
+            form = jQuery(form).parents('form')[0];
+            var url = form.dataset.cancelAction;
+
+            TBG.Main.updateAttachments(form, url);
         };
 
         TBG.Main.uploadFile = function (url, file, is_last) {

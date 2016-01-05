@@ -1,5 +1,5 @@
 <?php if (isset($target)): ?>
-<form action="<?php echo make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;">
+<form action="<?php echo make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;" data-cancel-action="<?php echo make_url('cancel_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>">
     <div class="backdrop_detail_content">
 <?php endif; ?>
         <div class="upload_container" id="upload_drop_zone">
@@ -42,7 +42,7 @@
 <?php if (isset($target)): ?>
     </div>
     <div class="backdrop_detail_footer">
-        <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.reset()"><?php echo __('Cancel'); ?></a>
+        <a href="javascript:void(0)" onclick="TBG.Main.cancelAttachments(this);return false;"><?php echo __('Cancel'); ?></a>
         <?php echo __('%cancel or %save_attachments', array('%cancel' => '', '%save_attachments' => '')); ?>
         <?php echo image_tag('spinning_16.gif', array('id' => 'attachments_indicator', 'style' => 'display: none;')); ?>
         <input type="submit" class="button button-silver" value="<?php echo __('Save attachments'); ?>" id="dynamic_uploader_submit">

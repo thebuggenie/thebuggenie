@@ -201,6 +201,13 @@ update_attachments:
     parameters: [ ]
     csrf_enabled: false
 
+cancel_attachments:
+    route: /cancel/attachments/for/:target/:target_id
+    module: main
+    action: cancelAttachments
+    parameters: [ ]
+    csrf_enabled: false
+
 issue_upload:
     route: /upload/to/issue/:issue_id
     module: main
