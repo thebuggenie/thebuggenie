@@ -344,10 +344,10 @@ class Main extends framework\Action
 
             framework\Settings::saveSetting('language', 'en_US', 'core', 1);
 
-            \thebuggenie\core\entities\Module::installModule('publish');
-            \thebuggenie\core\entities\Module::installModule('agile');
-            \thebuggenie\core\entities\Module::installModule('mailing');
-            \thebuggenie\core\entities\Module::installModule('vcs_integration');
+            foreach (['publish', 'agile', 'mailing', 'vcs_integration'] as $module)
+            {
+                \thebuggenie\core\entities\Module::installModule($module);
+            }
 
             $this->htaccess_error = false;
             $this->htaccess_ok = (bool) $request['apache_autosetup'];
@@ -588,6 +588,15 @@ class Main extends framework\Action
         $this->upgrade_complete = true;
     }
 
+    protected function _upgradeFrom4dot1dot5(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Files::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_414\File::getB2DBTable());
+
+        $this->upgrade_complete = true;
+    }
+
     public function runUpgrade(framework\Request $request)
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -625,6 +634,9 @@ class Main extends framework\Action
                     $this->_upgradeFrom4dot1dot2($request);
                 case '4.1.3':
                     $this->_upgradeFrom4dot1dot3($request);
+                case '4.1.4':
+                case '4.1.5':
+                    $this->_upgradeFrom4dot1dot5($request);
                 default:
                     $this->upgrade_complete = true;
                     break;

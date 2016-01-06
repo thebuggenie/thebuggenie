@@ -2860,7 +2860,8 @@
                         preg_match_all('/{([[:alnum:]]+)}/', $formula, $matches);
 
                         $hasValues = false;
-                        for($i=0; $i<count($matches[0]); $i++) {
+                        $matchCount = count($matches[0]);
+                        for($i=0; $i<$matchCount; $i++) {
                             $value = $this->getCustomField($matches[1][$i]);
                             if ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) {
                                 $value = $value->getValue();

@@ -2658,6 +2658,7 @@
                 {
                     $scope = \thebuggenie\core\entities\Scope::getB2DBTable()->selectById($scope_id);
                     if (!$scope instanceof Scope) continue;
+
                     if (!$details['confirmed'])
                     {
                         $this->_unconfirmed_scopes[$scope_id] = $scope;

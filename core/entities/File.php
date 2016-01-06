@@ -42,6 +42,11 @@
         protected $_description;
 
         /**
+         * @Column(type="string", length=200)
+         */
+        protected $_size;
+
+        /**
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\User")
          */
@@ -167,9 +172,16 @@
             }
         }
 
+        protected function _preSave($is_new)
+        {
+            if ($this->doesFileExistOnDisk()) {
+                $this->_size = filesize($this->getFullpath());
+            }
+        }
+
         public function getSize()
         {
-            return ($this->doesFileExistOnDisk()) ? filesize($this->getFullpath()) : 0;
+            return $this->_size;
         }
 
         public function getReadableFilesize()

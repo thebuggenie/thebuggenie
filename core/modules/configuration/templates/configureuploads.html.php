@@ -39,6 +39,12 @@
         <td valign="top" style="padding-left: 15px;">
             <div style="width: 730px;">
                 <h3><?php echo __('Configure uploads & attachments'); ?></h3>
+                <?php if (\thebuggenie\core\framework\Context::getScope()->getMaxUploadLimit()): ?>
+                    <div style="text-align: center;">
+                        <?php include_component('main/percentbar', array('height' => '20', 'percent' => \thebuggenie\core\framework\Context::getScope()->getCurrentUploadUsagePercent())); ?>
+                        <?php echo __('%mb MB of %max MB', array('%mb' => \thebuggenie\core\framework\Context::getScope()->getCurrentUploadUsageMB(), '%max' => \thebuggenie\core\framework\Context::getScope()->getMaxUploadLimit())); ?>
+                    </div>
+                <?php endif; ?>
                 <?php if ($uploads_enabled && $access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
                 <?php endif; ?>
@@ -112,6 +118,12 @@
                             </tr>
                             <tr>
                                 <td class="config_explanation" colspan="2"><?php echo __('Specify whether you want to use the filesystem or database to store uploaded files. Using the database will make it easier to move your installation to another server.'); ?></td>
+                            </tr>
+                            <tr>
+                                <td><label><?php echo __('Storage usage'); ?></label></td>
+                                <td>
+                                    <?php echo __('%mb MB used', ['%mb' => \thebuggenie\core\framework\Context::getScope()->getCurrentUploadUsageMB()]); ?>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
