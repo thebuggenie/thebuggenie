@@ -1056,7 +1056,7 @@
 
         /**
          * Return the current workflow
-         * 
+         *
          * @return Workflow
          */
         public function getWorkflow()
@@ -1071,7 +1071,7 @@
 
         /**
          * Returns an array of workflow transitions
-         * 
+         *
          * @return array|\thebuggenie\core\entities\WorkflowTransition
          */
         public function getAvailableWorkflowTransitions()
@@ -1632,7 +1632,7 @@
             $this->_can_permission_cache[$permission] = $retval;
             return $retval;
         }
-        
+
         protected function _canEditIssueField($type)
         {
             return $this->_canPermissionOrEditIssue('caneditissue'.$type) || ( $this->isInvolved() &&  $this->_permissionCheck("set_datatype_".$type));
@@ -5881,9 +5881,13 @@
                 'id' => $this->getID(),
                 'issue_no' => $this->getFormattedIssueNo(),
                 'state' => $this->getState(),
+                'closed' => $this->isClosed(),
                 'created_at' => $this->getPosted(),
+                'created_at_iso' => date('c', $this->getPosted()),
                 'updated_at' => $this->getLastUpdatedTime(),
+                'updated_at_iso' => date('c', $this->getLastUpdatedTime()),
                 'title' => $this->getRawTitle(),
+                'href' => framework\Context::getRouting()->generate('viewissue', ['project_key' => $this->getProject()->getKey(), 'issue_no' => $this->getFormattedIssueNo()], false),
                 'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
                 'assignee' => ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->toJSON() : null,
                 'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getStatus()->toJSON() : null,
