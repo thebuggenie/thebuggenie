@@ -31,13 +31,13 @@
         public function getAuthenticationMethodForAction($action)
         {
             if (Context::isCLI())
-            {
                 return self::AUTHENTICATION_METHOD_CLI;
+
+            if (in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml'])) {
+                return self::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
             }
-            else
-            {
-                return self::AUTHENTICATION_METHOD_CORE;
-            }
+
+            return self::AUTHENTICATION_METHOD_CORE;
         }
 
         /**
