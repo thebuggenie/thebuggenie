@@ -2841,27 +2841,28 @@
 
         public function markAllNotificationsRead()
         {
-            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(), null, $this->getID());
+            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(), null, $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
         }
 
         public function markNotificationsRead($type, $id)
         {
+            $grouped_notifications_minutes = $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue();
             if ($type == 'issue')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID());
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ISSUE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
                 }
             }
             if ($type == 'article')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID());
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ARTICLE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
                 }
             }
             $this->_notifications = null;
@@ -3002,6 +3003,16 @@
             $setting_object = $this->getNotificationSetting($setting, null, $module);
             $setting_object->setValue($value);
             return $setting_object;
+        }
+
+        /**
+         * @param Notification $notification
+         */
+        public function markNotificationGroupedNotificationsRead(\thebuggenie\core\entities\Notification $notification)
+        {
+            if ($notification->getNotificationType() != \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED) return;
+
+            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(\thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED), $notification->getTargetID(), $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue(), (int) $notification->isRead(), false);
         }
 
     }

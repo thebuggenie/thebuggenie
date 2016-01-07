@@ -397,6 +397,7 @@ class Main extends framework\Action
                             $notification->setIsRead(!$notification->isRead());
                             $notification->save();
                             $data['is_read'] = (int) $notification->isRead();
+                            $this->getUser()->markNotificationGroupedNotificationsRead($notification);
                         }
                         break;
                     case 'notificationsread':
