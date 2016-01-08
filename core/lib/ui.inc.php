@@ -33,6 +33,19 @@
         return "<img " . parseHTMLoptions($params) . '>';
     }
 
+    function fa_image_tag($image, $params = [])
+    {
+        if (!isset($params['class']))
+            $params['class'] = [];
+        elseif (!is_array($params['class']))
+            $params['class'] = [$params['class']];
+
+        $params['class'][] = 'fa';
+        $params['class'][] = 'fa-'.$image;
+
+        return '<i ' . parseHTMLoptions($params) . '></i>';
+    }
+
     /**
      * UI function to build an image icon with hover tooltip text.
      * Used in the config module initially.
@@ -225,6 +238,7 @@
         }
         foreach ($options as $key => $val)
         {
+            if (is_array($val)) $val = join(' ', $val);
             $option_strings[$key] = "{$key}=\"{$val}\"";
         }
         return implode(' ', array_values($option_strings));

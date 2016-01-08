@@ -1006,7 +1006,7 @@
         public function setOnline()
         {
             $this->_userstate = framework\Settings::getOnlineState();
-            $this->_customstate = !$this->isOffline();
+            $this->_customstate = false;
         }
 
         /**
@@ -1403,18 +1403,7 @@
          */
         public function isOffline()
         {
-            if ($this->_customstate)
-            {
-                return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
-            }
-            elseif ($this->_lastseen < (NOW - (60 * 30)))
-            {
-                return true;
-            }
-            else
-            {
-                return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
-            }
+            return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
         }
 
         /**
@@ -1426,7 +1415,7 @@
         {
             $active = $this->isActive();
             $away = $this->isAway();
-            if ($this->_customstate && ($active || $away))
+            if (($active || $away) && $this->_customstate)
             {
                 $this->_b2dbLazyload('_userstate');
                 if ($this->_userstate instanceof Userstate)
@@ -1438,8 +1427,10 @@
 
             if ($active)
                 return framework\Settings::getOnlineState();
-            elseif ($away)
+
+            if ($away)
                 return framework\Settings::getAwayState();
+
             else
                 return framework\Settings::getOfflineState();
         }

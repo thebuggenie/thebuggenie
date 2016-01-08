@@ -358,8 +358,8 @@
                     <div id="issue_details">
                         <div class="collapser_link" onclick="$('issue_details_container').toggleClassName('collapsed');$('issue_main_container').toggleClassName('uncollapsed');">
                             <a href="javascript:void(0);" class="image">
-                                <?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
-                                <?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
+                                <?php echo fa_image_tag('arrow-left', ['class' => 'collapser']); ?>
+                                <?php echo fa_image_tag('arrow-right', ['class' => 'expander']); ?>
                             </a>
                         </div>
                         <div class="issue_details_fieldsets_wrapper"><?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?></div>
