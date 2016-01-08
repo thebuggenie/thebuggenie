@@ -1544,6 +1544,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             $('.dashboard_column.jsortable').sortable({
                 handle: '.dashboardhandle',
                 connectWith: '.dashboard_column',
+                items: '.dashboard_view_container',
                 helper: function(event, ui){
                     var $clone =  $(ui).clone();
                     $clone .css('position','absolute');
