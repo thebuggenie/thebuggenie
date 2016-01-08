@@ -2117,6 +2117,12 @@ div.dropdown_separator {
     width: 22px;
     vertical-align: middle;
 }
+.tab_menu.inset li .fa {
+    vertical-align: middle;
+    font-size: 1.4em;
+    display: inline-block;
+    margin-right: 5px;
+}
 
 /* end tabbed menu */
 
@@ -6135,6 +6141,18 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     display: inline-block;
     vertical-align: text-bottom;
     margin-right: 5px;
+}
+
+.more_actions_dropdown li .fa {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.more_actions_dropdown li .disabled .fa {
+    text-shadow: 1px 1px 1px rgb(255, 255, 255);
+}
+.more_actions_dropdown li .fa.mark_blocking {
+    color: rgb(175, 75, 75);
 }
 
 .more_actions_dropdown li.disabled a {
