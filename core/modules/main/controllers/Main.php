@@ -3063,11 +3063,11 @@ class Main extends framework\Action
         {
             if ($target instanceof entities\Issue)
             {
-                $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($target->getID(), $file->getID());
+                $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($target->getID(), $file->getID(), false);
             }
             else
             {
-                $existed = !\thebuggenie\modules\publish\entities\tables\ArticleFiles::getTable()->addByArticleIDandFileID($target->getID(), $file->getID());
+                $existed = !\thebuggenie\modules\publish\entities\tables\ArticleFiles::getTable()->addByArticleIDandFileID($target->getID(), $file->getID(), false);
             }
 
             // Delete file if link with target doesn't exist
