@@ -153,6 +153,11 @@ class Main extends framework\Action
                     try
                     {
                         $issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+                        // Currently if category is changed we want to regenerate permissions since category is used for granting user access.
+                        if ($issue->isCategoryChanged())
+                        {
+                            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueCreate'));
+                        }
                         $issue->save();
                         framework\Context::setMessage('issue_saved', true);
                         $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));

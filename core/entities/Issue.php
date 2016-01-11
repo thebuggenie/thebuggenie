@@ -6180,4 +6180,14 @@
             return $this->_canPermissionOrEditIssue('caneditissuecolor');
         }
 
+        /**
+         * Check to see whether the category is changed
+         *
+         * @return boolean
+         */
+        public function isCategoryChanged()
+        {
+            return $this->_isPropertyChanged('_category');
+        }
+
     }
