@@ -656,7 +656,7 @@
          * @param integer $project_id The project ID
          * @param integer $milestone_id The milestone ID
          * @param array $allowed_status_ids
-         * 
+         *
          * @return array
          */
         public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids = array())
@@ -1064,7 +1064,7 @@
 
         /**
          * Return the current workflow
-         * 
+         *
          * @return Workflow
          */
         public function getWorkflow()
@@ -1079,7 +1079,7 @@
 
         /**
          * Returns an array of workflow transitions
-         * 
+         *
          * @return array|\thebuggenie\core\entities\WorkflowTransition
          */
         public function getAvailableWorkflowTransitions()
@@ -1640,7 +1640,7 @@
             $this->_can_permission_cache[$permission] = $retval;
             return $retval;
         }
-        
+
         protected function _canEditIssueField($type)
         {
             return $this->_canPermissionOrEditIssue('caneditissue'.$type) || ( $this->isInvolved() &&  $this->_permissionCheck("set_datatype_".$type));
@@ -5477,9 +5477,7 @@
             {
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
                 {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory() instanceof Category && $this->getCategory()->getID() == $subscribed_category_id)) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
                 }
             }
         }
