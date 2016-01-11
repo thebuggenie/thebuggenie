@@ -2287,7 +2287,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getEditions() as $edition)
                                 {
-                                    $retval[$key]['values'][$edition->getID()] = $edition->getName();
+                                    $retval[$key]['values']['v' . $edition->getID()] = $edition->getName();
                                 }
                                 if (!$this->isEditionsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2310,7 +2310,7 @@
                                 $retval[$key]['values'] = array();
                                 foreach (Status::getAll() as $status)
                                 {
-                                    $retval[$key]['values'][$status->getID()] = $status->getName();
+                                    $retval[$key]['values']['v' . $status->getID()] = $status->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {
@@ -2334,7 +2334,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getComponents() as $component)
                                 {
-                                    $retval[$key]['values'][$component->getID()] = $component->getName();
+                                    $retval[$key]['values']['v' . $component->getID()] = $component->getName();
                                 }
                                 if (!$this->isComponentsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2356,10 +2356,9 @@
                             {
                                 $retval[$key]['values'] = array();
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
-                                foreach ($this->getBuilds() as $build)
+                                foreach ($this->getActiveBuilds() as $build)
                                 {
-                                    if ($build->isLocked()) continue;
-                                    $retval[$key]['values'][$build->getID()] = $build->getName().' ('.$build->getVersion().')';
+                                    $retval[$key]['values']['v' . $build->getID()] = $build->getName().' ('.$build->getVersion().')';
                                 }
                                 if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2372,6 +2371,7 @@
                                         unset($retval[$key]['values']);
                                     }
                                 }
+                                arsort($retval[$key]['values']);
                             }
                             elseif ($key == 'milestone')
                             {
@@ -2380,7 +2380,7 @@
                                 foreach ($this->getOpenMilestones() as $milestone)
                                 {
                                     if (!$milestone->hasAccess()) continue;
-                                    $retval[$key]['values'][$milestone->getID()] = $milestone->getName();
+                                    $retval[$key]['values']['v' . $milestone->getID()] = $milestone->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {

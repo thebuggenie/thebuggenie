@@ -5019,7 +5019,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                             if (json.fields[fieldname].values) {
                                                 $(fieldname + '_id_additional').update('');
                                                 for (var opt in json.fields[fieldname].values) {
-                                                    $(fieldname + '_id_additional').insert('<option value="' + opt + '">' + json.fields[fieldname].values[opt] + '</option>');
+                                                    $(fieldname + '_id_additional').insert('<option value="' + opt.substr(1) + '">' + json.fields[fieldname].values[opt] + '</option>');
                                                 }
                                                 $(fieldname + '_id_additional').setValue(prev_val);
                                             }
@@ -5046,7 +5046,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                                 if ($(fieldname + '_id')) {
                                                     $(fieldname + '_id').update('');
                                                     for (var opt in json.fields[fieldname].values) {
-                                                        $(fieldname + '_id').insert('<option value="' + opt + '">' + json.fields[fieldname].values[opt] + '</option>');
+                                                      console.log('opt2', typeof(opt))
+                                                        $(fieldname + '_id').insert('<option value="' + opt.substr(1) + '">' + json.fields[fieldname].values[opt] + '</option>');
                                                     }
                                                     $(fieldname + '_id').setValue(prev_val);
                                                 }
