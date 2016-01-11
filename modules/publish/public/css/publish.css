@@ -453,3 +453,8 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 {
     line-height: 1.8;
 }
+
+.article ul li
+{
+    word-break: break-all;
+}
