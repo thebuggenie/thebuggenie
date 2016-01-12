@@ -950,6 +950,13 @@
                 }
                 $this->_addCreateNotifications($this->getAuthor());
             }
+            else
+            {
+                $history = $this->getHistory();
+                $history_item = array_shift($history);
+
+                if ($history_item !== null) $this->_addUpdateNotifications($history_item['author']);
+            }
 
             if (framework\Context::getUser() instanceof \thebuggenie\core\entities\User && framework\Context::getUser()->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES, false)->isOn() && !$this->isSubscriber(framework\Context::getUser()))
             {
@@ -963,14 +970,22 @@
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
 
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES, false)->isOn() && $this->isSubscriber($user))
-                {
-                    $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_CREATED, $user, $updated_by);
-                }
-
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS, false)->isOn())
                 {
                     $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_CREATED, $user, $updated_by);
+                }
+            }
+        }
+
+        protected function _addUpdateNotifications($updated_by)
+        {
+            if (!$updated_by instanceof \thebuggenie\core\entities\User) return;
+
+            foreach ($this->getSubscribers() as $user)
+            {
+                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES, false)->isOn() && $this->isSubscriber($user))
+                {
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_UPDATED, $user, $updated_by);
                 }
             }
         }
