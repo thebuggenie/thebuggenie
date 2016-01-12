@@ -15,7 +15,7 @@
                                 <span class="imagepreview" title="<?php echo $file->getOriginalFilename(); ?>"><?php echo image_tag(make_url('showfile', array('id' => $file->getID())), array(), true); ?></span>
                             <?php else: ?>
                                 <span class="imagepreview" title="<?php echo $file->getOriginalFilename(); ?>"><?php echo image_tag('icon_file_generic.png'); ?></span>
-                            <?php endif; ?>                    
+                            <?php endif; ?>
                             <label><?php echo __('File'); ?></label><span class="filename"><?php echo $file->getOriginalFilename(); ?></span> <span class="filesize"><?php echo $file->getReadableFilesize(); ?></span><br>
                             <label><?php echo __('Description'); ?></label><input type="text" class="file_description" name="file_description[<?php echo $file->getId(); ?>]" value="<?php echo $file->getDescription(); ?>" placeholder="<?php echo __('Enter a short file description here'); ?>">
                             <input type="hidden" name="files[<?php echo $file->getId(); ?>]" value="<?php echo $file->getId(); ?>">
@@ -42,11 +42,19 @@
 <?php if (isset($target)): ?>
     </div>
     <div class="backdrop_detail_footer">
-        <a href="javascript:void(0)" onclick="TBG.Main.cancelAttachments(this);return false;"><?php echo __('Cancel'); ?></a>
+        <a href="javascript:void(0)" onclick="TBG.Main.cancelAttachments(this);return false;" id="dynamic_uploader_cancel""><?php echo __('Cancel'); ?></a>
         <?php echo __('%cancel or %save_attachments', array('%cancel' => '', '%save_attachments' => '')); ?>
         <?php echo image_tag('spinning_16.gif', array('id' => 'attachments_indicator', 'style' => 'display: none;')); ?>
         <input type="submit" class="button button-silver" value="<?php echo __('Save attachments'); ?>" id="dynamic_uploader_submit">
     </div>
 </form>
+<script type="text/javascript">
+    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+        domReady(function () {
+            document.stopObserving('keydown', TBG.Core._escapeWatcher);
+            document.observe('keydown', TBG.Main.cancelAttachments_escapeWatcher);
+        });
+    });
+</script>
 <?php endif; ?>
 
