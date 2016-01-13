@@ -5712,15 +5712,32 @@
         /**
          * Stop working on the issue, and save time spent
          *
+         * @param \thebuggenie\core\entities\User $user
+         * @param integer $timespent_activitytype
+         * @param string $timespent_comment
+         *
          * @return null
          */
-        public function stopWorkingOnIssue()
+        public function stopWorkingOnIssue(User $user, $timespent_activitytype, $timespent_comment)
         {
             $time_spent = $this->calculateTimeSpent();
             $this->clearUserWorkingOnIssue();
-            if ($time_spent['hours'] > 0) $this->addSpentHours($time_spent['hours']);
-            if ($time_spent['days'] > 0) $this->addSpentDays($time_spent['days']);
-            if ($time_spent['weeks'] > 0) $this->addSpentWeeks($time_spent['weeks']);
+
+            if ($time_spent['hours'] > 0 || $time_spent['days'] > 0 || $time_spent['weeks'] > 0)
+            {
+                $time_spent['hours'] *= 100;
+                $spenttime = new \thebuggenie\core\entities\IssueSpentTime();
+                $spenttime->setIssue($this);
+                $spenttime->setUser(framework\Context::getUser());
+                $spenttime->setSpentPoints(0);
+                $spenttime->setSpentHours($time_spent['hours']);
+                $spenttime->setSpentDays($time_spent['days']);
+                $spenttime->setSpentWeeks($time_spent['weeks']);
+                $spenttime->setSpentMonths(0);
+                $spenttime->setActivityType($timespent_activitytype);
+                $spenttime->setComment($timespent_comment);
+                $spenttime->save();
+            }
         }
 
         /**

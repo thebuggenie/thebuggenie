@@ -339,7 +339,7 @@
                     }
                     else
                     {
-                        $issue->stopWorkingOnIssue();
+                        $issue->stopWorkingOnIssue(framework\Context::getUser(), $request['timespent_activitytype'], $request['timespent_comment']);
                     }
                     break;
                 default:
