@@ -1956,7 +1956,7 @@ class Main extends framework\Action
             return $this->renderText('invalid project');
         }
 
-        $fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id']);
+        $fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id'], true);
         $available_fields = entities\DatatypeBase::getAvailableFields();
         $available_fields[] = 'pain_bug_type';
         $available_fields[] = 'pain_likelihood';

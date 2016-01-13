@@ -2206,12 +2206,13 @@
          * Return an array specifying visibility, requirement and choices for fields in reporting wizard
          *
          * @param integer $issue_type
+         * @param boolean $prefix_values
          *
          * @return array
          */
-        public function getReportableFieldsArray($issue_type)
+        public function getReportableFieldsArray($issue_type, $prefix_values = false)
         {
-            return $this->_getFieldsArray($issue_type, true);
+            return $this->_getFieldsArray($issue_type, true, $prefix_values);
         }
 
         /**
@@ -2231,10 +2232,11 @@
          *
          * @param integer $issue_type
          * @param boolean $reportable [optional] Whether to only include fields that can be reported
+         * @param boolean $prefix_values [optional] Whether to prefix keys for values of fields that can be reported
          *
          * @return array
          */
-        protected function _getFieldsArray($issue_type, $reportable = true)
+        protected function _getFieldsArray($issue_type, $reportable = true, $prefix_values = false)
         {
             $issue_type = (is_object($issue_type)) ? $issue_type->getID() : $issue_type;
             if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
@@ -2279,6 +2281,9 @@
 
                     if ($reportable)
                     {
+                        // 'v' is just a dummy prefix.
+                        $key_prefix = $prefix_values ? 'v' : '';
+
                         foreach ($retval as $key => $return_details)
                         {
                             if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == CustomDatatype::EDITIONS_CHOICE)
@@ -2287,7 +2292,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getEditions() as $edition)
                                 {
-                                    $retval[$key]['values']['v' . $edition->getID()] = $edition->getName();
+                                    $retval[$key]['values'][$key_prefix . $edition->getID()] = $edition->getName();
                                 }
                                 if (!$this->isEditionsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2310,7 +2315,7 @@
                                 $retval[$key]['values'] = array();
                                 foreach (Status::getAll() as $status)
                                 {
-                                    $retval[$key]['values']['v' . $status->getID()] = $status->getName();
+                                    $retval[$key]['values'][$key_prefix . $status->getID()] = $status->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {
@@ -2334,7 +2339,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getComponents() as $component)
                                 {
-                                    $retval[$key]['values']['v' . $component->getID()] = $component->getName();
+                                    $retval[$key]['values'][$key_prefix . $component->getID()] = $component->getName();
                                 }
                                 if (!$this->isComponentsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2358,7 +2363,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getActiveBuilds() as $build)
                                 {
-                                    $retval[$key]['values']['v' . $build->getID()] = $build->getName().' ('.$build->getVersion().')';
+                                    $retval[$key]['values'][$key_prefix . $build->getID()] = $build->getName().' ('.$build->getVersion().')';
                                 }
                                 if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2380,7 +2385,7 @@
                                 foreach ($this->getOpenMilestones() as $milestone)
                                 {
                                     if (!$milestone->hasAccess()) continue;
-                                    $retval[$key]['values']['v' . $milestone->getID()] = $milestone->getName();
+                                    $retval[$key]['values'][$key_prefix . $milestone->getID()] = $milestone->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {
