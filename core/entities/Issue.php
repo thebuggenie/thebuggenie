@@ -5773,7 +5773,7 @@
                 $weeks_spent = floor($time_spent / 604800);
                 $days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
                 $hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
-                $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 60)) / 60);
+                $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 3600)) / 60);
 
                 $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
                 $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
