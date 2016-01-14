@@ -37,6 +37,7 @@
         const SPENT_WEEKS = 'issue_spenttimes.spent_weeks';
         const SPENT_DAYS = 'issue_spenttimes.spent_days';
         const SPENT_HOURS = 'issue_spenttimes.spent_hours';
+        const SPENT_MINUTES = 'issue_spenttimes.spent_minutes';
         const SPENT_POINTS = 'issue_spenttimes.spent_points';
         const ACTIVITY_TYPE = 'issue_spenttimes.activity_type';
 
@@ -144,16 +145,16 @@
 
             return $returnarr;
         }
-        
+
         public function getAllSpentTimesForFixing()
         {
             $crit = $this->getCriteria();
             $crit->addOrderBy(self::ISSUE_ID, Criteria::SORT_ASC);
             $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
-            
+
             $res = $this->doSelect($crit);
             $ret_arr = array();
-            
+
             if ($res)
             {
                 while ($row = $res->getNextRow())
@@ -161,19 +162,20 @@
                     $ret_arr[$row[self::ISSUE_ID]][] = $row;
                 }
             }
-            
+
             return $ret_arr;
         }
-        
+
         public function fixRow($row, $prev_times)
         {
             $crit = $this->getCriteria();
             $crit->addUpdate(self::SPENT_POINTS, $row[self::SPENT_POINTS] - $prev_times['points']);
+            $crit->addUpdate(self::SPENT_MINUTES, $row[self::SPENT_MINUTES] - $prev_times['minutes']);
             $crit->addUpdate(self::SPENT_HOURS, $row[self::SPENT_HOURS] - $prev_times['hours']);
             $crit->addUpdate(self::SPENT_DAYS, $row[self::SPENT_DAYS] - $prev_times['days']);
             $crit->addUpdate(self::SPENT_WEEKS, $row[self::SPENT_WEEKS] - $prev_times['weeks']);
             $crit->addUpdate(self::SPENT_MONTHS, $row[self::SPENT_MONTHS] - $prev_times['months']);
-            
+
             $this->doUpdateById($crit, $row[self::ID]);
         }
 
@@ -191,6 +193,7 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::ISSUE_ID, $issue_id);
             $crit->addSelectionColumn(self::SPENT_POINTS, 'points', Criteria::DB_SUM);
+            $crit->addSelectionColumn(self::SPENT_MINUTES, 'minutes', Criteria::DB_SUM);
             $crit->addSelectionColumn(self::SPENT_HOURS, 'hours', Criteria::DB_SUM);
             $crit->addSelectionColumn(self::SPENT_DAYS, 'days', Criteria::DB_SUM);
             $crit->addSelectionColumn(self::SPENT_MONTHS, 'months', Criteria::DB_SUM);

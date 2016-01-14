@@ -43,14 +43,15 @@
                     if (count($times) > 1)
                     {
                         $this->cliEcho("Fixing times spent for issue ID {$issue_id}, ".count($times)." entries\n");
-                        $prev_times = array('hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0, 'points' => 0);
+                        $prev_times = array('minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0, 'points' => 0);
                         foreach ($times as $k => $row)
                         {
-                            if ($row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_DAYS] < $prev_times['days'] ||
+                            if ($row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS] < $prev_times['points'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_HOURS] < $prev_times['minutes'] ||
                                 $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_HOURS] < $prev_times['hours'] ||
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_DAYS] < $prev_times['days'] ||
                                 $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_WEEKS] < $prev_times['weeks'] ||
-                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_MONTHS] < $prev_times['months'] ||
-                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS] < $prev_times['points'])
+                                $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_MONTHS] < $prev_times['months'])
                             {
                                 $error_issues[] = $issue_id;
                             }
@@ -58,6 +59,7 @@
                             {
                                 \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->fixRow($row, $prev_times);
                                 $prev_times['points'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS];
+                                $prev_times['minutes'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_MINUTES];
                                 $prev_times['hours'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_HOURS];
                                 $prev_times['days'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_DAYS];
                                 $prev_times['weeks'] += $row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_WEEKS];
@@ -79,7 +81,7 @@
                 {
                     $this->cliEcho("\n");
                     $this->cliEcho("All spent times have been attempted fixed, but there were some issues that could not be fixed automatically!\n");
-                    $this->cliEcho("This happens if there has been adjustments in time spent, lowering the value for spent points, hours, days, weeks or months.\n\n");
+                    $this->cliEcho("This happens if there has been adjustments in time spent, lowering the value for spent points, minutes, hours, days, weeks or months.\n\n");
                     $this->cliEcho("You should fix the issues manually (issue ids corresponding to issue_ids in the timesspent table): ");
                     $this->cliEcho(join(', ', $error_issues)."\n\n");
                     $this->cliEcho("Spent times fixed!\n\n", 'green');

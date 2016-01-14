@@ -37,6 +37,7 @@
         const ESTIMATED_WEEKS = 'issue_estimates.estimated_weeks';
         const ESTIMATED_DAYS = 'issue_estimates.estimated_days';
         const ESTIMATED_HOURS = 'issue_estimates.estimated_hours';
+        const ESTIMATED_MINUTES = 'issue_estimates.estimated_minutes';
         const ESTIMATED_POINTS = 'issue_estimates.estimated_points';
 
         protected function _initialize()
@@ -49,16 +50,18 @@
             parent::_addInteger(self::ESTIMATED_WEEKS, 10);
             parent::_addInteger(self::ESTIMATED_DAYS, 10);
             parent::_addInteger(self::ESTIMATED_HOURS, 10);
+            parent::_addInteger(self::ESTIMATED_MINUTES, 10);
             parent::_addFloat(self::ESTIMATED_POINTS);
         }
 
-        public function saveEstimate($issue_id, $months, $weeks, $days, $hours, $points)
+        public function saveEstimate($issue_id, $months, $weeks, $days, $hours, $minutes, $points)
         {
             $crit = $this->getCriteria();
             $crit->addInsert(self::ESTIMATED_MONTHS, $months);
             $crit->addInsert(self::ESTIMATED_WEEKS, $weeks);
             $crit->addInsert(self::ESTIMATED_DAYS, $days);
             $crit->addInsert(self::ESTIMATED_HOURS, $hours);
+            $crit->addInsert(self::ESTIMATED_MINUTES, $minutes);
             $crit->addInsert(self::ESTIMATED_POINTS, $points);
             $crit->addInsert(self::ISSUE_ID, $issue_id);
             $crit->addInsert(self::EDITED_AT, NOW);
@@ -83,7 +86,7 @@
                     $sd += 86400;
                 }
             }
-            
+
             if (count($issue_ids))
             {
                 $crit = $this->getCriteria();
@@ -128,5 +131,5 @@
 
             return array('points' => $points_retarr, 'hours' => $hours_retarr);
         }
-        
+
     }

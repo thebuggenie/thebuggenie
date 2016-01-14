@@ -2067,7 +2067,7 @@ class Main extends framework\Action
             }
             else
             {
-                $times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+                $times = array('points' => 0, 'minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
                 $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
             }
             $spenttime->setIssue($issue);
@@ -2076,6 +2076,7 @@ class Main extends framework\Action
         else
         {
             $times = array('points' => $request['points'],
+                'minutes' => $request['minutes'],
                 'hours' => $request['hours'],
                 'days' => $request['days'],
                 'weeks' => $request['weeks'],
@@ -2085,6 +2086,7 @@ class Main extends framework\Action
         }
         $times['hours'] *= 100;
         $spenttime->setSpentPoints($times['points']);
+        $spenttime->setSpentMinutes($times['minutes']);
         $spenttime->setSpentHours($times['hours']);
         $spenttime->setSpentDays($times['days']);
         $spenttime->setSpentWeeks($times['weeks']);
@@ -2190,6 +2192,7 @@ class Main extends framework\Action
                     if ($request->hasParameter('weeks')) $issue->setEstimatedWeeks($request['weeks']);
                     if ($request->hasParameter('days')) $issue->setEstimatedDays($request['days']);
                     if ($request->hasParameter('hours')) $issue->setEstimatedHours($request['hours']);
+                    if ($request->hasParameter('minutes')) $issue->setEstimatedMinutes($request['minutes']);
                     if ($request->hasParameter('points')) $issue->setEstimatedPoints($request['points']);
                 }
                 if ($request['do_save'])

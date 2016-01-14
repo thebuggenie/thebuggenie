@@ -338,6 +338,14 @@
         protected $_estimated_hours;
 
         /**
+         * The estimated time (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_estimated_minutes;
+
+        /**
          * The estimated time (points) to fix this issue
          *
          * @var integer
@@ -376,6 +384,14 @@
          * @Column(type="integer", length=10)
          */
         protected $_spent_hours;
+
+        /**
+         * The time spent (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_spent_minutes;
 
         /**
          * The time spent (points) to fix this issue
@@ -2219,7 +2235,7 @@
         /**
          * Returns a string-formatted time based on project setting
          *
-         * @param array $time array of weeks, days and hours
+         * @param array $time array of weeks, days, hours and minutes
          *
          * @return string
          */
@@ -2243,6 +2259,10 @@
             if (array_key_exists('hours', $time) && ($time['hours'] > 0 || !$strict))
             {
                 $values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of hours', array('%number_of' => $time['hours']));
+            }
+            if (array_key_exists('minutes', $time) && ($time['minutes'] > 0 || !$strict))
+            {
+                $values[] = ($time['minutes'] == 1) ? $i18n->__('1 minute') : $i18n->__('%number_of minutes', array('%number_of' => $time['minutes']));
             }
             $retval = join(', ', $values);
 
@@ -3170,8 +3190,8 @@
 
         public function calculateTime()
         {
-            $estimated_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
-            $spent_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+            $estimated_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
+            $spent_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
             foreach ($this->getChildIssues() as $issue)
             {
                 foreach ($issue->getEstimatedTime() as $key => $value) $estimated_times[$key] += $value;
@@ -3253,12 +3273,14 @@
             }
             else
             {
-                $estimated = $this->getEstimatedHours();
+                $estimated = $this->getEstimatedMinutes();
+                $estimated += $this->getEstimatedHours() * 60;
                 $estimated += $this->getEstimatedDays() * 8;
                 $estimated += $this->getEstimatedWeeks() * 8 * 5;
                 $estimated += $this->getEstimatedMonths() * 8 * 22;
 
-                $spent = $this->getSpentHours();
+                $spent = $this->getSpentMinutes();
+                $spent *= $this->getSpentHours() * 60;
                 $spent += $this->getSpentDays() * 8;
                 $spent += $this->getSpentWeeks() * 8 * 5;
                 $spent += $this->getSpentMonths() * 8 * 22;
@@ -3338,7 +3360,7 @@
          */
         public function getEstimatedTime()
         {
-            return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->_estimated_hours, 'points' => (int) $this->_estimated_points);
+            return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->_estimated_hours, 'minutes' => (int) $this->_estimated_minutes, 'points' => (int) $this->_estimated_points);
         }
 
         /**
@@ -3382,6 +3404,16 @@
         }
 
         /**
+         * Returns the estimated minutes
+         *
+         * @return integer
+         */
+        public function getEstimatedMinutes()
+        {
+            return (int) $this->_estimated_minutes;
+        }
+
+        /**
          * Returns the estimated points
          *
          * @return integer
@@ -3392,7 +3424,7 @@
         }
 
         /**
-         * Turns a string into a months/weeks/days/hours/points array
+         * Turns a string into a months/weeks/days/hours/minutes/points array
          *
          * @param string $string The string to convert
          *
@@ -3400,7 +3432,7 @@
          */
         public static function convertFancyStringToTime($string)
         {
-            $retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+            $retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
             $string = mb_strtolower(trim($string));
             $time_arr = preg_split('/(\,|\/|and|or|plus)/', $string);
             foreach ($time_arr as $time_elm)
@@ -3421,6 +3453,9 @@
                             break;
                         case mb_stristr($time_parts[1], 'hour'):
                             $retarr['hours'] = trim($time_parts[0]);
+                            break;
+                        case mb_stristr($time_parts[1], 'minute'):
+                            $retarr['minutes'] = trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'point'):
                             $retarr['points'] = (int) trim($time_parts[0]);
@@ -3455,6 +3490,7 @@
                 $this->_addChangedProperty('_estimated_weeks', 0);
                 $this->_addChangedProperty('_estimated_days', 0);
                 $this->_addChangedProperty('_estimated_hours', 0);
+                $this->_addChangedProperty('_estimated_minutes', 0);
                 $this->_addChangedProperty('_estimated_points', 0);
             }
             elseif (is_array($time))
@@ -3471,6 +3507,7 @@
                 $this->_addChangedProperty('_estimated_weeks', $time['weeks']);
                 $this->_addChangedProperty('_estimated_days', $time['days']);
                 $this->_addChangedProperty('_estimated_hours', $time['hours']);
+                $this->_addChangedProperty('_estimated_minutes', $time['minutes']);
                 $this->_addChangedProperty('_estimated_points', $time['points']);
             }
         }
@@ -3516,6 +3553,16 @@
         }
 
         /**
+         * Set estimated minutes
+         *
+         * @param integer $minutes The number of minutes estimated
+         */
+        public function setEstimatedMinutes($minutes)
+        {
+            $this->_addChangedProperty('_estimated_minutes', $minutes);
+        }
+
+        /**
          * Set issue number
          *
          * @param integer $no New issue number
@@ -3542,7 +3589,7 @@
          */
         public function isEstimatedTimeChanged()
         {
-            return (bool) ($this->isEstimated_MonthsChanged() || $this->isEstimated_WeeksChanged() || $this->isEstimated_DaysChanged() || $this->isEstimated_HoursChanged() || $this->isEstimated_PointsChanged());
+            return (bool) ($this->isEstimated_MonthsChanged() || $this->isEstimated_WeeksChanged() || $this->isEstimated_DaysChanged() || $this->isEstimated_HoursChanged() || $this->isEstimated_MinutesChanged() || $this->isEstimated_PointsChanged());
         }
 
         /**
@@ -3552,7 +3599,7 @@
          */
         public function isEstimatedTimeMerged()
         {
-            return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_PointsMerged());
+            return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_MinutesMerged() || $this->isEstimated_PointsMerged());
         }
 
         /**
@@ -3564,6 +3611,7 @@
             $this->revertEstimated_Weeks();
             $this->revertEstimated_Days();
             $this->revertEstimated_Hours();
+            $this->revertEstimated_Minutes();
             $this->revertEstimated_Points();
         }
 
@@ -3750,7 +3798,7 @@
          */
         public function getSpentTime()
         {
-            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'points' => (int) $this->_spent_points);
+            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'minutes' => (int) $this->_spent_minutes, 'points' => (int) $this->_spent_points);
         }
 
         /**
@@ -3791,6 +3839,16 @@
         public function getSpentHours()
         {
             return (int) round($this->_spent_hours / 100, 2);
+        }
+
+        /**
+         * Returns the spent minutes
+         *
+         * @return integer
+         */
+        public function getSpentMinutes()
+        {
+            return (int) round($this->_spent_minutes / 100, 2);
         }
 
         /**
@@ -3853,6 +3911,16 @@
         public function setSpentHours($hours)
         {
             $this->_addChangedProperty('_spent_hours', $hours);
+        }
+
+        /**
+         * Set spent minutes
+         *
+         * @param integer $minutes The number of minutes spent
+         */
+        public function setSpentMinutes($minutes)
+        {
+            $this->_addChangedProperty('_spent_minutes', $minutes);
         }
 
         /**
@@ -5148,6 +5216,7 @@
                             case '_estimated_weeks':
                             case '_estimated_days':
                             case '_estimated_hours':
+                            case '_estimated_minutes':
                             case '_estimated_points':
                                 if (!$is_saved_estimated)
                                 {
@@ -5155,6 +5224,7 @@
                                                         'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
                                                         'days' => $this->getChangedPropertyOriginal('_estimated_days'),
                                                         'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
+                                                        'minutes' => $this->getChangedPropertyOriginal('_estimated_minutes'),
                                                         'points' => $this->getChangedPropertyOriginal('_estimated_points'));
 
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('Not estimated');
@@ -5167,6 +5237,7 @@
                             case '_spent_weeks':
                             case '_spent_days':
                             case '_spent_hours':
+                            case '_spent_minutes':
                             case '_spent_points':
                                 if (!$is_saved_spent)
                                 {
@@ -5174,6 +5245,7 @@
                                                         'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
                                                         'days' => $this->getChangedPropertyOriginal('_spent_days'),
                                                         'hours' => round($this->getChangedPropertyOriginal('_spent_hours') / 100, 2),
+                                                        'minutes' => $this->getChangedPropertyOriginal('_spent_minutes'),
                                                         'points' => $this->getChangedPropertyOriginal('_spent_points'));
 
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('No time spent');
@@ -5199,6 +5271,10 @@
                                                 if ($this->getSpentHours() < $this->getEstimatedHours())
                                                 {
                                                     $this->setSpentHours($this->getEstimatedHours());
+                                                }
+                                                if ($this->getSpentMinutes() < $this->getEstimatedMinutes())
+                                                {
+                                                    $this->setSpentMinutes($this->getEstimatedMinutes());
                                                 }
                                                 foreach ($this->getParentIssues() as $parent_issue)
                                                 {
@@ -5327,7 +5403,7 @@
 
                 if ($is_saved_estimated)
                 {
-                    tables\IssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
+                    tables\IssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_minutes, $this->_estimated_points);
                 }
 
             }
@@ -5603,7 +5679,7 @@
 
         public function saveSpentTime()
         {
-            $spent_times = array('months', 'weeks', 'days', 'hours', 'points');
+            $spent_times = array('months', 'weeks', 'days', 'hours', 'minutes', 'points');
             $spent_times_changed_items = array();
             $changed_properties = $this->_getChangedProperties();
 
@@ -5690,18 +5766,16 @@
 
         public function calculateTimeSpent()
         {
-            $ts_array = array('hours' => 0, 'days' => 0, 'weeks' => 0);
+            $ts_array = array('minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0);
             $time_spent = ($this->_being_worked_on_by_user_since) ? NOW - $this->_being_worked_on_by_user_since : 0;
             if ($time_spent > 0)
             {
-                $weeks_spent = 0;
-                $days_spent = 0;
-                $hours_spent = 0;
-
                 $weeks_spent = floor($time_spent / 604800);
                 $days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
-                $hours_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+                $hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+                $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 60)) / 60);
 
+                $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
                 $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
                 $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
                 $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
@@ -5723,13 +5797,14 @@
             $time_spent = $this->calculateTimeSpent();
             $this->clearUserWorkingOnIssue();
 
-            if ($time_spent['hours'] > 0 || $time_spent['days'] > 0 || $time_spent['weeks'] > 0)
+            if ($time_spent['minutes'] > 0 || $time_spent['hours'] > 0 || $time_spent['days'] > 0 || $time_spent['weeks'] > 0)
             {
                 $time_spent['hours'] *= 100;
                 $spenttime = new \thebuggenie\core\entities\IssueSpentTime();
                 $spenttime->setIssue($this);
                 $spenttime->setUser(framework\Context::getUser());
                 $spenttime->setSpentPoints(0);
+                $spenttime->setSpentMinutes($time_spent['minutes']);
                 $spenttime->setSpentHours($time_spent['hours']);
                 $spenttime->setSpentDays($time_spent['days']);
                 $spenttime->setSpentWeeks($time_spent['weeks']);

@@ -90,6 +90,14 @@
         protected $_spent_hours;
 
         /**
+         * The time spent (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_spent_minutes;
+
+        /**
          * The time spent (points) to fix this issue
          *
          * @var integer
@@ -124,6 +132,7 @@
         {
             $times = tables\IssueSpentTimes::getTable()->getSpentTimeSumsByIssueId($this->getIssueID());
             $this->getIssue()->setSpentPoints($times['points']);
+            $this->getIssue()->setSpentMinutes($times['minutes']);
             $this->getIssue()->setSpentHours($times['hours']);
             $this->getIssue()->setSpentDays($times['days']);
             $this->getIssue()->setSpentWeeks($times['weeks']);
@@ -195,7 +204,7 @@
          */
         public function getSpentTime()
         {
-            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'points' => (int) $this->_spent_points);
+            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'minutes' => (int) $this->_spent_minutes, 'points' => (int) $this->_spent_points);
         }
 
         /**
@@ -236,6 +245,16 @@
         public function getSpentHours()
         {
             return (int) $this->_spent_hours;
+        }
+
+        /**
+         * Returns the spent minutes
+         *
+         * @return integer
+         */
+        public function getSpentMinutes()
+        {
+            return (int) $this->_spent_minutes;
         }
 
         /**
@@ -298,6 +317,16 @@
         public function setSpentHours($hours)
         {
             $this->_spent_hours = $hours;
+        }
+
+        /**
+         * Set spent minutes
+         *
+         * @param integer $minutes The number of minutes spent
+         */
+        public function setSpentMinutes($minutes)
+        {
+            $this->_spent_minutes = $minutes;
         }
 
         /**

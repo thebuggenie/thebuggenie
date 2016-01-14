@@ -59,11 +59,13 @@
         const ESTIMATED_WEEKS = 'issues.estimated_weeks';
         const ESTIMATED_DAYS = 'issues.estimated_days';
         const ESTIMATED_HOURS = 'issues.estimated_hours';
+        const ESTIMATED_MINUTES = 'issues.estimated_minutes';
         const ESTIMATED_POINTS = 'issues.estimated_points';
         const SPENT_MONTHS = 'issues.spent_months';
         const SPENT_WEEKS = 'issues.spent_weeks';
         const SPENT_DAYS = 'issues.spent_days';
         const SPENT_HOURS = 'issues.spent_hours';
+        const SPENT_MINUTES = 'issues.spent_minutes';
         const SPENT_POINTS = 'issues.spent_points';
         const PERCENT_COMPLETE = 'issues.percent_complete';
         const ASSIGNEE_USER = 'issues.assignee_user';
@@ -435,11 +437,13 @@
             }
             $crit->addSelectionColumn(self::STATE, 'state');
             $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
+            $crit->addSelectionColumn(self::ESTIMATED_MINUTES, 'estimated_minutes');
             $crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
             $crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
             $crit->addSelectionColumn(self::ESTIMATED_WEEKS, 'estimated_weeks');
             $crit->addSelectionColumn(self::ESTIMATED_MONTHS, 'estimated_months');
             $crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points');
+            $crit->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes');
             $crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours');
             $crit->addSelectionColumn(self::SPENT_DAYS, 'spent_days');
             $crit->addSelectionColumn(self::SPENT_WEEKS, 'spent_weeks');
@@ -1046,7 +1050,7 @@
             $crit = $this->getCriteria();
             $crit->addUpdate(self::LAST_UPDATED, time());
             $crit->addUpdate(self::MILESTONE, $new_milestone_id);
-            
+
             if ($milestone_order !== null) $crit->addUpdate(self::MILESTONE_ORDER, $milestone_order);
 
             $crit->addWhere(self::MILESTONE, $current_milestone_id);

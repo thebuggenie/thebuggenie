@@ -55,12 +55,14 @@
                     <?php elseif ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() != $issue->getEpicIssuetypeID()): ?>
                         <td><input type="text" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input">
                     <?php elseif ($board->getType() == AgileBoard::TYPE_GENERIC): ?>
+                        <td><input type="text" value="<?php echo $minutes; ?>" name="minutes" id="<?php echo $field . '_' . $issue_id; ?>_minutes_input">
                         <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input">
                         <td><input type="text" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input">
                     <td><input type="text" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input">
                     <td><input type="text" value="<?php echo $months; ?>" name="months" id="<?php echo $field . '_' . $issue_id; ?>_months_input">
                     <?php endif; ?>
                 <?php else: ?>
+                    <td><input type="text" value="<?php echo $minutes; ?>" name="minutes" id="<?php echo $field . '_' . $issue_id; ?>_minutes_input">
                     <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input">
                     <td><input type="text" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input">
                     <td><input type="text" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input">
@@ -75,12 +77,14 @@
                     <?php elseif ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() != $issue->getEpicIssuetypeID()): ?>
                         <td><?php echo __('%number_of points', array('%number_of' => '')); ?></td>
                     <?php elseif ($board->getType() == AgileBoard::TYPE_GENERIC): ?>
+                        <td><?php echo __('%number_of minutes', array('%number_of' => '')); ?></td>
                         <td><?php echo __('%number_of hours', array('%number_of' => '')); ?></td>
                         <td><?php echo __('%number_of days', array('%number_of' => '')); ?></td>
                         <td><?php echo __('%number_of weeks', array('%number_of' => '')); ?></td>
                         <td><?php echo __('%number_of months', array('%number_of' => '')); ?></td>
                     <?php endif; ?>
                 <?php else: ?>
+                    <td><?php echo __('%number_of minutes', array('%number_of' => '')); ?></td>
                     <td><?php echo __('%number_of hours', array('%number_of' => '')); ?></td>
                     <td><?php echo __('%number_of days', array('%number_of' => '')); ?></td>
                     <td><?php echo __('%number_of weeks', array('%number_of' => '')); ?></td>

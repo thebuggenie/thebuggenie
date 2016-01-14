@@ -726,6 +726,7 @@
                     $this->weeks = $this->issue->getEstimatedWeeks();
                     $this->days = $this->issue->getEstimatedDays();
                     $this->hours = $this->issue->getEstimatedHours();
+                    $this->minutes = $this->issue->getEstimatedMinutes();
                     $this->points = $this->issue->getEstimatedPoints();
                     break;
                 case 'spent_time':
@@ -733,6 +734,7 @@
                     $this->weeks = 0;
                     $this->days = 0;
                     $this->hours = 0;
+                    $this->minutes = 0;
                     $this->points = 0;
                     break;
             }
