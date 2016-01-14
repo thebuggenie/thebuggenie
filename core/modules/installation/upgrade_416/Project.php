@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\modules\installation\upgrade_415;
+    namespace thebuggenie\core\modules\installation\upgrade_416;
 
     use thebuggenie\core\entities\common\QaLeadable,
       thebuggenie\core\helpers\MentionableProvider;
@@ -11,7 +11,7 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @Table(name="\thebuggenie\core\modules\installation\upgrade_415\ProjectsTable")
+     * @Table(name="\thebuggenie\core\modules\installation\upgrade_416\ProjectsTable")
      */
     class Project extends QaLeadable implements MentionableProvider
     {

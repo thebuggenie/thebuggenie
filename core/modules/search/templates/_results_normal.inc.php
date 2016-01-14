@@ -1,7 +1,7 @@
 <?php
 if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
-$current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
+$current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
 $current_spent_time = $current_estimated_time;
 foreach ($search_object->getIssues() as $issue):
     // shows only issues with permissions, useful when if we're including subprojects
@@ -13,7 +13,7 @@ foreach ($search_object->getIssues() as $issue):
                 echo '</tbody></table>';
                 include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
                 $current_count = 0;
-                $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
+                $current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                 $current_spent_time = $current_estimated_time;
     endif;
     $current_count++;

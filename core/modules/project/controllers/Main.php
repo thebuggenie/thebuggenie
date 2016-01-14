@@ -1432,6 +1432,9 @@ class Main extends helpers\ProjectActions
             if ($request->hasParameter('allow_autoassignment'))
                 $this->selected_project->setAutoassign((bool) $request['allow_autoassignment']);
 
+            if ($request->hasParameter('time_units'))
+                $this->selected_project->setTimeUnits($request['time_units']);
+
             $this->selected_project->save();
             return $this->renderJSON(array('message' => $this->getI18n()->__('Settings saved')));
         }

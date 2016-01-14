@@ -12,7 +12,7 @@
         <?php echo __('%specify_manually or select %list', array('%specify_manually' => '', '%list' => '')); ?>
         <input type="text" name="timespent_specified_value" style="width: 50px;">
         <select name="timespent_specified_type">
-            <?php foreach (array('points' => __('%number_of point(s)', array('%number_of' => '')), 'minutes' => __('%number_of minute(s)', array('%number_of' => '')), 'hours' => __('%number_of hour(s)', array('%number_of' => '')), 'days' => __('%number_of day(s)', array('%number_of' => '')), 'weeks' => __('%number_of week(s)', array('%number_of' => '')), 'months' => __('%number_of month(s)', array('%number_of' => ''))) as $time => $description): ?>
+            <?php foreach ($issue->getSpentTimeUnitsWithPoints() as $time => $description): ?>
                 <option value="<?php echo $time; ?>" <?php if ($time == 'hours') echo 'selected'; ?>><?php echo $description; ?></option>
             <?php endforeach; ?>
         </select>

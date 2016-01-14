@@ -593,9 +593,17 @@ class Main extends framework\Action
         set_time_limit(0);
 
         \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\Issue::getB2DBTable());
-        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\Project::getB2DBTable());
         \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueSpentTime::getB2DBTable());
         \thebuggenie\core\entities\tables\IssueEstimates::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueEstimatesTable::getTable());
+
+        $this->upgrade_complete = true;
+    }
+
+    protected function _upgradeFrom4dot1dot6(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable());
 
         $this->upgrade_complete = true;
     }
@@ -639,6 +647,8 @@ class Main extends framework\Action
                     $this->_upgradeFrom4dot1dot3($request);
                 case '4.1.5':
                     $this->_upgradeFrom4dot1dot5($request);
+                case '4.1.6':
+                    $this->_upgradeFrom4dot1dot6($request);
                 default:
                     $this->upgrade_complete = true;
                     break;

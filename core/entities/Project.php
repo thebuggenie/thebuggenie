@@ -474,6 +474,19 @@
         protected $_dashboards = null;
 
         /**
+         * Reportable time units
+         *
+         * @var integer
+         * @access protected
+         * @Column(type="integer", length=10)
+         */
+        protected $_time_units = null;
+
+        protected $time_units_array = null;
+
+        protected $time_units_indexes = array('1' => 'months', '2' => 'weeks', '3' => 'days', '4' => 'hours', '5' => 'minutes');
+
+        /**
          * Retrieve a project by its key
          *
          * @param string $key
@@ -3334,6 +3347,53 @@
             }
 
             $preloaded = true;
+        }
+
+        /**
+         * Set reportable time units
+         *
+         * @param array $time_units
+         */
+        public function setTimeUnits(array $time_units)
+        {
+            $time_units_intersect = array_flip(array_intersect($this->time_units_indexes, $time_units));
+            if (!count($time_units_intersect))
+            {
+                $this->_time_units = -1;
+            }
+            else
+            {
+                $this->_time_units = count($time_units_intersect) == count($this->time_units_indexes) ? 0 : (int) implode('', $time_units_intersect);
+            }
+            $this->time_units_array = null;
+        }
+
+        /**
+         * Get reportable time units
+         *
+         * @return array|null
+         */
+        public function getTimeUnits()
+        {
+            if ($this->time_units_array === null)
+            {
+                // If time units column is 0, all units are reportable
+                $this->time_units_array = $this->_time_units == 0 ? $this->time_units_indexes : array_intersect_key($this->time_units_indexes, array_flip(str_split((string) $this->_time_units)));
+            }
+
+            return $this->time_units_array;
+        }
+
+        /**
+         * Check whether time unit is reportable
+         *
+         * @param $time_unit
+         *
+         * @return bool
+         */
+        public function hasTimeUnit($time_unit)
+        {
+            return in_array($time_unit, $this->getTimeUnits());
         }
 
     }

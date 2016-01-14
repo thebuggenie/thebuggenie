@@ -43,7 +43,7 @@
                     if (count($times) > 1)
                     {
                         $this->cliEcho("Fixing times spent for issue ID {$issue_id}, ".count($times)." entries\n");
-                        $prev_times = array('minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0, 'points' => 0);
+                        $prev_times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                         foreach ($times as $k => $row)
                         {
                             if ($row[\thebuggenie\core\entities\tables\IssueSpentTimes::SPENT_POINTS] < $prev_times['points'] ||

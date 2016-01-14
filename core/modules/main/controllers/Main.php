@@ -2063,11 +2063,11 @@ class Main extends framework\Action
         {
             if ($request['timespent_manual'])
             {
-                $times = entities\Issue::convertFancyStringToTime($request['timespent_manual']);
+                $times = entities\Issue::convertFancyStringToTime($request['timespent_manual'], $issue);
             }
             else
             {
-                $times = array('points' => 0, 'minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+                $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                 $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
             }
             $spenttime->setIssue($issue);

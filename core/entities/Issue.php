@@ -3190,8 +3190,7 @@
 
         public function calculateTime()
         {
-            $estimated_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
-            $spent_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
+            $estimated_times = $spent_times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
             foreach ($this->getChildIssues() as $issue)
             {
                 foreach ($issue->getEstimatedTime() as $key => $value) $estimated_times[$key] += $value;
@@ -3427,12 +3426,13 @@
          * Turns a string into a months/weeks/days/hours/minutes/points array
          *
          * @param string $string The string to convert
+         * @param Issue $issue
          *
          * @return array
          */
-        public static function convertFancyStringToTime($string)
+        public static function convertFancyStringToTime($string, self $issue)
         {
-            $retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'minutes' => 0, 'points' => 0);
+            $retarr = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
             $string = mb_strtolower(trim($string));
             $time_arr = preg_split('/(\,|\/|and|or|plus)/', $string);
             foreach ($time_arr as $time_elm)
@@ -3443,19 +3443,19 @@
                     switch (true)
                     {
                         case mb_stristr($time_parts[1], 'month'):
-                            $retarr['months'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('months')) $retarr['months'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'week'):
-                            $retarr['weeks'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('weeks')) $retarr['weeks'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'day'):
-                            $retarr['days'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('days')) $retarr['days'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'hour'):
-                            $retarr['hours'] = trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('hours')) $retarr['hours'] = trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'minute'):
-                            $retarr['minutes'] = trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('minutes')) $retarr['minutes'] = trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'point'):
                             $retarr['points'] = (int) trim($time_parts[0]);
@@ -3502,7 +3502,7 @@
             }
             else
             {
-                $time = self::convertFancyStringToTime($time);
+                $time = self::convertFancyStringToTime($time, $this);
                 $this->_addChangedProperty('_estimated_months', $time['months']);
                 $this->_addChangedProperty('_estimated_weeks', $time['weeks']);
                 $this->_addChangedProperty('_estimated_days', $time['days']);
@@ -5679,7 +5679,7 @@
 
         public function saveSpentTime()
         {
-            $spent_times = array('months', 'weeks', 'days', 'hours', 'minutes', 'points');
+            $spent_times = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
             $spent_times_changed_items = array();
             $changed_properties = $this->_getChangedProperties();
 
@@ -5766,7 +5766,7 @@
 
         public function calculateTimeSpent()
         {
-            $ts_array = array('minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0);
+            $ts_array = array_fill_keys(\thebuggenie\core\entities\common\Timeable::getUnitsWithout(array('months')), 0);
             $time_spent = ($this->_being_worked_on_by_user_since) ? NOW - $this->_being_worked_on_by_user_since : 0;
             if ($time_spent > 0)
             {
@@ -5775,10 +5775,10 @@
                 $hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
                 $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 3600)) / 60);
 
-                $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
-                $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
-                $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
-                $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
+                if ($this->getProject()->hasTimeUnit('months')) $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
+                if ($this->getProject()->hasTimeUnit('hours')) $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
+                if ($this->getProject()->hasTimeUnit('days')) $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
+                if ($this->getProject()->hasTimeUnit('weeks')) $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
             }
             return $ts_array;
         }
@@ -6280,6 +6280,31 @@
         public function isCategoryChanged()
         {
             return $this->_isPropertyChanged('_category');
+        }
+
+        /**
+         * Get spent time units with points and their description.
+         *
+         * @return array
+         */
+        public function getSpentTimeUnitsWithPoints()
+        {
+            $spent_time_units = array_intersect_key(array('minutes' => __('%number_of minute(s)', array('%number_of' => '')), 'hours' => __('%number_of hour(s)', array('%number_of' => '')), 'days' => __('%number_of day(s)', array('%number_of' => '')), 'weeks' => __('%number_of week(s)', array('%number_of' => '')), 'months' => __('%number_of month(s)', array('%number_of' => ''))), array_flip($this->getProject()->getTimeUnits()));
+
+            return array('points' => __('%number_of point(s)', array('%number_of' => ''))) + $spent_time_units;
+        }
+
+        /**
+         * Get something summary text for transition time logger
+         *
+         * @return string
+         */
+        public function getTimeLoggerSomethingSummaryText()
+        {
+            $time_logger_units = array_intersect_key(array('weeks' => '%weeks week(s)', 'days' => '%days day(s)', 'hours' => '%hours hour(s)', 'minutes' => '%minutes minute(s)'), array_flip($this->getProject()->getTimeUnits()));
+            $last_time_unit = array_pop($time_logger_units);
+
+            return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
         }
 
     }

@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\common\Timeable;
     use thebuggenie\core\framework;
 
     /**
@@ -313,11 +314,11 @@
                         $times = array();
                         if ($request['timespent_manual'])
                         {
-                            $times = Issue::convertFancyStringToTime($request['timespent_manual']);
+                            $times = Issue::convertFancyStringToTime($request['timespent_manual'], $issue);
                         }
                         elseif ($request['timespent_specified_type'])
                         {
-                            $times = array('points' => 0, 'minutes' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+                            $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                             $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
                         }
                         if (array_sum($times) > 0)
