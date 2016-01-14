@@ -220,7 +220,7 @@
             </td>
         </tr>
         <tr>
-            <td class="config_explanation" colspan="2">With this option you can now limit what time units can be reported for issues.</td>
+            <td class="config_explanation" colspan="2"><?php echo __('With this option you can now limit what time units can be reported for issues.'); ?></td>
         </tr>
     </table>
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
