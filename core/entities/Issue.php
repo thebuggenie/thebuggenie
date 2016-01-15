@@ -5220,13 +5220,19 @@
                             case '_estimated_points':
                                 if (!$is_saved_estimated)
                                 {
-                                    $old_time = array('months' => $this->getChangedPropertyOriginal('_estimated_months'),
-                                                        'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
-                                                        'days' => $this->getChangedPropertyOriginal('_estimated_days'),
-                                                        'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
-                                                        'minutes' => $this->getChangedPropertyOriginal('_estimated_minutes'),
-                                                        'points' => $this->getChangedPropertyOriginal('_estimated_points'));
-
+                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $old_time = array_fill_keys($time_units, 0);
+                                    foreach ($time_units as $time_unit)
+                                    {
+                                        if ($this->_isPropertyChanged('_estimated_' . $time_unit))
+                                        {
+                                            $old_time[$time_unit] = $this->getChangedPropertyOriginal('_estimated_' . $time_unit);
+                                        }
+                                        else
+                                        {
+                                            $old_time[$time_unit] = $this->{'_estimated_' . $time_unit};
+                                        }
+                                    }
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('Not estimated');
                                     $new_formatted_time = ($this->hasEstimatedTime()) ? Issue::getFormattedTime($this->getEstimatedTime()) : framework\Context::getI18n()->__('Not estimated');
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
@@ -5241,13 +5247,20 @@
                             case '_spent_points':
                                 if (!$is_saved_spent)
                                 {
-                                    $old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
-                                                        'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
-                                                        'days' => $this->getChangedPropertyOriginal('_spent_days'),
-                                                        'hours' => round($this->getChangedPropertyOriginal('_spent_hours') / 100, 2),
-                                                        'minutes' => $this->getChangedPropertyOriginal('_spent_minutes'),
-                                                        'points' => $this->getChangedPropertyOriginal('_spent_points'));
-
+                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $old_time = array_fill_keys($time_units, 0);
+                                    foreach ($time_units as $time_unit)
+                                    {
+                                        if ($this->_isPropertyChanged('_spent_' . $time_unit))
+                                        {
+                                            $old_time[$time_unit] = $this->getChangedPropertyOriginal('_spent_' . $time_unit);
+                                        }
+                                        else
+                                        {
+                                            $old_time[$time_unit] = $this->{'_spent_' . $time_unit};
+                                        }
+                                    }
+                                    $old_time['hours'] = round($old_time['hours'] / 100, 2);
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('No time spent');
                                     $new_formatted_time = ($this->hasSpentTime()) ? Issue::getFormattedTime($this->getSpentTime()) : framework\Context::getI18n()->__('No time spent');
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
