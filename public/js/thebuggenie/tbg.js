@@ -3259,8 +3259,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             var visible_issues = list_issues.filter(':visible');
             var sum_estimated_points = 0;
             var sum_estimated_hours = 0;
+            var sum_estimated_minutes = 0;
             var sum_spent_points = 0;
             var sum_spent_hours = 0;
+            var sum_spent_minutes = 0;
             visible_issues.each(function (index) {
                 var elm = $(this);
                 if (!elm.hasClassName('child_issue')) {
@@ -3268,10 +3270,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         sum_estimated_points += parseInt(elm.dataset.estimatedPoints);
                     if (elm.dataset.estimatedHours !== undefined)
                         sum_estimated_hours += parseInt(elm.dataset.estimatedHours);
+                    if (elm.dataset.estimatedMinutes !== undefined)
+                        sum_estimated_minutes += parseInt(elm.dataset.estimatedMinutes);
                     if (elm.dataset.spentPoints !== undefined)
                         sum_spent_points += parseInt(elm.dataset.spentPoints);
                     if (elm.dataset.spentHours !== undefined)
                         sum_spent_hours += parseInt(elm.dataset.spentHours);
+                    if (elm.dataset.spentMinutes !== undefined)
+                        sum_spent_minutes += parseInt(elm.dataset.spentMinutes);
                 }
             });
             var num_visible_issues = visible_issues.size();
@@ -3296,8 +3302,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             } else {
                 $('milestone_' + milestone_id + '_issues_count').update(num_visible_issues);
             }
+            sum_spent_hours += Math.floor(sum_spent_minutes / 60);
+            sum_estimated_hours += Math.floor(sum_estimated_minutes / 60);
+            sum_spent_minutes = sum_spent_minutes % 60;
+            sum_estimated_minutes = sum_estimated_minutes % 60;
             $('milestone_' + milestone_id + '_points_count').update(sum_spent_points + ' / ' + sum_estimated_points);
             $('milestone_' + milestone_id + '_hours_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
+            $('milestone_' + milestone_id + '_minutes_count').update(sum_spent_minutes + ' / ' + sum_estimated_minutes);
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
@@ -3315,6 +3326,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var num_issues = 0;
                 var sum_points = 0;
                 var sum_hours = 0;
+                var sum_minutes = 0;
                 var include_closed = $('milestone_list').hasClassName('show_closed');
                 jQuery('.milestone_issue').removeClass('included');
                 nbmm.up('.milestone_issues').childElements().each(function (elm) {
@@ -3328,15 +3340,20 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     sum_points += parseInt(elm.down('.issue_container').dataset.estimatedPoints);
                                 if (elm.down('.issue_container').dataset.estimatedHours !== undefined)
                                     sum_hours += parseInt(elm.down('.issue_container').dataset.estimatedHours);
+                                if (elm.down('.issue_container').dataset.estimatedMinutes !== undefined)
+                                    sum_minutes += parseInt(elm.down('.issue_container').dataset.estimatedMinutes);
                             }
                         }
                     } else {
                         throw $break;
                     }
                 });
+                sum_hours += Math.floor(sum_minutes / 60);
+                sum_minutes = sum_minutes % 60;
                 $('new_backlog_milestone_issues_count').update(num_issues);
                 $('new_backlog_milestone_points_count').update(sum_points);
                 $('new_backlog_milestone_hours_count').update(sum_hours);
+                $('new_backlog_milestone_minutes_count').update(sum_minutes);
             }
         };
 
@@ -3413,6 +3430,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     $('milestone_' + milestone_id + '_issues_count').update(json.issues);
                                     $('milestone_' + milestone_id + '_points_count').update(json.points);
                                     $('milestone_' + milestone_id + '_hours_count').update(json.hours);
+                                    $('milestone_' + milestone_id + '_minutes_count').update(json.minutes);
                                 }
                             }
                         }
@@ -5568,7 +5586,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     $(fn).show();
                 }
             }
-            ['points', 'hours', 'days', 'weeks', 'months'].each(function (unit) {
+            ['points', 'minutes', 'hours', 'days', 'weeks', 'months'].each(function (unit) {
                 if (field != 'spent_time' && $(field + '_' + issue_id + '_' + unit + '_input'))
                     $(field + '_' + issue_id + '_' + unit + '_input').setValue(values[unit]);
 
@@ -5694,7 +5712,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
                         (json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
                         if ($('issue_' + issue_id)) {
-                            ['points', 'hours'].each(function (unit) {
+                            ['points', 'hours', 'minutes'].each(function (unit) {
                                 if (field == 'estimated_time') {
                                     TBG.Issues.Field.updateEstimatedPercentbar(json);
                                     $('issue_' + issue_id).setAttribute('data-estimated-' + unit, json.values[unit]);

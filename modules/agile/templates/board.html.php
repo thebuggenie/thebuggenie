@@ -95,11 +95,13 @@
                                 <td id="milestone_0_issues_count">-</td>
                                 <td id="milestone_0_points_count" class="issue_estimates estimated_points">-</td>
                                 <td id="milestone_0_hours_count" class="issue_estimates estimated_hours">-</td>
+                                <td id="milestone_0_minutes_count" class="issue_estimates estimated_minutes">-</td>
                             </tr>
                             <tr>
                                 <td><?php echo __('Issues'); ?></td>
                                 <td class="issue_estimates estimated_points"><?php echo __('Points'); ?></td>
                                 <td class="issue_estimates estimated_hours"><?php echo __('Hours'); ?></td>
+                                <td class="issue_estimates estimated_minutes"><?php echo __('Minutes'); ?></td>
                             </tr>
                         </table>
                     </div>

@@ -3423,6 +3423,16 @@
         }
 
         /**
+         * Returns the estimated hours and minutes formatted
+         *
+         * @return integer|string
+         */
+        public function getEstimatedHoursAndMinutes()
+        {
+            return $this->_formatHoursAndMinutes($this->getEstimatedHours(), $this->getEstimatedMinutes());
+        }
+
+        /**
          * Turns a string into a months/weeks/days/hours/minutes/points array
          *
          * @param string $string The string to convert
@@ -3848,7 +3858,7 @@
          */
         public function getSpentMinutes()
         {
-            return (int) round($this->_spent_minutes / 100, 2);
+            return (int) $this->_spent_minutes;
         }
 
         /**
@@ -3859,6 +3869,16 @@
         public function getSpentPoints()
         {
             return (int) $this->_spent_points;
+        }
+
+        /**
+         * Returns the spent hours and minutes formatted
+         *
+         * @return integer|string
+         */
+        public function getSpentHoursAndMinutes()
+        {
+            return $this->_formatHoursAndMinutes($this->getSpentHours(), $this->getSpentMinutes());
         }
 
         /**
@@ -5788,7 +5808,7 @@
                 $hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
                 $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 3600)) / 60);
 
-                if ($this->getProject()->hasTimeUnit('months')) $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
+                if ($this->getProject()->hasTimeUnit('minutes')) $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
                 if ($this->getProject()->hasTimeUnit('hours')) $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
                 if ($this->getProject()->hasTimeUnit('days')) $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
                 if ($this->getProject()->hasTimeUnit('weeks')) $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
@@ -6318,6 +6338,20 @@
             $last_time_unit = array_pop($time_logger_units);
 
             return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
+        }
+
+        /**
+         * Formats hours and minutes
+         *
+         * @return integer|string
+         */
+        protected function _formatHoursAndMinutes($hours, $minutes)
+        {
+            if (!$hours && !$minutes) return 0;
+            if (!$minutes) return $hours;
+
+            // Trimmed since format 25 adds space (" ") prefix
+            return trim(tbg_formatTime(mktime($hours, $minutes), 25, true, true));
         }
 
     }

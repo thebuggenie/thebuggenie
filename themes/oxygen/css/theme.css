@@ -8620,7 +8620,9 @@ dl.info dt {
     font-size: 0.9em;
 }
 
-#project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours {
+#project_planning.type-kanban .issue_estimates,
+#project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours,
+#project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_minutes {
     display: none;
 }
 

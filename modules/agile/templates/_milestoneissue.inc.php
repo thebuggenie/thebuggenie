@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 // shows only issues with permissions, useful when if we're including subprojects
 if (!$issue->hasAccess())
     return;
 
-$parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_' : ''; 
+$parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_' : '';
 
 ?>
 <li id="<?php echo $parent_prefix ?>issue_<?php echo $issue->getID(); ?>_top_container" class="milestone_issue <?php if ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) echo 'child_issue'; ?> <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->hasChildIssues()) echo 'has_child_issues'; ?>" data-issue-id="<?php echo $parent_prefix . $issue->getID(); ?>"<?php
@@ -14,7 +14,7 @@ $parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_
 
 ?>>
     <div class="planning_indicator" id="<?php echo $parent_prefix; ?>issue_<?php echo $issue->getID(); ?>_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
-    <div id="<?php echo $parent_prefix .'issue_'. $issue->getID(); ?>" class="issue_container <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?> <?php echo ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) ? 'child_issue' : 'draggable'; ?>" data-estimated-points="<?php echo $issue->getEstimatedPoints(); ?>" data-estimated-hours="<?php echo $issue->getEstimatedHours(); ?>" data-spent-points="<?php echo $issue->getSpentPoints(); ?>" data-spent-hours="<?php echo $issue->getSpentHours(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>">
+    <div id="<?php echo $parent_prefix .'issue_'. $issue->getID(); ?>" class="issue_container <?php if ($issue->isClosed()) echo 'issue_closed'; ?> <?php if ($issue->isBlocking()) echo 'blocking'; ?> <?php echo ($issue->isChildIssue() && !$issue->hasParentIssuetype($board->getEpicIssuetypeID())) ? 'child_issue' : 'draggable'; ?>" data-estimated-points="<?php echo $issue->getEstimatedPoints(); ?>" data-estimated-hours="<?php echo $issue->getEstimatedHours(); ?>" data-estimated-minutes="<?php echo $issue->getEstimatedMinutes(); ?>" data-spent-points="<?php echo $issue->getSpentPoints(); ?>" data-spent-hours="<?php echo $issue->getSpentHours(); ?>" data-spent-minutes="<?php echo $issue->getSpentMinutes(); ?>" data-last-updated="<?php echo $issue->getLastUpdatedTime(); ?>">
         <?php include_component('agile/colorpicker', array('issue' => $issue)); ?>
         <div class="priority priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
         <div class="issue_link">
@@ -35,7 +35,7 @@ $parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_
                 <?php endforeach; ?>
                 <div class="issue_estimates">
                     <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
-                    <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHours(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHours(); ?></span></div>
+                    <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHours()) echo 'display: none;'; ?>"><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHoursAndMinutes(); ?></span>/<span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHoursAndMinutes(); ?></span></div>
                 </div>
                 <?php if ($board->getEpicIssuetypeID() && $issue->hasParentIssuetype($board->getEpicIssuetypeID())): ?>
                     <?php foreach ($issue->getParentIssues() as $parent): ?>

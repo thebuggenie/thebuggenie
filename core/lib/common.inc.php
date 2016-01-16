@@ -311,6 +311,9 @@
             case 24:
                 $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(18), $tstamp);
                 break;
+            case 25:
+                $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(19), $tstamp);
+                break;
             default:
                 return $tstamp;
         }

@@ -253,6 +253,7 @@
             {
                 $this->_points = array('estimated' => 0, 'spent' => 0);
                 $this->_hours = array('estimated' => 0, 'spent' => 0);
+                $this->_minutes = array('estimated' => 0, 'spent' => 0);
 
                 if ($res = tables\Issues::getTable()->getPointsAndTimeByMilestone($this->getID(), $allowed_status_ids))
                 {
@@ -262,6 +263,8 @@
                         $this->_points['spent'] += $res->get('spent_points');
                         $this->_hours['estimated'] += $res->get('estimated_hours');
                         $this->_hours['spent'] += round($res->get('spent_hours') / 100, 2);
+                        $this->_minutes['estimated'] += $res->get('estimated_minutes');
+                        $this->_minutes['spent'] += $res->get('spent_minutes');
                     }
                 }
             }
@@ -296,23 +299,57 @@
         /**
          * Get total estimated hours for issues assigned to this milestone
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getHoursEstimated()
+        public function getHoursEstimated($append_minutes = false)
         {
             $this->_populatePointsAndTime();
-            return (int) $this->_hours['estimated'];
+            $hours = (int) $this->_hours['estimated'];
+            return $hours + ($append_minutes ? (int) floor($this->getMinutesEstimated() / 60) : 0);
         }
 
         /**
          * Get total spent hours for issues assigned to this milestone
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getHoursSpent()
+        public function getHoursSpent($append_minutes = false)
         {
             $this->_populatePointsAndTime();
-            return (int) $this->_hours['spent'];
+            $hours = (int) $this->_hours['spent'];
+            return $hours + ($append_minutes ? (int) floor($this->getMinutesSpent() / 60) : 0);
+        }
+
+        /**
+         * Get total estimated minutes for issues assigned to this milestone
+         *
+         * @param bool $subtract_hours
+         *
+         * @return integer
+         */
+        public function getMinutesEstimated($subtract_hours = false)
+        {
+            $this->_populatePointsAndTime();
+            $minutes = (int) $this->_minutes['estimated'];
+            return $subtract_hours ? $minutes % 60 : $minutes;
+        }
+
+        /**
+         * Get total spent minutes for issues assigned to this milestone
+         *
+         * @param bool $subtract_hours
+         *
+         * @return integer
+         */
+        public function getMinutesSpent($subtract_hours = false)
+        {
+            $this->_populatePointsAndTime();
+            $minutes = (int) $this->_minutes['spent'];
+            return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
         public function clearEstimates()

@@ -31,12 +31,14 @@
                     <?php endif; ?>
                 </td>
                 <td id="milestone_<?php echo $milestone->getID(); ?>_points_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getPointsSpent() .'/'. $milestone->getPointsEstimated() : '-'; ?></td>
-                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursSpent() .'/'. $milestone->getHoursEstimated() : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursSpent(true) .'/'. $milestone->getHoursEstimated(true) : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_minutes_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getMinutesSpent(true) .'/'. $milestone->getMinutesEstimated(true) : '-'; ?></td>
             </tr>
             <tr>
                 <td><?php echo __('Issues'); ?></td>
                 <td class="issue_estimates"><?php echo __('Points'); ?></td>
                 <td class="issue_estimates"><?php echo __('Hours'); ?></td>
+                <td class="issue_estimates"><?php echo __('Minutes'); ?></td>
             </tr>
         </table>
     </div>
