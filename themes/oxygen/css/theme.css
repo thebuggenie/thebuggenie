@@ -9389,7 +9389,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     font-size: 0.8em;
     text-transform: uppercase;
     color: #555;
-    width: 50px;
+    width: 70px;
 }
 
 #milestone_details_issue_list th:first-child {
@@ -18314,7 +18314,12 @@ div[id^='wiki_'][id$='_no_links'] {
     border: 1px dotted rgb(170, 170, 170);
 }
 
-.more_actions_dropdown li a.increment-time-minutes,
+.more_actions_dropdown li a.increment-time-minutes {
+  display: inline;
+  opacity: 0.7;
+}
+
 .more_actions_dropdown li a.increment-time-minutes:hover {
   display: inline;
+  opacity: 1;
 }
