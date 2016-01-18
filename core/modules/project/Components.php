@@ -62,7 +62,7 @@
             $this->total_spent_points = 0;
             $this->total_estimated_hours = 0;
             $this->total_spent_hours = 0;
-            $this->burndown_data = $this->milestone->getBurndownData();
+            $this->burndown_data = $this->milestone->getBurndownData(true, true);
         }
 
         public function componentDashboardViewProjectInfo()

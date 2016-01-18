@@ -45,6 +45,7 @@
         {
             $points_retarr = array();
             $hours_retarr = array();
+            $minutes_retarr = array();
             if ($startdate && $enddate)
             {
                 $sd = $startdate;
@@ -52,6 +53,7 @@
                 {
                     $points_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
                     $hours_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
+                    $minutes_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
                     $sd += 86400;
                 }
             }
@@ -61,6 +63,7 @@
                 $crit = $this->getCriteria();
                 $points_retarr_keys = array_keys($points_retarr);
                 $hours_retarr_keys = array_keys($hours_retarr);
+                $minutes_retarr_keys = array_keys($minutes_retarr);
 
                 if ($startdate && $enddate)
                 {
@@ -107,12 +110,29 @@
                                         $hours_retarr[$key][] = $row->get(self::SPENT_HOURS);
                                 }
                             }
+                            foreach ($minutes_retarr_keys as $k => $key)
+                            {
+                                if ($key < $date) continue;
+                                if (array_key_exists($k + 1, $minutes_retarr_keys))
+                                {
+                                    if ($sd >= $key && $sd < $minutes_retarr_keys[$k + 1])
+                                        $minutes_retarr[$key][] = $row->get(self::SPENT_MINUTES);
+                                }
+                                else
+                                {
+                                    if ($sd >= $key)
+                                        $minutes_retarr[$key][] = $row->get(self::SPENT_MINUTES);
+                                }
+                            }
                         }
                         else
                         {
                             if (!isset($hours_retarr[$row->get(self::ISSUE_ID)])) $hours_retarr[$row->get(self::ISSUE_ID)] = array();
                             if (!isset($points_retarr[$row->get(self::ISSUE_ID)])) $hours_retarr[$row->get(self::ISSUE_ID)] = array();
+                            if (!isset($minutes_retarr[$row->get(self::ISSUE_ID)])) $minutes_retarr[$row->get(self::ISSUE_ID)] = array();
+                            if (!isset($points_retarr[$row->get(self::ISSUE_ID)])) $minutes_retarr[$row->get(self::ISSUE_ID)] = array();
                             $hours_retarr[$row->get(self::ISSUE_ID)][] = $row->get(self::SPENT_HOURS);
+                            $minutes_retarr[$row->get(self::ISSUE_ID)][] = $row->get(self::SPENT_MINUTES);
                             $points_retarr[$row->get(self::ISSUE_ID)][] = $row->get(self::SPENT_POINTS);
                         }
                     }
@@ -125,13 +145,17 @@
             foreach ($hours_retarr as $key => $vals)
                 $hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
 
-            $returnarr = array('points' => $points_retarr, 'hours' => $hours_retarr);
+            foreach ($minutes_retarr as $key => $vals)
+                $minutes_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+
+            $returnarr = array('points' => $points_retarr, 'hours' => $hours_retarr, 'minutes' => $minutes_retarr);
 
             if ($startdate && $enddate)
             {
                 $crit2 = $this->getCriteria();
                 $crit2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
                 $crit2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
+                $crit2->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes', Criteria::DB_SUM);
                 $crit2->addWhere(self::EDITED_AT, $startdate, Criteria::DB_LESS_THAN);
 
                 if (count($issue_ids)) $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
@@ -140,6 +164,7 @@
                 {
                     $returnarr['points_spent_before'] = $res2->get('spent_points');
                     $returnarr['hours_spent_before'] = $res2->get('spent_hours');
+                    $returnarr['minutes_spent_before'] = $res2->get('spent_minutes');
                 }
             }
 

@@ -76,6 +76,8 @@
             $points_issues_retarr = array();
             $hours_retarr = array();
             $hours_issues_retarr = array();
+            $minutes_retarr = array();
+            $minutes_issues_retarr = array();
             if ($startdate && $enddate)
             {
                 $sd = $startdate;
@@ -83,6 +85,7 @@
                 {
                     $points_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
                     $hours_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
+                    $minutes_retarr[mktime(0, 0, 1, date('m', $sd), date('d', $sd), date('Y', $sd))] = array();
                     $sd += 86400;
                 }
             }
@@ -106,11 +109,13 @@
                         {
                             $points_issues_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
                             $hours_issues_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
+                            $minutes_issues_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_MINUTES);
                         }
                         else
                         {
                             $hours_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_HOURS);
                             $points_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
+                            $minutes_retarr[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_MINUTES);
                         }
                     }
                 }
@@ -127,9 +132,14 @@
                     $hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
                 reset($hours_retarr);
                 $hours_retarr[key($hours_retarr)] = array_sum($hours_issues_retarr);
+
+                foreach ($minutes_retarr as $key => $vals)
+                    $minutes_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+                reset($minutes_retarr);
+                $minutes_retarr[key($minutes_retarr)] = array_sum($minutes_issues_retarr);
             }
 
-            return array('points' => $points_retarr, 'hours' => $hours_retarr);
+            return array('points' => $points_retarr, 'hours' => $hours_retarr, 'minutes' => $minutes_retarr);
         }
 
     }

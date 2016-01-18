@@ -371,9 +371,6 @@
                 case 18 : // Thu, 30 December 2010 14:45:45 GMT
                     $format = '%Y-%M-%D';
                     break;
-                case 19 : // 4:45 - without hour leading zero
-                    $format = '%k:%M';
-                    break;
                 default : // local server setting
                     $format = '%c';
             }
