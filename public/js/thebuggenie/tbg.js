@@ -5804,6 +5804,30 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
+        TBG.Issues.Field.incrementTimeMinutes = function (minutes, input)
+        {
+            if (minutes > 60 || minutes < 0) return;
+
+            var hour_input = input.replace('minutes', 'hours');
+
+            // Increment hour by one for 60 minutes
+            if (minutes == 60 && $(hour_input)) {
+              $(hour_input).setValue(parseInt($(hour_input).getValue()) + 1);
+              return;
+            }
+
+            if (! $(input)) return;
+
+            var new_minutes = parseInt($(input).getValue()) + minutes;
+
+            if (new_minutes >= 60 && $(hour_input)) {
+                $(hour_input).setValue(parseInt($(hour_input).getValue()) + 1);
+                new_minutes = new_minutes - 60;
+            }
+
+            $(input).setValue(new_minutes);
+        }
+
         TBG.Issues.markAsChanged = function (field)
         {
             if ($('viewissue_changed') != undefined) {

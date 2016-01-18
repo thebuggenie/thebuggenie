@@ -18313,3 +18313,8 @@ div[id^='wiki_'][id$='_no_links'] {
     margin-top: 10px;
     border: 1px dotted rgb(170, 170, 170);
 }
+
+.more_actions_dropdown li a.increment-time-minutes,
+.more_actions_dropdown li a.increment-time-minutes:hover {
+  display: inline;
+}

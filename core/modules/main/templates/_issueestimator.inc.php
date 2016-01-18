@@ -85,6 +85,15 @@
                     <td><?php echo __('%number_of points', array('%number_of' => '')); ?></td>
                 <?php endif; ?>
             </tr>
+            <?php if ($issue->getProject()->hasTimeUnit('minutes') && ((isset($board) && $board->getType() == AgileBoard::TYPE_GENERIC) || !isset($board))): ?>
+                <tr>
+                    <td colspan="<?php echo count($issue->getProject()->getTimeUnits()) + 1; ?>">
+                        <?php foreach (array(60, 30, 15, 5) as $minutes): ?>
+                            <a class="increment-time-minutes" title="<?php echo __('Add %number_of minutes', array('%number_of' => $minutes)); ?>" href="javascript:void(0);" onclick="TBG.Issues.Field.incrementTimeMinutes(<?php echo $minutes; ?>, '<?php echo $field . '_' . $issue_id; ?>_minutes_input');"><?php echo image_tag('time_' . $minutes . 'min.png'); ?></a>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
         </table>
         <?php if ($issue->hasChildIssues()): ?>
             <?php echo __('Note that the total estimated effort of parent issues is the sum of its child issues. This estimate will be replaced if any child issues are updated.'); ?>
