@@ -352,6 +352,32 @@
             return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
+        /**
+         * Returns the estimated hours and minutes formatted
+         *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
+         * @return integer|string
+         */
+        public function getHoursAndMinutesEstimated($append_minutes = false, $subtract_hours = false)
+        {
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getHoursEstimated($append_minutes), $this->getMinutesEstimated($subtract_hours));
+        }
+
+        /**
+         * Returns the spent hours and minutes formatted
+         *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
+         * @return integer|string
+         */
+        public function getHoursAndMinutesSpent($append_minutes = false, $subtract_hours = false)
+        {
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getHoursSpent($append_minutes), $this->getMinutesSpent($subtract_hours));
+        }
+
         public function clearEstimates()
         {
             $this->_hours = null;

@@ -648,9 +648,8 @@
                 }
                 $new_issues = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->countIssues() : 0;
                 $new_e_points = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getPointsEstimated() : 0;
-                $new_e_hours = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getHoursEstimated(true) : 0;
-                $new_e_minutes = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getMinutesEstimated(true) : 0;
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours, 'minutes' => $new_e_minutes));
+                $new_e_hours = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getHoursAndMinutesEstimated(true, true) : 0;
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours));
             }
             catch (\Exception $e)
             {
@@ -733,7 +732,7 @@
 
                         $no_milestone = new \thebuggenie\core\entities\Milestone(0);
                         $no_milestone->setProject($milestone->getProject());
-                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'minutes' => $no_milestone->getMinutesEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursAndMinutesEstimated(true, true), 'points' => $no_milestone->getPointsEstimated()));
                     case $request->isPost():
                         $this->_saveMilestoneDetails($request, $milestone);
                         $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);

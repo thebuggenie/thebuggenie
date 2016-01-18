@@ -53,4 +53,18 @@
             return array_diff(static::$units, $without);
         }
 
+        /**
+         * Formats hours and minutes
+         *
+         * @return integer|string
+         */
+        public static function formatHoursAndMinutes($hours, $minutes)
+        {
+            if (!$hours && !$minutes) return 0;
+            if (!$minutes) return $hours;
+
+            // Trimmed since format 25 adds space (" ") prefix
+            return trim(tbg_formatTime(mktime($hours, $minutes), 25, true, true));
+        }
+
     }

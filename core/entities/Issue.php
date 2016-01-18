@@ -3429,7 +3429,7 @@
          */
         public function getEstimatedHoursAndMinutes()
         {
-            return $this->_formatHoursAndMinutes($this->getEstimatedHours(), $this->getEstimatedMinutes());
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getEstimatedHours(), $this->getEstimatedMinutes());
         }
 
         /**
@@ -3878,7 +3878,7 @@
          */
         public function getSpentHoursAndMinutes()
         {
-            return $this->_formatHoursAndMinutes($this->getSpentHours(), $this->getSpentMinutes());
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getSpentHours(), $this->getSpentMinutes());
         }
 
         /**
@@ -6338,20 +6338,6 @@
             $last_time_unit = array_pop($time_logger_units);
 
             return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
-        }
-
-        /**
-         * Formats hours and minutes
-         *
-         * @return integer|string
-         */
-        protected function _formatHoursAndMinutes($hours, $minutes)
-        {
-            if (!$hours && !$minutes) return 0;
-            if (!$minutes) return $hours;
-
-            // Trimmed since format 25 adds space (" ") prefix
-            return trim(tbg_formatTime(mktime($hours, $minutes), 25, true, true));
         }
 
     }

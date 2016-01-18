@@ -3307,8 +3307,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             sum_spent_minutes = sum_spent_minutes % 60;
             sum_estimated_minutes = sum_estimated_minutes % 60;
             $('milestone_' + milestone_id + '_points_count').update(sum_spent_points + ' / ' + sum_estimated_points);
+            if (sum_spent_minutes != 0) {
+                sum_spent_hours += ':' + ((sum_spent_minutes.toString().length == 1) ? '0' : '') + sum_spent_minutes;
+            }
+            if (sum_estimated_minutes != 0) {
+                sum_estimated_hours += ':' + ((sum_estimated_minutes.toString().length == 1) ? '0' : '') + sum_estimated_minutes;
+            }
             $('milestone_' + milestone_id + '_hours_count').update(sum_spent_hours + ' / ' + sum_estimated_hours);
-            $('milestone_' + milestone_id + '_minutes_count').update(sum_spent_minutes + ' / ' + sum_estimated_minutes);
         };
 
         TBG.Project.Planning.calculateAllMilestonesVisibilityDetails = function () {
@@ -3352,8 +3357,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 sum_minutes = sum_minutes % 60;
                 $('new_backlog_milestone_issues_count').update(num_issues);
                 $('new_backlog_milestone_points_count').update(sum_points);
+                if (sum_minutes != 0) {
+                    sum_hours += ':' + ((sum_minutes.toString().length == 1) ? '0' : '') + sum_minutes;
+                }
                 $('new_backlog_milestone_hours_count').update(sum_hours);
-                $('new_backlog_milestone_minutes_count').update(sum_minutes);
             }
         };
 
@@ -3430,7 +3437,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                                     $('milestone_' + milestone_id + '_issues_count').update(json.issues);
                                     $('milestone_' + milestone_id + '_points_count').update(json.points);
                                     $('milestone_' + milestone_id + '_hours_count').update(json.hours);
-                                    $('milestone_' + milestone_id + '_minutes_count').update(json.minutes);
                                 }
                             }
                         }

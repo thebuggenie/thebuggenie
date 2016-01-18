@@ -6,13 +6,11 @@
                     <td id="new_backlog_milestone_issues_count">0</td>
                     <td id="new_backlog_milestone_points_count" class="issue_estimates estimated_points">0</td>
                     <td id="new_backlog_milestone_hours_count" class="issue_estimates estimated_hours">0</td>
-                    <td id="new_backlog_milestone_minutes_count" class="issue_estimates estimated_minutes">0</td>
                 </tr>
                 <tr>
                     <td><?php echo __('Issues'); ?></td>
                     <td class="issue_estimates estimated_points"><?php echo __('Points'); ?></td>
                     <td class="issue_estimates estimated_hours"><?php echo __('Hours'); ?></td>
-                    <td class="issue_estimates estimated_minutes"><?php echo __('Minutes'); ?></td>
                 </tr>
             </table>
         </div>
