@@ -431,7 +431,7 @@
         }
 
         /**
-         * Retrieve all userrs
+         * Retrieve all users
          *
          * @return array
          */
@@ -439,15 +439,9 @@
         {
             if (self::$_users === null)
             {
-                self::$_users = array();
-                if ($res = self::getB2DBTable()->getAll())
-                {
-                    while ($row = $res->getNextRow())
-                    {
-                        self::$_users[$row->get(tables\Users::ID)] = new \thebuggenie\core\entities\User($row->get(tables\Users::ID), $row);
-                    }
-                }
+                self::$_users = self::getB2DBTable()->getAll();
             }
+
             return self::$_users;
         }
 
