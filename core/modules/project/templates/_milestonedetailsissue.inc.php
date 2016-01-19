@@ -10,7 +10,7 @@
         <span class="<?php if (!$issue->getEstimatedPoints()): ?> faded_out<?php endif; ?>" id="estimated_time_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></span>
     </td>
     <td class="estimates">
-        <span class="<?php if (!$issue->getSpentHours()): ?> faded_out<?php endif; ?>" id="spent_time_<?php echo $issue->getID(); ?>_hours"><?php echo $issue->getSpentHoursAndMinutes(); ?></span> /
+        <span class="<?php if (!$issue->getSpentHoursAndMinutes()): ?> faded_out<?php endif; ?>" id="spent_time_<?php echo $issue->getID(); ?>_hours"><?php echo $issue->getSpentHoursAndMinutes(); ?></span> /
         <span class="<?php if (!$issue->getEstimatedHoursAndMinutes()): ?> faded_out<?php endif; ?>" id="estimated_time_<?php echo $issue->getID(); ?>_hours"><?php echo $issue->getEstimatedHoursAndMinutes(); ?></span>
     </td>
     <td class="milestone_issue_actions">
