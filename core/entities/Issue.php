@@ -5731,7 +5731,6 @@
                 $this->_revertPropertyChange($property);
             }
 
-            $this->_changed_items = array();
             $this->save();
 
             foreach ($changed_properties as $property => $property_values)
