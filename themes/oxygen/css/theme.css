@@ -17446,7 +17446,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #issue_main .commentcontent .image_container.thumb {
     max-width: 500px;
-    display: table;
 }
 
 #issue_main .commentcontent .image_container img {
