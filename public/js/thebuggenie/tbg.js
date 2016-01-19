@@ -5818,16 +5818,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
             // Increment hour by one for 60 minutes
             if (minutes == 60 && $(hour_input)) {
-              $(hour_input).setValue(parseInt($(hour_input).getValue()) + 1);
+              $(hour_input).setValue((parseInt($(hour_input).getValue()) || 0) + 1);
               return;
             }
 
             if (! $(input)) return;
 
-            var new_minutes = parseInt($(input).getValue()) + minutes;
+            var new_minutes = (parseInt($(input).getValue()) || 0) + minutes;
 
             if (new_minutes >= 60 && $(hour_input)) {
-                $(hour_input).setValue(parseInt($(hour_input).getValue()) + 1);
+                $(hour_input).setValue((parseInt($(hour_input).getValue()) || 0) + 1);
                 new_minutes = new_minutes - 60;
             }
 
