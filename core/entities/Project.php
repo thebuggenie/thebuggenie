@@ -2378,6 +2378,7 @@
                                 {
                                     $retval[$key]['values'][$key_prefix . $build->getID()] = $build->getName().' ('.$build->getVersion().')';
                                 }
+                                arsort($retval[$key]['values']);
                                 if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
                                 {
                                     if (!$retval[$key]['required'])
@@ -2389,7 +2390,6 @@
                                         unset($retval[$key]['values']);
                                     }
                                 }
-                                arsort($retval[$key]['values']);
                             }
                             elseif ($key == 'milestone')
                             {
