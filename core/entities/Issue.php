@@ -3395,21 +3395,26 @@
         /**
          * Returns the estimated hours
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getEstimatedHours()
+        public function getEstimatedHours($append_minutes = false)
         {
-            return (int) $this->_estimated_hours;
+            return (int) $this->_estimated_hours + ($append_minutes ? (int) floor($this->getEstimatedMinutes() / 60) : 0);
         }
 
         /**
          * Returns the estimated minutes
          *
+         * @param bool $subtract_hours
+         *
          * @return integer
          */
-        public function getEstimatedMinutes()
+        public function getEstimatedMinutes($subtract_hours = false)
         {
-            return (int) $this->_estimated_minutes;
+          $minutes = (int) $this->_estimated_minutes;
+          return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
         /**
@@ -3425,11 +3430,14 @@
         /**
          * Returns the estimated hours and minutes formatted
          *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
          * @return integer|string
          */
-        public function getEstimatedHoursAndMinutes()
+        public function getEstimatedHoursAndMinutes($append_minutes = false, $subtract_hours = false)
         {
-            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getEstimatedHours(), $this->getEstimatedMinutes());
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getEstimatedHours($append_minutes), $this->getEstimatedMinutes($subtract_hours));
         }
 
         /**
@@ -3844,21 +3852,26 @@
         /**
          * Returns the spent hours
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getSpentHours()
+        public function getSpentHours($append_minutes = false)
         {
-            return (int) round($this->_spent_hours / 100, 2);
+            return (int) round($this->_spent_hours / 100, 2) + ($append_minutes ? (int) floor($this->getSpentMinutes() / 60) : 0);
         }
 
         /**
          * Returns the spent minutes
          *
+         * @param bool $subtract_hours
+         *
          * @return integer
          */
-        public function getSpentMinutes()
+        public function getSpentMinutes($subtract_hours = false)
         {
-            return (int) $this->_spent_minutes;
+          $minutes = (int) $this->_spent_minutes;
+          return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
         /**
@@ -3874,11 +3887,14 @@
         /**
          * Returns the spent hours and minutes formatted
          *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
          * @return integer|string
          */
-        public function getSpentHoursAndMinutes()
+        public function getSpentHoursAndMinutes($append_minutes = false, $subtract_hours = false)
         {
-            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getSpentHours(), $this->getSpentMinutes());
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getSpentHours($append_minutes), $this->getSpentMinutes($subtract_hours));
         }
 
         /**
