@@ -454,7 +454,12 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     line-height: 1.8;
 }
 
-.article ul li
+.article ul li a
 {
     word-break: break-all;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
 }
