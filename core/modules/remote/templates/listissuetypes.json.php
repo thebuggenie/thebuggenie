@@ -1,3 +1,3 @@
 <?php
 
-    echo json_encode($issuetypes);
+    echo json_encode(array('count' => count($issuetypes), 'issuetypes' => $issuetypes));

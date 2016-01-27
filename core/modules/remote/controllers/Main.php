@@ -104,7 +104,10 @@ class Main extends framework\Action
         $return_array = array();
         foreach ($projects as $project)
         {
-            $return_array[$project->getKey()] = $project->getName();
+            $return_array[] = array(
+                'key' => $project->getKey(),
+                'name' => $project->getName()
+            );
         }
 
         $this->projects = $return_array;
@@ -169,7 +172,7 @@ class Main extends framework\Action
                     $choices = $classname::getAll();
                     foreach ($choices as $choice_key => $choice)
                     {
-                        $return_array['choices'][$choice_key] = $choice->getName();
+                        $return_array['choices'][] = array('key' => $choice_key, 'name' => $choice->getName());
                     }
                     break;
                 case 'percent_complete':
@@ -195,7 +198,7 @@ class Main extends framework\Action
                         $milestones = $this->selected_project->getAvailableMilestones();
                         foreach ($milestones as $milestone)
                         {
-                            $return_array['choices'][$milestone->getID()] = $milestone->getName();
+                            $return_array['choices'][] = array('key' => $milestone->getID(), 'name' => $milestone->getName());
                         }
                     }
                     break;
