@@ -9,7 +9,7 @@
         <dt><?php echo __('Current status'); ?></dt>
         <dd><div class="status_badge" style="background-color: <?php echo ($epic->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $epic->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($epic->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $epic->getStatus()->getName() : __('Unknown'); ?>">&nbsp;&nbsp;&nbsp;</div><?php echo ($epic->getStatus() instanceof \thebuggenie\core\entities\Status) ? $epic->getStatus()->getName() : __('Not determined'); ?></dd>
         <dt><?php echo __('Estimate'); ?></dt>
-        <dd id="epic_<?php echo $epic->getID(); ?>_estimate"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime()); ?></dd>
+        <dd id="epic_<?php echo $epic->getID(); ?>_estimate"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime(true, true)); ?></dd>
         <dt><?php echo __('Child issues'); ?></dt>
         <dd><?php echo __('%num_child_issues issue(s)', array('%num_child_issues' => '<span id="epic_'.$epic->getID().'_child_issues_count">'.$epic->countChildIssues().'</span>')); ?></dd>
     </dl>

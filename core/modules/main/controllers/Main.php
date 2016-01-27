@@ -2019,9 +2019,8 @@ class Main extends framework\Action
                     $spenttime->delete();
                     $spenttime->getIssue()->saveSpentTime();
                 }
-                $timesum = array_sum($issue->getSpentTime());
 
-                return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => array_sum($issue->getSpentTime()), 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime(true, true)), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
             }
             catch (\Exception $e)
             {
@@ -2097,9 +2096,7 @@ class Main extends framework\Action
 
         $spenttime->getIssue()->saveSpentTime();
 
-        $timesum = array_sum($spenttime->getIssue()->getSpentTime());
-
-        return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+        return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => array_sum($spenttime->getIssue()->getSpentTime()), 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime(true, true)), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
     }
 
     /**
@@ -2199,7 +2196,7 @@ class Main extends framework\Action
                 {
                     $issue->save();
                 }
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true))) : array('id' => 0)), 'values' => $issue->getEstimatedTime(true, true), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
             case 'posted_by':
             case 'owned_by':
             case 'assigned_to':
@@ -2640,11 +2637,11 @@ class Main extends framework\Action
                 break;
             case 'estimated_time':
                 $issue->revertEstimatedTime();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true))) : array('id' => 0)), 'values' => $issue->getEstimatedTime(true, true), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                 break;
             case 'spent_time':
                 $issue->revertSpentTime();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime(true, true))) : array('id' => 0)), 'values' => $issue->getSpentTime(true, true)));
                 break;
             case 'owned_by':
                 $issue->revertOwner();

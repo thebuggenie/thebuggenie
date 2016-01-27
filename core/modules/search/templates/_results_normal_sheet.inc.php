@@ -97,8 +97,8 @@
             $sheet->setCellValueByColumnAndRow(15, $cc, tbg_formatTime($issue->getPosted(), 21));
             $sheet->setCellValueByColumnAndRow(16, $cc, tbg_formatTime($issue->getLastUpdatedTime(), 21));
             $sheet->setCellValueByColumnAndRow(17, $cc, $issue->getPercentCompleted() . '%');
-            $sheet->setCellValueByColumnAndRow(18, $cc, (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime()));
-            $sheet->setCellValueByColumnAndRow(19, $cc, (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()));
+            $sheet->setCellValueByColumnAndRow(18, $cc, (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)));
+            $sheet->setCellValueByColumnAndRow(19, $cc, (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)));
             $sheet->setCellValueByColumnAndRow(20, $cc, $issue->getUserpain());
             $sheet->setCellValueByColumnAndRow(21, $cc, $issue->getVotes());
             $start_column = 22;
