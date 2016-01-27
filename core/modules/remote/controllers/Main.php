@@ -77,6 +77,26 @@ class Main extends framework\Action
         return $this->renderJSON(array('error' => 'Incorrect username or application password'));
     }
 
+    public function runStatus(framework\Request $request)
+    {
+        $status_info = array(
+            'api_version' => framework\Settings::getApiVersion(),
+            'tgb_version' => framework\Settings::getVersion(),
+            'tgb_version_long' => framework\Settings::getVersion(true, true),
+            'tbg_name' => framework\Settings::getSiteHeaderName(),
+            'tbg_url_host' => framework\Settings::getURLhost(),
+            'tbg_url' => (framework\Settings::getHeaderLink() == '') ? framework\Context::getWebroot() : framework\Settings::getHeaderLink(),
+            'tbg_logo_url' => framework\Settings::getHeaderIconURL(),
+            'tbg_icon_url' => framework\Settings::getFaviconURL(),
+            'online' => (! (bool)framework\Settings::isMaintenanceModeEnabled() )
+            );
+        if(framework\Settings::hasMaintenanceMessage()) {
+            $status_info['maintenance_msg'] = framework\Settings::getMaintenanceMessage();
+        }
+
+        $this->status_info = $status_info;
+    }
+
     public function runListProjects(framework\Request $request)
     {
         $projects = entities\Project::getAll();
