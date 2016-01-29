@@ -142,7 +142,7 @@
          * Returns all comments for a given item
          *
          */
-        static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
+        public static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
         {
             $comments = tables\Comments::getTable()->getComments($target_id, $target_type, $sort_order);
             self::$_comment_count[$target_type][$target_id] = count($comments);
@@ -150,13 +150,13 @@
             return $comments;
         }
 
-        static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)
+        public static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)
         {
             $comments = tables\Comments::getTable()->getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit);
             return $comments;
         }
 
-        static function countComments($target_id, $target_type, $include_system_comments = true)
+        public static function countComments($target_id, $target_type, $include_system_comments = true)
         {
             if (!array_key_exists($target_type, self::$_comment_count))
                 self::$_comment_count[$target_type] = array();

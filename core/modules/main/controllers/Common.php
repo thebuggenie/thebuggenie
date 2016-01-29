@@ -58,6 +58,7 @@ class Common extends framework\Action
         {
             framework\Logging::log('Setting user logout state');
             $this->getUser()->setOffline();
+            $this->getUser()->save();
         }
         framework\Context::logout();
         if ($request->isAjaxCall())

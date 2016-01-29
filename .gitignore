@@ -16,9 +16,11 @@ web.config
 .remote_password_hash
 .remote_server
 .remote_username
+.remote_token
 tmp
 thebuggenie/test.php
 *~
+modules/*/vendor
 vendor/
 /composer.phar
 .directory

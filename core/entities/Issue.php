@@ -2888,7 +2888,8 @@
                         preg_match_all('/{([[:alnum:]]+)}/', $formula, $matches);
 
                         $hasValues = false;
-                        for($i=0; $i<count($matches[0]); $i++) {
+                        $matchCount = count($matches[0]);
+                        for($i=0; $i<$matchCount; $i++) {
                             $value = $this->getCustomField($matches[1][$i]);
                             if ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) {
                                 $value = $value->getValue();
@@ -6034,9 +6035,13 @@
                 'id' => $this->getID(),
                 'issue_no' => $this->getFormattedIssueNo(),
                 'state' => $this->getState(),
+                'closed' => $this->isClosed(),
                 'created_at' => $this->getPosted(),
+                'created_at_iso' => date('c', $this->getPosted()),
                 'updated_at' => $this->getLastUpdatedTime(),
+                'updated_at_iso' => date('c', $this->getLastUpdatedTime()),
                 'title' => $this->getRawTitle(),
+                'href' => framework\Context::getRouting()->generate('viewissue', ['project_key' => $this->getProject()->getKey(), 'issue_no' => $this->getFormattedIssueNo()], false),
                 'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
                 'assignee' => ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->toJSON() : null,
                 'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getStatus()->toJSON() : null,

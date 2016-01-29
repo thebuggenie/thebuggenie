@@ -431,7 +431,7 @@
         }
 
         /**
-         * Retrieve all userrs
+         * Retrieve all users
          *
          * @return array
          */
@@ -439,15 +439,9 @@
         {
             if (self::$_users === null)
             {
-                self::$_users = array();
-                if ($res = self::getB2DBTable()->getAll())
-                {
-                    while ($row = $res->getNextRow())
-                    {
-                        self::$_users[$row->get(tables\Users::ID)] = new \thebuggenie\core\entities\User($row->get(tables\Users::ID), $row);
-                    }
-                }
+                self::$_users = self::getB2DBTable()->getAll();
             }
+
             return self::$_users;
         }
 
@@ -668,7 +662,7 @@
                         break;
                     case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
                         $user = self::getB2DBTable()->getByUsername($request['api_username']);
-                        if (!$user->authenticateApplicationPassword($request['api_token'])) $user = null;
+                        if ($user instanceof User && !$user->authenticateApplicationPassword($request['api_token'])) $user = null;
                         break;
                 }
 
@@ -1006,7 +1000,7 @@
         public function setOnline()
         {
             $this->_userstate = framework\Settings::getOnlineState();
-            $this->_customstate = !$this->isOffline();
+            $this->_customstate = false;
         }
 
         /**
@@ -1403,18 +1397,7 @@
          */
         public function isOffline()
         {
-            if ($this->_customstate)
-            {
-                return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
-            }
-            elseif ($this->_lastseen < (NOW - (60 * 30)))
-            {
-                return true;
-            }
-            else
-            {
-                return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
-            }
+            return (!$this->getState() instanceof UserState) ? false : !$this->getState()->isOnline();
         }
 
         /**
@@ -1426,7 +1409,7 @@
         {
             $active = $this->isActive();
             $away = $this->isAway();
-            if ($this->_customstate && ($active || $away))
+            if (($active || $away) && $this->_customstate)
             {
                 $this->_b2dbLazyload('_userstate');
                 if ($this->_userstate instanceof Userstate)
@@ -1438,8 +1421,10 @@
 
             if ($active)
                 return framework\Settings::getOnlineState();
-            elseif ($away)
+
+            if ($away)
                 return framework\Settings::getAwayState();
+
             else
                 return framework\Settings::getOfflineState();
         }
@@ -2658,6 +2643,7 @@
                 {
                     $scope = \thebuggenie\core\entities\Scope::getB2DBTable()->selectById($scope_id);
                     if (!$scope instanceof Scope) continue;
+
                     if (!$details['confirmed'])
                     {
                         $this->_unconfirmed_scopes[$scope_id] = $scope;

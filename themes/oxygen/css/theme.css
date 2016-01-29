@@ -610,6 +610,26 @@ img.userstate {
     margin: 1px 2px 2px 0;
     vertical-align: middle;
 }
+.fa.userstate {
+    display: inline-block;
+    vertical-align: middle;
+    width: 12px;
+}
+.fa.userstate.online {
+    color: rgb(50, 150, 50);
+}
+.fa.userstate.busy, .fa.userstate.unavailable {
+    color: rgb(200, 50, 50);
+}
+.fa.userstate.in-meeting {
+    color: rgb(50, 50, 200);
+}
+.fa.userstate.absent {
+    color: rgb(200, 200, 0);
+}
+.fa.userstate.offline {
+    color: rgb(200, 200, 200);
+}
 
 img.avatar {
     border-radius: 15px;
@@ -2115,6 +2135,12 @@ div.dropdown_separator {
     height: 22px;
     width: 22px;
     vertical-align: middle;
+}
+.tab_menu.inset li .fa {
+    vertical-align: middle;
+    font-size: 1.4em;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 /* end tabbed menu */
@@ -6142,6 +6168,23 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-right: 5px;
 }
 
+.more_actions_dropdown .fa {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 16px;
+    text-align: center;
+}
+.more_actions_dropdown .disabled .fa {
+    text-shadow: 1px 1px 1px rgb(255, 255, 255);
+}
+.more_actions_dropdown .fa.mark_blocking, .more_actions_dropdown .fa.delete {
+    color: rgb(225, 50, 50);
+}
+.more_actions_dropdown .fa.affected_items {
+    color: rgb(25, 150, 25);
+}
+
 .more_actions_dropdown li.disabled a {
     color: #AAA !important;
     text-shadow: 1px 1px 0 #FFF;
@@ -7493,20 +7536,20 @@ table.issue_affects td img {
     left: 20px;
 }
 
-#issue_details .collapser_link .collapser {
-    display: inline;
+#issue_details .collapser_link .collapser, #issue_details .collapser_link .fa.collapser {
+    display: inline-block;
 }
 
-#issue_details .collapser_link .expander {
+#issue_details .collapser_link .expander, #issue_details .collapser_link .fa.expander {
     display: none;
 }
 
-#issue_details.collapsed .collapser_link .collapser {
+#issue_details_container.collapsed .collapser_link .collapser, #issue_details_container.collapsed .collapser_link .fa.collapser {
     display: none;
 }
 
-#issue_details.collapsed .collapser_link .expander {
-    display: inline;
+#issue_details_container.collapsed .collapser_link .expander, #issue_details_container.collapsed .collapser_link .fa.expander {
+    display: inline-block;
 }
 
 .backdrop_box.sectioned input[type=text] {

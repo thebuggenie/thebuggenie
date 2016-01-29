@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\tables\Files;
     use thebuggenie\core\entities\tables\IssueFields,
         thebuggenie\core\entities\tables\Links,
         thebuggenie\core\entities\tables\Scopes,
@@ -65,6 +66,8 @@
         protected $_hostnames = null;
 
         protected $_is_secure = false;
+
+        protected $_used_storage = null;
 
         /**
          * @var boolean
@@ -240,6 +243,7 @@
                 '\thebuggenie\core\entities\tables\Components',
                 '\thebuggenie\core\entities\tables\Editions',
                 '\thebuggenie\core\entities\tables\Builds',
+                '\thebuggenie\core\entities\tables\Files',
                 '\thebuggenie\core\entities\tables\Milestones',
                 '\thebuggenie\core\entities\tables\Issues',
                 '\thebuggenie\core\entities\tables\Projects',
@@ -392,6 +396,28 @@
                 return ($this->getMaxWorkflowsLimit()) ? (Workflow::getCustomWorkflowsCount() < $this->getMaxWorkflowsLimit()) : true;
             else
                 return false;
+        }
+
+        public function getCurrentUploadUsagePercent()
+        {
+            $multiplier = 100 / $this->getMaxUploadLimit();
+            $pct = floor(($this->getCurrentUploadUsage() / 1000000) * $multiplier);
+            return ($pct > 100) ? 100 : $pct;
+        }
+
+        public function getCurrentUploadUsageMB()
+        {
+            $usage = $this->getCurrentUploadUsage();
+            return round($usage / 1000000, 1);
+        }
+
+        public function getCurrentUploadUsage()
+        {
+            if ($this->_used_storage === null) {
+                $this->_used_storage = Files::getTable()->getSizeByScopeID($this->getID());
+            }
+
+            return $this->_used_storage;
         }
 
         public function setMaxUploadLimit($limit)

@@ -838,6 +838,8 @@ class Main extends framework\Action
                     framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
                     framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
                     framework\Context::getResponse()->setCookie('tbg3_persona_session', true);
+                    $user->setOnline();
+                    $user->save();
                     return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
                 }
             }
@@ -909,6 +911,8 @@ class Main extends framework\Action
                         }
                         framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
                         framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
+                        $user->setOnline();
+                        $user->save();
                         if ($this->checkScopeMembership($user))
                             return true;
 
@@ -937,6 +941,8 @@ class Main extends framework\Action
                 {
                     $user = entities\User::loginCheck($request, $this);
 
+                    $user->setOnline();
+                    $user->save();
                     framework\Context::setUser($user);
                     if ($this->checkScopeMembership($user))
                         return true;
@@ -996,6 +1002,9 @@ class Main extends framework\Action
 
         if ($this->checkScopeMembership($user))
             return true;
+
+        $user->setOnline();
+        $user->save();
 
         if ($request->isAjaxCall())
         {

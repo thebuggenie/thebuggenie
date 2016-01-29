@@ -344,10 +344,10 @@ class Main extends framework\Action
 
             framework\Settings::saveSetting('language', 'en_US', 'core', 1);
 
-            \thebuggenie\core\entities\Module::installModule('publish');
-            \thebuggenie\core\entities\Module::installModule('agile');
-            \thebuggenie\core\entities\Module::installModule('mailing');
-            \thebuggenie\core\entities\Module::installModule('vcs_integration');
+            foreach (['publish', 'agile', 'mailing', 'vcs_integration'] as $module)
+            {
+                \thebuggenie\core\entities\Module::installModule($module);
+            }
 
             $this->htaccess_error = false;
             $this->htaccess_ok = (bool) $request['apache_autosetup'];
@@ -584,6 +584,15 @@ class Main extends framework\Action
         set_time_limit(0);
 
         \thebuggenie\modules\agile\entities\tables\AgileBoards::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_413\AgileBoard::getB2DBTable());
+
+        $this->upgrade_complete = true;
+    }
+
+    protected function _upgradeFrom4dot1dot5(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Files::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_414\File::getB2DBTable());
 
         $this->upgrade_complete = true;
     }

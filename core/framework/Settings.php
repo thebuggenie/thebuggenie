@@ -812,12 +812,13 @@
 
         public static function getUploadStorage()
         {
-            return self::get(self::SETTING_UPLOAD_STORAGE);
+            return self::get(self::SETTING_UPLOAD_STORAGE, 'core', self::getDefaultScopeID());
         }
 
         public static function getUploadsLocalpath()
         {
-            return self::get(self::SETTING_UPLOAD_LOCAL_PATH);
+            $path = self::get(self::SETTING_UPLOAD_LOCAL_PATH, 'core', self::getDefaultScopeID());
+            return (substr($path, -1, 1) == DS) ? $path : $path . DS;
         }
 
         public static function isInfoBoxVisible($key)

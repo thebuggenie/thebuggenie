@@ -536,7 +536,8 @@
         public function setCookie($key, $value, $expiration = 864000)
         {
             $expiration = ($expiration !== null) ? NOW + $expiration : null;
-            setcookie($key, $value, $expiration, Context::getWebroot());
+            $secure = Context::getScope()->isSecure();
+            setcookie($key, $value, $expiration, Context::getWebroot(), null, $secure);
             return true;
         }
 

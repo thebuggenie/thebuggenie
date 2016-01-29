@@ -6186,7 +6186,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Search.bulkContainerChanger = function (mode) {
             var sub_container_id = 'bulk_action_subcontainer_' + $('bulk_action_selector_' + mode).getValue();
-            $('search_results').select('.bulk_action_subcontainer').each(function (element) {
+            $$('.bulk_action_subcontainer').each(function (element) {
                 element.hide();
             });
             if ($(sub_container_id + '_top')) {

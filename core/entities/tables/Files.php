@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Criteria;
+    use b2db\Table;
     use thebuggenie\core\framework;
 
     /**
@@ -26,7 +28,7 @@
     class Files extends ScopedTable
     {
 
-        const B2DB_TABLE_VERSION = 1;
+        const B2DB_TABLE_VERSION = 2;
         const B2DBNAME = 'files';
         const ID = 'files.id';
         const SCOPE = 'files.scope';
@@ -60,12 +62,49 @@
             return $res->getInsertID();
         }
 
+        public function _migrateData(Table $old_table)
+        {
+            switch ($old_table::B2DB_TABLE_VERSION) {
+                case 1:
+                    foreach ($this->selectAll() as $file) {
+                        $file->save();
+                    }
+            }
+        }
+
+        public function getAllContentFiles()
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::CONTENT, null, Criteria::DB_IS_NOT_NULL);
+            $crit->addWhere(self::CONTENT, '', Criteria::DB_NOT_EQUALS);
+
+            return $this->select($crit);
+        }
+
         public function getByID($id)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $row = $this->doSelectById($id, $crit, false);
             return $row;
+        }
+
+        public function getByScopeID($scope_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, $scope_id);
+
+            return $this->select($crit);
+        }
+
+        public function getSizeByScopeID($scope_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, $scope_id);
+            $crit->addSelectionColumn('files.size', 'totalsize', Criteria::DB_SUM);
+
+            $result = $this->doSelectOne($crit);
+            return $result['totalsize'];
         }
 
     }

@@ -13,9 +13,10 @@
         "irc" : "irc://irc.freenode.org/thebuggenie"
     },
     "license" : [
-        "MPL 1.1"
+        "MPL 2.0"
     ],
     "require" : {
+    	"php": ">=5.4",
         "thebuggenie/b2db" : "dev-master",
         "mrclay/minify" : "dev-master",
         "easybook/geshi" : "dev-master",

@@ -1218,7 +1218,7 @@ EOT;
 
                         if ($user instanceof User)
                         {
-                            if (framework\Context::getUser()->getID() != $user->getID())
+                            if (framework\Context::isCLI() || framework\Context::getUser()->getID() != $user->getID())
                                 framework\Context::switchUserContext($user);
 
                             $message = $account->getMessage($email);
