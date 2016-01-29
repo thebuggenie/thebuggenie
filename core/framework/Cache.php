@@ -31,7 +31,6 @@
         const KEY_MAIN_MENU_LINKS = '_mainmenu_links';
         const KEY_I18N = '_i18n_';
         const KEY_TEXTPARSER_ISSUE_REGEX = 'thebuggenie\core\framework\helpers\TextParser::getIssueRegex';
-        const CLEAR_CACHE_KEY = 'KEY_';
 
         /**
          * Cache types APC, filesystem (default)
@@ -278,12 +277,12 @@
             $this->_prefix = $prefix;
         }
 
-        public function clearCacheKeys($keys, $prepend_scope = true, $force = false)
+        public function clearCacheKeys($keys)
         {
             foreach ($keys as $key)
             {
-                $this->delete($key, $prepend_scope, $force);
-                $this->fileDelete($key, $prepend_scope, $force);
+                $this->delete($key);
+                $this->fileDelete($key);
             }
         }
 
