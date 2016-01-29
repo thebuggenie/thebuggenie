@@ -454,7 +454,7 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     line-height: 1.8;
 }
 
-.article ul li a
+#viewissue_comments .article ul li a
 {
     word-break: break-all;
     white-space: pre-wrap;
