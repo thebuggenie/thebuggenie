@@ -32,3 +32,10 @@ api_list_fieldvalues:
     action: listFieldvalues
     parameters: [ ]
     csrf_enabled: false
+
+api_issue_edittimespent:
+    route: /api/:api_username/:project_key/issues/:issue_id/timespent/:entry_id/:format
+    module: remote
+    action: issueEditTimeSpent
+    parameters: [ ]
+    csrf_enabled: false

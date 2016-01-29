@@ -79,11 +79,12 @@ class Main extends framework\Action
 
     public function runListProjects(framework\Request $request)
     {
-        $projects = entities\Project::getAll();
+        $projects = framework\Context::getUser()->getAssociatedProjects();
 
         $return_array = array();
         foreach ($projects as $project)
         {
+            if ($project->isDeleted()) continue;
             $return_array[$project->getKey()] = $project->getName();
         }
 
@@ -95,7 +96,15 @@ class Main extends framework\Action
         try
         {
             $issuetype = entities\Issuetype::getByKeyish($request['issuetype']);
-            $issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
+
+            if ($issuetype instanceof entities\common\Identifiable)
+            {
+                $issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
+            }
+            else
+            {
+                $issuefields = array();
+            }
         }
         catch (\Exception $e)
         {
@@ -123,7 +132,7 @@ class Main extends framework\Action
     {
         $field_key = $request['field_key'];
         $return_array = array('description' => null, 'type' => null, 'choices' => null);
-        if ($field_key == 'title' || in_array($field_key, entities\DatatypeBase::getAvailableFields(true)))
+        if ($field_key == 'title' || in_array($field_key, entities\DatatypeBase::getAvailableFields(true)) || $field_key == 'activitytype')
         {
             switch ($field_key)
             {
@@ -146,6 +155,17 @@ class Main extends framework\Action
                     $return_array['type'] = 'choice';
 
                     $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
+                    $choices = $classname::getAll();
+                    foreach ($choices as $choice_key => $choice)
+                    {
+                        $return_array['choices'][$choice_key] = $choice->getName();
+                    }
+                    break;
+                case 'activitytype':
+                    $return_array['description'] = framework\Context::getI18n()->__('Choose one of the available values');
+                    $return_array['type'] = 'choice';
+
+                    $classname = "\\thebuggenie\\core\\entities\\ActivityType";
                     $choices = $classname::getAll();
                     foreach ($choices as $choice_key => $choice)
                     {
@@ -187,6 +207,28 @@ class Main extends framework\Action
         }
 
         $this->field_info = $return_array;
+    }
+
+    public function runIssueEditTimeSpent(framework\Request $request)
+    {
+        try
+        {
+            \thebuggenie\core\framework\Context::performAction(
+                new \thebuggenie\core\modules\main\controllers\Main(),
+                'main',
+                'IssueEditTimeSpent'
+            );
+        }
+        catch (\Exception $e)
+        {
+            ob_get_clean();
+
+            return $this->renderJSON(array('edited' => 'error', 'error' => $e->getMessage()));
+        }
+
+        ob_get_clean();
+
+        $this->return_data = array('edited' => 'ok');
     }
 
 }

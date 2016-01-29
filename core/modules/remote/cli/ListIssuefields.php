@@ -39,7 +39,7 @@
             $this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
             $this->cliEcho(" for issuefields valid for issue types {$issuetype} for project {$project_key}\n\n");
 
-            $response = $this->getRemoteResponse($this->getRemoteURL('remote_list_issuefields', array('issuetype' => $issuetype, 'project_key' => $project_key, 'format' => 'json')));
+            $response = $this->getRemoteResponse($this->getRemoteURL('api_list_issuefields', array('issuetype' => $issuetype, 'project_key' => $project_key, 'format' => 'json')));
 
             if (!empty($response))
             {
