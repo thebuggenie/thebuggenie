@@ -6170,10 +6170,11 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 .more_actions_dropdown .fa {
     display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-    width: 16px;
+    margin-right: 8px;
+    width: 18px;
+    font-size: 15px;
     text-align: center;
+    margin-top: -1px;
 }
 .more_actions_dropdown .disabled .fa {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
