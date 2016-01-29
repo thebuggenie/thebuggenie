@@ -692,6 +692,8 @@
 
         public static function parseIssuelink($matches, $markdown_format = false)
         {
+            framework\Context::loadLibrary('ui');
+            
             $theIssue = \thebuggenie\core\entities\Issue::getIssueFromLink($matches[0]);
             $output = '';
             $classname = '';
