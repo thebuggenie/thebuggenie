@@ -586,15 +586,17 @@ class Main extends framework\Action
         \thebuggenie\modules\agile\entities\tables\AgileBoards::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_413\AgileBoard::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.4';
     }
 
-    protected function _upgradeFrom4dot1dot5(framework\Request $request)
+    protected function _upgradeFrom4dot1dot4(framework\Request $request)
     {
         set_time_limit(0);
 
         \thebuggenie\core\entities\tables\Files::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_414\File::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.5';
     }
 
     protected function _upgradeFrom4dot1dot5(framework\Request $request)
@@ -606,6 +608,7 @@ class Main extends framework\Action
         \thebuggenie\core\entities\tables\IssueEstimates::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueEstimatesTable::getTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.6';
     }
 
     protected function _upgradeFrom4dot1dot6(framework\Request $request)
@@ -615,6 +618,7 @@ class Main extends framework\Action
         \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.7';
     }
 
     public function runUpgrade(framework\Request $request)
@@ -654,6 +658,8 @@ class Main extends framework\Action
                     $this->_upgradeFrom4dot1dot2($request);
                 case '4.1.3':
                     $this->_upgradeFrom4dot1dot3($request);
+                case '4.1.4':
+                    $this->_upgradeFrom4dot1dot4($request);
                 case '4.1.5':
                     $this->_upgradeFrom4dot1dot5($request);
                 case '4.1.6':
