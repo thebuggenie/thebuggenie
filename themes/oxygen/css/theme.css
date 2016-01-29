@@ -612,7 +612,6 @@ img.userstate {
 }
 .fa.userstate {
     display: inline-block;
-    vertical-align: middle;
     width: 12px;
 }
 .fa.userstate.online {
@@ -6176,6 +6175,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     font-size: 15px;
     text-align: center;
     margin-top: -1px;
+    color: #555;
 }
 .more_actions_dropdown .disabled .fa {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
