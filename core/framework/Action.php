@@ -33,7 +33,7 @@
             if (Context::isCLI())
                 return self::AUTHENTICATION_METHOD_CLI;
 
-            if (in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml'])) {
+            if (in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml']) && Context::getRouting()->getCurrentRouteAction() !== 'findIssue') {
                 return self::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
             }
 
