@@ -662,7 +662,7 @@
                         break;
                     case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
                         $user = self::getB2DBTable()->getByUsername($request['api_username']);
-                        if (!$user->authenticateApplicationPassword($request['api_token'])) $user = null;
+                        if ($user instanceof User && !$user->authenticateApplicationPassword($request['api_token'])) $user = null;
                         break;
                 }
 
