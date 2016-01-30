@@ -74,5 +74,14 @@
             $this->_owner_team = null;
             $this->_owner_user = null;
         }
+        
+        public function toJSON($detailed = false)
+        {
+            $jsonArray = array(
+                'id' => $this->getID(),
+        		'owner' => $this->hasOwner() ? $this->getOwner()->toJSON() : null
+            );
+            return $jsonArray;
+        }
 
     }

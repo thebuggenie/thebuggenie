@@ -202,5 +202,17 @@
         {
             $this->_name = $name;
         }
+        
+        public function toJSON($detailed = false)
+        {
+            return array(
+                'name' => $this->getName(),
+                'is_absent' => $this->isAbsent(),
+                'is_busy' => $this->isBusy(),
+                'is_in_meeting' => $this->isInMeeting(),
+                'is_online' => $this->isOnline(),
+                'is_unavalable' => $this->isUnavailable()
+            );
+        }
 
     }

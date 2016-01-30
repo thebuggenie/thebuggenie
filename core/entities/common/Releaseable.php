@@ -142,4 +142,17 @@
             return date("A", $this->_release_date);
         }
         
+        public function toJSON($detailed = false)
+        {
+            $jsonArray = array(
+                'id' => $this->getID(),
+        		'owner' => $this->hasOwner() ? $this->getOwner()->toJSON() : null
+            );
+            if($detailed) {
+        		$jsonArray['released'] = $this->isReleased();
+        		$jsonArray['release_date'] = $this->getReleaseDate();
+            }
+            return $jsonArray;
+        }
+        
     }

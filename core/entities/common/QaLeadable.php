@@ -143,5 +143,20 @@
             $this->_qa_responsible_team = null;
             $this->_qa_responsible_user = null;
         }
+        
+        public function toJSON($detailed = false)
+        {
+            $jsonArray = array(
+                'id' => $this->getID(),
+                'leader' => $this->hasLeader() ? $this->getLeader()->toJSON() : null,
+                'qa_responsible' => $this->hasQaResponsible() ? $this->getQaResponsible()->toJSON() : null,
+        		'owner' => $this->hasOwner() ? $this->getOwner()->toJSON() : null
+            );
+            if($detailed) {
+        		$jsonArray['released'] = $this->isReleased();
+        		$jsonArray['release_date'] = $this->getReleaseDate();
+            }
+            return $jsonArray;
+        }
 
     }

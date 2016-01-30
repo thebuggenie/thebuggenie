@@ -1294,6 +1294,11 @@
             return $this->_milestones;
         }
 
+        /**
+         * Returns an array with all open milestones
+         * 
+         * @return array|\thebuggenie\core\entities\Milestone
+         */
         public function getOpenMilestones()
         {
             $milestones = $this->getMilestones();
@@ -1305,6 +1310,11 @@
             return $milestones;
         }
 
+        /**
+         * Returns an array with all milestones visible for the roadmap
+         * 
+         * @return array|\thebuggenie\core\entities\Milestone
+         */
         public function getMilestonesForRoadmap()
         {
             $milestones = array();
@@ -1318,6 +1328,11 @@
             return $milestones;
         }
 
+        /**
+         * Returns an array with all milestones visible for issues
+         * 
+         * @return array|\thebuggenie\core\entities\Milestone
+         */
         public function getMilestonesForIssues()
         {
             $milestones = array();
@@ -1331,6 +1346,11 @@
             return $milestones;
         }
 
+        /**
+         * Returns an array with all milestones visible for issues or the roadmap
+         * 
+         * @return array|\thebuggenie\core\entities\Milestone
+         */
         public function getAvailableMilestones()
         {
             $milestones = array();
@@ -3318,6 +3338,59 @@
             }
 
             $preloaded = true;
+        }
+        
+        public function toJSON($detailed = false)
+        {
+        	$jsonArray = array(
+        			'id' => $this->getID(),
+        			'key' => $this->getKey(),
+        			'name' => $this->getName(),
+        			'href' => framework\Context::getRouting()->generate('project_dashboard', array('project_key' => $this->getKey())),
+        			'deleted' => $this->isDeleted(),
+        			'archived' => $this->isArchived()
+        	);
+        	if($detailed) {
+        		$jsonArray['icon_large'] = $this->getLargeIconName();
+        		$jsonArray['icon_small'] = $this->getSmallIconName();
+        		$jsonArray['description'] = $this->getDescription();
+        		$jsonArray['url_documentation'] = $this->getDocumentationURL();
+        		$jsonArray['url_homepage'] = $this->getHomepage();
+        		$jsonArray['url_wiki'] = $this->getWikiURL();
+        		
+        		$jsonArray['prefix_used'] = $this->doesUsePrefix();
+        		$jsonArray['prefix'] = $this->getPrefix();
+
+        		$jsonArray['workflow_scheme'] = $this->hasWorkflowScheme() ? $this->getWorkflowScheme()->toJSON() : null;
+        		$jsonArray['issuetype_scheme'] = $this->getIssuetypeScheme()->toJSON();
+
+        		$jsonArray['builds_enabled'] = $this->isBuildsEnabled();
+        		$jsonArray['editions_enabled'] = $this->isEditionsEnabled();
+        		$jsonArray['components_enabled'] = $this->isComponentsEnabled();
+        		$jsonArray['allow_freelancing'] = $this->canChangeIssuesWithoutWorkingOnThem();
+        		
+        		$jsonArray['released'] = $this->isReleased();
+        		$jsonArray['release_date'] = $this->getReleaseDate();
+        		
+        		$jsonArray['frontpage_shown'] = $this->isShownInFrontpageSummary();
+        		$jsonArray['frontpage_summary_type'] = $this->getFrontpageSummaryType();
+        		$jsonArray['frontpage_milestones_visible'] = $this->isMilestonesVisibleInFrontpageSummary();
+        		$jsonArray['frontpage_issuetypes_visible'] = $this->isIssuetypesVisibleInFrontpageSummary();
+        		$jsonArray['frontpage_issuelist_visible'] = $this->isIssuelistVisibleInFrontpageSummary();
+        		
+        		$jsonArray['parent'] = $this->hasParent() ? $this->getParent()->toJSON() : null;
+        		$jsonArray['leader'] = $this->hasLeader() ? $this->getLeader()->toJSON() : null;
+        		$jsonArray['owner'] = $this->hasOwner() ? $this->getOwner()->toJSON() : null;
+        		$jsonArray['qa_responsible'] = $this->hasQaResponsible() ? $this->getQaResponsible()->toJSON() : null;
+        		$jsonArray['client'] = $this->hasClient() ? $this->getClient()->toJSON() : null;
+
+        		$jsonArray['issues_count'] = $this->countAllIssues();
+        		$jsonArray['issues_count_open'] = $this->countAllOpenIssues();
+        		$jsonArray['issues_count_closed'] = $this->countAllClosedIssues();
+        		$jsonArray['issues_percent_closed'] = $this->getClosedPercentageForAllIssues();
+        		
+        	}
+        	return $jsonArray;
         }
 
     }

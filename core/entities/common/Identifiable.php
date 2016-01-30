@@ -56,6 +56,7 @@
          * Create a JSON representation of this Entity.
          * 
          * @param bool $detailed [optional] Include detailed information or not. (default false)
+         * @return array
          */
         public function toJSON($detailed = false)
         {
