@@ -29,7 +29,7 @@
     class Notifications extends ScopedTable
     {
         
-        const B2DB_TABLE_VERSION = 2;
+        const B2DB_TABLE_VERSION = 3;
         const B2DBNAME = 'notifications';
         const ID = 'notifications.id';
         const SCOPE = 'notifications.scope';
@@ -40,6 +40,7 @@
         const USER_ID = 'notifications.user_id';
         const IS_READ = 'notifications.is_read';
         const CREATED_AT = 'notifications.created_at';
+        const SHOWN_AT = 'notifications.shown_at';
 
         public function getCountsByUserID($user_id)
         {
@@ -121,7 +122,7 @@
             $notification_type_issue_updated_col = \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED;
             $seconds = $minutes * 60;
 
-            list($target_id_col, $notification_type_col, $module_name_col, $is_read_col, $created_at_col, $triggered_by_user_id_col, $user_id_col, $scope_col, $id_col) = $this->getAliasColumns();
+            list($target_id_col, $notification_type_col, $module_name_col, $is_read_col, $created_at_col, $triggered_by_user_id_col, $user_id_col, $shown_at_col, $scope_col, $id_col) = $this->getAliasColumns();
 
             $sql = 'SELECT ';
             $sql_selects = array();
@@ -225,6 +226,18 @@
 
             unset($types[$key]);
             $this->markUserNotificationsReadByTypesAndId($types, $id, $user_id);
+        }
+
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            switch ($old_table::B2DB_TABLE_VERSION)
+            {
+                case 2:
+                    $crit = $this->getCriteria();
+                    $crit->addUpdate(self::SHOWN_AT, time());
+                    $this->doUpdate($crit);
+                    break;
+            }
         }
         
     }

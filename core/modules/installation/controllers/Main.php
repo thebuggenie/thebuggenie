@@ -621,6 +621,16 @@ class Main extends framework\Action
         $this->current_version = '4.1.7';
     }
 
+    protected function _upgradeFrom4dot1dot7(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_417\Notification::getB2DBTable());
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.8';
+    }
+
     public function runUpgrade(framework\Request $request)
     {
         $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -664,6 +674,8 @@ class Main extends framework\Action
                     $this->_upgradeFrom4dot1dot5($request);
                 case '4.1.6':
                     $this->_upgradeFrom4dot1dot6($request);
+                case '4.1.7':
+                    $this->_upgradeFrom4dot1dot7($request);
                 default:
                     $this->upgrade_complete = true;
                     break;

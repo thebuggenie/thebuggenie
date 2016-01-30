@@ -457,6 +457,7 @@ header #user_notifications_count.unread + img {
     font-size: 1em;
     position: relative;
     z-index: 2;
+    margin-left: 10px;
 }
 
 #user_notifications_ist > li h1 {

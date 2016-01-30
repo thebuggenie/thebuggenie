@@ -87,6 +87,11 @@
          */
         protected $_user_id;
 
+        /**
+         * @Column(type="integer", length=10)
+         */
+        protected $_shown_at;
+
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
@@ -223,6 +228,24 @@
             $this->_is_read = $is_read;
         }
 
+        public function getShownAt()
+        {
+            return $this->_shown_at;
+        }
 
+        public function isShown()
+        {
+            return (bool) $this->_shown_at;
+        }
+
+        public function setShownAt($shown_at)
+        {
+            $this->_shown_at = $shown_at;
+        }
+
+        public function showOnce()
+        {
+            $this->_shown_at = time();
+        }
 
     }

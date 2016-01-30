@@ -1,5 +1,5 @@
-define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'jquery-ui', 'jquery.markitup', 'spectrum'],
-    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'notify', 'jquery-ui', 'jquery.markitup', 'spectrum'],
+    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable, Notify) {
 
         var TBG = {
             Core: {
@@ -19,7 +19,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     Backdrop: {}
                 },
                 Profile: {},
-                Notifications: {},
+                Notifications: {
+                    Web: {}
+                },
                 Dashboard: {
                     views: [],
                     View: {}
@@ -7620,6 +7622,26 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 }
             }
+        }
+
+        TBG.Main.Notifications.Web.GrantPermissionOrSendTest = function (event) {
+            if (!Notify.needsPermission) {
+                TBG.Main.Notifications.Web.Send('Test notification', 'This is a test notification.', 'test');
+            } else if (Notify.isSupported()) {
+                Notify.requestPermission(function () {
+                    TBG.Main.Notifications.Web.Send('Web Notifications are enabled', 'You will receive The Bug Genie notifications from box through browser as well. Link "Web Notifications" now sends test notification.', 'permission-granted');
+                });
+            }
+        }
+
+        TBG.Main.Notifications.Web.Send = function (title, body, tag) {
+            if (Notify.needsPermission) return;
+
+            new Notify(title, {
+                body: body,
+                tag: tag,
+                timeout: 8
+            }).show();
         }
 
         TBG.Main.initializeMentionable = function (textarea) {
