@@ -12,6 +12,32 @@ use thebuggenie\core\framework,
 class Main extends framework\Action
 {
 
+	protected static $_ver_api_mj = 1;
+	protected static $_ver_api_mn = 1;
+	protected static $_ver_api_rev = 0;
+
+	public function getApiVersion($with_revision = true)
+	{
+		$retvar = self::$_ver_api_mj . '.' . self::$_ver_api_mn;
+		if ($with_revision) $retvar .= (is_numeric(self::$_ver_api_rev)) ? '.' . self::$_ver_api_rev : self::$_ver_api_rev;
+		return $retvar;
+	}
+	
+	public function getApiMajorVer()
+	{
+		return self::$_ver_api_mj;
+	}
+	
+	public function getApiMinorVer()
+	{
+		return self::$_ver_api_mn;
+	}
+	
+	public function getApiRevision()
+	{
+		return self::$_ver_api_rev;
+	}
+	
     public function getAuthenticationMethodForAction($action)
     {
         switch ($action)
@@ -80,7 +106,7 @@ class Main extends framework\Action
     public function runStatus(framework\Request $request)
     {
         $status_info = array(
-            'api_version' => framework\Settings::getApiVersion(),
+            'api_version' => $this->getApiVersion(),
             'tgb_version' => framework\Settings::getVersion(),
             'tgb_version_long' => framework\Settings::getVersion(true, true),
             'tbg_name' => framework\Settings::getSiteHeaderName(),
@@ -104,10 +130,7 @@ class Main extends framework\Action
         $return_array = array();
         foreach ($projects as $project)
         {
-            $return_array[] = array(
-                'key' => $project->getKey(),
-                'name' => $project->getName()
-            );
+            $return_array[] = $project->toJSON();
         }
 
         $this->projects = $return_array;

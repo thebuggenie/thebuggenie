@@ -151,9 +151,6 @@
         protected static $_ver_name = "Abstract Apricot";
         protected static $_defaultscope = null;
         protected static $_settings = null;
-        protected static $_ver_api_mj = 1;
-        protected static $_ver_api_mn = 1;
-        protected static $_ver_api_rev = 0;
 
         /**
          * @var \DateTimeZone
@@ -340,28 +337,6 @@
         public static function getRevision()
         {
             return self::$_ver_rev;
-        }
-
-        public static function getApiVersion($with_revision = true)
-        {
-            $retvar = self::$_ver_api_mj . '.' . self::$_ver_api_mn;
-            if ($with_revision) $retvar .= (is_numeric(self::$_ver_api_rev)) ? '.' . self::$_ver_api_rev : self::$_ver_api_rev;
-            return $retvar;
-        }
-
-        public static function getApiMajorVer()
-        {
-            return self::$_ver_api_mj;
-        }
-
-        public static function getApiMinorVer()
-        {
-            return self::$_ver_api_mn;
-        }
-
-        public static function getApiRevision()
-        {
-            return self::$_ver_api_rev;
         }
 
         /**
