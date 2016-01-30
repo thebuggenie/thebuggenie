@@ -134,12 +134,12 @@
 
         protected function getRemoteURL($route_name, $params = array())
         {
-            $real_params = array_merge(array('api_username' => $this->_getCurrentRemoteUser(), 'api_token' => $this->_getCurrentRemotePasswordHash()), $params);
+            $real_params = array_merge(array('api_username' => $this->_getCurrentRemoteUser()), $params);
             $url = \thebuggenie\core\framework\Context::getRouting()->generate($route_name, $real_params, true);
             $host = $this->_getCurrentRemoteServer();
             if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 
-            return $host . mb_substr($url, 1);
+            return $host . mb_substr($url, 1) . '?api_token=' . $this->_getCurrentRemotePasswordHash();
         }
 
     }
