@@ -111,14 +111,14 @@
                             <li class="separator"></li>
                             <li class="nohover">
                                 <form id="percent_complete_form" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete', 'percent_complete');return false;">
-                                    <label for="set_percent"><?php echo __('Percent complete'); ?></label>&nbsp;<input type="text" style="width: 40px;" name="percent" id="set_percent">&percnt;
+                                    <label for="set_percent"><?php echo __('Percent complete'); ?></label>&nbsp;<input type="text" style="width: 40px;" name="percent" id="set_percent" value="<?php echo $issue->getPercentCompleted(); ?>">&percnt;
                                     <input type="submit" value="<?php echo __('Set'); ?>">
                                 </form>
                             </li>
                             <li id="percent_complete_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                         </ul>
                     <?php endif; ?>
-                    <div id="issue_percent_complete">
+                    <div id="issue_percent_complete" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
                         <?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 4)); ?>
                     </div>
                 </dd>
