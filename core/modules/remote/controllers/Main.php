@@ -122,6 +122,10 @@ class Main extends framework\Action
 
         $this->status_info = $status_info;
     }
+    
+    public function runMe(framework\Request $request) {
+        $this->users = array(framework\Context::getUser()->toJSON(true));
+    }
 
     public function runListProjects(framework\Request $request)
     {
