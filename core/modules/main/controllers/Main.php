@@ -840,7 +840,7 @@ class Main extends framework\Action
                     framework\Context::getResponse()->setCookie('tbg3_persona_session', true);
                     $user->setOnline();
                     $user->save();
-                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
+                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referer_route'], array('home', 'login'))));
                 }
             }
 
