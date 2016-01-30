@@ -2589,7 +2589,10 @@ class Context
 
                 Logging::log('An error occurred setting up the user object, redirecting to login', 'main', Logging::LEVEL_NOTICE);
                 if (self::getRouting()->getCurrentRouteName() != 'login')
+                {
                     self::setMessage('login_message_err', self::geti18n()->__('Please log in'));
+                    self::setMessage('login_referer', self::getRouting()->generate(self::getRouting()->getCurrentRouteName(), self::getRequest()->getParameters()));
+                }
                 self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
             }
 
