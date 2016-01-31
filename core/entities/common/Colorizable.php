@@ -48,4 +48,19 @@
             $this->setItemdata($color);
         }
 
+        public function toJSON($detailed = false)
+        {
+            return array(
+                    'id' => $this->getID(),
+                    'name' => $this->getName(),
+                    'key' => $this->getKey(),
+                    'itemdata' => $this->getItemdata(),
+                    'itemtype' => $this->_itemtype,
+                    'builtin' => $this->isBuiltin(),
+                    'sort_order' => $this->getOrder(),
+                    'color' => $this->getColor(),
+                    'text_color' => $this->getTextColor()
+            );
+        }
+
     }

@@ -153,9 +153,17 @@
             return (int) $this->_sort_order;
         }
 
-        public function toJSON()
+        public function toJSON($detailed = false)
         {
-            return array('id' => $this->getID(), 'itemdata' => $this->getItemdata(), 'itemtype' => $this->_itemtype, 'name' => $this->getName(), 'key' => $this->getKey());
+            return array(
+                    'id' => $this->getID(),
+                    'name' => $this->getName(),
+                    'key' => $this->getKey(),
+                    'itemdata' => $this->getItemdata(),
+                    'itemtype' => $this->_itemtype,
+                    'builtin' => $this->isBuiltin(),
+                    'sort_order' => $this->getOrder()
+            );
         }
 
         abstract function isBuiltin();

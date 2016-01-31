@@ -12,6 +12,32 @@ use thebuggenie\core\framework,
 class Main extends framework\Action
 {
 
+	protected static $_ver_api_mj = 1;
+	protected static $_ver_api_mn = 0;
+	protected static $_ver_api_rev = 0;
+
+	public function getApiVersion($with_revision = true)
+	{
+		$retvar = self::$_ver_api_mj . '.' . self::$_ver_api_mn;
+		if ($with_revision) $retvar .= (is_numeric(self::$_ver_api_rev)) ? '.' . self::$_ver_api_rev : self::$_ver_api_rev;
+		return $retvar;
+	}
+	
+	public function getApiMajorVer()
+	{
+		return self::$_ver_api_mj;
+	}
+	
+	public function getApiMinorVer()
+	{
+		return self::$_ver_api_mn;
+	}
+	
+	public function getApiRevision()
+	{
+		return self::$_ver_api_rev;
+	}
+	
     public function getAuthenticationMethodForAction($action)
     {
         switch ($action)
@@ -77,6 +103,30 @@ class Main extends framework\Action
         return $this->renderJSON(array('error' => 'Incorrect username or application password'));
     }
 
+    public function runStatus(framework\Request $request)
+    {
+        $status_info = array(
+            'api_version' => $this->getApiVersion(),
+            'tgb_version' => framework\Settings::getVersion(),
+            'tgb_version_long' => framework\Settings::getVersion(true, true),
+            'tbg_name' => framework\Settings::getSiteHeaderName(),
+            'tbg_url_host' => framework\Settings::getURLhost(),
+            'tbg_url' => (framework\Settings::getHeaderLink() == '') ? framework\Context::getWebroot() : framework\Settings::getHeaderLink(),
+            'tbg_logo_url' => framework\Settings::getHeaderIconURL(),
+            'tbg_icon_url' => framework\Settings::getFaviconURL(),
+            'online' => (! (bool)framework\Settings::isMaintenanceModeEnabled() )
+            );
+        if(framework\Settings::hasMaintenanceMessage()) {
+            $status_info['maintenance_msg'] = framework\Settings::getMaintenanceMessage();
+        }
+
+        $this->status_info = $status_info;
+    }
+    
+    public function runMe(framework\Request $request) {
+        $this->users = array(framework\Context::getUser()->toJSON(true));
+    }
+
     public function runListProjects(framework\Request $request)
     {
         $projects = entities\Project::getAll();
@@ -84,7 +134,7 @@ class Main extends framework\Action
         $return_array = array();
         foreach ($projects as $project)
         {
-            $return_array[$project->getKey()] = $project->getName();
+            $return_array[] = $project->toJSON();
         }
 
         $this->projects = $return_array;
@@ -113,7 +163,7 @@ class Main extends framework\Action
         $return_array = array();
         foreach ($issuetypes as $issuetype)
         {
-            $return_array[] = $issuetype->getName();
+            $return_array[] = $issuetype->toJSON(true);
         }
 
         $this->issuetypes = $return_array;
@@ -149,7 +199,7 @@ class Main extends framework\Action
                     $choices = $classname::getAll();
                     foreach ($choices as $choice_key => $choice)
                     {
-                        $return_array['choices'][$choice_key] = $choice->getName();
+                        $return_array['choices'][] = array('key' => $choice_key, 'name' => $choice->getName());
                     }
                     break;
                 case 'percent_complete':
@@ -175,7 +225,7 @@ class Main extends framework\Action
                         $milestones = $this->selected_project->getAvailableMilestones();
                         foreach ($milestones as $milestone)
                         {
-                            $return_array['choices'][$milestone->getID()] = $milestone->getName();
+                            $return_array['choices'][] = array('key' => $milestone->getID(), 'name' => $milestone->getName());
                         }
                     }
                     break;

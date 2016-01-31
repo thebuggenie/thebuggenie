@@ -5,6 +5,20 @@ api_authenticate:
     parameters: [ ]
     csrf_enabled: false
 
+api_status:
+    route: /api/:api_username/status/:format
+    module: remote
+    action: status
+    parameters: [ ]
+    csrf_enabled: false
+
+api_me:
+    route: /api/:api_username/me/:format
+    module: remote
+    action: me
+    parameters: [ ]
+    csrf_enabled: false
+
 api_list_projects:
     route: /api/:api_username/projects/:format
     module: remote

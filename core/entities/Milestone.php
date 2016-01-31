@@ -872,6 +872,11 @@
             return $this->_burndowndata;
         }
 
+        /**
+         * Whether this milestone is a scrum sprint.
+         * 
+         * @return boolean
+         */
         public function isSprint()
         {
             return (bool) ($this->_itemtype == self::TYPE_SCRUMSPRINT);
@@ -951,11 +956,21 @@
             $this->_visible_roadmap = $visible;
         }
 
+        /**
+         * Whether the milestone is visible on the project roadmap
+         * 
+         * @return boolean
+         */
         public function getVisibleRoadmap()
         {
             return $this->_visible_roadmap;
         }
 
+        /**
+         * Whether the milestone is visible on the project roadmap
+         * 
+         * @return boolean
+         */
         public function isVisibleRoadmap()
         {
             return $this->getVisibleRoadmap();
@@ -966,21 +981,41 @@
             $this->_visible_issues = $visible;
         }
 
+        /**
+         * Whether the milestone is available for issues
+         * 
+         * @return boolean
+         */
         public function getVisibleIssues()
         {
             return $this->_visible_issues;
         }
 
+        /**
+         * Whether the milestone is available for issues
+         * 
+         * @return boolean
+         */
         public function isVisibleIssues()
         {
             return $this->getVisibleIssues();
         }
 
+        /**
+         * Whether the milestone has been closed
+         * 
+         * @return boolean
+         */
         public function getClosed()
         {
             return $this->_closed;
         }
 
+        /**
+         * Whether the milestone has been closed
+         * 
+         * @return boolean
+         */
         public function isClosed()
         {
             return $this->getClosed();
@@ -996,9 +1031,49 @@
             $this->_sort_order = $order;
         }
 
+        /**
+         * Sort order of this item
+         * 
+         * @return integer
+         */
         public function getOrder()
         {
             return (int) $this->_sort_order;
+        }
+        
+        public function toJSON($detailed = false)
+        {
+            $returnJSON = array(
+            		'id' => $this->getID(),
+            		'name' => $this->getName(),
+            		'closed' => $this->getClosed(),
+            		'reached' => $this->isReached(),
+            		'visible_issues' => $this->isVisibleIssues(),
+            		'visible_rowdmap' => $this->isVisibleRoadmap()
+            );
+            if($detailed) {
+            	$returnJSON['is_sprint'] = $this->isSprint();
+            	$returnJSON['sort_order'] = $this->getOrder();
+            	$returnJSON['starting'] = $this->isStarting();
+            	$returnJSON['starting_date'] = $this->getStartingDate();
+            	$returnJSON['scheduled'] = $this->isScheduled();
+            	$returnJSON['scheduled_date'] = $this->getScheduledDate();
+            	$returnJSON['current'] = $this->isCurrent();
+            	$returnJSON['overdue'] = $this->isOverdue();
+            	
+            	//$returnJSON['reached'] = $this->isReached();
+            	$returnJSON['reached_date'] = $this->getReachedDate();
+
+            	$returnJSON['issues_count'] = $this->countIssues();
+            	$returnJSON['issues_count_open'] = $this->countOpenIssues();
+            	$returnJSON['issues_count_closed'] = $this->countClosedIssues();
+            	$returnJSON['percent_complete'] = $this->getPercentComplete();
+            	$returnJSON['percentage_type'] = $this->getPercentageType();
+            	
+            	$this->_populatePointsAndTime();
+            	$returnJSON['hours'] = $this->_hours;
+            	$returnJSON['points'] = $this->_points;
+            }
         }
 
     }

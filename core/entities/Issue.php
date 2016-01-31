@@ -5876,7 +5876,7 @@
             $this->_calculateUserPain();
         }
 
-        public function toJSON()
+        public function toJSON($detailed = false)
         {
             $return_values = array(
                 'id' => $this->getID(),
@@ -5894,86 +5894,88 @@
                 'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getStatus()->toJSON() : null,
             );
 
-            $fields = $this->getProject()->getVisibleFieldsArray($this->getIssueType());
-
-            foreach ($fields as $field => $details)
-            {
-                $identifiable = true;
-                switch ($field)
-                {
-                    case 'shortname':
-                    case 'description':
-                    case 'votes':
-                        $identifiable = false;
-                    case 'resolution':
-                    case 'priority':
-                    case 'severity':
-                    case 'category':
-                    case 'reproducability':
-                        $method = 'get'.ucfirst($field);
-                        $value = $this->$method();
-                        break;
-                    case 'milestone':
-                        $method = 'get'.ucfirst($field);
-                        $value = $this->$method();
-                        if (is_numeric($value) && $value == 0) {
-                            $value = new Milestone();
-                            $value->setID(0);
-                        }
-                        break;
-                    case 'owner':
-                        $value = $this->getOwner();
-                        break;
-                    case 'assignee':
-                        $value = $this->getAssignee();
-                        break;
-                    case 'percent_complete':
-                        $value = $this->getPercentCompleted();
-                        $identifiable = false;
-                        break;
-                    case 'user_pain':
-                        $value = $this->getUserPain();
-                        $identifiable = false;
-                        break;
-                    case 'reproduction_steps':
-                        $value = $this->getReproductionSteps();
-                        $identifiable = false;
-                        break;
-                    case 'estimated_time':
-                        $value = $this->getEstimatedTime();
-                        $identifiable = false;
-                        break;
-                    case 'spent_time':
-                        $value = $this->getSpentTime();
-                        $identifiable = false;
-                        break;
-                    case 'build':
-                    case 'edition':
-                    case 'component':
-                        break;
-                    default:
-                        $value = $this->getCustomField($field);
-                        $identifiable = false;
-                        break;
-                }
-                if (isset($value))
-                {
-                    if ($identifiable)
-                        $return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
-                    else
-                        $return_values[$field] = $value;
-                }
-
+            if($detailed) {
+            	$fields = $this->getProject()->getVisibleFieldsArray($this->getIssueType());
+            	
+            	foreach ($fields as $field => $details)
+            	{
+            		$identifiable = true;
+            		switch ($field)
+            		{
+            			case 'shortname':
+            			case 'description':
+            			case 'votes':
+            				$identifiable = false;
+            			case 'resolution':
+            			case 'priority':
+            			case 'severity':
+            			case 'category':
+            			case 'reproducability':
+            				$method = 'get'.ucfirst($field);
+            				$value = $this->$method();
+            				break;
+            			case 'milestone':
+            				$method = 'get'.ucfirst($field);
+            				$value = $this->$method();
+            				if (is_numeric($value) && $value == 0) {
+            					$value = new Milestone();
+            					$value->setID(0);
+            				}
+            				break;
+            			case 'owner':
+            				$value = $this->getOwner();
+            				break;
+            			case 'assignee':
+            				$value = $this->getAssignee();
+            				break;
+            			case 'percent_complete':
+            				$value = $this->getPercentCompleted();
+            				$identifiable = false;
+            				break;
+            			case 'user_pain':
+            				$value = $this->getUserPain();
+            				$identifiable = false;
+            				break;
+            			case 'reproduction_steps':
+            				$value = $this->getReproductionSteps();
+            				$identifiable = false;
+            				break;
+            			case 'estimated_time':
+            				$value = $this->getEstimatedTime();
+            				$identifiable = false;
+            				break;
+            			case 'spent_time':
+            				$value = $this->getSpentTime();
+            				$identifiable = false;
+            				break;
+            			case 'build':
+            			case 'edition':
+            			case 'component':
+            				break;
+            			default:
+            				$value = $this->getCustomField($field);
+            				$identifiable = false;
+            				break;
+            		}
+            		if (isset($value))
+            		{
+            			if ($identifiable)
+            				$return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
+            				else
+            					$return_values[$field] = $value;
+            		}
+            	
+            	}
+            	
+            	$comments = array();
+            	foreach ($this->getComments() as $comment)
+            	{
+            		$comments[$comment->getCommentNumber()] = $comment->toJSON();
+            	}
+            	
+            	$return_values['comments'] = $comments;
+            	$return_values['visible_fields'] = $fields;
             }
-
-            $comments = array();
-            foreach ($this->getComments() as $comment)
-            {
-                $comments[$comment->getCommentNumber()] = $comment->toJSON();
-            }
-
-            $return_values['comments'] = $comments;
-            $return_values['visible_fields'] = $fields;
 
             return $return_values;
         }
