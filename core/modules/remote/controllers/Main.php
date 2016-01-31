@@ -13,7 +13,7 @@ class Main extends framework\Action
 {
 
 	protected static $_ver_api_mj = 1;
-	protected static $_ver_api_mn = 1;
+	protected static $_ver_api_mn = 0;
 	protected static $_ver_api_rev = 0;
 
 	public function getApiVersion($with_revision = true)
