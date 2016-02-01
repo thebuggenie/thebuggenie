@@ -203,7 +203,7 @@
             $this->_name = $name;
         }
         
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             return array(
                 'name' => $this->getName(),

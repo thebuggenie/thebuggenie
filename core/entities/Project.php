@@ -3369,7 +3369,7 @@
             $preloaded = true;
         }
         
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
         	$jsonArray = array(
         			'id' => $this->getID(),

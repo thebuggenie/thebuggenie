@@ -1148,7 +1148,7 @@
             return (int) $this->_sort_order;
         }
         
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             $returnJSON = array(
             		'id' => $this->getID(),
@@ -1181,6 +1181,7 @@
             	$returnJSON['hours'] = $this->_hours;
             	$returnJSON['points'] = $this->_points;
             }
+            return $returnJSON;
         }
 
     }

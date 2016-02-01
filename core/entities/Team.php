@@ -271,7 +271,7 @@
             return $this->_dashboards;
         }
 
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             $returnJSON = array(
                 'id' => $this->getID(),

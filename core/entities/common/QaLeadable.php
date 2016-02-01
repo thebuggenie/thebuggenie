@@ -144,7 +144,7 @@
             $this->_qa_responsible_user = null;
         }
         
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             $jsonArray = array(
                 'id' => $this->getID(),
