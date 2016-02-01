@@ -417,7 +417,8 @@
             {
                 $user = new self();
                 $user->setPassword(self::createPassword());
-                $username = end((explode('/', rtrim($identity, '/'))));
+                $username = explode('/', rtrim($identity, '/'));
+                $username = end($username);
                 $username = urldecode($username);
                 $user->setUsername($username);
                 $user->setOpenIdLocked();
