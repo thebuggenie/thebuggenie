@@ -135,7 +135,7 @@
                         $this->cliEcho(" - {$command->getDescription()}\n");
                     }
 
-                    if (count($commands) > 1 && $module_name == 'remote')
+                    if (count($commands) > 1 && $module_name == 'api')
                     {
                         $this->cliEcho("\nModule commands, use ");
                         $this->cliEcho("module_name:command_name", 'green');

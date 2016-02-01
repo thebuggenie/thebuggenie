@@ -33,7 +33,6 @@
     // Set up all available search paths for cli commands
     $command_paths = array();
     $command_paths['main'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'main' . DS . 'cli' . DS;
-    $command_paths['remote'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'remote' . DS . 'cli' . DS;
     foreach (framework\Context::getModules() as $module_name => $module) {
         $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DS . 'cli' . DS;
         if (file_exists($module_cli_path)) {
