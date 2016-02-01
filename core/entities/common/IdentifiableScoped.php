@@ -71,9 +71,4 @@
                 $this->_scope = $this->getCurrentScope();
         }
 
-        public function toJSON()
-        {
-            return array('id' => $this->getID());
-        }
-
     }

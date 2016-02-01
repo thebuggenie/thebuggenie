@@ -225,6 +225,18 @@
         {
             return (bool) tables\IssuetypeSchemeLink::getTable()->countByIssuetypeID($this->getID());
         }
+        
+        public function toJSON($detailed = false)
+        {
+            return array(
+            		'id' => $this->getID(),
+            		'key' => $this->getKey(),
+            		'name' => $this->getName(),
+            		'icon' => $this->getIcon(),
+            		'is_task' => $this->isTask(),
+            		'description' => $this->getDescription()
+            );
+        }
 
     }
 

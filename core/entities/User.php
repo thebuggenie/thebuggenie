@@ -1804,6 +1804,11 @@
             return $this->getBuddyname();
         }
 
+        /**
+         * Returns the realname or, if not available, the buddyname.
+         * 
+         * @return string
+         */
         public function getDisplayName()
         {
             return ($this->getRealname() == '') ? $this->getBuddyname() : $this->getRealname();
@@ -1822,7 +1827,7 @@
         /**
          * Returns the users homepage
          *
-         * @return unknown
+         * @return string
          */
         public function getHomepage()
         {
@@ -2613,13 +2618,6 @@
             return array_key_exists($identity, $this->_openid_accounts);
         }
 
-        public function toJSON()
-        {
-            return array('id' => $this->getID(),
-                        'name' => $this->getName(),
-                        'username' => $this->getUsername());
-        }
-
         /**
          * Return the users associated scopes
          *
@@ -2827,28 +2825,27 @@
 
         public function markAllNotificationsRead()
         {
-            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(), null, $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
+            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(), null, $this->getID());
         }
 
         public function markNotificationsRead($type, $id)
         {
-            $grouped_notifications_minutes = $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue();
             if ($type == 'issue')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID());
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ISSUE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
                 }
             }
             if ($type == 'article')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID());
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ARTICLE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
                 }
             }
             $this->_notifications = null;
@@ -2991,14 +2988,57 @@
             return $setting_object;
         }
 
-        /**
-         * @param Notification $notification
-         */
-        public function markNotificationGroupedNotificationsRead(\thebuggenie\core\entities\Notification $notification)
+        public function toJSON($detailed = false)
         {
-            if ($notification->getNotificationType() != \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED) return;
+            $returnJSON = array(
+                'id' => $this->getID(),
+                'name' => $this->getName(),
+                'username' => $this->getUsername(),
+                'type' => 'user' // This is for distinguishing of assignees & similar "ambiguous" values in JSON.
+            );
+            
+            if($detailed) {
+                $returnJSON['display_name'] = $this->getDisplayName();
+                $returnJSON['realname'] = $this->getRealname();
+                $returnJSON['buddyname'] = $this->getBuddyname();
+                
+                // Only return email if it is public or we are looking at the currently logged-in user
+                if($this->isEmailPublic() || framework\Context::getUser()->getID() == $this->getID()) {
+                    $returnJSON['email'] = $this->getEmail();
+                }
+                $returnJSON['avatar'] = $this->getAvatar();
+                $returnJSON['avatar_url'] = $this->getAvatarURL(false);
+                $returnJSON['avatar_url_small'] = $this->getAvatarURL(true);
+                $returnJSON['url_homepage'] = $this->getHomepage();
 
-            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(\thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED), $notification->getTargetID(), $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue(), (int) $notification->isRead(), false);
+                $returnJSON['date_joined'] = $this->getJoinedDate();
+                $returnJSON['last_seen'] = $this->getLastSeen();
+                
+                $returnJSON['timezone'] = $this->getTimezoneIdentifier();
+                $returnJSON['language'] = $this->getLanguage();
+
+                $returnJSON['state'] = $this->getState()->toJSON();
+                
+                /*
+                 * TODO...
+                 */
+                
+//                 $this->getClients();
+//                 $this->getDashboards();
+//                 $this->getDefaultDashboard();
+//                 $this->getFriends();
+//                 $this->getGroup();
+//                 $this->getTeams();
+                
+                /*
+                 * TODO: Return these?
+                 */
+//                 $this->isActivated();
+//                 $this->isDeleted();
+//                 $this->isEnabled();
+            }
+            
+            return $returnJSON;
         }
 
     }
