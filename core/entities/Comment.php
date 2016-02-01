@@ -739,7 +739,7 @@
             return (int) $this->_comment_number;
         }
 
-        public function toJSON()
+        public function toJSON($detailed = false)
         {
             $return_values = array(
                 'id' => $this->getID(),

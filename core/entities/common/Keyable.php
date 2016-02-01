@@ -57,5 +57,13 @@
         {
             $this->_key = $key;
         }
+        
+        public function toJSON($detailed = false)
+        {
+            return array(
+            		'id' => $this->getID(),
+            		'key' => $this->getKey(),
+            );
+        }
 
     }

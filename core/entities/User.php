@@ -1804,6 +1804,11 @@
             return $this->getBuddyname();
         }
 
+        /**
+         * Returns the realname or, if not available, the buddyname.
+         *
+         * @return string
+         */
         public function getDisplayName()
         {
             return ($this->getRealname() == '') ? $this->getBuddyname() : $this->getRealname();
@@ -1822,7 +1827,7 @@
         /**
          * Returns the users homepage
          *
-         * @return unknown
+         * @return string
          */
         public function getHomepage()
         {
@@ -2613,13 +2618,6 @@
             return array_key_exists($identity, $this->_openid_accounts);
         }
 
-        public function toJSON()
-        {
-            return array('id' => $this->getID(),
-                        'name' => $this->getName(),
-                        'username' => $this->getUsername());
-        }
-
         /**
          * Return the users associated scopes
          *
@@ -2989,6 +2987,59 @@
             $setting_object = $this->getNotificationSetting($setting, null, $module);
             $setting_object->setValue($value);
             return $setting_object;
+        }
+
+        public function toJSON($detailed = false)
+        {
+            $returnJSON = array(
+                'id' => $this->getID(),
+                'name' => $this->getName(),
+                'username' => $this->getUsername(),
+                'type' => 'user' // This is for distinguishing of assignees & similar "ambiguous" values in JSON.
+            );
+
+            if($detailed) {
+                $returnJSON['display_name'] = $this->getDisplayName();
+                $returnJSON['realname'] = $this->getRealname();
+                $returnJSON['buddyname'] = $this->getBuddyname();
+
+                // Only return email if it is public or we are looking at the currently logged-in user
+                if($this->isEmailPublic() || framework\Context::getUser()->getID() == $this->getID()) {
+                    $returnJSON['email'] = $this->getEmail();
+                }
+                $returnJSON['avatar'] = $this->getAvatar();
+                $returnJSON['avatar_url'] = $this->getAvatarURL(false);
+                $returnJSON['avatar_url_small'] = $this->getAvatarURL(true);
+                $returnJSON['url_homepage'] = $this->getHomepage();
+
+                $returnJSON['date_joined'] = $this->getJoinedDate();
+                $returnJSON['last_seen'] = $this->getLastSeen();
+
+                $returnJSON['timezone'] = $this->getTimezoneIdentifier();
+                $returnJSON['language'] = $this->getLanguage();
+
+                $returnJSON['state'] = $this->getState()->toJSON();
+
+                /*
+                 * TODO...
+                 */
+
+//                 $this->getClients();
+//                 $this->getDashboards();
+//                 $this->getDefaultDashboard();
+//                 $this->getFriends();
+//                 $this->getGroup();
+//                 $this->getTeams();
+
+                /*
+                 * TODO: Return these?
+                 */
+//                 $this->isActivated();
+//                 $this->isDeleted();
+//                 $this->isEnabled();
+            }
+
+            return $returnJSON;
         }
 
         /**
