@@ -58,7 +58,7 @@
          * @param bool $detailed [optional] Include detailed information or not. (default false)
          * @return array
          */
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             return array('id' => $this->getID());
         }

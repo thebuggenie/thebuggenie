@@ -48,7 +48,7 @@
             $this->setItemdata($color);
         }
 
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             return array(
                     'id' => $this->getID(),

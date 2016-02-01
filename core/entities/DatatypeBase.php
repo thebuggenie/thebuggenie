@@ -153,7 +153,7 @@
             return (int) $this->_sort_order;
         }
 
-        public function toJSON($detailed = false)
+        public function toJSON($detailed = true)
         {
             return array(
                     'id' => $this->getID(),
