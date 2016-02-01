@@ -122,7 +122,9 @@
                 <script>
                     require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
                         domReady(function () {
-                            TBG.Main.Notifications.Web.Send('New notification', "<?php echo $notification_text; ?>", '<?php echo $notification->getID(); ?>');
+                            TBG.Main.Notifications.Web.Send("<?php echo __('New notification'); ?>", "<?php echo $notification_text; ?>", '<?php echo $notification->getID(); ?>', '<?php echo $notification->getTriggeredByUser()->getAvatarURL(); ?>', function () {
+                                TBG.Main.Notifications.toggleRead(<?php echo $notification->getID(); ?>);
+                            });
                         });
                     });
                 </script>

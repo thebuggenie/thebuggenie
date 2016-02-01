@@ -457,7 +457,6 @@ header #user_notifications_count.unread + img {
     font-size: 1em;
     position: relative;
     z-index: 2;
-    margin-left: 10px;
 }
 
 #user_notifications_ist > li h1 {
@@ -18366,4 +18365,8 @@ div[id^='wiki_'][id$='_no_links'] {
 .more_actions_dropdown li a.increment-time-minutes:hover {
   display: inline;
   opacity: 1;
+}
+
+table.desktop-notifications-settings tr:first-child > td:last-child {
+    text-align: right;
 }

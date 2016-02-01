@@ -7624,23 +7624,24 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         }
 
-        TBG.Main.Notifications.Web.GrantPermissionOrSendTest = function (event) {
+        TBG.Main.Notifications.Web.GrantPermissionOrSendTest = function (title, body, icon) {
             if (!Notify.needsPermission) {
-                TBG.Main.Notifications.Web.Send('Test notification', 'This is a test notification.', 'test');
+                TBG.Main.Notifications.Web.Send(title, body, 'test', icon);
             } else if (Notify.isSupported()) {
-                Notify.requestPermission(function () {
-                    TBG.Main.Notifications.Web.Send('Web Notifications are enabled', 'You will receive The Bug Genie notifications from box through browser as well. Link "Web Notifications" now sends test notification.', 'permission-granted');
-                });
+                Notify.requestPermission();
             }
         }
 
-        TBG.Main.Notifications.Web.Send = function (title, body, tag) {
+        TBG.Main.Notifications.Web.Send = function (title, body, tag, icon, click_callback) {
             if (Notify.needsPermission) return;
 
             new Notify(title, {
                 body: body,
                 tag: tag,
-                timeout: 8
+                icon: icon,
+                timeout: 8,
+                closeOnClick: true,
+                notifyClick: click_callback
             }).show();
         }
 

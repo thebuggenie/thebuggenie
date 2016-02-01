@@ -3,7 +3,6 @@
         <h1>
             <?php echo __('Your notifications'); ?>
             <a href="javascript:void(0);" onclick="TBG.Main.Notifications.markAllRead();"><?php echo __('Mark all read'); ?></a>
-            <a href="javascript:void(0);" onclick="TBG.Main.Notifications.Web.GrantPermissionOrSendTest();"><?php echo __('Web Notifications'); ?></a>
         </h1>
         <div id="user_notifications_list_wrapper_nano" class="nano">
             <div id="user_notifications_list_wrapper" class="nano-content">
