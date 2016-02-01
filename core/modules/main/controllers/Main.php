@@ -2067,43 +2067,8 @@ class Main extends framework\Action
             return $this->renderText('no issue');
         }
 
-        if (!$spenttime->getID())
-        {
-            if ($request['timespent_manual'])
-            {
-                $times = entities\Issue::convertFancyStringToTime($request['timespent_manual'], $issue);
-            }
-            else
-            {
-                $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
-                $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
-            }
-            $spenttime->setIssue($issue);
-            $spenttime->setUser($this->getUser());
-        }
-        else
-        {
-            $times = array('points' => $request['points'],
-                'minutes' => $request['minutes'],
-                'hours' => $request['hours'],
-                'days' => $request['days'],
-                'weeks' => $request['weeks'],
-                'months' => $request['months']);
-            $edited_at = $request['edited_at'];
-            $spenttime->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
-        }
-        $times['hours'] *= 100;
-        $spenttime->setSpentPoints($times['points']);
-        $spenttime->setSpentMinutes($times['minutes']);
-        $spenttime->setSpentHours($times['hours']);
-        $spenttime->setSpentDays($times['days']);
-        $spenttime->setSpentWeeks($times['weeks']);
-        $spenttime->setSpentMonths($times['months']);
-        $spenttime->setActivityType($request['timespent_activitytype']);
-        $spenttime->setComment($request['timespent_comment']);
-        $spenttime->save();
-
-        $spenttime->getIssue()->saveSpentTime();
+        framework\Context::loadLibrary('common');
+        $spenttime->editOrAdd($issue, $this->getUser(), array_only_with_default($request->getParameters(), array_merge(array('timespent_manual', 'timespent_specified_type', 'timespent_specified_value', 'timespent_activitytype', 'timespent_comment'), \thebuggenie\core\entities\common\Timeable::$units)));
 
         return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => array_sum($spenttime->getIssue()->getSpentTime()), 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime(true, true)), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
     }

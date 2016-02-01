@@ -349,4 +349,45 @@
             $this->_comment = $comment;
         }
 
+        public function editOrAdd(Issue $issue, User $user, $data = array())
+        {
+            if (!$this->getID())
+            {
+                if ($data['timespent_manual'])
+                {
+                    $times = Issue::convertFancyStringToTime($data['timespent_manual'], $issue);
+                }
+                else
+                {
+                    $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
+                    $times[$data['timespent_specified_type']] = $data['timespent_specified_value'];
+                }
+                $this->setIssue($issue);
+                $this->setUser($user);
+            }
+            else
+            {
+                $times = array('points' => $data['points'],
+                    'minutes' => $data['minutes'],
+                    'hours' => $data['hours'],
+                    'days' => $data['days'],
+                    'weeks' => $data['weeks'],
+                    'months' => $data['months']);
+                $edited_at = $data['edited_at'];
+                $this->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
+            }
+            $times['hours'] *= 100;
+            $this->setSpentPoints($times['points']);
+            $this->setSpentMinutes($times['minutes']);
+            $this->setSpentHours($times['hours']);
+            $this->setSpentDays($times['days']);
+            $this->setSpentWeeks($times['weeks']);
+            $this->setSpentMonths($times['months']);
+            $this->setActivityType($data['timespent_activitytype']);
+            $this->setComment($data['timespent_comment']);
+            $this->save();
+
+            $this->getIssue()->saveSpentTime();
+        }
+
     }
