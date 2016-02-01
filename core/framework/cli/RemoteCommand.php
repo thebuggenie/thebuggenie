@@ -139,7 +139,9 @@
             $host = $this->_getCurrentRemoteServer();
             if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 
-            return $host . mb_substr($url, 1) . '?api_token=' . $this->_getCurrentRemotePasswordHash();
+            $host .= mb_substr($url, 1);
+
+            return $host . (($token = $this->_getCurrentRemotePasswordHash()) == '' ? '' : '?api_token=' . $token);
         }
 
     }
