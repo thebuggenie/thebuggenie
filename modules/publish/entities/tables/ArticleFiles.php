@@ -60,11 +60,7 @@
                 $crit->addInsert(self::ARTICLE_ID, $article_id);
                 $crit->addInsert(self::FILE_ID, $file_id);
                 $this->doInsert($crit);
-
-                return true;
             }
-
-            return false;
         }
 
         public function getByArticleID($article_id)

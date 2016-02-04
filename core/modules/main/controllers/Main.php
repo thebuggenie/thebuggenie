@@ -2948,7 +2948,7 @@ class Main extends framework\Action
         return $this->renderJSON($status);
     }
 
-    public function runUpdateAttachments(framework\Request $request, $cancel = false)
+    public function runUpdateAttachments(framework\Request $request)
     {
         switch ($request['target'])
         {
@@ -2976,15 +2976,25 @@ class Main extends framework\Action
 
             if (! $file instanceof entities\File) continue;
 
-            if ($cancel)
+            $file->setDescription($description);
+            $file->save();
+            if (in_array($file_id, $saved_file_ids))
             {
-                if ($this->cancelAttachments($file_id, $saved_file_ids, $target, $file)) continue;
+                if ($target instanceof entities\Issue)
+                {
+                    $comment = $target->attachFile($file, '', '', true);
+
+                    if ($comment instanceof entities\Comment) $comments = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $target, 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count')) . $comments;
+                }
+                else
+                {
+                    $target->attachFile($file);
+                }
             }
             else
             {
-                $comments = $this->updateAttachments($file, $description, $file_id, $saved_file_ids, $target, $comments);
+                $target->detachFile($file);
             }
-
             if ($file->isImage()) {
                 $image_files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
             }
@@ -2995,73 +3005,6 @@ class Main extends framework\Action
         $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
         return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
-    }
-
-    /**
-     * @param $file
-     * @param $description
-     * @param $file_id
-     * @param $saved_file_ids
-     * @param $target
-     * @param $comments
-     * @return string
-     */
-    protected function updateAttachments($file, $description, $file_id, $saved_file_ids, $target, $comments)
-    {
-        $file->setDescription($description);
-        $file->save();
-        if (in_array($file_id, $saved_file_ids))
-        {
-            if ($target instanceof entities\Issue)
-            {
-                $comment = $target->attachFile($file, '', '', true);
-
-                if ($comment instanceof entities\Comment) $comments = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $target, 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count')) . $comments;
-            }
-            else
-            {
-                $target->attachFile($file);
-            }
-        }
-        else
-        {
-            $target->detachFile($file);
-        }
-        return $comments;
-    }
-
-    /**
-     * @param $file_id
-     * @param $saved_file_ids
-     * @param $target
-     * @param $file
-     */
-    protected function cancelAttachments($file_id, $saved_file_ids, $target, $file)
-    {
-        if (in_array($file_id, $saved_file_ids))
-        {
-            if ($target instanceof entities\Issue)
-            {
-                $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($target->getID(), $file->getID(), false);
-            }
-            else
-            {
-                $existed = !\thebuggenie\modules\publish\entities\tables\ArticleFiles::getTable()->addByArticleIDandFileID($target->getID(), $file->getID(), false);
-            }
-
-            // Delete file if link with target doesn't exist
-            if (!$existed)
-            {
-                $file->delete();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function runCancelAttachments(framework\Request $request)
-    {
-        return $this->runUpdateAttachments($request, true);
     }
 
     public function runUploadFile(framework\Request $request)
