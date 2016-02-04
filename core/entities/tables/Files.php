@@ -103,6 +103,11 @@
                     $file_ids = array_diff($file_ids, $linked_file_ids);
                 }
             }
+            $system_file_ids = Settings::getTable()->getFileIds();
+            $file_ids = array_diff($file_ids, $system_file_ids);
+
+            $project_file_ids = Projects::getTable()->getFileIds();
+            $file_ids = array_diff($file_ids, $project_file_ids);
 
             return $file_ids;
         }

@@ -173,4 +173,25 @@
             }
         }
 
+        public function getFileIds()
+        {
+            $crit = $this->getCriteria();
+            $file_id_settings = [
+                framework\Settings::SETTING_FAVICON_ID,
+                framework\Settings::SETTING_HEADER_ICON_ID
+            ];
+            $crit->addWhere(self::NAME, $file_id_settings, Criteria::DB_IN);
+            $crit->addSelectionColumn(self::VALUE, 'file_id');
+
+            $res = $this->doSelect($crit);
+            $file_ids = [];
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $file_ids[$row['file_id']] = $row['file_id'];
+                }
+            }
+
+            return $file_ids;
+        }
+
     }
