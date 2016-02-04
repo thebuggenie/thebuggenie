@@ -39,6 +39,12 @@
             {
                 $this->cliEcho("Finding files to remove\n", 'white', 'bold');
                 $files = Files::getTable()->getUnattachedFiles();
+                $ignore_files = array();
+
+                if (\thebuggenie\core\framework\Settings::isUsingCustomFavicon()) $ignore_files[] = \thebuggenie\core\framework\Settings::getFaviconID();
+                if (\thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon()) $ignore_files[] = \thebuggenie\core\framework\Settings::getHeaderIconID();
+
+                $files = array_diff($files, $ignore_files);
                 $this->cliEcho("Found " . count($files) . " files\n", 'white');
                 foreach ($files as $file_id) {
                     $file = Files::getTable()->selectById($file_id);
