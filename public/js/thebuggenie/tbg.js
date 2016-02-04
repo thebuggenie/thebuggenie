@@ -1097,15 +1097,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Main.updateAttachments(form, url);
         };
 
-        TBG.Main.cancelAttachments_escapeWatcher = function (event) {
-          if (event.keyCode != undefined && event.keyCode != 0 && Event.KEY_ESC != event.keyCode) return;
-          if ($('dynamic_uploader_cancel')) TBG.Main.cancelAttachments('#dynamic_uploader_cancel');
-          setTimeout(function() {
-            document.stopObserving('keydown', TBG.Main.cancelAttachments_escapeWatcher);
-            document.observe('keydown', TBG.Core._escapeWatcher);
-          }, 350);
-        };
-
         TBG.Main.uploadFile = function (url, file, is_last) {
             var is_last = is_last != undefined ? is_last : true;
             var fileSize = 0;
