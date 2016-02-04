@@ -11193,6 +11193,9 @@ div.quickaddtask .close_micro_popup_link {
     padding-left: 10px;
     border-left: 2px solid #EFEFEF;
     font-size: 0.9em;
+    word-break: break-all;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
 }
 
 .dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions {
