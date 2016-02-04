@@ -242,4 +242,22 @@
             return $this->select($crit);
         }
 
+        public function getFileIds()
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::SMALL_ICON, 'file_id_small');
+            $crit->addSelectionColumn(self::LARGE_ICON, 'file_id_large');
+
+            $res = $this->doSelect($crit);
+            $file_ids = [];
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $file_ids[$row['file_id_small']] = $row['file_id_small'];
+                    $file_ids[$row['file_id_large']] = $row['file_id_large'];
+                }
+            }
+
+            return $file_ids;
+        }
+
     }
