@@ -10,6 +10,7 @@
         thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\publish\entities\tables\UserArticles,
         thebuggenie\modules\publish\entities\tables\Articles;
+    use thebuggenie\modules\publish\entities\tables\ArticleFiles;
 
     /**
      * The wiki class
@@ -76,6 +77,7 @@
             framework\Event::listen('core', 'thebuggenie\core\entities\User::__isArticleStarred', array($this, 'User__isArticleStarred'));
             framework\Event::listen('core', 'thebuggenie\core\entities\User::__addStarredArticle', array($this, 'User__addStarredArticle'));
             framework\Event::listen('core', 'thebuggenie\core\entities\User::__removeStarredArticle', array($this, 'User__removeStarredArticle'));
+            framework\Event::listen('core', 'thebuggenie\core\entities\\tables\Files::getUnattachedFiles', array($this, 'Files__getUnattachedFiles'));
             framework\Event::listen('core', 'upload', array($this, 'listen_upload'));
             framework\Event::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
             framework\Event::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
@@ -579,6 +581,17 @@
             }
             $event->setProcessed();
             $event->setReturnValue(true);
+        }
+
+        /**
+         * Removes an article from the list of flagged articles
+         *
+         * @param framework\Event $event
+         */
+        public function Files__getUnattachedFiles(framework\Event $event)
+        {
+            $event->setProcessed();
+            $event->addToReturnList(ArticleFiles::getTable()->getLinkedFileIds());
         }
 
     }

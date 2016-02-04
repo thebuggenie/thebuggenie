@@ -81,6 +81,32 @@
             return $this->select($crit);
         }
 
+        public function getUnattachedFiles()
+        {
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::ID, 'id');
+
+            $res = $this->doSelect($crit);
+            $file_ids = [];
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $file_ids[$row['id']] = $row['id'];
+                }
+            }
+
+            $file_ids = array_diff($file_ids, IssueFiles::getTable()->getLinkedFileIds($file_ids));
+
+            $event = framework\Event::createNew('core', 'thebuggenie\core\entities\\tables\Files::getUnattachedFiles', $this, ['file_ids' => $file_ids], []);
+            $event->trigger();
+            if ($event->isProcessed()) {
+                foreach ($event->getReturnList() as $linked_file_ids) {
+                    $file_ids = array_diff($file_ids, $linked_file_ids);
+                }
+            }
+
+            return $file_ids;
+        }
+
         public function getByID($id)
         {
             $crit = $this->getCriteria();

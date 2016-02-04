@@ -3,7 +3,8 @@
     namespace thebuggenie\modules\publish\entities\tables;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities\tables\ScopedTable;
+        thebuggenie\core\entities\tables\ScopedTable,
+        thebuggenie\core\entities\traits\FileLink;
 
     /**
      * Articles <-> Files table
@@ -25,6 +26,8 @@
      */
     class ArticleFiles extends ScopedTable
     {
+
+        use FileLink;
 
         const B2DB_TABLE_VERSION = 1;
         const B2DBNAME = 'articlefiles';

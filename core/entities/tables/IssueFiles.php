@@ -3,7 +3,8 @@
     namespace thebuggenie\core\entities\tables;
 
     use thebuggenie\core\framework,
-        b2db\Criteria;
+        b2db\Criteria,
+        thebuggenie\core\entities\traits\FileLink;
 
     /**
      * Issues <-> Files table
@@ -25,6 +26,8 @@
      */
     class IssueFiles extends ScopedTable
     {
+
+        use FileLink;
 
         const B2DB_TABLE_VERSION = 1;
         const B2DBNAME = 'issuefiles';
