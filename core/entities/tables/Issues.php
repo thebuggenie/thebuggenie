@@ -346,6 +346,7 @@
             $crit->addWhere(Projects::PREFIX, mb_strtolower($prefix), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
             $crit->addWhere(Projects::DELETED, false);
             $crit->addWhere(self::ISSUE_NO, $issue_no);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             return $this->selectOne($crit, false);
         }
 
@@ -355,6 +356,7 @@
             $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::PROJECT_ID, $project_id);
             $crit->addWhere(self::ISSUE_NO, $issue_no);
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             return $this->selectOne($crit, false);
         }
 
