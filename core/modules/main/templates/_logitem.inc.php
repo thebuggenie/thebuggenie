@@ -42,7 +42,7 @@
             <?php elseif (!isset($include_issue_title) || $include_issue_title): ?>
                 <br>
             <?php endif; ?>
-            <div style="line-height: 1.4; <?php if (!isset($include_issue_title) || $include_issue_title == false): ?>margin-top: -7px; margin-bottom: 10px;<?php endif; ?>">
+            <div style="line-height: 1.4; word-break: break-all; word-wrap: break-word; -ms-word-break: break-all; <?php if (!isset($include_issue_title) || $include_issue_title == false): ?>margin-top: -7px; margin-bottom: 10px;<?php endif; ?>">
             <?php
 
                 switch ($log_action['change_type'])
