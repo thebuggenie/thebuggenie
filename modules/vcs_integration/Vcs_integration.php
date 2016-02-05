@@ -209,7 +209,7 @@
             if ($event->getSubject()->getModuleName() != 'vcs_integration')
                 return;
 
-            include_component('vcs_integration/notification_view.text', array('notification' => $event->getSubject()));
+            include_component('vcs_integration/notification_view_text', array('notification' => $event->getSubject()));
             $event->setProcessed();
         }
 

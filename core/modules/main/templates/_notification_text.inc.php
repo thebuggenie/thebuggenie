@@ -1,17 +1,6 @@
     <?php
 
-        if ($notification->isShown())
-        {
-            return '';
-        }
-        else
-        {
-            $notification->showOnce();
-            $notification->save();
-        }
-
-    ?>
-    <?php
+        if (!$return_notification) return '';
 
         switch ($notification->getNotificationType())
         {

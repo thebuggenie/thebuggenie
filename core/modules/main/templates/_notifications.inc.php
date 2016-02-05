@@ -117,7 +117,7 @@
         </li>
             <?php
                 // Replace multiple spaces with single space with regex.
-                if (($notification_text = trim(preg_replace('!\s+!', ' ', get_component_html('main/notification.text', compact('notification'))))) != ''):
+                if (($notification_text = trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification'))))) != ''):
             ?>
                 <script>
                     require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {

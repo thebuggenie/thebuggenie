@@ -406,6 +406,21 @@
             $this->num_read = $this->getUser()->getNumberOfReadNotifications();
         }
 
+        public function componentNotification_text()
+        {
+            $this->return_notification = true;
+
+            if ($this->notification->isShown())
+            {
+                $this->return_notification = false;
+            }
+            else
+            {
+                $this->notification->showOnce();
+                $this->notification->save();
+            }
+        }
+
         public function componentFindduplicateissues()
         {
             $this->setupVariables();
