@@ -217,7 +217,6 @@ label > input[type="checkbox"] {
 div.image_container {
     border: 1px solid #CCC;
     width: auto;
-    float: right;
     clear: right;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 10px 10px 15px 0;
@@ -613,7 +612,6 @@ img.userstate {
 }
 .fa.userstate {
     display: inline-block;
-    vertical-align: middle;
     width: 12px;
 }
 .fa.userstate.online {
@@ -1017,7 +1015,8 @@ footer img {
 }
 
 #tbg3_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
-    background: no-repeat 7px 10px;
+    background-repeat: no-repeat;
+    background-position: 7px 10px;
     padding: 8px 8px 8px 28px;
     font-size: 1.2em;
     border-radius: 4px;
@@ -4528,14 +4527,16 @@ a.friend {
     margin-top: 10px;
     margin-bottom: 0;
     clear: both;
-    line-height: 1.7;
 }
 
 .backdrop_detail_content .report-issue-custom-access-container {
     margin-top: 10px;
 }
-
-.report-issue-custom-access-check img {
+.backdrop_detail_content .report-issue-custom-access-container > label {
+    line-height: 1.7;
+}
+.report-issue-custom-access-check > img
+{
     margin-bottom: -3px;
     margin-left: 3px;
 }
@@ -4548,6 +4549,10 @@ a.friend {
 .report-issue-custom-access-check input[type=checkbox] {
     margin-left: 2px;
     margin-right: 4px;
+}
+
+.report-issue-custom-access-check .acl-delete-item-link {
+    float: none;
 }
 
 #report_form table.additional_information {
@@ -6165,10 +6170,12 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 .more_actions_dropdown .fa {
     display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-    width: 16px;
+    margin-right: 8px;
+    width: 18px;
+    font-size: 15px;
     text-align: center;
+    margin-top: -1px;
+    color: #555;
 }
 .more_actions_dropdown .disabled .fa {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
@@ -8004,16 +8011,26 @@ table.issue_affects td img {
 
 .milestone_box.unavailable:hover {
     opacity: 1;
+    -ms-opacity: 1;
+    -webkit-opacity: 1;
 }
 
 .milestone_box .status {
     margin-top: 10px;
     font-size: 0.8em;
     display: inline-block;
-    background-color: #FAEFEF;
-    color: #D88383;
     padding: 2px 5px;
     border-radius: 3px;
+}
+
+.milestone_box.red .status {
+    background-color: #FAEFEF;
+    color: #D88383;
+}
+
+.milestone_box.green .status {
+    background-color: #DCEFDC;
+    color: #00a400;
 }
 
 .milestone_box .date {
@@ -8137,12 +8154,20 @@ table.issue_affects td img {
 .milestone_box .header .settings_container {
     opacity: 0.4;
     transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
     z-index: 1;
 }
 
 .milestone_box .header .settings_container:hover {
     opacity: 1;
     transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
 }
 
 .milestone_box .header .settings_container img, .milestone_box .header .draggable img {
@@ -8156,6 +8181,7 @@ table.issue_affects td img {
 
 #project_planning.milestone-sort .milestone_box {
     cursor: move;
+    background-color: white;
 }
 
 #project_planning.milestone-sort .milestone_box .header .draggable {
@@ -8638,7 +8664,9 @@ dl.info dt {
     font-size: 0.9em;
 }
 
-#project_planning.type-kanban .issue_estimates, #project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours {
+#project_planning.type-kanban .issue_estimates,
+#project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_hours,
+#project_planning.type-scrum #project_backlog_sidebar .issue_estimates.estimated_minutes {
     display: none;
 }
 
@@ -9405,7 +9433,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     font-size: 0.8em;
     text-transform: uppercase;
     color: #555;
-    width: 50px;
+    width: 70px;
 }
 
 #milestone_details_issue_list th:first-child {
@@ -11165,6 +11193,9 @@ div.quickaddtask .close_micro_popup_link {
     padding-left: 10px;
     border-left: 2px solid #EFEFEF;
     font-size: 0.9em;
+    word-break: break-all;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
 }
 
 .dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions {
@@ -16162,6 +16193,12 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled {
     margin-top: -2px;
 }
 
+.acl-delete-item-link {
+    float: right;
+    margin-bottom: -5px;
+    margin-left: 2px;
+}
+
 /* Manage issue subscribers */
 
 ul[id^='popup_find_subscriber_'].more_actions_dropdown {
@@ -17456,7 +17493,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #issue_main .commentcontent .image_container.thumb {
     max-width: 500px;
-    display: table;
 }
 
 #issue_main .commentcontent .image_container img {
@@ -18322,4 +18358,18 @@ div[id^='wiki_'][id$='_no_links'] {
     background-color: rgb(241, 241, 241);
     margin-top: 10px;
     border: 1px dotted rgb(170, 170, 170);
+}
+
+.more_actions_dropdown li a.increment-time-minutes {
+  display: inline;
+  opacity: 0.7;
+}
+
+.more_actions_dropdown li a.increment-time-minutes:hover {
+  display: inline;
+  opacity: 1;
+}
+
+table.desktop-notifications-settings tr:first-child > td:last-child {
+    text-align: right;
 }

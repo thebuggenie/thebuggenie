@@ -250,13 +250,60 @@
             $notification->save();
         }
 
-        protected function _addIssueNotifications()
+        protected function _addTargetNotifications()
         {
             foreach ($this->getTarget()->getSubscribers() as $user)
             {
-                if ($user->getID() == $this->getPostedByID()) continue;
-                $this->_addNotification(Notification::TYPE_ISSUE_COMMENTED, $user);
+                switch ($this->getTargetType())
+                {
+                    case self::TYPE_ISSUE:
+                        if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn())
+                        {
+                          $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_COMMENTED, $user, $this->getPostedBy());
+                        }
+                        break;
+                    case self::TYPE_ARTICLE:
+                        if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES, false)->isOn())
+                        {
+                          $this->_addNotificationIfNotNotified(Notification::TYPE_ARTICLE_COMMENTED, $user, $this->getPostedBy());
+                        }
+                        break;
+                }
             }
+        }
+
+        protected function _addNotificationIfNotNotified($type, $user, $updated_by)
+        {
+          if (! $this->shouldUserBeNotified($user, $updated_by)) return;
+
+          $this->_addNotification($type, $user);
+        }
+
+        public function shouldUserBeNotified($user, $updated_by) {
+          if (!$this->getTarget()->hasAccess($user)) return false;
+
+          if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
+
+          if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
+
+          switch ($this->getTargetType())
+          {
+              case self::TYPE_ISSUE:
+                  $target_type_string = '_issue_';
+                  break;
+              case self::TYPE_ARTICLE:
+                  $target_type_string = '_article_';
+                  break;
+          }
+
+          if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . $target_type_string . $this->getTargetID(), false)->isOff())
+          {
+              $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . $target_type_string . $this->getTargetID(), true)->save();
+
+              return true;
+          }
+
+          return false;
         }
 
         /**
@@ -299,12 +346,12 @@
                         foreach ($this->_getParser()->getMentions() as $user)
                         {
                             if ($user->getID() == framework\Context::getUser()->getID()) continue;
-                            $this->_addNotification(Notification::TYPE_COMMENT_MENTIONED, $user);
+
+                            if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_COMMENT_MENTIONED, $user, $this->getPostedBy());
                         }
                     }
                     if ($this->getTargetType() == self::TYPE_ISSUE)
                     {
-                        $this->_addIssueNotifications();
                         if (framework\Settings::getUserSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, $this->getPostedByID()))
                             $this->getTarget()->addSubscriber($this->getPostedByID());
                     }
@@ -313,6 +360,7 @@
                         if (framework\Settings::getUserSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES, $this->getPostedByID()))
                             $this->getTarget()->addSubscriber($this->getPostedByID());
                     }
+                    $this->_addTargetNotifications();
                 }
             }
             else

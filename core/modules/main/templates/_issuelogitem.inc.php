@@ -271,7 +271,7 @@
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
                         echo image_tag('icon_time.png');
-                        echo __("Time spent changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+                        echo __("Time spent changed: %value", array('%value' => '<strong>'.\thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true).'</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PERCENT:
                         echo image_tag('icon_percent.png');
@@ -292,7 +292,7 @@
                         echo image_tag('icon_estimated_time.png');
                         if ($item->hasChangeDetails())
                         {
-                            echo __("Estimated time changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+                            echo __("Estimated time changed: %value", array('%value' => '<strong>'.\thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true).'</strong>'));
                          }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_AFF_ADD:

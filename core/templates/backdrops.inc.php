@@ -52,7 +52,7 @@
                     // 2. Update your UI.
                     TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
                         url_method: 'post',
-                        additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
+                        additional_params: '&persona=true&assertion='+assertion+'&referer_route=<?php echo \thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(); ?>',
                         loading: {
                             indicator: 'fullpage_backdrop',
                             clear: 'fullpage_backdrop_content',

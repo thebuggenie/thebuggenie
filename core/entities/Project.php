@@ -474,6 +474,19 @@
         protected $_dashboards = null;
 
         /**
+         * Reportable time units
+         *
+         * @var integer
+         * @access protected
+         * @Column(type="integer", length=10)
+         */
+        protected $_time_units = null;
+
+        protected $time_units_array = null;
+
+        protected $time_units_indexes = array('1' => 'months', '2' => 'weeks', '3' => 'days', '4' => 'hours', '5' => 'minutes');
+
+        /**
          * Retrieve a project by its key
          *
          * @param string $key
@@ -1811,7 +1824,10 @@
             }
         }
 
-        protected function _populateIssueCountsByMilestone($milestone_id)
+        /**
+         * @param array $allowed_status_ids
+         */
+        protected function _populateIssueCountsByMilestone($milestone_id, $allowed_status_ids = array())
         {
             if ($this->_issuecounts === null)
             {
@@ -1823,7 +1839,7 @@
             }
             if (!array_key_exists($milestone_id, $this->_issuecounts['milestone']))
             {
-                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
+                list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = Issue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id, $allowed_status_ids);
             }
         }
 
@@ -1939,12 +1955,13 @@
          * Returns the number of issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function countIssuesByMilestone($milestone)
+        public function countIssuesByMilestone($milestone, $allowed_status_ids = array())
         {
-            $this->_populateIssueCountsByMilestone($milestone);
+            $this->_populateIssueCountsByMilestone($milestone, $allowed_status_ids);
             if (!$milestone)
             {
                 return $this->_issuecounts['milestone'][$milestone]['open'];
@@ -2020,12 +2037,13 @@
          * Returns the number of closed issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function countClosedIssuesByMilestone($milestone)
+        public function countClosedIssuesByMilestone($milestone, $allowed_status_ids = array())
         {
-            $this->_populateIssueCountsByMilestone($milestone);
+            $this->_populateIssueCountsByMilestone($milestone, $allowed_status_ids);
             return $this->_issuecounts['milestone'][$milestone]['closed'];
         }
 
@@ -2076,19 +2094,23 @@
          * Returns the percentage of closed issues for this project with a specific milestone
          *
          * @param integer $milestone ID of the milestone
+         * @param array $allowed_status_ids
          *
          * @return integer
          */
-        public function getClosedPercentageByMilestone($milestone)
+        public function getClosedPercentageByMilestone($milestone, $allowed_status_ids = array())
         {
-            return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
+            return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone, $allowed_status_ids), $this->countIssuesByMilestone($milestone, $allowed_status_ids));
         }
 
-        public function getTotalPercentageByMilestone($milestone)
+        /**
+         * @param array $allowed_status_ids
+         */
+        public function getTotalPercentageByMilestone($milestone, $allowed_status_ids = array())
         {
-            if ($this->countIssuesByMilestone($milestone) == 0) return 0;
+            if ($this->countIssuesByMilestone($milestone, $allowed_status_ids) == 0) return 0;
 
-            return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone) / $this->countIssuesByMilestone($milestone);
+            return tables\Issues::getTable()->getTotalPercentCompleteByProjectIDAndMilestoneID($this->getID(), $milestone, $allowed_status_ids) / $this->countIssuesByMilestone($milestone, $allowed_status_ids);
         }
 
         /**
@@ -2217,12 +2239,13 @@
          * Return an array specifying visibility, requirement and choices for fields in reporting wizard
          *
          * @param integer $issue_type
+         * @param boolean $prefix_values
          *
          * @return array
          */
-        public function getReportableFieldsArray($issue_type)
+        public function getReportableFieldsArray($issue_type, $prefix_values = false)
         {
-            return $this->_getFieldsArray($issue_type, true);
+            return $this->_getFieldsArray($issue_type, true, $prefix_values);
         }
 
         /**
@@ -2242,10 +2265,11 @@
          *
          * @param integer $issue_type
          * @param boolean $reportable [optional] Whether to only include fields that can be reported
+         * @param boolean $prefix_values [optional] Whether to prefix keys for values of fields that can be reported
          *
          * @return array
          */
-        protected function _getFieldsArray($issue_type, $reportable = true)
+        protected function _getFieldsArray($issue_type, $reportable = true, $prefix_values = false)
         {
             $issue_type = (is_object($issue_type)) ? $issue_type->getID() : $issue_type;
             if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
@@ -2290,6 +2314,9 @@
 
                     if ($reportable)
                     {
+                        // 'v' is just a dummy prefix.
+                        $key_prefix = $prefix_values ? 'v' : '';
+
                         foreach ($retval as $key => $return_details)
                         {
                             if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == CustomDatatype::EDITIONS_CHOICE)
@@ -2298,7 +2325,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getEditions() as $edition)
                                 {
-                                    $retval[$key]['values'][$edition->getID()] = $edition->getName();
+                                    $retval[$key]['values'][$key_prefix . $edition->getID()] = $edition->getName();
                                 }
                                 if (!$this->isEditionsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2321,7 +2348,7 @@
                                 $retval[$key]['values'] = array();
                                 foreach (Status::getAll() as $status)
                                 {
-                                    $retval[$key]['values'][$status->getID()] = $status->getName();
+                                    $retval[$key]['values'][$key_prefix . $status->getID()] = $status->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {
@@ -2345,7 +2372,7 @@
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
                                 foreach ($this->getComponents() as $component)
                                 {
-                                    $retval[$key]['values'][$component->getID()] = $component->getName();
+                                    $retval[$key]['values'][$key_prefix . $component->getID()] = $component->getName();
                                 }
                                 if (!$this->isComponentsEnabled() || empty($retval[$key]['values']))
                                 {
@@ -2367,11 +2394,11 @@
                             {
                                 $retval[$key]['values'] = array();
                                 $retval[$key]['values'][''] = framework\Context::getI18n()->__('None');
-                                foreach ($this->getBuilds() as $build)
+                                foreach ($this->getActiveBuilds() as $build)
                                 {
-                                    if ($build->isLocked()) continue;
-                                    $retval[$key]['values'][$build->getID()] = $build->getName().' ('.$build->getVersion().')';
+                                    $retval[$key]['values'][$key_prefix . $build->getID()] = $build->getName().' ('.$build->getVersion().')';
                                 }
+                                arsort($retval[$key]['values']);
                                 if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
                                 {
                                     if (!$retval[$key]['required'])
@@ -2391,7 +2418,7 @@
                                 foreach ($this->getOpenMilestones() as $milestone)
                                 {
                                     if (!$milestone->hasAccess()) continue;
-                                    $retval[$key]['values'][$milestone->getID()] = $milestone->getName();
+                                    $retval[$key]['values'][$key_prefix . $milestone->getID()] = $milestone->getName();
                                 }
                                 if (empty($retval[$key]['values']))
                                 {
@@ -2415,13 +2442,15 @@
         }
 
         /**
-         * Whether or not the current user can access the project
+         * Whether or not the current or target user can access the project
          *
+         * @param null $target_user
          * @return boolean
          */
-        public function hasAccess()
+        public function hasAccess($target_user = null)
         {
-            $user = framework\Context::getUser();
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
+
             if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID()) return true;
             if ($this->getLeader() instanceof \thebuggenie\core\entities\User && $this->getLeader()->getID() == $user->getID()) return true;
 
@@ -3391,6 +3420,53 @@
         		
         	}
         	return $jsonArray;
+        }
+
+        /**
+         * Set reportable time units
+         *
+         * @param array $time_units
+         */
+        public function setTimeUnits(array $time_units)
+        {
+            $time_units_intersect = array_flip(array_intersect($this->time_units_indexes, $time_units));
+            if (!count($time_units_intersect))
+            {
+                $this->_time_units = -1;
+            }
+            else
+            {
+                $this->_time_units = count($time_units_intersect) == count($this->time_units_indexes) ? 0 : (int) implode('', $time_units_intersect);
+            }
+            $this->time_units_array = null;
+        }
+
+        /**
+         * Get reportable time units
+         *
+         * @return array|null
+         */
+        public function getTimeUnits()
+        {
+            if ($this->time_units_array === null)
+            {
+                // If time units column is 0, all units are reportable
+                $this->time_units_array = $this->_time_units == 0 ? $this->time_units_indexes : array_intersect_key($this->time_units_indexes, array_flip(str_split((string) $this->_time_units)));
+            }
+
+            return $this->time_units_array;
+        }
+
+        /**
+         * Check whether time unit is reportable
+         *
+         * @param $time_unit
+         *
+         * @return bool
+         */
+        public function hasTimeUnit($time_unit)
+        {
+            return in_array($time_unit, $this->getTimeUnits());
         }
 
     }

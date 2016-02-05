@@ -417,7 +417,8 @@
             {
                 $user = new self();
                 $user->setPassword(self::createPassword());
-                $username = end((explode('/', rtrim($identity, '/'))));
+                $username = explode('/', rtrim($identity, '/'));
+                $username = end($username);
                 $username = urldecode($username);
                 $user->setUsername($username);
                 $user->setOpenIdLocked();
@@ -1820,7 +1821,7 @@
 
         /**
          * Returns the realname or, if not available, the buddyname.
-         * 
+         *
          * @return string
          */
         public function getDisplayName()
@@ -2839,27 +2840,28 @@
 
         public function markAllNotificationsRead()
         {
-            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(), null, $this->getID());
+            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(), null, $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue());
         }
 
         public function markNotificationsRead($type, $id)
         {
+            $grouped_notifications_minutes = $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue();
             if ($type == 'issue')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID());
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ISSUE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
                 }
             }
             if ($type == 'article')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID());
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ARTICLE);
                 if (count($comment_ids))
                 {
-                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndId(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
+                    tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_COMMENTED, Notification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID(), $grouped_notifications_minutes);
                 }
             }
             $this->_notifications = null;
@@ -3010,12 +3012,12 @@
                 'username' => $this->getUsername(),
                 'type' => 'user' // This is for distinguishing of assignees & similar "ambiguous" values in JSON.
             );
-            
+
             if($detailed) {
                 $returnJSON['display_name'] = $this->getDisplayName();
                 $returnJSON['realname'] = $this->getRealname();
                 $returnJSON['buddyname'] = $this->getBuddyname();
-                
+
                 // Only return email if it is public or we are looking at the currently logged-in user
                 if($this->isEmailPublic() || framework\Context::getUser()->getID() == $this->getID()) {
                     $returnJSON['email'] = $this->getEmail();
@@ -3027,23 +3029,23 @@
 
                 $returnJSON['date_joined'] = $this->getJoinedDate();
                 $returnJSON['last_seen'] = $this->getLastSeen();
-                
+
                 $returnJSON['timezone'] = $this->getTimezoneIdentifier();
                 $returnJSON['language'] = $this->getLanguage();
 
                 $returnJSON['state'] = $this->getState()->toJSON();
-                
+
                 /*
                  * TODO...
                  */
-                
+
 //                 $this->getClients();
 //                 $this->getDashboards();
 //                 $this->getDefaultDashboard();
 //                 $this->getFriends();
 //                 $this->getGroup();
 //                 $this->getTeams();
-                
+
                 /*
                  * TODO: Return these?
                  */
@@ -3051,8 +3053,18 @@
 //                 $this->isDeleted();
 //                 $this->isEnabled();
             }
-            
+
             return $returnJSON;
+        }
+
+        /**
+         * @param Notification $notification
+         */
+        public function markNotificationGroupedNotificationsRead(\thebuggenie\core\entities\Notification $notification)
+        {
+            if ($notification->getNotificationType() != \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED) return;
+
+            tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(\thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED), $notification->getTargetID(), $this->getID(), $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue(), (int) $notification->isRead(), false);
         }
 
     }

@@ -338,6 +338,14 @@
         protected $_estimated_hours;
 
         /**
+         * The estimated time (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_estimated_minutes;
+
+        /**
          * The estimated time (points) to fix this issue
          *
          * @var integer
@@ -376,6 +384,14 @@
          * @Column(type="integer", length=10)
          */
         protected $_spent_hours;
+
+        /**
+         * The time spent (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_spent_minutes;
 
         /**
          * The time spent (points) to fix this issue
@@ -655,12 +671,13 @@
          *
          * @param integer $project_id The project ID
          * @param integer $milestone_id The milestone ID
+         * @param array $allowed_status_ids
          *
          * @return array
          */
-        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
+        public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids = array())
         {
-            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id);
+            return tables\Issues::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids);
         }
 
         /**
@@ -956,8 +973,9 @@
         }
 
         /**
-         * Whether or not the current user can access the issue
+         * Whether or not the current or target user can access the issue
          *
+         * @param null $target_user
          * @return boolean
          */
         public function hasAccess($target_user = null)
@@ -965,41 +983,47 @@
             \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
             $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
-            if (!$user->isGuest() && $user->isAuthenticated())
+            $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
+            if ($specific_access !== null)
             {
-                $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
-                if ($specific_access !== null)
+                if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
                 {
-                    \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
-                    return $specific_access;
+                    if (!$this->getCategory()->hasAccess($user))
+                    {
+                        \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
+                        return false;
+                    }
                 }
-                if ($this->getPostedByID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user posted it');
-                    return true;
-                }
-                if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user owns it');
-                    return true;
-                }
-                if ($this->getAssignee() instanceof \thebuggenie\core\entities\User && $this->getAssignee()->getID() == $user->getID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
-                    return true;
-                }
-                if ($user->hasPermission('canseegroupissues', 0, 'core') &&
-                    $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
-                    $this->getPostedBy()->getGroupID() == $user->getGroupID())
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
-                    return true;
-                }
-                if ($user->hasPermission('canseeallissues', 0, 'core') === false)
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
-                    return false;
-                }
+
+                \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
+                return $specific_access;
+            }
+            if ($this->getPostedByID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user posted it');
+                return true;
+            }
+            if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user owns it');
+                return true;
+            }
+            if ($this->getAssignee() instanceof \thebuggenie\core\entities\User && $this->getAssignee()->getID() == $user->getID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
+                return true;
+            }
+            if ($user->hasPermission('canseegroupissues', 0, 'core') &&
+                $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
+                $this->getPostedBy()->getGroupID() == $user->getGroupID())
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
+                return true;
+            }
+            if ($user->hasPermission('canseeallissues', 0, 'core') === false)
+            {
+                \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
+                return false;
             }
             if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category)
             {
@@ -1009,7 +1033,7 @@
                     return false;
                 }
             }
-            if ($this->getProject()->hasAccess())
+            if ($this->getProject()->hasAccess($user))
             {
                 \thebuggenie\core\framework\Logging::log('done checking, can access project');
                 return true;
@@ -2211,7 +2235,7 @@
         /**
          * Returns a string-formatted time based on project setting
          *
-         * @param array $time array of weeks, days and hours
+         * @param array $time array of weeks, days, hours and minutes
          *
          * @return string
          */
@@ -2235,6 +2259,10 @@
             if (array_key_exists('hours', $time) && ($time['hours'] > 0 || !$strict))
             {
                 $values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of hours', array('%number_of' => $time['hours']));
+            }
+            if (array_key_exists('minutes', $time) && ($time['minutes'] > 0 || !$strict))
+            {
+                $values[] = ($time['minutes'] == 1) ? $i18n->__('1 minute') : $i18n->__('%number_of minutes', array('%number_of' => $time['minutes']));
             }
             $retval = join(', ', $values);
 
@@ -3163,8 +3191,7 @@
 
         public function calculateTime()
         {
-            $estimated_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
-            $spent_times = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+            $estimated_times = $spent_times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
             foreach ($this->getChildIssues() as $issue)
             {
                 foreach ($issue->getEstimatedTime() as $key => $value) $estimated_times[$key] += $value;
@@ -3246,12 +3273,14 @@
             }
             else
             {
-                $estimated = $this->getEstimatedHours();
+                $estimated = $this->getEstimatedMinutes();
+                $estimated += $this->getEstimatedHours() * 60;
                 $estimated += $this->getEstimatedDays() * 8;
                 $estimated += $this->getEstimatedWeeks() * 8 * 5;
                 $estimated += $this->getEstimatedMonths() * 8 * 22;
 
-                $spent = $this->getSpentHours();
+                $spent = $this->getSpentMinutes();
+                $spent *= $this->getSpentHours() * 60;
                 $spent += $this->getSpentDays() * 8;
                 $spent += $this->getSpentWeeks() * 8 * 5;
                 $spent += $this->getSpentMonths() * 8 * 22;
@@ -3327,11 +3356,14 @@
         /**
          * Returns an array with the estimated time
          *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
          * @return array
          */
-        public function getEstimatedTime()
+        public function getEstimatedTime($append_minutes = false, $subtract_hours = false)
         {
-            return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->_estimated_hours, 'points' => (int) $this->_estimated_points);
+            return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->getEstimatedHours($append_minutes), 'minutes' => (int) $this->getEstimatedMinutes($subtract_hours), 'points' => (int) $this->_estimated_points);
         }
 
         /**
@@ -3367,11 +3399,26 @@
         /**
          * Returns the estimated hours
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getEstimatedHours()
+        public function getEstimatedHours($append_minutes = false)
         {
-            return (int) $this->_estimated_hours;
+            return (int) $this->_estimated_hours + ($append_minutes ? (int) floor($this->getEstimatedMinutes() / 60) : 0);
+        }
+
+        /**
+         * Returns the estimated minutes
+         *
+         * @param bool $subtract_hours
+         *
+         * @return integer
+         */
+        public function getEstimatedMinutes($subtract_hours = false)
+        {
+          $minutes = (int) $this->_estimated_minutes;
+          return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
         /**
@@ -3385,15 +3432,29 @@
         }
 
         /**
-         * Turns a string into a months/weeks/days/hours/points array
+         * Returns the estimated hours and minutes formatted
+         *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
+         * @return integer|string
+         */
+        public function getEstimatedHoursAndMinutes($append_minutes = false, $subtract_hours = false)
+        {
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getEstimatedHours($append_minutes), $this->getEstimatedMinutes($subtract_hours));
+        }
+
+        /**
+         * Turns a string into a months/weeks/days/hours/minutes/points array
          *
          * @param string $string The string to convert
+         * @param Issue $issue
          *
          * @return array
          */
-        public static function convertFancyStringToTime($string)
+        public static function convertFancyStringToTime($string, self $issue)
         {
-            $retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+            $retarr = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
             $string = mb_strtolower(trim($string));
             $time_arr = preg_split('/(\,|\/|and|or|plus)/', $string);
             foreach ($time_arr as $time_elm)
@@ -3404,16 +3465,19 @@
                     switch (true)
                     {
                         case mb_stristr($time_parts[1], 'month'):
-                            $retarr['months'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('months')) $retarr['months'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'week'):
-                            $retarr['weeks'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('weeks')) $retarr['weeks'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'day'):
-                            $retarr['days'] = (int) trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('days')) $retarr['days'] = (int) trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'hour'):
-                            $retarr['hours'] = trim($time_parts[0]);
+                            if ($issue->getProject()->hasTimeUnit('hours')) $retarr['hours'] = trim($time_parts[0]);
+                            break;
+                        case mb_stristr($time_parts[1], 'minute'):
+                            if ($issue->getProject()->hasTimeUnit('minutes')) $retarr['minutes'] = trim($time_parts[0]);
                             break;
                         case mb_stristr($time_parts[1], 'point'):
                             $retarr['points'] = (int) trim($time_parts[0]);
@@ -3448,6 +3512,7 @@
                 $this->_addChangedProperty('_estimated_weeks', 0);
                 $this->_addChangedProperty('_estimated_days', 0);
                 $this->_addChangedProperty('_estimated_hours', 0);
+                $this->_addChangedProperty('_estimated_minutes', 0);
                 $this->_addChangedProperty('_estimated_points', 0);
             }
             elseif (is_array($time))
@@ -3459,11 +3524,12 @@
             }
             else
             {
-                $time = self::convertFancyStringToTime($time);
+                $time = self::convertFancyStringToTime($time, $this);
                 $this->_addChangedProperty('_estimated_months', $time['months']);
                 $this->_addChangedProperty('_estimated_weeks', $time['weeks']);
                 $this->_addChangedProperty('_estimated_days', $time['days']);
                 $this->_addChangedProperty('_estimated_hours', $time['hours']);
+                $this->_addChangedProperty('_estimated_minutes', $time['minutes']);
                 $this->_addChangedProperty('_estimated_points', $time['points']);
             }
         }
@@ -3509,6 +3575,16 @@
         }
 
         /**
+         * Set estimated minutes
+         *
+         * @param integer $minutes The number of minutes estimated
+         */
+        public function setEstimatedMinutes($minutes)
+        {
+            $this->_addChangedProperty('_estimated_minutes', $minutes);
+        }
+
+        /**
          * Set issue number
          *
          * @param integer $no New issue number
@@ -3535,7 +3611,7 @@
          */
         public function isEstimatedTimeChanged()
         {
-            return (bool) ($this->isEstimated_MonthsChanged() || $this->isEstimated_WeeksChanged() || $this->isEstimated_DaysChanged() || $this->isEstimated_HoursChanged() || $this->isEstimated_PointsChanged());
+            return (bool) ($this->isEstimated_MonthsChanged() || $this->isEstimated_WeeksChanged() || $this->isEstimated_DaysChanged() || $this->isEstimated_HoursChanged() || $this->isEstimated_MinutesChanged() || $this->isEstimated_PointsChanged());
         }
 
         /**
@@ -3545,7 +3621,7 @@
          */
         public function isEstimatedTimeMerged()
         {
-            return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_PointsMerged());
+            return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_MinutesMerged() || $this->isEstimated_PointsMerged());
         }
 
         /**
@@ -3557,6 +3633,7 @@
             $this->revertEstimated_Weeks();
             $this->revertEstimated_Days();
             $this->revertEstimated_Hours();
+            $this->revertEstimated_Minutes();
             $this->revertEstimated_Points();
         }
 
@@ -3739,11 +3816,14 @@
         /**
          * Returns an array with the spent time
          *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
          * @return array
          */
-        public function getSpentTime()
+        public function getSpentTime($append_minutes = false, $subtract_hours = false)
         {
-            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'points' => (int) $this->_spent_points);
+            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => (int) $this->getSpentHours($append_minutes), 'minutes' => (int) $this->getSpentMinutes($subtract_hours), 'points' => (int) $this->_spent_points);
         }
 
         /**
@@ -3779,11 +3859,26 @@
         /**
          * Returns the spent hours
          *
+         * @param bool $append_minutes
+         *
          * @return integer
          */
-        public function getSpentHours()
+        public function getSpentHours($append_minutes = false)
         {
-            return (int) round($this->_spent_hours / 100, 2);
+            return (int) round($this->_spent_hours / 100, 2) + ($append_minutes ? (int) floor($this->getSpentMinutes() / 60) : 0);
+        }
+
+        /**
+         * Returns the spent minutes
+         *
+         * @param bool $subtract_hours
+         *
+         * @return integer
+         */
+        public function getSpentMinutes($subtract_hours = false)
+        {
+          $minutes = (int) $this->_spent_minutes;
+          return $subtract_hours ? $minutes % 60 : $minutes;
         }
 
         /**
@@ -3797,15 +3892,30 @@
         }
 
         /**
+         * Returns the spent hours and minutes formatted
+         *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
+         *
+         * @return integer|string
+         */
+        public function getSpentHoursAndMinutes($append_minutes = false, $subtract_hours = false)
+        {
+            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getSpentHours($append_minutes), $this->getSpentMinutes($subtract_hours));
+        }
+
+        /**
          * Returns an array with the spent time
          *
+         * @param bool $append_minutes
+         * @param bool $subtract_hours
          * @see getSpentTime()
          *
          * @return array
          */
-        public function getTimeSpent()
+        public function getTimeSpent($append_minutes = false, $subtract_hours = false)
         {
-            return $this->getSpentTime();
+            return $this->getSpentTime($append_minutes, $subtract_hours);
         }
 
         /**
@@ -3846,6 +3956,16 @@
         public function setSpentHours($hours)
         {
             $this->_addChangedProperty('_spent_hours', $hours);
+        }
+
+        /**
+         * Set spent minutes
+         *
+         * @param integer $minutes The number of minutes spent
+         */
+        public function setSpentMinutes($minutes)
+        {
+            $this->_addChangedProperty('_spent_minutes', $minutes);
         }
 
         /**
@@ -5141,15 +5261,23 @@
                             case '_estimated_weeks':
                             case '_estimated_days':
                             case '_estimated_hours':
+                            case '_estimated_minutes':
                             case '_estimated_points':
                                 if (!$is_saved_estimated)
                                 {
-                                    $old_time = array('months' => $this->getChangedPropertyOriginal('_estimated_months'),
-                                                        'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
-                                                        'days' => $this->getChangedPropertyOriginal('_estimated_days'),
-                                                        'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
-                                                        'points' => $this->getChangedPropertyOriginal('_estimated_points'));
-
+                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $old_time = array_fill_keys($time_units, 0);
+                                    foreach ($time_units as $time_unit)
+                                    {
+                                        if ($this->_isPropertyChanged('_estimated_' . $time_unit))
+                                        {
+                                            $old_time[$time_unit] = $this->getChangedPropertyOriginal('_estimated_' . $time_unit);
+                                        }
+                                        else
+                                        {
+                                            $old_time[$time_unit] = $this->{'_estimated_' . $time_unit};
+                                        }
+                                    }
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('Not estimated');
                                     $new_formatted_time = ($this->hasEstimatedTime()) ? Issue::getFormattedTime($this->getEstimatedTime()) : framework\Context::getI18n()->__('Not estimated');
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
@@ -5160,15 +5288,24 @@
                             case '_spent_weeks':
                             case '_spent_days':
                             case '_spent_hours':
+                            case '_spent_minutes':
                             case '_spent_points':
                                 if (!$is_saved_spent)
                                 {
-                                    $old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
-                                                        'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
-                                                        'days' => $this->getChangedPropertyOriginal('_spent_days'),
-                                                        'hours' => round($this->getChangedPropertyOriginal('_spent_hours') / 100, 2),
-                                                        'points' => $this->getChangedPropertyOriginal('_spent_points'));
-
+                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $old_time = array_fill_keys($time_units, 0);
+                                    foreach ($time_units as $time_unit)
+                                    {
+                                        if ($this->_isPropertyChanged('_spent_' . $time_unit))
+                                        {
+                                            $old_time[$time_unit] = $this->getChangedPropertyOriginal('_spent_' . $time_unit);
+                                        }
+                                        else
+                                        {
+                                            $old_time[$time_unit] = $this->{'_spent_' . $time_unit};
+                                        }
+                                    }
+                                    $old_time['hours'] = round($old_time['hours'] / 100, 2);
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('No time spent');
                                     $new_formatted_time = ($this->hasSpentTime()) ? Issue::getFormattedTime($this->getSpentTime()) : framework\Context::getI18n()->__('No time spent');
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
@@ -5192,6 +5329,10 @@
                                                 if ($this->getSpentHours() < $this->getEstimatedHours())
                                                 {
                                                     $this->setSpentHours($this->getEstimatedHours());
+                                                }
+                                                if ($this->getSpentMinutes() < $this->getEstimatedMinutes())
+                                                {
+                                                    $this->setSpentMinutes($this->getEstimatedMinutes());
                                                 }
                                                 foreach ($this->getParentIssues() as $parent_issue)
                                                 {
@@ -5320,7 +5461,7 @@
 
                 if ($is_saved_estimated)
                 {
-                    tables\IssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
+                    tables\IssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_minutes, $this->_estimated_points);
                 }
 
             }
@@ -5346,7 +5487,9 @@
         }
 
         public function shouldUserBeNotified($user, $updated_by) {
-            if (!$this->hasAccess($user) || ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID())) return false;
+            if (!$this->hasAccess($user)) return false;
+
+            if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_UPDATED_SELF, false)->isOff() && $user->getID() === $updated_by->getID()) return false;
 
             if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE, false)->isOff()) return true;
 
@@ -5468,9 +5611,7 @@
             {
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
                 {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory() instanceof Category && $this->getCategory()->getID() == $subscribed_category_id)) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_UPDATED, $user, $updated_by);
                 }
             }
         }
@@ -5480,13 +5621,6 @@
             foreach ($this->getRelatedUsers() as $user)
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
-
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES, false)->isOn() && $this->isSubscriber($user))
-                {
-                    $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
-
-                    if ($subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory() instanceof Category && $this->getCategory()->getID() == $subscribed_category_id))  $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
-                }
 
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS, false)->isOn() && ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == 0 || ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == $this->getCategory()->getID()))) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
@@ -5506,6 +5640,7 @@
                     }
                 }
             }
+            \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
             $this->_addUpdateNotifications($updated_by);
             $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
             $event->trigger();
@@ -5513,7 +5648,9 @@
 
         public function shouldAutomaticallySubscribeUser($user)
         {
-            if (!$this->hasAccess($user) || $this->isSubscriber($user) || (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1)) return false;
+            if (!$this->hasAccess($user) || $this->isSubscriber($user)) return false;
+
+            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1) return false;
 
             $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
 
@@ -5542,6 +5679,7 @@
             }
             else
             {
+                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', $this)->trigger();
                 $_description_parser = $this->_getDescriptionParser();
                 $_reproduction_steps_parser = $this->_getReproductionStepsParser();
                 if (! is_null($_description_parser) && $_description_parser->hasMentions())
@@ -5599,7 +5737,7 @@
 
         public function saveSpentTime()
         {
-            $spent_times = array('months', 'weeks', 'days', 'hours', 'points');
+            $spent_times = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
             $spent_times_changed_items = array();
             $changed_properties = $this->_getChangedProperties();
 
@@ -5618,7 +5756,6 @@
                 $this->_revertPropertyChange($property);
             }
 
-            $this->_changed_items = array();
             $this->save();
 
             foreach ($changed_properties as $property => $property_values)
@@ -5686,21 +5823,19 @@
 
         public function calculateTimeSpent()
         {
-            $ts_array = array('hours' => 0, 'days' => 0, 'weeks' => 0);
+            $ts_array = array_fill_keys(\thebuggenie\core\entities\common\Timeable::getUnitsWithout(array('months')), 0);
             $time_spent = ($this->_being_worked_on_by_user_since) ? NOW - $this->_being_worked_on_by_user_since : 0;
             if ($time_spent > 0)
             {
-                $weeks_spent = 0;
-                $days_spent = 0;
-                $hours_spent = 0;
-
                 $weeks_spent = floor($time_spent / 604800);
                 $days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
-                $hours_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+                $hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+                $minutes_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400) - ($hours_spent * 3600)) / 60);
 
-                $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
-                $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
-                $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
+                if ($this->getProject()->hasTimeUnit('minutes')) $ts_array['minutes'] = ($minutes_spent < 0) ? 0 : $minutes_spent;
+                if ($this->getProject()->hasTimeUnit('hours')) $ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
+                if ($this->getProject()->hasTimeUnit('days')) $ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
+                if ($this->getProject()->hasTimeUnit('weeks')) $ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
             }
             return $ts_array;
         }
@@ -5708,15 +5843,33 @@
         /**
          * Stop working on the issue, and save time spent
          *
+         * @param \thebuggenie\core\entities\User $user
+         * @param integer $timespent_activitytype
+         * @param string $timespent_comment
+         *
          * @return null
          */
-        public function stopWorkingOnIssue()
+        public function stopWorkingOnIssue(User $user, $timespent_activitytype, $timespent_comment)
         {
             $time_spent = $this->calculateTimeSpent();
             $this->clearUserWorkingOnIssue();
-            if ($time_spent['hours'] > 0) $this->addSpentHours($time_spent['hours']);
-            if ($time_spent['days'] > 0) $this->addSpentDays($time_spent['days']);
-            if ($time_spent['weeks'] > 0) $this->addSpentWeeks($time_spent['weeks']);
+
+            if ($time_spent['minutes'] > 0 || $time_spent['hours'] > 0 || $time_spent['days'] > 0 || $time_spent['weeks'] > 0)
+            {
+                $time_spent['hours'] *= 100;
+                $spenttime = new \thebuggenie\core\entities\IssueSpentTime();
+                $spenttime->setIssue($this);
+                $spenttime->setUser(framework\Context::getUser());
+                $spenttime->setSpentPoints(0);
+                $spenttime->setSpentMinutes($time_spent['minutes']);
+                $spenttime->setSpentHours($time_spent['hours']);
+                $spenttime->setSpentDays($time_spent['days']);
+                $spenttime->setSpentWeeks($time_spent['weeks']);
+                $spenttime->setSpentMonths(0);
+                $spenttime->setActivityType($timespent_activitytype);
+                $spenttime->setComment($timespent_comment);
+                $spenttime->save();
+            }
         }
 
         /**
@@ -5895,86 +6048,86 @@
             );
 
             if($detailed) {
-            	$fields = $this->getProject()->getVisibleFieldsArray($this->getIssueType());
-            	
-            	foreach ($fields as $field => $details)
-            	{
-            		$identifiable = true;
-            		switch ($field)
-            		{
-            			case 'shortname':
-            			case 'description':
-            			case 'votes':
-            				$identifiable = false;
-            			case 'resolution':
-            			case 'priority':
-            			case 'severity':
-            			case 'category':
-            			case 'reproducability':
-            				$method = 'get'.ucfirst($field);
-            				$value = $this->$method();
-            				break;
-            			case 'milestone':
-            				$method = 'get'.ucfirst($field);
-            				$value = $this->$method();
-            				if (is_numeric($value) && $value == 0) {
-            					$value = new Milestone();
-            					$value->setID(0);
-            				}
-            				break;
-            			case 'owner':
-            				$value = $this->getOwner();
-            				break;
-            			case 'assignee':
-            				$value = $this->getAssignee();
-            				break;
-            			case 'percent_complete':
-            				$value = $this->getPercentCompleted();
-            				$identifiable = false;
-            				break;
-            			case 'user_pain':
-            				$value = $this->getUserPain();
-            				$identifiable = false;
-            				break;
-            			case 'reproduction_steps':
-            				$value = $this->getReproductionSteps();
-            				$identifiable = false;
-            				break;
-            			case 'estimated_time':
-            				$value = $this->getEstimatedTime();
-            				$identifiable = false;
-            				break;
-            			case 'spent_time':
-            				$value = $this->getSpentTime();
-            				$identifiable = false;
-            				break;
-            			case 'build':
-            			case 'edition':
-            			case 'component':
-            				break;
-            			default:
-            				$value = $this->getCustomField($field);
-            				$identifiable = false;
-            				break;
-            		}
-            		if (isset($value))
-            		{
-            			if ($identifiable)
-            				$return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
-            				else
-            					$return_values[$field] = $value;
-            		}
-            	
-            	}
-            	
-            	$comments = array();
-            	foreach ($this->getComments() as $comment)
-            	{
-            		$comments[$comment->getCommentNumber()] = $comment->toJSON();
-            	}
-            	
-            	$return_values['comments'] = $comments;
-            	$return_values['visible_fields'] = $fields;
+                $fields = $this->getProject()->getVisibleFieldsArray($this->getIssueType());
+
+                foreach ($fields as $field => $details)
+                {
+                    $identifiable = true;
+                    switch ($field)
+                    {
+                        case 'shortname':
+                        case 'description':
+                        case 'votes':
+                            $identifiable = false;
+                        case 'resolution':
+                        case 'priority':
+                        case 'severity':
+                        case 'category':
+                        case 'reproducability':
+                            $method = 'get'.ucfirst($field);
+                            $value = $this->$method();
+                            break;
+                        case 'milestone':
+                            $method = 'get'.ucfirst($field);
+                            $value = $this->$method();
+                            if (is_numeric($value) && $value == 0) {
+                                $value = new Milestone();
+                                $value->setID(0);
+                            }
+                            break;
+                        case 'owner':
+                            $value = $this->getOwner();
+                            break;
+                        case 'assignee':
+                            $value = $this->getAssignee();
+                            break;
+                        case 'percent_complete':
+                            $value = $this->getPercentCompleted();
+                            $identifiable = false;
+                            break;
+                        case 'user_pain':
+                            $value = $this->getUserPain();
+                            $identifiable = false;
+                            break;
+                        case 'reproduction_steps':
+                            $value = $this->getReproductionSteps();
+                            $identifiable = false;
+                            break;
+                        case 'estimated_time':
+                            $value = $this->getEstimatedTime(true, true);
+                            $identifiable = false;
+                            break;
+                        case 'spent_time':
+                            $value = $this->getSpentTime(true, true);
+                            $identifiable = false;
+                            break;
+                        case 'build':
+                        case 'edition':
+                        case 'component':
+                            break;
+                        default:
+                            $value = $this->getCustomField($field);
+                            $identifiable = false;
+                            break;
+                    }
+                    if (isset($value))
+                    {
+                        if ($identifiable)
+                            $return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
+                        else
+                            $return_values[$field] = $value;
+                    }
+
+                }
+
+                $comments = array();
+                foreach ($this->getComments() as $comment)
+                {
+                    $comments[$comment->getCommentNumber()] = $comment->toJSON();
+                }
+
+                $return_values['comments'] = $comments;
+                $return_values['visible_fields'] = $fields;
             }
 
             return $return_values;
@@ -6180,6 +6333,41 @@
         public function canEditColor()
         {
             return $this->_canPermissionOrEditIssue('caneditissuecolor');
+        }
+
+        /**
+         * Check to see whether the category is changed
+         *
+         * @return boolean
+         */
+        public function isCategoryChanged()
+        {
+            return $this->_isPropertyChanged('_category');
+        }
+
+        /**
+         * Get spent time units with points and their description.
+         *
+         * @return array
+         */
+        public function getSpentTimeUnitsWithPoints()
+        {
+            $spent_time_units = array_intersect_key(array('minutes' => __('%number_of minute(s)', array('%number_of' => '')), 'hours' => __('%number_of hour(s)', array('%number_of' => '')), 'days' => __('%number_of day(s)', array('%number_of' => '')), 'weeks' => __('%number_of week(s)', array('%number_of' => '')), 'months' => __('%number_of month(s)', array('%number_of' => ''))), array_flip($this->getProject()->getTimeUnits()));
+
+            return array('points' => __('%number_of point(s)', array('%number_of' => ''))) + $spent_time_units;
+        }
+
+        /**
+         * Get something summary text for transition time logger
+         *
+         * @return string
+         */
+        public function getTimeLoggerSomethingSummaryText()
+        {
+            $time_logger_units = array_intersect_key(array('weeks' => '%weeks week(s)', 'days' => '%days day(s)', 'hours' => '%hours hour(s)', 'minutes' => '%minutes minute(s)'), array_flip($this->getProject()->getTimeUnits()));
+            $last_time_unit = array_pop($time_logger_units);
+
+            return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
         }
 
     }

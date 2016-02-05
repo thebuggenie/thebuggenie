@@ -103,6 +103,7 @@
             framework\Event::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
             framework\Event::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
             framework\Event::listen('core', '_notification_view', array($this, 'listen_notificationview'));
+            framework\Event::listen('core', '_notification_view_text', array($this, 'listen_notificationviewtext'));
             framework\Event::listen('core', 'thebuggenie\core\entities\Notification::getTarget', array($this, 'listen_thebuggenie_core_entities_Notification_getTarget'));
             framework\Event::listen('core', 'thebuggenie\core\framework\helpers\TextParser::_parse_line::char_regexes', array($this, 'listen_thebuggenie_core_helpers_textparser_char_regexes'));
             framework\Event::listen('core', 'thebuggenie\core\framework\helpers\TextParserMarkdown::transform', array($this, 'listen_thebuggenie_core_helpers_textparser_char_regexes'));
@@ -200,6 +201,15 @@
                 return;
 
             include_component('vcs_integration/notification_view', array('notification' => $event->getSubject()));
+            $event->setProcessed();
+        }
+
+        public function listen_notificationviewtext(framework\Event $event)
+        {
+            if ($event->getSubject()->getModuleName() != 'vcs_integration')
+                return;
+
+            include_component('vcs_integration/notification_view_text', array('notification' => $event->getSubject()));
             $event->setProcessed();
         }
 
@@ -419,7 +429,7 @@
                     }
                 }
 
-                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.<div class="commit_main">%commit_msg</div>', array('%commit_msg' => $commit_msg)), $user->getID(), 'vcs_integration');
+                $issue->addSystemComment(framework\Context::getI18n()->__('This issue has been updated with the latest changes from the code repository.%commit_msg', array('%commit_msg' => '<div class="commit_main">' . $commit_msg . '</div>')), $user->getID(), 'vcs_integration');
                 $output .= '[VCS ' . $project->getKey() . '] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
             }
 

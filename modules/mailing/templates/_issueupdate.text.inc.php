@@ -69,10 +69,10 @@
                     echo ' * ' . __('Issue type changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
                 case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
-                    echo ' * ' . __('Estimation changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
+                    echo ' * ' . __('Estimation changed: %text', array('%text' => str_replace('&rArr;', '->', \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))));
                     break;
                 case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
-                    echo ' * ' . __('Time spent: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
+                    echo ' * ' . __('Time spent: %text', array('%text' => str_replace('&rArr;', '->', \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))));
                     break;
                 case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
                     echo ' * ' . __('Assignee changed: %text', array('%text' => $item->getText()));

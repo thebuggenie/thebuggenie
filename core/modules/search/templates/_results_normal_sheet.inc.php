@@ -1,6 +1,6 @@
 <?php
 
-    $headers = array(__("Project"), __("Issue number"), __("Issue title"), __("Description"), __("Reproduction steps"), __("Posted by"), __("Assigned to"), __("Status"), __('Category'), __('Priority'), __('Reproducability'), __('Severity'), __("Resolution"), __('Targetted for'), __("Posted at"), __("Last updated"), __("Percentage complete"), __("Time estimated"), __("Time spent"), __("User pain"), __("Votes"));
+    $headers = array(__("Project"), __("Issue type"), __("Issue number"), __("Issue title"), __("Description"), __("Reproduction steps"), __("Posted by"), __("Assigned to"), __("Status"), __('Category'), __('Priority'), __('Reproducability'), __('Severity'), __("Resolution"), __('Targetted for'), __("Posted at"), __("Last updated"), __("Percentage complete"), __("Time estimated"), __("Time spent"), __("User pain"), __("Votes"));
     foreach ($custom_columns as $column) {
         $headers[] = __($column->getName());
     }
@@ -13,65 +13,65 @@
         $cc = 2;
         foreach ($search_object->getIssues() as $issue) {
             $temp = $issue->getAssignee();
-            if ($temp instanceof TBGUser && !($temp->isDeleted())) {
+            if ($temp instanceof thebuggenie\core\entities\User && !($temp->isDeleted())) {
                 $assignee = $temp->getBuddyname();
-            } elseif ($temp instanceof TBGTeam) {
+            } elseif ($temp instanceof thebuggenie\core\entities\Team) {
                 $assignee = $temp->getName();
             } else {
                 $assignee = '-';
             }
 
             $temp = $issue->getPostedBy();
-            if ($temp instanceof TBGUser && !($temp->isDeleted())) {
+            if ($temp instanceof thebuggenie\core\entities\User && !($temp->isDeleted())) {
                 $posted_by = $temp->getBuddyname();
             } else {
                 $posted_by = '-';
             }
 
             $temp = $issue->getStatus();
-            if ($temp instanceof TBGStatus) {
+            if ($temp instanceof thebuggenie\core\entities\Status) {
                 $status = $temp->getName();
             } else {
                 $status = '-';
             }
 
             $temp = $issue->getPriority();
-            if ($temp instanceof TBGPriority) {
+            if ($temp instanceof thebuggenie\core\entities\Priority) {
                 $priority = $temp->getName();
             } else {
                 $priority = '-';
             }
 
             $temp = $issue->getResolution();
-            if ($temp instanceof TBGResolution) {
+            if ($temp instanceof thebuggenie\core\entities\Resolution) {
                 $resolution = $temp->getName();
             } else {
                 $resolution = '-';
             }
 
             $temp = $issue->getCategory();
-            if ($temp instanceof TBGCategory) {
+            if ($temp instanceof thebuggenie\core\entities\Category) {
                 $category = $temp->getName();
             } else {
                 $category = '-';
             }
 
             $temp = $issue->getReproducability();
-            if ($temp instanceof TBGReproducability) {
+            if ($temp instanceof thebuggenie\core\entities\Reproducability) {
                 $reproducability = $temp->getName();
             } else {
                 $reproducability = '-';
             }
 
             $temp = $issue->getSeverity();
-            if ($temp instanceof TBGSeverity) {
+            if ($temp instanceof thebuggenie\core\entities\Severity) {
                 $severity = $temp->getName();
             } else {
                 $severity = '-';
             }
 
             $temp = $issue->getMilestone();
-            if ($temp instanceof TBGMilestone) {
+            if ($temp instanceof thebuggenie\core\entities\Milestone) {
                 $milestone = $temp->getName();
             } else {
                 $milestone = '-';
@@ -79,32 +79,34 @@
 
             unset($temp);
 
-            $percent = $issue->getPercentCompleted() . '%';
-
             $sheet->setCellValueByColumnAndRow(0, $cc, $issue->getProject()->getName());
-            $sheet->setCellValueByColumnAndRow(1, $cc, $issue->getFormattedIssueNo());
-            $sheet->setCellValueByColumnAndRow(2, $cc, $issue->getRawTitle());
-            $sheet->setCellValueByColumnAndRow(3, $cc, $issue->getDescription());
-            $sheet->setCellValueByColumnAndRow(4, $cc, $issue->getReproductionSteps());
-            $sheet->setCellValueByColumnAndRow(5, $cc, $posted_by);
-            $sheet->setCellValueByColumnAndRow(6, $cc, $assignee);
-            $sheet->setCellValueByColumnAndRow(7, $cc, $status);
-            $sheet->setCellValueByColumnAndRow(8, $cc, $category);
-            $sheet->setCellValueByColumnAndRow(9, $cc, $priority);
-            $sheet->setCellValueByColumnAndRow(10, $cc, $reproducability);
-            $sheet->setCellValueByColumnAndRow(11, $cc, $severity);
-            $sheet->setCellValueByColumnAndRow(12, $cc, $resolution);
-            $sheet->setCellValueByColumnAndRow(13, $cc, $milestone);
-            $sheet->setCellValueByColumnAndRow(14, $cc, tbg_formatTime($issue->getPosted(), 21));
-            $sheet->setCellValueByColumnAndRow(15, $cc, tbg_formatTime($issue->getLastUpdatedTime(), 21));
-            $sheet->setCellValueByColumnAndRow(16, $cc, $issue->getUserpain());
-            $sheet->setCellValueByColumnAndRow(17, $cc, $issue->getVotes());
-            $start_column = 18;
+            $sheet->setCellValueByColumnAndRow(1, $cc, $issue->getIssueType()->getName());
+            $sheet->setCellValueByColumnAndRow(2, $cc, $issue->getFormattedIssueNo());
+            $sheet->setCellValueByColumnAndRow(3, $cc, $issue->getRawTitle());
+            $sheet->setCellValueByColumnAndRow(4, $cc, $issue->getDescription());
+            $sheet->setCellValueByColumnAndRow(5, $cc, $issue->getReproductionSteps());
+            $sheet->setCellValueByColumnAndRow(6, $cc, $posted_by);
+            $sheet->setCellValueByColumnAndRow(7, $cc, $assignee);
+            $sheet->setCellValueByColumnAndRow(8, $cc, $status);
+            $sheet->setCellValueByColumnAndRow(9, $cc, $category);
+            $sheet->setCellValueByColumnAndRow(10, $cc, $priority);
+            $sheet->setCellValueByColumnAndRow(11, $cc, $reproducability);
+            $sheet->setCellValueByColumnAndRow(12, $cc, $severity);
+            $sheet->setCellValueByColumnAndRow(13, $cc, $resolution);
+            $sheet->setCellValueByColumnAndRow(14, $cc, $milestone);
+            $sheet->setCellValueByColumnAndRow(15, $cc, tbg_formatTime($issue->getPosted(), 21));
+            $sheet->setCellValueByColumnAndRow(16, $cc, tbg_formatTime($issue->getLastUpdatedTime(), 21));
+            $sheet->setCellValueByColumnAndRow(17, $cc, $issue->getPercentCompleted() . '%');
+            $sheet->setCellValueByColumnAndRow(18, $cc, (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)));
+            $sheet->setCellValueByColumnAndRow(19, $cc, (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)));
+            $sheet->setCellValueByColumnAndRow(20, $cc, $issue->getUserpain());
+            $sheet->setCellValueByColumnAndRow(21, $cc, $issue->getVotes());
+            $start_column = 22;
             foreach ($custom_columns as $column) {
                 $value = $issue->getCustomField($column->getKey());
                 switch ($column->getType()) {
                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                        $value = tbg_formatTime($value, 20);
+                        $value = strtotime($value) !== false ? tbg_formatTime($value, 20) : '';
                         break;
                     case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
                     case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:

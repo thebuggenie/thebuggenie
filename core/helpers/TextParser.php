@@ -532,10 +532,6 @@
                             $divclasses[] = 'icright';
                         }
                         $retval = '<div class="'.join(' ', $divclasses).'"';
-                        if ($issuemode && !$in_email)
-                        {
-                            $retval .= ' style="float: left; clear: left;"';
-                        }
                         $retval .= '>';
                         $retval .= image_tag($file_link, array('alt' => $caption, 'title' => $caption, 'style' => $style_dimensions, 'class' => 'image'), true);
                         if ($caption != '')

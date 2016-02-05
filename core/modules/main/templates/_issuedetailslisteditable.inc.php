@@ -111,14 +111,14 @@
                             <li class="separator"></li>
                             <li class="nohover">
                                 <form id="percent_complete_form" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete', 'percent_complete');return false;">
-                                    <label for="set_percent"><?php echo __('Percent complete'); ?></label>&nbsp;<input type="text" style="width: 40px;" name="percent" id="set_percent">&percnt;
+                                    <label for="set_percent"><?php echo __('Percent complete'); ?></label>&nbsp;<input type="text" style="width: 40px;" name="percent" id="set_percent" value="<?php echo $issue->getPercentCompleted(); ?>">&percnt;
                                     <input type="submit" value="<?php echo __('Set'); ?>">
                                 </form>
                             </li>
                             <li id="percent_complete_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                         </ul>
                     <?php endif; ?>
-                    <div id="issue_percent_complete">
+                    <div id="issue_percent_complete" title="<?php echo __('%percentage % completed', array('%percentage' => $issue->getPercentCompleted())); ?>">
                         <?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 4)); ?>
                     </div>
                 </dd>
@@ -367,7 +367,7 @@
                         <?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time', 'mode' => 'left')); ?>
                     <?php endif; ?>
                     <span id="estimated_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime()); ?>
+                        <?php echo \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)); ?>
                     </span>
                     <span class="faded_out" id="no_estimated_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
                 </dd>
@@ -378,7 +378,7 @@
                 <dt id="spent_time_header"><?php echo __('Time spent'); ?></dt>
                 <dd id="spent_time_content">
                     <span id="spent_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
-                        <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()); ?></a>
+                        <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?></a>
                     </span>
                     <span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');"><?php echo __('No time spent'); ?></a></span>
                     <div id="estimated_percentbar"<?php if (!($issue->hasEstimatedTime())): ?> style="display: none;"<?php endif; ?>><?php include_component('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 2)); ?></div>

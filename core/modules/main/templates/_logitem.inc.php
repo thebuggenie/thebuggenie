@@ -42,7 +42,7 @@
             <?php elseif (!isset($include_issue_title) || $include_issue_title): ?>
                 <br>
             <?php endif; ?>
-            <div style="line-height: 1.4; <?php if (!isset($include_issue_title) || $include_issue_title == false): ?>margin-top: -7px; margin-bottom: 10px;<?php endif; ?>">
+            <div style="line-height: 1.4; word-break: break-all; word-wrap: break-word; -ms-word-break: break-all; <?php if (!isset($include_issue_title) || $include_issue_title == false): ?>margin-top: -7px; margin-bottom: 10px;<?php endif; ?>">
             <?php
 
                 switch ($log_action['change_type'])
@@ -112,10 +112,10 @@
                         echo '<i>' . __('Issue type changed: %text', array('%text' => $log_action['text'])) . '</i>';
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
-                        echo '<i>' . __('Estimation changed: %text', array('%text' => $log_action['text'])) . '</i>';
+                        echo '<i>' . __('Estimation changed: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($log_action['text'], $log_action['previous_value'], $log_action['current_value'], true, true))) . '</i>';
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
-                        echo '<i>' . __('Time spent: %text', array('%text' => $log_action['text'])) . '</i>';
+                        echo '<i>' . __('Time spent: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($log_action['text'], $log_action['previous_value'], $log_action['current_value'], true, true))) . '</i>';
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
                         echo '<i>' . __('Assignee changed: %text', array('%text' => $log_action['text'])) . '</i>';

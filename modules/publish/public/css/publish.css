@@ -240,6 +240,8 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 #article_comments, #article_attachments { margin: 20px 0 0 5px; }
 #article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; }
 #article_comments button, #article_attachments button { float: right; font-weight: normal !important; padding: 4px 8px !important; font-size: 0.8em !important; }
+#article_attachments a.downloadlink { width: initial; }
+#article_attachments .removelink { margin-top: 4px; position: absolute; }
 
 .side_bar.manual { padding-top: 5px; }
 .side_bar .toggled .header { cursor: pointer; }
@@ -450,4 +452,14 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article ul
 {
     line-height: 1.8;
+}
+
+#viewissue_comments .article ul li a
+{
+    word-break: break-all;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
 }

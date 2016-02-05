@@ -119,7 +119,7 @@
          */
         public function getReleaseDateHour()
         {
-            return date("h", $this->_release_date);
+            return date("H", $this->_release_date);
         }
         
         /**

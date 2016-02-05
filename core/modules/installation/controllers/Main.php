@@ -586,15 +586,49 @@ class Main extends framework\Action
         \thebuggenie\modules\agile\entities\tables\AgileBoards::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_413\AgileBoard::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.4';
     }
 
-    protected function _upgradeFrom4dot1dot5(framework\Request $request)
+    protected function _upgradeFrom4dot1dot4(framework\Request $request)
     {
         set_time_limit(0);
 
         \thebuggenie\core\entities\tables\Files::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_414\File::getB2DBTable());
 
         $this->upgrade_complete = true;
+        $this->current_version = '4.1.5';
+    }
+
+    protected function _upgradeFrom4dot1dot5(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\Issue::getB2DBTable());
+        \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueSpentTime::getB2DBTable());
+        \thebuggenie\core\entities\tables\IssueEstimates::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueEstimatesTable::getTable());
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.6';
+    }
+
+    protected function _upgradeFrom4dot1dot6(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable());
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.7';
+    }
+
+    protected function _upgradeFrom4dot1dot7(framework\Request $request)
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_417\Notification::getB2DBTable());
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.8';
     }
 
     public function runUpgrade(framework\Request $request)
@@ -635,8 +669,13 @@ class Main extends framework\Action
                 case '4.1.3':
                     $this->_upgradeFrom4dot1dot3($request);
                 case '4.1.4':
+                    $this->_upgradeFrom4dot1dot4($request);
                 case '4.1.5':
                     $this->_upgradeFrom4dot1dot5($request);
+                case '4.1.6':
+                    $this->_upgradeFrom4dot1dot6($request);
+                case '4.1.7':
+                    $this->_upgradeFrom4dot1dot7($request);
                 default:
                     $this->upgrade_complete = true;
                     break;

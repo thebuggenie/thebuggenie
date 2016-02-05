@@ -361,6 +361,19 @@
                             </tr>
                         <?php endforeach; ?>
                     </table>
+                    <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>
+                        <tr>
+                            <td><label for="profile_enable_keyboard_navigation_yes"><?php echo __('Enable desktop notifications'); ?></label></td>
+                            <td>
+                                <input type="button" value="<?php echo __('Grant Permission'); ?>" onclick="TBG.Main.Notifications.Web.GrantPermissionOrSendTest('<?php echo __('Test notification'); ?>', '<?php echo __('This is a test notification.'); ?>', '<?php echo \thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png'); ?>');">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="config_explanation" colspan="2">
+                                <?php echo __('Receive notifications from box through browser as well. After you grant permission, additional clicks on button will send test notification.'); ?>
+                            </td>
+                        </tr>
+                    </table>
                     <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
                         <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
                         <input type="submit" id="submit_notificationsettings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">

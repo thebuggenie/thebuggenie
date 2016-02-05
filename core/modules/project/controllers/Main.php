@@ -26,6 +26,7 @@ class Main extends helpers\ProjectActions
         switch ($action)
         {
             case 'listIssues':
+            case 'updateIssueDetails':
                 return framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
                 break;
             default:
@@ -586,7 +587,7 @@ class Main extends helpers\ProjectActions
 
     public function runListIssues(framework\Request $request)
     {
-        $filters = array('project_id' => array('o' => '=', 'v' => $this->selected_project->getID()));
+        $filters = array('project_id' => \thebuggenie\core\entities\SearchFilter::createFilter('project_id', array('v' => $this->selected_project->getID(), 'o' => '=')));
         $filter_state = $request->getParameter('state', 'open');
         $filter_issuetype = $request->getParameter('issuetype', 'all');
         $filter_assigned_to = $request->getParameter('assigned_to', 'all');
@@ -1431,6 +1432,9 @@ class Main extends helpers\ProjectActions
 
             if ($request->hasParameter('allow_autoassignment'))
                 $this->selected_project->setAutoassign((bool) $request['allow_autoassignment']);
+
+            if ($request->hasParameter('time_units'))
+                $this->selected_project->setTimeUnits($request['time_units']);
 
             $this->selected_project->save();
             return $this->renderJSON(array('message' => $this->getI18n()->__('Settings saved')));

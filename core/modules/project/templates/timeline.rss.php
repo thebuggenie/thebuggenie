@@ -69,10 +69,10 @@
                             echo __('Issue type changed: %text', array('%text' => $activity['text']));
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
-                            echo __('Estimation changed: %text', array('%text' => $activity['text']));
+                            echo __('Estimation changed: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($activity['text'], $activity['previous_value'], $activity['current_value'], true, true)));
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
-                            echo __('Time spent: %text', array('%text' => $activity['text']));
+                            echo __('Time spent: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($activity['text'], $activity['previous_value'], $activity['current_value'], true, true)));
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
                             echo __('Assignee changed: %text', array('%text' => $activity['text']));

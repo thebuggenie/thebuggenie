@@ -85,9 +85,9 @@
                     case \thebuggenie\core\entities\Notification::TYPE_ARTICLE_UPDATED:
                         ?>
                         <h1>
-                            <?php echo image_tag($notification->getTarget()->getTarget()->getProject()->getSmallIconName(), array('class' => 'notification-project-logo'), $notification->getTarget()->getTarget()->getProject()->hasSmallIcon()); ?>
+                            <?php echo image_tag($notification->getTarget()->getProject()->getSmallIconName(), array('class' => 'notification-project-logo'), $notification->getTarget()->getProject()->hasSmallIcon()); ?>
                             <time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
-                            <?php echo __('%user_name updated %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())), $notification->getTarget()->getTarget()->getName()))); ?>
+                            <?php echo __('%user_name updated %article_name', array('%user_name' => get_component_html('main/userdropdown_inline', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getName())), $notification->getTarget()->getName()))); ?>
                         </h1>
                         <?php
                         break;
@@ -115,5 +115,19 @@
 
             ?>
         </li>
+            <?php
+                // Replace multiple spaces with single space with regex.
+                if (($notification_text = trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification'))))) != ''):
+            ?>
+                <script>
+                    require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
+                        domReady(function () {
+                            TBG.Main.Notifications.Web.Send("<?php echo __('New notification'); ?>", "<?php echo $notification_text; ?>", '<?php echo $notification->getID(); ?>', '<?php echo $notification->getTriggeredByUser()->getAvatarURL(); ?>', function () {
+                                TBG.Main.Notifications.toggleRead(<?php echo $notification->getID(); ?>);
+                            });
+                        });
+                    });
+                </script>
+            <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>

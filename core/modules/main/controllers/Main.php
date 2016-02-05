@@ -153,6 +153,11 @@ class Main extends framework\Action
                     try
                     {
                         $issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+                        // Currently if category is changed we want to regenerate permissions since category is used for granting user access.
+                        if ($issue->isCategoryChanged())
+                        {
+                            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueCreate'));
+                        }
                         $issue->save();
                         framework\Context::setMessage('issue_saved', true);
                         $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
@@ -397,6 +402,7 @@ class Main extends framework\Action
                             $notification->setIsRead(!$notification->isRead());
                             $notification->save();
                             $data['is_read'] = (int) $notification->isRead();
+                            $this->getUser()->markNotificationGroupedNotificationsRead($notification);
                         }
                         break;
                     case 'notificationsread':
@@ -834,7 +840,7 @@ class Main extends framework\Action
                     framework\Context::getResponse()->setCookie('tbg3_persona_session', true);
                     $user->setOnline();
                     $user->save();
-                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
+                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referer_route'], array('home', 'login'))));
                 }
             }
 
@@ -1772,6 +1778,7 @@ class Main extends framework\Action
             $issue->setLockedFromProject($this->selected_project);
         }
 
+        framework\Event::listen('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', array($this, 'listen_issueCreate'));
         $issue->save();
 
         if (isset($this->parent_issue))
@@ -1783,21 +1790,22 @@ class Main extends framework\Action
         if (isset($fields_array['component']) && $this->selected_component instanceof entities\Component)
             $issue->addAffectedComponent($this->selected_component);
 
-        if ($request->hasParameter('custom_issue_access') && $this->selected_project->permissionCheck('canlockandeditlockedissues'))
-        {
-            switch ($request->getParameter('issue_access'))
-            {
-                case 'public':
-                case 'public_category':
-                    $this->_unlockIssueAfter($request, $issue);
-                    break;
-                case 'restricted':
-                    $this->_lockIssueAfter($request, $issue);
-                    break;
-            }
-        }
-
         return $issue;
+    }
+
+    public function listen_issueCreate(framework\Event $event)
+    {
+        $request = framework\Context::getRequest();
+        $issue = $event->getSubject();
+
+        if ($issue->isUnlocked())
+        {
+            $this->_unlockIssueAfter($request, $issue);
+        }
+        else if ($issue->isLocked())
+        {
+            $this->_lockIssueAfter($request, $issue);
+        }
     }
 
     protected function _getMilestoneFromRequest($request)
@@ -1957,7 +1965,7 @@ class Main extends framework\Action
             return $this->renderText('invalid project');
         }
 
-        $fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id']);
+        $fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id'], true);
         $available_fields = entities\DatatypeBase::getAvailableFields();
         $available_fields[] = 'pain_bug_type';
         $available_fields[] = 'pain_likelihood';
@@ -2020,9 +2028,8 @@ class Main extends framework\Action
                     $spenttime->delete();
                     $spenttime->getIssue()->saveSpentTime();
                 }
-                $timesum = array_sum($issue->getSpentTime());
 
-                return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => array_sum($issue->getSpentTime()), 'spenttime' => entities\Issue::getFormattedTime($issue->getSpentTime(true, true)), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
             }
             catch (\Exception $e)
             {
@@ -2060,45 +2067,10 @@ class Main extends framework\Action
             return $this->renderText('no issue');
         }
 
-        if (!$spenttime->getID())
-        {
-            if ($request['timespent_manual'])
-            {
-                $times = entities\Issue::convertFancyStringToTime($request['timespent_manual']);
-            }
-            else
-            {
-                $times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
-                $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
-            }
-            $spenttime->setIssue($issue);
-            $spenttime->setUser($this->getUser());
-        }
-        else
-        {
-            $times = array('points' => $request['points'],
-                'hours' => $request['hours'],
-                'days' => $request['days'],
-                'weeks' => $request['weeks'],
-                'months' => $request['months']);
-            $edited_at = $request['edited_at'];
-            $spenttime->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
-        }
-        $times['hours'] *= 100;
-        $spenttime->setSpentPoints($times['points']);
-        $spenttime->setSpentHours($times['hours']);
-        $spenttime->setSpentDays($times['days']);
-        $spenttime->setSpentWeeks($times['weeks']);
-        $spenttime->setSpentMonths($times['months']);
-        $spenttime->setActivityType($request['timespent_activitytype']);
-        $spenttime->setComment($request['timespent_comment']);
-        $spenttime->save();
+        framework\Context::loadLibrary('common');
+        $spenttime->editOrAdd($issue, $this->getUser(), array_only_with_default($request->getParameters(), array_merge(array('timespent_manual', 'timespent_specified_type', 'timespent_specified_value', 'timespent_activitytype', 'timespent_comment', 'edited_at'), \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints())));
 
-        $spenttime->getIssue()->saveSpentTime();
-
-        $timesum = array_sum($spenttime->getIssue()->getSpentTime());
-
-        return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+        return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => array_sum($spenttime->getIssue()->getSpentTime()), 'spenttime' => entities\Issue::getFormattedTime($spenttime->getIssue()->getSpentTime(true, true)), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3)), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
     }
 
     /**
@@ -2191,13 +2163,14 @@ class Main extends framework\Action
                     if ($request->hasParameter('weeks')) $issue->setEstimatedWeeks($request['weeks']);
                     if ($request->hasParameter('days')) $issue->setEstimatedDays($request['days']);
                     if ($request->hasParameter('hours')) $issue->setEstimatedHours($request['hours']);
+                    if ($request->hasParameter('minutes')) $issue->setEstimatedMinutes($request['minutes']);
                     if ($request->hasParameter('points')) $issue->setEstimatedPoints($request['points']);
                 }
                 if ($request['do_save'])
                 {
                     $issue->save();
                 }
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true))) : array('id' => 0)), 'values' => $issue->getEstimatedTime(true, true), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
             case 'posted_by':
             case 'owned_by':
             case 'assigned_to':
@@ -2638,11 +2611,11 @@ class Main extends framework\Action
                 break;
             case 'estimated_time':
                 $issue->revertEstimatedTime();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime(), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
+                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true))) : array('id' => 0)), 'values' => $issue->getEstimatedTime(true, true), 'percentbar' => $this->getComponentHTML('main/percentbar', array('percent' => $issue->getEstimatedPercentCompleted(), 'height' => 3))));
                 break;
             case 'spent_time':
                 $issue->revertSpentTime();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => entities\Issue::getFormattedTime($issue->getSpentTime(true, true))) : array('id' => 0)), 'values' => $issue->getSpentTime(true, true)));
                 break;
             case 'owned_by':
                 $issue->revertOwner();
@@ -2719,10 +2692,11 @@ class Main extends framework\Action
                 $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
                 return;
             }
+
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueSaveUnlock'));
             $issue->setLocked(false);
             $issue->setLockedCategory($request->hasParameter('public_category'));
             $issue->save();
-            $this->_unlockIssueAfter($request, $issue);
         }
         else
         {
@@ -2731,6 +2705,11 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+    }
+
+    public function listen_issueSaveUnlock(framework\Event $event)
+    {
+        $this->_unlockIssueAfter(framework\Context::getRequest(), $event->getSubject());
     }
 
     /**
@@ -2757,9 +2736,10 @@ class Main extends framework\Action
                 $this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
                 return;
             }
+
+            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueSaveLock'));
             $issue->setLocked();
             $issue->save();
-            $this->_lockIssueAfter($request, $issue);
         }
         else
         {
@@ -2768,6 +2748,11 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+    }
+
+    public function listen_issueSaveLock(framework\Event $event)
+    {
+        $this->_lockIssueAfter(framework\Context::getRequest(), $event->getSubject());
     }
 
     /**
@@ -3034,6 +3019,7 @@ class Main extends framework\Action
 
         foreach ($request->getUploadedFiles() as $key => $file)
         {
+            $file['name'] = str_replace(array('[', ']'), array('(', ')'), $file['name']);
             $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($file['name']);
             if (framework\Settings::getUploadStorage() == 'files')
             {
