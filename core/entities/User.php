@@ -661,8 +661,22 @@
                         $user = self::getB2DBTable()->getByRssKey($request['rsskey']);
                         break;
                     case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
-                        $user = self::getB2DBTable()->getByUsername($request['api_username']);
-                        if ($user instanceof User && !$user->authenticateApplicationPassword($request['api_token'])) $user = null;
+                        // If we have HTTP basic auth, use that. Else, fall back to parameters.
+                        
+                        if(isset($_SERVER['PHP_AUTH_USER'])) {
+                            $username = $_SERVER['PHP_AUTH_USER'];
+                        } else {
+                            $username = $request['api_username'];
+                        }
+                        
+                        if(isset($_SERVER['PHP_AUTH_PW'])) {
+                            $token = $_SERVER['PHP_AUTH_PW'];
+                        } else {
+                            $token = $request['api_token'];
+                        }
+                        
+                        $user = self::getB2DBTable()->getByUsername($username);
+                        if ($user instanceof User && !$user->authenticateApplicationPassword($token)) $user = null;
                         break;
                 }
 
