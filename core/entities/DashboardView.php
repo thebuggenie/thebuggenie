@@ -299,6 +299,14 @@
                     break;
                 }
             }
+
+            if ($this->getType() == self::VIEW_SAVED_SEARCH)
+            {
+                $search = tables\SavedSearches::getTable()->selectById($this->getDetail());
+
+                if ($search instanceof SavedSearch) $title = $search->getName();
+            }
+
             return (isset($title)) ? $title : framework\Context::getI18n()->__('Unknown dashboard item');
         }
 

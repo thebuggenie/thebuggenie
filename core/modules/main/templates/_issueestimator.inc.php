@@ -35,14 +35,14 @@
             <div class="faded_out" style="padding: 5px 0 5px 0;">
                 <?php if (isset($board)): ?>
                     <?php if ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() == $issue->getIssuetype()->getID()): ?>
-                        <?php echo __('Enter a value in plain text, like "1 hour", "7 hours", or similar'); ?>.
+                        <?php echo __('Enter a value in plain text, like "1 hour", "7 hours", or similar. Time units not supported by project will not be parsed.'); ?>.
                     <?php elseif ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() != $issue->getEpicIssuetypeID()): ?>
-                        <?php echo __('Enter a value in plain text, like "1 point", "11 points", or similar'); ?>.
+                        <?php echo __('Enter a value in plain text, like "1 point", "11 points", or similar. Time units not supported by project will not be parsed.'); ?>.
                     <?php elseif ($board->getType() == AgileBoard::TYPE_GENERIC): ?>
-                        <?php echo __('Enter a value in plain text, like "1 week, 2 hours", "1 day", or similar'); ?>.
+                        <?php echo __('Enter a value in plain text, like "1 week, 2 hours", "1 day", or similar. Time units not supported by project will not be parsed.'); ?>.
                     <?php endif; ?>
                 <?php else: ?>
-                    <?php echo __('Enter a value in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.
+                    <?php echo __('Enter a value in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar. Time units not supported by project will not be parsed.'); ?>.
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -50,44 +50,50 @@
         <table class="estimator_table">
             <tr>
                 <?php if (isset($board)): ?>
-                    <?php if ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() == $issue->getIssuetype()->getID()): ?>
-                        <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input">
+                    <?php if ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() == $issue->getIssuetype()->getID() && $issue->getProject()->hasTimeUnit('hours')): ?>
+                        <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input"></td>
                     <?php elseif ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() != $issue->getEpicIssuetypeID()): ?>
                         <td><input type="text" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input">
                     <?php elseif ($board->getType() == AgileBoard::TYPE_GENERIC): ?>
-                        <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input">
-                        <td><input type="text" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input">
-                    <td><input type="text" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input">
-                    <td><input type="text" value="<?php echo $months; ?>" name="months" id="<?php echo $field . '_' . $issue_id; ?>_months_input">
+                        <?php foreach ($issue->getProject()->getTimeUnits() as $time_unit): ?>
+                            <td><input type="text" value="<?php echo $times[$time_unit]; ?>" name="<?php echo $time_unit; ?>" id="<?php echo $field . '_' . $issue_id . '_' . $time_unit; ?>_input"></td>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 <?php else: ?>
-                    <td><input type="text" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input">
-                    <td><input type="text" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input">
-                    <td><input type="text" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input">
-                    <td><input type="text" value="<?php echo $months; ?>" name="months" id="<?php echo $field . '_' . $issue_id; ?>_months_input">
-                    <td><input type="text" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input">
+                    <?php foreach ($issue->getProject()->getTimeUnits() as $time_unit): ?>
+                        <td><input type="text" value="<?php echo $times[$time_unit]; ?>" name="<?php echo $time_unit; ?>" id="<?php echo $field . '_' . $issue_id . '_' . $time_unit; ?>_input"></td>
+                    <?php endforeach; ?>
+                    <td><input type="text" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input"></td>
                 <?php endif; ?>
             </tr>
             <tr>
                 <?php if (isset($board)): ?>
-                    <?php if ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() == $issue->getIssuetype()->getID()): ?>
+                    <?php if ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() == $issue->getIssuetype()->getID() && $issue->getProject()->hasTimeUnit('hours')): ?>
                         <td><?php echo __('%number_of hours', array('%number_of' => '')); ?></td>
                     <?php elseif ($board->getType() == AgileBoard::TYPE_SCRUM && $board->getTaskIssueTypeID() != $issue->getEpicIssuetypeID()): ?>
                         <td><?php echo __('%number_of points', array('%number_of' => '')); ?></td>
                     <?php elseif ($board->getType() == AgileBoard::TYPE_GENERIC): ?>
-                        <td><?php echo __('%number_of hours', array('%number_of' => '')); ?></td>
-                        <td><?php echo __('%number_of days', array('%number_of' => '')); ?></td>
-                        <td><?php echo __('%number_of weeks', array('%number_of' => '')); ?></td>
-                        <td><?php echo __('%number_of months', array('%number_of' => '')); ?></td>
+                        <?php foreach ($issue->getProject()->getTimeUnits() as $time_unit): ?>
+                            <td><?php echo __('%number_of ' . $time_unit, array('%number_of' => '')); ?></td>
+                        <?php endforeach; ?>
+                        <td><?php echo __('%number_of points', array('%number_of' => '')); ?></td>
                     <?php endif; ?>
                 <?php else: ?>
-                    <td><?php echo __('%number_of hours', array('%number_of' => '')); ?></td>
-                    <td><?php echo __('%number_of days', array('%number_of' => '')); ?></td>
-                    <td><?php echo __('%number_of weeks', array('%number_of' => '')); ?></td>
-                    <td><?php echo __('%number_of months', array('%number_of' => '')); ?></td>
+                    <?php foreach ($issue->getProject()->getTimeUnits() as $time_unit): ?>
+                        <td><?php echo __('%number_of ' . $time_unit, array('%number_of' => '')); ?></td>
+                    <?php endforeach; ?>
                     <td><?php echo __('%number_of points', array('%number_of' => '')); ?></td>
                 <?php endif; ?>
             </tr>
+            <?php if ($issue->getProject()->hasTimeUnit('minutes') && ((isset($board) && $board->getType() == AgileBoard::TYPE_GENERIC) || !isset($board))): ?>
+                <tr>
+                    <td colspan="<?php echo count($issue->getProject()->getTimeUnits()) + 1; ?>">
+                        <?php foreach (array(60, 30, 15, 5) as $minutes): ?>
+                            <a class="increment-time-minutes" title="<?php echo __('Add %number_of minutes', array('%number_of' => $minutes)); ?>" href="javascript:void(0);" onclick="TBG.Issues.Field.incrementTimeMinutes(<?php echo $minutes; ?>, '<?php echo $field . '_' . $issue_id; ?>_minutes_input');"><?php echo image_tag('time_' . $minutes . 'min.png'); ?></a>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
         </table>
         <?php if ($issue->hasChildIssues()): ?>
             <?php echo __('Note that the total estimated effort of parent issues is the sum of its child issues. This estimate will be replaced if any child issues are updated.'); ?>

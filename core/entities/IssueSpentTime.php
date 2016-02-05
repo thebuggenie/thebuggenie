@@ -90,6 +90,14 @@
         protected $_spent_hours;
 
         /**
+         * The time spent (minutes) to fix this issue
+         *
+         * @var integer
+         * @Column(type="integer", length=10)
+         */
+        protected $_spent_minutes;
+
+        /**
          * The time spent (points) to fix this issue
          *
          * @var integer
@@ -124,6 +132,7 @@
         {
             $times = tables\IssueSpentTimes::getTable()->getSpentTimeSumsByIssueId($this->getIssueID());
             $this->getIssue()->setSpentPoints($times['points']);
+            $this->getIssue()->setSpentMinutes($times['minutes']);
             $this->getIssue()->setSpentHours($times['hours']);
             $this->getIssue()->setSpentDays($times['days']);
             $this->getIssue()->setSpentWeeks($times['weeks']);
@@ -195,7 +204,7 @@
          */
         public function getSpentTime()
         {
-            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'points' => (int) $this->_spent_points);
+            return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'minutes' => (int) $this->_spent_minutes, 'points' => (int) $this->_spent_points);
         }
 
         /**
@@ -236,6 +245,16 @@
         public function getSpentHours()
         {
             return (int) $this->_spent_hours;
+        }
+
+        /**
+         * Returns the spent minutes
+         *
+         * @return integer
+         */
+        public function getSpentMinutes()
+        {
+            return (int) $this->_spent_minutes;
         }
 
         /**
@@ -301,6 +320,16 @@
         }
 
         /**
+         * Set spent minutes
+         *
+         * @param integer $minutes The number of minutes spent
+         */
+        public function setSpentMinutes($minutes)
+        {
+            $this->_spent_minutes = $minutes;
+        }
+
+        /**
          * Set spent points
          *
          * @param integer $points The number of points spent
@@ -318,6 +347,47 @@
         public function setComment($comment)
         {
             $this->_comment = $comment;
+        }
+
+        public function editOrAdd(Issue $issue, User $user, $data = array())
+        {
+            if (!$this->getID())
+            {
+                if ($data['timespent_manual'])
+                {
+                    $times = Issue::convertFancyStringToTime($data['timespent_manual'], $issue);
+                }
+                else
+                {
+                    $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
+                    $times[$data['timespent_specified_type']] = $data['timespent_specified_value'];
+                }
+                $this->setIssue($issue);
+                $this->setUser($user);
+            }
+            else
+            {
+                $times = array('points' => $data['points'],
+                    'minutes' => $data['minutes'],
+                    'hours' => $data['hours'],
+                    'days' => $data['days'],
+                    'weeks' => $data['weeks'],
+                    'months' => $data['months']);
+                $edited_at = $data['edited_at'];
+                $this->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
+            }
+            $times['hours'] *= 100;
+            $this->setSpentPoints($times['points']);
+            $this->setSpentMinutes($times['minutes']);
+            $this->setSpentHours($times['hours']);
+            $this->setSpentDays($times['days']);
+            $this->setSpentWeeks($times['weeks']);
+            $this->setSpentMonths($times['months']);
+            $this->setActivityType($data['timespent_activitytype']);
+            $this->setComment($data['timespent_comment']);
+            $this->save();
+
+            $this->getIssue()->saveSpentTime();
         }
 
     }

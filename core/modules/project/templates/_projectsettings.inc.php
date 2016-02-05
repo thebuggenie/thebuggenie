@@ -205,6 +205,23 @@
         <tr>
             <td class="config_explanation" colspan="2"><?php echo __('You can set issues to be automatically assigned to users depending on the leader set for editions, components and projects. If you wish to use this feature you can turn it on here.'); ?></td>
         </tr>
+        <tr>
+            <td><label for="allow_autoassignment"><?php echo __('Reportable time units'); ?></label></td>
+            <td>
+                <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                    <?php foreach (\thebuggenie\core\entities\common\Timeable::$units as $time_unit): ?>
+                        <label>
+                            <input type="checkbox" name="time_units[]" value="<?php echo $time_unit; ?>"<?php if ($project->hasTimeUnit($time_unit)): ?> checked<?php endif; ?>> <?php echo __($time_unit); ?>
+                        </label>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <?php echo implode(', ', $project->getTimeUnits()); ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="config_explanation" colspan="2"><?php echo __('With this option you can now limit what time units can be reported for issues.'); ?></td>
+        </tr>
     </table>
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 </form>

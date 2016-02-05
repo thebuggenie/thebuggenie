@@ -73,10 +73,10 @@
                             echo '<i>' . __('Issue type changed: %text', array('%text' => $item->getText())) . '</i>';
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
-                            echo '<i>' . __('Estimation changed: %text', array('%text' => $item->getText())) . '</i>';
+                            echo '<i>' . __('Estimation changed: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))) . '</i>';
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
-                            echo '<i>' . __('Time spent: %text', array('%text' => $item->getText())) . '</i>';
+                            echo '<i>' . __('Time spent: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))) . '</i>';
                             break;
                         case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
                             echo '<i>' . __('Assignee changed: %text', array('%text' => $item->getText())) . '</i>';

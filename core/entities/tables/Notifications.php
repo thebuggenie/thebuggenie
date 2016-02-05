@@ -29,7 +29,7 @@
     class Notifications extends ScopedTable
     {
         
-        const B2DB_TABLE_VERSION = 2;
+        const B2DB_TABLE_VERSION = 3;
         const B2DBNAME = 'notifications';
         const ID = 'notifications.id';
         const SCOPE = 'notifications.scope';
@@ -40,6 +40,7 @@
         const USER_ID = 'notifications.user_id';
         const IS_READ = 'notifications.is_read';
         const CREATED_AT = 'notifications.created_at';
+        const SHOWN_AT = 'notifications.shown_at';
 
         public function getCountsByUserID($user_id)
         {
@@ -121,7 +122,7 @@
             $notification_type_issue_updated_col = \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED;
             $seconds = $minutes * 60;
 
-            list($target_id_col, $notification_type_col, $module_name_col, $is_read_col, $created_at_col, $triggered_by_user_id_col, $user_id_col, $scope_col, $id_col) = $this->getAliasColumns();
+            list($target_id_col, $notification_type_col, $module_name_col, $is_read_col, $created_at_col, $triggered_by_user_id_col, $user_id_col, $shown_at_col, $scope_col, $id_col) = $this->getAliasColumns();
 
             $sql = 'SELECT ';
             $sql_selects = array();
@@ -171,6 +172,72 @@
             $crit->addWhere(self::IS_READ, true);
             $crit->addWhere('notifications.created_at', NOW - (86400 * 30), Criteria::DB_LESS_THAN_EQUAL);
             $this->doDelete($crit);
+        }
+
+        public function markUserNotificationsReadByTypesAndIdAndGroupableMinutes($types, $id, $user_id, $minutes = 0, $is_read = 1, $mark_all = true)
+        {
+            if (!is_array($types)) $types = array($types);
+
+            $notification_type_issue_updated_col = \thebuggenie\core\entities\Notification::TYPE_ISSUE_UPDATED;
+
+            if (($key = array_search($notification_type_issue_updated_col, $types)) === false || ($minutes <= 0 || !is_numeric($minutes)))
+            {
+                if (! $mark_all) return;
+
+                return $this->markUserNotificationsReadByTypesAndId($types, $id, $user_id);
+            }
+
+            $cols = array_map(function ($col) {
+                return str_replace(self::B2DBNAME . '.', '', $col);
+            }, array(
+                'id' => self::ID,
+                'target_id' => self::TARGET_ID,
+                'created_at' => self::CREATED_AT,
+                'is_read' => self::IS_READ,
+                'notification_type' => self::NOTIFICATION_TYPE,
+                'user_id' => self::USER_ID,
+                'scope' => self::SCOPE,
+            ));
+
+            $b2dbname = \b2db\Core::getTablePrefix() . self::B2DBNAME;
+            $seconds = $minutes * 60;
+            $scope = framework\Context::getScope()->getID();
+
+            $sub_sql = "SELECT {$cols['id']}, {$cols['target_id']}, ({$cols['created_at']} DIV {$seconds}) AS created_at_div FROM {$b2dbname} WHERE ";
+
+            if (is_array($id))
+            {
+                $sub_sql .= $cols['target_id'] . ' IN (' . implode(', ', $id) . ')';
+            }
+            else
+            {
+                $sub_sql .= "{$cols['target_id']} = {$id}";
+            }
+
+            $sql = "UPDATE {$b2dbname} a JOIN ({$sub_sql}) b ON a.{$cols['id']} = b.{$cols['id']} SET a.{$cols['is_read']} = {$is_read} WHERE (a.{$cols['notification_type']} = '{$notification_type_issue_updated_col}') AND (a.{$cols['user_id']} = {$user_id}) AND (a.{$cols['scope']} = {$scope}) AND ((a.{$cols['created_at']} DIV {$seconds}) * a.{$cols['created_at']} DIV (a.{$cols['created_at']})) IN (b.created_at_div)";
+
+            $crit = $this->getCriteria();
+            $crit->sql = $sql;
+            $crit->action = 'update';
+            $statement = \b2db\Statement::getPreparedStatement($crit);
+            $statement->performQuery();
+
+            if (! $mark_all) return;
+
+            unset($types[$key]);
+            $this->markUserNotificationsReadByTypesAndId($types, $id, $user_id);
+        }
+
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            switch ($old_table::B2DB_TABLE_VERSION)
+            {
+                case 2:
+                    $crit = $this->getCriteria();
+                    $crit->addUpdate(self::SHOWN_AT, time());
+                    $this->doUpdate($crit);
+                    break;
+            }
         }
         
     }

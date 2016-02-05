@@ -47,7 +47,7 @@
             parent::_addInteger(self::ATTACHED_AT, 10);
         }
 
-        public function addByArticleIDandFileID($article_id, $file_id)
+        public function addByArticleIDandFileID($article_id, $file_id, $insert = true)
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::ARTICLE_ID, $article_id);
@@ -55,6 +55,8 @@
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             if ($this->doCount($crit) == 0)
             {
+                if (! $insert) return true;
+
                 $crit = $this->getCriteria();
                 $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
                 $crit->addInsert(self::ATTACHED_AT, NOW);

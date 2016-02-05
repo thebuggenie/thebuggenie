@@ -71,6 +71,7 @@
             };
 
             var require = {
+                waitSeconds: 0,
                 baseUrl: '<?php echo make_url('home'); ?>js',
                 paths: {
                     jquery: 'jquery-2.1.3.min',

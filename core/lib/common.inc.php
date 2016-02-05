@@ -590,3 +590,17 @@
 
         return $url;
     }
+
+    /**
+     * Get a subset of the items from the given array with default for not found.
+     *
+     * @param  array  $array
+     * @param  array|string  $keys
+     * @param  mixed  $default
+     *
+     * @return array
+     */
+    function array_only_with_default($array, $keys, $default = null)
+    {
+        return array_merge(array_fill_keys($keys, $default), array_intersect_key($array, array_flip((array) $keys)));
+    }

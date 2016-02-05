@@ -4,6 +4,8 @@
     {
         foreach ($issues as $issue)
         {
+            if (! $issue->hasAccess()) continue;
+
             $return_issues[] = array('id' => $issue->getID(),
                 'title' => $issue->getRawTitle(),
                 'state' => $issue->getState(),

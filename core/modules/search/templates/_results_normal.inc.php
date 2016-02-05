@@ -1,24 +1,24 @@
 <?php
 if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
-$current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+$current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
 $current_spent_time = $current_estimated_time;
 foreach ($search_object->getIssues() as $issue):
     // shows only issues with permissions, useful when if we're including subprojects
     if (!$issue->hasAccess())
         return;
-    
+
     list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
     if (($showtablestart || $showheader) && $cc > 1):
                 echo '</tbody></table>';
                 include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
                 $current_count = 0;
-                $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+                $current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                 $current_spent_time = $current_estimated_time;
     endif;
     $current_count++;
-    $estimate = $issue->getEstimatedTime();
-    $spenttime = $issue->getSpentTime();
+    $estimate = $issue->getEstimatedTime(true, true);
+    $spenttime = $issue->getSpentTime(true, true);
     foreach ($current_estimated_time as $key => $value) $current_estimated_time[$key] += $estimate[$key];
     foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key];
     if ($showheader):
@@ -145,10 +145,10 @@ foreach ($search_object->getIssues() as $issue):
                         <?php echo ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
                     </td>
                     <td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime()); ?>
+                        <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)); ?>
                     </td>
                     <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime()); ?>
+                        <?php echo (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?>
                     </td>
                     <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
                     <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>

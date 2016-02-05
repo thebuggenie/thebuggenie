@@ -31,7 +31,7 @@
                     <?php endif; ?>
                 </td>
                 <td id="milestone_<?php echo $milestone->getID(); ?>_points_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getPointsSpent() .'/'. $milestone->getPointsEstimated() : '-'; ?></td>
-                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursSpent() .'/'. $milestone->getHoursEstimated() : '-'; ?></td>
+                <td id="milestone_<?php echo $milestone->getID(); ?>_hours_count" class="issue_estimates"><?php echo ($include_counts) ? $milestone->getHoursAndMinutesSpent(true, true) .'/'. $milestone->getHoursAndMinutesEstimated(true, true) : '-'; ?></td>
             </tr>
             <tr>
                 <td><?php echo __('Issues'); ?></td>

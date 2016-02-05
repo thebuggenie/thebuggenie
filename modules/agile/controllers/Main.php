@@ -117,7 +117,7 @@
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_only_planning'));
             $this->board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
-            
+
             if (!$this->board instanceof entities\AgileBoard) {
                 return $this->return404();
             }
@@ -568,7 +568,7 @@
 
                         $board = ($request['board_id']) ? entities\tables\AgileBoards::getTable()->selectById($request['board_id']) : new entities\AgileBoard();
                         $component = (isset($milestone) && $milestone instanceof \thebuggenie\core\entities\Milestone) ? 'milestoneissues' : 'backlog';
-                        
+
                         return $this->renderJSON(array('content' => $this->getComponentHTML("agile/{$component}", compact('milestone', 'board'))));
                 }
             }
@@ -630,7 +630,7 @@
         {
             $this->forward403if(framework\Context::getCurrentProject()->isArchived());
             $this->forward403unless($this->_checkProjectPageAccess('project_scrum') && framework\Context::getUser()->canAssignScrumUserStories($this->selected_project));
-            
+
             try
             {
                 $issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $request['issue_id']);
@@ -648,7 +648,7 @@
                 }
                 $new_issues = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->countIssues() : 0;
                 $new_e_points = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getPointsEstimated() : 0;
-                $new_e_hours = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getHoursEstimated() : 0;
+                $new_e_hours = ($milestone instanceof \thebuggenie\core\entities\Milestone) ? $milestone->getHoursAndMinutesEstimated(true, true) : 0;
                 return $this->renderJSON(array('issue_id' => $issue->getID(), 'issues' => $new_issues, 'points' => $new_e_points, 'hours' => $new_e_hours));
             }
             catch (\Exception $e)
@@ -699,7 +699,7 @@
 
                 $epic->addChildIssue($issue, true);
 
-                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime()), 'text_color' => $epic->getAgileTextColor()));
+                return $this->renderJSON(array('issue_id' => $issue->getID(), 'epic_id' => $epic->getID(), 'closed_pct' => $epic->getEstimatedPercentCompleted(), 'num_child_issues' => $epic->countChildIssues(), 'estimate' => \thebuggenie\core\entities\Issue::getFormattedTime($epic->getEstimatedTime(true, true)), 'text_color' => $epic->getAgileTextColor()));
             }
             catch (\Exception $e)
             {
@@ -732,7 +732,7 @@
 
                         $no_milestone = new \thebuggenie\core\entities\Milestone(0);
                         $no_milestone->setProject($milestone->getProject());
-                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+                        return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursAndMinutesEstimated(true, true), 'points' => $no_milestone->getPointsEstimated()));
                     case $request->isPost():
                         $this->_saveMilestoneDetails($request, $milestone);
                         $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
@@ -783,7 +783,7 @@
             }
 
             $backlog_ids = array();
-            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch) 
+            if ($search_object instanceof \thebuggenie\core\entities\SavedSearch)
             {
                 foreach ($search_object->getIssues(true) as $backlog_issue)
                 {
@@ -795,7 +795,10 @@
                 }
             }
 
-            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id'));
+            \thebuggenie\core\framework\Context::loadLibrary('ui');
+            $whiteboard_url = make_url('agile_whiteboardissues', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID()));
+
+            return $this->renderJSON(compact('ids', 'backlog_ids', 'epic_ids', 'milestone_id', 'whiteboard_url'));
         }
 
     }

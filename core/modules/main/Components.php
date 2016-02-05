@@ -406,6 +406,21 @@
             $this->num_read = $this->getUser()->getNumberOfReadNotifications();
         }
 
+        public function componentNotification_text()
+        {
+            $this->return_notification = true;
+
+            if ($this->notification->isShown())
+            {
+                $this->return_notification = false;
+            }
+            else
+            {
+                $this->notification->showOnce();
+                $this->notification->save();
+            }
+        }
+
         public function componentFindduplicateissues()
         {
             $this->setupVariables();
@@ -546,7 +561,7 @@
             $project = $this->issue->getProject();
             $this->editions = $project->getEditions();
             $this->components = $project->getComponents();
-            $this->builds = $project->getBuilds();
+            $this->builds = $project->getActiveBuilds();
         }
 
         public function componentDashboardview()
@@ -719,23 +734,27 @@
 
         public function componentIssueEstimator()
         {
+            $times = array();
             switch ($this->field)
             {
                 case 'estimated_time':
-                    $this->months = $this->issue->getEstimatedMonths();
-                    $this->weeks = $this->issue->getEstimatedWeeks();
-                    $this->days = $this->issue->getEstimatedDays();
-                    $this->hours = $this->issue->getEstimatedHours();
+                    $times['months'] = $this->issue->getEstimatedMonths();
+                    $times['weeks'] = $this->issue->getEstimatedWeeks();
+                    $times['days'] = $this->issue->getEstimatedDays();
+                    $times['hours'] = $this->issue->getEstimatedHours();
+                    $times['minutes'] = $this->issue->getEstimatedMinutes();
                     $this->points = $this->issue->getEstimatedPoints();
                     break;
-                case 'spent_time':
-                    $this->months = 0;
-                    $this->weeks = 0;
-                    $this->days = 0;
-                    $this->hours = 0;
+                case 'spent_time';
+                    $times['months'] = 0;
+                    $times['weeks'] = 0;
+                    $times['days'] = 0;
+                    $times['hours'] = 0;
+                    $times['minutes'] = 0;
                     $this->points = 0;
                     break;
             }
+            $this->times = $times;
             $this->project_key = $this->issue->getProject()->getKey();
             $this->issue_id = $this->issue->getID();
         }

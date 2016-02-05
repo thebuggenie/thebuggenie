@@ -373,7 +373,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="description"><?php echo __('The whiteboard will have issue fields details for all issues. Specify which custom issue fields should also visible for issue.'); ?></p>
+                            <p class="description"><?php echo __('Specify which custom issue fields should also be visible for issue.'); ?></p>
                         </div>
                     </td>
                 </tr>

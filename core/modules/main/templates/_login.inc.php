@@ -1,14 +1,4 @@
 <?php /* \thebuggenie\core\framework\Event::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); */ ?>
-<script type="text/javascript">
-    require(['domReady', 'prototype'], function (domReady, prototype) {
-        domReady(function () {
-            if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
-                if ($('tbg3_referer')) $('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
-                else if ($('return_to')) $('return_to').setValue('<?php echo make_url('dashboard'); ?>');
-        });
-    });
-
-</script>
 <div class="logindiv regular active" id="regular_login_container">
     <?php if ($loginintro instanceof \thebuggenie\modules\publish\entities\Article): ?>
         <?php include_component('publish/articledisplay', array('article' => $loginintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>

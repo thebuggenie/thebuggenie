@@ -64,7 +64,7 @@
             }
             $crit->addWhere(self::TARGET_TYPE, $target_type);
             $crit->addWhere(self::DELETED, 0);
-            $crit->addOrderBy(self::POSTED, $sort_order);
+            $crit->addOrderBy(self::COMMENT_NUMBER, $sort_order);
             $res = $this->select($crit, false);
 
             return $res;

@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\common\Timeable;
     use thebuggenie\core\framework;
 
     /**
@@ -313,11 +314,11 @@
                         $times = array();
                         if ($request['timespent_manual'])
                         {
-                            $times = Issue::convertFancyStringToTime($request['timespent_manual']);
+                            $times = Issue::convertFancyStringToTime($request['timespent_manual'], $issue);
                         }
                         elseif ($request['timespent_specified_type'])
                         {
-                            $times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+                            $times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
                             $times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
                         }
                         if (array_sum($times) > 0)
@@ -327,6 +328,7 @@
                             $spenttime->setIssue($issue);
                             $spenttime->setUser(framework\Context::getUser());
                             $spenttime->setSpentPoints($times['points']);
+                            $spenttime->setSpentMinutes($times['minutes']);
                             $spenttime->setSpentHours($times['hours']);
                             $spenttime->setSpentDays($times['days']);
                             $spenttime->setSpentWeeks($times['weeks']);
@@ -339,7 +341,7 @@
                     }
                     else
                     {
-                        $issue->stopWorkingOnIssue();
+                        $issue->stopWorkingOnIssue(framework\Context::getUser(), $request['timespent_activitytype'], $request['timespent_comment']);
                     }
                     break;
                 default:
