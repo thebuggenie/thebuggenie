@@ -18374,3 +18374,92 @@ div[id^='wiki_'][id$='_no_links'] {
 table.desktop-notifications-settings tr:first-child > td:last-child {
     text-align: right;
 }
+
+.address-container {
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
+    padding: 10px 15px 10px 60px;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: #333;
+    background-color: #FFF;
+    border-radius: 2px;
+    position: relative;
+    box-sizing: border-box;
+}
+.address-container:before {
+    content: '';
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: #555;
+    background-color: #F1F1F1;
+    padding: 10px 25px;
+    border: none;
+    background-position: 5px 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px 0 0 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+.address-container input[type=text] {
+    border: none;
+    box-shadow: none;
+    padding: 0%;
+    font-size: 1.1em;
+    width: 450px;
+}
+.address-container + input[type=submit], .address-container + input[type=submit]:hover, .address-container ~ .change-button, .address-container ~ .change-button:hover {
+    display: inline-block;
+    margin: 0;
+    height: 45px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    font-weight: normal;
+    padding: 0 13px;
+    vertical-align: top;
+}
+.address-container ~ .indicator {
+    margin-left: 15px;
+}
+.address-container ~ .indicator, .address-container ~ .indicator img {
+    vertical-align: middle;
+    height: 20px;
+}
+.address-container img.verified {
+    display: none;
+}
+.address-container.verified img.verified {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 8px);
+}
+.disabled .address-container {
+    background-color: #F7F7F7;
+}
+form.disabled .address-container + input[type=submit], .address-container ~ .change-button {
+    display: none;
+}
+.address-container.verified ~ .change-button {
+    display: inline-block;
+    padding-top: 12px;
+}
+.address-settings {
+    display: block;
+    padding: 5px 15px;
+    margin: 0;
+}
+#config_modules .address-settings {
+    padding: 5px 0;
+}
+.address-settings p {
+    font-size: 1.1em;
+    padding: 2px 0 7px 0;
+}
+#config_modules .address-settings p {
+    padding: 0 0 15px 0;
+}

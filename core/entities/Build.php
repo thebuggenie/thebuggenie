@@ -141,7 +141,7 @@
             if ($is_new)
             {
                 framework\Context::setPermission("canseebuild", $this->getID(), "core", 0, framework\Context::getUser()->getGroup()->getID(), 0, true);
-                \thebuggenie\core\framework\Event::createNew('core', 'Build::_postSave', $this)->trigger();
+                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Build::_postSave', $this)->trigger();
             }
         }
 
