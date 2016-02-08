@@ -11031,6 +11031,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .project_information_sidebar .sidebar_links img {
+    width: 16px;
     float: left;
     position: relative;
     margin-right: 5px;

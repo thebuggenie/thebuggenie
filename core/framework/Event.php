@@ -113,13 +113,21 @@
                     try
                     {
                         $cb_string = (is_array($trigger)) ? get_class($trigger[0]).'::'.$trigger[1] : $trigger;
-                        Logging::log('Running callback function '.$cb_string);
+                        if (is_object($cb_string)) {
+                            Logging::log('Running anonymous callback function');
+                        } else {
+                            Logging::log('Running callback function '.$cb_string);
+                        }
                         $retval = call_user_func($trigger, $event);
                         if ($return_when_processed && $event->isProcessed())
                         {
                             return true;
                         }
-                        Logging::log('done (Running callback function '.$cb_string.')');
+                        if (is_object($cb_string)) {
+                            Logging::log('done (Running anonymous callback function)');
+                        } else {
+                            Logging::log('done (Running callback function '.$cb_string.')');
+                        }
                     }
                     catch (\Exception $e)
                     {
