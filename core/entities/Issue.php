@@ -5202,7 +5202,7 @@
                                 }
                                 break;
                             case '_percent_complete':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '', $original_value, $compare_value);
+                                $this->addLogEntry(tables\Log::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '%', $original_value, $compare_value);
                                 break;
                             case '_resolution':
                                 if ($original_value != 0)
