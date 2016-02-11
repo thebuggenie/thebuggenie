@@ -116,8 +116,8 @@
             ?>
         </li>
             <?php
-                // Replace multiple spaces with single space with regex.
-                if (($notification_text = trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification'))))) != ''):
+                // Replace multiple spaces with single space with regex, apply trim, decode entities to show non standard characters and strip tags to remove any left / decoded "injections" to retrieve only valid text of notification.
+                if (($notification_text = strip_tags(html_entity_decode(trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification')))), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()))) != ''):
             ?>
                 <script>
                     require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
