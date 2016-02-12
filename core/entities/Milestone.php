@@ -961,7 +961,7 @@
                     $prev_key = $key;
                 }
 
-                if ($subtract_hours) $spent_times['minutes_spent_before'] = $spent_times['minutes_spent_before'] % 60;
+                if ($subtract_hours && isset($spent_times['minutes_spent_before'])) $spent_times['minutes_spent_before'] = $spent_times['minutes_spent_before'] % 60;
 
                 $this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);
             }
