@@ -363,14 +363,27 @@
                     </table>
                     <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>
                         <tr>
-                            <td><label for="profile_enable_keyboard_navigation_yes"><?php echo __('Enable desktop notifications'); ?></label></td>
+                            <td><label><?php echo __('Enable desktop notifications'); ?></label></td>
                             <td>
                                 <input type="button" value="<?php echo __('Grant Permission'); ?>" onclick="TBG.Main.Notifications.Web.GrantPermissionOrSendTest('<?php echo __('Test notification'); ?>', '<?php echo __('This is a test notification.'); ?>', '<?php echo \thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png'); ?>');">
                             </td>
                         </tr>
                         <tr>
                             <td class="config_explanation" colspan="2">
-                                <?php echo __('Receive notifications from box through browser as well. After you grant permission, additional clicks on button will send test notification.'); ?>
+                                <?php echo __('Receive notifications from box through browser as well. Once you receive desktop notification clicking on it will dismiss it and open notification target url or backdrop depending on notification. After you grant permission, additional clicks on button will send test notification.'); ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>
+                        <tr>
+                            <td><label for="profile_enable_desktop_notifications_new_tab"><?php echo __('Open desktop notifications in new tab'); ?></label></td>
+                            <td>
+                                <input type="checkbox" name="enable_desktop_notifications_new_tab" value="1" id="profile_enable_desktop_notifications_new_tab"<?php if ($tbg_user->isDesktopNotificationsNewTabEnabled()): ?> checked<?php endif; ?>>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="config_explanation" colspan="2">
+                                <?php echo __('Whether clicking on notification will open target url in new or current tab. Notifications which target is backdrop will not be affected and will open in current tab. By default browsers will block opening of new tab programmatically, unless you enable pop-ups.'); ?>
                             </td>
                         </tr>
                     </table>

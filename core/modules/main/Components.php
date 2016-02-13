@@ -404,6 +404,7 @@
             }
             $this->num_unread = $this->getUser()->getNumberOfUnreadNotifications();
             $this->num_read = $this->getUser()->getNumberOfReadNotifications();
+            $this->desktop_notifications_new_tab = $this->getUser()->isDesktopNotificationsNewTabEnabled();
         }
 
         public function componentNotification_text()

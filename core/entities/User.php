@@ -1957,10 +1957,22 @@
             return ($val !== null) ? $val : true;
         }
 
+        public function isDesktopNotificationsNewTabEnabled()
+        {
+            $val = framework\Settings::get(framework\Settings::SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB, 'core', framework\Context::getScope(), $this->getID());
+            return ($val !== null) ? $val : false;
+        }
+
         public function setKeyboardNavigationEnabled($value = true)
         {
             if (!$value) framework\Settings::saveSetting(framework\Settings::SETTING_USER_KEYBOARD_NAVIGATION, false, 'core', null, $this->getID());
             else framework\Settings::deleteSetting(framework\Settings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', null, $this->getID());
+        }
+
+        public function setDesktopNotificationsNewTabEnabled($value = true)
+        {
+            if ($value) framework\Settings::saveSetting(framework\Settings::SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB, true, 'core', null, $this->getID());
+            else framework\Settings::deleteSetting(framework\Settings::SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB, 'core', null, $this->getID());
         }
 
         public function getActivationKey()

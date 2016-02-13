@@ -124,8 +124,14 @@
                         domReady(function () {
                             TBG.Main.Notifications.Web.Send("<?php echo __('New notification'); ?>", "<?php echo $notification_text; ?>", '<?php echo $notification->getID(); ?>', '<?php echo $notification->getTriggeredByUser()->getAvatarURL(); ?>', function () {
                                 var target_url = "<?php echo $notification->getTargetUrl(); ?>";
+                                var desktop_notifications_new_tab = <?php echo $desktop_notifications_new_tab ? 'true' : 'false'; ?>;
                                 if (target_url.startsWith('http')) {
-                                    window.location = target_url;
+                                    if (desktop_notifications_new_tab) {
+                                        window.open(target_url, '_blank').focus();
+                                    }
+                                    else {
+                                        window.location = target_url;
+                                    }
                                 }
                                 else {
                                     eval(target_url);
