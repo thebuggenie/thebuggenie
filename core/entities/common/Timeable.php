@@ -90,13 +90,25 @@
 
             if ($append_minutes)
             {
-                $old_time['hours'] += (int) floor($old_time['minutes'] / 60);
-                $new_time['hours'] += (int) floor($new_time['minutes'] / 60);
+                if (isset($old_time['hours']) && isset($old_time['minutes']))
+                {
+                    $old_time['hours'] += (int) floor($old_time['minutes'] / 60);
+                }
+                if (isset($new_time['hours']) && isset($new_time['minutes']))
+                {
+                    $new_time['hours'] += (int) floor($new_time['minutes'] / 60);
+                }
             }
             if ($subtract_hours)
             {
-                $old_time['minutes'] = $old_time['minutes'] % 60;
-                $new_time['minutes'] = $new_time['minutes'] % 60;
+                if (isset($old_time['minutes']))
+                {
+                    $old_time['minutes'] = $old_time['minutes'] % 60;
+                }
+                if (isset($new_time['minutes']))
+                {
+                    $new_time['minutes'] = $new_time['minutes'] % 60;
+                }
             }
 
             return \thebuggenie\core\entities\Issue::getFormattedTime($old_time) . ' &rArr; ' . \thebuggenie\core\entities\Issue::getFormattedTime($new_time);
