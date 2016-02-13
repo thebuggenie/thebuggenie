@@ -6288,6 +6288,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).addClassName('disabled');
+                            $(element).writeAttribute('disabled');
                         });
                     }
                 },
@@ -6302,9 +6303,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).removeClassName('disabled');
+                            $(element).writeAttribute('disabled', false);
                         });
                     }
                 }
+            });
+        }
+
+        TBG.Search.nonInteractiveWorkflowTransition = function () {
+            // No need to remove 'disabled' class and attribute since form that is submitted
+            // will refresh page.
+            $$('.workflow_transition_submit_button').each(function (element) {
+                $(element).addClassName('disabled');
+                $(element).writeAttribute('disabled');
             });
         }
 
@@ -6316,6 +6327,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).addClassName('disabled');
+                            $(element).writeAttribute('disabled');
                         });
                     }
                 },
@@ -6329,6 +6341,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).removeClassName('disabled');
+                            $(element).writeAttribute('disabled', false);
                         });
                     }
                 }
