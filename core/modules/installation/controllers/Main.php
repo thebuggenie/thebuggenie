@@ -562,8 +562,8 @@ class Main extends framework\Action
     {
         set_time_limit(0);
 
-        \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Issue::getB2DBTable());
-        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Project::getB2DBTable());
+        \thebuggenie\core\modules\installation\upgrade_415\Issue::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Issue::getB2DBTable());
+        \thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Project::getB2DBTable());
 
         $this->upgrade_complete = true;
         $this->current_version = '4.1.2';
