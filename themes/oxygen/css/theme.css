@@ -9974,7 +9974,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     position: relative;
 }
 
-#whiteboard-headers, #whiteboard-headers-placeholder {
+#whiteboard-headers .td,
+#whiteboard-headers-placeholder .td {
     height: 35px;
 }
 
