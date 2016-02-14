@@ -506,6 +506,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.Profile.toggleNotifications = function (toggle_classes) {
             var un = $('user_notifications');
             var unc = $('user_notifications_container');
+            if (! un || ! unc) return false;
             if (toggle_classes == null) toggle_classes = true;
             if (toggle_classes) unc.toggleClassName('active');
             if (un.hasClassName('active')) {
