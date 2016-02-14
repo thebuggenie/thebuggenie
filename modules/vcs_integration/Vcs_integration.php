@@ -229,8 +229,15 @@
             if ($event->getSubject()->getModuleName() != 'vcs_integration')
                 return;
 
-            $event->setReturnValue("TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $event->getSubject()->getTargetID()))."');");
-            $event->setProcessed();
+            switch ($event->getSubject()->getNotificationType()) {
+                case self::NOTIFICATION_COMMIT_MENTIONED:
+                    $event->setReturnValue("TBG.Main.Helpers.Backdrop.show('" . make_url('get_partial_for_backdrop', array(
+                        'key' => 'vcs_integration_getcommit', 'commit_id' => $event->getSubject()
+                          ->getTargetID()
+                      )) . "');");
+                    $event->setProcessed();
+                    break;
+            }
         }
 
 
