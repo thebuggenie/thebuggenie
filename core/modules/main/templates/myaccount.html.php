@@ -363,9 +363,9 @@
                     </table>
                     <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>
                         <tr>
-                            <td><label for="profile_enable_desktop_notifications_new_tab"><?php echo __('Enable desktop notifications'); ?></label></td>
+                            <td><label for="profile_enable_desktop_notifications"><?php echo __('Enable desktop notifications'); ?></label></td>
                             <td>
-                                <input type="button" value="<?php echo __('Grant Permission'); ?>" id="profile_enable_desktop_notifications_new_tab" onclick="TBG.Main.Notifications.Web.GrantPermissionOrSendTest('<?php echo __('Test notification'); ?>', '<?php echo __('This is a test notification.'); ?>', '<?php echo \thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png'); ?>');">
+                                <input type="button" value="<?php echo __('Grant Permission'); ?>" id="profile_enable_desktop_notifications" onclick="TBG.Main.Notifications.Web.GrantPermissionOrSendTest('<?php echo __('Test notification'); ?>', '<?php echo __('This is a test notification.'); ?>', '<?php echo \thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png'); ?>');">
                             </td>
                         </tr>
                         <tr>
