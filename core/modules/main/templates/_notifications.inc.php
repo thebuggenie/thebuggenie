@@ -134,7 +134,7 @@
                                     }
                                 }
                                 else {
-                                    eval(target_url);
+                                    TBG.Main.Helpers.Backdrop.show(target_url);
                                 }
                             });
                         });
