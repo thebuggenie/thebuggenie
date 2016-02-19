@@ -690,7 +690,7 @@
         {
             framework\Context::loadLibrary('ui');
             
-            $theIssue = \thebuggenie\core\entities\Issue::getIssueFromLink($matches[0]);
+            $theIssue = \thebuggenie\core\entities\Issue::getIssueFromLink($matches[2]);
             $output = '';
             $classname = '';
             if ($theIssue instanceof \thebuggenie\core\entities\Issue && ($theIssue->isClosed() || $theIssue->isDeleted()))
@@ -704,15 +704,15 @@
                 if ($markdown_format) {
                     if ($classname != '') $classname = ' {.'.$classname.'}';
 
-                    $output = "[{$matches[0]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
+                    $output = "{$matches[1]}[{$matches[2]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
                 }
                 else {
-                    $output = ' '.link_tag($theIssueUrl, $matches[0], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
+                    $output = $matches[1] . link_tag($theIssueUrl, $matches[2], array('class' => $classname, 'title' => $theIssue->getFormattedTitle()));
                 }
             }
             else
             {
-                $output = $matches[0];
+                $output = $matches[1] . $matches[2];
             }
             return $output;
         }

@@ -439,6 +439,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             document.observe('keydown', TBG.Core._escapeWatcher);
 
             TBG.Core.Pollers.Callbacks.dataPoller();
+            TBG.Main.Profile.toggleNotifications(false);
             TBG.OpenID.init();
             // Mimick browser scroll to element with id as hash once header get 'fixed' class
             // from _scrollWatcher method.
@@ -502,15 +503,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         };
 
-        TBG.Main.Profile.toggleNotifications = function () {
+        TBG.Main.Profile.toggleNotifications = function (toggle_classes) {
             var un = $('user_notifications');
             var unc = $('user_notifications_container');
-            unc.toggleClassName('active');
+            if (! un || ! unc) return false;
+            if (toggle_classes == null) toggle_classes = true;
+            if (toggle_classes) unc.toggleClassName('active');
             if (un.hasClassName('active')) {
                 un.removeClassName('active');
             } else {
                 un.style.right = (jQuery(window).width() - (jQuery('#user_notifications_container').offset().left + jQuery('#user_notifications_container').outerWidth()) - parseInt(jQuery('#user_notifications').css('border-right-width'), 10)) + 'px';
-                un.addClassName('active');
+                if (toggle_classes) un.addClassName('active');
                 if ($('user_notifications_list').childElements().size() == 0) {
                     TBG.Main.Helpers.ajax($('user_notifications_list').dataset.notificationsUrl, {
                         url_method: 'get',
@@ -6286,6 +6289,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).addClassName('disabled');
+                            $(element).writeAttribute('disabled');
                         });
                     }
                 },
@@ -6300,9 +6304,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).removeClassName('disabled');
+                            $(element).writeAttribute('disabled', false);
                         });
                     }
                 }
+            });
+        }
+
+        TBG.Search.nonInteractiveWorkflowTransition = function () {
+            // No need to remove 'disabled' class and attribute since form that is submitted
+            // will refresh page.
+            $$('.workflow_transition_submit_button').each(function (element) {
+                $(element).addClassName('disabled');
+                $(element).writeAttribute('disabled');
             });
         }
 
@@ -6314,6 +6328,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).addClassName('disabled');
+                            $(element).writeAttribute('disabled');
                         });
                     }
                 },
@@ -6327,6 +6342,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: function () {
                         $$('.workflow_transition_submit_button').each(function (element) {
                             $(element).removeClassName('disabled');
+                            $(element).writeAttribute('disabled', false);
                         });
                     }
                 }

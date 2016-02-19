@@ -248,4 +248,43 @@
             $this->_shown_at = time();
         }
 
+        public function getTargetUrl()
+        {
+            switch ($this->getNotificationType())
+            {
+                case self::TYPE_ISSUE_CREATED:
+                case self::TYPE_ISSUE_UPDATED:
+                case self::TYPE_ISSUE_MENTIONED:
+                    $url = make_url('viewissue', array('project_key' => $this->getTarget()->getProject()->getKey(), 'issue_no' => $this->getTarget()->getFormattedIssueNo()), false);
+                    break;
+                case self::TYPE_ISSUE_COMMENTED:
+                    $url = make_url('viewissue', array('project_key' => $this->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $this->getTarget()->getTarget()->getFormattedIssueNo()), false).'#comment_'.$this->getTarget()->getID();
+                    break;
+                case self::TYPE_COMMENT_MENTIONED:
+                    if ($this->getTarget()->getTargetType() == \thebuggenie\core\entities\Comment::TYPE_ISSUE)
+                    {
+                        $url = make_url('viewissue', array('project_key' => $this->getTarget()->getTarget()->getProject()->getKey(), 'issue_no' => $this->getTarget()->getTarget()->getFormattedIssueNo()), false).'#comment_'.$this->getTarget()->getID();
+                    }
+                    else
+                    {
+                        $url = make_url('publish_article', array('article_name' => $this->getTarget()->getTarget()->getName()), false).'#comment_'.$this->getTarget()->getID();
+                    }
+                    break;
+                case self::TYPE_ARTICLE_COMMENTED:
+                    $url = make_url('publish_article', array('article_name' => $this->getTarget()->getTarget()->getName()), false).'#comment_'.$this->getTarget()->getID();
+                    break;
+                case self::TYPE_ARTICLE_CREATED:
+                case self::TYPE_ARTICLE_UPDATED:
+                case self::TYPE_ARTICLE_MENTIONED:
+                    $url = make_url('publish_article', array('article_name' => $this->getTarget()->getName()), false);
+                    break;
+                default:
+                    $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Notification::getTargetUrl', $this);
+                    $event->triggerUntilProcessed();
+                    $url = $event->getReturnValue();
+            }
+
+            return $url;
+        }
+
     }

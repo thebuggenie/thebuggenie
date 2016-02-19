@@ -117,6 +117,7 @@
         const SETTING_USER_LANGUAGE = 'language';
         const SETTING_USER_ACTIVATION_KEY = 'activation_key';
         const SETTING_USER_NOTIFICATION_TIMEOUT = 'notifications_timeout';
+        const SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB = 'desktop_notifications_new_tab';
 
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES = 'subscribe_posted_updated_commented_issues';
         const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES = 'subscribe_created_updated_commented_articles';

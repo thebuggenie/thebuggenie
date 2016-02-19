@@ -116,14 +116,26 @@
             ?>
         </li>
             <?php
-                // Replace multiple spaces with single space with regex.
-                if (($notification_text = trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification'))))) != ''):
+                // Replace multiple spaces with single space with regex, apply trim, decode entities to show non standard characters and strip tags to remove any left / decoded "injections" to retrieve only valid text of notification.
+                if (($notification_text = strip_tags(html_entity_decode(trim(preg_replace('!\s+!', ' ', get_component_html('main/notification_text', compact('notification')))), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()))) != ''):
             ?>
                 <script>
                     require(['domReady', 'thebuggenie/tbg'], function (domReady, TBG) {
                         domReady(function () {
                             TBG.Main.Notifications.Web.Send("<?php echo __('New notification'); ?>", "<?php echo $notification_text; ?>", '<?php echo $notification->getID(); ?>', '<?php echo $notification->getTriggeredByUser()->getAvatarURL(); ?>', function () {
-                                TBG.Main.Notifications.toggleRead(<?php echo $notification->getID(); ?>);
+                                var target_url = "<?php echo $notification->getTargetUrl(); ?>";
+                                var desktop_notifications_new_tab = <?php echo $desktop_notifications_new_tab ? 'true' : 'false'; ?>;
+                                if (target_url.startsWith('http')) {
+                                    if (desktop_notifications_new_tab) {
+                                        window.open(target_url, '_blank').focus();
+                                    }
+                                    else {
+                                        window.location = target_url;
+                                    }
+                                }
+                                else {
+                                    TBG.Main.Helpers.Backdrop.show(target_url);
+                                }
                             });
                         });
                     });
