@@ -33,7 +33,7 @@
             if (Context::isCLI())
                 return self::AUTHENTICATION_METHOD_CLI;
 
-            if (in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml'])) {
+            if (Context::getRequest()->hasParameter('api_username') && in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml'])) {
                 return self::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
             }
 

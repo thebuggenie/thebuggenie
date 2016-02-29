@@ -13,19 +13,6 @@ use thebuggenie\core\framework,
 class Main extends framework\Action
 {
 
-    public function getAuthenticationMethodForAction($action)
-    {
-        switch ($action)
-        {
-            case 'toggleFavouriteIssue':
-                return framework\Action::AUTHENTICATION_METHOD_CORE;
-                break;
-            default:
-                return parent::getAuthenticationMethodForAction($action);
-                break;
-        }
-    }
-
     /**
      * The currently selected project in actions where there is one
      *
