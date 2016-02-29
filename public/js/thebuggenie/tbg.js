@@ -2364,8 +2364,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 loading: {indicator: 'new_epic_indicator'},
                 success: {
                     callback: function (json) {
-                        TBG.Core.Pollers.Callbacks.planningPoller();
+                        $(form).reset();
                         $(form).up('li').removeClassName('selected');
+                        TBG.Core.Pollers.Callbacks.planningPoller();
                     }
                 }
             });
