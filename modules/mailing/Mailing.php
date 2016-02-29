@@ -527,7 +527,7 @@ EOT;
 
                     foreach ($to_users as $uid => $user)
                     {
-                        if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user) || ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, 0, 'mailing')->getValue() != $issue->getCategory()->getID())) unset($to_users[$uid]);
+                        if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user) || ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->isOn() && ($issue->getCategory() instanceof \thebuggenie\core\entities\Category && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, 0, 'mailing')->getValue() != $issue->getCategory()->getID()))) unset($to_users[$uid]);
                         if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive()) unset($to_users[$uid]);
                     }
                     $messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
