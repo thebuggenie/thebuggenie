@@ -888,16 +888,33 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             if (callback) callback();
         };
 
-        TBG.Main.Helpers.tabSwitcher = function (visibletab, menu) {
+        TBG.Main.Helpers.tabSwitcher = function (visibletab, menu, change_hash) {
+            if (change_hash == null) change_hash = false;
+
             if ($(menu)) {
                 $(menu).childElements().each(function (item) {
                     item.removeClassName('selected');
                 });
-                $(visibletab).addClassName('selected');
-                $(menu + '_panes').childElements().each(function (item) {
-                    item.hide();
-                });
-                $(visibletab + '_pane').show();
+                if ($(visibletab)) {
+                    $(visibletab).addClassName('selected');
+                    $(menu + '_panes').childElements().each(function (item) {
+                        item.hide();
+                    });
+                }
+                if ($(visibletab + '_pane')) {
+                    $(visibletab + '_pane').show();
+                }
+                if (change_hash) {
+                    window.location.hash = visibletab;
+                }
+            }
+        };
+
+        TBG.Main.Helpers.tabSwitchFromHash = function (menu) {
+            var hash = window.location.hash;
+
+            if (hash != undefined && hash.indexOf('tab_') == 1) {
+                TBG.Main.Helpers.tabSwitcher(hash.substr(1), menu);
             }
         };
 
