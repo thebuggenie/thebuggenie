@@ -17486,6 +17486,10 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
     margin-top: 25px;
 }
 
+#issue_main #viewissue_comments_container .viewissue_comments_header {
+    padding-top: 45px;
+}
+
 #issue_main #comment_bodybox_syntax_picker,
 ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
 ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
