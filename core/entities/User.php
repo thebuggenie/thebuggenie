@@ -509,14 +509,18 @@
          *
          * @param \thebuggenie\core\framework\Request $request
          * @param \thebuggenie\core\framework\Action  $action
+         * @param null                                $authentication_method
          *
          * @return \thebuggenie\core\entities\User
          */
-        public static function loginCheck(framework\Request $request, framework\Action $action)
+        public static function loginCheck(framework\Request $request, framework\Action $action, $authentication_method = null)
         {
             try
             {
-                $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
+                if ($authentication_method === null)
+                {
+                    $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
+                }
                 $user = null;
                 $external = false;
 

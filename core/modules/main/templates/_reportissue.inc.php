@@ -721,7 +721,7 @@
                                 <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
                                 <?php echo __('Users or teams who can see this issue'); ?>
                             </h4>
-                            <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_",
+                            <?php include_component('main/identifiableselector', array(    'html_id'             => "popup_find_acl_",
                                                                                       'header'             => __('Give someone access to this issue'),
                                                                                       'callback'             => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', '');",
                                                                                       'team_callback'     => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', '');",

@@ -468,16 +468,14 @@ viewissue_find_issue:
     route: /:project_key/findissues/:issue_id/:type
     module: main
     action: findIssue
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 viewissue_relate_issues:
     route: /:project_key/issues/:issue_id/relate
     module: main
     action: relateIssues
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 viewissue_remove_related_issue:
@@ -589,8 +587,7 @@ toggle_favourite_issue:
     route: /toggle_favourite_issue/:issue_id/:user_id
     module: main
     action: toggleFavouriteIssue
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 project_reportissue:
@@ -598,40 +595,6 @@ project_reportissue:
     module: main
     action: reportIssue
     parameters: [ ]
-    csrf_enabled: false
-
-nextopenissue:
-    route: /:project_key/issues/:issue_no/next/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-      mode: open
-    csrf_enabled: false
-
-nextissue:
-    route: /:project_key/issues/:issue_no/next
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-    csrf_enabled: false
-
-previousopenissue:
-    route: /:project_key/issues/:issue_no/previous/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-      mode: open
-    csrf_enabled: false
-
-previousissue:
-    route: /:project_key/issues/:issue_no/previous
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
     csrf_enabled: false
 
 issue_log:
