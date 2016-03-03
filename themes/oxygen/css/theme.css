@@ -8653,6 +8653,10 @@ dl.info dt {
     text-shadow: none;
 }
 
+.whiteboard-issue .epic_badge {
+  font-weight: normal;
+}
+
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
     background: rgba(225, 225, 100, 0.5);
 }
