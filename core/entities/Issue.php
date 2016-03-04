@@ -2396,7 +2396,7 @@
                 foreach ($this->getParentIssues() as $parent_issue)
                 {
                     if ($parent_issue->hasAccess($user))
-                        $this->_accessible_parent_issues[$user_id] = $child_issue;
+                        $this->_accessible_parent_issues[$user_id] = $parent_issue;
                 }
             }
         }
