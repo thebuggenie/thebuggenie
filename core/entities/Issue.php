@@ -499,11 +499,25 @@
         protected $_parent_issues;
 
         /**
+         * List of issues this issue depends on, accessible by user
+         *
+         * @var array
+         */
+        protected $_accessible_parent_issues;
+
+        /**
          * List of issues that depends on this issue
          *
          * @var array
          */
         protected $_child_issues;
+
+        /**
+         * List of issues that depends on this issue, accessible by user
+         *
+         * @var array
+         */
+        protected $_accessible_child_issues;
 
         /**
          * List of issues which are duplicates of this one
@@ -2353,6 +2367,41 @@
         }
 
         /**
+         * populates accessible related issues for current or target user
+         *
+         * @param null $target_user
+         */
+        protected function _populateAccessibleRelatedIssues($target_user = null)
+        {
+            if ($this->_accessible_parent_issues === null || $this->_accessible_child_issues === null)
+            {
+                $this->_accessible_parent_issues = array();
+                $this->_accessible_child_issues = array();
+            }
+
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
+            $user_id = $user->getID();
+
+            if (!isset($this->_accessible_parent_issues[$user_id]) || !isset($this->_accessible_child_issues[$user_id]))
+            {
+                $this->_accessible_parent_issues[$user_id] = array();
+                $this->_accessible_child_issues[$user_id] = array();
+
+                foreach ($this->getChildIssues() as $child_issue)
+                {
+                    if ($child_issue->hasAccess($user))
+                        $this->_accessible_child_issues[$user_id] = $child_issue;
+                }
+
+                foreach ($this->getParentIssues() as $parent_issue)
+                {
+                    if ($parent_issue->hasAccess($user))
+                        $this->_accessible_parent_issues[$user_id] = $child_issue;
+                }
+            }
+        }
+
+        /**
          * populates list of issues which are duplicates of this one
          */
         protected function _populateDuplicateIssues()
@@ -2376,6 +2425,19 @@
         {
             $this->_populateRelatedIssues();
             return $this->_parent_issues;
+        }
+
+        /**
+         * Return issues relating to this, accessible by current or target user
+         *
+         * @param null $target_user
+         * @return array
+         */
+        public function getAccessibleParentIssues($target_user = null)
+        {
+            $this->_populateAccessibleRelatedIssues($target_user);
+            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
+            return $this->_accessible_parent_issues[$user_id];
         }
 
         public function isChildIssue()
@@ -2423,6 +2485,19 @@
             {
                 return tables\IssueRelations::getTable()->countChildIssues($this->getID());
             }
+        }
+
+        /**
+         * Return related issues, accessible by current or target user
+         *
+         * @param null $target_user
+         * @return array
+         */
+        public function getAccessibleChildIssues($target_user = null)
+        {
+            $this->_populateAccessibleRelatedIssues($target_user);
+            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
+            return $this->_accessible_child_issues[$user_id];
         }
 
         /**

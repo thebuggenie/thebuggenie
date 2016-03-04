@@ -479,13 +479,7 @@
 
         public function componentRelatedissues()
         {
-            $child_issues = array();
-            foreach ($this->issue->getChildIssues() as $child_issue)
-            {
-                if ($child_issue->hasAccess())
-                    $child_issues[] = $child_issue;
-            }
-            $this->child_issues = $child_issues;
+            $this->child_issues = $this->issue->getAccessibleChildIssues();
         }
 
         public function componentDuplicateissues()

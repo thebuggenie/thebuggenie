@@ -663,7 +663,7 @@
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_after_attachments', $issue)->trigger(); ?>
 <fieldset id="viewissue_related_information_container">
     <legend>
-        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getChildIssues()).'</span>')); ?>
+        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getAccessibleChildIssues()).'</span>')); ?>
     </legend>
     <div id="viewissue_related_information">
         <?php include_component('main/relatedissues', array('issue' => $issue)); ?>
