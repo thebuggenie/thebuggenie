@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 25 -->
-<!-- Number of Strings: 200 -->
-<!-- Keys extracted from sources on: 2015 Oct 17. -->
+<!-- Number of Strings: 208 -->
+<!-- Keys extracted from sources on: 2016 Mar 06. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -55,6 +55,12 @@
         <body>
             <trans-unit id="6ae8cabf4766060e4dc30b156d3c84ad">
                 <source>You don't have access to modify milestones</source>
+            </trans-unit>
+            <trans-unit id="302064884c4407f1b1fa06d01c415d71">
+                <source>You must select an existing, unfinished milestone</source>
+            </trans-unit>
+            <trans-unit id="88232c32c08bb7fd30a18284db7bc39d">
+                <source>You must select an existing, unfinished sprint</source>
             </trans-unit>
             <trans-unit id="8d484b1a1a4c80e279c610bdfd455cf1">
                 <source>The board has been deleted</source>
@@ -320,6 +326,18 @@
             <trans-unit id="547d5dbc9b242ea89881f48441ea00d1">
                 <source>The whiteboard will have a separate swimlane at the top for prioritized issues, like a expedite line / fastlane. Select which issue details puts issues in this swimlane.</source>
             </trans-unit>
+            <trans-unit id="eae82d969dc2d245569faef81daac880">
+                <source>Whiteboard custom issue fields info</source>
+            </trans-unit>
+            <trans-unit id="cea3e0e48ce5f26e2fc5ddbb8a7f3470">
+                <source>Issue field(s)</source>
+            </trans-unit>
+            <trans-unit id="1d7bd6033c8ff4a2a47e2ccf7acaf6a0">
+                <source>Select issue field(s)</source>
+            </trans-unit>
+            <trans-unit id="f508aa8a2c264becb95bae29ec4c39bb">
+                <source>Specify which custom issue fields should also be visible for issue.</source>
+            </trans-unit>
             <trans-unit id="827e1baff2fd19587d3c6f251eb8d1a8">
                 <source>%cancel or %save_board</source>
             </trans-unit>
@@ -557,6 +575,12 @@
             </trans-unit>
             <trans-unit id="fc4ec31f7228cb810f224277fcbc8578">
                 <source>Assign to a new sprint</source>
+            </trans-unit>
+            <trans-unit id="77d016f0b7c1e7d23fd8f47e0bf9da54">
+                <source>Select milestone...</source>
+            </trans-unit>
+            <trans-unit id="2b49b3f90d5978a99510d33417e5ab6e">
+                <source>Select sprint...</source>
             </trans-unit>
             <trans-unit id="fe40ee83d34cc3f2f0d716240056f951">
                 <source>%cancel or %mark_milestone_finished</source>

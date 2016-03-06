@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 13 -->
-<!-- Number of Strings: 72 -->
-<!-- Keys extracted from sources on: 2015 Oct 17. -->
+<!-- Number of Strings: 73 -->
+<!-- Keys extracted from sources on: 2016 Mar 06. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -253,6 +253,9 @@
             <trans-unit id="a6fda05ffbf14489419e9c3766103d79">
                 <source>There are no code checkins for this issue</source>
             </trans-unit>
+            <trans-unit id="eb92025cb8c66f1850c13a9b602a1856">
+                <source>Show all</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -286,8 +289,8 @@
 
     <file source-language="en" datatype="php" original="Vcs_integration.php">
         <body>
-            <trans-unit id="7500e6af663307f2ba00621834388f07">
-                <source>This issue has been updated with the latest changes from the code repository.&lt;source&gt;%commit_msg&lt;/source&gt;</source>
+            <trans-unit id="edeed74987acff8324d82d5ec974b8f9">
+                <source>This issue has been updated with the latest changes from the code repository.%commit_msg</source>
             </trans-unit>
         </body>
     </file>
