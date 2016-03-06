@@ -4,15 +4,15 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 12 -->
-<!-- Number of Strings: 69 -->
+<!-- Number of Sections: 13 -->
+<!-- Number of Strings: 72 -->
 
-<!-- Keys extracted from sources on: 2014 Dec 26. -->
-<!-- Translations extracted from Transifex on: 2015 Apr 11. -->
+<!-- Keys extracted from sources on: 2015 Oct 17. -->
+<!-- Translations extracted from Transifex on: 2016 Mar 06.-->
 
 <xliff version="1.2">
 
-    <file datatype="php" original="Actions.php" source-language="en">
+    <file datatype="php" original="controllers/Main.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="d830f533ad8d4207b9efaaaf64296d3b">
                 <source>VCS Integration has been disabled for this project</source>
@@ -25,7 +25,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_commitbackdrop.inc.php" source-language="en">
+    <file datatype="php" original="templates/_commitbackdrop.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="f01a7e06c748e04f696f65489836fad4">
                 <source>Show commit details</source>
@@ -38,11 +38,15 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_commitbox.inc.php" source-language="en">
+    <file datatype="php" original="templates/_commitbox.inc.php" source-language="en" target-language="it-IT">
         <body>
-            <trans-unit id="508a1181a66b7aa2fa3d64269eecbc0a">
-                <source>Revision %rev by %user</source>
-                <target>Revisione %rev di %user</target>
+            <trans-unit id="63780c03b426a44faa461e65d09de634">
+                <source>Revision %rev</source>
+                <target>Revisione %rev</target>
+            </trans-unit>
+            <trans-unit id="e3a5812e651901de503a749e32d92ff0">
+                <source>By %user</source>
+                <target>Di %utente</target>
             </trans-unit>
             <trans-unit id="1e7978209afd6fec92d42e5c5cb314c3">
                 <source>Preceeded by %prev</source>
@@ -92,14 +96,10 @@
                 <source>This commit affects no issues</source>
                 <target>Questo commit non interessa alcuna segnalazione</target>
             </trans-unit>
-            <trans-unit id="1f3f27b7cbfff27988b677036d4fb6f5">
-                <source>This commit only affects issues you do not have access to</source>
-                <target>Questo commit interessa solo segnalazioni a cui non hai accesso</target>
-            </trans-unit>
         </body>
     </file>
 
-    <file datatype="php" original="templates/_menustriplinks.inc.php" source-language="en">
+    <file datatype="php" original="templates/_menustriplinks.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="7b3e99499b99f8c89ac261493ee5c49c">
                 <source>Commits</source>
@@ -112,7 +112,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_notification_view.inc.php" source-language="en">
+    <file datatype="php" original="templates/_notification_view.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="dbd18caed4e4cae3606abfec03efc046">
                 <source>%user_name mentioned you in commit %rev</source>
@@ -121,7 +121,20 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_projectconfig_panel.inc.php" source-language="en">
+    <file datatype="php" original="templates/_projectcommitsbox.inc.php" source-language="en" target-language="it-IT">
+        <body>
+            <trans-unit id="118abc26b32479243422657f3f0496ae">
+                <source>No commits have been found for this project</source>
+                <target>Non sono stati trovati commit per questo progetto</target>
+            </trans-unit>
+            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
+                <source>Show more</source>
+                <target>Visualizza altro</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_projectconfig_panel.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="356015849d73e72a4c644e3f0d24d547">
                 <source>Editing VCS connectivity settings</source>
@@ -278,7 +291,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_projectconfig_tab.inc.php" source-language="en">
+    <file datatype="php" original="templates/_projectconfig_tab.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="52415a1b91e05b1339d30a34c8081eb1">
                 <source>VCS Integration</source>
@@ -287,7 +300,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_projectheaderbutton.inc.php" source-language="en">
+    <file datatype="php" original="templates/_projectheaderbutton.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="a98df7359ac52361af81fa897d556a6a">
                 <source>Source code</source>
@@ -296,7 +309,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_viewissue_commits.inc.php" source-language="en">
+    <file datatype="php" original="templates/_viewissue_commits.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="63472150e70f25ffe3ae2be23a250069">
                 <source>Commits (%count)</source>
@@ -309,7 +322,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_viewissue_tab.inc.php" source-language="en">
+    <file datatype="php" original="templates/_viewissue_tab.inc.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="51bab8e2b3a781f0dd0034bdec6b45bd">
                 <source>Code checkins (%count)</source>
@@ -318,7 +331,7 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/projectcommits.html.php" source-language="en">
+    <file datatype="php" original="templates/projectcommits.html.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="66148e95789bf59beea3e056a496c97b">
                 <source>&quot;%project_name&quot; commits</source>
@@ -328,18 +341,22 @@
                 <source>Project commits</source>
                 <target>Commit progetto</target>
             </trans-unit>
-            <trans-unit id="118abc26b32479243422657f3f0496ae">
-                <source>No commits have been found for this project</source>
-                <target>Non sono stati trovati commit per questo progetto</target>
+            <trans-unit id="c62aaa93a21121edf22a73248515721b">
+                <source>Choose branch on the left to filter commits for this project</source>
+                <target>Seleziona il branch sulla sinistra per filtrare i commit per questo progetto</target>
             </trans-unit>
-            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
-                <source>Show more</source>
-                <target>Visualizza ulteriori informazioni</target>
+            <trans-unit id="9c343084c54e1d387ead36d270cf4827">
+                <source>All branches</source>
+                <target>Tutti i branch</target>
+            </trans-unit>
+            <trans-unit id="649fdfc207df25011ea7cb22bbcdb2c5">
+                <source>Branch filters</source>
+                <target>Filtri branch</target>
             </trans-unit>
         </body>
     </file>
 
-    <file datatype="php" original="Vcs_integration.php" source-language="en">
+    <file datatype="php" original="Vcs_integration.php" source-language="en" target-language="it-IT">
         <body>
             <trans-unit id="7500e6af663307f2ba00621834388f07">
                 <source>This issue has been updated with the latest changes from the code repository.&lt;source&gt;%commit_msg&lt;/source&gt;</source>

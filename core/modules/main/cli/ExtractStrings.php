@@ -313,7 +313,7 @@
                 if(!file_exists($relative_path))
                     mkdir(THEBUGGENIE_PATH . $relative_path, 0755, true);
 
-                $relative_path .= DS . $module . '.' . $ext;
+                $relative_path .= DS . 'strings.' . $ext;
                 file_put_contents(THEBUGGENIE_PATH . $relative_path, $generatedFile);
                 $this->generatedFiles[] = $relative_path;
             }
