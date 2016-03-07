@@ -40,7 +40,7 @@
                 <?php if ($swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID())): ?>
                     <?php foreach ($issue->getParentIssues() as $parent): ?>
                         <?php if ($parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID()): ?>
-                            <?php echo link_tag(make_url('viewissue', array('issue_no' => $parent->getFormattedIssueNo(), 'project_key' => $parent->getProject()->getKey())), $parent->getFormattedTitle(true, false), array('title' => $parent->getFormattedTitle(), 'target' => '_new', 'class' => 'epic_badge', 'style' => 'background-color: ' . $parent->getAgileColor().'; color: ' . $parent->getAgileTextColor(), 'data-parent-epic-id' => $parent->getID())); ?>
+                            <?php echo link_tag(make_url('viewissue', array('issue_no' => $parent->getFormattedIssueNo(), 'project_key' => $parent->getProject()->getKey())), $parent->getTitle(), array('title' => $parent->getFormattedTitle(), 'target' => '_new', 'class' => 'epic_badge', 'style' => 'background-color: ' . $parent->getAgileColor().'; color: ' . $parent->getAgileTextColor(), 'data-parent-epic-id' => $parent->getID())); ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
