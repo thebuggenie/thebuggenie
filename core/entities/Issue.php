@@ -2390,13 +2390,13 @@
                 foreach ($this->getChildIssues() as $child_issue)
                 {
                     if ($child_issue->hasAccess($user))
-                        $this->_accessible_child_issues[$user_id] = $child_issue;
+                        $this->_accessible_child_issues[$user_id][] = $child_issue;
                 }
 
                 foreach ($this->getParentIssues() as $parent_issue)
                 {
                     if ($parent_issue->hasAccess($user))
-                        $this->_accessible_parent_issues[$user_id] = $parent_issue;
+                        $this->_accessible_parent_issues[$user_id][] = $parent_issue;
                 }
             }
         }
@@ -2500,7 +2500,7 @@
             return $this->_accessible_child_issues[$user_id];
         }
 
-        /**
+        /**SS
          * Returns the vote sum for this issue
          *
          * @return integer
