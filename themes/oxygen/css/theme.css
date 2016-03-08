@@ -8655,6 +8655,7 @@ dl.info dt {
 
 .whiteboard-issue .epic_badge {
   font-weight: normal;
+  font-size: 1em;
 }
 
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
