@@ -1,6 +1,7 @@
 # The Bug Genie
 
-[![Build Status](https://travis-ci.org/thebuggenie/thebuggenie.png?branch=master)](https://travis-ci.org/thebuggenie/thebuggenie)
+[![Build Status](https://travis-ci.org/thebuggenie/thebuggenie.png?branch=master)](https://travis-ci.org/thebuggenie/thebuggenie) 
+[![Join the chat at https://gitter.im/thebuggenie/general](https://badges.gitter.im/thebuggenie/general.svg)](https://gitter.im/thebuggenie/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Bug Genie is an enterprise-grade issue-tracking, development and project
 management system. Main features includes:
