@@ -17073,7 +17073,7 @@ li.header div.user_avatar {
 .commentbody.article br {
     display: block;
     content: "";
-    margin-top: 5px;
+    margin-top: 7px;
 }
 
 #issue_view #issue_details_container.collapsed img.collapser {
@@ -17499,7 +17499,7 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #issue_main .issue_inline_description,
 #issue_main .commentcontent {
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
 #issue_main .commentcontent .image_container.thumb {
