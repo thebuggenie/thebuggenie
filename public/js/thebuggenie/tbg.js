@@ -100,6 +100,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             debug: false,
             activated_popoutmenu: undefined,
             autocompleter_url: undefined,
+            autocompleter: undefined,
             available_fields: ['shortname', 'description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone', 'owned_by']
         };
 
@@ -109,7 +110,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Core._initializeAutocompleter = function () {
             if ($('searchfor') == null)
                 return;
-            new Ajax.Autocompleter(
+            TBG.autocompleter = new Ajax.Autocompleter(
                 "searchfor",
                 "searchfor_autocomplete_choices",
                 TBG.autocompleter_url,
@@ -129,7 +130,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('quicksearch_submit').removeClassName('button-silver');
                         $('quicksearch_submit').addClassName('button-blue');
                     },
-                    afterUpdateElement: TBG.Core._extractAutocompleteValue
+                    afterUpdateElement: TBG.Core._extractAutocompleteValue,
+                    onHide: function () {},
+                    forceHide: function () {
+                        new Effect.Fade($('searchfor_autocomplete_choices'),{duration:0.15});
+                    }
                 }
             );
         };
@@ -139,7 +144,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
          */
         TBG.Core._extractAutocompleteValue = function (elem, value, event) {
             var elements = value.select('.url');
-            if (elements.size() == 1) {
+            if (elements.size() == 1 && value.select('.link').size() == 0) {
                 window.location = elements[0].innerHTML.unescapeHTML();
                 $('quicksearch_indicator').show();
                 $('quicksearch_submit').disable();

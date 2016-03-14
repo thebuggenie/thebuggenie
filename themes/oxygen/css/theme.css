@@ -17823,6 +17823,7 @@ div[id^='comment_reply_indicator_'] {
 
 #searchfor_autocomplete_choices li {
     font-size: 1em;
+    position: relative;
 }
 
 #searchfor_autocomplete_choices li .informal {
@@ -17858,6 +17859,14 @@ div[id^='comment_reply_indicator_'] {
 #searchfor_autocomplete_choices li > img:first-child {
     width: 16px !important;
     height: 16px !important;
+}
+
+#searchfor_autocomplete_choices li > a.link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 #topmenu-container .tab_menu li .menuitem_container a {
