@@ -4,9 +4,9 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 21 -->
-<!-- Number of Strings: 174 -->
-<!-- Keys extracted from sources on: 2015 Oct 17. -->
+<!-- Number of Sections: 22 -->
+<!-- Number of Strings: 176 -->
+<!-- Keys extracted from sources on: 2016 Mar 06. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -104,26 +104,29 @@
             <trans-unit id="082c399d4770724de425e7faac9cf8d3">
                 <source>The email module is not configured for outgoing emails</source>
             </trans-unit>
-            <trans-unit id="b421445494c6f8bedf13b01747e62586">
-                <source>Notify by email when there are updates to my subscribed issues</source>
+            <trans-unit id="2558d0d93911b330782c4da80b3a589d">
+                <source>Notify when there are updates to my subscribed issues</source>
             </trans-unit>
-            <trans-unit id="ba267e72058e6e5e4492be4f00d690d7">
-                <source>Notify by email when there are updates to my subscribed articles</source>
+            <trans-unit id="2e450225830f3fdd29eee67e212482ed">
+                <source>Notify when there are updates to my subscribed articles</source>
             </trans-unit>
-            <trans-unit id="ab2543f7b83f8eea46fca4a0b1deecd4">
-                <source>Notify by email when new issues are created in my project(s)</source>
+            <trans-unit id="a02d6a6b1c6af693590b9e839d043621">
+                <source>Notify when new issues are created in my project(s)</source>
             </trans-unit>
-            <trans-unit id="234d064698bdc36926e172ce9ad83f10">
-                <source>Notify by email when new articles are created in my project(s)</source>
+            <trans-unit id="b0040936c7fb9d2aeb482f06aa6288a9">
+                <source>New created issues have category</source>
             </trans-unit>
-            <trans-unit id="a35d671269f986876dcd33544380d075">
-                <source>Only send one email per issue or article until I view the issue or article in my browser</source>
+            <trans-unit id="3a8fc200241eab38f80e13daef0f78d7">
+                <source>Notify when new articles are created in my project(s)</source>
             </trans-unit>
-            <trans-unit id="51d4eed4d75c73287727a9b1b7b4f362">
-                <source>Notify by email also when I am the one making the changes</source>
+            <trans-unit id="06ee0ed9915ea31190ddc50d0d1cfcae">
+                <source>Only notify once per issue or article until I view the issue or article in my browser</source>
             </trans-unit>
-            <trans-unit id="f9a423410072ceb57e589b01c83fde0d">
-                <source>Notify by email when I am mentioned in issue or article or their comment</source>
+            <trans-unit id="7859b88887968a01388121b278d642d4">
+                <source>Notify also when I am the one making the changes</source>
+            </trans-unit>
+            <trans-unit id="94e0da2311d5fc74e057f4ba1b23425a">
+                <source>Notify when I am mentioned in issue or article or their comment</source>
             </trans-unit>
         </body>
     </file>
@@ -135,6 +138,14 @@
             </trans-unit>
             <trans-unit id="a9cd599eb02c3fd036a1aa6a21863235">
                 <source>In addition to being notified when logging in, you can choose to also be notified via email for issues or articles you subscribe to. The following settings control when you receive emails.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_accountsettings_thead.inc.php">
+        <body>
+            <trans-unit id="ce8ae9da5b7cd6c3df2929543a9af92d">
+                <source>Email</source>
             </trans-unit>
         </body>
     </file>

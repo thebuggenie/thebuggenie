@@ -8,26 +8,26 @@ source_lang = en_US
 type = XLIFF
 
 [tbg.4-0-agile-xlf]
-file_filter = modules/agile/i18n/<lang>/agile.xlf
+file_filter = modules/agile/i18n/<lang>/strings.xlf
 source_lang = en_US
 type = XLIFF
 
 [tbg.4-0-auth_ldap-xlf]
-file_filter = modules/auth_ldap/i18n/<lang>/auth_ldap.xlf
+file_filter = modules/auth_ldap/i18n/<lang>/strings.xlf
 source_lang = en_US
 type = XLIFF
 
 [tbg.4-0-mailing-xlf]
-file_filter = modules/mailing/i18n/<lang>/mailing.xlf
+file_filter = modules/mailing/i18n/<lang>/strings.xlf
 source_lang = en_US
 type = XLIFF
 
 [tbg.4-0-publish-xlf]
-file_filter = modules/publish/i18n/<lang>/publish.xlf
+file_filter = modules/publish/i18n/<lang>/strings.xlf
 source_lang = en_US
 type = XLIFF
 
 [tbg.4-0-vcs_integration-xlf]
-file_filter = modules/vcs_integration/i18n/<lang>/vcs_integration.xlf
+file_filter = modules/vcs_integration/i18n/<lang>/strings.xlf
 source_lang = en_US
 type = XLIFF
