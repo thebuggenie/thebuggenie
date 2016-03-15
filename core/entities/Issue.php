@@ -6143,6 +6143,10 @@
                                 $value = new Milestone();
                                 $value->setID(0);
                             }
+                            if (!$value->getProject() instanceof Project)
+                            {
+                                $value->setProject($this->getProject());
+                            }
                             break;
                         case 'owner':
                             $value = $this->getOwner();
