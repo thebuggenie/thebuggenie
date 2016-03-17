@@ -124,6 +124,7 @@
         const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS = 'subscribe_new_issues_project';
         const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY = 'subscribe_new_issues_project_category';
         const SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS = 'subscribe_new_articles_project';
+        const SETTINGS_USER_SUBSCRIBE_ASSIGNED_ISSUES = 'subscribe_assigned_issues';
 
         const SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS = 'notify_new_issues_my_projects';
         const SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY = 'notify_new_issues_my_projects_category';
@@ -977,6 +978,7 @@
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('New created issues have category');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_ASSIGNED_ISSUES] = $i18n->__('Automatically subscribe to issues I get assigned to.');
             return $subscriptionssettings;
         }
 

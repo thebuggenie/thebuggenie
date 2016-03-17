@@ -6238,6 +6238,11 @@
             } else {
                 $this->_addChangedProperty('_assignee_user', $assignee->getID());
                 $this->_addChangedProperty('_assignee_team', null);
+
+                if ($assignee instanceof \thebuggenie\core\entities\User && $assignee->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_ASSIGNED_ISSUES, false)->isOn() && !$this->isSubscriber($assignee))
+                {
+                    $this->addSubscriber($assignee->getID());
+                }
             }
         }
 
