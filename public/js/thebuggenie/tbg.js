@@ -1210,17 +1210,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Main.submitIssue = function (url) {
-            if ($('report_issue_submit_button').hasClassName('disabled'))
+            if ($('report_issue_submit_button').hasClassName('disabled') || $('report_issue_submit_button').hasAttribute('disabled'))
                 return;
+
+            $('report_issue_submit_button').addClassName('disabled');
+            $('report_issue_submit_button').writeAttribute('disabled', true);
 
             TBG.Main.Helpers.ajax(url, {
                 form: 'report_issue_form',
                 url_method: 'post',
                 loading: {
-                    indicator: 'report_issue_indicator',
-                    callback: function () {
-                        $('report_issue_submit_button').addClassName('disabled');
-                    }
+                    indicator: 'report_issue_indicator'
                 },
                 success: {
                     update: 'fullpage_backdrop_content',
@@ -1232,6 +1232,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 complete: {
                     callback: function () {
                         $('report_issue_submit_button').removeClassName('disabled');
+                        $('report_issue_submit_button').writeAttribute('disabled', false);
                     }
                 }
             });
