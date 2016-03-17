@@ -3209,6 +3209,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         if (json.issue_details.milestone && json.issue_details.milestone.id && json.milestone_percent_complete != null) {
                             $('milestone_' + json.issue_details.milestone.id + '_percentage_filler').setStyle({width: json.milestone_percent_complete + '%'});
                         }
+                        TBG.Project.Planning.filterTitles($('planning_filter_title_input').getValue());
                     }
                 }
             });
