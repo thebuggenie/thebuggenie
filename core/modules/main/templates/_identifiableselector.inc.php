@@ -7,7 +7,11 @@
         <li class="separator"></li>
     <?php endif; ?>
     <li class="dropdown_content nohover form_container">
-        <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+        <?php if (!$use_form): ?>
+            <div id="<?php echo $base_id; ?>_form">
+        <?php else: ?>
+            <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+        <?php endif; ?>
             <?php if ($include_teams && $include_users): ?>
                 <label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
             <?php elseif ($include_teams): ?>
@@ -28,8 +32,13 @@
             <input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
             <input type="hidden" name="include_clients" value="<?php echo (int) $include_clients; ?>">
             <input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-            <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>"></input>
-        </form>
+        <?php if ($use_form): ?>
+                <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>">
+            </form>
+        <?php else: ?>
+                <input type="button" style="width: 60px;" value="<?php echo __('Find'); ?>" onclick="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+            </div>
+        <?php endif; ?>
     </li>
     <li class="dropdown_content nohover" id="<?php echo $base_id; ?>_results_container" style="display: none;">
         <ul id="<?php echo $base_id; ?>_results"></ul>

@@ -157,6 +157,7 @@
             $this->include_users = (isset($this->include_users)) ? $this->include_users : true;
             $this->callback = (isset($this->callback)) ? $this->callback : null;
             $this->allow_clear = (isset($this->allow_clear)) ? $this->allow_clear : true;
+            $this->use_form = (isset($this->use_form)) ? $this->use_form : true;
         }
 
         public function componentIdentifiableselectorresults()
