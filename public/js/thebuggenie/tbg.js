@@ -1130,8 +1130,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 isimage = true;
             }
             elm += '<label>' + ful.dataset.filenameLabel + '</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>' + ful.dataset.descriptionLabel + '</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <div class="progress_container"><span class="progress"></span></div></li>';
-            ful.insert(elm);
-            var inserted_elm = $('file_upload_list').childElements().last();
+            ful.insert({top: elm});
+            var inserted_elm = $('file_upload_list').childElements().first();
             if (isimage) {
                 var image_elm = inserted_elm.down('img');
                 var reader = new FileReader();

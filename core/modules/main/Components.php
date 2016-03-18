@@ -333,11 +333,11 @@
             {
                 case isset($this->issue):
                     $this->target = $this->issue;
-                    $this->existing_files = $this->issue->getFiles();
+                    $this->existing_files = array_reverse($this->issue->getFiles());
                     break;
                 case isset($this->article):
                     $this->target = $this->article;
-                    $this->existing_files = $this->article->getFiles();
+                    $this->existing_files = array_reverse($this->article->getFiles());
                     break;
                 default:
                     // @todo: dispatch a framework\Event that allows us to retrieve the
@@ -353,12 +353,12 @@
                 case 'issue':
                     $this->form_action = make_url('issue_upload', array('issue_id' => $this->issue->getID()));
                     $this->poller_url = make_url('issue_upload_status', array('issue_id' => $this->issue->getID()));
-                    $this->existing_files = $this->issue->getFiles();
+                    $this->existing_files = array_reverse($this->issue->getFiles());
                     break;
                 case 'article':
                     $this->form_action = make_url('article_upload', array('article_name' => $this->article->getName()));
                     $this->poller_url = make_url('article_upload_status', array('article_name' => $this->article->getName()));
-                    $this->existing_files = $this->article->getFiles();
+                    $this->existing_files = array_reverse($this->article->getFiles());
                     break;
                 default:
                     // @todo: dispatch a framework\Event that allows us to retrieve the

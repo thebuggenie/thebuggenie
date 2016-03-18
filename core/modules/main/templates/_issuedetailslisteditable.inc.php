@@ -647,12 +647,12 @@
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if (!$file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if ($file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
