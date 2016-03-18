@@ -753,6 +753,13 @@ header nav > ul {
     z-index: 10;
 }
 
+#quicksearch_clear {
+    position: absolute;
+    right: 56px;
+    top: 5px;
+    z-index: 10;
+}
+
 div.autocomplete ul li.quicksearch_user_item img {
     float: none;
 }
