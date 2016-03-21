@@ -1000,12 +1000,6 @@
             $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
             if ($specific_access !== null)
             {
-                if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category && !$this->getCategory()->hasAccess($user))
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
-                    return false;
-                }
-
                 \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
                 return $specific_access;
             }
