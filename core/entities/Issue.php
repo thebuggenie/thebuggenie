@@ -499,11 +499,25 @@
         protected $_parent_issues;
 
         /**
+         * List of issues this issue depends on, accessible by user
+         *
+         * @var array
+         */
+        protected $_accessible_parent_issues;
+
+        /**
          * List of issues that depends on this issue
          *
          * @var array
          */
         protected $_child_issues;
+
+        /**
+         * List of issues that depends on this issue, accessible by user
+         *
+         * @var array
+         */
+        protected $_accessible_child_issues;
 
         /**
          * List of issues which are duplicates of this one
@@ -986,12 +1000,6 @@
             $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
             if ($specific_access !== null)
             {
-                if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category && !$this->getCategory()->hasAccess($user))
-                {
-                    \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
-                    return false;
-                }
-
                 \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
                 return $specific_access;
             }
@@ -2353,6 +2361,41 @@
         }
 
         /**
+         * populates accessible related issues for current or target user
+         *
+         * @param null $target_user
+         */
+        protected function _populateAccessibleRelatedIssues($target_user = null)
+        {
+            if ($this->_accessible_parent_issues === null || $this->_accessible_child_issues === null)
+            {
+                $this->_accessible_parent_issues = array();
+                $this->_accessible_child_issues = array();
+            }
+
+            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
+            $user_id = $user->getID();
+
+            if (!isset($this->_accessible_parent_issues[$user_id]) || !isset($this->_accessible_child_issues[$user_id]))
+            {
+                $this->_accessible_parent_issues[$user_id] = array();
+                $this->_accessible_child_issues[$user_id] = array();
+
+                foreach ($this->getChildIssues() as $child_issue)
+                {
+                    if ($child_issue->hasAccess($user))
+                        $this->_accessible_child_issues[$user_id][] = $child_issue;
+                }
+
+                foreach ($this->getParentIssues() as $parent_issue)
+                {
+                    if ($parent_issue->hasAccess($user))
+                        $this->_accessible_parent_issues[$user_id][] = $parent_issue;
+                }
+            }
+        }
+
+        /**
          * populates list of issues which are duplicates of this one
          */
         protected function _populateDuplicateIssues()
@@ -2376,6 +2419,19 @@
         {
             $this->_populateRelatedIssues();
             return $this->_parent_issues;
+        }
+
+        /**
+         * Return issues relating to this, accessible by current or target user
+         *
+         * @param null $target_user
+         * @return array
+         */
+        public function getAccessibleParentIssues($target_user = null)
+        {
+            $this->_populateAccessibleRelatedIssues($target_user);
+            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
+            return $this->_accessible_parent_issues[$user_id];
         }
 
         public function isChildIssue()
@@ -2426,6 +2482,19 @@
         }
 
         /**
+         * Return related issues, accessible by current or target user
+         *
+         * @param null $target_user
+         * @return array
+         */
+        public function getAccessibleChildIssues($target_user = null)
+        {
+            $this->_populateAccessibleRelatedIssues($target_user);
+            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
+            return $this->_accessible_child_issues[$user_id];
+        }
+
+        /**SS
          * Returns the vote sum for this issue
          *
          * @return integer
@@ -6068,6 +6137,10 @@
                                 $value = new Milestone();
                                 $value->setID(0);
                             }
+                            if (!$value->getProject() instanceof Project)
+                            {
+                                $value->setProject($this->getProject());
+                            }
                             break;
                         case 'owner':
                             $value = $this->getOwner();
@@ -6159,6 +6232,11 @@
             } else {
                 $this->_addChangedProperty('_assignee_user', $assignee->getID());
                 $this->_addChangedProperty('_assignee_team', null);
+
+                if ($assignee instanceof \thebuggenie\core\entities\User && $assignee->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_ASSIGNED_ISSUES, false)->isOn() && !$this->isSubscriber($assignee))
+                {
+                    $this->addSubscriber($assignee->getID());
+                }
             }
         }
 

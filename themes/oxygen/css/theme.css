@@ -753,6 +753,13 @@ header nav > ul {
     z-index: 10;
 }
 
+#quicksearch_clear {
+    position: absolute;
+    right: 56px;
+    top: 5px;
+    z-index: 10;
+}
+
 div.autocomplete ul li.quicksearch_user_item img {
     float: none;
 }
@@ -1471,7 +1478,7 @@ footer img {
 }
 
 .commentbody {
-    padding: 1px 5px 5px 40px;
+    padding: 5px 5px 5px 40px;
     font-size: 1em;
     overflow: hidden;
 }
@@ -8651,6 +8658,11 @@ dl.info dt {
     margin: 1px 1px 0 1px;
     line-height: 1em;
     text-shadow: none;
+}
+
+.whiteboard-issue .epic_badge {
+  font-weight: normal;
+  font-size: 1em;
 }
 
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
@@ -17068,7 +17080,7 @@ li.header div.user_avatar {
 .commentbody.article br {
     display: block;
     content: "";
-    margin-top: 5px;
+    margin-top: 7px;
 }
 
 #issue_view #issue_details_container.collapsed img.collapser {
@@ -17482,6 +17494,10 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
     margin-top: 25px;
 }
 
+#issue_main #viewissue_comments_container .viewissue_comments_header {
+    padding-top: 45px;
+}
+
 #issue_main #comment_bodybox_syntax_picker,
 ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
 ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
@@ -17490,7 +17506,7 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #issue_main .issue_inline_description,
 #issue_main .commentcontent {
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
 #issue_main .commentcontent .image_container.thumb {
@@ -17814,6 +17830,7 @@ div[id^='comment_reply_indicator_'] {
 
 #searchfor_autocomplete_choices li {
     font-size: 1em;
+    position: relative;
 }
 
 #searchfor_autocomplete_choices li .informal {
@@ -17849,6 +17866,14 @@ div[id^='comment_reply_indicator_'] {
 #searchfor_autocomplete_choices li > img:first-child {
     width: 16px !important;
     height: 16px !important;
+}
+
+#searchfor_autocomplete_choices li > a.link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 #topmenu-container .tab_menu li .menuitem_container a {

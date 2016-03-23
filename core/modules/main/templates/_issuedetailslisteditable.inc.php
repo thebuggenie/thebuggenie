@@ -647,12 +647,12 @@
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if (!$file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if ($file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
@@ -663,7 +663,7 @@
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_after_attachments', $issue)->trigger(); ?>
 <fieldset id="viewissue_related_information_container">
     <legend>
-        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getChildIssues()).'</span>')); ?>
+        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getAccessibleChildIssues()).'</span>')); ?>
     </legend>
     <div id="viewissue_related_information">
         <?php include_component('main/relatedissues', array('issue' => $issue)); ?>

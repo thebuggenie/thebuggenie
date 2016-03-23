@@ -100,6 +100,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             debug: false,
             activated_popoutmenu: undefined,
             autocompleter_url: undefined,
+            autocompleter: undefined,
             available_fields: ['shortname', 'description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone', 'owned_by']
         };
 
@@ -109,7 +110,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Core._initializeAutocompleter = function () {
             if ($('searchfor') == null)
                 return;
-            new Ajax.Autocompleter(
+            TBG.autocompleter = new Ajax.Autocompleter(
                 "searchfor",
                 "searchfor_autocomplete_choices",
                 TBG.autocompleter_url,
@@ -128,10 +129,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('quicksearch_submit').enable();
                         $('quicksearch_submit').removeClassName('button-silver');
                         $('quicksearch_submit').addClassName('button-blue');
+                        $('quicksearch_clear').show();
                     },
-                    afterUpdateElement: TBG.Core._extractAutocompleteValue
+                    afterUpdateElement: TBG.Core._extractAutocompleteValue,
+                    onHide: function () {},
+                    forceHide: function () {
+                        new Effect.Fade($('searchfor_autocomplete_choices'),{duration:0.15});
+                        new Effect.Fade($('quicksearch_clear'),{duration:0.15});
+                    }
                 }
             );
+            jQuery('#quicksearch_clear').on('click', function () {
+                TBG.autocompleter.options.forceHide();
+                $('searchfor').setValue('');
+                $('searchfor').focus();
+            });
         };
 
         /**
@@ -139,7 +151,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
          */
         TBG.Core._extractAutocompleteValue = function (elem, value, event) {
             var elements = value.select('.url');
-            if (elements.size() == 1) {
+            if (elements.size() == 1 && value.select('.link').size() == 0) {
                 window.location = elements[0].innerHTML.unescapeHTML();
                 $('quicksearch_indicator').show();
                 $('quicksearch_submit').disable();
@@ -147,6 +159,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('quicksearch_submit').addClassName('button-silver');
                 $('searchfor').blur();
                 $('searchfor').setValue('');
+                $('quicksearch_clear').hide();
             } else {
                 var cb_elements = value.select('.backdrop');
                 if (cb_elements.size() == 1) {
@@ -155,6 +168,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     TBG.Main.Helpers.Backdrop.show(backdrop_url);
                     $('searchfor').blur();
                     $('searchfor').setValue('');
+                    $('quicksearch_clear').hide();
                     event.stopPropagation();
                     event.preventDefault();
                 }
@@ -1125,8 +1139,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 isimage = true;
             }
             elm += '<label>' + ful.dataset.filenameLabel + '</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>' + ful.dataset.descriptionLabel + '</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <div class="progress_container"><span class="progress"></span></div></li>';
-            ful.insert(elm);
-            var inserted_elm = $('file_upload_list').childElements().last();
+            ful.insert({top: elm});
+            var inserted_elm = $('file_upload_list').childElements().first();
             if (isimage) {
                 var image_elm = inserted_elm.down('img');
                 var reader = new FileReader();
@@ -1205,17 +1219,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Main.submitIssue = function (url) {
-            if ($('report_issue_submit_button').hasClassName('disabled'))
+            if ($('report_issue_submit_button').hasClassName('disabled') || $('report_issue_submit_button').hasAttribute('disabled'))
                 return;
+
+            $('report_issue_submit_button').addClassName('disabled');
+            $('report_issue_submit_button').writeAttribute('disabled', true);
 
             TBG.Main.Helpers.ajax(url, {
                 form: 'report_issue_form',
                 url_method: 'post',
                 loading: {
-                    indicator: 'report_issue_indicator',
-                    callback: function () {
-                        $('report_issue_submit_button').addClassName('disabled');
-                    }
+                    indicator: 'report_issue_indicator'
                 },
                 success: {
                     update: 'fullpage_backdrop_content',
@@ -1227,6 +1241,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 complete: {
                     callback: function () {
                         $('report_issue_submit_button').removeClassName('disabled');
+                        $('report_issue_submit_button').writeAttribute('disabled', false);
                     }
                 }
             });
@@ -3203,6 +3218,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         if (json.issue_details.milestone && json.issue_details.milestone.id && json.milestone_percent_complete != null) {
                             $('milestone_' + json.issue_details.milestone.id + '_percentage_filler').setStyle({width: json.milestone_percent_complete + '%'});
                         }
+                        TBG.Project.Planning.filterTitles($('planning_filter_title_input').getValue());
                     }
                 }
             });

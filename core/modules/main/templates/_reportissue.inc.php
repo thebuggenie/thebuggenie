@@ -728,7 +728,8 @@
                                                                                       'base_id'            => "popup_find_acl_",
                                                                                       'include_teams'        => true,
                                                                                       'allow_clear'        => false,
-                                                                                      'absolute'            => true)); ?>
+                                                                                      'absolute'            => true,
+                                                                                      'use_form'            => false)); ?>
                         </div>
                         <div id="acl__public" style="display: none;">
                             <ul class="issue_access_list simple_list" id="issue__public_category_access_list" style="display: none;">
