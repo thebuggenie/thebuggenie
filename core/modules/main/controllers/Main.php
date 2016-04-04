@@ -4617,7 +4617,7 @@ class Main extends framework\Action
     {
         framework\Context::loadLibrary('ui');
 
-        if (!function_exists('imagecreatetruecolor'))
+        if (!function_exists('imagecreatetruecolor') || !array_key_exists('activation_number', $_SESSION))
         {
             return $this->return404();
         }
