@@ -75,7 +75,7 @@
                     button: '<?php echo __('Epics?'); ?>'
                 },
                 11: {
-                    message: "<h3><?php echo __('Epics'); ?></h3><?php echo __("Yes, epics. Epics (specified in the board configuration) are issues of a certain types, they contain sub-issues and / or tasks, and can span multiple milestones / sprints.").'<br><br>'.__('Epics, like releases, are displayed as a card list, they can filter issues by clicking on them, and you can assign an issue to an epic by dropping the issue on the epic.'); ?>",
+                    message: "<h3><?php echo __('Epics'); ?></h3><?php echo __("Yes, epics. Epics (specified in the board configuration) are issues of a certain type, they contain sub-issues and / or tasks, and can span multiple milestones / sprints.").'<br><br>'.__('Epics, like releases, are displayed as a card list, they can filter issues by clicking on them, and you can assign an issue to an epic by dropping the issue on the epic.'); ?>",
                     messageSize: 'large',
                     messagePosition: 'center',
                     button: '<?php echo __("Also useful"); ?>'
