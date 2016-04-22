@@ -53,6 +53,7 @@
             $filter_state = $request->getParameter('state', 'open');
             $filter_issuetype = $request->getParameter('issuetype', 'all');
             $filter_assigned_to = $request->getParameter('assigned_to', 'all');
+            $filter_relation = $request->getParameter('relation');
 
             if (mb_strtolower($filter_state) != 'all')
             {
@@ -98,6 +99,11 @@
                 }
 
                 $filters['assignee_user'] = array('o' => '=', 'v' => $user_id);
+            }
+
+            if (is_numeric($filter_relation) && in_array((string) $filter_relation, array('2', '1', '0')))
+            {
+                $filters['relation'] = array('o' => '=', 'v' => $filter_relation);
             }
 
             $filters = array_map(function ($key, $options)
