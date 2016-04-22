@@ -49,7 +49,7 @@
 
         public function runListIssues(framework\Request $request)
         {
-            $filters = array('project_id' => \thebuggenie\core\entities\SearchFilter::createFilter('project_id', array('v' => $this->selected_project->getID(), 'o' => '=')));
+            $filters = array('project_id' => array('v' => $this->selected_project->getID(), 'o' => '='));
             $filter_state = $request->getParameter('state', 'open');
             $filter_issuetype = $request->getParameter('issuetype', 'all');
             $filter_assigned_to = $request->getParameter('assigned_to', 'all');
@@ -99,6 +99,11 @@
 
                 $filters['assignee_user'] = array('o' => '=', 'v' => $user_id);
             }
+
+            $filters = array_map(function ($key, $options)
+            {
+                return \thebuggenie\core\entities\SearchFilter::createFilter($key, $options);
+            }, array_keys($filters), $filters);
 
             list ($this->issues, $this->count) = entities\Issue::findIssues($filters, 50);
             $this->return_issues = array();
