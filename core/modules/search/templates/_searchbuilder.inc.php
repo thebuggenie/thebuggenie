@@ -57,6 +57,7 @@
                             <li data-filter="resolution" id="additional_filter_resolution_link"><?php echo __('Resolution'); ?></li>
                             <li data-filter="reproducability" id="additional_filter_reproducability_link"><?php echo __('Reproducability'); ?></li>
                             <li data-filter="blocking" id="additional_filter_blocking_link"><?php echo __('Blocker status'); ?></li>
+                            <li data-filter="relation" id="additional_filter_relation_link"><?php echo __('Relation'); ?></li>
                         </ul>
                     </div>
                     <?php if (count($nondatecustomfields)): ?>
@@ -205,7 +206,7 @@
         <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
             <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter('subprojects'))); ?>
         <?php endif; ?>
-        <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking') as $key): ?>
+        <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking', 'relation') as $key): ?>
             <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key))); ?>
         <?php endforeach; ?>
         <?php foreach (array('posted', 'last_updated') as $key): ?>

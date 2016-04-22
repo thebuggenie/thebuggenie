@@ -155,6 +155,39 @@
             case 'last_updated':
                 include_component('search/interactivefilter_date', compact('filter'));
                 break;
+            case 'relation':
+                ?>
+                <div class="filter interactive_dropdown" id="interactive_filter_relation" data-filterkey="relation" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Any'); ?>">
+                    <input type="hidden" name="fs[relation][o]" value="<?php echo $filter->getOperator(); ?>">
+                    <input type="hidden" name="fs[relation][v]" value="" id="filter_relation_value_input">
+                    <label><?php echo __('Relation'); ?></label>
+                    <span class="value"><?php if (!$filter->hasValue()) echo __('Any'); ?></span>
+                    <div class="interactive_menu">
+                        <h1><?php echo __('Filter on relation'); ?></h1>
+                        <div class="interactive_values_container">
+                            <ul class="interactive_menu_values">
+                                <li data-value="2" class="filtervalue <?php if ($filter->hasValue('2')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                    <input type="checkbox" value="2" name="filters_relation_value" data-text="<?php echo __('Neither child nor parent issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('2')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Neither child nor parent issues'); ?></label>
+                                </li>
+                                <li data-value="1" class="filtervalue <?php if ($filter->hasValue('1')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                    <input type="checkbox" value="1" name="filters_relation_value" data-text="<?php echo __('Only child issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('1')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Only child issues'); ?></label>
+                                </li>
+                                <li data-value="0" class="filtervalue <?php if ($filter->hasValue('0')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                    <input type="checkbox" value="0" name="filters_relation_value" data-text="<?php echo __('Only parent issues'); ?>" id="filters_relation_value_none" <?php if ($filter->hasValue('0')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_no"><?php echo __('Only parent issues'); ?></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo image_tag('icon-mono-remove.png'); ?></div>
+                </div>
+                <?php
+                break;
             default:
                 if (!in_array($filter->getFilterKey(), \thebuggenie\core\entities\SearchFilter::getValidSearchFilters()))
                 {
