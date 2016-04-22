@@ -101,7 +101,7 @@
                 $filters['assignee_user'] = array('o' => '=', 'v' => $user_id);
             }
 
-            if (is_numeric($filter_relation) && in_array((string) $filter_relation, array('2', '1', '0')))
+            if (is_numeric($filter_relation) && in_array((string) $filter_relation, array('4', '3', '2', '1', '0')))
             {
                 $filters['relation'] = array('o' => '=', 'v' => $filter_relation);
             }

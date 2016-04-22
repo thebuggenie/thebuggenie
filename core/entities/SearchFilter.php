@@ -711,17 +711,30 @@
                                 $fk  = tables\IssueAffectsBuild::ISSUE;
                                 break;
                             case 'relation':
-                                if ($this->hasValue(2)) {
+                                if ($this->hasValue(4))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                }
+                                else if ($this->hasValue(3))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
+                                    return $crit->returnCriterion(tables\IssueRelations::CHILD_ID, '', Criteria::DB_IS_NULL);
+                                }
+                                else if ($this->hasValue(2))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                }
+                                else if ($this->hasValue(1))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                    return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
+                                }
+                                else if ($this->hasValue(0))
+                                {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
                                     $crit->addWhere(tables\IssueRelations::CHILD_ID, '', Criteria::DB_IS_NULL);
                                     return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
-                                }
-                                else if ($this->hasValue(1)) {
-                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
-                                }
-                                else if ($this->hasValue(0)) {
-                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
                                 }
                                 return null;
                                 break;

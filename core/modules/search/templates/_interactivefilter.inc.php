@@ -166,20 +166,30 @@
                         <h1><?php echo __('Filter on relation'); ?></h1>
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values">
+                                <li data-value="4" class="filtervalue <?php if ($filter->hasValue('4')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                    <input type="checkbox" value="4" name="filters_relation_value" data-text="<?php echo __('Only child issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('4')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Only child issues'); ?></label>
+                                </li>
+                                <li data-value="3" class="filtervalue <?php if ($filter->hasValue('3')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                    <input type="checkbox" value="3" name="filters_relation_value" data-text="<?php echo __('Without child issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('3')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Without child issues'); ?></label>
+                                </li>
                                 <li data-value="2" class="filtervalue <?php if ($filter->hasValue('2')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
                                     <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                    <input type="checkbox" value="2" name="filters_relation_value" data-text="<?php echo __('Neither child nor parent issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('2')) echo 'checked'; ?>>
-                                    <label for="filters_relation_value_yes"><?php echo __('Neither child nor parent issues'); ?></label>
+                                    <input type="checkbox" value="2" name="filters_relation_value" data-text="<?php echo __('Only parent issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('2')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Only parent issues'); ?></label>
                                 </li>
                                 <li data-value="1" class="filtervalue <?php if ($filter->hasValue('1')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
                                     <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                    <input type="checkbox" value="1" name="filters_relation_value" data-text="<?php echo __('Only child issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('1')) echo 'checked'; ?>>
-                                    <label for="filters_relation_value_yes"><?php echo __('Only child issues'); ?></label>
+                                    <input type="checkbox" value="1" name="filters_relation_value" data-text="<?php echo __('Without parent issues'); ?>" id="filters_relation_value_none" <?php if ($filter->hasValue('1')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_no"><?php echo __('Without parent issues'); ?></label>
                                 </li>
                                 <li data-value="0" class="filtervalue <?php if ($filter->hasValue('0')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
                                     <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                    <input type="checkbox" value="0" name="filters_relation_value" data-text="<?php echo __('Only parent issues'); ?>" id="filters_relation_value_none" <?php if ($filter->hasValue('0')) echo 'checked'; ?>>
-                                    <label for="filters_relation_value_no"><?php echo __('Only parent issues'); ?></label>
+                                    <input type="checkbox" value="0" name="filters_relation_value" data-text="<?php echo __('Neither child nor parent issues'); ?>" id="filters_relation_value_yes" <?php if ($filter->hasValue('0')) echo 'checked'; ?>>
+                                    <label for="filters_relation_value_yes"><?php echo __('Neither child nor parent issues'); ?></label>
                                 </li>
                             </ul>
                         </div>
