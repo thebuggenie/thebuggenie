@@ -1032,7 +1032,7 @@
             $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
             $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
             $line_regexes['newline'] = '^$';
-            $line_regexes['list'] = '^([\*\#]+)(.*?)$';
+            $line_regexes['list'] = '^([\*\#]+ )(.*?)$';
             $line_regexes['tableopener'] = '^\{\|(.*?)$';
             $line_regexes['tablecloser'] = '^\|\}$';
             $line_regexes['tablerow'] = '^\|-(.*?)$';
