@@ -204,6 +204,7 @@
                     switch ($filter->getFilterType())
                     {
                         case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                        case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                             include_component('search/interactivefilter_date', compact('filter'));
                             break;
                         case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:

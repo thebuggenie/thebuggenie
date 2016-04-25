@@ -311,6 +311,26 @@
             case 24:
                 $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(18), $tstamp);
                 break;
+            case 25:
+                $tstring = '';
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
+                {
+                    $tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                elseif ($days == -1)
+                {
+                    $tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                elseif ($days == 1)
+                {
+                    $tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                else
+                {
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(10), $tstamp);
+                }
+                break;
             default:
                 return $tstamp;
         }

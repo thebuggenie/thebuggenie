@@ -213,7 +213,7 @@
             <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
         <?php foreach ($nondatecustomfields as $customtype): ?>
-            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) continue; ?>
+            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) continue; ?>
             <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey()))); ?>
         <?php endforeach; ?>
         <?php foreach ($datecustomfields as $customtype): ?>

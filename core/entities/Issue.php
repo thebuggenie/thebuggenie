@@ -2917,6 +2917,19 @@
             return $retarr;
         }
 
+        public function getCustomFieldsOfTypes($types)
+        {
+            $retarr = array();
+            foreach (CustomDatatype::getAll() as $key => $customdatatype)
+            {
+                if (!in_array($customdatatype->getType(), $types)) continue;
+
+                $var_name = '_customfield'.$key;
+                $retarr[$key] = $this->$var_name;
+            }
+            return $retarr;
+        }
+
         /**
          * Set the value of a custom field
          *
@@ -5027,6 +5040,7 @@
                     case CustomDatatype::INPUT_TEXTAREA_SMALL:
                     case CustomDatatype::INPUT_TEXTAREA_MAIN:
                     case CustomDatatype::DATE_PICKER:
+                    case CustomDatatype::DATETIME_PICKER:
                         $option_id = $this->getCustomField($key);
                         tables\IssueCustomFields::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
                         break;

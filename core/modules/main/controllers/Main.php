@@ -2284,6 +2284,7 @@ class Main extends framework\Action
 
                                 return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
                             case entities\CustomDatatype::DATE_PICKER:
+                            case entities\CustomDatatype::DATETIME_PICKER:
                                 if ($customdatatypeoption_value == '')
                                 {
                                     $issue->setCustomField($key, "");
@@ -2296,7 +2297,7 @@ class Main extends framework\Action
                                 if (!$issue->$changed_methodname())
                                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
 
-                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d', (int) $request->getRawParameter("{$key}_value")))));
+                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d' . ($customdatatype->getType() == entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $request->getRawParameter("{$key}_value")))));
                             default:
                                 if ($customdatatypeoption_value == '')
                                 {

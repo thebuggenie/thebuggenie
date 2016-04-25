@@ -27,7 +27,7 @@
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
-    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)); ?>
+    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfTypes(array(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER, \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER))); ?>
     <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))): ?>
         <div class="issue_info<?php if (isset($swimlane) && $swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue_custom_fields_of_type), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); }))) echo ' issue_info_top'; ?>">
             <?php foreach ($issue->getBuilds() as $details): ?>
