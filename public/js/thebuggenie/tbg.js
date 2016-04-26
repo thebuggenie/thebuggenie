@@ -6076,6 +6076,37 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, transition_id, true);
         }
 
+        TBG.Issues.removeTodo = function (url, todo) {
+            TBG.Main.Helpers.ajax(url, {
+                params: {
+                    todo: todo
+                },
+                loading: {
+                    indicator: 'dialog_indicator'
+                },
+                success: {
+                    update: 'viewissue_todos',
+                    callback: function () {
+                        TBG.Main.Helpers.Dialog.dismiss();
+                        if (jQuery('.todo', $('todos_box')).length == 0) $('todos_none').show();
+                        $('viewissue_todo_count').update(jQuery('.todo', $('todos_box')).length);
+                    }
+                }
+            });
+        };
+
+        TBG.Issues.markTodo = function (url, todo, todo_key) {
+            TBG.Main.Helpers.ajax(url, {
+                params: {
+                    todo: todo
+                },
+                loading: {
+                    indicator: 'todo_' + todo_key + '_mark_indicator'
+                },
+                success: {update: 'viewissue_todos'}
+            });
+        };
+
         TBG.Search.deleteSavedSearch = function (url, id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {indicator: 'delete_search_' + id + '_indicator'},

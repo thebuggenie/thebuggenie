@@ -314,6 +314,15 @@
                         </fieldset>
                         <?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
+                        <fieldset class="todos"
+                            id="viewissue_todos_container">
+                            <legend class="viewissue_comments_header">
+                                <?php echo __('Todos (%count)', array('%count' => '<span id="viewissue_todo_count"></span>')); ?>
+                            </legend>
+                            <div id="viewissue_todos">
+                                <?php include_component('main/todos', compact('issue')); ?>
+                            </div>
+                        </fieldset>
                         <fieldset class="comments" id="viewissue_comments_container">
                             <legend class="viewissue_comments_header">
                                 <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?>

@@ -818,4 +818,14 @@
             $this->touchTargetIfItsIssue();
         }
 
+        public function getTodos()
+        {
+            return $this->_getParser()->getTodos();
+        }
+
+        public function getDoneTodos()
+        {
+            return $this->_getParser()->getDoneTodos();
+        }
+
     }

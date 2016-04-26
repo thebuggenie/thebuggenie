@@ -670,3 +670,17 @@ asset_js_unthemed:
     module: main
     action: Asset::resolve
     anonymous_route: true
+
+todo_delete:
+    route: /:project_key/issues/:issue_id/delete-todo
+    module: main
+    action: deleteTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_mark:
+    route: /:project_key/issues/:issue_id/mark-todo/:mark
+    module: main
+    action: toggleDoneTodo
+    parameters: [ ]
+    csrf_enabled: false

@@ -602,6 +602,20 @@
         protected $_new_subscribers = array();
 
         /**
+         * List of not done todos for this issue
+         *
+         * @var array
+         */
+        protected $_todos;
+
+        /**
+         * List of done todos for this issue
+         *
+         * @var array
+         */
+        protected $_done_todos;
+
+        /**
          * All custom data type properties
          *
          * @property $_customfield*
@@ -6454,6 +6468,158 @@
             $last_time_unit = array_pop($time_logger_units);
 
             return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
+        }
+
+        /**
+         * Get number of todos.
+         *
+         * @return integer
+         */
+        public function countTodos()
+        {
+            return count($this->getTodos()['issue']) + count($this->getTodos()['comments']);
+        }
+
+        /**
+         * Get todos from issue description, reproduction steps and comments.
+         *
+         * @return array
+         */
+        public function getTodos($method = 'getTodos', $property = '_todos')
+        {
+            if (is_null($this->$property))
+            {
+                $todos = array('issue' => array_merge(
+                    $this->_getDescriptionParser()->$method(),
+                    $this->_getReproductionStepsParser()->$method()
+                ));
+                $todos['comments'] = array();
+
+                foreach ($this->getComments() as $comment)
+                {
+                    $comment_todos = $comment->$method();
+
+                    if (! count($comment_todos)) continue;
+
+                    $todos['comments'][$comment->getID()] = array_merge(
+                        isset($todos['comments'][$comment->getID()])
+                            ? $todos['comments'][$comment->getID()]
+                            : array(),
+                        $comment_todos
+                    );
+                }
+
+                $this->$property = $todos;
+            }
+
+            return $this->$property;
+        }
+
+        /**
+         * Get done todos.
+         *
+         * @return array
+         */
+        public function getDoneTodos()
+        {
+            return $this->getTodos('getDoneTodos', '_done_todos');
+        }
+
+        /**
+         * Delete todos item. This is done by removing it from text in sources.
+         *
+         * @param $delete_todo
+         */
+        public function deleteTodo($delete_todo)
+        {
+            foreach (array_merge($this->getTodos()['issue'], $this->getDoneTodos()['issue']) as $todo)
+            {
+                if ($todo !== $delete_todo) continue;
+
+                $this->setDescription(str_replace(
+                    '[] ' . $delete_todo,
+                    '',
+                    $this->getDescription()
+                ));
+                $this->setReproductionSteps(str_replace(
+                    '[] ' . $delete_todo,
+                    '',
+                    $this->getReproductionSteps()
+                ));
+            }
+            foreach (array_merge($this->getTodos()['comments'], $this->getDoneTodos()['comments']) as $comment_id => $comment_todos)
+            {
+                foreach ($comment_todos as $todo)
+                {
+                    if ($todo !== $delete_todo) continue;
+
+                    $comment = $this->getComments()[$comment_id];
+                    $comment->setContent(str_replace(
+                        '[] ' . $delete_todo,
+                        '',
+                        $comment->getContent()
+                    ));
+                    $comment->save();
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Mark todos item as either "done" or "not done". This is done by changing mediawiki syntax in text in sources.
+         *
+         * @param $mark_todo
+         * @param $as
+         */
+        public function markTodo($mark_todo, $as)
+        {
+            list ($syntax1, $syntax2, $method) = $as === 'done'
+                ? array('[] ', '[x] ', 'getTodos')
+                : array('[x] ', '[] ', 'getDoneTodos');
+
+            foreach ($this->$method()['issue'] as $todo)
+            {
+                if ($todo !== $mark_todo) continue;
+
+                $this->setDescription(str_replace(
+                    $syntax1 . $mark_todo,
+                    $syntax2 . $mark_todo,
+                    $this->getDescription()
+                ));
+                $this->setReproductionSteps(str_replace(
+                    $syntax1 . $mark_todo,
+                    $syntax2 . $mark_todo,
+                    $this->getReproductionSteps()
+                ));
+            }
+            foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
+            {
+                foreach ($comment_todos as $todo)
+                {
+                    if ($todo !== $mark_todo) continue;
+
+                    $comment = $this->getComments()[$comment_id];
+                    $comment->setContent(str_replace(
+                        $syntax1 . $mark_todo,
+                        $syntax2 . $mark_todo,
+                        $comment->getContent()
+                    ));
+                    $comment->save();
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Reset "cached" todos.
+         */
+        protected function resetTodos()
+        {
+            $this->_todos = null;
+            $this->_done_todos = null;
+            $this->_description_parser = null;
+            $this->_reproduction_steps_parser = null;
+            $this->_comments = null;
         }
 
     }

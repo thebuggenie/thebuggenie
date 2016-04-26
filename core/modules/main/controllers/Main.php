@@ -4809,4 +4809,81 @@ class Main extends framework\Action
             framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
     }
+
+    /**
+     * Delete an issue todo
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runDeleteTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        $issue->deleteTodo($request['todo']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Toggle done for issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runToggleDoneTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+        
+        if (! isset($request['mark']) || ! in_array($request['mark'], array('done', 'not_done')))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "mark" parameter')));
+        }
+
+        $issue->markTodo($request['todo'], $request['mark']);
+        
+        $a = $issue->getTodos();
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
 }
