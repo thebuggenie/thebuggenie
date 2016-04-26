@@ -18489,3 +18489,7 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 #config_modules .address-settings p {
     padding: 0 0 15px 0;
 }
+
+.relate_issue_with_selected {
+    margin-top: -3px;
+}
