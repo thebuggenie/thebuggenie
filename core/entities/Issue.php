@@ -616,6 +616,13 @@
         protected $_done_todos;
 
         /**
+         * Should log entry be added
+         * 
+         * @var bool
+         */
+        protected $should_log_entry = true;
+
+        /**
          * All custom data type properties
          *
          * @property $_customfield*
@@ -4501,6 +4508,7 @@
          */
         public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
         {
+            if (!$this->should_log_entry) return;
             $uid = ($system) ? 0 : framework\Context::getUser()->getID();
             $log_item = new LogItem();
             $log_item->setChangeType($change_type);
@@ -6473,26 +6481,40 @@
         /**
          * Get number of todos.
          *
+         * @param string $method
+         *
          * @return integer
          */
-        public function countTodos()
+        public function countTodos($method = 'getTodos')
         {
-            return count($this->getTodos()['issue']) + count($this->getTodos()['comments']);
+            return count($this->$method()['issue']) + array_sum(array_map('count', $this->$method()['comments']));
         }
 
         /**
-         * Get todos from issue description, reproduction steps and comments.
+         * Get number of done todos.
+         *
+         * @return integer
+         */
+        public function countDoneTodos()
+        {
+            return $this->countTodos('getDoneTodos');
+        }
+
+        /**
+         * Get todos from issue description and comments.
+         *
+         * @param null $comment_id
+         * @param string $method
+         * @param string $property
+         * @return mixed
          *
          * @return array
          */
-        public function getTodos($method = 'getTodos', $property = '_todos')
+        public function getTodos($comment_id = null, $method = 'getTodos', $property = '_todos')
         {
             if (is_null($this->$property))
             {
-                $todos = array('issue' => array_merge(
-                    $this->_getDescriptionParser()->$method(),
-                    $this->_getReproductionStepsParser()->$method()
-                ));
+                $todos = array('issue' => $this->_getDescriptionParser()->$method());
                 $todos['comments'] = array();
 
                 foreach ($this->getComments() as $comment)
@@ -6512,6 +6534,18 @@
                 $this->$property = $todos;
             }
 
+            if (! is_null($comment_id))
+            {
+                if ($comment_id == 0)
+                {
+                    return $this->$property['issue'];
+                }
+
+                return isset($this->$property['comments'][$comment_id])
+                    ? $this->$property['comments'][$comment_id]
+                    : array();
+            }
+
             return $this->$property;
         }
 
@@ -6522,13 +6556,15 @@
          */
         public function getDoneTodos()
         {
-            return $this->getTodos('getDoneTodos', '_done_todos');
+            return $this->getTodos(null, 'getDoneTodos', '_done_todos');
         }
 
         /**
          * Delete todos item. This is done by removing it from text in sources.
          *
          * @param $delete_todo
+         *
+         * @return void
          */
         public function deleteTodo($delete_todo)
         {
@@ -6541,13 +6577,9 @@
                     '',
                     $this->getDescription()
                 ));
-                $this->setReproductionSteps(str_replace(
-                    '[] ' . $delete_todo,
-                    '',
-                    $this->getReproductionSteps()
-                ));
+                $this->saveTodos();
             }
-            foreach (array_merge($this->getTodos()['comments'], $this->getDoneTodos()['comments']) as $comment_id => $comment_todos)
+            foreach (array_merge_recursive($this->getTodos()['comments'], $this->getDoneTodos()['comments']) as $comment_id => $comment_todos)
             {
                 foreach ($comment_todos as $todo)
                 {
@@ -6560,6 +6592,7 @@
                         $comment->getContent()
                     ));
                     $comment->save();
+                    $comment->resetTodos();
                 }
             }
             $this->resetTodos();
@@ -6570,6 +6603,8 @@
          *
          * @param $mark_todo
          * @param $as
+         *
+         * @return void
          */
         public function markTodo($mark_todo, $as)
         {
@@ -6586,11 +6621,7 @@
                     $syntax2 . $mark_todo,
                     $this->getDescription()
                 ));
-                $this->setReproductionSteps(str_replace(
-                    $syntax1 . $mark_todo,
-                    $syntax2 . $mark_todo,
-                    $this->getReproductionSteps()
-                ));
+                $this->saveTodos();
             }
             foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
             {
@@ -6605,6 +6636,7 @@
                         $comment->getContent()
                     ));
                     $comment->save();
+                    $comment->resetTodos();
                 }
             }
             $this->resetTodos();
@@ -6612,14 +6644,91 @@
 
         /**
          * Reset "cached" todos.
+         *
+         * @return void
          */
         protected function resetTodos()
         {
             $this->_todos = null;
             $this->_done_todos = null;
             $this->_description_parser = null;
-            $this->_reproduction_steps_parser = null;
-            $this->_comments = null;
+        }
+
+        /**
+         * Save only issue column "description" that is todos text source. This is done by reverting other columns before save and adding changes back after save.
+         *
+         * @return void
+         */
+        public function saveTodos()
+        {
+            $todos_changed_items = array();
+            $changed_properties = $this->_getChangedProperties();
+
+            foreach (array('_description') as $property)
+            {
+                if (! $this->_isPropertyChanged($property)) continue;
+
+                $todos_changed_items[$property] = $changed_properties[$property];
+                unset($changed_properties[$property]);
+            }
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_revertPropertyChange($property);
+            }
+
+            // Since todos are saved in description don't log entry of that field changing.
+            $this->should_log_entry = false;
+            $this->save();
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_addChangedProperty($property, $property_values['current_value']);
+            }
+        }
+
+        /**
+         * Save order of todos. This is done by changing order of lines in text in sources.
+         *
+         * @param $comment_id
+         * @param $ordered_todos
+         *
+         * @return void
+         */
+        public function saveOrderTodo($comment_id, $ordered_todos)
+        {
+            $todos = $this->getTodos($comment_id);
+            // Map keys of todos so that they are string.
+            $todos = array_combine(array_map('strval', array_keys($todos)), $todos);
+            $ordered_todos = array_map(function ($todo_order)
+            {
+                // Decrement order since we incremented it in template for plugin "Sortable" to work.
+                return strval($todo_order - 1);
+            }, $ordered_todos);
+            $new_todos = array_merge(array_flip($ordered_todos), $todos);
+
+            if ($comment_id == 0)
+            {
+                $this->setDescription(str_replace(
+                    implode("\n", $todos),
+                    implode("\n", $new_todos),
+                    $this->getDescription()
+                ));
+                $this->saveTodos();
+            }
+            else
+            {
+                if (! isset($this->getComments()[$comment_id])) return;
+
+                $comment = $this->getComments()[$comment_id];
+                $comment->setContent(str_replace(
+                    implode("\n", $todos),
+                    implode("\n", $new_todos),
+                    $comment->getContent()
+                ));
+                $comment->save();
+                $comment->resetTodos();
+            }
         }
 
     }

@@ -4879,8 +4879,60 @@ class Main extends framework\Action
         }
 
         $issue->markTodo($request['todo'], $request['mark']);
-        
-        $a = $issue->getTodos();
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Save order of issue todos.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runSaveOrderTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $ordered_todos = $request->getParameter(($request['comment_id'] == 0
+            ? ''
+            : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
+
+        if (! is_null($ordered_todos))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
+        }
+
+        // TODO: Validate $ordered_todos values
+        $todos = $issue->getTodos($request['comment_id']);
+
+//        if ()
+//        {
+//
+//        }
+//        else
+//        {
+//            $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
+//        }
 
         return $this->renderJSON(array(
             'content' => $this->getComponentHTML('todos', compact('issue'))

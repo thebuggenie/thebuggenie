@@ -1,5 +1,6 @@
-<div class="todo" id="todo_<?php echo $todo_key; ?>">
-    <span id="todo_<?php echo $todo_key; ?>_mark_wrapper">
+<<?php echo $done ? 'div' : 'li'; ?> class="todo" id="item_option_<?php echo $todo_key; ?>" style="clear: both; height: 24px;">
+    <div id="item_option_<?php echo $todo_key; ?>_content">
+        <span id="todo_<?php echo $todo_key; ?>_mark_wrapper">
         <?php echo image_tag('spinning_16.gif', array('id' => 'todo_' . $todo_key . '_mark_indicator', 'style' => 'display: none;')); ?>
         <?php if ($done): ?>
             <a href="javascript:void(0);"
@@ -15,6 +16,7 @@
             </a>
         <?php endif; ?>
     </span>
-    <?php echo $todo; ?>
-    <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('" . __('Do you really want to delete this todo?') . "', '" . __('Please confirm that you want to delete this todo.') . "', {yes: {click: function() {TBG.Issues.removeTodo('" . make_url('todo_delete', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())) . "', '" . $todo . "'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
-</div>
+        <span id="<?php echo $todo_key; ?>_name"><?php echo $todo; ?></span>
+        <?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('" . __('Do you really want to delete this todo?') . "', '" . __('Please confirm that you want to delete this todo.') . "', {yes: {click: function() {TBG.Issues.removeTodo('" . make_url('todo_delete', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())) . "', '" . $todo . "'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
+    </div>
+</<?php echo $done ? 'div' : 'li'; ?>>

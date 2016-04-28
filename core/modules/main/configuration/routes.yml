@@ -684,3 +684,10 @@ todo_mark:
     action: toggleDoneTodo
     parameters: [ ]
     csrf_enabled: false
+
+todo_saveorder:
+    route: /:project_key/issues/:issue_id/save-order/:comment_id
+    module: main
+    action: saveOrderTodo
+    parameters: [ ]
+    csrf_enabled: false

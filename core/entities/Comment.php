@@ -313,7 +313,7 @@
          */
         protected function _getParser()
         {
-            if (!isset($this->_parser))
+            if (is_null($this->_parser))
             {
                 $this->_parseContent();
             }
@@ -818,14 +818,34 @@
             $this->touchTargetIfItsIssue();
         }
 
+        /**
+         * Get todos from comment content.
+         *
+         * @return array
+         */
         public function getTodos()
         {
             return $this->_getParser()->getTodos();
         }
 
+        /**
+         * Get done todos.
+         *
+         * @return array
+         */
         public function getDoneTodos()
         {
             return $this->_getParser()->getDoneTodos();
+        }
+
+        /**
+         * Reset "cached" todos.
+         *
+         * @return void
+         */
+        public function resetTodos()
+        {
+            $this->_parser = null;
         }
 
     }

@@ -6086,11 +6086,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 },
                 success: {
                     update: 'viewissue_todos',
-                    callback: function () {
-                        TBG.Main.Helpers.Dialog.dismiss();
-                        if (jQuery('.todo', $('todos_box')).length == 0) $('todos_none').show();
-                        $('viewissue_todo_count').update(jQuery('.todo', $('todos_box')).length);
-                    }
+                    callback: TBG.Main.Helpers.Dialog.dismiss
                 }
             });
         };
@@ -6101,7 +6097,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     todo: todo
                 },
                 loading: {
-                    indicator: 'todo_' + todo_key + '_mark_indicator'
+                    indicator: 'todo_' + todo_key + '_mark_indicator',
+                    callback: function () {
+                        $$('#todo_' + todo_key + '_mark_wrapper .image img').each(function (element) {
+                            $(element).hide();
+                        });
+                    }
+                },
+                success: {update: 'viewissue_todos'}
+            });
+        };
+
+        TBG.Issues.saveTodosOrder = function (container, url) {
+            TBG.Main.Helpers.ajax(url, {
+                additional_params: Sortable.serialize(container),
+                loading: {
+                    indicator: 'todos_sort_indicator'
                 },
                 success: {update: 'viewissue_todos'}
             });
