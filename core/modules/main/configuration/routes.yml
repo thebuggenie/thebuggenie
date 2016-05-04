@@ -386,6 +386,14 @@ account_save_settings:
       mode: settings
     csrf_enabled: true
 
+account_save_notificationsettings:
+    route: '/account/save/notificationsettings/*'
+    module: main
+    action: myAccount
+    parameters:
+      mode: notificationsettings
+    csrf_enabled: true
+
 account_save_module_settings:
     route: '/account/save/module/:target_module/settings/*'
     module: main
