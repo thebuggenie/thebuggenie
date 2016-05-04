@@ -349,10 +349,42 @@
                         <?php endforeach; ?>
                     </table>
                     <?php $category_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY; ?>
+                    <?php $project_issues_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS; ?>
                     <table class="padded_table" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $category_key; ?>_yes"><?= __('Automatically subscribe to new issues in selected categories'); ?></label></td>
+                            <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $project_issues_key; ?>_yes"><?= __('Automatically subscribe to new issues that are created in my project(s)'); ?></label></td>
                             <td style="width: 350px; text-align: right; border-bottom: 1px solid #DDD; vertical-align: middle;">
+                                <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $project_issues_key; ?>" data-value="" data-all-value="<?php echo __('All my projects'); ?>">
+                                    <input type="hidden" name="core_<?= $project_issues_key; ?>" value="<?= join(',', $selected_project_subscriptions); ?>" id="filter_<?php echo $project_issues_key; ?>_value_input">
+                                    <label><?php echo __('Projects'); ?></label>
+                                    <span class="value"><?php if (empty($selected_project_subscriptions)) echo __('All my projects'); ?></span>
+                                    <div class="interactive_menu">
+                                        <h1><?php echo __('Select which projects to subscribe to'); ?></h1>
+                                        <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter projects'); ?>">
+                                        <div class="interactive_values_container">
+                                            <ul class="interactive_menu_values">
+                                                <li data-value="0" class="filtervalue <?php if ($all_projects_subscription) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
+                                                    <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                    <input type="checkbox" value="all" name="core_<?php echo $project_issues_key; ?>_value_all" data-text="<?php echo __('All my projects'); ?>" id="core_<?= $project_issues_key; ?>_value_all" <?php if ($all_projects_subscription) echo 'checked'; ?>>
+                                                    <label for="core_<?= $project_issues_key; ?>_value_all"><?php echo __('All my projects'); ?></label>
+                                                </li>
+                                                <li class="separator"></li>
+                                                <?php foreach ($projects as $project_id => $project): ?>
+                                                    <li data-value="<?php echo $project_id; ?>" class="filtervalue<?php if (in_array($project_id, $selected_project_subscriptions)) echo ' selected'; ?>" data-selection-group="2" data-exclude-group="1">
+                                                        <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                        <input type="checkbox" value="<?php echo $project_id; ?>" name="core_<?php echo $project_issues_key; ?>_<?php echo $project_id; ?>" data-text="<?php echo __($project->getName()); ?>" id="core_<?php echo $project_issues_key; ?>_value_<?php echo $project_id; ?>" <?php if (in_array($project_id, $selected_project_subscriptions)) echo 'checked'; ?>>
+                                                        <label for="core_<?php echo $project_issues_key; ?>_value_<?php echo $project_id; ?>"><?php echo __($project->getName()); ?></label>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #DDD;"><label for="<?php echo $category_key; ?>_yes"><?= __('Automatically subscribe to new issues in selected categories'); ?></label></td>
+                            <td style="text-align: right; border-bottom: 1px solid #DDD; vertical-align: middle;">
                                 <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $category_key; ?>" data-value="" data-all-value="<?php echo __('None selected'); ?>">
                                     <input type="hidden" name="core_<?= $category_key; ?>" value="<?= join(',', $selected_category_subscriptions); ?>" id="filter_<?php echo $category_key; ?>_value_input">
                                     <label><?php echo __('Categories'); ?></label>

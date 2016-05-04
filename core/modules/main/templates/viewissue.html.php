@@ -251,6 +251,18 @@
             </ul>
           </div>
             <div id="issue_view">
+                <div id="issue_details_container">
+                    <div id="issue_details">
+                        <div class="collapser_link" onclick="$('issue_details_container').toggleClassName('collapsed');$('issue_main_container').toggleClassName('uncollapsed');">
+                            <a href="javascript:void(0);" class="image">
+                                <?php echo fa_image_tag('arrow-left', ['class' => 'collapser']); ?>
+                                <?php echo fa_image_tag('arrow-right', ['class' => 'expander']); ?>
+                            </a>
+                        </div>
+                        <div class="issue_details_fieldsets_wrapper"><?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?></div>
+                        <div style="clear: both; margin-bottom: 5px;"> </div>
+                    </div>
+                </div>
                 <div id="issue_main_container">
                     <div class="issue_main" id="issue_main">
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
@@ -352,18 +364,6 @@
                         <div id="viewissue_panes">
                             <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
                         </div>
-                    </div>
-                </div>
-                <div id="issue_details_container">
-                    <div id="issue_details">
-                        <div class="collapser_link" onclick="$('issue_details_container').toggleClassName('collapsed');$('issue_main_container').toggleClassName('uncollapsed');">
-                            <a href="javascript:void(0);" class="image">
-                                <?php echo fa_image_tag('arrow-left', ['class' => 'collapser']); ?>
-                                <?php echo fa_image_tag('arrow-right', ['class' => 'expander']); ?>
-                            </a>
-                        </div>
-                        <div class="issue_details_fieldsets_wrapper"><?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?></div>
-                        <div style="clear: both; margin-bottom: 5px;"> </div>
                     </div>
                 </div>
             </div>
