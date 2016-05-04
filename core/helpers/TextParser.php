@@ -1030,18 +1030,18 @@
         {
             $line_regexes = array();
 
-//            $line_regexes['preformat'] = '^\s{1}(.*?)$';
-//            $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
-//            $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
-//            $line_regexes['newline'] = '^$';
-//            $line_regexes['list'] = '^([\*\#]+ )(.*?)$';
-//            $line_regexes['tableopener'] = '^\{\|(.*?)$';
-//            $line_regexes['tablecloser'] = '^\|\}$';
-//            $line_regexes['tablerow'] = '^\|-(.*?)$';
-//            $line_regexes['tableheader'] = '^\!\ (.*?)$';
-//            $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
-//            $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
-//            $line_regexes['horizontalrule'] = '^----$';
+            $line_regexes['preformat'] = '^\s{1}(.*?)$';
+            $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
+            $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
+            $line_regexes['newline'] = '^$';
+            $line_regexes['list'] = '^([\*\#]+ )(.*?)$';
+            $line_regexes['tableopener'] = '^\{\|(.*?)$';
+            $line_regexes['tablecloser'] = '^\|\}$';
+            $line_regexes['tablerow'] = '^\|-(.*?)$';
+            $line_regexes['tableheader'] = '^\!\ (.*?)$';
+            $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
+            $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
+            $line_regexes['horizontalrule'] = '^----$';
             $line_regexes['todo'] = '^(\[\] )(.*?)$';
             $line_regexes['donetodo'] = '^(\[x\] )(.*?)$';
 
