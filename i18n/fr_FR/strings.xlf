@@ -2391,7 +2391,7 @@
             </trans-unit>
             <trans-unit id="5b3b99f23d3be22c417d2122d61576af">
                 <source>If you delete this client, any projects this client is assigned to will be set to having no client</source>
-                <target>Si vous supprimez ce client, l'ensemble des projets pour lesquels ce client est assigné seront définis comme n'ayant pas de client.</target>
+                <target>Si vous supprimez ce client, l\'ensemble des projets pour lesquels ce client est assigné seront définis comme n\'ayant pas de client.</target>
             </trans-unit>
             <trans-unit id="09e5e7f6c1d4cf78e8b5c08acb50e357">
                 <source>ID: %id</source>
