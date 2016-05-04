@@ -950,6 +950,18 @@
             return $seconds == null ? 10 : $seconds;
         }
 
+        public static function getSubscriptionsSettings()
+        {
+            $i18n = Context::getI18n();
+            $subscriptionssettings = array();
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I posted');
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I posted');
+//            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
+//            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Automatically subscribe to new issues in selected categories');
+            return $subscriptionssettings;
+        }
+
         public static function getNotificationSettings()
         {
             $i18n = Context::getI18n();
@@ -965,18 +977,6 @@
 //            $notificationsettings[self::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS] = $i18n->__('Show notifications about issue updates that are grouped as one notification based on interval in minutes:');
 //            $notificationsettings[self::SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE] = $i18n->__("Don't send email notification if I'm currently logged in and active");
             return $notificationsettings;
-        }
-
-        public static function getSubscriptionsSettings()
-        {
-            $i18n = Context::getI18n();
-            $subscriptionssettings = array();
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I posted');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I posted');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
-//            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Automatically subscribe to new issues in selected categories');
-            return $subscriptionssettings;
         }
 
         /**

@@ -1183,12 +1183,24 @@ class Main extends framework\Action
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
         $categories = \thebuggenie\core\entities\Category::getAll();
+        $projects = [];
+        $project_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS;
         $category_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY;
         $category_notification_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY;
         $subscriptionssettings = framework\Settings::getSubscriptionsSettings();
         $notificationsettings = framework\Settings:: getNotificationSettings();
+        $selected_project_subscriptions = [];
         $selected_category_subscriptions = [];
         $selected_category_notifications = [];
+        $this->all_projects_subscription = $this->getUser()->getNotificationSetting($project_subscription_key, false)->isOn();
+        foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+            if ($project->hasAccess()) {
+                $projects[$project_id] = $project;
+                if ($this->getUser()->getNotificationSetting($project_subscription_key . '_' . $project_id, false)->isOn()) {
+                    $selected_project_subscriptions[] = $project_id;
+                }
+            }
+        }
         foreach ($categories as $category_id => $category) {
             if ($this->getUser()->getNotificationSetting($category_subscription_key . '_' . $category_id, false)->isOn()) {
                 $selected_category_subscriptions[] = $category_id;
@@ -1197,6 +1209,8 @@ class Main extends framework\Action
                 $selected_category_notifications[] = $category_id;
             }
         }
+        $this->selected_project_subscriptions = ($this->all_projects_subscription) ? [] : $selected_project_subscriptions;
+        $this->projects = $projects;
         $this->selected_category_subscriptions = $selected_category_subscriptions;
         $this->selected_category_notifications = $selected_category_notifications;
         $this->categories = $categories;
