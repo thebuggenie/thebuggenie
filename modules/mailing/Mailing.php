@@ -819,6 +819,7 @@ EOT;
             $category_key = self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY;
 
             foreach ($notificationsettings as $setting => $description) {
+                if ($setting == $category_key) continue;
                 if ($request->hasParameter('mailing_' . $setting)) {
                     framework\Context::getUser()->setNotificationSetting($setting, true, 'mailing')->save();
                 } else {
