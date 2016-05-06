@@ -1,5 +1,7 @@
 <?php
 
+    use thebuggenie\core\framework\Settings;
+
     $tbg_response->setTitle('Your account details');
     $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
 
@@ -314,7 +316,7 @@
                     <p><?php echo __('Please select when you would like The Bug Genie to subscribe you.'); ?></p>
                     <table class="padded_table" cellpadding=0 cellspacing=0>
                         <?php foreach ($subscriptionssettings as $key => $description): ?>
-                            <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY) continue; ?>
+                            <?php if (in_array($key, [Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS])) continue; ?>
                             <tr>
                                 <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes"><?php echo $description ?></label></td>
                                 <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
@@ -354,10 +356,10 @@
                         <tr>
                             <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $project_issues_key; ?>_yes"><?= __('Automatically subscribe to new issues that are created in my project(s)'); ?></label></td>
                             <td style="width: 350px; text-align: right; border-bottom: 1px solid #DDD; vertical-align: middle;">
-                                <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $project_issues_key; ?>" data-value="" data-all-value="<?php echo __('All my projects'); ?>">
+                                <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $project_issues_key; ?>" data-value="" data-all-value="<?php echo __('No projects'); ?>">
                                     <input type="hidden" name="core_<?= $project_issues_key; ?>" value="<?= join(',', $selected_project_subscriptions); ?>" id="filter_<?php echo $project_issues_key; ?>_value_input">
                                     <label><?php echo __('Projects'); ?></label>
-                                    <span class="value"><?php if (empty($selected_project_subscriptions)) echo __('All my projects'); ?></span>
+                                    <span class="value"><?= (empty($selected_project_subscriptions) && !$all_projects_subscription) ? __('No projects') : __('All my projects'); ?></span>
                                     <div class="interactive_menu">
                                         <h1><?php echo __('Select which projects to subscribe to'); ?></h1>
                                         <input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter projects'); ?>">
@@ -365,7 +367,7 @@
                                             <ul class="interactive_menu_values">
                                                 <li data-value="0" class="filtervalue <?php if ($all_projects_subscription) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
                                                     <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-                                                    <input type="checkbox" value="all" name="core_<?php echo $project_issues_key; ?>_value_all" data-text="<?php echo __('All my projects'); ?>" id="core_<?= $project_issues_key; ?>_value_all" <?php if ($all_projects_subscription) echo 'checked'; ?>>
+                                                    <input type="checkbox" value="all" name="core_<?php echo $project_issues_key; ?>_all" data-text="<?php echo __('All my projects'); ?>" id="core_<?= $project_issues_key; ?>_value_all" <?php if ($all_projects_subscription) echo 'checked'; ?>>
                                                     <label for="core_<?= $project_issues_key; ?>_value_all"><?php echo __('All my projects'); ?></label>
                                                 </li>
                                                 <li class="separator"></li>
@@ -383,7 +385,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="border-bottom: 1px solid #DDD;"><label for="<?php echo $category_key; ?>_yes"><?= __('Automatically subscribe to new issues in selected categories'); ?></label></td>
+                            <td style="border-bottom: 1px solid #DDD;">
+                                <label for="<?php echo $category_key; ?>_yes"><?= __('Automatically subscribe to new issues in selected categories'); ?></label><br>
+                                <?= __("If you don't want to set up automatic subscriptions for all projects you're participating in, you can choose to subscribe to categories, instead. Note that if '%all_my_projects' is selected in the project subscriptions dropdown, the category subscription will have no further effect.", ['%all_my_projects' => __('All my projects')]); ?>
+                            </td>
                             <td style="text-align: right; border-bottom: 1px solid #DDD; vertical-align: middle;">
                                 <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $category_key; ?>" data-value="" data-all-value="<?php echo __('None selected'); ?>">
                                     <input type="hidden" name="core_<?= $category_key; ?>" value="<?= join(',', $selected_category_subscriptions); ?>" id="filter_<?php echo $category_key; ?>_value_input">

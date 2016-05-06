@@ -5659,7 +5659,7 @@
                 if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn()) return true;
             }
 
-            return $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn();
+            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProjectID(), false)->isOn());
         }
 
         protected function _postSave($is_new)

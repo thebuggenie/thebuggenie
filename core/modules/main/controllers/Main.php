@@ -1272,6 +1272,22 @@ class Main extends framework\Action
                                     $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
                                 }
                             }
+                        } elseif ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS) {
+                            if ($request->hasParameter('core_' . $setting . '_all')) {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                }
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    if ($request->hasParameter('core_' . $setting . '_' . $project_id)) {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true)->save();
+                                    } else {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                    }
+                                }
+                            }
                         } else {
                             if ($request->hasParameter('core_' . $setting)) {
                                 $this->getUser()->setNotificationSetting($setting, true)->save();
