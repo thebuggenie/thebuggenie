@@ -1412,7 +1412,7 @@
 
             $this->todos[] = $matches[2];
 
-            return '';
+            return '<br><input type="checkbox" disabled>' . $matches[2];
         }
 
         public function getTodos()
@@ -1426,7 +1426,7 @@
 
             $this->done_todos[] = $matches[2];
 
-            return '';
+            return '<br><input type="checkbox" disabled checked>' . $matches[2];
         }
 
         public function getDoneTodos()

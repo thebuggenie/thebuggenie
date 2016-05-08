@@ -18493,3 +18493,31 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 .relate_issue_with_selected {
     margin-top: -3px;
 }
+
+.todos-list .todo {
+    margin-left: 4px;
+}
+.comment-todos-list .todo {
+    margin-left: 21px;
+}
+.todo .todo-delete {
+    opacity: 0;
+    top: 4px;
+    position: relative;
+}
+.todo:hover .todo-delete {
+    opacity: 1;
+}
+.todo .todo-mark-done,
+.todo .todo-mark-not-done,
+.todo .todo-mark-indicator {
+    top: 3px;
+    position: relative;
+}
+.todo-comment-author > span {
+    color: #AAA;
+    font-weight: normal;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 2px;
+}

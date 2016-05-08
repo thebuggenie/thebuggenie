@@ -6534,19 +6534,21 @@
                 $this->$property = $todos;
             }
 
+            $todos = $this->$property;
+
             if (! is_null($comment_id))
             {
                 if ($comment_id == 0)
                 {
-                    return $this->$property['issue'];
+                    return $todos['issue'];
                 }
 
-                return isset($this->$property['comments'][$comment_id])
-                    ? $this->$property['comments'][$comment_id]
+                return isset($todos['comments'][$comment_id])
+                    ? $todos['comments'][$comment_id]
                     : array();
             }
 
-            return $this->$property;
+            return $todos;
         }
 
         /**
@@ -6568,7 +6570,7 @@
          */
         public function deleteTodo($delete_todo)
         {
-            foreach (array_merge($this->getTodos()['issue'], $this->getDoneTodos()['issue']) as $todo)
+            foreach ($this->getTodos()['issue'] as $todo)
             {
                 if ($todo !== $delete_todo) continue;
 
@@ -6579,7 +6581,18 @@
                 ));
                 $this->saveTodos();
             }
-            foreach (array_merge_recursive($this->getTodos()['comments'], $this->getDoneTodos()['comments']) as $comment_id => $comment_todos)
+            foreach ($this->getDoneTodos()['issue'] as $todo)
+            {
+                if ($todo !== $delete_todo) continue;
+
+                $this->setDescription(str_replace(
+                    '[x] ' . $delete_todo,
+                    '',
+                    $this->getDescription()
+                ));
+                $this->saveTodos();
+            }
+            foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos)
             {
                 foreach ($comment_todos as $todo)
                 {
@@ -6588,6 +6601,22 @@
                     $comment = $this->getComments()[$comment_id];
                     $comment->setContent(str_replace(
                         '[] ' . $delete_todo,
+                        '',
+                        $comment->getContent()
+                    ));
+                    $comment->save();
+                    $comment->resetTodos();
+                }
+            }
+            foreach ($this->getDoneTodos()['comments'] as $comment_id => $comment_todos)
+            {
+                foreach ($comment_todos as $todo)
+                {
+                    if ($todo !== $delete_todo) continue;
+
+                    $comment = $this->getComments()[$comment_id];
+                    $comment->setContent(str_replace(
+                        '[x] ' . $delete_todo,
                         '',
                         $comment->getContent()
                     ));
@@ -6698,12 +6727,12 @@
         public function saveOrderTodo($comment_id, $ordered_todos)
         {
             $todos = $this->getTodos($comment_id);
-            // Map keys of todos so that they are string.
-            $todos = array_combine(array_map('strval', array_keys($todos)), $todos);
+            // Prefix keys of todos so that they are string.
+            $todos = array_prefix_keys(array_prefix_values($todos, '[] '), 'order_');
             $ordered_todos = array_map(function ($todo_order)
             {
                 // Decrement order since we incremented it in template for plugin "Sortable" to work.
-                return strval($todo_order - 1);
+                return 'order_' . strval($todo_order - 1);
             }, $ordered_todos);
             $new_todos = array_merge(array_flip($ordered_todos), $todos);
 
@@ -6715,6 +6744,7 @@
                     $this->getDescription()
                 ));
                 $this->saveTodos();
+                $this->resetTodos();
             }
             else
             {

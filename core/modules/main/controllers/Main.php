@@ -4917,22 +4917,12 @@ class Main extends framework\Action
             ? ''
             : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
 
-        if (! is_null($ordered_todos))
+        if (! is_array($ordered_todos))
         {
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
         }
 
-        // TODO: Validate $ordered_todos values
-        $todos = $issue->getTodos($request['comment_id']);
-
-//        if ()
-//        {
-//
-//        }
-//        else
-//        {
-//            $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
-//        }
+        $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
 
         return $this->renderJSON(array(
             'content' => $this->getComponentHTML('todos', compact('issue'))
