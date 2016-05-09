@@ -6570,6 +6570,8 @@
          */
         public function deleteTodo($delete_todo)
         {
+            $delete_todo = base64_decode($delete_todo);
+
             foreach ($this->getTodos()['issue'] as $todo)
             {
                 if ($todo !== $delete_todo) continue;
@@ -6637,6 +6639,7 @@
          */
         public function markTodo($mark_todo, $as)
         {
+            $mark_todo = base64_decode($mark_todo);
             list ($syntax1, $syntax2, $method) = $as === 'done'
                 ? array('[] ', '[x] ', 'getTodos')
                 : array('[x] ', '[] ', 'getDoneTodos');
