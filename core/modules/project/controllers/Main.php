@@ -1707,4 +1707,19 @@ class Main extends helpers\ProjectActions
         return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to create new project roles')));
     }
 
+    public function listen_issueCreate(framework\Event $event)
+    {
+        $request = framework\Context::getRequest();
+        $issue = $event->getSubject();
+
+        if ($issue->isUnlocked())
+        {
+            $this->_unlockIssueAfter($request, $issue);
+        }
+        else if ($issue->isLocked())
+        {
+            $this->_lockIssueAfter($request, $issue);
+        }
+    }
+
 }
