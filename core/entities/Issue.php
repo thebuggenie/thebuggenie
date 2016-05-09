@@ -3242,6 +3242,9 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $related_issue->calculateTime();
                 $related_issue->save();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
 
                 return true;
             }
