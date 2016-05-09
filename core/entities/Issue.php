@@ -6767,4 +6767,19 @@
             }
         }
 
+        /**
+         * Add todos item. This is done by adding it to text in description.
+         *
+         * @param $add_todo
+         *
+         * @return void
+         */
+        public function addTodo($add_todo)
+        {
+            // Replace new lines with single space since todos item has to be on one line.
+            $this->setDescription($this->getDescription() . "\n[] " . trim(preg_replace('/\s+/', ' ', $add_todo)));
+            $this->saveTodos();
+            $this->resetTodos();
+        }
+
     }

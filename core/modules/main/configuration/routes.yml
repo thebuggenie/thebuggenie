@@ -691,3 +691,10 @@ todo_saveorder:
     action: saveOrderTodo
     parameters: [ ]
     csrf_enabled: false
+
+todo_add:
+    route: /:project_key/issues/:issue_id/add-todo
+    module: main
+    action: addTodo
+    parameters: [ ]
+    csrf_enabled: false

@@ -1511,12 +1511,16 @@ footer img {
     border-bottom-color: #AAA;
 }
 
-.comment_controls {
+.comment_controls,
+.todo_controls {
     margin-top: 10px;
     font-size: 1em;
 }
 
-.comment_controls .button, .comment_controls .button:hover {
+.comment_controls .button,
+.comment_controls .button:hover,
+.todo_controls .button,
+.todo_controls .button:hover {
     font-size: 1.1em;
     padding: 4px 8px;
 }
@@ -1545,7 +1549,8 @@ footer img {
     border: 1px solid #D8E6D8;
 }
 
-.comment_editor {
+.comment_editor,
+.todo_editor {
     position: fixed;
     width: 650px;
     z-index: 120;
@@ -1557,7 +1562,8 @@ footer img {
     border: 0;
 }
 
-.comment_editor .typeahead.dropdown-menu {
+.comment_editor .typeahead.dropdown-menu,
+.todo_editor .typeahead.dropdown-menu {
     overflow-y: scroll;
     max-height: 100px;
 }
@@ -5765,7 +5771,8 @@ ul.workflow_actions li:hover {
     border-radius: 4px;
 }
 
-#comment_add_button {
+#comment_add_button,
+#todo_add_button {
     padding: 0;
 }
 
@@ -5782,7 +5789,8 @@ ul.workflow_actions li:hover {
     font-size: 0.8em;
 }
 
-#viewissue_comments #comment_add_button .button {
+#viewissue_comments #comment_add_button .button,
+#viewissue_todos #todo_add_button .button {
     padding: 2px 10px;
     font-size: 1em;
 }
@@ -17500,7 +17508,8 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 
 #issue_main #comment_bodybox_syntax_picker,
 ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
-ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
+ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
+#issue_main #todo_bodybox_syntax_picker {
     margin-top: 22px;
 }
 
@@ -17528,7 +17537,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #comment_add_indicator,
 div[id^='comment_edit_indicator_'],
-div[id^='comment_reply_indicator_'] {
+div[id^='comment_reply_indicator_'],
+#todo_add_indicator {
     margin-top: 13px;
 }
 

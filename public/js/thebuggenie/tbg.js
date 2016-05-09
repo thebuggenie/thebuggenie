@@ -6118,6 +6118,32 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Issues.showTodo = function () {
+            $$('.todo_editor').each(Element.hide);
+            $('todo_add_button').hide();
+            $('todo_add').show();
+            $('todo_bodybox').focus();
+        };
+
+        TBG.Issues.addTodo = function (url) {
+            TBG.Main.Helpers.ajax(url, {
+                form: 'todo_form',
+                loading: {
+                    indicator: 'todo_add_indicator',
+                    hide: 'todo_add_controls'
+                },
+                success: {
+                    hide: ['todo_add_indicator', 'todo_add'],
+                    show: ['todo_add_button', 'todo_add_controls'],
+                    clear: 'todo_bodybox',
+                    update: 'viewissue_todos'
+                },
+                failure: {
+                    show: 'todo_add_controls'
+                }
+            });
+        };
+
         TBG.Search.deleteSavedSearch = function (url, id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {indicator: 'delete_search_' + id + '_indicator'},

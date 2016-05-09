@@ -4811,7 +4811,7 @@ class Main extends framework\Action
     }
 
     /**
-     * Delete an issue todo
+     * Delete an issue todos item.
      *
      * @param \thebuggenie\core\framework\Request $request
      */
@@ -4923,6 +4923,44 @@ class Main extends framework\Action
         }
 
         $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Add an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runAddTodo(framework\Request $request)
+    {
+        // If todos item is submitted via form and not ajax forward 403 error.
+        $this->forward403unless($request->isAjaxCall());
+
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['todo_body']) || !trim($request['todo_body']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo_body" parameter')));
+        }
+
+        $issue->addTodo($request['todo_body']);
 
         return $this->renderJSON(array(
             'content' => $this->getComponentHTML('todos', compact('issue'))
