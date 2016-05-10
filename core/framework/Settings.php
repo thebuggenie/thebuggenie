@@ -947,7 +947,7 @@
         public static function getNotificationPollInterval()
         {
             $seconds = self::get(self::SETTING_NOTIFICATION_POLL_INTERVAL);
-            return $seconds == null ? 10 : $seconds;
+            return $seconds == null ? 180 : $seconds;
         }
 
         public static function getSubscriptionsSettings()
@@ -958,7 +958,7 @@
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I posted');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
-//            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Automatically subscribe to new issues in selected categories');
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Automatically subscribe to new issues in selected categories');
             return $subscriptionssettings;
         }
 

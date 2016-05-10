@@ -313,10 +313,10 @@
             <div id="tab_notificationsettings_pane" style="display: none;">
                 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateNotificationSettings('<?php echo make_url('account_save_notificationsettings'); ?>'); return false;" method="post" id="profile_notificationsettings_form">
                     <h3><?php echo __('Subscriptions'); ?></h3>
-                    <p><?php echo __('Please select when you would like The Bug Genie to subscribe you.'); ?></p>
+                    <p><?php echo __('The Bug Genie can subscribe you to issues, articles and other items in the system, so you can receive notifications when they are updated. Please select when you would like The Bug Genie to subscribe you.'); ?></p>
                     <table class="padded_table" cellpadding=0 cellspacing=0>
                         <?php foreach ($subscriptionssettings as $key => $description): ?>
-                            <?php if (in_array($key, [Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS])) continue; ?>
+                            <?php if (in_array($key, [Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS])) continue; ?>
                             <tr>
                                 <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes"><?php echo $description ?></label></td>
                                 <?php if ($key == \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY): ?>
@@ -434,7 +434,7 @@
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle"></td>
                                 <?php else: ?>
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, false, 'core')->isOn()): ?> checked<?php endif; ?>>
+                                        <input type="checkbox" name="core_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, $key == Settings::SETTINGS_USER_NOTIFY_MENTIONED, 'core')->isOn()) echo ' checked'; ?>>
                                     </td>
                                     <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_cell')->trigger(compact('key')); ?>
                                 <?php endif; ?>
@@ -444,8 +444,12 @@
                     <?php $category_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY; ?>
                     <table class="padded_table" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td style="width: auto; border-bottom: 1px solid #DDD; vertical-align: middle;"><label for="<?php echo $category_key; ?>_yes"><?= __('Notify to notifications box when issues are created in selected categories') ?></label></td>
+                            <td style="width: auto; border-bottom: 1px solid #DDD; vertical-align: middle;">
+                                <label for="<?php echo $category_key; ?>_yes"><?= __('Notify to notifications box when issues are created in selected categories') ?></label><br>
+                                <?= __('If you want to be notified when an issue is created in a specific category, but do not want to automatically subscribe for updates to these issues, make sure auto-subscriptions are turned off in the "%subscriptions"-section, then use this dropdown to configure notifications.', ['%subscriptions' => __('Subscriptions')]); ?>
+                            </td>
                             <td style="width: 350px; text-align: right; border-bottom: 1px solid #DDD; vertical-align: middle;">
+                                <label><?= __('Notifications box'); ?></label><br>
                                 <div class="filter interactive_dropdown rightie" data-filterkey="<?php echo $category_key; ?>" data-value="" data-all-value="<?php echo __('None selected'); ?>">
                                     <input type="hidden" name="core_<?= $category_key; ?>" value="<?= join(',', $selected_category_notifications); ?>" id="filter_<?php echo $category_key; ?>_value_input">
                                     <label><?php echo __('Categories'); ?></label>
@@ -466,10 +470,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
+                                <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_notification_categories')->trigger(compact('categories')); ?>
                             </td>
                         </tr>
                     </table>
-                    <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_notification_categories')->trigger(compact('categories')); ?>
+                    <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_subscriptions')->trigger(compact('categories')); ?>
                     <h3><?php echo __('Desktop notifications'); ?></h3>
                     <p><?php echo __('You can receive desktop notifications based on system actions or your subscriptions. Choose your desktop notification preferences from this section.'); ?></p>
                     <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>

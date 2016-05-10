@@ -133,6 +133,7 @@
             framework\Event::listen('core', 'account_pane_notificationsettings_thead', array($this, 'listen_accountNotificationSettingsThead'));
             framework\Event::listen('core', 'account_pane_notificationsettings_cell', array($this, 'listen_accountNotificationSettingsCell'));
             framework\Event::listen('core', 'account_pane_notificationsettings_notification_categories', array($this, 'listen_accountNotificationSettingsNotificationCategories'));
+            framework\Event::listen('core', 'account_pane_notificationsettings_subscriptions', array($this, 'listen_accountNotificationSettingsSubscriptions'));
             framework\Event::listen('core', 'config.createuser.email', array($this, 'listen_configCreateuserEmail'));
             framework\Event::listen('core', 'config.createuser.save', array($this, 'listen_configCreateuserSave'));
             framework\Event::listen('core', 'mainActions::myAccount::saveNotificationSettings', array($this, 'listen_accountSaveNotificationSettings'));
@@ -789,6 +790,11 @@ EOT;
         public function listen_accountNotificationSettingsNotificationCategories(framework\Event $event)
         {
             framework\ActionComponent::includeComponent('mailing/accountsettings_notificationcategories', array('categories' => $event->getParameter('categories')));
+        }
+
+        public function listen_accountNotificationSettingsSubscriptions(framework\Event $event)
+        {
+            framework\ActionComponent::includeComponent('mailing/accountsettings_subscriptions');
         }
 
         public function listen_configCreateuserEmail(framework\Event $event)
