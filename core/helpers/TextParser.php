@@ -1412,7 +1412,7 @@
 
             $this->todos[] = $matches[2];
 
-            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
         }
 
         public function getTodos()
@@ -1426,7 +1426,7 @@
 
             $this->done_todos[] = $matches[2];
 
-            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
         }
 
         public function getDoneTodos()
