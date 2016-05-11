@@ -6,13 +6,13 @@
             <a href="javascript:void(0);"
                onclick="TBG.Issues.markTodo('<?php echo make_url('todo_mark', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'mark' => 'not_done')); ?>', '<?php echo base64_encode($todo); ?>', '<?php echo $todo_key; ?>');"
                class="image todo-mark-done" title="<?php echo __('Click to mark todo item as not done'); ?>">
-                <?php echo image_tag('permission_set_ok.png'); ?>
+                <?php echo fa_image_tag('check-square'); ?>
             </a>
         <?php else: ?>
             <a href="javascript:void(0);"
                onclick="TBG.Issues.markTodo('<?php echo make_url('todo_mark', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'mark' => 'done')); ?>', '<?php echo base64_encode($todo); ?>', '<?php echo $todo_key; ?>');"
                class="image todo-mark-not-done" title="<?php echo __('Click to mark todo item as done'); ?>">
-                <?php echo image_tag('permission_set_unset.png'); ?>
+                <?php echo fa_image_tag('square-o'); ?>
             </a>
         <?php endif; ?>
     </span>

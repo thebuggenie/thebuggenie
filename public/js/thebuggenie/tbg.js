@@ -6099,7 +6099,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 loading: {
                     indicator: 'todo_' + todo_key + '_mark_indicator',
                     callback: function () {
-                        $$('#todo_' + todo_key + '_mark_wrapper .image img').each(function (element) {
+                        $$('#todo_' + todo_key + '_mark_wrapper .image i').each(function (element) {
                             $(element).hide();
                         });
                     }

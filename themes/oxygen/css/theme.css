@@ -18507,6 +18507,9 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 .todos-list .todo {
     margin-left: 4px;
 }
+.comment-todos-list {
+    margin-top: 0;
+}
 .comment-todos-list .todo {
     margin-left: 21px;
 }
@@ -18521,8 +18524,12 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 .todo .todo-mark-done,
 .todo .todo-mark-not-done,
 .todo .todo-mark-indicator {
-    top: 3px;
+    top: 1px;
     position: relative;
+    font-size: 15px;
+}
+.todo-comment-author {
+    margin-top: 15px;
 }
 .todo-comment-author > span {
     color: #AAA;

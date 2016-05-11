@@ -18,10 +18,9 @@
     <?php endforeach; ?>
 </div>
 <div id="done_todos_box">
-    <div class="header">
-        <?php echo __('Done'); ?>
-        (<span id="viewissue_todo_done_count"><?php echo $issue->countDoneTodos(); ?></span>)
-    </div>
+    <legend class="viewissue_comments_header">
+        <?php echo __('Done todos (%count)', array('%count' => '<span id="viewissue_todo_done_count">'.$issue->countDoneTodos().'</span>')); ?>
+    </legend>
     <div class="faded_out done-todos-none" id="done_todos_none" <?php if ($issue->countDoneTodos() != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no done todos'); ?></div>
     <div class="todos-list">
         <?php foreach ($issue->getDoneTodos()['issue'] as $todo_key => $todo): ?>
@@ -41,19 +40,29 @@
     <?php endforeach; ?>
 </div>
 <script type="text/javascript">
-    require(['domReady', 'prototype', 'dragdrop'], function (domReady) {
+    require(['domReady', 'jquery', 'prototype', 'dragdrop'], function (domReady, jQuery) {
         domReady(function () {
-            <?php if (($issue->countTodos() + $issue->countDoneTodos()) === 0): ?>
-                Element.remove('viewissue_todos_container');
+            <?php if ($issue->countTodos() === 0): ?>
+                jQuery('#viewissue_todos_container > .viewissue_comments_header').hide();
+                jQuery('#todos_box').hide();
             <?php else: ?>
-                $('viewissue_todo_count').update(<?php echo $issue->countTodos(); ?>);
-                Sortable.destroy('todos_list');
-                Sortable.create('todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => 0)); ?>'); }});
-                <?php foreach ($issue->getTodos()['comments'] as $comment_id => $comment_todos): ?>
-                Sortable.destroy('comment_<?php echo $comment_id; ?>_todos_list');
-                Sortable.create('comment_<?php echo $comment_id; ?>_todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => $comment_id)); ?>'); }});
-                <?php endforeach; ?>
+                jQuery('#viewissue_todos_container > .viewissue_comments_header').show();
+                jQuery('#todos_box').show();
             <?php endif; ?>
+            <?php if ($issue->countDoneTodos() === 0): ?>
+                jQuery('#done_todos_box').hide();
+            <?php else: ?>
+                jQuery('#done_todos_box').show();
+            <?php endif; ?>
+            jQuery('viewissue_todos_container', $('viewissue_todos_container')).toggle();
+
+            $('viewissue_todo_count').update(<?php echo $issue->countTodos(); ?>);
+            Sortable.destroy('todos_list');
+            Sortable.create('todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => 0)); ?>'); }});
+            <?php foreach ($issue->getTodos()['comments'] as $comment_id => $comment_todos): ?>
+            Sortable.destroy('comment_<?php echo $comment_id; ?>_todos_list');
+            Sortable.create('comment_<?php echo $comment_id; ?>_todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => $comment_id)); ?>'); }});
+            <?php endforeach; ?>
         });
     });
 </script>
