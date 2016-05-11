@@ -18538,3 +18538,6 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     display: inline-block;
     margin-left: 2px;
 }
+input[type="checkbox"].todo-checkbox {
+    margin-right: 3px;
+}

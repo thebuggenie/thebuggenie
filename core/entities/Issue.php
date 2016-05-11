@@ -6567,67 +6567,74 @@
         /**
          * Delete todos item. This is done by removing it from text in sources.
          *
+         * @param $comment_id
          * @param $delete_todo
          *
          * @return void
          */
-        public function deleteTodo($delete_todo)
+        public function deleteTodo($comment_id, $delete_todo)
         {
             $delete_todo = base64_decode($delete_todo);
             $delete_todo_utf8 = tbg_encodeUTF8($delete_todo, true);
-
-            foreach ($this->getTodos()['issue'] as $todo)
+            
+            if ($comment_id == 0)
             {
-                if ($todo !== $delete_todo) continue;
-
-                $this->setDescription(str_replace(
-                    '[] ' . $delete_todo_utf8,
-                    '',
-                    $this->getDescription()
-                ));
-                $this->saveTodos();
-            }
-            foreach ($this->getDoneTodos()['issue'] as $todo)
-            {
-                if ($todo !== $delete_todo) continue;
-
-                $this->setDescription(str_replace(
-                    '[x] ' . $delete_todo_utf8,
-                    '',
-                    $this->getDescription()
-                ));
-                $this->saveTodos();
-            }
-            foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos)
-            {
-                foreach ($comment_todos as $todo)
+                foreach ($this->getTodos()['issue'] as $todo)
                 {
                     if ($todo !== $delete_todo) continue;
 
-                    $comment = $this->getComments()[$comment_id];
-                    $comment->setContent(str_replace(
+                    $this->setDescription(str_replace(
                         '[] ' . $delete_todo_utf8,
                         '',
-                        $comment->getContent()
+                        $this->getDescription()
                     ));
-                    $comment->save();
-                    $comment->resetTodos();
+                    $this->saveTodos();
                 }
-            }
-            foreach ($this->getDoneTodos()['comments'] as $comment_id => $comment_todos)
-            {
-                foreach ($comment_todos as $todo)
+                foreach ($this->getDoneTodos()['issue'] as $todo)
                 {
                     if ($todo !== $delete_todo) continue;
 
-                    $comment = $this->getComments()[$comment_id];
-                    $comment->setContent(str_replace(
+                    $this->setDescription(str_replace(
                         '[x] ' . $delete_todo_utf8,
                         '',
-                        $comment->getContent()
+                        $this->getDescription()
                     ));
-                    $comment->save();
-                    $comment->resetTodos();
+                    $this->saveTodos();
+                }
+            }
+            else
+            {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $delete_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            '[] ' . $delete_todo_utf8,
+                            '',
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+                foreach ($this->getDoneTodos()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $delete_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            '[x] ' . $delete_todo_utf8,
+                            '',
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
                 }
             }
             $this->resetTodos();
@@ -6636,12 +6643,13 @@
         /**
          * Mark todos item as either "done" or "not done". This is done by changing mediawiki syntax in text in sources.
          *
+         * @param $comment_id
          * @param $mark_todo
          * @param $as
          *
          * @return void
          */
-        public function markTodo($mark_todo, $as)
+        public function markTodo($comment_id, $mark_todo, $as)
         {
             $mark_todo = base64_decode($mark_todo);
             $mark_todo_utf8 = tbg_encodeUTF8($mark_todo, true);
@@ -6649,31 +6657,37 @@
                 ? array('[] ', '[x] ', 'getTodos')
                 : array('[x] ', '[] ', 'getDoneTodos');
 
-            foreach ($this->$method()['issue'] as $todo)
+            if ($comment_id == 0)
             {
-                if ($todo !== $mark_todo) continue;
-
-                $this->setDescription(str_replace(
-                    $syntax1 . $mark_todo_utf8,
-                    $syntax2 . $mark_todo_utf8,
-                    $this->getDescription()
-                ));
-                $this->saveTodos();
-            }
-            foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
-            {
-                foreach ($comment_todos as $todo)
+                foreach ($this->$method()['issue'] as $todo)
                 {
                     if ($todo !== $mark_todo) continue;
 
-                    $comment = $this->getComments()[$comment_id];
-                    $comment->setContent(str_replace(
+                    $this->setDescription(str_replace(
                         $syntax1 . $mark_todo_utf8,
                         $syntax2 . $mark_todo_utf8,
-                        $comment->getContent()
+                        $this->getDescription()
                     ));
-                    $comment->save();
-                    $comment->resetTodos();
+                    $this->saveTodos();
+                }
+            }
+            else
+            {
+                foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $mark_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            $syntax1 . $mark_todo_utf8,
+                            $syntax2 . $mark_todo_utf8,
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
                 }
             }
             $this->resetTodos();

@@ -1412,7 +1412,7 @@
 
             $this->todos[] = $matches[2];
 
-            return '<br><input type="checkbox" disabled>' . $this->_parse_line($matches[2], $this->options);
+            return '<br><input type="checkbox" disabled class="todo-checkbox">' . $this->_parse_line($matches[2], $this->options);
         }
 
         public function getTodos()
@@ -1426,7 +1426,7 @@
 
             $this->done_todos[] = $matches[2];
 
-            return '<br><input type="checkbox" disabled checked>' . $this->_parse_line($matches[2], $this->options);
+            return '<br><input type="checkbox" disabled checked class="todo-checkbox">' . $this->_parse_line($matches[2], $this->options);
         }
 
         public function getDoneTodos()

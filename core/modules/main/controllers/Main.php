@@ -4833,13 +4833,18 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
         }
 
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
         if (! isset($request['todo']) || $request['todo'] == '')
         {
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
         }
 
         framework\Context::loadLibrary('common');
-        $issue->deleteTodo($request['todo']);
+        $issue->deleteTodo($request['comment_id'], $request['todo']);
 
         return $this->renderJSON(array(
             'content' => $this->getComponentHTML('todos', compact('issue'))
@@ -4869,6 +4874,11 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
         }
 
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
         if (! isset($request['todo']) || $request['todo'] == '')
         {
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
@@ -4880,7 +4890,7 @@ class Main extends framework\Action
         }
 
         framework\Context::loadLibrary('common');
-        $issue->markTodo($request['todo'], $request['mark']);
+        $issue->markTodo($request['comment_id'], $request['todo'], $request['mark']);
 
         return $this->renderJSON(array(
             'content' => $this->getComponentHTML('todos', compact('issue'))

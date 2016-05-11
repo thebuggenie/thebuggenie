@@ -672,14 +672,14 @@ asset_js_unthemed:
     anonymous_route: true
 
 todo_delete:
-    route: /:project_key/issues/:issue_id/delete-todo
+    route: /:project_key/issues/:issue_id/delete-todo/:comment_id
     module: main
     action: deleteTodo
     parameters: [ ]
     csrf_enabled: false
 
 todo_mark:
-    route: /:project_key/issues/:issue_id/mark-todo/:mark
+    route: /:project_key/issues/:issue_id/mark-todo/:comment_id/:mark
     module: main
     action: toggleDoneTodo
     parameters: [ ]
