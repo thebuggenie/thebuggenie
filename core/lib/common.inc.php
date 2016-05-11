@@ -399,6 +399,29 @@
     }
 
     /**
+     * The opposite of custom function "tbg_decodeUTF8".
+     *
+     * @param string $str the encode string
+     * @param boolean $htmlentities [optional] whether to convert applicable characters to HTML entities
+     *
+     * @return string
+     */
+    function tbg_encodeUTF8($str, $htmlentities = false)
+    {
+        if ($htmlentities)
+        {
+            $str = html_entity_decode($str, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        }
+
+        if (! tbg_isUTF8($str) && !mb_stristr(\thebuggenie\core\framework\Context::getI18n()->getCharset(), 'UTF-8'))
+        {
+            $str = utf8_encode($str);
+        }
+
+        return $str;
+    }
+
+    /**
      * Determine if a string is UTF-8 encoded
      * @filesource http://www.php.net/manual/en/function.mb-detect-encoding.php#68607
      *

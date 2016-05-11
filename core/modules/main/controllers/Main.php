@@ -4838,6 +4838,7 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
         }
 
+        framework\Context::loadLibrary('common');
         $issue->deleteTodo($request['todo']);
 
         return $this->renderJSON(array(
@@ -4878,6 +4879,7 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "mark" parameter')));
         }
 
+        framework\Context::loadLibrary('common');
         $issue->markTodo($request['todo'], $request['mark']);
 
         return $this->renderJSON(array(
@@ -4922,6 +4924,7 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
         }
 
+        framework\Context::loadLibrary('common');
         $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
 
         return $this->renderJSON(array(

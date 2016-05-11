@@ -6574,13 +6574,14 @@
         public function deleteTodo($delete_todo)
         {
             $delete_todo = base64_decode($delete_todo);
+            $delete_todo_utf8 = tbg_encodeUTF8($delete_todo, true);
 
             foreach ($this->getTodos()['issue'] as $todo)
             {
                 if ($todo !== $delete_todo) continue;
 
                 $this->setDescription(str_replace(
-                    '[] ' . $delete_todo,
+                    '[] ' . $delete_todo_utf8,
                     '',
                     $this->getDescription()
                 ));
@@ -6591,7 +6592,7 @@
                 if ($todo !== $delete_todo) continue;
 
                 $this->setDescription(str_replace(
-                    '[x] ' . $delete_todo,
+                    '[x] ' . $delete_todo_utf8,
                     '',
                     $this->getDescription()
                 ));
@@ -6605,7 +6606,7 @@
 
                     $comment = $this->getComments()[$comment_id];
                     $comment->setContent(str_replace(
-                        '[] ' . $delete_todo,
+                        '[] ' . $delete_todo_utf8,
                         '',
                         $comment->getContent()
                     ));
@@ -6621,7 +6622,7 @@
 
                     $comment = $this->getComments()[$comment_id];
                     $comment->setContent(str_replace(
-                        '[x] ' . $delete_todo,
+                        '[x] ' . $delete_todo_utf8,
                         '',
                         $comment->getContent()
                     ));
@@ -6643,6 +6644,7 @@
         public function markTodo($mark_todo, $as)
         {
             $mark_todo = base64_decode($mark_todo);
+            $mark_todo_utf8 = tbg_encodeUTF8($mark_todo, true);
             list ($syntax1, $syntax2, $method) = $as === 'done'
                 ? array('[] ', '[x] ', 'getTodos')
                 : array('[x] ', '[] ', 'getDoneTodos');
@@ -6652,8 +6654,8 @@
                 if ($todo !== $mark_todo) continue;
 
                 $this->setDescription(str_replace(
-                    $syntax1 . $mark_todo,
-                    $syntax2 . $mark_todo,
+                    $syntax1 . $mark_todo_utf8,
+                    $syntax2 . $mark_todo_utf8,
                     $this->getDescription()
                 ));
                 $this->saveTodos();
@@ -6666,8 +6668,8 @@
 
                     $comment = $this->getComments()[$comment_id];
                     $comment->setContent(str_replace(
-                        $syntax1 . $mark_todo,
-                        $syntax2 . $mark_todo,
+                        $syntax1 . $mark_todo_utf8,
+                        $syntax2 . $mark_todo_utf8,
                         $comment->getContent()
                     ));
                     $comment->save();
@@ -6745,8 +6747,8 @@
             if ($comment_id == 0)
             {
                 $this->setDescription(str_replace(
-                    implode("\n", $todos),
-                    implode("\n", $new_todos),
+                    tbg_encodeUTF8(implode("\n", $todos), true),
+                    tbg_encodeUTF8(implode("\n", $new_todos), true),
                     $this->getDescription()
                 ));
                 $this->saveTodos();
@@ -6758,8 +6760,8 @@
 
                 $comment = $this->getComments()[$comment_id];
                 $comment->setContent(str_replace(
-                    implode("\n", $todos),
-                    implode("\n", $new_todos),
+                    tbg_encodeUTF8(implode("\n", $todos), true),
+                    tbg_encodeUTF8(implode("\n", $new_todos), true),
                     $comment->getContent()
                 ));
                 $comment->save();
@@ -6777,7 +6779,7 @@
         public function addTodo($add_todo)
         {
             // Replace new lines with single space since todos item has to be on one line.
-            $this->setDescription($this->getDescription() . "\n[] " . trim(preg_replace('/\s+/', ' ', $add_todo)));
+            $this->setDescription($this->getDescription() . "\n[] " . tbg_encodeUTF8(trim(preg_replace('/\s+/', ' ', $add_todo)), true));
             $this->saveTodos();
             $this->resetTodos();
         }
