@@ -4973,6 +4973,7 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo_body" parameter')));
         }
 
+        framework\Context::loadLibrary('common');
         $issue->addTodo($request['todo_body']);
 
         return $this->renderJSON(array(
