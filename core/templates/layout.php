@@ -16,34 +16,13 @@
               src: url('<?php echo $webroot; ?>fonts/droid_sans_mono.eot');
               src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo $webroot; ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo $webroot; ?>fonts/droid_sans_mono.ttf') format('truetype');
             }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: normal;
-              font-weight: normal;
-              src: url('<?php echo $webroot; ?>fonts/open_sans.eot');
-              src: local('Open Sans'), local('OpenSans'), url('<?php echo $webroot; ?>fonts/open_sans.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: italic;
-              font-weight: normal;
-              src: url('<?php echo $webroot; ?>fonts/open_sans_italic.eot');
-              src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo $webroot; ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_italic.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: normal;
-              font-weight: bold;
-              src: url('<?php echo $webroot; ?>fonts/open_sans_bold.eot');
-              src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo $webroot; ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_bold.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: italic;
-              font-weight: bold;
-              src: url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.eot');
-              src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo $webroot; ?>fonts/open_sans_bold_italic.ttf') format('truetype');
-            }
+            <?php $os_unicode_ranges = array('latin' => 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000', 'latin_ext' => 'U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF', 'cyrillic' => 'U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116'); ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_300_italic', 300, 'italic', 'Open Sans Light Italic', 'OpenSansLight-Italic', $os_unicode_ranges); ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_400_italic', 400, 'italic', 'Open Sans Italic', 'OpenSans-Italic', $os_unicode_ranges); ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_600_italic', 'bold', 'italic', 'Open Sans Semibold Italic', 'OpenSans-SemiboldItalic', $os_unicode_ranges); // semibold will act as bold ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_300', 300, 'normal', 'Open Sans Light', 'OpenSansLight', $os_unicode_ranges); ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_400', 400, 'normal', 'Open Sans', 'OpenSans', $os_unicode_ranges); ?>
+            <?php echo font_face_woffs('Open Sans', 'open_sans_600', 'bold', 'normal', 'Open Sans Semibold', 'OpenSans-Semibold', $os_unicode_ranges); // semibold will act as bold ?>
         </style>
         <link rel="shortcut icon" href="<?php echo (\thebuggenie\core\framework\Context::isProjectContext() && \thebuggenie\core\framework\Context::getCurrentProject()->hasSmallIcon()) ? \thebuggenie\core\framework\Context::getCurrentProject()->getSmallIconName() : (\thebuggenie\core\framework\Settings::isUsingCustomFavicon() ? \thebuggenie\core\framework\Settings::getFaviconURL() : image_url('favicon.png')); ?>">
         <link title="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? __('%project_name search', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())) : __('%site_name search', array('%site_name' => \thebuggenie\core\framework\Settings::getSiteHeaderName())); ?>" href="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('project_opensearch', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
