@@ -5789,8 +5789,7 @@ ul.workflow_actions li:hover {
     font-size: 0.8em;
 }
 
-#viewissue_comments #comment_add_button .button,
-#viewissue_todos #todo_add_button .button {
+#viewissue_comments #comment_add_button .button {
     padding: 2px 10px;
     font-size: 1em;
 }
