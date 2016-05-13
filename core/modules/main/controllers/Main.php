@@ -4838,6 +4838,8 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
         }
 
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
         if (! isset($request['todo']) || $request['todo'] == '')
         {
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
@@ -4925,6 +4927,8 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
         }
 
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
         $ordered_todos = $request->getParameter(($request['comment_id'] == 0
             ? ''
             : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
@@ -4966,6 +4970,11 @@ class Main extends framework\Action
         else
         {
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (!$issue->canEditDescription())
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
         }
 
         if (! isset($request['todo_body']) || !trim($request['todo_body']))
