@@ -870,6 +870,13 @@
                             $crit3->addJoin(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), Criteria::DB_LEFT_JOIN, IssueAffectsComponent::getTable());
                             $crit3->addOrderBy(Components::NAME, $grouporder);
                             break;
+                        case 'time_spent':
+                            $crit->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit->addSelectionColumn(IssueSpentTimes::EDITED_AT);
+                            $crit->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit3->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            break;
                     }
                 }
 
@@ -881,23 +888,41 @@
 
                 $res = $this->doSelect($crit, 'none');
                 $ids = array();
+                $sums = array();
 
                 if ($res)
                 {
                     while ($row = $res->getNextRow())
                     {
                         $ids[] = $row->get(self::ID);
+                        $sum = array();
+
+                        foreach (\thebuggenie\core\entities\common\Timeable::$units as $time_unit)
+                        {
+                            if (! isset($row['spent_minutes_sum'])) continue;
+
+                            $sum['spent_' . $time_unit] = $row->get('spent_'. $time_unit .'_sum');
+                        }
+
+                        $sums[$row->get(self::ID)] = $sum;
                     }
                     $ids = array_reverse($ids);
 
                     $crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
                     foreach ($sortfields as $field => $sortorder)
                     {
+                        if ($field == IssueSpentTimes::EDITED_AT)
+                        {
+                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit3->addGroupBy(self::ID);
+                            $crit3->addSelectionColumn($field);
+                        }
+
                         $crit3->addOrderBy($field, $sortorder);
                     }
 
-                    $res = $this->doSelect($crit3);
-                    $rows = $res->getAllRows();
+                    $res3 = $this->doSelect($crit3);
+                    $rows = $res3->getAllRows();
                 }
                 else
                 {
@@ -905,8 +930,9 @@
                 }
 
                 unset($res);
+                unset($res3);
 
-                return array($rows, $count, $ids);
+                return array($rows, $count, $ids, $sums);
             }
             else
             {

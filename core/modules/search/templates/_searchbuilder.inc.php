@@ -29,6 +29,7 @@
                         <ul>
                             <li data-filter="posted" id="additional_filter_posted_link"><?php echo __('Created before / after'); ?></li>
                             <li data-filter="last_updated" id="additional_filter_last_updated_link"><?php echo __('Last updated before / after'); ?></li>
+                            <li data-filter="time_spent" id="additional_filter_time_spent_link"><?php echo __('Time spent before / after'); ?></li>
                             <?php foreach ($datecustomfields as $field): ?>
                                 <li data-filter="<?php echo $field->getKey(); ?>" id="additional_filter_<?php echo $field->getKey(); ?>_link"><?php echo __($field->getDescription()); ?></li>
                             <?php endforeach; ?>
@@ -209,7 +210,7 @@
         <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking', 'relation') as $key): ?>
             <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key))); ?>
         <?php endforeach; ?>
-        <?php foreach (array('posted', 'last_updated') as $key): ?>
+        <?php foreach (array('posted', 'last_updated', 'time_spent') as $key): ?>
             <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
         <?php foreach ($nondatecustomfields as $customtype): ?>
