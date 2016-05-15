@@ -10,10 +10,6 @@
             $title = __('Last updated');
             $description = __('Filter on last updated date');
             break;
-        case 'time_spent':
-            $title = __('Time spent');
-            $description = __('Filter on time spent date');
-            break;
         default:
             $title = __($filter->getFilterTitle());
             $description = __("Filter on %customfield", array('%customfield' => $filter->getFilterTitle()));

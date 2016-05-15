@@ -24,7 +24,7 @@
                 <?php endforeach; ?>
             </select>
             <?php $show_button = true; ?>
-        <?php elseif (in_array($filter, array('posted', 'last_updated', 'time_spent'))): ?>
+        <?php elseif (in_array($filter, array('posted', 'last_updated'))): ?>
             <label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
             <select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
                 <option value="<?php echo urlencode('<='); ?>"<?php if (urldecode($selected_operator) == '<='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated before %value', array('%posted_or_updated' => '', '%value' => '')); ?></option>

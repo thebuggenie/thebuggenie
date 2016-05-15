@@ -623,13 +623,6 @@
         protected $should_log_entry = true;
 
         /**
-         * Custom sums columns.
-         *
-         * @var array
-         */
-        protected $_sums = array();
-
-        /**
          * All custom data type properties
          *
          * @property $_customfield*
@@ -783,7 +776,7 @@
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'desc'), $include_deleted = false)
         {
             $issues = array();
-            list ($rows, $count, $ids, $sums) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
+            list ($rows, $count, $ids) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
             if ($rows)
             {
                 if (framework\Context::isProjectContext())
@@ -804,7 +797,6 @@
                         $issue = new Issue($row->get(tables\Issues::ID), $row);
                         $user_ids[$row['issues.posted_by']] = true;
                         $issues[] = $issue;
-                        $issue->setSums($sums[$row->get(tables\Issues::ID)]);
                         unset($rows[$key]);
                     }
                     catch (\Exception $e) {}
@@ -6804,49 +6796,6 @@
             $this->setDescription($this->getDescription() . "\n[] " . tbg_encodeUTF8(trim(preg_replace('/\s+/', ' ', $add_todo)), true));
             $this->saveTodos();
             $this->resetTodos();
-        }
-
-        /**
-         * Set sums columns.
-         *
-         * @param array $sums
-         */
-        public function setSums(array $sums)
-        {
-            $this->_sums = $sums;
-        }
-
-        /**
-         * Get sums columns.
-         *
-         * @return array
-         */
-        public function getSums()
-        {
-            return $this->_sums;
-        }
-
-        /**
-         * Get sums spent time columns.
-         *
-         * @return string
-         */
-        public function getSumsSpentTime()
-        {
-            // Add array values prefix "spent_" and fetch time columns from sums with default 0.
-            $time = array_only_with_default($this->_sums, array_prefix_values(common\Timeable::$units, 'spent_'), 0);
-            $time = array_prefix_keys($time, 'spent_', true);
-
-            if ($time['hours'] != 0)
-                $time['hours'] = $time['hours'] / 100;
-
-            if ($time['minutes'] != 0)
-            {
-                $time['hours'] += $time['minutes'] % 60;
-                $time['minutes'] = floor($time['minutes'] / 60);
-            }
-            
-            return $this->getFormattedTime($time);
         }
 
     }

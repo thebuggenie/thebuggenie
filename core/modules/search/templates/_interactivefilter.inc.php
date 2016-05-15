@@ -153,7 +153,6 @@
                 break;
             case 'posted':
             case 'last_updated':
-            case 'time_spent':
                 include_component('search/interactivefilter_date', compact('filter'));
                 break;
             case 'relation':

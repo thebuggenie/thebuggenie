@@ -560,19 +560,6 @@ class Main extends framework\Action
                     $groupby_id = date('Ymd', $issue->getPosted());
                     $groupby_description = tbg_formatTime($issue->getPosted(), 20);
                     break;
-                case 'time_spent':
-                    if ($issue->getSpentTimes())
-                    {
-                        $issue_spent_time = reset($issue->getSpentTimes());
-                        $groupby_id = date('Ymd', $issue_spent_time->getEditedAt());
-                        $groupby_description = tbg_formatTime($issue_spent_time->getEditedAt(), 20);
-                    }
-                    else
-                    {
-                        $groupby_id = 0;
-                        $groupby_description = $i18n->__('None');
-                    }
-                    break;
             }
             if ($groupby_id !== $prevgroup_id)
             {
