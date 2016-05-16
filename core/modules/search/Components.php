@@ -34,7 +34,7 @@
             $this->selected_operator = (isset($this->selected_operator)) ? $this->selected_operator : '=';
             $this->key = (isset($this->key)) ? $this->key : null;
             $this->filter = (isset($this->filter)) ? $this->filter : null;
-            if (in_array($this->filter, array('posted', 'last_updated')))
+            if (in_array($this->filter, array('posted', 'last_updated', 'time_spent')))
             {
                 $this->selected_value = ($this->selected_value) ? $this->selected_value : NOW;
             }
@@ -98,6 +98,7 @@
             $filters['owner_team'] = array('description' => $i18n->__('Owned by team'));
             $filters['posted'] = array('description' => $i18n->__('Date reported'));
             $filters['last_updated'] = array('description' => $i18n->__('Date last updated'));
+            $filters['time_spent'] = array('description' => $i18n->__('Date time spent'));
             $this->filters = $filters;
         }
 
@@ -181,7 +182,7 @@
             $this->nondatecustomfields = entities\CustomDatatype::getAllExceptTypes($date_types);
             $this->datecustomfields = entities\CustomDatatype::getByFieldTypes($date_types);
             $i18n = framework\Context::getI18n();
-            $columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'posted_by' => $i18n->__('Posted by'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('Percent completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'posted' => $i18n->__('Posted at'), 'comments' => $i18n->__('Number of comments'));
+            $columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'posted_by' => $i18n->__('Posted by'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('Percent completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'posted' => $i18n->__('Posted at'), 'comments' => $i18n->__('Number of comments'), 'time_spent' => $i18n->__('Time spent at'));
             foreach ($this->nondatecustomfields as $field)
             {
                 $columns[$field->getKey()] = $i18n->__($field->getName());
