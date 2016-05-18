@@ -216,8 +216,18 @@
             {
                 if (!isset($details['o']))
                 {
-                    foreach ($details as $subdetails)
+                    foreach ($details as $i => $subdetails)
                     {
+                        if (count($subdetails) == 1)
+                        {
+                            if (isset($subdetails['o']))
+                            {
+                                $return_filters[$key][] = self::createFilter($key, array('o' => $subdetails['o'], 'v' => $details[$i+1]['v']), $search);
+                            }
+
+                            continue;
+                        }
+
                         $return_filters[$key][] = self::createFilter($key, $subdetails, $search);
                     }
                 }
