@@ -6833,18 +6833,34 @@
          */
         public function getSumsSpentTime()
         {
-            // Add array values prefix "spent_" and fetch time columns from sums with default 0.
-            $time = array_only_with_default($this->_sums, array_prefix_values(common\Timeable::$units, 'spent_'), 0);
-            $time = array_prefix_keys($time, 'spent_', true);
+            $any_exists = false;
+            $time = array();
 
-            if ($time['hours'] != 0)
+            foreach (common\Timeable::$units as $time_unit)
+            {
+                if (! array_key_exists('spent_' . $time_unit, $this->_sums))
+                {
+                    $time[$time_unit] = 0;
+                    continue;
+                }
+
+                $time[$time_unit] = $this->_sums['spent_' . $time_unit];
+
+                if (! $any_exists)
+                    $any_exists = true;
+            }
+
+            if (isset($time['hours']) && $time['hours'] != 0)
                 $time['hours'] = $time['hours'] / 100;
 
-            if ($time['minutes'] != 0)
+            if (isset($time['minutes']) && $time['minutes'] != 0)
             {
-                $time['hours'] += $time['minutes'] % 60;
-                $time['minutes'] = floor($time['minutes'] / 60);
+                $time['hours'] += floor($time['minutes'] / 60);
+                $time['minutes'] = $time['minutes'] % 60;
             }
+
+            if (! $any_exists)
+                $time = $this->getSpentTime(true, true);
             
             return $this->getFormattedTime($time);
         }
