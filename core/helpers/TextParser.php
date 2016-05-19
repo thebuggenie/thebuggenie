@@ -47,6 +47,8 @@
         protected $parsed_text = null;
         protected $toc = array();
         protected $text = null;
+        protected $todos = array();
+        protected $done_todos = array();
 
         /**
          * Add a regex to be parsed, with a function callback
@@ -210,6 +212,7 @@
             $listtypes = array('*' => 'ul', '#' => 'ol');
             $output = "";
 
+            $matches[1] = trim($matches[1]);
             $newlevel = ($close) ? 0 : mb_strlen($matches[1]);
 
             while ($this->list_level != $newlevel)
@@ -1032,7 +1035,7 @@
             $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
             $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
             $line_regexes['newline'] = '^$';
-            $line_regexes['list'] = '^([\*\#]+)(.*?)$';
+            $line_regexes['list'] = '^([\*\#]+ )(.*?)$';
             $line_regexes['tableopener'] = '^\{\|(.*?)$';
             $line_regexes['tablecloser'] = '^\|\}$';
             $line_regexes['tablerow'] = '^\|-(.*?)$';
@@ -1040,6 +1043,8 @@
             $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
             $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
             $line_regexes['horizontalrule'] = '^----$';
+            $line_regexes['todo'] = '^(\[\] )(.*?)$';
+            $line_regexes['donetodo'] = '^(\[x\] )(.*?)$';
 
             $char_regexes = array();
             $char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
@@ -1399,6 +1404,34 @@
         public function setOption($option, $value)
         {
             $this->options[$option] = $value;
+        }
+
+        protected function _parse_todo($matches)
+        {
+            if (! isset($matches)) return '';
+
+            $this->todos[] = $matches[2];
+
+            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+        }
+
+        public function getTodos()
+        {
+            return $this->todos;
+        }
+
+        protected function _parse_donetodo($matches)
+        {
+            if (! isset($matches)) return '';
+
+            $this->done_todos[] = $matches[2];
+
+            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+        }
+
+        public function getDoneTodos()
+        {
+            return $this->done_todos;
         }
 
     }

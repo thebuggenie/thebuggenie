@@ -15,8 +15,8 @@
             <?php endforeach; ?>
         </table>
         </div>
-        <p><label><input type="radio" id="relate_issue_with_selected" name="relate_action" checked="checked" value="relate_children"> <?php echo __('Add checked issues as children'); ?></label></p>
-        <p><label><input type="radio" id="relate_issue_with_selected" name="relate_action" value="relate_parent"> <?php echo __('Set selected issue as parent'); ?></label></p>
+        <p><label><input type="radio" class="relate_issue_with_selected" name="relate_action" checked="checked" value="relate_children"> <?php echo __('Add checked issues as children'); ?></label></p>
+        <p><label><input type="radio" class="relate_issue_with_selected" name="relate_action" value="relate_parent"> <?php echo __('Set selected issue as parent'); ?></label></p>
         <br>
         <div style="text-align: right; border-top: 1px dotted #CCC; padding-top: 5px;">
             <input type="submit" value="<?php echo __('Relate these issues'); ?>">

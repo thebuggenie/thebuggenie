@@ -242,7 +242,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'posted_by_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'posted_by_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'posted_by_change',
                                                                                 'header'             => __('Change poster'),
                                                                                 'allow_clear'        => false,
                                                                                 'clear_link_text'    => '',
@@ -266,7 +266,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by')); ?>', 'owned_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'owned_by_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'owned_by_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'owned_by_change',
                                                                                 'header'             => __('Change issue owner'),
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'user', 'value' => '%identifiable_value')) . "', 'owned_by');",
                                                                                 'team_callback'         => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'team', 'value' => '%identifiable_value')) . "', 'owned_by');",
@@ -296,7 +296,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'assigned_to_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'assigned_to_change',
                                                                                 'header'             => __('Assign this issue'),
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'user', 'value' => '%identifiable_value')) . "', 'assigned_to');",
                                                                                 'team_callback'         => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'team', 'value' => '%identifiable_value')) . "', 'assigned_to');",
@@ -408,7 +408,7 @@
                                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
                                 <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                                 <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::USER_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a user'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'user', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected user'),
@@ -417,7 +417,7 @@
                                                                                             'absolute'            => true,
                                                                                             'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a team'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'team', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected team'),
@@ -427,7 +427,7 @@
                                                                                             'absolute'            => true,
                                                                                             'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a client'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'client', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected client'),
@@ -452,23 +452,60 @@
                                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo image_tag('icon_customdatatype.png').__($choice->getName()); ?></a>
                                                 </li>
                                             <?php endforeach; ?>
-                                        <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                                        <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
                                             <li>
                                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
                                             </li>
                                             <li class="separator"></li>
                                             <li id="customfield_<?php echo $field; ?>_calendar_container" style="padding: 0;"></li>
+                                            <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                <li class="nohover">
+                                                    <form id="customfield_<?php echo $field; ?>_form" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>', 'customfield_<?php echo $field; ?>');return false;">
+                                                        <label><?php echo __('Time'); ?></label>
+                                                        <input type="text" id="customfield_<?php echo $field; ?>_hour" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">&nbsp;:&nbsp;
+                                                        <input type="text" id="customfield_<?php echo $field; ?>_minute" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">
+                                                        <input type="hidden" name="<?php echo $field; ?>_value" value="<?php echo (int) $info['name'] - tbg_get_timezone_offset(); ?>" id="<?php echo $field; ?>_value" />
+                                                        <input type="submit" value="<?php echo __('Set'); ?>">
+                                                    </form>
+                                                </li>
+                                            <?php endif; ?>
                                             <script type="text/javascript">
                                                 require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
                                                     domReady(function () {
                                                         Calendar.setup({
-                                                            dateField: '<?php echo $field; ?>_name',
+                                                            dateField: '<?php echo $field; ?>_new_name',
                                                             parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
                                                             valueCallback: function(element, date) {
-                                                                var value = Math.floor(date.getTime() / 1000);
-                                                                TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+                                                                <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) { ?>
+                                                                    var value = date.setHours(parseInt($('customfield_<?php echo $field; ?>_hour').value));
+                                                                    var date  = new Date(value);
+                                                                    var value = Math.floor(date.setMinutes(parseInt($('customfield_<?php echo $field; ?>_minute').value)) / 1000);
+                                                                <?php } else { ?>
+                                                                    var value = Math.floor(date.getTime() / 1000);
+                                                                    TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+                                                                <?php } ?>
+                                                                $('<?php echo $field; ?>_value').value = value;
                                                             }
                                                         });
+                                                        <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                            var date = new Date(parseInt($('<?php echo $field; ?>_value').value) * 1000);
+                                                            $('customfield_<?php echo $field; ?>_hour').value = date.getHours();
+                                                            $('customfield_<?php echo $field; ?>_minute').value = date.getMinutes();
+                                                            Event.observe($('customfield_<?php echo $field; ?>_hour'), 'change', function (event) {
+                                                                var value = parseInt($('<?php echo $field; ?>_value').value);
+                                                                var hours = parseInt(this.value);
+                                                                if (value <= 0 || hours < 0 || hours > 24) return;
+                                                                var date = new Date(value * 1000);
+                                                                $('<?php echo $field; ?>_value').value = date.setHours(parseInt(this.value)) / 1000;
+                                                            });
+                                                            Event.observe($('customfield_<?php echo $field; ?>_minute'), 'change', function (event) {
+                                                                var value = parseInt($('<?php echo $field; ?>_value').value);
+                                                                var minutes = parseInt(this.value);
+                                                                if (value <= 0 || minutes < 0 || minutes > 60) return;
+                                                                var date = new Date(value * 1000);
+                                                                $('<?php echo $field; ?>_value').value = date.setMinutes(parseInt(this.value)) / 1000;
+                                                            });
+                                                        <?php endif; ?>
                                                     });
                                                 });
                                             </script>
@@ -616,9 +653,10 @@
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><div class="status_badge" style="background-color: <?php echo $color; ?>;"><span><?php echo __($value); ?></span></div></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
                                         break;
                                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                    case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                                         $tbg_response->addJavascript('calendarview');
-                                        $value = ($info['name']) ? date('Y-m-d', $info['name']) : __('Not set');
-                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
+                                        $value = ($info['name']) ? date('Y-m-d' . ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $info['name']) : __('Not set');
+                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span id="<?php echo $field; ?>_new_name" style="display: none;"><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
                                         break;
                                     default:
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo (filter_var($info['name'], FILTER_VALIDATE_URL) !== false) ? link_tag($info['name'], $info['name']) : $info['name']; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
@@ -647,12 +685,12 @@
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if (!$file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if ($file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
@@ -663,7 +701,7 @@
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_after_attachments', $issue)->trigger(); ?>
 <fieldset id="viewissue_related_information_container">
     <legend>
-        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getChildIssues()).'</span>')); ?>
+        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getAccessibleChildIssues()).'</span>')); ?>
     </legend>
     <div id="viewissue_related_information">
         <?php include_component('main/relatedissues', array('issue' => $issue)); ?>

@@ -88,7 +88,7 @@
                     	
                     this.tempQuery = data;
 
-                    return data;
+                    return [data, replace];
                 },
                 _sorter = function(items) {
                     if (items.length && settings.sensitive) {

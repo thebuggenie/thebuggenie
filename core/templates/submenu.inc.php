@@ -48,6 +48,7 @@
                 <input type="hidden" name="fs[text][o]" value="=">
                 <?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'display: none;')); ?>
                 <input type="search" name="fs[text][v]" accesskey="f" id="searchfor" placeholder="<?php echo __('Search for anything here'); ?>"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
+                <?php echo image_tag('icon-mono-remove.png', array('id' => 'quicksearch_clear', 'style' => 'display: none;')); ?>
                 <input type="submit" class="button-blue" id="quicksearch_submit" value="<?php echo \thebuggenie\core\framework\Context::getI18n()->__('Find'); ?>">
             </div>
         </form>

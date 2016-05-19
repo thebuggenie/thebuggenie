@@ -879,6 +879,11 @@ class Context
     {
         try
         {
+            if ($user === null && in_array(self::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml']))
+            {
+                $user = User::loginCheck(self::getRequest(), self::getCurrentAction(),
+                Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD);
+            }
             self::$_user = ($user === null) ? User::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
             if (self::$_user->isAuthenticated())
             {

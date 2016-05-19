@@ -122,6 +122,9 @@
                     case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                         $value = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
                         break;
+                    case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                        $value = strtotime($value) !== false ? tbg_formatTime($value, 25) : '';
+                        break;
                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:

@@ -89,7 +89,7 @@
 
         public static function getValidSearchFilters()
         {
-            return array('id', 'project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking', 'votes_total');
+            return array('id', 'project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking', 'votes_total', 'relation', 'time_spent');
         }
 
         public static function getPredefinedFilters($type, \thebuggenie\core\entities\SavedSearch $search)
@@ -216,8 +216,18 @@
             {
                 if (!isset($details['o']))
                 {
-                    foreach ($details as $subdetails)
+                    foreach ($details as $i => $subdetails)
                     {
+                        if (count($subdetails) == 1)
+                        {
+                            if (isset($subdetails['o']))
+                            {
+                                $return_filters[$key][] = self::createFilter($key, array('o' => $subdetails['o'], 'v' => $details[$i+1]['v']), $search);
+                            }
+
+                            continue;
+                        }
+
                         $return_filters[$key][] = self::createFilter($key, $subdetails, $search);
                     }
                 }
@@ -694,7 +704,7 @@
                             return $ctn;
                         }
                     }
-                    elseif (in_array($filter_key, array('build', 'edition', 'component')))
+                    elseif (in_array($filter_key, array('build', 'edition', 'component', 'relation', 'time_spent')))
                     {
                         switch ($filter_key)
                         {
@@ -709,6 +719,44 @@
                             case 'build':
                                 $tbl = tables\IssueAffectsBuild::getTable();
                                 $fk  = tables\IssueAffectsBuild::ISSUE;
+                                break;
+                            case 'relation':
+                                if ($this->hasValue(4))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                }
+                                else if ($this->hasValue(3))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
+                                    return $crit->returnCriterion(tables\IssueRelations::CHILD_ID, '', Criteria::DB_IS_NULL);
+                                }
+                                else if ($this->hasValue(2))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                }
+                                else if ($this->hasValue(1))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                    return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
+                                }
+                                else if ($this->hasValue(0))
+                                {
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
+                                    $crit->addWhere(tables\IssueRelations::CHILD_ID, '', Criteria::DB_IS_NULL);
+                                    return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
+                                }
+                                return null;
+                                break;
+                            case 'time_spent':
+                                $crit->addJoin(tables\IssueSpentTimes::getTable(), tables\IssueSpentTimes::ISSUE_ID, tables\Issues::ID);
+                                $crit->addSelectionColumn(tables\IssueSpentTimes::SPENT_MINUTES, 'spent_minutes_sum', Criteria::DB_SUM);
+                                $crit->addSelectionColumn(tables\IssueSpentTimes::SPENT_HOURS, 'spent_hours_sum', Criteria::DB_SUM);
+                                $crit->addSelectionColumn(tables\IssueSpentTimes::SPENT_DAYS, 'spent_days_sum', Criteria::DB_SUM);
+                                $crit->addSelectionColumn(tables\IssueSpentTimes::SPENT_WEEKS, 'spent_weeks_sum', Criteria::DB_SUM);
+                                $crit->addSelectionColumn(tables\IssueSpentTimes::SPENT_MONTHS, 'spent_months_sum', Criteria::DB_SUM);
+                                $crit->addGroupBy(tables\Issues::ID);
+                                return $crit->returnCriterion(tables\IssueSpentTimes::EDITED_AT, $this->_value, $this->_operator);
                                 break;
                         }
                         $crit->addJoin($tbl, $fk, tables\Issues::ID, array(array($tbl->getB2DBAlias().'.'.$filter_key, $this->getValues())), \b2db\Criteria::DB_INNER_JOIN);
