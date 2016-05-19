@@ -321,7 +321,7 @@
             $this->quote = true;
 
             if ($matches[2])
-                $output .= $this->_parse_line($matches[2], $this->options)."<br>";
+                $output .= $matches[2]."<br>";
 
             return $output;
         }
