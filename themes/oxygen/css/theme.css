@@ -1511,12 +1511,16 @@ footer img {
     border-bottom-color: #AAA;
 }
 
-.comment_controls {
+.comment_controls,
+.todo_controls {
     margin-top: 10px;
     font-size: 1em;
 }
 
-.comment_controls .button, .comment_controls .button:hover {
+.comment_controls .button,
+.comment_controls .button:hover,
+.todo_controls .button,
+.todo_controls .button:hover {
     font-size: 1.1em;
     padding: 4px 8px;
 }
@@ -1545,7 +1549,8 @@ footer img {
     border: 1px solid #D8E6D8;
 }
 
-.comment_editor {
+.comment_editor,
+.todo_editor {
     position: fixed;
     width: 650px;
     z-index: 120;
@@ -1557,7 +1562,8 @@ footer img {
     border: 0;
 }
 
-.comment_editor .typeahead.dropdown-menu {
+.comment_editor .typeahead.dropdown-menu,
+.todo_editor .typeahead.dropdown-menu {
     overflow-y: scroll;
     max-height: 100px;
 }
@@ -2684,7 +2690,6 @@ a.shadowed:active {
 
 #account_tabs_panes label {
     padding: 0;
-    margin: 0;
 }
 
 #account_tabs_panes h3, .configuration_page h3, #project_config_menu_panes h3 {
@@ -3153,6 +3158,10 @@ td.selected_red span {
 
 /* some table styling */
 .padded_table td {
+    padding: 2px;
+}
+
+.padded_table.compact {
     padding: 2px;
 }
 
@@ -5765,7 +5774,8 @@ ul.workflow_actions li:hover {
     border-radius: 4px;
 }
 
-#comment_add_button {
+#comment_add_button,
+#todo_add_button {
     padding: 0;
 }
 
@@ -11469,10 +11479,6 @@ div.quickaddtask .close_micro_popup_link {
     margin: 0 5px;
 }
 
-.searchbuilder_filterstrip .interactive_dropdown > span.value {
-    float: left;
-}
-
 .interactive_dropdown, .interactive_plus_button {
     display: inline-block;
     position: relative;
@@ -11486,6 +11492,7 @@ div.quickaddtask .close_micro_popup_link {
     max-width: 300px;
     vertical-align: middle;
     cursor: pointer;
+    text-align: left;
 }
 
 .interactive_plus_container {
@@ -11593,6 +11600,7 @@ div.quickaddtask .close_micro_popup_link {
     overflow: hidden;
     white-space: nowrap;
     display: block;
+    float: left;
 }
 
 .interactive_menu h1, .interactive_filters_list h1 {
@@ -11759,6 +11767,10 @@ div.quickaddtask .close_micro_popup_link {
     display: block;
     left: -1px;
     z-index: 1;
+}
+.interactive_dropdown.rightie.selected .interactive_menu {
+    right: -1px;
+    left: auto;
 }
 
 .interactive_menu_values {
@@ -17500,7 +17512,8 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 
 #issue_main #comment_bodybox_syntax_picker,
 ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
-ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
+ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
+#issue_main #todo_bodybox_syntax_picker {
     margin-top: 22px;
 }
 
@@ -17528,7 +17541,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #comment_add_indicator,
 div[id^='comment_edit_indicator_'],
-div[id^='comment_reply_indicator_'] {
+div[id^='comment_reply_indicator_'],
+#todo_add_indicator {
     margin-top: 13px;
 }
 
@@ -18488,4 +18502,47 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 #config_modules .address-settings p {
     padding: 0 0 15px 0;
+}
+
+.relate_issue_with_selected {
+    margin-top: -3px;
+}
+
+.todos-list .todo {
+    margin-left: 4px;
+}
+.comment-todos-list {
+    margin-top: 0;
+}
+.comment-todos-list .todo {
+    margin-left: 21px;
+}
+.todo .todo-delete {
+    opacity: 0;
+    top: 4px;
+    position: relative;
+}
+.todo:hover .todo-delete {
+    opacity: 1;
+}
+.todo .todo-mark-done,
+.todo .todo-mark-not-done,
+.todo .todo-mark-indicator {
+    top: 1px;
+    position: relative;
+    font-size: 15px;
+}
+.todo-comment-author {
+    margin-top: 15px;
+}
+.todo-comment-author > span {
+    color: #AAA;
+    font-weight: normal;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 2px;
+}
+.todo-checkbox {
+    margin-right: 3px;
+    color: #AAA;
 }

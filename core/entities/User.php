@@ -509,14 +509,18 @@
          *
          * @param \thebuggenie\core\framework\Request $request
          * @param \thebuggenie\core\framework\Action  $action
+         * @param null                                $authentication_method
          *
          * @return \thebuggenie\core\entities\User
          */
-        public static function loginCheck(framework\Request $request, framework\Action $action)
+        public static function loginCheck(framework\Request $request, framework\Action $action, $authentication_method = null)
         {
             try
             {
-                $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
+                if ($authentication_method === null)
+                {
+                    $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
+                }
                 $user = null;
                 $external = false;
 
@@ -2982,11 +2986,11 @@
                 $this->_notification_settings_sorted = array();
                 foreach ($this->_notification_settings as $ns)
                 {
-                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = array();
+                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = [];
                     $this->_notification_settings_sorted[$ns->getModuleName()][$ns->getName()] = $ns;
                 }
             }
-            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = array();
+            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = [];
 
             if (!isset($this->_notification_settings_sorted[$module][$setting]))
             {

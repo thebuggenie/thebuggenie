@@ -177,7 +177,7 @@
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 </select>
-                            <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                            <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
                                 <div id="customfield_<?php echo $field; ?>_calendar_container"></div>
                                 <script type="text/javascript">
                                     require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {

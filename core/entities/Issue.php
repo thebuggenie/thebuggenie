@@ -602,6 +602,34 @@
         protected $_new_subscribers = array();
 
         /**
+         * List of not done todos for this issue
+         *
+         * @var array
+         */
+        protected $_todos;
+
+        /**
+         * List of done todos for this issue
+         *
+         * @var array
+         */
+        protected $_done_todos;
+
+        /**
+         * Should log entry be added
+         * 
+         * @var bool
+         */
+        protected $should_log_entry = true;
+
+        /**
+         * Custom sums columns.
+         *
+         * @var array
+         */
+        protected $_sums = array();
+
+        /**
          * All custom data type properties
          *
          * @property $_customfield*
@@ -699,7 +727,7 @@
          *
          * @param string $issue_number An integer or issue number
          *
-         * @return \thebuggenie\core\entities\Issue
+         * @return Issue
          */
         public static function getIssueFromLink($issue_number)
         {
@@ -710,7 +738,7 @@
             {
                 try
                 {
-                    if (!$project instanceof \thebuggenie\core\entities\Project) return null;
+                    if (!$project instanceof Project) return null;
                     if ($project->usePrefix()) return null;
                     $found_issue = tables\Issues::getTable()->getByProjectIDAndIssueNo($project->getID(), (integer) $issue_no);
                 }
@@ -722,15 +750,15 @@
             else
             {
                 $issue_no = explode('-', mb_strtoupper($issue_no));
-                \thebuggenie\core\framework\Logging::log('exploding');
-                if (count($issue_no) == 2 && ($found_issue = tables\Issues::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1])) instanceof \thebuggenie\core\entities\Issue)
+                framework\Logging::log('exploding');
+                if (count($issue_no) == 2 && ($found_issue = tables\Issues::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1])) instanceof Issue)
                 {
                     if (!$found_issue->getProject()->usePrefix()) return null;
                 }
-                \thebuggenie\core\framework\Logging::log('exploding done');
+                framework\Logging::log('exploding done');
             }
 
-            return ($found_issue instanceof \thebuggenie\core\entities\Issue) ? $found_issue : null;
+            return ($found_issue instanceof Issue) ? $found_issue : null;
         }
 
         /**
@@ -755,7 +783,7 @@
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'desc'), $include_deleted = false)
         {
             $issues = array();
-            list ($rows, $count, $ids) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
+            list ($rows, $count, $ids, $sums) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
             if ($rows)
             {
                 if (framework\Context::isProjectContext())
@@ -776,6 +804,7 @@
                         $issue = new Issue($row->get(tables\Issues::ID), $row);
                         $user_ids[$row['issues.posted_by']] = true;
                         $issues[] = $issue;
+                        $issue->setSums($sums[$row->get(tables\Issues::ID)]);
                         unset($rows[$key]);
                     }
                     catch (\Exception $e) {}
@@ -804,11 +833,11 @@
         public static function findIssuesByText($text, $project = null)
         {
             $issue = self::getIssueFromLink($text);
-            if ($issue instanceof \thebuggenie\core\entities\Issue)
+            if ($issue instanceof Issue)
                 return array(array($issue), 1);
 
             $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
-            if ($project instanceof \thebuggenie\core\entities\Project)
+            if ($project instanceof Project)
             {
                 $filters['project_id'] = SearchFilter::createFilter('project_id', array('v' => $project->getID(), 'o' => '='));
             }
@@ -942,10 +971,10 @@
             foreach ($unique_issue_numbers as $issue_no)
             {
                 $issue = Issue::getIssueFromLink($issue_no);
-                if ($issue instanceof \thebuggenie\core\entities\Issue) $issues[] = $issue;
+                if ($issue instanceof Issue) $issues[] = $issue;
             }
 
-            // Return array consisting out of two arrays - one with \thebuggenie\core\entities\Issue
+            // Return array consisting out of two arrays - one with Issue
             // instances, and the second one with transition information for those
             // issues.
             return array("issues" => $issues, "transitions" => $transitions);
@@ -994,7 +1023,7 @@
          */
         public function hasAccess($target_user = null)
         {
-            \thebuggenie\core\framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
+            framework\Logging::log('checking access to issue ' . $this->getFormattedIssueNo());
             $i_id = $this->getID();
             $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
             $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
@@ -1005,29 +1034,29 @@
             }
             if ($this->getPostedByID() == $user->getID())
             {
-                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user posted it');
+                framework\Logging::log('done checking, allowed since this user posted it');
                 return true;
             }
-            if ($this->getOwner() instanceof \thebuggenie\core\entities\User && $this->getOwner()->getID() == $user->getID())
+            if ($this->getOwner() instanceof User && $this->getOwner()->getID() == $user->getID())
             {
-                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user owns it');
+                framework\Logging::log('done checking, allowed since this user owns it');
                 return true;
             }
-            if ($this->getAssignee() instanceof \thebuggenie\core\entities\User && $this->getAssignee()->getID() == $user->getID())
+            if ($this->getAssignee() instanceof User && $this->getAssignee()->getID() == $user->getID())
             {
-                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is assigned to it');
+                framework\Logging::log('done checking, allowed since this user is assigned to it');
                 return true;
             }
             if ($user->hasPermission('canseegroupissues', 0, 'core') &&
-                $this->getPostedBy() instanceof \thebuggenie\core\entities\User &&
+                $this->getPostedBy() instanceof User &&
                 $this->getPostedBy()->getGroupID() == $user->getGroupID())
             {
-                \thebuggenie\core\framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
+                framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
                 return true;
             }
             if ($user->hasPermission('canseeallissues', 0, 'core') === false)
             {
-                \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
+                framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
                 return false;
             }
             if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category && !$this->getCategory()->hasAccess($user))
@@ -1037,10 +1066,10 @@
             }
             if ($this->getProject()->hasAccess($user))
             {
-                \thebuggenie\core\framework\Logging::log('done checking, can access project');
+                framework\Logging::log('done checking, can access project');
                 return true;
             }
-            \thebuggenie\core\framework\Logging::log('done checking, denied');
+            framework\Logging::log('done checking, denied');
             return false;
         }
 
@@ -1052,7 +1081,7 @@
         /**
          * Returns the project for this issue
          *
-         * @return \thebuggenie\core\entities\Project
+         * @return Project
          */
         public function getProject()
         {
@@ -1067,13 +1096,13 @@
         public function getProjectID()
         {
             $project = $this->getProject();
-            return ($project instanceof \thebuggenie\core\entities\Project) ? $project->getID() : null;
+            return ($project instanceof Project) ? $project->getID() : null;
         }
 
         /**
          * Return the issues current step in the workflow
          *
-         * @return \thebuggenie\core\entities\WorkflowStep
+         * @return WorkflowStep
          */
         public function getWorkflowStep()
         {
@@ -1090,7 +1119,7 @@
             return $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType());
         }
 
-        public function setWorkflowStep(\thebuggenie\core\entities\WorkflowStep $step)
+        public function setWorkflowStep(WorkflowStep $step)
         {
             $this->_addChangedProperty('_workflow_step_id', $step->getID());
         }
@@ -1098,17 +1127,17 @@
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransition
+         * @return array|WorkflowTransition
          */
         public function getAvailableWorkflowTransitions()
         {
-            return ($this->getWorkflowStep() instanceof \thebuggenie\core\entities\WorkflowStep && $this->isWorkflowTransitionsAvailable()) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
+            return ($this->getWorkflowStep() instanceof WorkflowStep && $this->isWorkflowTransitionsAvailable()) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
         }
 
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransition
+         * @return array|WorkflowTransition
          */
         public function getAvailableWorkflowStatusIDsAndTransitions()
         {
@@ -1152,7 +1181,7 @@
         /**
          * Get current available statuses
          *
-         * @return array|\thebuggenie\core\entities\Status
+         * @return array|Status
          */
         public function getAvailableStatuses()
         {
@@ -1205,7 +1234,7 @@
                         if ($datatype->hasCustomOptions())
                         {
                             $option = tables\CustomFieldOptions::getTable()->selectById((int) $row->get(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID));
-                            if ($option instanceof \thebuggenie\core\entities\CustomDatatypeOption)
+                            if ($option instanceof CustomDatatypeOption)
                             {
                                 $this->$var_name = $option;
                             }
@@ -1333,7 +1362,7 @@
          */
         public function isDuplicate()
         {
-            return ($this->getDuplicateOf() instanceof \thebuggenie\core\entities\Issue) ? true : false;
+            return ($this->getDuplicateOf() instanceof Issue) ? true : false;
         }
 
         /**
@@ -1362,7 +1391,7 @@
         /**
          * Returns the issue which this is a duplicate of
          *
-         * @return \thebuggenie\core\entities\Issue
+         * @return Issue
          */
         public function getDuplicateOf()
         {
@@ -1372,7 +1401,7 @@
         /**
          * Returns an array of all issues which are duplicates of this one
          *
-         * @return array|\thebuggenie\core\entities\Issue
+         * @return array|Issue
          */
         public function getDuplicateIssues()
         {
@@ -1483,7 +1512,7 @@
             if ($this->_editable !== null) return $this->_editable;
 
             if ($this->getProject()->isArchived()) $this->_editable = false;
-            else $this->_editable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof \thebuggenie\core\entities\WorkflowStep && $this->getWorkflowStep()->isEditable())));
+            else $this->_editable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof WorkflowStep && $this->getWorkflowStep()->isEditable())));
 
             return $this->_editable;
         }
@@ -1493,7 +1522,7 @@
             if ($this->_updateable !== null) return $this->_updateable;
 
             if ($this->getProject()->isArchived()) $this->_updateable = false;
-            else $this->_updateable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep() instanceof \thebuggenie\core\entities\WorkflowStep || !$this->getWorkflowStep()->isClosed()));
+            else $this->_updateable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep() instanceof WorkflowStep || !$this->getWorkflowStep()->isClosed()));
 
             return $this->_updateable;
         }
@@ -1527,7 +1556,7 @@
         public function isInvolved()
         {
             $user_id = framework\Context::getUser()->getID();
-            return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee() instanceof \thebuggenie\core\entities\User) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner() instanceof \thebuggenie\core\entities\User));
+            return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee() instanceof User) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner() instanceof User));
         }
 
         /**
@@ -1538,7 +1567,7 @@
         public function canEditAccessPolicy()
         {
             $retval = $this->_permissionCheck('canlockandeditlockedissues', true);
-            $retval = ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
 
             return $retval;
         }
@@ -1556,7 +1585,7 @@
             $retval = $this->_permissionCheck('caneditissuebasic');
             $retval = ($retval === null) ? $this->_permissionCheck('cancreateandeditissues') : $retval;
             $retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
-            $retval = ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
 
             return $retval;
         }
@@ -1571,7 +1600,7 @@
             $retval = $this->_permissionCheck('caneditissuetitle');
             $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
 
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1604,7 +1633,7 @@
             $retval = $this->_permissionCheck('caneditissuedescription');
             $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
 
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1617,7 +1646,7 @@
             $retval = $this->_permissionCheck('caneditissueshortname');
             $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
 
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1630,7 +1659,7 @@
             $retval = $this->_permissionCheck('caneditissuereproduction_steps');
             $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
 
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1652,7 +1681,7 @@
 
             if ($retval === null)
             {
-                $retval = ($fallback !== null) ? $fallback : \thebuggenie\core\framework\Settings::isPermissive();
+                $retval = ($fallback !== null) ? $fallback : framework\Settings::isPermissive();
             }
 
             $this->_can_permission_cache[$permission] = $retval;
@@ -1835,7 +1864,7 @@
             $retval = $this->_permissionCheck('cancloseissues');
             $retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
             $retval = ($retval === null) ? $this->canEditIssue() : $retval;
-            $retval = ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
 
             return $retval;
         }
@@ -1853,7 +1882,7 @@
             $retval = $this->_permissionCheck('canreopenissues');
             $retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
             $retval = ($retval === null) ? $this->canEditIssue() : $retval;
-            $retval = ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
 
             return $retval;
         }
@@ -1863,7 +1892,7 @@
             $retval = $this->_permissionCheck($permission_1);
             $retval = ($retval === null) ? $this->_permissionCheck($permission_2) : $retval;
 
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1883,7 +1912,7 @@
             $retval = ($retval === null) ? $this->canAddExtraInformation() : $retval;
 
             $this->_can_permission_cache[$permission] = $retval;
-            return ($retval !== null) ? $retval : \thebuggenie\core\framework\Settings::isPermissive();
+            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
         }
 
         /**
@@ -1993,7 +2022,7 @@
         {
             try
             {
-                $issuetype_description = ($this->getIssueType() instanceof \thebuggenie\core\entities\Issuetype && $include_issuetype) ? $this->getIssueType()->getName().' ' : '';
+                $issuetype_description = ($this->getIssueType() instanceof Issuetype && $include_issuetype) ? $this->getIssueType()->getName().' ' : '';
             }
             catch (\Exception $e)
             {
@@ -2014,7 +2043,7 @@
         /**
          * Returns the issue type for this issue
          *
-         * @return \thebuggenie\core\entities\Issuetype
+         * @return Issuetype
          */
         public function getIssueType()
         {
@@ -2025,7 +2054,7 @@
         {
             try
             {
-                return ($this->getIssueType() instanceof \thebuggenie\core\entities\Issuetype);
+                return ($this->getIssueType() instanceof Issuetype);
             }
             catch (\Exception $e)
             {
@@ -2077,7 +2106,7 @@
         /**
          * Returns the issue status
          *
-         * @return \thebuggenie\core\entities\Status
+         * @return Status
          */
         public function getStatus()
         {
@@ -2087,7 +2116,7 @@
         /**
          * Returns the editions for this issue
          *
-         * @return array Returns an array with 'edition' (\thebuggenie\core\entities\Edition), 'status' (\thebuggenie\core\entities\Datatype), 'confirmed' (boolean) and 'a_id'
+         * @return array Returns an array with 'edition' (Edition), 'status' (Datatype), 'confirmed' (boolean) and 'a_id'
          */
         public function getEditions()
         {
@@ -2095,7 +2124,7 @@
             return $this->_editions;
         }
 
-        public function isEditionAffected(\thebuggenie\core\entities\Edition $edition)
+        public function isEditionAffected(Edition $edition)
         {
             $editions = $this->getEditions();
             if (count($editions))
@@ -2143,7 +2172,7 @@
             return (bool) count($builds);
         }
 
-        public function isBuildAffected(\thebuggenie\core\entities\Build $build)
+        public function isBuildAffected(Build $build)
         {
             $builds = $this->getBuilds();
             if (count($builds))
@@ -2191,7 +2220,7 @@
             return (bool) count($components);
         }
 
-        public function isComponentAffected(\thebuggenie\core\entities\Component $component)
+        public function isComponentAffected(Component $component)
         {
             $components = $this->getComponents();
             if (count($components))
@@ -2295,14 +2324,14 @@
         /**
          * Attach a file to the issue
          *
-         * @param \thebuggenie\core\entities\File $file The file to attach
+         * @param File $file The file to attach
          */
-        public function attachFile(\thebuggenie\core\entities\File $file, $file_comment = '', $file_description = '', $return_comment = false)
+        public function attachFile(File $file, $file_comment = '', $file_description = '', $return_comment = false)
         {
             $existed = !tables\IssueFiles::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
             if (!$existed)
             {
-                $comment = new \thebuggenie\core\entities\Comment();
+                $comment = new Comment();
                 $comment->setPostedBy(framework\Context::getUser()->getID());
                 $comment->setTargetID($this->getID());
                 $comment->setTargetType(Comment::TYPE_ISSUE);
@@ -2343,12 +2372,12 @@
                         {
                             if ($row->get(tables\IssueRelations::PARENT_ID) == $this->getID())
                             {
-                                $issue = new \thebuggenie\core\entities\Issue($row->get(tables\IssueRelations::CHILD_ID));
+                                $issue = new Issue($row->get(tables\IssueRelations::CHILD_ID));
                                 $this->_child_issues[$row->get(tables\IssueRelations::ID)] = $issue;
                             }
                             else
                             {
-                                $issue = new \thebuggenie\core\entities\Issue($row->get(tables\IssueRelations::PARENT_ID));
+                                $issue = new Issue($row->get(tables\IssueRelations::PARENT_ID));
                                 $this->_parent_issues[$row->get(tables\IssueRelations::ID)] = $issue;
                             }
                         }
@@ -2413,7 +2442,7 @@
         /**
          * Return issues relating to this
          *
-         * @return array|\thebuggenie\core\entities\Issue
+         * @return array|Issue
          */
         public function getParentIssues()
         {
@@ -2441,7 +2470,7 @@
 
         public function hasParentIssuetype($issuetype)
         {
-            $issuetype_id = ($issuetype instanceof \thebuggenie\core\entities\Issuetype) ? $issuetype->getID() : $issuetype;
+            $issuetype_id = ($issuetype instanceof Issuetype) ? $issuetype->getID() : $issuetype;
 
             if (! count($this->getParentIssues())) return false;
 
@@ -2456,7 +2485,7 @@
         /**
          * Return related issues
          *
-         * @return array|\thebuggenie\core\entities\Issue
+         * @return array|Issue
          */
         public function getChildIssues()
         {
@@ -2543,7 +2572,7 @@
             $user_id = (is_object($user_id)) ? $user_id->getID() : $user_id;
             $this->_setupVotes();
 
-            if (($user_id == \thebuggenie\core\framework\Settings::getDefaultUserID() && \thebuggenie\core\framework\Settings::isDefaultUserGuest()) || !$this->getProject()->canVoteOnIssues())
+            if (($user_id == framework\Settings::getDefaultUserID() && framework\Settings::isDefaultUserGuest()) || !$this->getProject()->canVoteOnIssues())
             {
                 return true;
             }
@@ -2706,9 +2735,9 @@
             switch ($syntax)
             {
                 default:
-                case \thebuggenie\core\framework\Settings::SYNTAX_PT:
+                case framework\Settings::SYNTAX_PT:
                     $options = array('plain' => true);
-                case \thebuggenie\core\framework\Settings::SYNTAX_MW:
+                case framework\Settings::SYNTAX_MW:
                     $parser = new \thebuggenie\core\helpers\TextParser($text);
                     foreach ($options as $option => $value)
                     {
@@ -2716,7 +2745,7 @@
                     }
                     $text = $parser->getParsedText();
                     break;
-                case \thebuggenie\core\framework\Settings::SYNTAX_MD:
+                case framework\Settings::SYNTAX_MD:
                     $parser = new \thebuggenie\core\helpers\TextParserMarkdown();
                     $text = $parser->transform($text);
                     break;
@@ -2766,7 +2795,7 @@
          */
         public function setDescriptionSyntax($syntax)
         {
-            if (!is_numeric($syntax)) $syntax = \thebuggenie\core\framework\Settings::getSyntaxValue($syntax);
+            if (!is_numeric($syntax)) $syntax = framework\Settings::getSyntaxValue($syntax);
 
             $this->_addChangedProperty('_description_syntax', $syntax);
         }
@@ -2813,7 +2842,7 @@
          */
         public function setReproductionStepsSyntax($syntax)
         {
-            if (!is_numeric($syntax)) $syntax = \thebuggenie\core\framework\Settings::getSyntaxValue($syntax);
+            if (!is_numeric($syntax)) $syntax = framework\Settings::getSyntaxValue($syntax);
 
             $this->_addChangedProperty('_reproduction_steps_syntax', $syntax);
         }
@@ -2821,7 +2850,7 @@
         /**
          * Returns the category
          *
-         * @return \thebuggenie\core\entities\Category
+         * @return Category
          */
         public function getCategory()
         {
@@ -2851,7 +2880,7 @@
         /**
          * Returns the reproducability
          *
-         * @return \thebuggenie\core\entities\Reproducability
+         * @return Reproducability
          */
         public function getReproducability()
         {
@@ -2871,7 +2900,7 @@
         /**
          * Returns the priority
          *
-         * @return \thebuggenie\core\entities\Priority
+         * @return Priority
          */
         public function getPriority()
         {
@@ -2917,6 +2946,19 @@
             return $retarr;
         }
 
+        public function getCustomFieldsOfTypes($types)
+        {
+            $retarr = array();
+            foreach (CustomDatatype::getAll() as $key => $customdatatype)
+            {
+                if (!in_array($customdatatype->getType(), $types)) continue;
+
+                $var_name = '_customfield'.$key;
+                $retarr[$key] = $this->$var_name;
+            }
+            return $retarr;
+        }
+
         /**
          * Set the value of a custom field
          *
@@ -2954,7 +2996,7 @@
                         $matchCount = count($matches[0]);
                         for($i=0; $i<$matchCount; $i++) {
                             $value = $this->getCustomField($matches[1][$i]);
-                            if ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) {
+                            if ($value instanceof CustomDatatypeOption) {
                                 $value = $value->getValue();
                             }
                             if (is_numeric($value)) {
@@ -2982,11 +3024,11 @@
                     }
                     return $result;
                 }
-                elseif ($this->$var_name && $customtype->hasCustomOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\CustomDatatypeOption)
+                elseif ($this->$var_name && $customtype->hasCustomOptions() && !$this->$var_name instanceof CustomDatatypeOption)
                 {
                     $this->$var_name = tables\CustomFieldOptions::getTable()->selectById($this->$var_name);
                 }
-                elseif ($this->$var_name && $customtype->hasPredefinedOptions() && !$this->$var_name instanceof \thebuggenie\core\entities\common\Identifiable)
+                elseif ($this->$var_name && $customtype->hasPredefinedOptions() && !$this->$var_name instanceof common\Identifiable)
                 {
                     try
                     {
@@ -3074,9 +3116,9 @@
 
         public function getAgileTextColor()
         {
-            if (!\thebuggenie\core\framework\Context::isCLI())
+            if (!framework\Context::isCLI())
             {
-                \thebuggenie\core\framework\Context::loadLibrary('ui');
+                framework\Context::loadLibrary('ui');
             }
 
             $rgb = hex2rgb($this->_scrumcolor);
@@ -3099,7 +3141,7 @@
         /**
          * Returns the assigned milestone if any
          *
-         * @return \thebuggenie\core\entities\Milestone
+         * @return Milestone
          */
         public function getMilestone()
         {
@@ -3133,7 +3175,7 @@
         {
             if ($row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $issue_id))
             {
-                $related_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById($issue_id);
+                $related_issue = Issue::getB2DBTable()->selectById($issue_id);
                 $relation_id = $row->get(tables\IssueRelations::ID);
                 if ($row->get(tables\IssueRelations::PARENT_ID) == $this->getID())
                 {
@@ -3155,7 +3197,7 @@
          *
          * @see removeDependantIssue()
          *
-         * @param \thebuggenie\core\entities\Issue $related_issue The issue to remove relations from
+         * @param Issue $related_issue The issue to remove relations from
          * @param integer $relation_id The relation id to delete
          */
         protected function _removeParentIssue($related_issue, $relation_id)
@@ -3175,7 +3217,7 @@
          *
          * @see removeDependantIssue()
          *
-         * @param \thebuggenie\core\entities\Issue $related_issue The issue to remove relations from
+         * @param Issue $related_issue The issue to remove relations from
          * @param integer $relation_id The relation id to delete
          */
         protected function _removeChildIssue($related_issue, $relation_id)
@@ -3193,11 +3235,11 @@
         /**
          * Add a related issue
          *
-         * @param \thebuggenie\core\entities\Issue $related_issue
+         * @param Issue $related_issue
          *
          * @return boolean
          */
-        public function addParentIssue(\thebuggenie\core\entities\Issue $related_issue)
+        public function addParentIssue(Issue $related_issue)
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
@@ -3208,6 +3250,9 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $related_issue->calculateTime();
                 $related_issue->save();
+                $last_updated = time();
+                $this->touch($last_updated);
+                $related_issue->touch($last_updated);
 
                 return true;
             }
@@ -3217,11 +3262,11 @@
         /**
          * Add a related issue
          *
-         * @param \thebuggenie\core\entities\Issue $related_issue
+         * @param Issue $related_issue
          *
          * @return boolean
          */
-        public function addChildIssue(\thebuggenie\core\entities\Issue $related_issue, $epic = false)
+        public function addChildIssue(Issue $related_issue, $epic = false)
         {
             if (!$row = tables\IssueRelations::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
             {
@@ -3254,7 +3299,7 @@
 
         public function calculateTime()
         {
-            $estimated_times = $spent_times = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
+            $estimated_times = $spent_times = common\Timeable::getZeroedUnitsWithPoints();
             foreach ($this->getChildIssues() as $issue)
             {
                 foreach ($issue->getEstimatedTime() as $key => $value) $estimated_times[$key] += $value;
@@ -3270,7 +3315,7 @@
         /**
          * Return the poster
          *
-         * @return \thebuggenie\core\entities\User
+         * @return User
          */
         public function getPostedBy()
         {
@@ -3285,7 +3330,7 @@
          */
         public function isPostedBy()
         {
-            return (bool) ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable);
+            return (bool) ($this->getPostedBy() instanceof common\Identifiable);
         }
 
         /**
@@ -3296,15 +3341,15 @@
         public function getPostedByID()
         {
             $poster = $this->getPostedBy();
-            return ($poster instanceof \thebuggenie\core\entities\common\Identifiable) ? $poster->getID() : null;
+            return ($poster instanceof common\Identifiable) ? $poster->getID() : null;
         }
 
         /**
          * Set issue poster
          *
-         * @param \thebuggenie\core\entities\common\Identifiable $poster The user/team you want to have posted the issue
+         * @param common\Identifiable $poster The user/team you want to have posted the issue
          */
-        public function setPostedBy(\thebuggenie\core\entities\common\Identifiable $poster)
+        public function setPostedBy(common\Identifiable $poster)
         {
             $this->_addChangedProperty('_posted_by', $poster->getID());
         }
@@ -3369,7 +3414,7 @@
         /**
          * Returns the resolution
          *
-         * @return \thebuggenie\core\entities\Resolution
+         * @return Resolution
          */
         public function getResolution()
         {
@@ -3389,7 +3434,7 @@
         /**
          * Returns the severity
          *
-         * @return \thebuggenie\core\entities\Severity
+         * @return Severity
          */
         public function getSeverity()
         {
@@ -3504,7 +3549,7 @@
          */
         public function getEstimatedHoursAndMinutes($append_minutes = false, $subtract_hours = false)
         {
-            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getEstimatedHours($append_minutes), $this->getEstimatedMinutes($subtract_hours));
+            return common\Timeable::formatHoursAndMinutes($this->getEstimatedHours($append_minutes), $this->getEstimatedMinutes($subtract_hours));
         }
 
         /**
@@ -3517,7 +3562,7 @@
          */
         public static function convertFancyStringToTime($string, self $issue)
         {
-            $retarr = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
+            $retarr = common\Timeable::getZeroedUnitsWithPoints();
             $string = mb_strtolower(trim($string));
             $time_arr = preg_split('/(\,|\/|and|or|plus)/', $string);
             foreach ($time_arr as $time_elm)
@@ -3791,7 +3836,7 @@
 
         public function isOwned()
         {
-            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable);
+            return (bool) ($this->getOwner() instanceof common\Identifiable);
         }
 
         public function revertOwner()
@@ -3857,7 +3902,7 @@
 
         public function isAssigned()
         {
-            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable);
+            return (bool) ($this->getAssignee() instanceof common\Identifiable);
         }
 
         /**
@@ -3964,7 +4009,7 @@
          */
         public function getSpentHoursAndMinutes($append_minutes = false, $subtract_hours = false)
         {
-            return \thebuggenie\core\entities\common\Timeable::formatHoursAndMinutes($this->getSpentHours($append_minutes), $this->getSpentMinutes($subtract_hours));
+            return common\Timeable::formatHoursAndMinutes($this->getSpentHours($append_minutes), $this->getSpentMinutes($subtract_hours));
         }
 
         /**
@@ -4155,7 +4200,7 @@
         /**
          * Add a build to the list of affected builds
          *
-         * @param \thebuggenie\core\entities\Build $build The build to add
+         * @param Build $build The build to add
          *
          * @return boolean
          */
@@ -4181,7 +4226,7 @@
         /**
          * Add an edition to the list of affected editions
          *
-         * @param \thebuggenie\core\entities\Edition $edition The edition to add
+         * @param Edition $edition The edition to add
          *
          * @return boolean
          */
@@ -4203,7 +4248,7 @@
         /**
          * Add a component to the list of affected components
          *
-         * @param \thebuggenie\core\entities\Component $component The component to add
+         * @param Component $component The component to add
          *
          * @return boolean
          */
@@ -4229,7 +4274,7 @@
          * @see removeAffectedBuild()
          * @see removeAffectedComponent()
          *
-         * @param \thebuggenie\core\entities\Edition $item The edition to remove
+         * @param Edition $item The edition to remove
          *
          * @return boolean
          */
@@ -4251,7 +4296,7 @@
          * @see removeAffectedEdition()
          * @see removeAffectedComponent()
          *
-         * @param \thebuggenie\core\entities\Build $item The build to remove
+         * @param Build $item The build to remove
          *
          * @return boolean
          */
@@ -4273,7 +4318,7 @@
          * @see removeAffectedEdition()
          * @see removeAffectedBuild()
          *
-         * @param \thebuggenie\core\entities\Component $item The component to remove
+         * @param Component $item The component to remove
          *
          * @return boolean
          */
@@ -4295,7 +4340,7 @@
          * @see confirmAffectedBuild()
          * @see confirmAffectedComponent()
          *
-         * @param \thebuggenie\core\entities\Edition $item The edition to remove
+         * @param Edition $item The edition to remove
          * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
@@ -4325,7 +4370,7 @@
          * @see confirmAffectedEdition()
          * @see confirmAffectedComponent()
          *
-         * @param \thebuggenie\core\entities\Build $item The build to remove
+         * @param Build $item The build to remove
          * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
@@ -4355,7 +4400,7 @@
          * @see confirmAffectedEdition()
          * @see confirmAffectedBuild()
          *
-         * @param \thebuggenie\core\entities\Component $item The component to remove
+         * @param Component $item The component to remove
          * @param boolean $confirmed [optional] Whether it's confirmed or not
          *
          * @return boolean
@@ -4385,8 +4430,8 @@
          * @see setAffectedBuildStatus()
          * @see setAffectedComponentStatus()
          *
-         * @param \thebuggenie\core\entities\Edition $item The edition to set status for
-         * @param \thebuggenie\core\entities\Datatype $status The status to set
+         * @param Edition $item The edition to set status for
+         * @param Datatype $status The status to set
          *
          * @return boolean
          */
@@ -4408,8 +4453,8 @@
          * @see setAffectedEditionStatus()
          * @see setAffectedComponentStatus()
          *
-         * @param \thebuggenie\core\entities\Build $item The build to set status for
-         * @param \thebuggenie\core\entities\Datatype $status The status to set
+         * @param Build $item The build to set status for
+         * @param Datatype $status The status to set
          *
          * @return boolean
          */
@@ -4431,8 +4476,8 @@
          * @see setAffectedBuildStatus()
          * @see setAffectedEditionStatus()
          *
-         * @param \thebuggenie\core\entities\Component $item The component to set status for
-         * @param \thebuggenie\core\entities\Datatype $status The status to set
+         * @param Component $item The component to set status for
+         * @param Datatype $status The status to set
          *
          * @return boolean
          */
@@ -4474,6 +4519,7 @@
          */
         public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
         {
+            if (!$this->should_log_entry) return;
             $uid = ($system) ? 0 : framework\Context::getUser()->getID();
             $log_item = new LogItem();
             $log_item->setChangeType($change_type);
@@ -4486,6 +4532,9 @@
             $log_item->setUser($uid);
             $log_item->save();
             $this->_log_items_added[$log_item->getID()] = $log_item;
+
+            framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::addLogEntry', $this)->trigger(['log_item' => $log_item]);
+
             return $log_item;
         }
 
@@ -4495,7 +4544,7 @@
          * @param string $text Comment text
          * @param integer $uid The user ID that posted the comment
          *
-         * @return \thebuggenie\core\entities\Comment
+         * @return Comment
          */
         public function addSystemComment($text, $uid, $module = 'core')
         {
@@ -4506,7 +4555,7 @@
             $comment->setTargetType(Comment::TYPE_ISSUE);
             $comment->setSystemComment();
             $comment->setModuleName($module);
-            if (!\thebuggenie\core\framework\Settings::isCommentTrailClean())
+            if (!framework\Settings::isCommentTrailClean())
             {
                 $comment->save();
             }
@@ -4601,7 +4650,7 @@
          *
          * @param string $filename The original filename to match against
          *
-         * @return \thebuggenie\core\entities\File
+         * @return File
          */
         public function getFileByFilename($filename)
         {
@@ -4618,7 +4667,7 @@
         /**
          * Remove a file
          *
-         * @param \thebuggenie\core\entities\File $file The file to be removed
+         * @param File $file The file to be removed
          *
          * @return boolean
          */
@@ -4678,7 +4727,7 @@
         /**
          * Retrieve all spent times for this issue
          *
-         * @return array|\thebuggenie\core\entities\IssueSpentTime
+         * @return array|IssueSpentTime
          */
         public function getSpentTimes()
         {
@@ -4955,7 +5004,7 @@
          */
         public function isMilestoneVisible()
         {
-            return (bool) ($this->isFieldVisible('milestone') || $this->getMilestone() instanceof \thebuggenie\core\entities\Milestone);
+            return (bool) ($this->isFieldVisible('milestone') || $this->getMilestone() instanceof Milestone);
         }
 
         /**
@@ -5027,6 +5076,7 @@
                     case CustomDatatype::INPUT_TEXTAREA_SMALL:
                     case CustomDatatype::INPUT_TEXTAREA_MAIN:
                     case CustomDatatype::DATE_PICKER:
+                    case CustomDatatype::DATETIME_PICKER:
                         $option_id = $this->getCustomField($key);
                         tables\IssueCustomFields::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
                         break;
@@ -5060,7 +5110,7 @@
                         tables\IssueCustomFields::getTable()->saveIssueCustomFieldOption($option_id, $customdatatype->getID(), $this->getID());
                         break;
                     default:
-                        $option_id = ($this->getCustomField($key) instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
+                        $option_id = ($this->getCustomField($key) instanceof CustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
                         tables\IssueCustomFields::getTable()->saveIssueCustomFieldOption($option_id, $customdatatype->getID(), $this->getID());
                         break;
                 }
@@ -5126,7 +5176,7 @@
                             case '_category':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Category::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
+                                    $old_name = ($old_item = Category::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
                                 }
                                 else
                                 {
@@ -5181,7 +5231,7 @@
                             case '_status':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_item = Status::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
@@ -5194,7 +5244,7 @@
                             case '_reproducability':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_item = Reproducability::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
@@ -5207,7 +5257,7 @@
                             case '_priority':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_item = Priority::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
@@ -5221,9 +5271,9 @@
                             case '_assignee_user':
                                 if (!$is_saved_assignee)
                                 {
-                                    $new_name = ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->getNameWithUsername() : framework\Context::getI18n()->__('Not assigned');
+                                    $new_name = ($this->getAssignee() instanceof common\Identifiable) ? $this->getAssignee()->getNameWithUsername() : framework\Context::getI18n()->__('Not assigned');
 
-                                    if ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
+                                    if ($this->getAssignee() instanceof User)
                                     {
                                         $this->startWorkingOnIssue($this->getAssignee());
                                         $new_name = $this->getAssignee()->getNameWithUsername();
@@ -5234,8 +5284,8 @@
                                 }
                                 break;
                             case '_posted_by':
-                                $old_identifiable = ($original_value) ? \thebuggenie\core\entities\User::getB2DBTable()->selectById($original_value) : framework\Context::getI18n()->__('Unknown');
-                                $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
+                                $old_identifiable = ($original_value) ? User::getB2DBTable()->selectById($original_value) : framework\Context::getI18n()->__('Unknown');
+                                $old_name = ($old_identifiable instanceof User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
                                 $new_name = $this->getPostedBy()->getNameWithUsername();
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
@@ -5243,14 +5293,14 @@
                             case '_being_worked_on_by_user':
                                 if ($original_value != 0)
                                 {
-                                    $old_identifiable = \thebuggenie\core\entities\User::getB2DBTable()->selectById($original_value);
-                                    $old_name = ($old_identifiable instanceof \thebuggenie\core\entities\User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
+                                    $old_identifiable = User::getB2DBTable()->selectById($original_value);
+                                    $old_name = ($old_identifiable instanceof User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
                                     $old_name = framework\Context::getI18n()->__('Not being worked on');
                                 }
-                                $new_name = ($this->getUserWorkingOnIssue() instanceof \thebuggenie\core\entities\User) ? $this->getUserWorkingOnIssue()->getNameWithUsername() : framework\Context::getI18n()->__('Not being worked on');
+                                $new_name = ($this->getUserWorkingOnIssue() instanceof User) ? $this->getUserWorkingOnIssue()->getNameWithUsername() : framework\Context::getI18n()->__('Not being worked on');
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
@@ -5258,7 +5308,7 @@
                             case '_owner_user':
                                 if (!$is_saved_owner)
                                 {
-                                    $new_name = ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getOwner()->getNameWithUsername() : framework\Context::getI18n()->__('Not owned by anyone');
+                                    $new_name = ($this->getOwner() instanceof common\Identifiable) ? $this->getOwner()->getNameWithUsername() : framework\Context::getI18n()->__('Not owned by anyone');
 
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_OWNED, $new_name);
                                     $is_saved_owner = true;
@@ -5270,7 +5320,7 @@
                             case '_resolution':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_item = Resolution::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
@@ -5283,7 +5333,7 @@
                             case '_severity':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Severity::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                    $old_name = ($old_item = Severity::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                 }
                                 else
                                 {
@@ -5296,13 +5346,13 @@
                             case '_milestone':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
+                                    $old_name = ($old_item = Milestone::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
                                 }
                                 else
                                 {
                                     $old_name = framework\Context::getI18n()->__('Not determined');
                                 }
-                                $new_name = ($this->getMilestone() instanceof \thebuggenie\core\entities\Milestone) ? $this->getMilestone()->getName() : framework\Context::getI18n()->__('Not determined');
+                                $new_name = ($this->getMilestone() instanceof Milestone) ? $this->getMilestone()->getName() : framework\Context::getI18n()->__('Not determined');
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 $this->_milestone_order = 0;
@@ -5316,7 +5366,7 @@
                                 {
                                     $old_name = framework\Context::getI18n()->__('Unknown');
                                 }
-                                $new_name = ($this->getIssuetype() instanceof \thebuggenie\core\entities\Issuetype) ? $this->getIssuetype()->getName() : framework\Context::getI18n()->__('Unknown');
+                                $new_name = ($this->getIssuetype() instanceof Issuetype) ? $this->getIssuetype()->getName() : framework\Context::getI18n()->__('Unknown');
 
                                 $this->addLogEntry(tables\Log::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
@@ -5328,7 +5378,7 @@
                             case '_estimated_points':
                                 if (!$is_saved_estimated)
                                 {
-                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $time_units = common\Timeable::getUnitsWithPoints();
                                     $old_time = array_fill_keys($time_units, 0);
                                     foreach ($time_units as $time_unit)
                                     {
@@ -5355,7 +5405,7 @@
                             case '_spent_points':
                                 if (!$is_saved_spent)
                                 {
-                                    $time_units = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+                                    $time_units = common\Timeable::getUnitsWithPoints();
                                     $old_time = array_fill_keys($time_units, 0);
                                     foreach ($time_units as $time_unit)
                                     {
@@ -5379,7 +5429,7 @@
                                 if ($this->isClosed())
                                 {
                                     $this->addLogEntry(tables\Log::LOG_ISSUE_CLOSE);
-                                    if ($this->getMilestone() instanceof \thebuggenie\core\entities\Milestone)
+                                    if ($this->getMilestone() instanceof Milestone)
                                     {
                                         if ($this->getMilestone()->isSprint())
                                         {
@@ -5511,8 +5561,8 @@
                                                 $old_item = ($original_value) ? new CustomDatatypeOption($original_value) : null;
                                             }
                                             catch (\Exception $e) {}
-                                            $old_value = ($old_item instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
-                                            $new_value = ($this->getCustomField($key) instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $this->getCustomField($key)->getName() : framework\Context::getI18n()->__('Unknown');
+                                            $old_value = ($old_item instanceof CustomDatatypeOption) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
+                                            $new_value = ($this->getCustomField($key) instanceof CustomDatatypeOption) ? $this->getCustomField($key)->getName() : framework\Context::getI18n()->__('Unknown');
                                             $this->addLogEntry(tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
                                             break;
                                     }
@@ -5569,7 +5619,7 @@
         /**
          * Returns an array with everyone related to this project
          *
-         * @return array|\thebuggenie\core\entities\User
+         * @return array|User
          */
         public function getRelatedUsers()
         {
@@ -5581,43 +5631,43 @@
 
             // Add all users from the team owning the issue if valid
             // or add the owning user if a user owns the issue
-            if ($this->getOwner() instanceof \thebuggenie\core\entities\Team)
+            if ($this->getOwner() instanceof Team)
             {
                 $teams[$this->getOwner()] = $this->getOwner();
             }
-            elseif ($this->getOwner() instanceof \thebuggenie\core\entities\User)
+            elseif ($this->getOwner() instanceof User)
             {
                 $uids[$this->getOwner()->getID()] = $this->getOwner()->getID();
             }
 
             // Add all users from the team assigned to the issue if valid
             // or add the assigned user if a user is assigned to the issue
-            if ($this->getAssignee() instanceof \thebuggenie\core\entities\Team)
+            if ($this->getAssignee() instanceof Team)
             {
                 $teams[$this->getAssignee()->getID()] = $this->getAssignee();
             }
-            elseif ($this->getAssignee() instanceof \thebuggenie\core\entities\User)
+            elseif ($this->getAssignee() instanceof User)
             {
                 $uids[$this->getAssignee()->getID()] = $this->getAssignee()->getID();
             }
 
             // Add all users in the team who leads the project, if valid
             // or add the user who leads the project, if valid
-            if ($this->getProject()->getLeader() instanceof \thebuggenie\core\entities\Team)
+            if ($this->getProject()->getLeader() instanceof Team)
             {
                 $teams[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader();
             }
-            elseif ($this->getProject()->getLeader() instanceof \thebuggenie\core\entities\User)
+            elseif ($this->getProject()->getLeader() instanceof User)
             {
                 $uids[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader()->getID();
             }
 
             // Same for QA
-            if ($this->getProject()->getQaResponsible() instanceof \thebuggenie\core\entities\Team)
+            if ($this->getProject()->getQaResponsible() instanceof Team)
             {
                 $teams[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible();
             }
-            elseif ($this->getProject()->getQaResponsible() instanceof \thebuggenie\core\entities\User)
+            elseif ($this->getProject()->getQaResponsible() instanceof User)
             {
                 $uids[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible()->getID();
             }
@@ -5634,19 +5684,19 @@
             // Add all users relevant for all affected editions
             foreach ($this->getEditions() as $edition_list)
             {
-                if ($edition_list['edition']->getLeader() instanceof \thebuggenie\core\entities\Team)
+                if ($edition_list['edition']->getLeader() instanceof Team)
                 {
                     $teams[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeader();
                 }
-                elseif ($edition_list['edition']->getLeader() instanceof \thebuggenie\core\entities\User)
+                elseif ($edition_list['edition']->getLeader() instanceof User)
                 {
                     $uids[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeaderID();
                 }
-                if ($edition_list['edition']->getQaResponsible() instanceof \thebuggenie\core\entities\Team)
+                if ($edition_list['edition']->getQaResponsible() instanceof Team)
                 {
                     $teams[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsible();
                 }
-                elseif ($edition_list['edition']->getQaResponsible() instanceof \thebuggenie\core\entities\User)
+                elseif ($edition_list['edition']->getQaResponsible() instanceof User)
                 {
                     $uids[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsibleID();
                 }
@@ -5685,14 +5735,14 @@
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
 
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS, false)->isOn() && ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == 0 || ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue() == $this->getCategory()->getID()))) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
+                if ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS . '_' . $this->getCategory()->getID(), false)->isOn()) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
         }
 
         public function triggerSaveEvent($comment, $updated_by)
         {
             $log_items = $this->_log_items_added;
-            if ($comment instanceof \thebuggenie\core\entities\Comment && count($log_items))
+            if ($comment instanceof Comment && count($log_items))
             {
                 if ($comment->getID())
                 {
@@ -5703,9 +5753,9 @@
                     }
                 }
             }
-            \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
+            framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
             $this->_addUpdateNotifications($updated_by);
-            $event = \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
+            $event = framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save', $this, compact('comment', 'log_items', 'updated_by'));
             $event->trigger();
         }
 
@@ -5713,11 +5763,13 @@
         {
             if (!$this->hasAccess($user) || $this->isSubscriber($user)) return false;
 
-            if (!$user instanceof \thebuggenie\core\entities\User || $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, null)->getValue() != 1) return false;
+            if (!$user instanceof User) return false;
 
-            $subscribed_category_id = $user->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY, null)->getValue();
+            if ($this->getCategory() instanceof Category) {
+                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn()) return true;
+            }
 
-            return $subscribed_category_id === null || $subscribed_category_id == 0 || ($this->getCategory() instanceof Category && $this->getCategory()->getID() == $subscribed_category_id);
+            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProjectID(), false)->isOn());
         }
 
         protected function _postSave($is_new)
@@ -5735,14 +5787,14 @@
                 {
                     foreach (array_keys($related_issues_to_save) as $i_id)
                     {
-                        $related_issue = \thebuggenie\core\entities\Issue::getB2DBTable()->selectById((int) $i_id);
+                        $related_issue = Issue::getB2DBTable()->selectById((int) $i_id);
                         $related_issue->save();
                     }
                 }
             }
             else
             {
-                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', $this)->trigger();
+                framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew_pre_notifications', $this)->trigger();
                 $_description_parser = $this->_getDescriptionParser();
                 $_reproduction_steps_parser = $this->_getReproductionStepsParser();
                 if (! is_null($_description_parser) && $_description_parser->hasMentions())
@@ -5768,10 +5820,10 @@
                 if ($this->shouldAutomaticallySubscribeUser(framework\Context::getUser())) $this->addSubscriber(framework\Context::getUser()->getID());
 
                 $this->_addCreateNotifications($this->getPostedBy());
-                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
+                framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::createNew', $this)->trigger();
             }
 
-            if (framework\Context::getUser() instanceof \thebuggenie\core\entities\User && framework\Context::getUser()->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, false)->isOn() && !$this->isSubscriber(framework\Context::getUser()))
+            if (framework\Context::getUser() instanceof User && framework\Context::getUser()->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, false)->isOn() && !$this->isSubscriber(framework\Context::getUser()))
             {
                 $this->addSubscriber(framework\Context::getUser()->getID());
             }
@@ -5789,7 +5841,7 @@
                 }
             }
 
-            if ($this->getMilestone() instanceof \thebuggenie\core\entities\Milestone)
+            if ($this->getMilestone() instanceof Milestone)
             {
                 $this->getMilestone()->updateStatus();
                                 $this->getMilestone()->save();
@@ -5800,7 +5852,7 @@
 
         public function saveSpentTime()
         {
-            $spent_times = \thebuggenie\core\entities\common\Timeable::getUnitsWithPoints();
+            $spent_times = common\Timeable::getUnitsWithPoints();
             $spent_times_changed_items = array();
             $changed_properties = $this->_getChangedProperties();
 
@@ -5855,7 +5907,7 @@
         /**
          * Return the user working on this issue if any
          *
-         * @return \thebuggenie\core\entities\User
+         * @return User
          */
         public function getUserWorkingOnIssue()
         {
@@ -5876,7 +5928,7 @@
         /**
          * Register a user as working on the issue
          *
-         * @param \thebuggenie\core\entities\User $user
+         * @param User $user
          */
         public function startWorkingOnIssue(User $user)
         {
@@ -5886,7 +5938,7 @@
 
         public function calculateTimeSpent()
         {
-            $ts_array = array_fill_keys(\thebuggenie\core\entities\common\Timeable::getUnitsWithout(array('months')), 0);
+            $ts_array = array_fill_keys(common\Timeable::getUnitsWithout(array('months')), 0);
             $time_spent = ($this->_being_worked_on_by_user_since) ? NOW - $this->_being_worked_on_by_user_since : 0;
             if ($time_spent > 0)
             {
@@ -5906,7 +5958,7 @@
         /**
          * Stop working on the issue, and save time spent
          *
-         * @param \thebuggenie\core\entities\User $user
+         * @param User $user
          * @param integer $timespent_activitytype
          * @param string $timespent_comment
          *
@@ -5920,7 +5972,7 @@
             if ($time_spent['minutes'] > 0 || $time_spent['hours'] > 0 || $time_spent['days'] > 0 || $time_spent['weeks'] > 0)
             {
                 $time_spent['hours'] *= 100;
-                $spenttime = new \thebuggenie\core\entities\IssueSpentTime();
+                $spenttime = new IssueSpentTime();
                 $spenttime->setIssue($this);
                 $spenttime->setUser(framework\Context::getUser());
                 $spenttime->setSpentPoints(0);
@@ -5942,7 +5994,7 @@
          */
         public function isBeingWorkedOn()
         {
-            return ($this->getUserWorkingOnIssue() instanceof \thebuggenie\core\entities\User) ? true : false;
+            return ($this->getUserWorkingOnIssue() instanceof User) ? true : false;
         }
 
         public function getWorkedOnSince()
@@ -6105,9 +6157,9 @@
                 'updated_at_iso' => date('c', $this->getLastUpdatedTime()),
                 'title' => $this->getRawTitle(),
                 'href' => framework\Context::getRouting()->generate('viewissue', ['project_key' => $this->getProject()->getKey(), 'issue_no' => $this->getFormattedIssueNo()], false),
-                'posted_by' => ($this->getPostedBy() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
-                'assignee' => ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getAssignee()->toJSON() : null,
-                'status' => ($this->getStatus() instanceof \thebuggenie\core\entities\common\Identifiable) ? $this->getStatus()->toJSON() : null,
+                'posted_by' => ($this->getPostedBy() instanceof common\Identifiable) ? $this->getPostedBy()->toJSON() : null,
+                'assignee' => ($this->getAssignee() instanceof common\Identifiable) ? $this->getAssignee()->toJSON() : null,
+                'status' => ($this->getStatus() instanceof common\Identifiable) ? $this->getStatus()->toJSON() : null,
             );
 
             if($detailed) {
@@ -6180,7 +6232,7 @@
                     if (isset($value))
                     {
                         if ($identifiable)
-                            $return_values[$field] = ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->toJSON() : null;
+                            $return_values[$field] = ($value instanceof common\Identifiable) ? $value->toJSON() : null;
                         else
                             $return_values[$field] = $value;
                     }
@@ -6210,9 +6262,9 @@
             $this->_b2dbLazyload('_assignee_team');
             $this->_b2dbLazyload('_assignee_user');
 
-            if ($this->_assignee_team instanceof \thebuggenie\core\entities\Team) {
+            if ($this->_assignee_team instanceof Team) {
                 return $this->_assignee_team;
-            } elseif ($this->_assignee_user instanceof \thebuggenie\core\entities\User) {
+            } elseif ($this->_assignee_user instanceof User) {
                 return $this->_assignee_user;
             } else {
                 return null;
@@ -6221,12 +6273,12 @@
 
         public function hasAssignee()
         {
-            return (bool) ($this->getAssignee() instanceof \thebuggenie\core\entities\common\Identifiable);
+            return (bool) ($this->getAssignee() instanceof common\Identifiable);
         }
 
-        public function setAssignee(\thebuggenie\core\entities\common\Identifiable $assignee)
+        public function setAssignee(common\Identifiable $assignee)
         {
-            if ($assignee instanceof \thebuggenie\core\entities\Team) {
+            if ($assignee instanceof Team) {
                 $this->_addChangedProperty('_assignee_user', null);
                 $this->_addChangedProperty('_assignee_team', $assignee->getID());
             } else {
@@ -6256,9 +6308,9 @@
             $this->_b2dbLazyload('_owner_team');
             $this->_b2dbLazyload('_owner_user');
 
-            if ($this->_owner_team instanceof \thebuggenie\core\entities\Team) {
+            if ($this->_owner_team instanceof Team) {
                 return $this->_owner_team;
-            } elseif ($this->_owner_user instanceof \thebuggenie\core\entities\User) {
+            } elseif ($this->_owner_user instanceof User) {
                 return $this->_owner_user;
             } else {
                 return null;
@@ -6267,12 +6319,12 @@
 
         public function hasOwner()
         {
-            return (bool) ($this->getOwner() instanceof \thebuggenie\core\entities\common\Identifiable);
+            return (bool) ($this->getOwner() instanceof common\Identifiable);
         }
 
-        public function setOwner(\thebuggenie\core\entities\common\Identifiable $owner)
+        public function setOwner(common\Identifiable $owner)
         {
-            if ($owner instanceof \thebuggenie\core\entities\Team) {
+            if ($owner instanceof Team) {
                 $this->_addChangedProperty('_owner_user', null);
                 $this->_addChangedProperty('_owner_team', $owner);
             } else {
@@ -6293,7 +6345,7 @@
         }
 
         /**
-         * Return an arary of subscribed users
+         * Return an array of subscribed users
          *
          * @return array|User
          */
@@ -6440,6 +6492,382 @@
             $last_time_unit = array_pop($time_logger_units);
 
             return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
+        }
+
+        /**
+         * Get number of todos.
+         *
+         * @param string $method
+         *
+         * @return integer
+         */
+        public function countTodos($method = 'getTodos')
+        {
+            return count($this->$method()['issue']) + array_sum(array_map('count', $this->$method()['comments']));
+        }
+
+        /**
+         * Get number of done todos.
+         *
+         * @return integer
+         */
+        public function countDoneTodos()
+        {
+            return $this->countTodos('getDoneTodos');
+        }
+
+        /**
+         * Get todos from issue description and comments.
+         *
+         * @param null $comment_id
+         * @param string $method
+         * @param string $property
+         * @return mixed
+         *
+         * @return array
+         */
+        public function getTodos($comment_id = null, $method = 'getTodos', $property = '_todos')
+        {
+            if (is_null($this->$property))
+            {
+                $todos = array('issue' => $this->_getDescriptionParser()->$method());
+                $todos['comments'] = array();
+
+                foreach ($this->getComments() as $comment)
+                {
+                    $comment_todos = $comment->$method();
+
+                    if (! count($comment_todos)) continue;
+
+                    $todos['comments'][$comment->getID()] = array_merge(
+                        isset($todos['comments'][$comment->getID()])
+                            ? $todos['comments'][$comment->getID()]
+                            : array(),
+                        $comment_todos
+                    );
+                }
+
+                $this->$property = $todos;
+            }
+
+            $todos = $this->$property;
+
+            if (! is_null($comment_id))
+            {
+                if ($comment_id == 0)
+                {
+                    return $todos['issue'];
+                }
+
+                return isset($todos['comments'][$comment_id])
+                    ? $todos['comments'][$comment_id]
+                    : array();
+            }
+
+            return $todos;
+        }
+
+        /**
+         * Get done todos.
+         *
+         * @return array
+         */
+        public function getDoneTodos()
+        {
+            return $this->getTodos(null, 'getDoneTodos', '_done_todos');
+        }
+
+        /**
+         * Delete todos item. This is done by removing it from text in sources.
+         *
+         * @param $comment_id
+         * @param $delete_todo
+         *
+         * @return void
+         */
+        public function deleteTodo($comment_id, $delete_todo)
+        {
+            $delete_todo = base64_decode($delete_todo);
+            $delete_todo_utf8 = tbg_encodeUTF8($delete_todo, true);
+            
+            if ($comment_id == 0)
+            {
+                foreach ($this->getTodos()['issue'] as $todo)
+                {
+                    if ($todo !== $delete_todo) continue;
+
+                    $this->setDescription(str_replace(
+                        '[] ' . $delete_todo_utf8,
+                        '',
+                        $this->getDescription()
+                    ));
+                    $this->saveTodos();
+                }
+                foreach ($this->getDoneTodos()['issue'] as $todo)
+                {
+                    if ($todo !== $delete_todo) continue;
+
+                    $this->setDescription(str_replace(
+                        '[x] ' . $delete_todo_utf8,
+                        '',
+                        $this->getDescription()
+                    ));
+                    $this->saveTodos();
+                }
+            }
+            else
+            {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $delete_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            '[] ' . $delete_todo_utf8,
+                            '',
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+                foreach ($this->getDoneTodos()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $delete_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            '[x] ' . $delete_todo_utf8,
+                            '',
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Mark todos item as either "done" or "not done". This is done by changing mediawiki syntax in text in sources.
+         *
+         * @param $comment_id
+         * @param $mark_todo
+         * @param $as
+         *
+         * @return void
+         */
+        public function markTodo($comment_id, $mark_todo, $as)
+        {
+            $mark_todo = base64_decode($mark_todo);
+            $mark_todo_utf8 = tbg_encodeUTF8($mark_todo, true);
+            list ($syntax1, $syntax2, $method) = $as === 'done'
+                ? array('[] ', '[x] ', 'getTodos')
+                : array('[x] ', '[] ', 'getDoneTodos');
+
+            if ($comment_id == 0)
+            {
+                foreach ($this->$method()['issue'] as $todo)
+                {
+                    if ($todo !== $mark_todo) continue;
+
+                    $this->setDescription(str_replace(
+                        $syntax1 . $mark_todo_utf8,
+                        $syntax2 . $mark_todo_utf8,
+                        $this->getDescription()
+                    ));
+                    $this->saveTodos();
+                }
+            }
+            else
+            {
+                foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
+                {
+                    foreach ($comment_todos as $todo)
+                    {
+                        if ($todo !== $mark_todo) continue;
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(str_replace(
+                            $syntax1 . $mark_todo_utf8,
+                            $syntax2 . $mark_todo_utf8,
+                            $comment->getContent()
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Reset "cached" todos.
+         *
+         * @return void
+         */
+        protected function resetTodos()
+        {
+            $this->_todos = null;
+            $this->_done_todos = null;
+            $this->_description_parser = null;
+        }
+
+        /**
+         * Save only issue column "description" that is todos text source. This is done by reverting other columns before save and adding changes back after save.
+         *
+         * @return void
+         */
+        public function saveTodos()
+        {
+            $todos_changed_items = array();
+            $changed_properties = $this->_getChangedProperties();
+
+            foreach (array('_description') as $property)
+            {
+                if (! $this->_isPropertyChanged($property)) continue;
+
+                $todos_changed_items[$property] = $changed_properties[$property];
+                unset($changed_properties[$property]);
+            }
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_revertPropertyChange($property);
+            }
+
+            // Since todos are saved in description don't log entry of that field changing.
+            $this->should_log_entry = false;
+            $this->save();
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_addChangedProperty($property, $property_values['current_value']);
+            }
+        }
+
+        /**
+         * Save order of todos. This is done by changing order of lines in text in sources.
+         *
+         * @param $comment_id
+         * @param $ordered_todos
+         *
+         * @return void
+         */
+        public function saveOrderTodo($comment_id, $ordered_todos)
+        {
+            $todos = $this->getTodos($comment_id);
+            // Prefix keys of todos so that they are string.
+            $todos = array_prefix_keys(array_prefix_values($todos, '[] '), 'order_');
+            $ordered_todos = array_map(function ($todo_order)
+            {
+                // Decrement order since we incremented it in template for plugin "Sortable" to work.
+                return 'order_' . strval($todo_order - 1);
+            }, $ordered_todos);
+            $new_todos = array_merge(array_flip($ordered_todos), $todos);
+
+            if ($comment_id == 0)
+            {
+                $this->setDescription(str_replace(
+                    tbg_encodeUTF8(implode("\n", $todos), true),
+                    tbg_encodeUTF8(implode("\n", $new_todos), true),
+                    $this->getDescription()
+                ));
+                $this->saveTodos();
+                $this->resetTodos();
+            }
+            else
+            {
+                if (! isset($this->getComments()[$comment_id])) return;
+
+                $comment = $this->getComments()[$comment_id];
+                $comment->setContent(str_replace(
+                    tbg_encodeUTF8(implode("\n", $todos), true),
+                    tbg_encodeUTF8(implode("\n", $new_todos), true),
+                    $comment->getContent()
+                ));
+                $comment->save();
+                $comment->resetTodos();
+            }
+        }
+
+        /**
+         * Add todos item. This is done by adding it to text in description.
+         *
+         * @param $add_todo
+         *
+         * @return void
+         */
+        public function addTodo($add_todo)
+        {
+            // Replace new lines with single space since todos item has to be on one line.
+            $this->setDescription($this->getDescription() . "\n[] " . tbg_encodeUTF8(trim(preg_replace('/\s+/', ' ', $add_todo)), true));
+            $this->saveTodos();
+            $this->resetTodos();
+        }
+
+        /**
+         * Set sums columns.
+         *
+         * @param array $sums
+         */
+        public function setSums(array $sums)
+        {
+            $this->_sums = $sums;
+        }
+
+        /**
+         * Get sums columns.
+         *
+         * @return array
+         */
+        public function getSums()
+        {
+            return $this->_sums;
+        }
+
+        /**
+         * Get sums spent time columns.
+         *
+         * @return string
+         */
+        public function getSumsSpentTime()
+        {
+            $any_exists = false;
+            $time = array();
+
+            foreach (common\Timeable::$units as $time_unit)
+            {
+                if (! array_key_exists('spent_' . $time_unit, $this->_sums))
+                {
+                    $time[$time_unit] = 0;
+                    continue;
+                }
+
+                $time[$time_unit] = $this->_sums['spent_' . $time_unit];
+
+                if (! $any_exists)
+                    $any_exists = true;
+            }
+
+            if (isset($time['hours']) && $time['hours'] != 0)
+                $time['hours'] = $time['hours'] / 100;
+
+            if (isset($time['minutes']) && $time['minutes'] != 0)
+            {
+                $time['hours'] += floor($time['minutes'] / 60);
+                $time['minutes'] = $time['minutes'] % 60;
+            }
+
+            if (! $any_exists)
+                $time = $this->getSpentTime(true, true);
+            
+            return $this->getFormattedTime($time);
         }
 
     }

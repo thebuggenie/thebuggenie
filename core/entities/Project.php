@@ -3164,6 +3164,9 @@
             $this->_large_icon = null;
         }
 
+        /**
+         * @return mixed
+         */
         public function getLargeIcon()
         {
             return $this->_b2dbLazyload('_large_icon');

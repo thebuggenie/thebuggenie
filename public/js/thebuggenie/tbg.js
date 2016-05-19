@@ -1,5 +1,5 @@
-define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'notify', 'jquery-ui', 'jquery.markitup', 'spectrum'],
-    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable, Notify) {
+define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax', 'GSDraggable', 'notify', 'calendarview', 'jquery-ui', 'jquery.markitup', 'spectrum'],
+    function (prototype, effects, controls, scriptaculous, jQuery, TweenMax, GSDraggable, Notify, Calendar) {
 
         var TBG = {
             Core: {
@@ -1376,7 +1376,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.Profile.updateInformation = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'profile_information_form',
-                loading: {indicator: 'profile_save_indicator'}
+                loading: {indicator: 'profile_save_indicator'},
+                success: {callback: function () {
+                    ($('profile_use_gravatar_yes').checked) ? $('gravatar_change').show() : $('gravatar_change').hide();
+                }}
             });
         };
 
@@ -1390,10 +1393,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.Profile.updateSettings = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'profile_settings_form',
-                loading: {indicator: 'profile_notificationsettings_save_indicator'},
-                success: {callback: function () {
-                    ($('profile_use_gravatar_yes').checked) ? $('gravatar_change').show() : $('gravatar_change').hide();
-                }}
+                loading: {indicator: 'profile_settings_save_indicator'}
             });
         };
 
@@ -6076,6 +6076,74 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, transition_id, true);
         }
 
+        TBG.Issues.removeTodo = function (url, todo) {
+            TBG.Main.Helpers.ajax(url, {
+                params: {
+                    todo: todo
+                },
+                loading: {
+                    indicator: 'dialog_indicator'
+                },
+                success: {
+                    update: 'viewissue_todos',
+                    callback: TBG.Main.Helpers.Dialog.dismiss
+                }
+            });
+        };
+
+        TBG.Issues.markTodo = function (url, todo, todo_key) {
+            TBG.Main.Helpers.ajax(url, {
+                params: {
+                    todo: todo
+                },
+                loading: {
+                    indicator: 'todo_' + todo_key + '_mark_indicator',
+                    callback: function () {
+                        $$('#todo_' + todo_key + '_mark_wrapper .image i').each(function (element) {
+                            $(element).hide();
+                        });
+                    }
+                },
+                success: {update: 'viewissue_todos'}
+            });
+        };
+
+        TBG.Issues.saveTodosOrder = function (container, url) {
+            TBG.Main.Helpers.ajax(url, {
+                additional_params: Sortable.serialize(container),
+                loading: {
+                    indicator: 'todos_sort_indicator'
+                },
+                success: {update: 'viewissue_todos'}
+            });
+        };
+
+        TBG.Issues.showTodo = function () {
+            $$('.todo_editor').each(Element.hide);
+            $('todo_add_button').hide();
+            $('todo_add').show();
+            $('todo_bodybox').focus();
+        };
+
+        TBG.Issues.addTodo = function (url) {
+            TBG.Main.Helpers.ajax(url, {
+                form: 'todo_form',
+                loading: {
+                    indicator: 'todo_add_indicator',
+                    hide: 'todo_add_controls'
+                },
+                success: {
+                    hide: ['todo_add_indicator', 'todo_add'],
+                    show: ['todo_add_button', 'todo_add_controls'],
+                    clear: 'todo_bodybox',
+                    update: 'viewissue_todos'
+                },
+                failure: {
+                    show: 'todo_add_controls'
+                }
+            });
+        };
+
         TBG.Search.deleteSavedSearch = function (url, id) {
             TBG.Main.Helpers.ajax(url, {
                 loading: {indicator: 'delete_search_' + id + '_indicator'},
@@ -6535,7 +6603,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         };
 
-        TBG.Search.initializeFilterField = function (filter) {
+        TBG.Search.initializeFilterField = function (filter, hidden) {
             filter.on('click', TBG.Search.toggleInteractiveFilter);
             filter.select('li.filtervalue').each(function (filtervalue) {
                 filtervalue.on('click', TBG.Search.toggleFilterValue);
@@ -6543,6 +6611,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Search.initializeFilterSearchValues(filter);
             TBG.Search.initializeFilterNavigation(filter);
             TBG.Search.calculateFilterDetails(filter);
+            if (!hidden && filter.dataset.isdate == '') {
+                var filter_key = filter.dataset.filterkey;
+                Calendar.setup({
+                    dateField: jQuery('.filter_' + filter_key + '_value_input', filter)[0],
+                    parentElement: jQuery('.filter_' + filter_key + '_calendar_container', filter)[0],
+                    valueCallback: TBG.Search.setInteractiveDate
+                });
+            }
         };
 
         TBG.Search.initializeFilterNavigation = function (filter) {
@@ -6639,9 +6715,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             }
         };
 
-        TBG.Search.addFilter = function (event, element) {
-            if (!this.hasClassName('disabled')) {
-                var filter = this.dataset.filter;
+        TBG.Search.addFilter = function () {
+            if (this.hasClassName('disabled')) return;
+
+            var filter_key = this.dataset.filter;
+            var filter_element = jQuery('#searchbuilder_filter_hiddencontainer .interactive_filter_' + filter_key);
+
+            if (filter_element.data('isdate') == '') {
+                var filter_element_clone = filter_element.clone().appendTo('#searchbuilder_filterstrip_filtercontainer')[0];
+
+                setTimeout(function () {
+                    TBG.Search.toggleInteractiveFilterElement(filter_element_clone);
+                    TBG.Search.initializeFilterField(filter_element_clone, false);
+                }, 250);
+            }
+            else {
                 $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_' + filter).remove());
                 setTimeout(function () {
                     TBG.Search.toggleInteractiveFilterElement($('interactive_filter_' + filter));
@@ -6651,12 +6739,18 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Search.removeFilter = function (element) {
-            var do_update = ($('filter_' + element.dataset.filterkey + '_value_input').getValue() != '');
-            $('additional_filter_' + element.dataset.filterkey + '_link').removeClassName('disabled');
-            element.select('.filtervalue').each(function (elm) {
+            if (jQuery(element).data('isdate') == '') {
+                var do_update = (jQuery('filter_' + element.dataset.filterkey + '_value_input', element).val() != '');
+                element.remove();
+            }
+            else {
+                var do_update = ($('filter_' + element.dataset.filterkey + '_value_input').getValue() != '');
+                $('additional_filter_' + element.dataset.filterkey + '_link').removeClassName('disabled');
+                element.select('.filtervalue').each(function (elm) {
 
-            });
-            $('searchbuilder_filter_hiddencontainer').insert(element.remove());
+                });
+                $('searchbuilder_filter_hiddencontainer').insert(element.remove());
+            }
 
             if (do_update)
                 TBG.Search.liveUpdate();
@@ -6690,8 +6784,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Search.initializeFilters = function () {
             var fif = $('find_issues_form');
             fif.reset();
-            $$('.filter').each(function (filter) {
-                TBG.Search.initializeFilterField(filter);
+            $$('#searchbuilder_filter_hiddencontainer .filter').each(function (filter) {
+                TBG.Search.initializeFilterField(filter, true);
+            });
+            $$('#find_issues_form .filter').each(function (filter) {
+                TBG.Search.initializeFilterField(filter, false);
             });
             ['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button', 'interactive_save_button'].each(function (element) {
                 if ($(element))
@@ -6853,6 +6950,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Search.loadDynamicChoices = function () {
             var fif = $('find_issues_form');
+            if (!fif) {
+                return;
+            }
             var url = fif.dataset.dynamicCallbackUrl;
             var parameters = '&project_id=' + $('filter_project_id_value_input').getValue();
             var filters_containers = [];
@@ -6938,6 +7038,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Search.liveUpdate = function (force) {
             var fif = $('find_issues_form');
+            if (!fif) {
+                return;
+            }
             var url = fif.action;
             var parameters = fif.serialize();
 
@@ -7114,7 +7217,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             TBG.Search.setFilterSelectionGroupSelections(element);
             var f_element = element.up('.filter');
             TBG.Search.calculateFilterDetails(f_element);
-            $('filter_' + f_element.dataset.filterkey + '_value_input').dataset.dirty = 'dirty';
+            if (jQuery('.filter_' + f_element.dataset.filterkey + '_value_input', f_element).length) {
+                jQuery('.filter_' + f_element.dataset.filterkey + '_value_input', f_element).data('dirty', 'dirty');
+            }
+            else {
+                $('filter_' + f_element.dataset.filterkey + '_value_input').dataset.dirty = 'dirty';
+            }
             TBG.Search.liveUpdate(true);
         };
 
@@ -7129,7 +7237,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     if (element.up('.filtervalue').dataset.operator == undefined) {
                         selected_values.push(element.getValue());
                     } else {
-                        $('filter_' + filter.dataset.filterkey + '_operator_input').setValue(element.getValue());
+                        if (jQuery('.filter_' + filter.dataset.filterkey + '_operator_input', filter).length) {
+                            jQuery('.filter_' + filter.dataset.filterkey + '_operator_input', filter).val(element.getValue());
+                        }
+                        else {
+                            $('filter_' + filter.dataset.filterkey + '_operator_input').setValue(element.getValue());
+                        }
                     }
                 }
             });
@@ -7140,15 +7253,31 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 string = filter.dataset.allValue;
             }
             if (filter.dataset.isdate !== undefined) {
-                selected_elements.push($('filter_' + filter.dataset.filterkey + '_value_input').dataset.displayValue);
+                if (jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).length) {
+                    selected_elements.push(jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).attr('data-display-value'));
+                }
+                else {
+                    selected_elements.push($('filter_' + filter.dataset.filterkey + '_value_input').dataset.displayValue);
+                }
                 string = selected_elements.join(' ');
             }
             if (filter.dataset.istext !== undefined) {
-                string = $('filter_' + filter.dataset.filterkey + '_value_input').getValue();
+                if (jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).length) {
+                    string = jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).val();
+                }
+                else {
+                    string = $('filter_' + filter.dataset.filterkey + '_value_input').getValue();
+                }
             }
             TBG.Search.updateFilterVisibleValue(filter, string);
-            if (filter.dataset.isdate === undefined && filter.dataset.istext === undefined)
-                $('filter_' + filter.dataset.filterkey + '_value_input').setValue(value_string);
+            if (filter.dataset.isdate === undefined && filter.dataset.istext === undefined) {
+                if (jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).length) {
+                    jQuery('.filter_' + filter.dataset.filterkey + '_value_input', filter).val(value_string);
+                }
+                else {
+                    $('filter_' + filter.dataset.filterkey + '_value_input').setValue(value_string);
+                }
+            }
         };
 
         TBG.Search.updateFilterVisibleValue = function (filter, value) {
@@ -8021,6 +8150,34 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Themes.install = function (event) {
             TBG.Core.installPlugin(this, 'theme');
+        };
+
+        TBG.Core._mobileMenuMover = function() {
+            if (document.viewport.getWidth() > 900) {
+                if ($('mobile_usermenu').childElements().size() > 0) {
+                    var um = $('user_menu');
+                    if (um) {
+                        $('header_userinfo_details').insert({after: um.remove()});
+                    }
+                }
+                if ($('mobile_menu').childElements().size() > 0) {
+                    $('header_userinfo').insert({
+                        before: $('main_menu').remove(),
+                        after: $('global_submenu').remove()
+                    });
+                }
+            } else {
+                if ($('mobile_usermenu').childElements().size() == 0) {
+                    var um = $('user_menu');
+                    if (um) {
+                        $('mobile_usermenu').insert(um.remove());
+                    }
+                }
+                if ($('mobile_menu').childElements().size() == 0) {
+                    $('mobile_menu').insert($('main_menu').remove());
+                    $('mobile_menu').insert($('global_submenu').remove());
+                }
+            }
         };
 
         return TBG;

@@ -36,184 +36,6 @@ class Main extends framework\Action
         }
     }
 
-    protected function _getIssueFromRequest(framework\Request $request)
-    {
-        $issue = null;
-        if ($issue_no = framework\Context::getRequest()->getParameter('issue_no'))
-        {
-            $issue = entities\Issue::getIssueFromLink($issue_no);
-            if ($issue instanceof entities\Issue)
-            {
-                if (!$this->selected_project instanceof entities\Project || $issue->getProjectID() != $this->selected_project->getID())
-                {
-                    $issue = null;
-                }
-            }
-            else
-            {
-                framework\Logging::log("Issue no [$issue_no] not a valid issue no", 'main', framework\Logging::LEVEL_WARNING_RISK);
-            }
-        }
-        framework\Logging::log('done (Loading issue)');
-        if ($issue instanceof entities\Issue && (!$issue->hasAccess() || $issue->isDeleted()))
-            $issue = null;
-
-        return $issue;
-    }
-
-    /**
-     * Go to the next/previous open issue
-     *
-     * @param \thebuggenie\core\framework\Request $request
-     */
-    public function runNavigateIssue(framework\Request $request)
-    {
-        $issue = $this->_getIssueFromRequest($request);
-
-        if (!$issue instanceof entities\Issue)
-        {
-            $this->getResponse()->setTemplate('viewissue');
-            return;
-        }
-
-        do
-        {
-            if ($issue->getMilestone() instanceof entities\Milestone) {
-                if ($request['direction'] == 'next') {
-                    $found_issue = tables\Issues::getTable()->getNextIssueFromIssueMilestoneOrderAndMilestoneID($issue->getMilestoneOrder(), $issue->getMilestone()->getID(), $request['mode'] == 'open');
-                } else {
-                    $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueMilestoneOrderAndMilestoneID($issue->getMilestoneOrder(), $issue->getMilestone()->getID(), $request['mode'] == 'open');
-                }
-            } else {
-                if ($request['direction'] == 'next') {
-                    $found_issue = tables\Issues::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
-                } else {
-                    $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
-                }
-            }
-            if (is_null($found_issue))
-                break;
-        }
-        while ($found_issue instanceof entities\Issue && !$found_issue->hasAccess());
-
-        if ($found_issue instanceof entities\Issue)
-        {
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
-        }
-        else
-        {
-            framework\Context::setMessage('issue_message', $this->getI18n()->__('There are no more issues in that direction.'));
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-        }
-    }
-
-    /**
-     * View an issue
-     *
-     * @param \thebuggenie\core\framework\Request $request
-     */
-    public function runViewIssue(framework\Request $request)
-    {
-        framework\Logging::log('Loading issue');
-
-        $issue = $this->_getIssueFromRequest($request);
-
-        if ($issue instanceof entities\Issue)
-        {
-            if (!array_key_exists('viewissue_list', $_SESSION))
-            {
-                $_SESSION['viewissue_list'] = array();
-            }
-
-            $k = array_search($issue->getID(), $_SESSION['viewissue_list']);
-            if ($k !== false)
-                unset($_SESSION['viewissue_list'][$k]);
-
-            array_push($_SESSION['viewissue_list'], $issue->getID());
-
-            if (count($_SESSION['viewissue_list']) > 10)
-                array_shift($_SESSION['viewissue_list']);
-
-            $this->getUser()->markNotificationsRead('issue', $issue->getID());
-
-            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false)->save();
-
-            \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
-        }
-
-        $message = framework\Context::getMessageAndClear('issue_saved');
-        $uploaded = framework\Context::getMessageAndClear('issue_file_uploaded');
-
-        if ($request->isPost() && $issue instanceof entities\Issue && $request->hasParameter('issue_action'))
-        {
-            if ($request['issue_action'] == 'save')
-            {
-                if (!$issue->hasMergeErrors())
-                {
-                    try
-                    {
-                        $issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
-                        // Currently if category is changed we want to regenerate permissions since category is used for granting user access.
-                        if ($issue->isCategoryChanged())
-                        {
-                            framework\Event::listen('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', array($this, 'listen_issueCreate'));
-                        }
-                        $issue->save();
-                        framework\Context::setMessage('issue_saved', true);
-                        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-                    }
-                    catch (\thebuggenie\core\exceptions\WorkflowException $e)
-                    {
-                        $this->error = $e->getMessage();
-                        $this->workflow_error = true;
-                    }
-                    catch (\Exception $e)
-                    {
-                        $this->error = $e->getMessage();
-                    }
-                }
-                else
-                {
-                    $this->issue_unsaved = true;
-                }
-            }
-        }
-        elseif (framework\Context::hasMessage('issue_deleted_shown') && (is_null($issue) || ($issue instanceof entities\Issue && $issue->isDeleted())))
-        {
-            $request_referer = ($request['referer'] ?: isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
-
-            if ($request_referer)
-            {
-                return $this->forward($request_referer);
-            }
-        }
-        elseif (framework\Context::hasMessage('issue_deleted'))
-        {
-            $this->issue_deleted = framework\Context::getMessageAndClear('issue_deleted');
-            framework\Context::setMessage('issue_deleted_shown', true);
-        }
-        elseif ($message == true)
-        {
-            $this->issue_saved = true;
-        }
-        elseif ($uploaded == true)
-        {
-            $this->issue_file_uploaded = true;
-        }
-        elseif (framework\Context::hasMessage('issue_error'))
-        {
-            $this->error = framework\Context::getMessageAndClear('issue_error');
-        }
-        elseif (framework\Context::hasMessage('issue_message'))
-        {
-            $this->issue_message = framework\Context::getMessageAndClear('issue_message');
-        }
-
-        $this->issue = $issue;
-        $event = \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
-        $this->listenViewIssuePostError($event);
-    }
-
     public function runMoveIssue(framework\Request $request)
     {
         $issue = null;
@@ -1182,9 +1004,39 @@ class Main extends framework\Action
     public function runMyAccount(framework\Request $request)
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
+        $categories = \thebuggenie\core\entities\Category::getAll();
+        $projects = [];
+        $project_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS;
+        $category_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY;
+        $category_notification_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY;
         $subscriptionssettings = framework\Settings::getSubscriptionsSettings();
-        $this->subscriptionssettings = $subscriptionssettings;
         $notificationsettings = framework\Settings:: getNotificationSettings();
+        $selected_project_subscriptions = [];
+        $selected_category_subscriptions = [];
+        $selected_category_notifications = [];
+        $this->all_projects_subscription = $this->getUser()->getNotificationSetting($project_subscription_key, false)->isOn();
+        foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+            if ($project->hasAccess()) {
+                $projects[$project_id] = $project;
+                if ($this->getUser()->getNotificationSetting($project_subscription_key . '_' . $project_id, false)->isOn()) {
+                    $selected_project_subscriptions[] = $project_id;
+                }
+            }
+        }
+        foreach ($categories as $category_id => $category) {
+            if ($this->getUser()->getNotificationSetting($category_subscription_key . '_' . $category_id, false)->isOn()) {
+                $selected_category_subscriptions[] = $category_id;
+            }
+            if ($this->getUser()->getNotificationSetting($category_notification_key . '_' . $category_id, false)->isOn()) {
+                $selected_category_notifications[] = $category_id;
+            }
+        }
+        $this->selected_project_subscriptions = ($this->all_projects_subscription) ? [] : $selected_project_subscriptions;
+        $this->projects = $projects;
+        $this->selected_category_subscriptions = $selected_category_subscriptions;
+        $this->selected_category_notifications = $selected_category_notifications;
+        $this->categories = $categories;
+        $this->subscriptionssettings = $subscriptionssettings;
         $this->notificationsettings = $notificationsettings;
         $this->has_autopassword = framework\Context::hasMessage('auto_password');
         if ($this->has_autopassword)
@@ -1227,51 +1079,72 @@ class Main extends framework\Action
                     $this->getUser()->setPreferredIssuesSyntax($request['syntax_issues']);
                     $this->getUser()->setPreferredCommentsSyntax($request['syntax_comments']);
                     $this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
-                    $this->getUser()->setDesktopNotificationsNewTabEnabled($request['enable_desktop_notifications_new_tab']);
-                    foreach ($subscriptionssettings as $setting => $description)
-                    {
-                        if ($request->hasParameter('core_' . $setting))
-                        {
-                            if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
-                        }
-                        else
-                        {
-                            $this->getUser()->setNotificationSetting($setting, false)->save();
-                        }
-                    }
-                    foreach ($notificationsettings as $setting => $description)
-                    {
-                        if ($request->hasParameter('core_' . $setting))
-                        {
-                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
-                        }
-                        else
-                        {
-                            $this->getUser()->setNotificationSetting($setting, false)->save();
-                        }
-                    }
-                    \thebuggenie\core\framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));
                     $this->getUser()->save();
 
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Profile settings saved')));
+                    break;
+                case 'notificationsettings':
+                    $this->getUser()->setDesktopNotificationsNewTabEnabled($request['enable_desktop_notifications_new_tab']);
+                    foreach ($subscriptionssettings as $setting => $description) {
+                        if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
+                            foreach ($categories as $category_id => $category) {
+                                if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                }
+                            }
+                        } elseif ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS) {
+                            if ($request->hasParameter('core_' . $setting . '_all')) {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                }
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    if ($request->hasParameter('core_' . $setting . '_' . $project_id)) {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true)->save();
+                                    } else {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($request->hasParameter('core_' . $setting)) {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                            }
+                        }
+                    }
+
+                    foreach ($notificationsettings as $setting => $description) {
+                        if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
+                            foreach ($categories as $category_id => $category) {
+                                if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                }
+                            }
+                        } else {
+                            if ($request->hasParameter('core_' . $setting)) {
+                                if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS) {
+                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting, true)->save();
+                                }
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                            }
+                        }
+                    }
+
+                    \thebuggenie\core\framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request', 'categories'));
+                    $this->getUser()->save();
+
+                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Notification settings saved')));
                     break;
                 case 'module':
                     foreach (framework\Context::getModules() as $module_name => $module)
@@ -2462,6 +2335,7 @@ class Main extends framework\Action
 
                                 return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
                             case entities\CustomDatatype::DATE_PICKER:
+                            case entities\CustomDatatype::DATETIME_PICKER:
                                 if ($customdatatypeoption_value == '')
                                 {
                                     $issue->setCustomField($key, "");
@@ -2474,7 +2348,7 @@ class Main extends framework\Action
                                 if (!$issue->$changed_methodname())
                                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
 
-                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d', (int) $request->getRawParameter("{$key}_value")))));
+                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d' . ($customdatatype->getType() == entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $request->getRawParameter("{$key}_value")))));
                             default:
                                 if ($customdatatypeoption_value == '')
                                 {
@@ -3371,16 +3245,6 @@ class Main extends framework\Action
     {
         $this->comment_lines = $event->getParameter('comment_lines');
         $this->comment = $event->getParameter('comment');
-    }
-
-    public function listenViewIssuePostError(\thebuggenie\core\framework\Event $event)
-    {
-        if (framework\Context::hasMessage('comment_error'))
-        {
-            $this->comment_error = true;
-            $this->error = framework\Context::getMessageAndClear('comment_error');
-            $this->comment_error_body = framework\Context::getMessageAndClear('comment_error_body');
-        }
     }
 
     public function runAddComment(framework\Request $request)
@@ -4995,5 +4859,185 @@ class Main extends framework\Action
         {
             framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
+    }
+
+    /**
+     * Delete an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runDeleteTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->deleteTodo($request['comment_id'], $request['todo']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Toggle done for issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runToggleDoneTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+        
+        if (! isset($request['mark']) || ! in_array($request['mark'], array('done', 'not_done')))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "mark" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->markTodo($request['comment_id'], $request['todo'], $request['mark']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Save order of issue todos.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runSaveOrderTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
+        $ordered_todos = $request->getParameter(($request['comment_id'] == 0
+            ? ''
+            : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
+
+        if (! is_array($ordered_todos))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Add an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runAddTodo(framework\Request $request)
+    {
+        // If todos item is submitted via form and not ajax forward 403 error.
+        $this->forward403unless($request->isAjaxCall());
+
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (!$issue->canEditDescription())
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
+        }
+
+        if (! isset($request['todo_body']) || !trim($request['todo_body']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo_body" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->addTodo($request['todo_body']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
     }
 }

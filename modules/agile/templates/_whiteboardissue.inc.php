@@ -3,8 +3,8 @@
     <?php include_component('agile/colorpicker', array('issue' => $issue)); ?>
     <div>
         <div class="issue_estimates">
-            <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints()) echo 'display: none;'; ?>"><?php if ($issue->getSpentPoints()): ?><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<?php endif; ?><span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
-            <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHoursAndMinutes(true, true)) echo 'display: none;'; ?>"><?php if ($issue->getSpentHoursAndMinutes(true, true)): ?><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHoursAndMinutes(true, true); ?></span>/<?php endif; ?><span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHoursAndMinutes(true, true); ?></span></div>
+            <div class="issue_estimate points" style="<?php if (!$issue->getEstimatedPoints() && !$issue->getSpentPoints()) echo 'display: none;'; ?>"><?php if ($issue->getSpentPoints()): ?><span title="<?php echo __('Spent points'); ?>"><?php echo $issue->getSpentPoints(); ?></span>/<?php endif; ?><span title="<?php echo __('Estimated points'); ?>"><?php echo $issue->getEstimatedPoints(); ?></span></div>
+            <div class="issue_estimate hours" style="<?php if (!$issue->getEstimatedHoursAndMinutes(true, true) && !$issue->getSpentHoursAndMinutes(true, true)) echo 'display: none;'; ?>"><?php if ($issue->getSpentHoursAndMinutes(true, true)): ?><span title="<?php echo __('Spent hours'); ?>"><?php echo $issue->getSpentHoursAndMinutes(true, true); ?></span>/<?php endif; ?><span title="<?php echo __('Estimated hours'); ?>"><?php echo $issue->getEstimatedHoursAndMinutes(true, true); ?></span></div>
         </div>
         <?php if ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?>
             <div class="priority priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" title="<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? __($issue->getPriority()->getName()) : __('Priority not set'); ?>"><?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getAbbreviation() : '-'; ?></div>
@@ -27,7 +27,7 @@
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
-    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER)); ?>
+    <?php $issue_custom_fields_of_type = array_filter($issue->getCustomFieldsOfTypes(array(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER, \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER))); ?>
     <?php if (count($issue->getBuilds()) || count($issue->getComponents()) || (isset($swimlane) && $swimlane->getBoard()->getEpicIssuetypeID() && $issue->hasParentIssuetype($swimlane->getBoard()->getEpicIssuetypeID()) && count(array_filter($issue->getParentIssues(), function($parent) use($swimlane) { return $parent->getIssueType()->getID() == $swimlane->getBoard()->getEpicIssuetypeID(); })))): ?>
         <div class="issue_info<?php if (isset($swimlane) && $swimlane->getBoard()->hasIssueFieldValues() && count(array_filter(array_keys($issue_custom_fields_of_type), function($custom_field_key) use($swimlane) { return $swimlane->getBoard()->hasIssueFieldValue($custom_field_key); }))) echo ' issue_info_top'; ?>">
             <?php foreach ($issue->getBuilds() as $details): ?>

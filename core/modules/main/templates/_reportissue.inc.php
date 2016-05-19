@@ -402,7 +402,7 @@
                         <td style="text-align: left;"><input type="text" name="spent_time" id="spent_time_id" style="width: 220px;" value="<?php if ($selected_spent_time !== null) echo $selected_spent_time; ?>" placeholder="<?php echo __('Enter time spent here'); ?>"></td>
                     </tr>
                     <tr>
-                        <td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+                        <td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your effort'); ?></td>
                     </tr>
                 </table>
                 <table cellpadding="0" cellspacing="0" id="percent_complete_div" style="display: none;" class="additional_information<?php if (array_key_exists('percent_complete', $errors)): ?> reportissue_error<?php endif; ?>">
@@ -570,7 +570,7 @@
                 <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $field => $customdatatype): ?>
                     <table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;" class="additional_information<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> reportissue_error<?php endif; ?>">
                         <tr>
-                            <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                            <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
                                 <td style="width: 180px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
                                 <td style="width: 326px;position: relative;" class="report_issue_help faded_out dark">
                                     <a href="javascript:void(0);" class="dropper dropdown_link"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
@@ -581,6 +581,13 @@
                                         </li>
                                         <li class="separator"></li>
                                         <li id="customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container" style="padding: 0;"></li>
+                                        <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                            <li class="nohover">
+                                                <label><?php echo __('Time'); ?></label>
+                                                <input type="text" id="customfield_<?php echo $customdatatype->getKey(); ?>_hour" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">&nbsp;:&nbsp;
+                                                <input type="text" id="customfield_<?php echo $customdatatype->getKey(); ?>_minute" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">
+                                            </li>
+                                        <?php endif; ?>
                                         <script type="text/javascript">
                                             require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
                                                 domReady(function () {
@@ -588,12 +595,50 @@
                                                         dateField: '<?php echo $customdatatype->getKey(); ?>_name',
                                                         parentElement: 'customfield_<?php echo $customdatatype->getKey(); ?>_calendar_container',
                                                         valueCallback: function(element, date) {
-                                                            var value = Math.floor(date.getTime() / 1000);
+                                                            <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) { ?>
+                                                                var value = date.setHours(parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_hour').value));
+                                                                var date  = new Date(value);
+                                                                var value = Math.floor(date.setMinutes(parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_minute').value)) / 1000);
+                                                                $('<?php echo $customdatatype->getKey(); ?>_name').dataset.dateStr = $('<?php echo $customdatatype->getKey(); ?>_name').innerText;
+                                                                $('<?php echo $customdatatype->getKey(); ?>_name').update(
+                                                                    $('<?php echo $customdatatype->getKey(); ?>_name').dataset.dateStr + ' '
+                                                                    + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_hour').value) + ':'
+                                                                    + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_minute').value)
+                                                                );
+                                                            <?php } else { ?>
+                                                                var value = Math.floor(date.getTime() / 1000);
+                                                            <?php } ?>
                                                             $('<?php echo $customdatatype->getKey(); ?>_name').show();
                                                             $('<?php echo $customdatatype->getKey(); ?>_value').value = value;
                                                             $('no_<?php echo $customdatatype->getKey(); ?>').hide();
                                                         }
                                                     });
+                                                    <?php if ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                        Event.observe($('customfield_<?php echo $customdatatype->getKey(); ?>_hour'), 'change', function (event) {
+                                                            var value = parseInt($('<?php echo $customdatatype->getKey(); ?>_value').value);
+                                                            var hours = parseInt(this.value);
+                                                            if (value <= 0 || hours < 0 || hours > 24) return;
+                                                            var date = new Date(value * 1000);
+                                                            $('<?php echo $customdatatype->getKey(); ?>_value').value = date.setHours(parseInt(this.value)) / 1000;
+                                                            $('<?php echo $customdatatype->getKey(); ?>_name').update(
+                                                                $('<?php echo $customdatatype->getKey(); ?>_name').dataset.dateStr + ' '
+                                                                + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_hour').value) + ':'
+                                                                + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_minute').value)
+                                                            );
+                                                        });
+                                                        Event.observe($('customfield_<?php echo $customdatatype->getKey(); ?>_minute'), 'change', function (event) {
+                                                            var value = parseInt($('<?php echo $customdatatype->getKey(); ?>_value').value);
+                                                            var minutes = parseInt(this.value);
+                                                            if (value <= 0 || minutes < 0 || minutes > 60) return;
+                                                            var date = new Date(value * 1000);
+                                                            $('<?php echo $customdatatype->getKey(); ?>_value').value = date.setMinutes(parseInt(this.value)) / 1000;
+                                                            $('<?php echo $customdatatype->getKey(); ?>_name').update(
+                                                                $('<?php echo $customdatatype->getKey(); ?>_name').dataset.dateStr + ' '
+                                                                + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_hour').value) + ':'
+                                                                + parseInt($('customfield_<?php echo $customdatatype->getKey(); ?>_minute').value)
+                                                            );
+                                                        });
+                                                    <?php endif; ?>
                                                 });
                                             });
                                         </script>
@@ -680,6 +725,7 @@
                                             <?php
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                        case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                                             ?>
 
                                             <?php
@@ -721,7 +767,7 @@
                                 <?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_').toggle('block');", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
                                 <?php echo __('Users or teams who can see this issue'); ?>
                             </h4>
-                            <?php include_component('identifiableselector', array(    'html_id'             => "popup_find_acl_",
+                            <?php include_component('main/identifiableselector', array(    'html_id'             => "popup_find_acl_",
                                                                                       'header'             => __('Give someone access to this issue'),
                                                                                       'callback'             => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', '');",
                                                                                       'team_callback'     => "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', '');",

@@ -64,7 +64,7 @@
             <?php $cc++; ?>
             <?php if ($project instanceof \thebuggenie\core\entities\Project): ?>
                 <li class="<?php if ($cc == count($found_projects) && $num_projects == count($found_projects)): ?> last<?php endif; ?>">
-                    <?php echo image_tag($project->getSmallIconName(), array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;")); ?>
+                    <?php echo image_tag($project->getSmallIconName(), array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;"), $project->hasSmallIcon()); ?>
                     <?php echo $project->getName(); ?>
                     <span class="hidden url"><?php echo make_url('project_dashboard', array('project_key' => $project->getKey())); ?></span>
                 </li>

@@ -386,6 +386,14 @@ account_save_settings:
       mode: settings
     csrf_enabled: true
 
+account_save_notificationsettings:
+    route: '/account/save/notificationsettings/*'
+    module: main
+    action: myAccount
+    parameters:
+      mode: notificationsettings
+    csrf_enabled: true
+
 account_save_module_settings:
     route: '/account/save/module/:target_module/settings/*'
     module: main
@@ -468,16 +476,14 @@ viewissue_find_issue:
     route: /:project_key/findissues/:issue_id/:type
     module: main
     action: findIssue
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 viewissue_relate_issues:
     route: /:project_key/issues/:issue_id/relate
     module: main
     action: relateIssues
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 viewissue_remove_related_issue:
@@ -589,8 +595,7 @@ toggle_favourite_issue:
     route: /toggle_favourite_issue/:issue_id/:user_id
     module: main
     action: toggleFavouriteIssue
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false
 
 project_reportissue:
@@ -598,40 +603,6 @@ project_reportissue:
     module: main
     action: reportIssue
     parameters: [ ]
-    csrf_enabled: false
-
-nextopenissue:
-    route: /:project_key/issues/:issue_no/next/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-      mode: open
-    csrf_enabled: false
-
-nextissue:
-    route: /:project_key/issues/:issue_no/next
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-    csrf_enabled: false
-
-previousopenissue:
-    route: /:project_key/issues/:issue_no/previous/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-      mode: open
-    csrf_enabled: false
-
-previousissue:
-    route: /:project_key/issues/:issue_no/previous
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
     csrf_enabled: false
 
 issue_log:
@@ -707,3 +678,31 @@ asset_js_unthemed:
     module: main
     action: Asset::resolve
     anonymous_route: true
+
+todo_delete:
+    route: /:project_key/issues/:issue_id/delete-todo/:comment_id
+    module: main
+    action: deleteTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_mark:
+    route: /:project_key/issues/:issue_id/mark-todo/:comment_id/:mark
+    module: main
+    action: toggleDoneTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_saveorder:
+    route: /:project_key/issues/:issue_id/save-order/:comment_id
+    module: main
+    action: saveOrderTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_add:
+    route: /:project_key/issues/:issue_id/add-todo
+    module: main
+    action: addTodo
+    parameters: [ ]
+    csrf_enabled: false

@@ -4,9 +4,9 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 273 -->
-<!-- Number of Strings: 3081 -->
-<!-- Keys extracted from sources on: 2015 Oct 17. -->
+<!-- Number of Sections: 274 -->
+<!-- Number of Strings: 3131 -->
+<!-- Keys extracted from sources on: 2016 Mar 06. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -293,6 +293,12 @@
             <trans-unit id="e2cdf7b415155883cef85ccf03cbe2a0">
                 <source>%number_of hours</source>
             </trans-unit>
+            <trans-unit id="f77eb9f1b917ba78f6eb2ce8ede0a0e4">
+                <source>1 minute</source>
+            </trans-unit>
+            <trans-unit id="b1dfbccf96c137071bfc8a2148c5e273">
+                <source>%number_of minutes</source>
+            </trans-unit>
             <trans-unit id="3599fd1768689596291edfc8acd53602">
                 <source>1 point</source>
             </trans-unit>
@@ -302,11 +308,11 @@
             <trans-unit id="bd21734fa62bc2d6f944f9dd422589bf">
                 <source>No time</source>
             </trans-unit>
-            <trans-unit id="379c0e6cfbc6a2825e5142db16d03364">
-                <source>A file was uploaded. %link_to_file This comment was attached: %comment</source>
+            <trans-unit id="c54f17d52a3ee6cfd3ce94e3aa9de1ac">
+                <source>A file was uploaded.%link_to_file nnThis comment was attached: %comment</source>
             </trans-unit>
-            <trans-unit id="48d8b51eef27cc21422b7df0704696de">
-                <source>A file was uploaded. %link_to_file</source>
+            <trans-unit id="dc47fbd16fd9853595a1c0b85e016c67">
+                <source>A file was uploaded.%link_to_file</source>
             </trans-unit>
             <trans-unit id="370ddcb4adc5a3a2a6b78a4e38e5a81c">
                 <source>This issue no longer depends on the solution of issue %issue_no</source>
@@ -386,6 +392,24 @@
             <trans-unit id="ab0ce08ebd8e02e0a2dbbde343b00dcc">
                 <source>No time spent</source>
             </trans-unit>
+            <trans-unit id="e198d8d3b9adccfaac30ce144b2dd160">
+                <source>%number_of minute(s)</source>
+            </trans-unit>
+            <trans-unit id="0216f82d6691e8377c09aef130812994">
+                <source>%number_of hour(s)</source>
+            </trans-unit>
+            <trans-unit id="a8e2b82203807d40d4bce474d353a28d">
+                <source>%number_of day(s)</source>
+            </trans-unit>
+            <trans-unit id="1543700796f08c136c0388fed3fcf334">
+                <source>%number_of week(s)</source>
+            </trans-unit>
+            <trans-unit id="f131fb2eee18ca8841d3742a062697e1">
+                <source>%number_of month(s)</source>
+            </trans-unit>
+            <trans-unit id="aafd37df006536681ac541b5cfe1ee4f">
+                <source>%number_of point(s)</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -423,6 +447,15 @@
 
     <file source-language="en" datatype="php" original="core/entities/Milestone.php">
         <body>
+            <trans-unit id="6916c4017816033add7773c582a6292b">
+                <source>Based on closed / opened issues</source>
+            </trans-unit>
+            <trans-unit id="b2970daa3a30f575f3620232ea8dfd97">
+                <source>Based on spent / estimated points</source>
+            </trans-unit>
+            <trans-unit id="15c77e4723500c68e384abc29e825c50">
+                <source>Based on issues percent completed</source>
+            </trans-unit>
             <trans-unit id="3a172d2139db612c3b2ae6e5b9fe6a51">
                 <source>%milestone_name (started %start_date - ended %end_date)</source>
             </trans-unit>
@@ -640,6 +673,9 @@
             <trans-unit id="553d56182b10c9c58f64a7a65e4360b3">
                 <source>User must be member of a certain team</source>
             </trans-unit>
+            <trans-unit id="89c82842887dfd68a026bc2e54d4ccea">
+                <source>Issue must be in milestone</source>
+            </trans-unit>
             <trans-unit id="04902141b151953fa8a3009fb92080dc">
                 <source>Validate specified priority</source>
             </trans-unit>
@@ -666,11 +702,8 @@
 
     <file source-language="en" datatype="php" original="core/framework/Action.php">
         <body>
-            <trans-unit id="3af0e63ff45f01cd770ac63c854503fb">
-                <source>You are not allowed to access this page</source>
-            </trans-unit>
-            <trans-unit id="c722f410b5efeab9e40b95ac3832352c">
-                <source>You don't have access to perform this action</source>
+            <trans-unit id="683e2b9d5dec2722211eeae8af0c851c">
+                <source>You are either not allowed to access this page or don't have access to perform this action</source>
             </trans-unit>
         </body>
     </file>
@@ -794,8 +827,11 @@
             <trans-unit id="db7e82fa21c584d32410fa20158c5cb2">
                 <source>Can access the project dashboard</source>
             </trans-unit>
-            <trans-unit id="db8c191992ecac86ad970345a6a35659">
-                <source>Can access the project planning page</source>
+            <trans-unit id="6cb75d706713b9a635759c15cc2a96d5">
+                <source>Can access the project agile pages without planning page</source>
+            </trans-unit>
+            <trans-unit id="67ec38dfad7fdea259639298e38a2b58">
+                <source>Can access the project planning pages</source>
             </trans-unit>
             <trans-unit id="a19b9a2e214d2626cc3ee50736345945">
                 <source>Can access the project scrum page</source>
@@ -814,6 +850,9 @@
             </trans-unit>
             <trans-unit id="a1768f2629d3d270ea9de6ad0e13de85">
                 <source>Can access the project timeline page</source>
+            </trans-unit>
+            <trans-unit id="5dda0d861f1ac4a3a6bfa8ca2ec82306">
+                <source>Can access the project commits page</source>
             </trans-unit>
             <trans-unit id="9e8ab9af0f578a56adc94d47a7a017f8">
                 <source>Can see that project exists</source>
@@ -845,8 +884,8 @@
             <trans-unit id="adf5c6d64779846e459e4bd96eb0c08f">
                 <source>Can manage project</source>
             </trans-unit>
-            <trans-unit id="692241c6240e93486933ac2d270bb733">
-                <source>Can manage project releases and components</source>
+            <trans-unit id="7a03b68f378150444d304c4376929104">
+                <source>Can manage project releases, editions and components</source>
             </trans-unit>
             <trans-unit id="3d0010479721c311bfd161f16e06e7a7">
                 <source>Can edit project details and settings</source>
@@ -866,8 +905,8 @@
             <trans-unit id="8589bfafc6eace4458ff8ac901f4a6f3">
                 <source>Can vote for issues</source>
             </trans-unit>
-            <trans-unit id="56a8f05771f5a336e18400e6f53640c7">
-                <source>Can toggle issue access between restricted and public</source>
+            <trans-unit id="de837d23a62d84dc4ac27635cccca86e">
+                <source>Can change issue access policy</source>
             </trans-unit>
             <trans-unit id="88ee461b9851b7a9fbafece737a71cef">
                 <source>Can create issues, edit basic information on issues reported by the user and close/re-open them</source>
@@ -887,15 +926,6 @@
             <trans-unit id="757f151815b1a437b29db062ae5ffaa7">
                 <source>Can edit steps to reproduce on issues reported by the user</source>
             </trans-unit>
-            <trans-unit id="7b1164de94c046c72e15060a4b79fc1b">
-                <source>Can close and reopen issues reported by the user</source>
-            </trans-unit>
-            <trans-unit id="95a604a8b47a80f50b9f4139ff70f8a0">
-                <source>Can close issues reported by the user</source>
-            </trans-unit>
-            <trans-unit id="c13de93f42482da276e7f74398a98e0b">
-                <source>Can re-open issues reported by the user</source>
-            </trans-unit>
             <trans-unit id="dbc4222a8e6fffff82b11cbe5f492589">
                 <source>Can delete, close, reopen and update any issue details and progress</source>
             </trans-unit>
@@ -913,12 +943,6 @@
             </trans-unit>
             <trans-unit id="1386ff6eac6ba48dd4ef463ebcae0457">
                 <source>Can delete issues</source>
-            </trans-unit>
-            <trans-unit id="9c43bf5fe75661bfa880995301885b5a">
-                <source>Can close any issues</source>
-            </trans-unit>
-            <trans-unit id="757a1279b4d21e056a43068bf0286a71">
-                <source>Can re-open any issues</source>
             </trans-unit>
             <trans-unit id="7a7c719cb509f223c7a03c8405cf7c5d">
                 <source>Can edit issue posted by</source>
@@ -958,6 +982,15 @@
             </trans-unit>
             <trans-unit id="b889c5a34caea06190b6120c324b5f92">
                 <source>Can set issue milestone</source>
+            </trans-unit>
+            <trans-unit id="688da7c97a935b3b97260cb3e8bbbf4f">
+                <source>Can transition issue</source>
+            </trans-unit>
+            <trans-unit id="787b24c2868014ac30187179ecfd9846">
+                <source>Can edit issue scrum color</source>
+            </trans-unit>
+            <trans-unit id="853cc3dfefcb794c0669826b6374dcfa">
+                <source>Can edit issue user pain</source>
             </trans-unit>
             <trans-unit id="451fc3adac956be55d04cb80d863f419">
                 <source>Can change custom field values for issues reported by the user</source>
@@ -1004,11 +1037,11 @@
             <trans-unit id="7585e633cb6cb4931be4089027bc9195">
                 <source>Can add links to any issues</source>
             </trans-unit>
-            <trans-unit id="fc37191f6e5f2d4532142c5e5a0970e3">
-                <source>Can add files to and remove own files from issues reported by the user</source>
+            <trans-unit id="67a127cc4c954b2ff9b4be230adb45ff">
+                <source>Can add files to  issues reported by the user</source>
             </trans-unit>
-            <trans-unit id="f3056a629e5babe897211772e40e0ca0">
-                <source>Can add files to and remove own files from any issues</source>
+            <trans-unit id="297a9e82f5e985a0047b489142b7d645">
+                <source>Can add files to any issues</source>
             </trans-unit>
             <trans-unit id="f4637d9c61d2f30b63a8050f56a31013">
                 <source>Can remove any attachments from issues reported by the user</source>
@@ -1151,6 +1184,48 @@
 
     <file source-language="en" datatype="php" original="core/framework/Settings.php">
         <body>
+            <trans-unit id="2558d0d93911b330782c4da80b3a589d">
+                <source>Notify when there are updates to my subscribed issues</source>
+            </trans-unit>
+            <trans-unit id="2e450225830f3fdd29eee67e212482ed">
+                <source>Notify when there are updates to my subscribed articles</source>
+            </trans-unit>
+            <trans-unit id="a02d6a6b1c6af693590b9e839d043621">
+                <source>Notify when new issues are created in my project(s)</source>
+            </trans-unit>
+            <trans-unit id="b0040936c7fb9d2aeb482f06aa6288a9">
+                <source>New created issues have category</source>
+            </trans-unit>
+            <trans-unit id="3a8fc200241eab38f80e13daef0f78d7">
+                <source>Notify when new articles are created in my project(s)</source>
+            </trans-unit>
+            <trans-unit id="06ee0ed9915ea31190ddc50d0d1cfcae">
+                <source>Only notify once per issue or article until I view the issue or article in my browser</source>
+            </trans-unit>
+            <trans-unit id="7859b88887968a01388121b278d642d4">
+                <source>Notify also when I am the one making the changes</source>
+            </trans-unit>
+            <trans-unit id="94e0da2311d5fc74e057f4ba1b23425a">
+                <source>Notify when I am mentioned in issue or article or their comment</source>
+            </trans-unit>
+            <trans-unit id="157cc2b42a7565f57ebd38f173ddbf50">
+                <source>Show notifications about issue updates that are grouped as one notification based on interval in minutes:</source>
+            </trans-unit>
+            <trans-unit id="9a63741b2e595bc5fdbab2fb76061576">
+                <source>Notify only to notifications box when I am active on system</source>
+            </trans-unit>
+            <trans-unit id="f7673aa478166eaff626ac655892b7e8">
+                <source>Automatically subscribe to issues I posted</source>
+            </trans-unit>
+            <trans-unit id="e7d89c6415436e057f9eddb55b42a74d">
+                <source>Automatically subscribe to article I posted</source>
+            </trans-unit>
+            <trans-unit id="b2910cb2a5d16f7c472876c052d6df79">
+                <source>Automatically subscribe to new issues that are created in my project(s)</source>
+            </trans-unit>
+            <trans-unit id="ddf3e81904d5e819047beafd56a6d00e">
+                <source>Automatically subscribe to new articles that are created in my project(s)</source>
+            </trans-unit>
             <trans-unit id="48b26d57c14af0500090800c2cdd0d58">
                 <source>Scopes</source>
             </trans-unit>
@@ -1706,6 +1781,9 @@
             <trans-unit id="035617d988a47d4689c558f52e05cd8a">
                 <source>You have to specify a name for this role</source>
             </trans-unit>
+            <trans-unit id="c722f410b5efeab9e40b95ac3832352c">
+                <source>You don't have access to perform this action</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -2148,6 +2226,9 @@
             <trans-unit id="cb5feb1b7314637725a2e73bdc9f7295">
                 <source>Color</source>
             </trans-unit>
+            <trans-unit id="fbd39fe0ecd01afaf01ea1957ef4a57c">
+                <source>No.</source>
+            </trans-unit>
             <trans-unit id="ec211f7c20af43e742bf2570c3cb84f9">
                 <source>Add</source>
             </trans-unit>
@@ -2578,26 +2659,26 @@
             <trans-unit id="03b6467407c8843969161e9e4b97f79c">
                 <source>Please see [[ConfigurePermissions]] for more information about how permissions work in general.</source>
             </trans-unit>
-            <trans-unit id="93b4f06619a0895f7926695085d43c0b">
-                <source>Users / groups / teams</source>
-            </trans-unit>
             <trans-unit id="63e17b7f19fa3212255151c891cd7ea0">
                 <source>Can set</source>
             </trans-unit>
             <trans-unit id="d677b410373bc790d9a8ec2e68090839">
                 <source>Can</source>
             </trans-unit>
-            <trans-unit id="bf733d8a933c1601697f364223fc7ecb">
-                <source>Access</source>
+            <trans-unit id="a2ef4cce10237e7a451bf5cd4a15f22f">
+                <source>Inherited access / Explicit access</source>
+            </trans-unit>
+            <trans-unit id="c31394c029cd76dbed040bab01517aaf">
+                <source>I / E</source>
             </trans-unit>
             <trans-unit id="f0d26d0123737bbbf583ba6238440203">
                 <source>&lt;b&gt;Global &lt;/b&gt;(Everyone with access)</source>
             </trans-unit>
-            <trans-unit id="758266dffe87ebc44da5214ce4d120ee">
-                <source>Group: %group_name</source>
+            <trans-unit id="a37ede293936e29279ed543129451ec3">
+                <source>Groups</source>
             </trans-unit>
-            <trans-unit id="ceb43046a5e710a50223d55b8992343b">
-                <source>Team: %team_name</source>
+            <trans-unit id="21bd5ee038e8d97a87f125f46c0f9453">
+                <source>There are no teams</source>
             </trans-unit>
         </body>
     </file>
@@ -3377,6 +3458,9 @@
             <trans-unit id="99364fda15fd9900983eff4cf630510c">
                 <source>Assignee is member of any of these teams: %teams</source>
             </trans-unit>
+            <trans-unit id="06513c40d33281a25a125fdc4684ab13">
+                <source>Issue is in any of these milestones: %milestones</source>
+            </trans-unit>
             <trans-unit id="447f3e61ba039c59d5f0be4b764b829b">
                 <source>Custom field %customfield is any of these values: %values</source>
             </trans-unit>
@@ -3400,6 +3484,9 @@
             </trans-unit>
             <trans-unit id="a11f161bd7fe0f96ffb2c59c8b234c69">
                 <source>User must be member of any of these teams</source>
+            </trans-unit>
+            <trans-unit id="f912eb8f1ba67d846c6b59560df654fe">
+                <source>Issue must be in any of these milestones</source>
             </trans-unit>
             <trans-unit id="b676bc2fe3eb3adab63ba9af46e64d5d">
                 <source>Do you really want to delete this transition validation rule?</source>
@@ -3703,6 +3790,9 @@
             <trans-unit id="3053a66c19502c9882e3b68d3c85092c">
                 <source>Configure uploads &amp; attachments</source>
             </trans-unit>
+            <trans-unit id="55abf5da45c12daeb8e7c6d60d10a53b">
+                <source>%mb MB of %max MB</source>
+            </trans-unit>
             <trans-unit id="f5b3fc35c8151a9388f3e91587c048d6">
                 <source>The file upload functionality can be enhanced with file type detection. To enable this, please install and enable the fileinfo extension.</source>
             </trans-unit>
@@ -3760,6 +3850,12 @@
             <trans-unit id="e9b9c768bb3b3f95b507748a62ca8285">
                 <source>Specify whether you want to use the filesystem or database to store uploaded files. Using the database will make it easier to move your installation to another server.</source>
             </trans-unit>
+            <trans-unit id="8bf93164da9c0dfb017c81bfc458b7b5">
+                <source>Storage usage</source>
+            </trans-unit>
+            <trans-unit id="91e465a3c3524765b7df6f1ac95298d4">
+                <source>%mb MB used</source>
+            </trans-unit>
             <trans-unit id="557fa069073c7e7d6cf0c83478d09d68">
                 <source>Upload location</source>
             </trans-unit>
@@ -3803,9 +3899,6 @@
             </trans-unit>
             <trans-unit id="96d07b08b31b7e0acb76cf0801e2f39f">
                 <source>Teams (%num/%max)</source>
-            </trans-unit>
-            <trans-unit id="a37ede293936e29279ed543129451ec3">
-                <source>Groups</source>
             </trans-unit>
             <trans-unit id="ce582eefdd28f29f12aebd64865a8872">
                 <source>Quick add user</source>
@@ -4750,18 +4843,6 @@
             <trans-unit id="0c716457b01af1336b28ef554b55948d">
                 <source>Your account has been activated! You can now log in with the username %user and the password in your activation email.</source>
             </trans-unit>
-            <trans-unit id="c02e2475f5f3fbeca737fc17cf1d1df9">
-                <source>Automatically subscribe to issues I get involved in</source>
-            </trans-unit>
-            <trans-unit id="ed97177a1df37b07733b81a05a485d09">
-                <source>Automatically subscribe to article I get involved in</source>
-            </trans-unit>
-            <trans-unit id="b2910cb2a5d16f7c472876c052d6df79">
-                <source>Automatically subscribe to new issues that are created in my project(s)</source>
-            </trans-unit>
-            <trans-unit id="ddf3e81904d5e819047beafd56a6d00e">
-                <source>Automatically subscribe to new articles that are created in my project(s)</source>
-            </trans-unit>
             <trans-unit id="09b95de733d322e9aa3f22d42b503a61">
                 <source>Please fill out all the required fields</source>
             </trans-unit>
@@ -4822,11 +4903,11 @@
             <trans-unit id="4ca8c059bfae0cd6086802c4932dcbb3">
                 <source>This issue does not exist</source>
             </trans-unit>
-            <trans-unit id="12175898a0909c31f76e3159cd87d25c">
-                <source>Issue access policy updated</source>
-            </trans-unit>
             <trans-unit id="7fbf9c0227115fbab5190e389a847750">
                 <source>You don't have access to update the issue access policy</source>
+            </trans-unit>
+            <trans-unit id="12175898a0909c31f76e3159cd87d25c">
+                <source>Issue access policy updated</source>
             </trans-unit>
             <trans-unit id="8ba0ba63ee55a17dbb64ff8986f22bb9">
                 <source>An error occurred when uploading the file</source>
@@ -5455,6 +5536,12 @@
             <trans-unit id="d34327c528e8d4d0a94563642243fd48">
                 <source>Relate these issues</source>
             </trans-unit>
+            <trans-unit id="bf6cf0b039ceedcd84afaf63b40f4f77">
+                <source>Add checked issues as children</source>
+            </trans-unit>
+            <trans-unit id="0e9b32e904f3e48c4d8ed926c0a10803">
+                <source>Set selected issue as parent</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -5584,6 +5671,9 @@
             <trans-unit id="1ba6d3b26a084c9f91aa99d67bce0304">
                 <source>Could not process issue transition since assigned user is not member of any of allowed teams</source>
             </trans-unit>
+            <trans-unit id="4b5dd356e9dc44f7ce56c718933747bd">
+                <source>Could not process issue transition since issue is not in of any of allowed milestones</source>
+            </trans-unit>
             <trans-unit id="5fe178b8a04ca1a5fba2896664d7cfed">
                 <source>Could not set priority</source>
             </trans-unit>
@@ -5706,6 +5796,9 @@
             </trans-unit>
             <trans-unit id="5d5b78699e57104f2fa03bbdf7b9197b">
                 <source>Set</source>
+            </trans-unit>
+            <trans-unit id="3e8840a4c791dbdd8cf9ca20ca4b4d78">
+                <source>%percentage % completed</source>
             </trans-unit>
             <trans-unit id="28f6a4c8454cbf25e5fb8b7cdc4b31ce">
                 <source>User pain</source>
@@ -5870,20 +5963,26 @@
             <trans-unit id="090fc0696d9f853c1ef03d30d97c76c7">
                 <source>Enter time spent here</source>
             </trans-unit>
-            <trans-unit id="7c4d5fd3a005d7c3d715d5037d1c40be">
-                <source>Enter a value in plain text, like "1 hour", "7 hours", or similar</source>
+            <trans-unit id="f46a86f9c916d434b6239cb47152d576">
+                <source>Enter a value in plain text, like "1 hour", "7 hours", or similar. Time units not supported by project will not be parsed.</source>
             </trans-unit>
-            <trans-unit id="1c2cfa5bef8e5433524bb2dc90058d00">
-                <source>Enter a value in plain text, like "1 point", "11 points", or similar</source>
+            <trans-unit id="d0893adf229bc318ba66f2e8a99c8427">
+                <source>Enter a value in plain text, like "1 point", "11 points", or similar. Time units not supported by project will not be parsed.</source>
             </trans-unit>
-            <trans-unit id="133eba4449194f455bbb3ff98368b179">
-                <source>Enter a value in plain text, like "1 week, 2 hours", "1 day", or similar</source>
+            <trans-unit id="556fd8f5118d1a08cb225c9e14bdc74c">
+                <source>Enter a value in plain text, like "1 week, 2 hours", "1 day", or similar. Time units not supported by project will not be parsed.</source>
             </trans-unit>
-            <trans-unit id="6439406477de7bdd6d70cddcd085b06a">
-                <source>Enter a value in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar</source>
+            <trans-unit id="33626362008b77af7436bd4f2cdc8caf">
+                <source>Enter a value in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar. Time units not supported by project will not be parsed.</source>
             </trans-unit>
             <trans-unit id="30819b3c27601576df59819b3b7a5015">
                 <source>%enter_a_value_in_plain_text or specify below</source>
+            </trans-unit>
+            <trans-unit id="b9259747a7d0884e9e80322de5bbd64b">
+                <source>%number_of</source>
+            </trans-unit>
+            <trans-unit id="0a5af37eb11e7dbe24e620c762d281b5">
+                <source>Add %number_of minutes</source>
             </trans-unit>
             <trans-unit id="7954572c9b6201358c85445319c2b24c">
                 <source>Note that the total estimated effort of parent issues is the sum of its child issues. This estimate will be replaced if any child issues are updated.</source>
@@ -6059,7 +6158,7 @@
             <trans-unit id="57a52b16d602eeeebff7c199674146cb">
                 <source>Create a new related issue</source>
             </trans-unit>
-            <trans-unit id="f92f8e280200dd2b3930f90598dca697">
+            <trans-unit id="a39319fbe4116886336f74976a1fc272">
                 <source>Add a relation for this issue</source>
             </trans-unit>
             <trans-unit id="6b0a3be2f95ef7a8da6b7888940c94d7">
@@ -6114,8 +6213,11 @@
             <trans-unit id="4988c05ffe9d76df3610b2cb6941fbea">
                 <source>Issue access policy</source>
             </trans-unit>
-            <trans-unit id="15ad67d8a99d7dfa9470eafc605a5f03">
-                <source>Available to anyone with access</source>
+            <trans-unit id="7b08cb0412394257e16e93ca529315e4">
+                <source>Available to anyone with access to project</source>
+            </trans-unit>
+            <trans-unit id="b82060a4899297196d3abea049deb16d">
+                <source>Available to anyone with access to project, category and those listed below</source>
             </trans-unit>
             <trans-unit id="0a486fd70dbcd54b447a4c7d15869789">
                 <source>Available only to you and those listed below</source>
@@ -6151,6 +6253,9 @@
             </trans-unit>
             <trans-unit id="622d69cedcb8ce9393b78b85ecf97ae4">
                 <source>Points spent</source>
+            </trans-unit>
+            <trans-unit id="f5e7a68a240624351e7cfecc6bfcecb4">
+                <source>Minutes spent</source>
             </trans-unit>
             <trans-unit id="90717199b40c86e409d1b190f432a4cf">
                 <source>Hours spent</source>
@@ -6193,21 +6298,6 @@
             <trans-unit id="83c0ec83a40cdffe1112d212be2b7c82">
                 <source>%specify_manually or select %list</source>
             </trans-unit>
-            <trans-unit id="aafd37df006536681ac541b5cfe1ee4f">
-                <source>%number_of point(s)</source>
-            </trans-unit>
-            <trans-unit id="0216f82d6691e8377c09aef130812994">
-                <source>%number_of hour(s)</source>
-            </trans-unit>
-            <trans-unit id="a8e2b82203807d40d4bce474d353a28d">
-                <source>%number_of day(s)</source>
-            </trans-unit>
-            <trans-unit id="1543700796f08c136c0388fed3fcf334">
-                <source>%number_of week(s)</source>
-            </trans-unit>
-            <trans-unit id="f131fb2eee18ca8841d3742a062697e1">
-                <source>%number_of month(s)</source>
-            </trans-unit>
             <trans-unit id="d1a69a3314fa6b5bf26fd27e9c30ed74">
                 <source>Log time entry</source>
             </trans-unit>
@@ -6234,8 +6324,8 @@
             <trans-unit id="b6f0e8cece09a3c00711d2371debdfba">
                 <source>Do you really want to remove this time entry?</source>
             </trans-unit>
-            <trans-unit id="d43cd56dffd5b4235ced41462e9a7c9d">
-                <source>Removing this entry will change the number of points, hours, days, weeks or months spent on this issue.</source>
+            <trans-unit id="c887e9eea005fc7ce90c6137a315b0bd">
+                <source>Removing this entry will change the number of points, minutes, hours, days, weeks or months spent on this issue.</source>
             </trans-unit>
             <trans-unit id="1063e38cb53d94d386f21227fcd84717">
                 <source>Remove</source>
@@ -6490,6 +6580,14 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_myaccountsettingsformsubmit.inc.php">
+        <body>
+            <trans-unit id="436e0c9f50c6dd88dc15a5d6660bd8e3">
+                <source>Click "%save" to save changes in the "%module_settings_name" category</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/templates/_myfriends.inc.php">
         <body>
             <trans-unit id="3d594614f445f6b00014e9b77730b833">
@@ -6501,7 +6599,7 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_notification.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_notification_text.inc.php">
         <body>
             <trans-unit id="bc365ff223ecf430f0b28820e57a734f">
                 <source>%user_name created a new issue under %project_name</source>
@@ -6524,8 +6622,17 @@
             <trans-unit id="63c2fb5003a3a44993bbf8b8fcd5bb6d">
                 <source>%user_name posted a %comment on %article_name</source>
             </trans-unit>
+            <trans-unit id="5d9c754d696491c93a091603ae727150">
+                <source>%user_name created a new article %article_name</source>
+            </trans-unit>
             <trans-unit id="769b32679efefabdb4b5f80c98e6e29c">
                 <source>%user_name updated %article_name</source>
+            </trans-unit>
+            <trans-unit id="31df51539d683edef06a0e37645a0b37">
+                <source>%user_name mentioned you in an issue %issue_no</source>
+            </trans-unit>
+            <trans-unit id="09bd1edb244a50464707436ff8234fc7">
+                <source>%user_name mentioned you in an article %article_name</source>
             </trans-unit>
         </body>
     </file>
@@ -6535,11 +6642,8 @@
             <trans-unit id="f478d19b8f322ebaf7f826c353200af8">
                 <source>You have no notifications</source>
             </trans-unit>
-            <trans-unit id="31df51539d683edef06a0e37645a0b37">
-                <source>%user_name mentioned you in an issue %issue_no</source>
-            </trans-unit>
-            <trans-unit id="09bd1edb244a50464707436ff8234fc7">
-                <source>%user_name mentioned you in an article %article_name</source>
+            <trans-unit id="bdb8cd20f19af6047124613f4e3cc4c0">
+                <source>New notification</source>
             </trans-unit>
         </body>
     </file>
@@ -6887,11 +6991,11 @@
             <trans-unit id="8e3c806791ad3bb8844fd69eb7c30503">
                 <source>Enter an estimate here</source>
             </trans-unit>
-            <trans-unit id="4e76e4f7a57de6f64b5baa45a4b6a9f0">
-                <source>Type in your estimate here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate</source>
+            <trans-unit id="56c04ee0cd0c1196149896d7083b2ad6">
+                <source>Type in your estimate here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your estimate</source>
             </trans-unit>
-            <trans-unit id="f40b71beca71fcb3c6201ebb478a6138">
-                <source>Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate</source>
+            <trans-unit id="9d6a30ec92ae5ecb7f72826021bff7f6">
+                <source>Enter time spent on this issue here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your estimate</source>
             </trans-unit>
             <trans-unit id="b55214197c27e39632934cec31895154">
                 <source>Pct. completed</source>
@@ -6938,6 +7042,9 @@
             <trans-unit id="2f2afe16c754e7ac85015df52b52090b">
                 <source>Choose a severity for this issue</source>
             </trans-unit>
+            <trans-unit id="5f2cb82b37d3c1873429e64a7162b5f9">
+                <source>Custom access policy</source>
+            </trans-unit>
             <trans-unit id="75e397c9cf026ff363461a136d884c5c">
                 <source>When you are satisfied, click the %file_issue button to file your issue</source>
             </trans-unit>
@@ -6965,8 +7072,8 @@
             <trans-unit id="1e984906e3ab1951de9181f1faa625a9">
                 <source>Specify category</source>
             </trans-unit>
-            <trans-unit id="add930fb60788b7ffd17c3ae63998cc7">
-                <source>Estimate time to fix</source>
+            <trans-unit id="3699416edac8d6ca841d5ba5dbefec8a">
+                <source>Estimate time</source>
             </trans-unit>
             <trans-unit id="e02466f33d0f8966a5ffd70951739e4b">
                 <source>Time spent on fix</source>
@@ -7143,8 +7250,8 @@
             <trans-unit id="cf023b6b75b016cbb75cf15bcd0fed39">
                 <source>The Bug Genie interactive planning</source>
             </trans-unit>
-            <trans-unit id="3ea46b78d5149cac91d638b183fdd968">
-                <source>This is the the interactive project planning board. From this page you can manage all your releases, milestones, epics, tasks and issues.</source>
+            <trans-unit id="2b08e7d845c60d51998aa40121c50517">
+                <source>This is the interactive project planning board. From this page you can manage all your releases, milestones, epics, tasks and issues.</source>
             </trans-unit>
             <trans-unit id="02127ca39cc303028f2c1dfddd0298d6">
                 <source>We'll just quickly go over the most important elements on this page to help you get going.</source>
@@ -7398,9 +7505,6 @@
             </trans-unit>
             <trans-unit id="ecf7de776c7ad3b6bfba9aa850ede50e">
                 <source>Milestone isn't visible for this issuetype / product combination</source>
-            </trans-unit>
-            <trans-unit id="dda38064fe88774bfb48ef3e2081eb5b">
-                <source>Adds %hours hour(s), %days day(s) and %weeks week(s)</source>
             </trans-unit>
             <trans-unit id="3cecc28ca6ca336bf8f68f6459c63cb0">
                 <source>Yes, let me specify</source>
@@ -7656,6 +7760,9 @@
             <trans-unit id="31ab772c7b6bad974a80cbe6f2e6bc9e">
                 <source>403 - Forbidden</source>
             </trans-unit>
+            <trans-unit id="3af0e63ff45f01cd770ac63c854503fb">
+                <source>You are not allowed to access this page</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -7758,11 +7865,11 @@
             <trans-unit id="18fcd2f0d1ca2a81ecc341108eee4865">
                 <source>Use Gravatar avatar</source>
             </trans-unit>
-            <trans-unit id="f17388678c4473d658b788b089e350c5">
-                <source>The Bug Genie can use your &lt;a href="http://www.gravatar.com" target="_blank"&gt;Gravatar&lt;/a&gt; profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar &lt;a href="http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/" target="_blank"&gt;auto-generated image unique for your email address&lt;/a&gt;.</source>
+            <trans-unit id="1258c8de0cd5d976a6bfbab676b48201">
+                <source>The Bug Genie can use your %link_to_gravatar profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar %auto_generated_image_unique_for_your_email_address. Don't have a Gravatar yet? %link_to_get_one_now</source>
             </trans-unit>
-            <trans-unit id="616834bd3ad2026adafe89bed07205c5">
-                <source>Don't have a Gravatar yet? %link_to_get_one_now</source>
+            <trans-unit id="fae967aac53c6cfbbe53e7740be78c8c">
+                <source>auto-generated image unique for your email address</source>
             </trans-unit>
             <trans-unit id="8dbe49cf2134b71c708edccf24f5975f">
                 <source>Get one now!</source>
@@ -7830,11 +7937,44 @@
             <trans-unit id="c6beece3d3f5a9081f37b3a53bd38a72">
                 <source>Preferred syntax when posting comments</source>
             </trans-unit>
-            <trans-unit id="c9cf7338d6687a99088094c52d0e60b4">
-                <source>Update notifications</source>
+            <trans-unit id="4ca2c509994c2776d0880357b4e8e5be">
+                <source>Subscriptions</source>
             </trans-unit>
-            <trans-unit id="e62d882bf96a344b328cb8de5dbc7af9">
-                <source>You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to, and The Bug Genie will automatically subscribe to certain issues and articles for you. Please select when you would like The Bug Genie to subscribe and / or notify you.</source>
+            <trans-unit id="2653775429bb0b1037a2a85b90e5d7c5">
+                <source>Please select when you would like The Bug Genie to subscribe you.</source>
+            </trans-unit>
+            <trans-unit id="62f5d708d6ad1fa1ddd9429a65cccbea">
+                <source>All categories</source>
+            </trans-unit>
+            <trans-unit id="a274f4d4670213a9045ce258c6c56b80">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="818626820645fe8a0b865d318a3e7408">
+                <source>You can receive notifications based on system actions or your subscriptions. By default notifications can be receieved in notifications box (visible next to your avatar in top menu) and also via email using Email communication module.</source>
+            </trans-unit>
+            <trans-unit id="91f8938715262fbde834de147769b0a1">
+                <source>Notifications box</source>
+            </trans-unit>
+            <trans-unit id="ce07ead298d59ee8fa68c6bbe3b12567">
+                <source>Enable desktop notifications</source>
+            </trans-unit>
+            <trans-unit id="dc8b07f8694e1ad59b3c5e714f808e55">
+                <source>Grant Permission</source>
+            </trans-unit>
+            <trans-unit id="49cb2d17d9f99483000bec51b5517e59">
+                <source>Test notification</source>
+            </trans-unit>
+            <trans-unit id="dd5b498c35a719b98a0e90950a790946">
+                <source>This is a test notification.</source>
+            </trans-unit>
+            <trans-unit id="c15f06d5c00d1a2863782b2aabebd0a7">
+                <source>Receive notifications from box through browser as well. Once you receive desktop notification clicking on it will dismiss it and open notification target url or backdrop depending on notification. After you grant permission, additional clicks on button will send test notification.</source>
+            </trans-unit>
+            <trans-unit id="715f860748d96dbfdc8bf9defb8a21e5">
+                <source>Open desktop notifications in new tab</source>
+            </trans-unit>
+            <trans-unit id="fafc3091bfeb362de51f9e0f2a548a80">
+                <source>Whether clicking on notification will open target url in new or current tab. Notifications which target is backdrop will not be affected and will open in current tab. By default browsers will block opening of new tab programmatically, unless you enable pop-ups.</source>
             </trans-unit>
             <trans-unit id="0c0d6282aaf99a443d2f4a2e5cf633aa">
                 <source>Click "%save" to update the settings on this tab</source>
@@ -7922,9 +8062,6 @@
             </trans-unit>
             <trans-unit id="3361351b3e0cef6487ad758175553fa7">
                 <source>Other OpenID provider</source>
-            </trans-unit>
-            <trans-unit id="436e0c9f50c6dd88dc15a5d6660bd8e3">
-                <source>Click "%save" to save changes in the "%module_settings_name" category</source>
             </trans-unit>
             <trans-unit id="baab006b26b7dfe77376fa77643f1fda">
                 <source>Pending memberships</source>
@@ -8702,6 +8839,9 @@
             <trans-unit id="399402d5588629f641b0ede08d04404b">
                 <source>Issue availability</source>
             </trans-unit>
+            <trans-unit id="1030e7f3221400c17c17be40da07d2b6">
+                <source>Percentage type</source>
+            </trans-unit>
             <trans-unit id="610b554d147237a70f70e2351195b7cc">
                 <source>Planned start date</source>
             </trans-unit>
@@ -8747,6 +8887,9 @@
             </trans-unit>
             <trans-unit id="eb2e4e4c2147afdb554de372bc896b4f">
                 <source>Total estimated effort</source>
+            </trans-unit>
+            <trans-unit id="b82f32203142b078f3947120b83c0030">
+                <source>Previous effort</source>
             </trans-unit>
             <trans-unit id="7ebfd48a82a4064645bf99fee4e040c3">
                 <source>Current effort</source>
@@ -8810,9 +8953,6 @@
             </trans-unit>
             <trans-unit id="59468337d52a54fd6dbde8f39b451f21">
                 <source>Unknown status</source>
-            </trans-unit>
-            <trans-unit id="3e8840a4c791dbdd8cf9ca20ca4b4d78">
-                <source>%percentage % completed</source>
             </trans-unit>
             <trans-unit id="a348c30e936ffb9b4df04067f99094c8">
                 <source>%percentage completed</source>
@@ -9360,6 +9500,15 @@
             <trans-unit id="fe79c83532c4d06d73e9d0e23215e993">
                 <source>Allow issues to be reported</source>
             </trans-unit>
+            <trans-unit id="585478a0308e583c28bd01da207248eb">
+                <source>New issues access policy</source>
+            </trans-unit>
+            <trans-unit id="79ed2dbe01f36136d5cd1f4af0742482">
+                <source>Available to anyone with access to project and category</source>
+            </trans-unit>
+            <trans-unit id="91fe1a7a2646407c7fd6f533a96eb338">
+                <source>Available only to issue's poster</source>
+            </trans-unit>
             <trans-unit id="437bdd88421f2f52b1dee2aa7136d787">
                 <source>Allow freelancing</source>
             </trans-unit>
@@ -9371,6 +9520,12 @@
             </trans-unit>
             <trans-unit id="dee1c626810326954957d74f82610f1d">
                 <source>You can set issues to be automatically assigned to users depending on the leader set for editions, components and projects. If you wish to use this feature you can turn it on here.</source>
+            </trans-unit>
+            <trans-unit id="be9f0c332cd1a54add3ec545577f06db">
+                <source>Reportable time units</source>
+            </trans-unit>
+            <trans-unit id="9e578302a1d2d831bb9ca57edbe9a154">
+                <source>With this option you can now limit what time units can be reported for issues.</source>
             </trans-unit>
         </body>
     </file>

@@ -23,7 +23,7 @@
             );
             $this->savedsearches = \thebuggenie\core\entities\tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), $this->board->getProject()->getID());
             $this->issuetypes = $this->board->getProject()->getIssuetypeScheme()->getIssuetypes();
-            $this->issuefields = \thebuggenie\core\entities\CustomDatatype::getByFieldType(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER);
+            $this->issuefields = \thebuggenie\core\entities\CustomDatatype::getByFieldTypes(array(\thebuggenie\core\entities\CustomDatatype::DATE_PICKER, \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER));
             $this->swimlane_groups = array(
                 'priority' => $i18n->__('Issue priority'),
                 'severity' => $i18n->__('Issue severity'),

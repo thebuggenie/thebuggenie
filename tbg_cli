@@ -31,8 +31,9 @@
     }
 
     // Set up all available search paths for cli commands
-    $command_paths = array();
+    $command_paths = [];
     $command_paths['main'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'main' . DS . 'cli' . DS;
+    $command_paths['import'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'import' . DS . 'cli' . DS;
     foreach (framework\Context::getModules() as $module_name => $module) {
         $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DS . 'cli' . DS;
         if (file_exists($module_cli_path)) {
@@ -41,7 +42,7 @@
     }
 
     // Set up all cli commands
-    $commands = array('main' => array());
+    $commands = ['main' => []];
     foreach ($command_paths as $module_name => $command_path) {
         $_path_handle = opendir($command_path);
         while ($command_class_file = readdir($_path_handle)) {
