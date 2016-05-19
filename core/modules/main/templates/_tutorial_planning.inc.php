@@ -43,7 +43,7 @@
                     button: "<?php echo __("That's useful"); ?>"
                 },
                 6: {
-                    message: "<h3><?php echo __('Interactive collaboration'); ?></h3><?php echo __("The planning page is 100% interactive. New issues that are created will show up on the planning page if they are assigned any of the visible milestones, or if they match the backlog search criteria."); ?><br><br><?php echo __("If any of the visible issues are updated, the information on the planning page will also be updated automatically.").'<br><br>'.__('This means you can collaborate with users and colleagues when planning, without having to leave or refresh the planning page.'); ?>",
+                    message: "<h3><?php echo __('Interactive collaboration'); ?></h3><?php echo __("The planning page is 100% interactive. New issues that are created will show up on the planning page if they are assigned to any of the visible milestones, or if they match the backlog search criteria."); ?><br><br><?php echo __("If any of the visible issues are updated, the information on the planning page will also be updated automatically.").'<br><br>'.__('This means you can collaborate with users and colleagues when planning, without having to leave or refresh the planning page.'); ?>",
                     messageSize: 'large',
                     messagePosition: 'center',
                     button: '<?php echo __('Awesome!'); ?>'
@@ -75,7 +75,7 @@
                     button: '<?php echo __('Epics?'); ?>'
                 },
                 11: {
-                    message: "<h3><?php echo __('Epics'); ?></h3><?php echo __("Yes, epics. Epics (specified in the board configuration) are issues of a certain types, they contain sub-issues and / or tasks, and can span multiple milestones / sprints.").'<br><br>'.__('Epics, like releases, are displayed as a card list, they can filter issues by clicking on them, and you can assign an issue to an epic by dropping the issue on the epic.'); ?>",
+                    message: "<h3><?php echo __('Epics'); ?></h3><?php echo __("Yes, epics. Epics (specified in the board configuration) are issues of a certain type, they contain sub-issues and / or tasks, and can span multiple milestones / sprints.").'<br><br>'.__('Epics, like releases, are displayed as a card list, they can filter issues by clicking on them, and you can assign an issue to an epic by dropping the issue on the epic.'); ?>",
                     messageSize: 'large',
                     messagePosition: 'center',
                     button: '<?php echo __("Also useful"); ?>'

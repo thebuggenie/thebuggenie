@@ -5,6 +5,7 @@
      */
 
     $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'oxygen', 'css' => 'theme.css')));
+    $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'oxygen', 'css' => 'mobile.css')));
     \thebuggenie\core\framework\Settings::setIconsetName('oxygen');
 ?>
 <style>

@@ -1004,9 +1004,39 @@ class Main extends framework\Action
     public function runMyAccount(framework\Request $request)
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
+        $categories = \thebuggenie\core\entities\Category::getAll();
+        $projects = [];
+        $project_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS;
+        $category_subscription_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY;
+        $category_notification_key = \thebuggenie\core\framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY;
         $subscriptionssettings = framework\Settings::getSubscriptionsSettings();
-        $this->subscriptionssettings = $subscriptionssettings;
         $notificationsettings = framework\Settings:: getNotificationSettings();
+        $selected_project_subscriptions = [];
+        $selected_category_subscriptions = [];
+        $selected_category_notifications = [];
+        $this->all_projects_subscription = $this->getUser()->getNotificationSetting($project_subscription_key, false)->isOn();
+        foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+            if ($project->hasAccess()) {
+                $projects[$project_id] = $project;
+                if ($this->getUser()->getNotificationSetting($project_subscription_key . '_' . $project_id, false)->isOn()) {
+                    $selected_project_subscriptions[] = $project_id;
+                }
+            }
+        }
+        foreach ($categories as $category_id => $category) {
+            if ($this->getUser()->getNotificationSetting($category_subscription_key . '_' . $category_id, false)->isOn()) {
+                $selected_category_subscriptions[] = $category_id;
+            }
+            if ($this->getUser()->getNotificationSetting($category_notification_key . '_' . $category_id, false)->isOn()) {
+                $selected_category_notifications[] = $category_id;
+            }
+        }
+        $this->selected_project_subscriptions = ($this->all_projects_subscription) ? [] : $selected_project_subscriptions;
+        $this->projects = $projects;
+        $this->selected_category_subscriptions = $selected_category_subscriptions;
+        $this->selected_category_notifications = $selected_category_notifications;
+        $this->categories = $categories;
+        $this->subscriptionssettings = $subscriptionssettings;
         $this->notificationsettings = $notificationsettings;
         $this->has_autopassword = framework\Context::hasMessage('auto_password');
         if ($this->has_autopassword)
@@ -1049,51 +1079,72 @@ class Main extends framework\Action
                     $this->getUser()->setPreferredIssuesSyntax($request['syntax_issues']);
                     $this->getUser()->setPreferredCommentsSyntax($request['syntax_comments']);
                     $this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
-                    $this->getUser()->setDesktopNotificationsNewTabEnabled($request['enable_desktop_notifications_new_tab']);
-                    foreach ($subscriptionssettings as $setting => $description)
-                    {
-                        if ($request->hasParameter('core_' . $setting))
-                        {
-                            if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
-                        }
-                        else
-                        {
-                            $this->getUser()->setNotificationSetting($setting, false)->save();
-                        }
-                    }
-                    foreach ($notificationsettings as $setting => $description)
-                    {
-                        if ($request->hasParameter('core_' . $setting))
-                        {
-                            if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS)
-                            {
-                                $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
-                            }
-                            else
-                            {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
-                            }
-                        }
-                        else
-                        {
-                            $this->getUser()->setNotificationSetting($setting, false)->save();
-                        }
-                    }
-                    \thebuggenie\core\framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));
                     $this->getUser()->save();
 
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Profile settings saved')));
+                    break;
+                case 'notificationsettings':
+                    $this->getUser()->setDesktopNotificationsNewTabEnabled($request['enable_desktop_notifications_new_tab']);
+                    foreach ($subscriptionssettings as $setting => $description) {
+                        if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
+                            foreach ($categories as $category_id => $category) {
+                                if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                }
+                            }
+                        } elseif ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS) {
+                            if ($request->hasParameter('core_' . $setting . '_all')) {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                }
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
+                                    if ($request->hasParameter('core_' . $setting . '_' . $project_id)) {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true)->save();
+                                    } else {
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($request->hasParameter('core_' . $setting)) {
+                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                            }
+                        }
+                    }
+
+                    foreach ($notificationsettings as $setting => $description) {
+                        if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
+                            foreach ($categories as $category_id => $category) {
+                                if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                }
+                            }
+                        } else {
+                            if ($request->hasParameter('core_' . $setting)) {
+                                if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS) {
+                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                                } else {
+                                    $this->getUser()->setNotificationSetting($setting, true)->save();
+                                }
+                            } else {
+                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                            }
+                        }
+                    }
+
+                    \thebuggenie\core\framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request', 'categories'));
+                    $this->getUser()->save();
+
+                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Notification settings saved')));
                     break;
                 case 'module':
                     foreach (framework\Context::getModules() as $module_name => $module)

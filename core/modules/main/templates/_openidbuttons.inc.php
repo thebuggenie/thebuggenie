@@ -27,10 +27,10 @@
 <script type="text/javascript">
 
     var providers_large = {
-        google : {
-            name : 'Google',
-            url : 'https://www.google.com/accounts/o8/id'
-        },
+//        google : {
+//            name : 'Google',
+//            url : 'https://www.google.com/accounts/o8/id'
+//        },
         openid : {
             name : 'OpenID',
             label : '<?php echo htmlspecialchars(__('Enter your OpenID'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>',
@@ -97,12 +97,12 @@
             name : 'ClickPass',
             label : '<?php echo htmlspecialchars(__('Enter your ClickPass username'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>',
             url : 'http://clickpass.com/public/{username}'
-        },
-        google_profile : {
-            name : 'Google Profile',
-            label : '<?php echo htmlspecialchars(__('Enter your Google Profile username'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>',
-            url : 'http://www.google.com/profiles/{username}'
         }
+//        google_profile : {
+//            name : 'Google Profile',
+//            label : '<?php //echo htmlspecialchars(__('Enter your Google Profile username'), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>//',
+//            url : 'http://www.google.com/profiles/{username}'
+//        }
     };
 
     require(['thebuggenie/tbg'], function (TBG) {

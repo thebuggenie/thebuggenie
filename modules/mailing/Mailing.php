@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\mailing;
 
+    use thebuggenie\core\entities\Category;
     use thebuggenie\core\entities\tables\Settings;
     use thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\mailing\entities\IncomingEmailAccount,
@@ -67,6 +68,12 @@
          * Notify the user when he is mentioned
          */
         const NOTIFY_MENTIONED = 'notify_mentioned';
+
+        /**
+         * Notify the user when he is mentioned
+         */
+        const NOTIFY_NOT_WHEN_ACTIVE = 'notify_not_when_active';
+
         const MAIL_ENCODING_BASE64 = 3;
         const MAIL_ENCODING_QUOTED = 4;
         const MAIL_ENCODING_UTF7 = 0;
@@ -125,6 +132,8 @@
             framework\Event::listen('core', 'account_pane_notificationsettings', array($this, 'listen_accountNotificationSettings'));
             framework\Event::listen('core', 'account_pane_notificationsettings_thead', array($this, 'listen_accountNotificationSettingsThead'));
             framework\Event::listen('core', 'account_pane_notificationsettings_cell', array($this, 'listen_accountNotificationSettingsCell'));
+            framework\Event::listen('core', 'account_pane_notificationsettings_notification_categories', array($this, 'listen_accountNotificationSettingsNotificationCategories'));
+            framework\Event::listen('core', 'account_pane_notificationsettings_subscriptions', array($this, 'listen_accountNotificationSettingsSubscriptions'));
             framework\Event::listen('core', 'config.createuser.email', array($this, 'listen_configCreateuserEmail'));
             framework\Event::listen('core', 'config.createuser.save', array($this, 'listen_configCreateuserSave'));
             framework\Event::listen('core', 'mainActions::myAccount::saveNotificationSettings', array($this, 'listen_accountSaveNotificationSettings'));
@@ -741,6 +750,7 @@ EOT;
             $notificationsettings[self::NOTIFY_ITEM_ONCE] = $i18n->__('Only notify once per issue or article until I view the issue or article in my browser');
             $notificationsettings[self::NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
             $notificationsettings[self::NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
+            $notificationsettings[self::NOTIFY_NOT_WHEN_ACTIVE] = $i18n->__("Don't send email notification if I'm currently logged in and active");
             return $notificationsettings;
         }
 
@@ -774,6 +784,16 @@ EOT;
             framework\ActionComponent::includeComponent('mailing/accountsettings_cell', array('notificationsettings' => $this->_getNotificationSettings(), 'key' => $event->getParameter('key')));
         }
 
+        public function listen_accountNotificationSettingsNotificationCategories(framework\Event $event)
+        {
+            framework\ActionComponent::includeComponent('mailing/accountsettings_notificationcategories', array('categories' => $event->getParameter('categories')));
+        }
+
+        public function listen_accountNotificationSettingsSubscriptions(framework\Event $event)
+        {
+            framework\ActionComponent::includeComponent('mailing/accountsettings_subscriptions');
+        }
+
         public function listen_configCreateuserEmail(framework\Event $event)
         {
             framework\ActionComponent::includeComponent('mailing/configcreateuseremail');
@@ -803,27 +823,23 @@ EOT;
         {
             $request = $event->getParameter('request');
             $notificationsettings = $this->_getNotificationSettings();
+            $category_key = self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY;
 
-            foreach ($notificationsettings as $setting => $description)
-            {
-                if ($request->hasParameter('mailing_' . $setting))
-                {
+            foreach ($notificationsettings as $setting => $description) {
+                if ($setting == $category_key) continue;
+                if ($request->hasParameter('mailing_' . $setting)) {
                     framework\Context::getUser()->setNotificationSetting($setting, true, 'mailing')->save();
-                }
-                else
-                {
+                } else {
                     framework\Context::getUser()->setNotificationSetting($setting, false, 'mailing')->save();
                 }
             }
 
-            // Currently you can only select one category of new issues to be notified regardless of multiple modules implementing notifications. However in this module's code local constant "NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY" will be referenced and that's why code below update its value based on core module's notifications settings.
-            if ($request->hasParameter('core_' . framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY))
-            {
-                framework\Context::getUser()->setNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, $request->getParameter('core_' . framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY), 'mailing')->save();
-            }
-            else
-            {
-                framework\Context::getUser()->setNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->save();
+            foreach ($event->getParameter('categories') as $category_id => $category) {
+                if ($request->hasParameter('mailing_' . $category_key . '_' . $category_id)) {
+                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, true, 'mailing')->save();
+                } else {
+                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, false, 'mailing')->save();
+                }
             }
         }
 

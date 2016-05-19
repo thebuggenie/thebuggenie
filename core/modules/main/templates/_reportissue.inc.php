@@ -402,7 +402,7 @@
                         <td style="text-align: left;"><input type="text" name="spent_time" id="spent_time_id" style="width: 220px;" value="<?php if ($selected_spent_time !== null) echo $selected_spent_time; ?>" placeholder="<?php echo __('Enter time spent here'); ?>"></td>
                     </tr>
                     <tr>
-                        <td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+                        <td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "minutes", "hours", "days", "weeks" and "months" to describe your effort'); ?></td>
                     </tr>
                 </table>
                 <table cellpadding="0" cellspacing="0" id="percent_complete_div" style="display: none;" class="additional_information<?php if (array_key_exists('percent_complete', $errors)): ?> reportissue_error<?php endif; ?>">

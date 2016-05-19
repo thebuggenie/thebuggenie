@@ -2690,7 +2690,6 @@ a.shadowed:active {
 
 #account_tabs_panes label {
     padding: 0;
-    margin: 0;
 }
 
 #account_tabs_panes h3, .configuration_page h3, #project_config_menu_panes h3 {
@@ -3159,6 +3158,10 @@ td.selected_red span {
 
 /* some table styling */
 .padded_table td {
+    padding: 2px;
+}
+
+.padded_table.compact {
     padding: 2px;
 }
 
@@ -11476,10 +11479,6 @@ div.quickaddtask .close_micro_popup_link {
     margin: 0 5px;
 }
 
-.searchbuilder_filterstrip .interactive_dropdown > span.value {
-    float: left;
-}
-
 .interactive_dropdown, .interactive_plus_button {
     display: inline-block;
     position: relative;
@@ -11493,6 +11492,7 @@ div.quickaddtask .close_micro_popup_link {
     max-width: 300px;
     vertical-align: middle;
     cursor: pointer;
+    text-align: left;
 }
 
 .interactive_plus_container {
@@ -11600,6 +11600,7 @@ div.quickaddtask .close_micro_popup_link {
     overflow: hidden;
     white-space: nowrap;
     display: block;
+    float: left;
 }
 
 .interactive_menu h1, .interactive_filters_list h1 {
@@ -11766,6 +11767,10 @@ div.quickaddtask .close_micro_popup_link {
     display: block;
     left: -1px;
     z-index: 1;
+}
+.interactive_dropdown.rightie.selected .interactive_menu {
+    right: -1px;
+    left: auto;
 }
 
 .interactive_menu_values {

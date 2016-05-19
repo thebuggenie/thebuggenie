@@ -2986,11 +2986,11 @@
                 $this->_notification_settings_sorted = array();
                 foreach ($this->_notification_settings as $ns)
                 {
-                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = array();
+                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = [];
                     $this->_notification_settings_sorted[$ns->getModuleName()][$ns->getName()] = $ns;
                 }
             }
-            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = array();
+            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = [];
 
             if (!isset($this->_notification_settings_sorted[$module][$setting]))
             {

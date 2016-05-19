@@ -659,6 +659,7 @@ class Main extends framework\Action
                 case '3.2.0':
                 case '3.2':
                     $this->_upgradeFrom3dot2($request);
+                case '4.0':
                 case '4.1':
                 case '4.1.0':
                     $this->_upgradeFrom4dot1($request);
