@@ -48,7 +48,7 @@
                 </div>
             <?php endif; ?>
             <?php if ($search_message == 'saved_search'): ?>
-                <?php include_component('main/hideableInfoBoxModal', array('template' => 'search/infobox_saved_search_saved', 'title' => __('Search details have been saved'), 'button_label' => __('Got it!'))); ?>
+                <?php include_component('main/hideableInfoBoxModal', array('key' => 'save_search_saved', 'template' => 'search/infobox_saved_search_saved', 'title' => __('Search details have been saved'), 'button_label' => __('Got it!'))); ?>
             <?php elseif ($search_message !== null): ?>
                 <div class="greenbox" style="margin: 0; vertical-align: middle;" id="search_message">
                     <div class="header"><?php echo $search_message; ?></div>
