@@ -4743,9 +4743,10 @@ a.friend {
 }
 
 #issue_main_container {
-    float: left;
+    float: right;
     overflow: hidden;
     width: 100%;
+    margin-left: -100%;
 }
 
 #issue_main {
@@ -4760,7 +4761,6 @@ a.friend {
 #issue_details_container {
     float: left;
     width: 360px;
-    margin-left: -100%;
     transition: width 0.3s ease;
 }
 
