@@ -216,8 +216,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var vihcl = vihc.getLayout();
                 var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 8 : vihc.offsetTop;
                 if (y >= compare_coord) {
-                    $('issue_main_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
-                    $('issue_details_container').setStyle({marginTop: vihcl.get('height')+vihcl.get('margin-top')+vihcl.get('margin-bottom')+'px'});
+                    $('issue_main_container').addClassName('scroll-top');
+                    $('issue_details_container').addClassName('scroll-top');
                     vhc.addClassName('fixed');
                     $('workflow_actions').addClassName('fixed');
                     if ($('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').hide();
@@ -234,8 +234,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('add_comment_button_container').update(button);
                     }
                 } else {
-                    $('issue_main_container').setStyle({marginTop: 0});
-                    $('issue_details_container').setStyle({marginTop: 0});
+                    $('issue_main_container').removeClassName('scroll-top');
+                    $('issue_details_container').removeClassName('scroll-top');
                     vhc.removeClassName('fixed');
                     $('workflow_actions').removeClassName('fixed');
                     if (! $('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').show();

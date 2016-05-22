@@ -678,7 +678,9 @@
     </div>
 </fieldset>
 <div style="clear: both; margin-bottom: 5px;"> </div>
-<a href="javascript:void(0);" onclick="$('issue_details').toggleClassName('detailed');" class="issue_details_detailed_toggler"><?php echo __('Show / hide more details'); ?>&nbsp;&raquo;</a>
+<div class="issue_details_detailed_toggler">
+    <a href="javascript:void(0);" class="button button-silver" onclick="$('issue_details').toggleClassName('detailed');"><?php echo __('Show / hide more details'); ?>&nbsp;&raquo;</a>
+</div>
 <script type="text/javascript">
     var TBG, jQuery;
     require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], function (domReady, tbgjs, jquery, nanoscroller) {

@@ -4730,32 +4730,49 @@ a.friend {
 }
 
 #issue_main_container {
-    float: left;
+    float: none;
+    box-sizing: border-box;
     overflow: hidden;
-    width: 100%;
-}
-
-#issue_main {
-    margin: 0 10px 0 380px;
-    transition: margin 0.3s ease;
-}
-
-#issue_main_container.uncollapsed #issue_main {
-    margin-left: 50px;
-}
-
-#issue_details_container {
-    float: left;
-    width: 360px;
-    margin-left: -100%;
+    width: calc(100% - 375px);
+    vertical-align: top;
+    display: inline-block;
     transition: width 0.3s ease;
 }
 
-#issue_details {
-    display: inline-block;
-    float: left;
-    width: 350px;
+#issue_main_container.scroll-top {
+    margin-top: 128px;
+}
+
+#issue_main {
+    display: block;
+    box-sizing: border-box;
+    vertical-align: top;
     margin: 0 10px;
+}
+
+#issue_main_container.uncollapsed {
+    width: calc(100% - 50px);
+}
+
+#issue_details_container {
+    float: none;
+    display: inline-block;
+    width: 360px;
+    padding: 0 10px;
+    transition: width 0.3s ease;
+    box-sizing: border-box;
+}
+
+#issue_details_container.scroll-top {
+    margin-top: 128px;
+}
+
+#issue_details {
+    display: block;
+    float: none;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
     vertical-align: top;
     border-right: 1px solid #DDD;
     box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.8);
@@ -4770,7 +4787,7 @@ a.friend {
 }
 
 #issue_details .issue_details_fieldsets_wrapper {
-    width: 350px;
+    width: 100%;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease, visibility 0.3s ease, margin-left 0.3s ease;
@@ -4779,7 +4796,7 @@ a.friend {
 #issue_details_container.collapsed .issue_details_fieldsets_wrapper {
     opacity: 0;
     visibility: hidden;
-    margin-left: -350px;
+    /*margin-left: -350px;*/
 }
 
 #issue_view fieldset {
@@ -5092,6 +5109,7 @@ a.friend {
 }
 
 #issue_details fieldset {
+    box-sizing: border-box;
     margin: 0 8px 15px 0;
     border-color: rgba(0, 0, 0, 0.2);
 }
@@ -5324,7 +5342,7 @@ a.dropper.dropdown_link:hover {
     margin-top: 3px;
     right: 14px;
     height: 25px;
-    z-index: 102;
+    z-index: 1002;
     -webkit-animation: show 0.3s ease-out;
     animation: show 0.3s ease-out;
 }

@@ -293,7 +293,7 @@
         public static function cliError($title, $exception)
         {
             $trace_elements = null;
-            if ($exception instanceof \Exception)
+            if ($exception instanceof \Exception || $exception instanceof \Error)
             {
                 if ($exception instanceof \thebuggenie\core\framework\exceptions\ActionNotFoundException)
                 {
