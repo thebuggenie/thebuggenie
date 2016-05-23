@@ -58,14 +58,14 @@
 <script type="text/javascript">
     require(['domReady', 'prototype', 'dragdrop'], function (domReady) {
         domReady(function () {
-            Sortable.destroy('todos_list');
+//            Sortable.destroy('todos_list');
             <?php if ($issue->canEditDescription()): ?>
-            Sortable.create('todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => 0)); ?>'); }});
+//            Sortable.create('todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php //echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => 0)); ?>//'); }});
             <?php endif; ?>
             <?php foreach ($issue->getTodos()['comments'] as $comment_id => $comment_todos): ?>
-                Sortable.destroy('comment_<?php echo $comment_id; ?>_todos_list');
+//                Sortable.destroy('comment_<?php //echo $comment_id; ?>//_todos_list');
                 <?php if ($comment_id != 0 && $issue->getComments()[$comment_id]->canUserEditComment()): ?>
-                    Sortable.create('comment_<?php echo $comment_id; ?>_todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => $comment_id)); ?>'); }});
+//                    Sortable.create('comment_<?php //echo $comment_id; ?>//_todos_list', {constraint: '', onUpdate: function(container) { TBG.Issues.saveTodosOrder(container, '<?php //echo make_url('todo_saveorder', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'comment_id' => $comment_id)); ?>//'); }});
                 <?php endif; ?>
             <?php endforeach; ?>
         });
