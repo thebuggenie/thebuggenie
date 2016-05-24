@@ -457,7 +457,7 @@ EOT;
                     unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), false, 'mailing')->isOn())
                     unset($users[$user->getID()]);
-                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive())
+                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
                     unset($users[$user->getID()]);
             }
             $mentioned_users = $article->getMentionedUsers();
@@ -469,7 +469,7 @@ EOT;
                     unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), false, 'mailing')->isOn())
                     unset($users[$user->getID()]);
-                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive())
+                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
                     unset($users[$user->getID()]);
             }
             return $users;
@@ -490,7 +490,7 @@ EOT;
                     unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
                     unset($users[$user->getID()]);
-                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive())
+                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
                     unset($users[$user->getID()]);
             }
             $mentioned_users = $issue->getMentionedUsers();
@@ -502,7 +502,7 @@ EOT;
                     unset($users[$user->getID()]);
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn())
                     unset($users[$user->getID()]);
-                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive())
+                if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
                     unset($users[$user->getID()]);
             }
             return $users;
@@ -537,7 +537,7 @@ EOT;
                     foreach ($to_users as $uid => $user)
                     {
                         if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user) || ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->isOn() && ($issue->getCategory() instanceof \thebuggenie\core\entities\Category && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, 0, 'mailing')->getValue() != $issue->getCategory()->getID()))) unset($to_users[$uid]);
-                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive()) unset($to_users[$uid]);
+                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive()) unset($to_users[$uid]);
                     }
                     $messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
 
@@ -668,7 +668,7 @@ EOT;
                     {
                         if (!$issue->hasAccess($user))
                             unset($to_users[$uid]);
-                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'core')->isOn() && $user->isActive())
+                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
                             unset($to_users[$uid]);
                     }
                     $this->_markIssueSent($issue, $to_users);
