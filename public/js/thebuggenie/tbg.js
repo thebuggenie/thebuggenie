@@ -6730,9 +6730,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 }, 250);
             }
             else {
-                $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_' + filter).remove());
+                $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_' + filter_key).remove());
                 setTimeout(function () {
-                    TBG.Search.toggleInteractiveFilterElement($('interactive_filter_' + filter));
+                    TBG.Search.toggleInteractiveFilterElement($('interactive_filter_' + filter_key));
                 }, 250);
                 this.addClassName('disabled');
             }
