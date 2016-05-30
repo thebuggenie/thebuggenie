@@ -736,7 +736,7 @@
                                 }
                                 else if ($this->hasValue(1))
                                 {
-                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
+                                    $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
                                     return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
                                 }
                                 else if ($this->hasValue(0))
