@@ -134,6 +134,7 @@
         const SETTINGS_USER_NOTIFY_UPDATED_SELF = 'notify_updated_self';
         const SETTINGS_USER_NOTIFY_MENTIONED = 'notify_mentioned';
         const SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS = 'notify_grouped_notifications';
+        const SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE = 'notify_only_in_box_when_active';
 
         const SETTING_AUTH_BACKEND = 'auth_backend';
         const SETTING_MAINTENANCE_MODE = 'offline';

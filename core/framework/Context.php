@@ -486,8 +486,7 @@ class Context
 
             self::loadConfiguration();
 
-            if (self::$_debug_mode)
-                self::$debug_id = uniqid();
+            self::$debug_id = uniqid();
 
             Logging::log('Initializing Caspar framework');
             Logging::log('PHP_SAPI says "' . PHP_SAPI . '"');
@@ -2363,6 +2362,7 @@ class Context
                         $action_pretime = $time[1] + $time[0];
                     }
                     $action_retval = $action->$actionToRunName(self::getRequest());
+                    session_write_close();
                     if (self::$_debug_mode)
                     {
                         $time = explode(' ', microtime());
