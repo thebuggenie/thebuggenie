@@ -156,16 +156,32 @@
             $crit = $this->getCriteria();
             $crit->addWhere(self::USER_ID, $user_id);
 
-            $scopes = array();
+            $scope_details = array();
+
             if ($res = $this->doSelect($crit))
             {
                 while ($row = $res->getNextRow())
                 {
-                    $scopes[$row->get(self::SCOPE)] = array('confirmed' => (boolean) $row->get(self::CONFIRMED), 'group_id' => $row->get(self::GROUP_ID));
+                    $scope_details[$row->get(self::SCOPE)] = array('confirmed' => (boolean) $row->get(self::CONFIRMED), 'group_id' => $row->get(self::GROUP_ID), 'internal_id' => $row->get(self::ID));
+                }
+            }
+            if (count($scope_details)) {
+                $scopes = Scopes::getTable()->getByIds(array_keys($scope_details));
+                foreach ($scope_details as $id => $detail)
+                {
+                    if (array_key_exists($id, $scopes))
+                    {
+                        $scope_details[$id]['scope'] = $scopes[$id];
+                    }
+                    else
+                    {
+                        $this->doDeleteById($detail['internal_id']);
+                        unset($scope_details[$id]);
+                    }
                 }
             }
 
-            return $scopes;
+            return $scope_details;
         }
 
         public function getUsersByGroupID($group_id)

@@ -2663,21 +2663,23 @@
                 $this->_unconfirmed_scopes = array();
                 $this->_confirmed_scopes = array();
                 if ($this->_scopes === null) $this->_scopes = array();
-                $scopes = tables\UserScopes::getTable()->getScopeDetailsByUser($this->getID());
-                foreach ($scopes as $scope_id => $details)
-                {
-                    $scope = \thebuggenie\core\entities\Scope::getB2DBTable()->selectById($scope_id);
-                    if (!$scope instanceof Scope) continue;
 
-                    if (!$details['confirmed'])
+                if ($this->getID() == framework\Settings::getDefaultUserID() && framework\Settings::isDefaultUserGuest()) {
+                    $this->_confirmed_scopes[framework\Context::getScope()->getID()] = framework\Context::getScope();
+                } else {
+                    $scopes = tables\UserScopes::getTable()->getScopeDetailsByUser($this->getID());
+                    foreach ($scopes as $scope_id => $details)
                     {
-                        $this->_unconfirmed_scopes[$scope_id] = $scope;
+                        if (!$details['confirmed'])
+                        {
+                            $this->_unconfirmed_scopes[$scope_id] = $details['scope'];
+                        }
+                        else
+                        {
+                            $this->_confirmed_scopes[$scope_id] = $details['scope'];
+                        }
+                        if (!array_key_exists($scope_id, $this->_scopes)) $this->_scopes[$scope_id] = $details['scope'];
                     }
-                    else
-                    {
-                        $this->_confirmed_scopes[$scope_id] = $scope;
-                    }
-                    if (!array_key_exists($scope_id, $this->_scopes)) $this->_scopes[$scope_id] = $scope;
                 }
             }
         }
