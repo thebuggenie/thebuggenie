@@ -1390,19 +1390,22 @@ class Main extends framework\Action
     }
 
     /**
-     * Change password ajax action
+     * Add a new application password: ajax action
      *
      * @param \thebuggenie\core\framework\Request $request
      */
     public function runAccountAddPassword(framework\Request $request)
     {
         $this->forward403unless($this->getUser()->hasPageAccess('account'));
-        if (trim($request['name']))
+        $name = trim($request['name']);
+        if ($name)
         {
+            framework\Logging::log('Adding new application password for user.', 'account', framework\Logging::LEVEL_INFO);
             $password = new entities\ApplicationPassword();
             $password->setUser($this->getUser());
-            $password->setName(trim($request['name']));
+            $password->setName($name);
             $visible_password = strtolower(entities\User::createPassword());
+            // Internally creates a hash from this visible password & crypts that hash for storage
             $password->setPassword($visible_password);
             $password->save();
             $spans = '';
