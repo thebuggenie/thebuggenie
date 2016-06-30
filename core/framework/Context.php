@@ -762,7 +762,14 @@ class Context
         self::$_configuration = $configuration;
 
         self::$_debug_mode = self::$_configuration['core']['debug'];
-        Logging::log('...done', 'core');
+        
+        $log_file = self::$_configuration['core']['log_file'];
+        if($log_file)
+        {
+            Logging::setLogFilePath($log_file);
+            Logging::log('Log file path set. At this point, configuration is loaded & caching enabled, if possible.', 'core');
+        }
+        Logging::log('Done Loading Configuration', 'core');
     }
 
     /**
