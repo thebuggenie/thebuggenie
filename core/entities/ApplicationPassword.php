@@ -60,6 +60,17 @@
          */
         protected $_user_id;
 
+        /**
+         * Creates the token from the one-time-use application password for subsequent authentication.
+         * 
+         * @param string $application_password
+         * @return string A SHA-256 Hash of the password
+         */
+        public static function createToken($application_password)
+        {
+            return hash("sha256", $application_password);
+        }
+        
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
@@ -102,7 +113,7 @@
         /**
          * Returns a hash of the user password
          *
-         * @see \thebuggenie\core\entities\User::getHashPassword
+         * @see \thebuggenie\core\entities\ApplicationPassword::getHashPassword
          * @return string
          */
         public function getPassword()
@@ -111,15 +122,14 @@
         }
 
         /**
-         * Set password
+         * Set a new application password. Generates token & crypts the token.
          *
          * @param string $newpassword
-         *
-         * @see \thebuggenie\core\entities\User::changePassword
          */
         public function setPassword($newpassword)
         {
-            $this->_password = \thebuggenie\core\entities\User::hashPassword($newpassword, $this->getUser()->getSalt());
+            $token = self::createToken($newpassword);
+            $this->_password = \thebuggenie\core\entities\User::hashPassword($token, $this->getUser()->getSalt());
         }
 
         public function getCreatedAt()

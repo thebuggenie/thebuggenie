@@ -662,6 +662,8 @@
                         $user = self::getB2DBTable()->getByRssKey($request['rsskey']);
                         break;
                     case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
+                        framework\Logging::log('Using application password authentication (token)', 'auth', framework\Logging::LEVEL_INFO);
+                        
                         // If we have HTTP basic auth, use that. Else, fall back to parameters.
                         
                         if(isset($_SERVER['PHP_AUTH_USER'])) {
@@ -675,8 +677,11 @@
                         } else {
                             $token = $request['api_token'];
                         }
+
+                        framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
                         
                         $user = self::getB2DBTable()->getByUsername($username);
+
                         if ($user instanceof User && !$user->authenticateApplicationPassword($token)) $user = null;
                         break;
                 }
@@ -2953,18 +2958,32 @@
             return $this->_application_passwords;
         }
 
-        public function authenticateApplicationPassword($hashed_password)
+        /**
+         * Authenticates a request via application password.
+         * The given token is created by requesting authentication via an API endpoint,
+         * which also marks the password as "used" and thus usable here.
+         * 
+         * @param string $token
+         * @return boolean
+         */
+        public function authenticateApplicationPassword($token)
         {
-            foreach ($this->getApplicationPasswords() as $password)
+            $applicationPasswords = $this->getApplicationPasswords();
+            framework\Logging::log('Cycling application passwords for given user. Count: '.count($applicationPasswords), 'auth', framework\Logging::LEVEL_INFO);
+            
+            // Create hash for comparison with db value
+            $hashed_token = self::hashPassword($token, $this->getSalt());
+            foreach ($applicationPasswords as $password)
             {
-                if (sha1($password->getPassword()) == $hashed_password)
+                if ($password->getHashPassword() == $hashed_token)
                 {
+                    framework\Logging::log('Token hash matches.', 'auth', framework\Logging::LEVEL_INFO);
                     $password->useOnce();
                     $password->save();
                     return true;
                 }
             }
-
+            framework\Logging::log('No token hash matched.', 'auth', framework\Logging::LEVEL_INFO);
             return false;
         }
 
