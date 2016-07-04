@@ -749,9 +749,16 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 },
                 onSuccess: function (response) {
                     if (response.responseJSON == null && JSON != null) {
-                        response.responseJSON = JSON.parse(response.responseText);
+                        try {
+                            var json = JSON.parse(response.responseText);
+                        }
+                        catch (err) {
+                            var json = undefined;
+                        }
                     }
-                    var json = (response.responseJSON) ? response.responseJSON : undefined;
+                    else {
+                        var json = (response.responseJSON) ? response.responseJSON : undefined;
+                    }
                     if (json || (options.success && options.success.update)) {
                         if (json && json.forward != undefined) {
                             document.location = json.forward;
