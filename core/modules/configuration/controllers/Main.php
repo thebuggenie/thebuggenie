@@ -685,7 +685,7 @@
                     }
                     else
                     {
-                        framework\Context::setMessage('module_error', framework\Context::getI18n()->__('There was an error install the module "%module_name"', array('%module_name' => $request['module_key'])));
+                        framework\Context::setMessage('module_error', framework\Context::getI18n()->__('There was an error during the installation of the module "%module_name"', array('%module_name' => $request['module_key'])));
                     }
                 }
                 else
