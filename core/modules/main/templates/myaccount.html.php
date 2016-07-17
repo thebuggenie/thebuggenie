@@ -414,7 +414,7 @@
                         </tr>
                     </table>
                     <h3><?php echo __('Notifications'); ?></h3>
-                    <p><?php echo __('The Bug Genie will send you notifications based on system actions and/or your subscriptions. Notifications can be receieved in the notifications box (the counter visible next to your avatar in the top menu) and/or via email.'); ?></p>
+                    <p><?php echo __('The Bug Genie will send you notifications based on system actions and/or your subscriptions. Notifications can be received in the notifications box (the counter visible next to your avatar in the top menu) and/or via email.'); ?></p>
                     <table class="padded_table" cellpadding=0 cellspacing=0>
                         <thead>
                             <tr>
