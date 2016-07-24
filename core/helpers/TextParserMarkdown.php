@@ -3,6 +3,7 @@
     namespace thebuggenie\core\helpers;
 
     use \Michelf\MarkdownExtra;
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework;
 
     /**
@@ -23,6 +24,7 @@
      */
     class TextParserMarkdown extends MarkdownExtra implements ContentParser
     {
+        use TextParserTodo;
 
         /**
          * An array of mentioned users

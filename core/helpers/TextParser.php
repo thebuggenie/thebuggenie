@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\helpers;
 
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\tables\Articles,
         thebuggenie\modules\publish\entities\Article;
@@ -24,6 +25,7 @@
      */
     class TextParser implements ContentParser
     {
+        use TextParserTodo;
 
         protected static $additional_regexes = null;
 
@@ -47,8 +49,6 @@
         protected $parsed_text = null;
         protected $toc = array();
         protected $text = null;
-        protected $todos = array();
-        protected $done_todos = array();
 
         /**
          * Add a regex to be parsed, with a function callback
@@ -1404,34 +1404,6 @@
         public function setOption($option, $value)
         {
             $this->options[$option] = $value;
-        }
-
-        protected function _parse_todo($matches)
-        {
-            if (! isset($matches)) return '';
-
-            $this->todos[] = $matches[2];
-
-            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
-        }
-
-        public function getTodos()
-        {
-            return $this->todos;
-        }
-
-        protected function _parse_donetodo($matches)
-        {
-            if (! isset($matches)) return '';
-
-            $this->done_todos[] = $matches[2];
-
-            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
-        }
-
-        public function getDoneTodos()
-        {
-            return $this->done_todos;
         }
 
     }
