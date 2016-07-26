@@ -763,7 +763,7 @@ class Context
 
         self::$_debug_mode = self::$_configuration['core']['debug'];
         
-        $log_file = self::$_configuration['core']['log_file'];
+        $log_file = (isset(self::$_configuration['core']['log_file'])) ? self::$_configuration['core']['log_file'] : null;
         if($log_file)
         {
             Logging::setLogFilePath($log_file);
