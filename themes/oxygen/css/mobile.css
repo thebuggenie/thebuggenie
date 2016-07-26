@@ -39,6 +39,7 @@ header .mobile_menuanchor { display: none; }
     #header_userinfo .guest_avatar { display: none; }
     #header_userinfo .menu_dropdown { display: none; }
     .header_menu { height: auto; }
+    header nav > ul { display: block; }
 
     .mobile_menu {
         width: 360px;
@@ -94,11 +95,15 @@ header .mobile_menuanchor { display: none; }
     }
     #main_menu .menuitem_container, #mobile_usermenu .tab_menu_dropdown a {
         height: auto;
-        padding: 5px 3px;
+        padding: 10px 3px 0px 3px;
         margin: 0;
         display: block;
-        border-bottom: 1px dotted rgba(255, 255, 255, 0.4);
+        border-bottom: none;
+        font-weight: normal;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.8);
     }
+    #main_menu li .menuitem_container a, #main_menu li.selected .menuitem_container a { color: rgba(255, 255, 255, 0.5); }
     #main_menu .tab_menu_dropdown, #mobile_usermenu .tab_menu_dropdown {
         display: block;
         background: transparent;
@@ -153,25 +158,34 @@ header .mobile_menuanchor { display: none; }
     }
     #main_menu li a, #main_menu li.selected a {
         color: #FFF;
+        background: transparent;
         text-decoration: none;
         border: none;
         float: none;
         display: block;
         width: auto;
     }
+    #main_menu li a.selected {
+        font-weight: bold;
+    }
+    #main_menu li a.selected:before {
+        display: inline-block;
+        content: '>>';
+        margin-right: 6px;
+    }
     #mobile_usermenu .tab_menu_dropdown a {
         padding: 5px;
         margin: 0 5px;
         font-size: 1em;
     }
-    #mobile_usermenu .tab_menu_dropdown a, #main_menu li.selected a {
+    #mobile_usermenu .tab_menu_dropdown a {
         color: #FFF;
     }
     #main_menu li img, #mobile_usermenu .tab_menu_dropdown a img {
         display: none;
     }
     #main_menu .tab_menu_dropdown {
-        display: none;
+        /*display: none;*/
     }
     #main_menu .menuitem_container.selected {
         background: transparent;
@@ -186,18 +200,20 @@ header .mobile_menuanchor { display: none; }
         display: block;
         top: 0;
         left: 0;
-        width: 90%;
+        width: 100%;
         background: transparent;
         height: 45px;
         padding: 5px 0;
         z-index: 2;
+        box-sizing: border-box;
     }
-    #quicksearchform { position: absolute; float: none; top: 5px; }
-    #quicksearch_container input[type="submit"] { padding: 2px 3px 1px !important; border-radius: 0 1px 1px 0 !important; font-size: 1.1em; }
-    #quicksearch_container input[type="search"] { width: 320px; }
+    #quicksearchform { position: absolute; float: none; top: 5px; display: block; width: 100%; }
+    #quicksearch_container input[type="submit"] { width: 80px; font-size: 1.1em; display: inline-block; position: relative; margin-left: -5px; }
+    #quicksearch_container input[type="search"] { width: calc(100% - 100px); display: inline-block; position: relative; margin-right: 0; }
 
     #submenu { position: absolute; top: 25px; left: 5px; }
-    nav.submenu_strip a, nav.submenu_strip a:hover { color: rgba(150, 150, 150, 0.7); }
+    nav.submenu_strip a, nav.submenu_strip a:hover { text-transform: uppercase; color: rgba(150, 150, 150, 0.7); font-weight: normal; }
+    .submenu_strip .selected_project { font-weight: normal; }
 
     #content_container { margin-top: 36px; }
 
@@ -208,6 +224,8 @@ header .mobile_menuanchor { display: none; }
     .main_area.frontpage .button-group .button-dashboard { display: none; }
     .main_area.frontpage .button-group .button-wiki { display: none; }
     .main_area.frontpage .button-group .button-issues { border-left-width: 1px; border-radius: 3px 0 0 3px; }
+
+    .dashboard.layout_standard ul.dashboard_column { width: 100%; }
 
     #find_issues { padding: 0; }
     #find_issues .results_header { padding: 6px; }
@@ -308,12 +326,12 @@ header .mobile_menuanchor { display: none; }
         border-top: 1px dotted rgba(100, 100, 100, 0.5);
     }
     #issue_details legend {
-    display: none;
-}
+        display: none;
+    }
     #issue_details.detailed legend {
-    display: block;
-}
-    .issue_details li { display: none; }
+        display: block;
+    }
+    .issue_details_fieldsets_wrapper > fieldset > ul > li { display: none; }
     #issue_details.detailed .issue_details li { display: block; }
     .issue_details li.primary { display: block; }
     #viewissue_attached_information_container { display: none; }
@@ -375,13 +393,13 @@ header .mobile_menuanchor { display: none; }
     }
 }
 
-@media screen and (min-width: 640px) and (max-width: 900px) {
-    #mobile_menu {
-        margin-left: 0;
-        margin-top: 36px;
-        box-shadow: none;
-    }
-    #content_container { margin-left: 360px; }
-    #viewissue_menu li a span { display: inline; }
+/*@media screen and (min-width: 640px) and (max-width: 900px) {*/
+    /*#mobile_menu {*/
+        /*margin-left: 0;*/
+        /*margin-top: 36px;*/
+        /*box-shadow: none;*/
+    /*}*/
+    /*#content_container { margin-left: 360px; }*/
+    /*#viewissue_menu li a span { display: inline; }*/
 
-}
+/*}*/

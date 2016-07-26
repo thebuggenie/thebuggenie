@@ -736,7 +736,7 @@ header nav > ul {
     height: 17px;
     line-height: 17px;
     box-sizing: initial;
-    display: block !important;
+    display: block;
     position: relative;
     -o-appearance: none;
     -moz-appearance: none;
