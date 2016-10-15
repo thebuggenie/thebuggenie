@@ -63,7 +63,7 @@
                 {
                     file_put_contents(self::$_logfile, mb_strtoupper(self::getLevelName($level)) . " [{$category}] {$message}\n", FILE_APPEND);
                 }
-                $time_msg = (Context::isDebugMode()) ? (($load_time = Context::getLoadtime()) >= 1) ? round($load_time, 2) . ' seconds' : round(($load_time * 1000), 3) . ' ms' : '';
+                $time_msg = (($load_time = Context::getLoadtime()) >= 1) ? round($load_time, 2) . ' seconds' : round(($load_time * 1000), 3) . ' ms';
                 
                 self::$_entries[] = array('category' => $category, 'time' => $time_msg, 'message' => $message, 'level' => $level);
                 self::$_categorized_entries[$category][] = array('time' => $time_msg, 'message' => $message, 'level' => $level);

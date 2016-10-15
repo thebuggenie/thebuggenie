@@ -662,7 +662,7 @@
         {
             $this->forward403unless($request->isPost());
 
-            if ($this->access_level != framework\Settings::ACCESS_FULL)
+            if ($this->access_level == framework\Settings::ACCESS_FULL)
             {
                 $project_id = $request['project_id'];
 

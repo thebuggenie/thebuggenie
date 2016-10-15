@@ -53,6 +53,14 @@
             return $row;
         }
 
+        public function getByIds($ids)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
+
+            return $this->select($crit);
+        }
+
         public function getDefault()
         {
             return $this->doSelectById(1);

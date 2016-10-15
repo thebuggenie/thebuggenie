@@ -486,8 +486,7 @@ class Context
 
             self::loadConfiguration();
 
-            if (self::$_debug_mode)
-                self::$debug_id = uniqid();
+            self::$debug_id = uniqid();
 
             Logging::log('Initializing Caspar framework');
             Logging::log('PHP_SAPI says "' . PHP_SAPI . '"');
@@ -763,7 +762,14 @@ class Context
         self::$_configuration = $configuration;
 
         self::$_debug_mode = self::$_configuration['core']['debug'];
-        Logging::log('...done', 'core');
+        
+        $log_file = (isset(self::$_configuration['core']['log_file'])) ? self::$_configuration['core']['log_file'] : null;
+        if($log_file)
+        {
+            Logging::setLogFilePath($log_file);
+            Logging::log('Log file path set. At this point, configuration is loaded & caching enabled, if possible.', 'core');
+        }
+        Logging::log('Done Loading Configuration', 'core');
     }
 
     /**
@@ -2363,6 +2369,7 @@ class Context
                         $action_pretime = $time[1] + $time[0];
                     }
                     $action_retval = $action->$actionToRunName(self::getRequest());
+                    session_write_close();
                     if (self::$_debug_mode)
                     {
                         $time = explode(' ', microtime());

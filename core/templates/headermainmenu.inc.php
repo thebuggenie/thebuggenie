@@ -55,13 +55,13 @@
                                 $an_issue = \thebuggenie\core\entities\tables\Issues::getTable()->getIssueById($i_id);
                                 if (!$an_issue instanceof \thebuggenie\core\entities\Issue)
                                 {
-                                    unset($_SESSION['viewissue_list'][$k]);
+                                    //unset($_SESSION['viewissue_list'][$k]);
                                     continue;
                                 }
                             }
                             catch (\Exception $e)
                             {
-                                unset($_SESSION['viewissue_list'][$k]);
+                                //unset($_SESSION['viewissue_list'][$k]);
                             }
                             echo link_tag(make_url('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), $an_issue->getFormattedTitle(true, false), array('title' => $an_issue->getFormattedTitle(true, true)));
                             ?>

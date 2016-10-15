@@ -148,7 +148,7 @@
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 1;
-        protected static $_ver_rev = 8;
+        protected static $_ver_rev = 9;
         protected static $_ver_name = "Abstract Apricot";
         protected static $_defaultscope = null;
         protected static $_settings = null;
@@ -948,24 +948,7 @@
         public static function getNotificationPollInterval()
         {
             $seconds = self::get(self::SETTING_NOTIFICATION_POLL_INTERVAL);
-            return $seconds == null ? 10 : $seconds;
-        }
-
-        public static function getNotificationSettings()
-        {
-            $i18n = Context::getI18n();
-            $notificationsettings = array();
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES] = $i18n->__('Notify when there are updates to my subscribed issues');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES] = $i18n->__('Notify when there are updates to my subscribed articles');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Notify when new issues are created in my project(s)');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('New created issues have category');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify when new articles are created in my project(s)');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_ITEM_ONCE] = $i18n->__('Only notify once per issue or article until I view the issue or article in my browser');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS] = $i18n->__('Show notifications about issue updates that are grouped as one notification based on interval in minutes:');
-            $notificationsettings[self::SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE] = $i18n->__('Notify only to notifications box when I am active on system');
-            return $notificationsettings;
+            return $seconds == null ? 180 : $seconds;
         }
 
         public static function getSubscriptionsSettings()
@@ -975,9 +958,26 @@
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I posted');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I posted');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
-            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('New created issues have category');
             $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
+            $subscriptionssettings[self::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Automatically subscribe to new issues in selected categories');
             return $subscriptionssettings;
+        }
+
+        public static function getNotificationSettings()
+        {
+            $i18n = Context::getI18n();
+            $notificationsettings = array();
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ISSUES] = $i18n->__('Notify when there are updates to my subscribed issues');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_SUBSCRIBED_ARTICLES] = $i18n->__('Notify when there are updates to my subscribed articles');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Notify when new issues are created in my project(s)');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify when new articles are created in my project(s)');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_UPDATED_SELF] = $i18n->__('Notify also when I am the one making the changes');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_MENTIONED] = $i18n->__('Notify when I am mentioned in issue or article or their comment');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_ITEM_ONCE] = $i18n->__('Only notify once per issue or article until I view the issue or article in my browser');
+            $notificationsettings[self::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY] = $i18n->__('Notify when issues are created in selected categories');
+//            $notificationsettings[self::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS] = $i18n->__('Show notifications about issue updates that are grouped as one notification based on interval in minutes:');
+//            $notificationsettings[self::SETTINGS_USER_NOTIFY_ONLY_IN_BOX_WHEN_ACTIVE] = $i18n->__("Don't send email notification if I'm currently logged in and active");
+            return $notificationsettings;
         }
 
         /**

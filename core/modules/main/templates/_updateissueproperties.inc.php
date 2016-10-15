@@ -189,6 +189,10 @@
                                         });
                                     });
                                 </script>
+                            <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL || $info['type'] == \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN):
+                                include_component('main/textarea', array('area_name' => $field.'_id', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => ''));
+                            elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT): ?>
+                                <input type="text" name="<?php echo $field; ?>_id" placeholder="<?php echo $info['name'] ?>">
                             <?php else: ?>
                                 <select name="<?php echo $field; ?>_id" id="transition_popup_set_<?php echo $field; ?>_<?php echo $transition->getID(); ?>">
                                     <?php
@@ -219,14 +223,6 @@
                                                 foreach ($project->getBuilds() as $choice): ?>
                                                     <option value="<?php echo $choice->getID(); ?>"<?php if ($issue instanceof \thebuggenie\core\entities\Issue && $issue->getCustomField($field) instanceof \thebuggenie\core\entities\Edition && $issue->getCustomField($field)->getID() == $choice->getID()): ?> selected<?php endif; ?>><?php echo __($choice->getName()); ?></option>
                                                 <?php endforeach;
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
-                                                ?>
-                                                <input type="text" name="<?php echo $field; ?>_id" placeholder="<?php echo $info['name'] ?>">
-                                                <?php
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
-                                                include_component('main/textarea', array('area_name' => $field.'_id', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => $field.'_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => ''));
                                                 break;
                                         }
                                     ?>

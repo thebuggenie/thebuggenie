@@ -16,7 +16,7 @@
 
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-            $categories = array('General', 'Security', 'User interface');
+            $categories = array('General' => '', 'Security' => '', 'User interface' => '');
             $categories['General'] = '#FFFFFF';
             $categories['Security'] = '#C2F533';
             $categories['User interface'] = '#55CC55';
@@ -25,7 +25,7 @@
             {
                 $category = new \thebuggenie\core\entities\Category();
                 $category->setName($name);
-                $category->setColor($name);
+                $category->setColor($color);
                 $category->setScope($scope);
                 $category->save();
             }
