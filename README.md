@@ -44,21 +44,21 @@ all necessary components for The Bug Genie, and you can continue to the actual
 installation as soon as it is completed.
 
 
-### 3: Install via web
+### 3a: Install via web
 
-Visit the subfolder `/thebuggenie/index.php` in your web-browser.
+Visit the subfolder `https://example.com/thebuggenie/public/index.php` in your web-browser.
 
 The installation script will start automatically and guide you through the
 installation process.
 
 
-### 4: Install via command-line (unix/linux only)
+### 3b: Install via command-line (unix/linux only)
 
 You can use the included command-line client to install, if you prefer that.
-Run `./tbg_cli` from this folder.
+The command line utility can be found in the root folder: `$ php ./tbg_cli`
 
 To install:
-`./tbg_cli install`
+`$ ./tbg_cli install`
 
 
 ## REPORTING ISSUES
