@@ -2,9 +2,9 @@
     "name" : "thebuggenie/thebuggenie",
     "description" : "The Bug Genie is a friendly project management and issue tracking tool",
     "authors" : [{
-            "name" : "Daniel Andre Eikeland",
-            "email" : "zegenie@gmail.com"
-        }
+        "name" : "Daniel Andre Eikeland",
+        "email" : "zegenie@gmail.com"
+    }
     ],
     "support" : {
         "email" : "support@thebuggenie.com",
@@ -16,7 +16,7 @@
         "MPL 2.0"
     ],
     "require" : {
-    	"php": ">=5.4",
+        "php": "^5.4|^7.0",
         "thebuggenie/b2db" : "dev-master",
         "mrclay/minify" : "dev-master",
         "easybook/geshi" : "dev-master",
@@ -53,11 +53,19 @@
             "thebuggenie\\core\\" : "core/"
         }
     },
+    "config": {
+        "platform": {"php": "5.4"}
+    },
     "minimum-stability" : "dev",
     "prefer-stable" : true,
-	"scripts": {
+    "scripts": {
         "post-install-cmd": [
-            "thebuggenie\\core\\modules\\installation\\controllers\\Main::createCacheFolder"
-		]
-	}
+            "thebuggenie\\core\\modules\\installation\\controllers\\Main::createCacheFolder",
+            "thebuggenie\\core\\modules\\installation\\controllers\\Main::checkAssetSymlink"
+        ],
+        "post-update-cmd": [
+            "thebuggenie\\core\\modules\\installation\\controllers\\Main::createCacheFolder",
+            "thebuggenie\\core\\modules\\installation\\controllers\\Main::checkAssetSymlink"
+        ]
+    }
 }
