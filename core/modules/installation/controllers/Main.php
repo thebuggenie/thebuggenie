@@ -23,6 +23,19 @@ class Main extends framework\Action
         }
     }
 
+    /**
+     * Check or symlink to the images in the oxygen theme folder exists, otherwise create it.
+     **/
+    public static function checkAssetSymlink()
+    {
+        $rootDir = __DIR__ . '/../../../../';
+        $link = $rootDir . 'public/images';
+        if (!file_exists($link)) {
+            $target = $rootDir . 'themes/oxygen/images';
+            symlink($target, $link);
+        }
+    }
+
     public function preExecute(framework\Request $request, $action)
     {
         $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
