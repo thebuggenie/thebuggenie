@@ -314,7 +314,7 @@
             default:
                 return $tstamp;
         }
-        return utf8_encode ($tstring);
+        return utf8_encode($tstring);
     }
 
     /**
