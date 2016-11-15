@@ -21,10 +21,15 @@
 
             try
             {
-                $username = str_replace('%2E', '.', $request['forgot_password_username']);
-                if (!empty($username))
+                $username_or_email = str_replace('%2E', '.', $request['forgot_password_username']);
+                if (!empty($username_or_email))
                 {
-                    if (($user = \thebuggenie\core\entities\User::getByUsername($username)) instanceof \thebuggenie\core\entities\User)
+                    $user = \thebuggenie\core\entities\User::getByUsername($username_or_email);
+                    if (!$user instanceof \thebuggenie\core\entities\User)
+                    {
+                        $user = \thebuggenie\core\entities\User::getByEmail($username_or_email);
+                    }
+                    if ($user instanceof \thebuggenie\core\entities\User)
                     {
                         if ($user->isActivated() && $user->isEnabled() && !$user->isDeleted())
                         {
