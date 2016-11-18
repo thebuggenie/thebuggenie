@@ -26,6 +26,7 @@
                         echo __('The issues dependency changed: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE:
+                        echo image_tag('icon_info.png'); 
                         echo __('The issue was updated: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
                         if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
                         {
