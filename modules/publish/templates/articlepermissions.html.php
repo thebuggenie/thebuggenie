@@ -44,13 +44,13 @@
                                     <button onclick="$('publish_<?php echo $namespace; ?>_editarticle_permissions').toggle();"><?php echo __('Edit write permissions'); ?></button>
                                     <button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
                                 </div>
-                                <div id="publish_<?php echo $namespace; ?>_readarticle_permissions" style="padding: 10px; width: 700px; display: none;">
+                                <div id="publish_<?php echo $namespace; ?>_readarticle_permissions" style="padding: 10px; display: none;">
                                     <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_READ_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
-                                <div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
+                                <div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; display: none;">
                                     <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_EDIT_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
-                                <div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
+                                <div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; display: none;">
                                     <?php include_component('configuration/permissionsinfo', array('key' => \thebuggenie\modules\publish\Publish::PERMISSION_DELETE_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => \thebuggenie\core\framework\Settings::ACCESS_FULL)); ?>
                                 </div>
                             </li>
