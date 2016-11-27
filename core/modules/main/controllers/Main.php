@@ -3075,33 +3075,53 @@ class Main extends framework\Action
         foreach ($request->getUploadedFiles() as $key => $file)
         {
             $file['name'] = str_replace(array('[', ']'), array('(', ')'), $file['name']);
-            $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($file['name']);
-            if (framework\Settings::getUploadStorage() == 'files')
+            if (self::fileExtensionAllowed($file['name']))
             {
-                $filename = $files_dir . $new_filename;
-            }
-            else
-            {
-                $filename = $file['tmp_name'];
-            }
-            framework\Logging::log('Moving uploaded file to ' . $filename);
-            if (framework\Settings::getUploadStorage() == 'files' && !move_uploaded_file($file['tmp_name'], $filename))
-            {
-                framework\Logging::log('Moving uploaded file failed!');
-                throw new \Exception(framework\Context::getI18n()->__('An error occured when saving the file'));
-            }
-            else
-            {
-                framework\Logging::log('Upload complete and ok, storing upload status and returning filename ' . $new_filename);
-                $content_type = entities\File::getMimeType($filename);
-                if (framework\Settings::getUploadStorage() == 'database')
+                framework\Logging::log('Upload extension ok');
+                $max_file_size = framework\Settings::getUploadsEffectiveMaxSize(true);
+                if ($max_file_size === 0 || filesize($file['tmp_name']) <= $max_file_size)
                 {
-                    $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
+                    framework\Logging::log('Upload file size ok');
+                    $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($file['name']);
+                    if (framework\Settings::getUploadStorage() == 'files')
+                    {
+                        $filename = $files_dir . $new_filename;
+                    }
+                    else
+                    {
+                        $filename = $file['tmp_name'];
+                    }
+                    framework\Logging::log('Moving uploaded file to ' . $filename);
+                    if (framework\Settings::getUploadStorage() == 'files' && !move_uploaded_file($file['tmp_name'], $filename))
+                    {
+                        framework\Logging::log('Moving uploaded file failed!');
+                        throw new \Exception(framework\Context::getI18n()->__('An error occured when saving the file'));
+                    }
+                    else
+                    {
+                        framework\Logging::log('Upload complete and ok, storing upload status and returning filename ' . $new_filename);
+                        $content_type = entities\File::getMimeType($filename);
+                        if (framework\Settings::getUploadStorage() == 'database')
+                        {
+                            $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
+                        }
+                        else
+                        {
+                            $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type);
+                        }
+                        return $this->renderJSON(array('file_id' => $file_object_id));
+                    }
                 }
-                else {
-                    $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type);
+                else
+                {
+                    framework\Logging::log('Allowed file size exceeded!');
+                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You cannot upload files bigger than %max_size MB', array('%max_size' => ($max_file_size / 1024 / 1024)))));
                 }
-                return $this->renderJSON(array('file_id' => $file_object_id));
+            }
+            else
+            {
+                framework\Logging::log('Upload extension not ok');
+                return $this->renderJSON(array('error' => framework\Context::getI18n()->__('This filetype is not allowed')));
             }
         }
 
@@ -5009,6 +5029,43 @@ class Main extends framework\Action
             framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
     }
+
+
+    private function fileExtensionAllowed($filename)
+    {
+        $file_extension = mb_strtolower(trim(entities\File::getFileExtension($filename)));
+        if ($file_extension != '')
+        {
+            $extensionlist = framework\Settings::getUploadsExtensionsList();
+            $part_of_the_list = false;
+            foreach ($extensionlist as $an_ext)
+            {
+                if ($file_extension == mb_strtolower(trim($an_ext)))
+                {
+                    $part_of_the_list = true;
+                    break;
+                }
+            }
+            if (framework\Settings::getUploadsRestrictionMode() === 'blacklist')
+            {
+                framework\Logging::log('Checking uploaded file extension using blacklist');
+                $allowed = !$part_of_the_list;
+            }
+            else
+            {
+                framework\Logging::log('Checking uploaded file extension using whilelist');
+                $allowed = $part_of_the_list;
+            }
+        }
+        else
+        {
+           framework\Logging::log('Oops, could not determine upload filetype', 'main', framework\Logging::LEVEL_WARNING_RISK);
+           //throw new \Exception(framework\Context::getI18n()->__('Could not determine filetype'));
+           $allowed = true; // accept, for backwardcompatibility
+        }
+        return $allowed;
+    }
+
 
     /**
      * @param framework\Request $request
