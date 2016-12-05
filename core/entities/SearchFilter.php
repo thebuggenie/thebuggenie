@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities;
 
+    use b2db\Core;
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\framework;
     use b2db\Criteria;
@@ -638,23 +639,25 @@
                         $issue_no = Issue::extractIssueNoFromNumber($this['value']);
                         if ($this['operator'] == '=')
                         {
-                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_LIKE);
-                            $ctn->addOr(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
-                            $ctn->addOr(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+                            $comparison = (Core::getDBtype() == 'pgsql') ? Criteria::DB_ILIKE : Criteria::DB_LIKE;
+                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, $comparison);
+                            $ctn->addOr(tables\Issues::DESCRIPTION, $searchterm, $comparison);
+                            $ctn->addOr(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
+                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
                             if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
                             if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_ILIKE);
                         }
                         else
                         {
-                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
-                            $ctn->addWhere(tables\Issues::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
-                            $ctn->addWhere(tables\Issues::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+                            $comparison = (Core::getDBtype() == 'pgsql') ? Criteria::DB_NOT_ILIKE : Criteria::DB_NOT_LIKE;
+                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, $comparison);
+                            $ctn->addWhere(tables\Issues::DESCRIPTION, $searchterm, $comparison);
+                            $ctn->addWhere(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
+                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
                             if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
                             if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
                             // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
                         }
