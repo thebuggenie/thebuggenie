@@ -7997,28 +7997,22 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Core._mobileMenuMover = function() {
             if (document.viewport.getWidth() > 900) {
-                if ($('mobile_usermenu').childElements().size() > 0) {
+                if ($('mobile_menu').childElements().size() > 1) {
                     var um = $('user_menu');
                     if (um) {
                         $('header_userinfo_details').insert({after: um.remove()});
                     }
-                }
-                if ($('mobile_menu').childElements().size() > 0) {
                     $('header_userinfo').insert({
                         before: $('main_menu').remove(),
-                        after: $('global_submenu').remove()
                     });
                 }
             } else {
-                if ($('mobile_usermenu').childElements().size() == 0) {
+                if ($('mobile_menu').childElements().size() == 1) {
                     var um = $('user_menu');
                     if (um) {
-                        $('mobile_usermenu').insert(um.remove());
+                        $('mobile_menu').insert(um.remove());
                     }
-                }
-                if ($('mobile_menu').childElements().size() == 0) {
                     $('mobile_menu').insert($('main_menu').remove());
-                    $('mobile_menu').insert($('global_submenu').remove());
                 }
             }
         };

@@ -1,3 +1,9 @@
+<?php
+
+    $header_name = \thebuggenie\core\framework\Settings::getSiteHeaderName();
+    if ($header_name == '') $header_name = 'The Bug Genie';
+
+?>
 <!DOCTYPE html>
 <html lang="<?= \thebuggenie\core\framework\Settings::getHTMLLanguage(); ?>" style="cursor: progress;">
     <head>
@@ -8,7 +14,7 @@
         <meta name="author" content="thebuggenie.com">
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-        <title><?= ($tbg_response->hasTitle()) ? strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName()); ?></title>
+        <title><?= ($tbg_response->hasTitle()) ? strip_tags($header_name . ' ~ ' . $tbg_response->getTitle()) : strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName()); ?></title>
         <style>
             @font-face {
               font-family: 'Droid Sans Mono';

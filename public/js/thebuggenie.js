@@ -35,7 +35,7 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                     if (e.target.up('#topmenu-container') == undefined && jQuery('#topmenu-container').hasClass('active')) {
                         jQuery('#topmenu-container').removeClass('active');
                     }
-                    if (e.target.up('#user_notifications') == undefined && jQuery('#user_notifications').hasClass('active') && e.target.id != 'user_notifications_count') {
+                    if (e.target.up('#user_notifications') == undefined && e.target.up('#user_notifications_container') == undefined && jQuery('#user_notifications').hasClass('active')) {
                         jQuery('#user_notifications').removeClass('active');
                         jQuery('#user_notifications_container').removeClass('active');
                     }
