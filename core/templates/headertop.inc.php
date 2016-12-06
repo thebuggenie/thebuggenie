@@ -18,7 +18,7 @@
                 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo (\thebuggenie\core\framework\Context::isProjectContext()) ? make_url('search', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" name="quicksearchform" id="quicksearchform">
                     <input type="hidden" name="fs[text][o]" value="=">
                     <i class="fa fa-circle-o-notch fa-spin fa-fw" id="quicksearch_indicator" style="display: none;"></i>
-                    <input type="search" name="fs[text][v]" accesskey="f" id="searchfor" placeholder="<?php echo __('Search for anything here'); ?>"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
+                    <input type="search" name="fs[text][v]" accesskey="f" id="searchfor" placeholder="<?php echo __('Search'); ?>"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
                     <button type="submit" id="quicksearch_submit"><?= fa_image_tag('search'); ?></button>
                 </form>
             <?php endif; ?>

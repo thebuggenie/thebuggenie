@@ -36,6 +36,8 @@ header .mobile_menuanchor { display: none; }
         padding: 4px;
     }
     #logo_container { margin-left: 0; padding-left: 5px; }
+    #logo_container .logo_name { display: none; }
+    header .login_required_name { display: none; }
     header .logo { margin-right: 10px; }
     header #header_userinfo li { height: 36px;
         height: auto;
