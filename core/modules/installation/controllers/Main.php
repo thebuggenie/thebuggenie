@@ -646,9 +646,7 @@ class Main extends framework\Action
 
     public function runUpgrade(framework\Request $request)
     {
-        $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
-        $this->current_version = $version_info[0];
-        $this->upgrade_available = ($this->current_version != framework\Settings::getVersion(false));
+        list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
 
         if ($this->upgrade_available)
         {

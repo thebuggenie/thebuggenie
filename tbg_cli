@@ -34,11 +34,21 @@
     $command_paths = [];
     $command_paths['main'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'main' . DS . 'cli' . DS;
     $command_paths['import'] = THEBUGGENIE_INTERNAL_MODULES_PATH . 'import' . DS . 'cli' . DS;
-    foreach (framework\Context::getModules() as $module_name => $module) {
-        $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DS . 'cli' . DS;
-        if (file_exists($module_cli_path)) {
-            $command_paths[$module_name] = $module_cli_path;
+    try {
+        framework\Context::checkInstallMode();
+
+        foreach (framework\Context::getModules() as $module_name => $module) {
+            $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DS . 'cli' . DS;
+            if (file_exists($module_cli_path)) {
+                $command_paths[$module_name] = $module_cli_path;
+            }
         }
+    } catch (\Exception $e) {
+        framework\cli\Command::cli_echo("\n");
+        framework\cli\Command::cli_echo(str_pad('-', strlen($e->getMessage()), '-') . "\n");
+        framework\cli\Command::cli_echo($e->getMessage() . "\n");
+        framework\cli\Command::cli_echo(str_pad('-', strlen($e->getMessage()), '-') . "\n");
+        framework\cli\Command::cli_echo("\n");
     }
 
     // Set up all cli commands

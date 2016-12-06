@@ -305,6 +305,15 @@
             return $retvar;
         }
 
+        public static function getUpgradeStatus()
+        {
+            $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+            $current_version = $version_info[0];
+            $upgrade_available = ($current_version != self::getVersion(false));
+
+            return [$current_version, $upgrade_available];
+        }
+
         public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
         {
             return self::get($name, $module, $scope, $user_id);
@@ -506,7 +515,7 @@
                 if (!Context::isReadySetup()) return 'The Bug Genie';
                 $name = self::get(self::SETTING_TBG_NAME);
                 if (!self::isHeaderHtmlFormattingAllowed()) $name = htmlspecialchars($name, ENT_COMPAT, Context::getI18n()->getCharset());
-                return $name;
+                return trim($name);
             }
             catch (\Exception $e)
             {

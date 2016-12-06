@@ -464,7 +464,9 @@ class Context
             // Set the start time
             self::setLoadStart($starttime[1] + $starttime[0]);
 
-            self::checkInstallMode();
+            if (!defined('TBG_CLI')) {
+                self::checkInstallMode();
+            }
             self::getCache()->setPrefix(str_replace('.', '_', Settings::getVersion()));
 
             if (!self::isReadySetup())
