@@ -4,6 +4,38 @@ header .mobile_menuanchor { display: none; }
 
 @media screen and (max-width: 900px) {
 
+    .popup_message {
+        margin: 10px;
+        top: 0;
+        left: 0;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+    }
+
+    .backdrop_box.login_popup {
+        width: 100%;
+        margin: 0;
+        left: auto;
+        right: auto;
+        top: auto;
+    }
+
+    .login_popup .article h1 {
+        font-size: 1.5em;
+    }
+
+    #tbg3_username, #forgot_password_username, .login_popup input[type="password"], #fieldusername, #register input[type="text"], #register input[type="email"], #register input#fieldusername[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .logindiv.openid_container {
+        width: 100%;
+    }
+    .logindiv.openid_container form {
+        width: auto;
+    }
+
     #mobile_menu { display: block; }
 
     #main_container {
@@ -108,7 +140,8 @@ header .mobile_menuanchor { display: none; }
     }
 
     .mobile_menu {
-        width: calc(320px);
+        width: 75%;
+        max-width: 360px;
         position: fixed;
         overflow-y: auto;
         top: 0;
@@ -156,6 +189,9 @@ header .mobile_menuanchor { display: none; }
         width: 100%;
         margin-top: 0;
         z-index: 1;
+    }
+    #topmenu-container #main_menu {
+        display: none;
     }
     #main_menu li, #main_menu li.selected, #mobile_menu #user_menu.tab_menu_dropdown a, #mobile_menu #user_menu.tab_menu_dropdown a:hover {
         display: block;
@@ -239,20 +275,12 @@ header .mobile_menuanchor { display: none; }
     #mobile_menu #user_menu.tab_menu_dropdown .header {
         padding-left: 7px;
     }
+    #user_menu .fa {
+        margin-right: 6px;
+        font-size: 1.1em;
+    }
     .mobile_menu.right .tab_menu_dropdown .header {
         text-align: right;
-    }
-    nav.submenu_strip {
-        position: absolute;
-        display: block;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: transparent;
-        height: auto;
-        padding: 0;
-        z-index: 2;
-        box-sizing: border-box;
     }
     #quicksearchform {
         position: absolute;
@@ -279,28 +307,10 @@ header .mobile_menuanchor { display: none; }
         box-sizing: border-box;
     }
 
-    #submenu {
-        position: absolute;
-        top: 0;
-        left: 0;
-        float: none;
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        margin: 0;
-        height: auto;
-        background-color: rgba(200, 200, 200, 0.15);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    .main_area {
+        padding-left: 5px;
+        padding-right: 5px;
     }
-    nav.submenu_strip a, nav.submenu_strip a:hover {
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.5);
-        font-weight: normal;
-        vertical-align: middle;
-        text-decoration: none;
-        border: none;
-    }
-    .submenu_strip .selected_project { font-weight: normal; }
 
     #content_container { margin-top: 36px; }
 
