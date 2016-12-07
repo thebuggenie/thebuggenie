@@ -45,11 +45,19 @@
                 $this->cliEcho("\n");
                 return;
             } else {
-                $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
-                $result = $upgrader->upgrade();
+                try {
+                    $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
+                    $result = $upgrader->upgrade();
+                    if ($result) {
+                        $this->cliEcho("Upgrade complete!\n");
+                    } else {
+                        $this->cliEcho("Upgrade failed!\n", 'red');
+                    }
+                } catch (\Exception $e) {
+                    $this->cliEcho("An error occured during the upgrade:\n", 'red', 'bold');
+                    $this->cliEcho($e->getMessage() . "\n");
+                }
             }
-
-            $this->cliEcho("Done!\n");
         }
 
     }
