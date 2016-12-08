@@ -1,6 +1,6 @@
 <?php
 
-    namespace thebuggenie\core\entities\tables;
+    namespace thebuggenie\core\modules\installation\upgrade_419;
 
     use thebuggenie\core\entities\tables\ScopedTable;
 
@@ -21,11 +21,11 @@
      * @subpackage tables
      *
      * @Table(name="notificationsettings")
-     * @Entity(class="\thebuggenie\core\entities\NotificationSetting")
+     * @Entity(class="\thebuggenie\core\modules\installation\upgrade_419\NotificationSetting")
      */
-    class NotificationSettings extends ScopedTable
+    class NotificationSettingsTable extends ScopedTable
     {
 
-        const B2DB_TABLE_VERSION = 2;
+        const B2DB_TABLE_VERSION = 1;
 
     }

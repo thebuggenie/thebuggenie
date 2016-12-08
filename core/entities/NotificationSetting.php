@@ -37,7 +37,7 @@
          * The setting name
          *
          * @var string
-         * @Column(type="string", length=50)
+         * @Column(type="string", length=255)
          */
         protected $_name;
 

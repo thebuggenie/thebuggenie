@@ -125,6 +125,20 @@ class Upgrade
         }
     }
 
+    protected function _upgradeFrom4dot1dot9()
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\NotificationSettings::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_419\NotificationSetting::getB2DBTable());
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.10';
+
+        if (defined('TBG_CLI')) {
+            framework\cli\Command::cli_echo("Successfully upgraded to version {$this->current_version}\n");
+        }
+    }
+
     public function upgrade()
     {
         list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
@@ -159,6 +173,8 @@ class Upgrade
                     $this->_upgradeFrom4dot1dot6();
                 case '4.1.7':
                     $this->_upgradeFrom4dot1dot7();
+                case '4.1.9':
+                    $this->_upgradeFrom4dot1dot9();
                 default:
                     $this->upgrade_complete = true;
                     break;

@@ -148,8 +148,8 @@
 
         protected static $_ver_mj = 4;
         protected static $_ver_mn = 1;
-        protected static $_ver_rev = 9;
-        protected static $_ver_name = "Abstract Apricot";
+        protected static $_ver_rev = 10;
+        protected static $_ver_name = "Blissful Banana";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
