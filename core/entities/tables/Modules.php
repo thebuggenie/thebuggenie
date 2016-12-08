@@ -51,7 +51,9 @@
                 {
                     $module_name = $row->get(self::MODULE_NAME);
                     $classname = "\\thebuggenie\\modules\\{$module_name}\\".ucfirst($module_name);
-                    $modules[$module_name] = new $classname($row->get(self::ID), $row);
+                    if (class_exists($classname)) {
+                        $modules[$module_name] = new $classname($row->get(self::ID), $row);
+                    }
                 }
             }
 
