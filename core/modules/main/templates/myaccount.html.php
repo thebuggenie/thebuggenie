@@ -2,7 +2,7 @@
 
     use thebuggenie\core\framework\Settings;
 
-    $tbg_response->setTitle('Your account details');
+    $tbg_response->setTitle(__('Your account details'));
     $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
 
 ?>
