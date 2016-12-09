@@ -4791,8 +4791,8 @@ a.friend {
     transition: width 0.3s ease;
 }
 
-#issue_main_container.scroll-top {
-    margin-top: 128px;
+#issue_main_container.scroll-top, #issue_details_container.scroll-top {
+    margin-top: 70px;
 }
 
 #issue_main {
@@ -4813,10 +4813,6 @@ a.friend {
     padding: 0 10px;
     transition: width 0.3s ease;
     box-sizing: border-box;
-}
-
-#issue_details_container.scroll-top {
-    margin-top: 128px;
 }
 
 #issue_details {

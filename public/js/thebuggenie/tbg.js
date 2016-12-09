@@ -208,21 +208,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
          * Monitors viewport scrolling to adapt fixed positioners
          */
         TBG.Core._scrollWatcher = function () {
-            var vhc = $('viewissue_header_container');
-            if (vhc) {
+            var vihc = $('viewissue_header_container');
+            if (vihc) {
                 var iv = $('issue_view');
                 var y = document.viewport.getScrollOffsets().top;
-                var vihc = $('viewissue_header_container');
-                var vihcl = vihc.getLayout();
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 8 : vihc.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 10 : vihc.offsetTop;
                 if (y >= compare_coord) {
                     $('issue_main_container').addClassName('scroll-top');
                     $('issue_details_container').addClassName('scroll-top');
-                    vhc.addClassName('fixed');
+                    vihc.addClassName('fixed');
                     $('workflow_actions').addClassName('fixed');
                     if ($('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').hide();
                     if ($('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').hide();
-                    var vhc_layout = vhc.getLayout();
+                    var vhc_layout = vihc.getLayout();
                     var vhc_height = vhc_layout.get('height') + vhc_layout.get('padding-top') + vhc_layout.get('padding-bottom');
                     if (y >= $('viewissue_comment_count').offsetTop) {
                         if ($('comment_add_button') != undefined) {
@@ -236,7 +234,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 } else {
                     $('issue_main_container').removeClassName('scroll-top');
                     $('issue_details_container').removeClassName('scroll-top');
-                    vhc.removeClassName('fixed');
+                    vihc.removeClassName('fixed');
                     $('workflow_actions').removeClassName('fixed');
                     if (! $('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').show();
                     if (! $('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').show();
