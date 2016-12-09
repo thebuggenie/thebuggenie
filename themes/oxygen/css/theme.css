@@ -1397,15 +1397,6 @@ footer img {
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code {
     margin: 0;
 }
-code {
-    background-color: rgba(100, 100, 100, 0.15);
-    display: inline-block;
-    border: none;
-    color: #555;
-    padding: 2px 3px;
-    line-height: 1.4em;
-    border-radius: 3px;
-}
 
 .comment_delete {
     margin-top: 10px !important;
@@ -6751,12 +6742,27 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     padding: 4px;
     border: 1px solid transparent;
 }
+#viewissue_comments .article ul li a.userlink, #viewissue_log_items a.userlink {
+    white-space: normal;
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0 7px;
+}
+.comment_log_items a.userlink img, #viewissue_log_items a.userlink img {
+    margin: 0;
+}
 
 .fa.log_issue_created, .fa.log_issue_closed {
     color: forestgreen;
 }
 .fa.log_issue_priority {
     color: darkorange;
+}
+.fa.log_issue_blocked {
+    color: darkred;
+}
+.fa.log_issue_affected_item_delete, .fa.log_issue_unblocked {
+    color: rgb(200, 200, 200);
 }
 #viewissue_log_items ul li .fa.log_issue_status {
     padding: 4px;
