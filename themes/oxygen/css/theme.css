@@ -1397,6 +1397,15 @@ footer img {
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code {
     margin: 0;
 }
+code {
+    background-color: rgba(100, 100, 100, 0.15);
+    display: inline-block;
+    border: none;
+    color: #555;
+    padding: 2px 3px;
+    line-height: 1.4em;
+    border-radius: 3px;
+}
 
 .comment_delete {
     margin-top: 10px !important;
@@ -6735,6 +6744,24 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 #viewissue_log_items ul li img {
     margin: 3px 5px -3px 5px;
+}
+
+#viewissue_log_items .fa, .comment_log_items .fa {
+    margin-right: 5px;
+    padding: 4px;
+    border: 1px solid transparent;
+}
+
+.fa.log_issue_created, .fa.log_issue_closed {
+    color: forestgreen;
+}
+.fa.log_issue_priority {
+    color: darkorange;
+}
+#viewissue_log_items ul li .fa.log_issue_status {
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #viewissue_log_items ul li span.date {

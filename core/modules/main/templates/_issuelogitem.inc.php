@@ -10,11 +10,11 @@
                 switch($item->getChangeType())
                 {
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CREATED:
-                        echo image_tag('icon_open_new.png');
+                        echo fa_image_tag('file-text-o', ['class' => 'log_issue_created']);
                         echo __('The issue was created');
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:
-                        echo image_tag('icon_close.png');
+                        echo fa_image_tag('check-square', ['class' => 'log_issue_closed']);
                         echo __('The issue was closed');
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REOPEN:
@@ -43,7 +43,10 @@
                         echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
-                        echo image_tag('icon_status.png');
+                        $new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue());
+                        $background_color = ($new_item instanceof \thebuggenie\core\entities\Status) ? $new_item->getColor() : '#FFF';
+                        $text_color = ($new_item instanceof \thebuggenie\core\entities\Status) ? $new_item->getTextColor() : '#000';
+                        echo fa_image_tag('flag', ['class' => 'log_issue_status', 'style' => "background-color: {$background_color}; color: {$text_color};"]);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -52,7 +55,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
-                        echo image_tag('icon_resolution.png');
+                        echo fa_image_tag('tasks', ['class' => 'log_issue_resolution']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -61,7 +64,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PRIORITY:
-                        echo image_tag('icon_priority.png');
+                        echo fa_image_tag('exclamation-circle', ['class' => 'log_issue_priority']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -70,7 +73,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_SEVERITY:
-                        echo image_tag('icon_severity.png');
+                        echo fa_image_tag('exclamation-circle', ['class' => 'log_issue_severity']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Severity::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -79,7 +82,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REPRODUCABILITY:
-                        echo image_tag('icon_reproducability.png');
+                        echo fa_image_tag('repeat', ['class' => 'log_issue_reproducability']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
