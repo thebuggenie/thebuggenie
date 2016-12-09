@@ -594,4 +594,14 @@
             $event->addToReturnList(ArticleFiles::getTable()->getLinkedFileIds());
         }
 
+        public function getFontAwesomeIcon()
+        {
+            return 'newspaper-o';
+        }
+
+        public function getFontAwesomeColor()
+        {
+            return '#555';
+        }
+
     }

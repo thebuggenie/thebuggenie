@@ -30,7 +30,11 @@
         <?php endif; ?>
             <a href="<?php echo $url; ?>">
                 <b>
-                    <?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+                    <?php if (isset($info['fa_icon'])): ?>
+                        <?php echo fa_image_tag($info['fa_icon']); ?>
+                    <?php else: ?>
+                        <?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+                    <?php endif; ?>
                     <?php echo $info['description']; ?>
                 </b>
                 <span><?php echo $info['details']; ?></span>
@@ -47,7 +51,10 @@
         <?php endif; ?>
             <a href="<?php echo $url; ?>">
                 <b>
-                    <?php if ($info['module'] != 'core'): ?>
+                    <?php if (isset($info['fa_icon'])): ?>
+                        <?php $style = (isset($info['fa_color'])) ? 'color: ' . $info['fa_color'] : ''; ?>
+                        <?= fa_image_tag($info['fa_icon'], ['style' => $style]); ?>
+                    <?php elseif ($info['module'] != 'core'): ?>
                         <?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;'), false, $info['module']); ?>
                     <?php else: ?>
                         <?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>

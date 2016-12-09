@@ -164,7 +164,7 @@ header .mobile_menuanchor { display: none; }
         z-index: 50;
     }
     .mobile_menu.left {
-        margin-left: -350px;
+        margin-left: -370px;
         border-right: none;
         box-shadow: 5px 0 15px -5px rgba(0, 0, 0, 0.1);
         left: 0;

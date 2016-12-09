@@ -3349,6 +3349,13 @@ table.cleantable th {
     color: #555;
 }
 
+.config_badges a .fa {
+    color: #555;
+    width: 16px;
+    text-align: center;
+    margin-right: 0;
+}
+
 .config_badges b {
     font-size: 1.2em;
     display: block;
@@ -11100,6 +11107,13 @@ div.quickaddtask .close_micro_popup_link {
 .project_information_sidebar .sidebar_links {
     box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.3) inset;
     height: 100%;
+}
+
+.project_information_sidebar .sidebar_links .fa {
+    font-size: 1.1em;
+    width: 16px;
+    text-align: center;
+    margin-right: 6px;
 }
 
 .project_information_sidebar .sidebar_links img {

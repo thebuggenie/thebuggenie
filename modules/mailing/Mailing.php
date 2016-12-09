@@ -1366,4 +1366,14 @@ EOT;
             return $count;
         }
 
+        public function getFontAwesomeIcon()
+        {
+            return 'envelope-o';
+        }
+
+        public function getFontAwesomeColor()
+        {
+            return '#555';
+        }
+
     }

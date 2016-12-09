@@ -415,7 +415,9 @@
         public function hasConfigSettings()
         {
             /* If the module is outdated, we may not access its settings */
-            if ($this->isOutdated()): return false; endif;
+            if ($this->isOutdated()) {
+                return false;
+            }
 
             return $this->_has_config_settings;
         }
@@ -423,6 +425,21 @@
         public function hasProjectAwareRoute()
         {
             return false;
+        }
+
+        public function hasFontAwesomeIcon()
+        {
+            return true;
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            return 'puzzle-piece';
+        }
+
+        public function getFontAwesomeColor()
+        {
+            return 'mediumseagreen';
         }
 
         public function getTabKey()

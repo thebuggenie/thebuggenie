@@ -27,11 +27,11 @@
         <li<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?> class="temporarily_switched"<?php endif; ?> id="header_usermenu_link">
             <div id="header_userinfo_details">
                 <?php if ($tbg_user->isGuest()): ?>
-                    <a href="javascript:void(0);" <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo fa_image_tag('user') . '<span class="login_required_name">' . __('You are not logged in') . '</span>'; ?></a>
+                    <a href="javascript:void(0);" <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo fa_image_tag('user'); ?></a>
                 <?php else: ?>
                     <?php echo link_tag(make_url('dashboard'), image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]', 'id' => 'header_avatar'), true)); ?>
                 <?php endif; ?>
-                <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>
+                <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page' && !$tbg_user->isGuest()): ?>
                     <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
                 <?php endif; ?>
             </div>
