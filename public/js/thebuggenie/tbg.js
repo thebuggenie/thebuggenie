@@ -212,7 +212,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             if (vihc) {
                 var iv = $('issue_view');
                 var y = document.viewport.getScrollOffsets().top;
-                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 10 : vihc.offsetTop;
+                var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop - 15 : vihc.offsetTop;
                 if (y >= compare_coord) {
                     $('issue_main_container').addClassName('scroll-top');
                     $('issue_details_container').addClassName('scroll-top');

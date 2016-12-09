@@ -6530,6 +6530,12 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #title_header {
     font-size: 0.8em;
 }
+#title_header .issue_project_icon {
+    height: 16px;
+    display: inline-block;
+    vertical-align: baseline;
+    margin-right: 6px;
+}
 
 #title_form {
     display: inline-block;
