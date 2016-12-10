@@ -3355,6 +3355,9 @@ table.cleantable th {
     text-align: center;
     margin-right: 0;
 }
+.button.destroy-link .fa {
+    color: #cb1a00;
+}
 
 .config_badges b {
     font-size: 1.2em;

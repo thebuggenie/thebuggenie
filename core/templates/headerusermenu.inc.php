@@ -20,7 +20,7 @@
             </li>
         <?php endif; ?>
         <?php if ($tbg_user->canAccessConfigurationPage()): ?>
-            <li id="header_config_link" class="<?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteModule() == 'configuration') echo ' selected'; ?>">
+            <li id="header_config_link" class="<?php if (in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteModule(), ['configuration', 'import'])) echo ' selected'; ?>">
                 <?php echo link_tag(make_url('configure'), fa_image_tag('cog')); ?>
             </li>
         <?php endif; ?>
