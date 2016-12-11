@@ -2259,6 +2259,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .header_menu > ul > li.selected {
     background: #FFF;
+    color: #555;
     text-shadow: none;
     border-bottom: 0;
 }
