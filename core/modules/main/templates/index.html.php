@@ -11,7 +11,7 @@
         <?php include_component('main/hideableInfoBoxModal', array('key' => 'index_no_projects', 'title' => __('Get started using The Bug Genie'), 'template' => 'main/intro_index_no_projects')); ?>
     <?php endif; ?>
 <?php endif; ?>
-<table style="margin-top: 0px; table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
+<table cellpadding=0 cellspacing=0 id="main-table">
     <tr>
         <td class="side_bar">
             <?php include_component('main/menulinks', array('links' => $links, 'target_type' => 'main_menu', 'target_id' => 0, 'title' => __('Quick links'))); ?>
@@ -22,9 +22,9 @@
             <?php if ($show_project_list): ?>
                 <div class="project_overview">
                     <div class="header">
-                        <?php echo __('Projects'); ?>
+                        <span><?php echo __('Projects'); ?></span>
                         <div class="dropper_container">
-                            <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo image_tag('icon-mono-settings.png'); ?></a>
+                            <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
                             <ul class="more_actions_dropdown popup_box">
                                 <?php if ($show_project_config_link): ?>
                                     <li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>

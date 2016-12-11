@@ -15,8 +15,13 @@ require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], functi
         }
 
         jQuery("body").on("click", "#mobile_menu .menu_dropdown", function (e) {
+            var is_active = jQuery(this).parents('li').hasClass('active');
             jQuery(this).parents('ul').find('li').removeClass('active');
-            jQuery(this).parents('li').addClass('active');
+            if (is_active) {
+                jQuery(this).parents('li').removeClass('active');
+            } else {
+                jQuery(this).parents('li').addClass('active');
+            }
         });
         // console.log('Stopped autoresizing');
         // TBG.Core._mobileMenuMover();

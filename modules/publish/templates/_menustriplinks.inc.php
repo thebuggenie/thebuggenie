@@ -16,7 +16,7 @@
                 <?php if (!isset($wiki_url)): ?>
                     <?php echo link_tag($project_url, __('Project wiki frontpage')); ?>
                     <?php $quicksearch_title = __('Find project article (press enter to search)'); ?>
-                    <div style="font-weight: normal; margin: 0 0 15px 5px;">
+                    <div style="font-weight: normal; margin: 0 0 15px 5px; padding: 0 10px 0 0;">
                         <form action="<?php echo make_url('publish_find_project_articles', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
                             <input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
                         </form>

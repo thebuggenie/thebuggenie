@@ -924,6 +924,12 @@ input[type=checkbox].semi-checked {
     margin-bottom: 30px;
 }
 
+#main-table {
+    margin-top: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
 .page-project_settings #content_container,
 .page-project_release_center #content_container,
 .page-vcs_commitspage #content_container,
