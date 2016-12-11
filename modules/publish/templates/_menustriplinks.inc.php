@@ -1,4 +1,4 @@
-<li<?php if (strpos($selected_tab, 'publish_') === 0): ?> class="selected"<?php endif; ?>>
+<li class="with-dropdown <?php if (strpos($selected_tab, 'publish_') === 0): ?>selected<?php endif; ?>">
     <div class="menuitem_container">
         <?php if (!isset($wiki_url)): ?>
             <?php echo link_tag(((isset($project_url)) ? $project_url : $url), fa_image_tag('newspaper-o', array(), false, 'publish') . \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle()); ?>

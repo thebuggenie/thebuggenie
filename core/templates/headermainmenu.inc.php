@@ -6,32 +6,32 @@
 <nav class="tab_menu header_menu<?php if (framework\Context::isProjectContext()): ?> project_context<?php endif; ?>" id="main_menu">
     <ul>
         <?php if (!framework\Settings::isSingleProjectTracker() && !framework\Context::isProjectContext()): ?>
-                <li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div class="menuitem_container"><?php echo link_tag(make_url('home'), fa_image_tag('home') . __('Frontpage')); ?></div></li>
-            <?php elseif (framework\Context::isProjectContext()): ?>
-                <?php $page = (in_array($tbg_response->getPage(), array('project_dashboard', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))) ? $tbg_response->getPage() : 'project_dashboard'; ?>
-                <li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))): ?> class="selected"<?php endif; ?>>
-                    <div class="menuitem_container">
-                        <?php echo link_tag(make_url($page, array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('columns') . tbg_get_pagename($tbg_response->getPage())); ?>
-                        <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
-                    </div>
-                    <div id="project_information_menu" class="tab_menu_dropdown">
-                        <?php include_component('project/projectinfolinks', array('submenu' => true)); ?>
-                    </div>
-                </li>
-            <?php endif; ?>
+            <li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div class="menuitem_container"><?php echo link_tag(make_url('home'), fa_image_tag('home') . __('Frontpage')); ?></div></li>
+        <?php elseif (framework\Context::isProjectContext()): ?>
+            <?php $page = (in_array($tbg_response->getPage(), array('project_dashboard', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))) ? $tbg_response->getPage() : 'project_dashboard'; ?>
+            <li class="with-dropdown <?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))): ?>selected<?php endif; ?>">
+                <div class="menuitem_container">
+                    <?php echo link_tag(make_url($page, array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('columns') . tbg_get_pagename($tbg_response->getPage())); ?>
+                    <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
+                </div>
+                <div id="project_information_menu" class="tab_menu_dropdown">
+                    <?php include_component('project/projectinfolinks', array('submenu' => true)); ?>
+                </div>
+            </li>
+        <?php endif; ?>
         <?php if (!$tbg_user->isThisGuest() && !framework\Settings::isSingleProjectTracker() && !framework\Context::isProjectContext()): ?>
-                <li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>>
-                    <div class="menuitem_container">
-                        <?php echo link_tag('javascript:void(0);', fa_image_tag('columns') . __('Dashboard')); ?>
-                        <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
-                    </div>
-                    <div class="tab_menu_dropdown">
-                        <?php echo link_tag(make_url('dashboard'), __('My dashboard'), ((in_array($tbg_response->getPage(), array('dashboard'))) ? array('class' => 'selected') : array())); ?>
-                    </div>
-                </li>
+            <li class="with-dropdown <?php if ($tbg_response->getPage() == 'dashboard'): ?>selected<?php endif; ?>">
+                <div class="menuitem_container">
+                    <?php echo link_tag('javascript:void(0);', fa_image_tag('columns') . __('Dashboard')); ?>
+                    <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
+                </div>
+                <div class="tab_menu_dropdown">
+                    <?php echo link_tag(make_url('dashboard'), __('My dashboard'), ((in_array($tbg_response->getPage(), array('dashboard'))) ? array('class' => 'selected') : array())); ?>
+                </div>
+            </li>
         <?php endif; ?>
         <?php if (framework\Context::isProjectContext() && $tbg_user->canSearchForIssues()): ?>
-            <li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>>
+            <li class="with-dropdown <?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?>selected<?php endif; ?>">
                 <div class="menuitem_container">
                     <?php echo link_tag(make_url('project_issues', array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('file-text-o') . __('Issues')); ?>
                     <?php if (framework\Context::isProjectContext()): ?>
@@ -74,7 +74,7 @@
             </li>
         <?php endif; ?>
         <?php if (!framework\Context::isProjectContext() && ($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(\thebuggenie\core\entities\tables\Teams::getTable()->getAll())): ?>
-            <li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
+            <li class="with-dropdown <?php if ($tbg_response->getPage() == 'team'): ?>selected<?php endif; ?>">
                 <div class="menuitem_container">
                     <?php echo link_tag('javascript:void(0)', fa_image_tag('users') . __('Teams'), array('class' => 'not_clickable')); ?>
                     <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
@@ -88,7 +88,7 @@
             </li>
         <?php endif; ?>
         <?php if (!framework\Context::isProjectContext() && $tbg_user->hasPageAccess('clientlist') && count($tbg_user->getClients()) && !is_null(\thebuggenie\core\entities\Client::getAll())): ?>
-            <li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
+            <li class="with-dropdown <?php if ($tbg_response->getPage() == 'client'): ?>selected<?php endif; ?>">
                 <div class="menuitem_container">
                     <?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients'), array('class' => 'not_clickable')); ?>
                     <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
