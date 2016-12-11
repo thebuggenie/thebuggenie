@@ -1,11 +1,11 @@
 <header>
     <div id="logo_container">
         <?php \thebuggenie\core\framework\Event::createNew('core', 'header_before_logo')->trigger(); ?>
-        <span class="mobile_menuanchor" onclick="$('body').toggleClassName('mobile_leftmenu_visible');"><?= fa_image_tag('bars'); ?></span>
+        <span id="mobile_menuanchor" class="mobile_menuanchor" onclick="$('body').toggleClassName('mobile_leftmenu_visible');"><?= fa_image_tag('bars'); ?></span>
         <?php $link = (\thebuggenie\core\framework\Settings::getHeaderLink() == '') ? \thebuggenie\core\framework\Context::getWebroot() : \thebuggenie\core\framework\Settings::getHeaderLink(); ?>
-        <a class="logo" href="<?php print $link; ?>"><?php echo image_tag(\thebuggenie\core\framework\Settings::getHeaderIconUrl(), array('style' => 'max-height: 24px;'), \thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon()); ?></a>
+        <a class="logo" href="<?php print $link; ?>"><?php echo image_tag(\thebuggenie\core\framework\Settings::getHeaderIconUrl(), [], \thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon()); ?></a>
         <?php if (\thebuggenie\core\framework\Settings::getSiteHeaderName() != ''): ?>
-            <div class="logo_name"><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName(); ?></div>
+            <div id="logo_name" class="logo_name"><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName(); ?></div>
         <?php endif; ?>
     </div>
     <?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?>
@@ -24,11 +24,12 @@
             <?php endif; ?>
         </div>
         <div id="mobile_menu" class="mobile_menu left">
-            <div id="header_banner" style="background-image: url('<?= image_url('mobile_header_banner.png'); ?>');">
+            <div id="header_banner">
+                <span id="header_mobile_menuanchor" class="mobile_menuanchor" onclick="$('body').toggleClassName('mobile_leftmenu_visible');"><?= fa_image_tag('bars'); ?></span>
                 <?php if ($tbg_user->isGuest()): ?>
-                    <a href="javascript:void(0);" <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]', 'class' => 'guest_avatar header_avatar'), true) . __('You are not logged in') . fa_image_tag('caret-down') . fa_image_tag('caret-up'); ?></a>
+                    <a id="header_banner_user_link" href="javascript:void(0);" <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]', 'class' => 'guest_avatar header_avatar'), true) . __('You are not logged in') . fa_image_tag('caret-down') . fa_image_tag('caret-up'); ?></a>
                 <?php else: ?>
-                    <a href="javascript:void(0);" onclick="$('header_banner').toggleClassName('selected');"><?php echo image_tag($tbg_user->getAvatarURL(false), array('alt' => '[avatar]', 'class' => 'header_avatar'), true) . '<span class="header_user_fullname">' . tbg_decodeUTF8($tbg_user->getDisplayName()) . '<br>' . $tbg_user->getEmail() . fa_image_tag('caret-down') . fa_image_tag('caret-up') . '</span>'; ?></a>
+                    <a id="header_banner_user_link" href="javascript:void(0);" onclick="$('header_banner').toggleClassName('selected');"><?php echo image_tag($tbg_user->getAvatarURL(false), array('alt' => '[avatar]', 'class' => 'header_avatar'), true) . '<span class="header_user_fullname">' . tbg_decodeUTF8($tbg_user->getDisplayName()) . '<br>' . $tbg_user->getEmail() . fa_image_tag('caret-down') . fa_image_tag('caret-up') . '</span>'; ?></a>
                 <?php endif; ?>
             </div>
         </div>

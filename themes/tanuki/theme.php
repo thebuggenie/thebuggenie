@@ -4,12 +4,12 @@
      * Configuration for theme
      */
 
-    $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'oxygen', 'css' => 'theme.css')));
-    $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'oxygen', 'css' => 'mobile.css')));
+    $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'tanuki', 'css' => 'theme.css')));
+    $tbg_response->addStylesheet(make_url('asset_css', array('theme_name' => 'tanuki', 'css' => 'mobile.css')));
+    $tbg_response->addJavascript(make_url('asset_js', array('theme_name' => 'tanuki', 'js' => 'theme')), true);
     \thebuggenie\core\framework\Settings::setIconsetName('oxygen');
 ?>
 <style>
-    #header_banner { background-image: url('<?= image_url('mobile_header_banner.png'); ?>'); }
     #tbg3_username, #fieldusername { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
     #fieldusername.invalid { background-image: url('<?php echo $webroot; ?>images/icon_error.png'); background-color: rgba(255, 220, 220, 0.5); }
     #fieldusername.valid { background-image: url('<?php echo $webroot; ?>images/icon_ok.png'); background-color: rgba(220, 255, 220, 0.5); }

@@ -1,0 +1,1 @@
+"Tanuki" is a theme resembling the default [gitlab.com](http://gitlab.com) look and feel. While not an exact replica, it will make you feel right at home.

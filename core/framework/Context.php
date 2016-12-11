@@ -2274,6 +2274,9 @@ class Context
             if (file_exists($themepath . 'css' . DS . "{$module_name}.css")) {
                 self::getResponse()->addStylesheet(self::getRouting()->generate('asset_css', array('theme_name' => $theme, 'css' => "{$module_name}.css")));
             }
+            if (file_exists($themepath . 'js' . DS . "theme.js")) {
+                self::getResponse()->addJavascript(self::getRouting()->generate('asset_js', array('theme_name' => $theme, 'js' => "theme.js"), false));
+            }
             if (file_exists($basepath . 'js' . DS . "{$module_name}.js")) {
                 self::getResponse()->addJavascript(self::getRouting()->generate('asset_js_unthemed', array('js' => "{$module_name}.js")));
             }

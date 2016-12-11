@@ -83,6 +83,7 @@
                 paths: {
                     jquery: 'jquery-2.1.3.min',
                     'jquery-ui': 'jquery-ui.min',
+                    '<?= \thebuggenie\core\framework\Settings::getThemeName(); ?>/theme': bust('<?= \thebuggenie\core\framework\Settings::getThemeName(); ?>/theme.js'),
                     'thebuggenie': bust('thebuggenie.js'),
                     'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
                     'thebuggenie/tools': bust('thebuggenie/tools.js'),
