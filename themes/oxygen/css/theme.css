@@ -2442,6 +2442,31 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 /* end project menu */
 
 /* project front page menu */
+.project_strip .project_information_block {
+    float: left;
+    font-weight: normal;
+}
+.project_strip .project_information_block .button-group {
+    float: none;
+}
+.project_strip .divider {
+    width: 1px;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0 0 0 7px;
+    margin: 0 7px 0 0;
+    display: inline-block;
+}
+.project_strip .icon-large {
+    display: none;
+}
+.project_strip .icon-small {
+    display: inline-block;
+    margin: 2px 5px 0 0;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
 .project_strip .project_name a {
     color: #333;
     font-size: 1.1em;
@@ -3819,7 +3844,8 @@ table.cleantable th {
 .project_list nav .more_actions_dropdown li.finduser_container {
     padding: 5px;
     height: auto;
-    width: 247px;
+    width: auto;
+    white-space: nowrap;
 }
 
 .project_list nav .more_actions_dropdown li.finduser_container:hover {
@@ -12831,6 +12857,11 @@ input.button-silver[type=submit]:hover,
 
 .button img {
     display: inline-block;
+    margin: 0 5px 0 0;
+    vertical-align: middle;
+}
+
+.button .fa {
     margin: 0 5px 0 0;
     vertical-align: middle;
 }

@@ -1030,7 +1030,7 @@ input[type=checkbox].semi-checked {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
     padding-top: 18px;
     padding-bottom: 10px;
-    margin: 20px auto 60px;
+    margin: 65px auto 60px;
 }
 
 .side_bar {
@@ -2029,10 +2029,15 @@ a.not_clickable:hover {
 .more_actions_dropdown li a:hover, .tab_menu_dropdown li a:hover, .tab_menu .tab_menu_dropdown li a:hover {
     background-color: #F7FAFF;
 }
-.more_actions_dropdown li .fa, .tab_menu_dropdown li .fa {
+.more_actions_dropdown li span, .tab_menu_dropdown li span {
+    vertical-align: middle;
+}
+.more_actions_dropdown li .fa, .tab_menu_dropdown li .fa, .more_actions_dropdown li img {
     margin-right: 6px;
     width: 16px;
     text-align: left;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .more_actions_dropdown, .header_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown {
@@ -2179,6 +2184,7 @@ div.dropdown_separator {
 
 .tab_menu.inset ul {
     display: block;
+    bottom: -5px;
 }
 
 .tab_menu.inset ul#usersteamsgroups_menu {
@@ -2204,6 +2210,7 @@ div.dropdown_separator {
     padding: 0;
     border: 1px solid rgba(78, 129, 171, 0.2);
     border-radius: 2px;
+    display: inline-block;
 }
 
 .tab_menu.inset li.right {
@@ -2211,6 +2218,8 @@ div.dropdown_separator {
 }
 
 .tab_menu.inset li a {
+    display: block;
+    box-sizing: border-box;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     font-size: 1.1em !important;
@@ -2243,6 +2252,7 @@ div.dropdown_separator {
     height: 22px;
     width: 22px;
     vertical-align: middle;
+    padding: 3px 5px;
 }
 .tab_menu.inset li .fa {
     vertical-align: middle;
@@ -2437,6 +2447,41 @@ div.dropdown_separator {
 /* end project menu */
 
 /* project front page menu */
+.project_strip .project_information_block {
+    float: none;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 60%;
+    min-width: 300px;
+}
+.project_strip .project_information_block .button-group,
+.project_strip .project_information_block .project_meta_information {
+    display: none;
+}
+.project_strip .divider {
+    width: 1px;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0 0 0 7px;
+    margin: 0 7px 0 0;
+    display: inline-block;
+}
+.project_strip .icon-large {
+    display: inline-block;
+    margin: 0 5px 0 0;
+    width: 38px;
+    height: 38px;
+    vertical-align: middle;
+    border-radius: 26px;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+}
+.project_strip .icon-small {
+    display: none;
+}
+
 .project_strip .project_name a {
     color: #333;
     font-size: 1.1em;
@@ -2461,8 +2506,13 @@ div.dropdown_separator {
 }
 
 .project_strip nav {
-    float: right;
-    margin: 10px;
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+    width: 40%;
+    box-sizing: border-box;
+    min-width: 300px;
+    margin: 10px 0;
     position: relative;
     text-align: right;
 }
@@ -2478,10 +2528,6 @@ div.dropdown_separator {
 .project_strip nav .more_actions_dropdown {
     text-align: left;
     font-size: 1.1em;
-}
-
-.project_strip nav .more_actions_dropdown li {
-    padding: 2px 0;
 }
 
 /* end project frontpage menu */
@@ -3814,7 +3860,8 @@ table.cleantable th {
 .project_list nav .more_actions_dropdown li.finduser_container {
     padding: 5px;
     height: auto;
-    width: 247px;
+    width: auto;
+    white-space: nowrap;
 }
 
 .project_list nav .more_actions_dropdown li.finduser_container:hover {
@@ -4289,7 +4336,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 
 /* project list, client/team dashboard and overview */
 ul.project_list {
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
     text-align: left;
 }
 
@@ -4303,8 +4350,11 @@ ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
     font-weight: bold;
-    padding: 5px 0 5px 0;
+    padding: 8px 0;
     clear: both;
+    box-sizing: border-box;
+    height: 68px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .client_dashboard, .project_overview {
@@ -4332,17 +4382,42 @@ ul.project_list > li {
     float: right;
 }
 
-.project_overview .button-group .button {
-    font-weight: normal;
+.project_overview .button-dashboard, .project_overview .button-wiki, .project_overview .agile-dropdown {
+    display: none;
 }
-
-.project_overview .button-group .button.lefthugging, .project_overview .button-group .button.lefthugging:hover {
-    padding-left: 7px !important;
-    font-size: 0.8em !important;
+.project_overview .button-issues-container .dropper, .project_overview .button-report-issue-container .dropper {
+    display: none;
 }
-
-.project_overview .button-group .button.righthugging, .project_overview .button-group .button.righthugging:hover {
-    padding-right: 4px !important;
+.project_overview .button-group > .button-issues-container,
+.project_overview .button-group > .button-issues-container:hover,
+.project_overview .button-group > .button-report-issue-container,
+.project_overview .button-group > .button-report-issue-container:hover {
+    float: none;
+    background: transparent;
+    border: none;
+    margin: 0 0 0 15px;
+    vertical-align: middle;
+    display: inline-block;
+    box-shadow: none;
+}
+.project_overview .button.button-silver.button-issues, .project_overview .button.button-silver.button-issues:hover {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    text-shadow: none;
+    font-size: 1em;
+    padding: 6px 10px;
+    vertical-align: middle;
+    box-shadow: none;
+}
+.project_overview .button.button-green.button-report-issue, .project_overview .button.button-green.button-report-issue:hover {
+    background-color: #38AE67;
+    border: 1px solid #2FAA60;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 1em;
+    padding: 6px 10px;
+    border-radius: 3px;
+    vertical-align: middle;
 }
 
 .team_dashboard {
@@ -12641,7 +12716,6 @@ li.filtervalue .hidden {
     margin: 0;
     padding: 5px 0;
     border: none;
-    border-bottom: 1px dotted #CCC;
     font-weight: normal;
     font-size: 1.1em;
     color: #888;
@@ -12828,6 +12902,10 @@ input.button-silver[type=submit]:hover,
     display: inline-block;
     margin: 0 5px 0 0;
     vertical-align: middle;
+}
+
+.button .fa {
+    margin-right: 5px;
 }
 
 .button-icon img, .button-icon:hover img {
@@ -13809,6 +13887,8 @@ button:focus, input:focus, select:focus {
 
 /* Configure */
 
+.configuration_page { table-layout: fixed; width: 100%; }
+.configuration_page .main_configuration_content { padding: 0 15px; }
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,
 ul#account_tabs li.selected,
@@ -13819,17 +13899,17 @@ ul#editions_menu li.selected:hover {
     position: relative;
 }
 
-.configuration_page .tab_menu li.selected:after,
-ul#account_tabs li.selected:after,
-ul#editions_menu li.selected:after {
-    content: "";
-    width: 100%;
-    height: 7px;
-    position: absolute;
-    background-color: #FFF;
-    bottom: -7px;
-    left: 0;
-}
+/*.configuration_page .tab_menu li.selected:after,*/
+/*ul#account_tabs li.selected:after,*/
+/*ul#editions_menu li.selected:after {*/
+    /*content: "";*/
+    /*width: 100%;*/
+    /*height: 7px;*/
+    /*position: absolute;*/
+    /*background-color: #FFF;*/
+    /*bottom: -7px;*/
+    /*left: 0;*/
+/*}*/
 
 .config_badges > li > a > span {
     font-size: 13px;
