@@ -1,8 +1,8 @@
 <?php $tbg_response->setTitle(__('Configure roles')); ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_ROLES)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <div id="config_roles" style="position: relative; width: 730px;">
                 <h3>
                     <a class="dropper button button-silver"><?php echo __('Actions'); ?></a>

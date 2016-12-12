@@ -5,10 +5,10 @@
     $teams_text = (\thebuggenie\core\framework\Context::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.\thebuggenie\core\entities\Team::countAll().'</span>', '%max' => \thebuggenie\core\framework\Context::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_USERS)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <div style="width: 730px;">
                 <h3><?php echo __('Configure users, teams and clients'); ?></h3>
                 <div class="tab_menu inset">

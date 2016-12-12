@@ -11,10 +11,10 @@
     }
     
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_WORKFLOW)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <?php include_component('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
             <div class="content" style="width: 730px;" id="workflow_step_container">
                 <?php if ($step instanceof \thebuggenie\core\entities\WorkflowStep): ?>

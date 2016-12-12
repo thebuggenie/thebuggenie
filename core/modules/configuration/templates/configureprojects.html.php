@@ -3,10 +3,10 @@
     $tbg_response->setTitle(__('Manage projects'));
     
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => 10)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <div style="width: 730px;">
                 <h3><?php echo __('Configure projects'); ?></h3>
                 <div class="content faded_out">

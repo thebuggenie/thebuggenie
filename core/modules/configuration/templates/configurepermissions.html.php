@@ -3,10 +3,10 @@
     $tbg_response->setTitle(__('Configure advanced permissions'));
 
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => 5)); ?>
-        <td valign="top" style="padding-left: 15px;" id="configure_permissions_advanced">
+        <td valign="top" class="main_configuration_content" id="configure_permissions_advanced">
             <div style="width: 730px;">
                 <h3>
                     <?php echo link_tag(make_url('configure_roles'), '&lt;&lt;'.__('Back to roles'), array('class' => 'button button-green')); ?>

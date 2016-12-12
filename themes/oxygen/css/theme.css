@@ -13819,6 +13819,8 @@ button:focus, input:focus, select:focus {
 
 /* Configure */
 
+.configuration_page { table-layout: fixed; width: 100%; }
+.configuration_page .main_configuration_content { padding: 0 15px; }
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,
 ul#account_tabs li.selected,
