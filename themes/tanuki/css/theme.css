@@ -2455,6 +2455,7 @@ div.dropdown_separator {
     box-sizing: border-box;
     width: 60%;
     min-width: 300px;
+    line-height: 1.3em;
 }
 .project_strip .project_information_block .button-group,
 .project_strip .project_information_block .project_meta_information {
@@ -2469,35 +2470,63 @@ div.dropdown_separator {
 }
 .project_strip .icon-large {
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin: 0 8px 0 0;
     width: 38px;
     height: 38px;
     vertical-align: middle;
     border-radius: 26px;
     padding: 0;
     background-color: rgba(0, 0, 0, 0.1);
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    line-height: 38px;
+    text-align: center;
 }
 .project_strip .icon-small {
     display: none;
 }
 
+.project_strip .project_name,
+.project_strip .project_description {
+    display: block;
+}
+.project_strip .project_name {
+    font-weight: 600;
+    font-size: 1em;
+}
+.project_strip .project_name .project_prefix_span:before {
+    content: '(';
+    display: inline-block;
+    margin: 0 0 0 7px;
+}
+.project_strip .project_name .project_prefix_span:after {
+    content: ')';
+    display: inline-block;
+    margin: 0;
+}
 .project_strip .project_name a {
     color: #333;
-    font-size: 1.1em;
 }
-
-.project_strip .project_name a:hover {
-    color: #555;
+.project_strip .project_description {
+    font-weight: normal;
+    font-size: 1em;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    display: block;
 }
 
 .project_strip .search_results {
-    padding-top: 5px;
+    display: none;
 }
 
 .project_strip .subprojects_list {
     clear: both;
     padding-top: 5px;
+    line-height: 1.3em;
+    margin-left: 48px;
 }
 
 .project_strip .subprojects_list .subproject_link {
@@ -2509,10 +2538,11 @@ div.dropdown_separator {
     float: none;
     display: inline-block;
     vertical-align: middle;
-    width: 40%;
+    width: calc(40% - 48px);
     box-sizing: border-box;
     min-width: 300px;
-    margin: 10px 0;
+    margin: 0;
+    line-height: 1.3em;
     position: relative;
     text-align: right;
 }
@@ -2528,6 +2558,44 @@ div.dropdown_separator {
 .project_strip nav .more_actions_dropdown {
     text-align: left;
     font-size: 1.1em;
+}
+
+.project_overview .button-dashboard, .project_overview .button-wiki, .project_overview .agile-dropdown {
+    display: none;
+}
+.project_overview .button-issues-container .dropper, .project_overview .button-report-issue-container .dropper {
+    display: none;
+}
+.project_overview .button-group > .button-issues-container,
+.project_overview .button-group > .button-issues-container:hover,
+.project_overview .button-group > .button-report-issue-container,
+.project_overview .button-group > .button-report-issue-container:hover {
+    float: none;
+    background: transparent;
+    border: none;
+    margin: 0 0 0 15px;
+    vertical-align: middle;
+    display: inline-block;
+    box-shadow: none;
+}
+.project_overview .button.button-silver.button-issues, .project_overview .button.button-silver.button-issues:hover {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    text-shadow: none;
+    font-size: 1em;
+    padding: 6px 10px;
+    vertical-align: middle;
+    box-shadow: none;
+}
+.project_overview .button.button-green.button-report-issue, .project_overview .button.button-green.button-report-issue:hover {
+    background-color: #38AE67;
+    border: 1px solid #2FAA60;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 1em;
+    padding: 6px 10px;
+    border-radius: 3px;
+    vertical-align: middle;
 }
 
 /* end project frontpage menu */
@@ -4350,11 +4418,16 @@ ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
     font-weight: bold;
-    padding: 8px 0;
+    padding: 0;
     clear: both;
     box-sizing: border-box;
-    height: 68px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: auto;
+    border-top: 1px solid #F0F0F0;
+}
+ul.project_list .project_strip {
+    height: 60px;
+    line-height: 60px;
+    box-sizing: border-box;
 }
 
 .client_dashboard, .project_overview {
@@ -4376,48 +4449,6 @@ ul.project_list > li {
 
 .team_dashboard, .project_overview {
     clear: both;
-}
-
-.project_overview .button-group {
-    float: right;
-}
-
-.project_overview .button-dashboard, .project_overview .button-wiki, .project_overview .agile-dropdown {
-    display: none;
-}
-.project_overview .button-issues-container .dropper, .project_overview .button-report-issue-container .dropper {
-    display: none;
-}
-.project_overview .button-group > .button-issues-container,
-.project_overview .button-group > .button-issues-container:hover,
-.project_overview .button-group > .button-report-issue-container,
-.project_overview .button-group > .button-report-issue-container:hover {
-    float: none;
-    background: transparent;
-    border: none;
-    margin: 0 0 0 15px;
-    vertical-align: middle;
-    display: inline-block;
-    box-shadow: none;
-}
-.project_overview .button.button-silver.button-issues, .project_overview .button.button-silver.button-issues:hover {
-    background-color: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    text-shadow: none;
-    font-size: 1em;
-    padding: 6px 10px;
-    vertical-align: middle;
-    box-shadow: none;
-}
-.project_overview .button.button-green.button-report-issue, .project_overview .button.button-green.button-report-issue:hover {
-    background-color: #38AE67;
-    border: 1px solid #2FAA60;
-    box-shadow: none;
-    text-shadow: none;
-    font-size: 1em;
-    padding: 6px 10px;
-    border-radius: 3px;
-    vertical-align: middle;
 }
 
 .team_dashboard {

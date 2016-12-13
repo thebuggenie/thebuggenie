@@ -7,23 +7,30 @@
 
 ?>
 <div class="project_strip">
-    <div class="project_information_block">
-        <?php echo image_tag($project->getSmallIconName(), array('class' => 'icon-small'), $project->hasSmallIcon()); ?>
-        <?php echo image_tag($project->getLargeIconName(), array('class' => 'icon-large'), $project->hasLargeIcon()); ?>
-        <b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="button-group project-config-buttons"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver project-settings')); ?></span><?php endif; ?><br>
-        <div class="project_meta_information">
-            <?php if ($project->hasHomepage()): ?>
-                <a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
-            <?php endif; ?>
-            <?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
-                <span class="divider">&nbsp;</span>
-            <?php endif; ?>
-            <?php if ($project->hasDocumentationURL()): ?>
-                <a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
-            <?php endif; ?>
+    <?php echo image_tag($project->getSmallIconName(), array('class' => 'icon-small', 'alt' => '[i]'), $project->hasSmallIcon()); ?><!--
+    --><?php echo image_tag($project->getLargeIconName(), array('class' => 'icon-large', 'alt' => '[i]'), $project->hasLargeIcon()); ?><!--
+    --><div class="project_information_block">
+        <div class="project_information_container">
+            <span class="project_name">
+                <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span class="project_name_span">'.$project->getName()."</span>"); ?><?php if ($project->usePrefix()) echo '<span class="project_prefix_span">'.mb_strtoupper($project->getPrefix()).'</span>'; ?><?php if ($tbg_user->canEditProjectDetails($project)): ?><span class="button-group project-config-buttons"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver project-settings')); ?></span><?php endif; ?>
+            </span>
+            <div class="project_description">
+                <?= tbg_parse_text($project->getDescription()); ?>
+            </div>
+            <div class="project_meta_information">
+                <?php if ($project->hasHomepage()): ?>
+                    <a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
+                <?php endif; ?>
+                <?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
+                    <span class="divider">&nbsp;</span>
+                <?php endif; ?>
+                <?php if ($project->hasDocumentationURL()): ?>
+                    <a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
-    <nav class="button-group">
+    </div><!--
+    --><nav class="button-group">
         <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
             <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
         <?php endif; ?>
@@ -92,5 +99,4 @@
         <?php endforeach; ?>
         </table>
     <?php endif; ?>
-    <div style="clear: both;"> </div>
 </div>
