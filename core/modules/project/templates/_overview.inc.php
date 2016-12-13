@@ -7,8 +7,7 @@
 
 ?>
 <div class="project_strip">
-    <?php echo image_tag($project->getSmallIconName(), array('class' => 'icon-small', 'alt' => '[i]'), $project->hasSmallIcon()); ?><!--
-    --><?php echo image_tag($project->getLargeIconName(), array('class' => 'icon-large', 'alt' => '[i]'), $project->hasLargeIcon()); ?><!--
+    <?php echo image_tag($project->getLargeIconName(), array('class' => 'icon-large', 'alt' => '[i]'), $project->hasLargeIcon()); ?><!--
     --><div class="project_information_block">
         <div class="project_information_container">
             <span class="project_name">
@@ -36,9 +35,9 @@
         <?php endif; ?>
         <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
             <div class="button-dropdown button-issues-container">
-                <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', array('class' => 'button button-silver button-issues righthugging')); ?>
-                <a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a>
-                <ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
+                <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', array('class' => 'button button-silver button-issues righthugging')); ?><!--
+                --><a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
+                --><ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
                     <li class="finduser_container">
                         <label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
                         <form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
@@ -48,13 +47,13 @@
                     </li>
                 </ul>
             </div>
-        <?php endif; ?>
-        <?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
-        <?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
+        <?php endif; ?><!--
+        --><?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?><!--
+        --><?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
             <div class="button-dropdown button-report-issue-container">
-                <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue righthugging')); ?>
-                <a class="dropper button button-green last lefthugging reportissue_dropdown_button" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a>
-                <ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
+                <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue lefthugging righthugging')); ?><!--
+                --><a class="dropper button button-green last lefthugging reportissue_dropdown_button" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
+                --><ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
                     <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
                         <li><?php echo javascript_link_tag(image_tag($issuetype->getIcon() . '_tiny.png' ) . '<span>'.__($issuetype->getName()).'</span>', array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId(), 'issuetype' => $issuetype->getKey())) . "', this);")); ?></li>
                     <?php endforeach;?>

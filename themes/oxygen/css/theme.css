@@ -2443,11 +2443,23 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 /* project front page menu */
 .project_strip .project_information_block {
-    float: left;
+    float: none;
     font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 60%;
+    min-width: 300px;
+    line-height: 1.3em;
 }
 .project_strip .project_information_block .button-group {
     float: none;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+}
+.project_strip .project_description {
+    display: none;
 }
 .project_strip .divider {
     width: 1px;
@@ -2457,23 +2469,33 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     display: inline-block;
 }
 .project_strip .icon-large {
-    display: none;
-}
-.project_strip .icon-small {
     display: inline-block;
-    margin: 2px 5px 0 0;
-    width: 16px;
-    height: 16px;
+    margin: 0 8px 0 0;
+    width: 32px;
+    height: 32px;
     vertical-align: middle;
+    padding: 3px 3px 3px 0;
+    line-height: 38px;
+    text-align: center;
 }
 
 .project_strip .project_name a {
     color: #333;
     font-size: 1.1em;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
 }
 
 .project_strip .project_name a:hover {
     color: #555;
+}
+
+.project_strip .project_prefix_span {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+    color: #777;
 }
 
 .project_strip .search_results {
@@ -2492,7 +2514,13 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .project_strip nav {
     float: right;
-    margin: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    box-sizing: border-box;
+    min-width: 300px;
+    margin: 5px 0;
+    line-height: 1.3em;
     position: relative;
     text-align: right;
 }
@@ -2503,6 +2531,10 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .project_strip nav a.button {
     font-weight: bold;
+}
+
+.project_strip nav .button .fa-file-text {
+    display: none;
 }
 
 .project_strip nav .more_actions_dropdown {
@@ -4334,7 +4366,7 @@ ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
     font-weight: bold;
-    padding: 5px 0 5px 0;
+    padding: 10px 10px 10px 0;
     clear: both;
 }
 
@@ -4359,21 +4391,23 @@ ul.project_list > li {
     clear: both;
 }
 
-.project_overview .button-group {
-    float: right;
-}
-
-.project_overview .button-group .button {
+.project_overview .button-group .button, .project_overview .button-group > .button-dropdown {
     font-weight: normal;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .project_overview .button-group .button.lefthugging, .project_overview .button-group .button.lefthugging:hover {
     padding-left: 7px !important;
-    font-size: 0.8em !important;
+    /*font-size: 0.8em !important;*/
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
 }
 
 .project_overview .button-group .button.righthugging, .project_overview .button-group .button.righthugging:hover {
     padding-right: 4px !important;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .team_dashboard {
@@ -5181,16 +5215,13 @@ a.friend {
 }
 
 .button-group > .button-dropdown .button {
-    border-radius: 3px;
     box-shadow: none;
     border: none;
-    background: none;
 }
 
 .button-group > .button-dropdown .button:hover {
     box-shadow: none;
     border: none;
-    background: none;
 }
 
 .button-group > .button-dropdown .dropper, .button-group > .button-dropdown .dropper:hover {
@@ -6256,6 +6287,8 @@ dd {
     display: block;
     line-height: 1.7;
     text-transform: none;
+    white-space: nowrap;
+    font-weight: normal;
 }
 
 .more_actions_dropdown li:first-child {
@@ -6337,9 +6370,10 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     color: rgb(25, 150, 25);
 }
 
-.more_actions_dropdown li.disabled a {
+.more_actions_dropdown li.disabled a, .more_actions_dropdown li.disabled div {
     color: #AAA !important;
     text-shadow: 1px 1px 0 #FFF;
+    padding: 0 8px;
 }
 
 .more_actions_dropdown li.form_container {
