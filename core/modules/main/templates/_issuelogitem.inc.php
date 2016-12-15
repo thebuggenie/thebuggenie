@@ -47,7 +47,7 @@
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
                             $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-                            echo __("Status changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+                            echo __("Status changed: %previous_value => %new_value by  %who_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>', '%who_value' => '<strong>'.$item->getUser().'</strong>'));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
