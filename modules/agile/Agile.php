@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\agile;
 
+    use thebuggenie\core\entities\Project;
     use thebuggenie\core\framework;
 
     /**
@@ -126,9 +127,9 @@
          */
         public function headerMenuProjectLinks(framework\Event $event)
         {
-            if ($this->isEnabled() && framework\Context::isProjectContext())
+            if ($this->isEnabled() && $event->getSubject() instanceof Project)
             {
-                $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), framework\Context::getCurrentProject()->getID());
+                $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), $event->getSubject()->getID());
                 framework\ActionComponent::includeComponent('agile/headermenuprojectlinks', array('project' => $event->getSubject(), 'boards' => $boards));
             }
         }

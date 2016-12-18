@@ -12,6 +12,20 @@ require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], functi
             //     $('mobile_menu').insert(um.remove());
             // }
             $('mobile_menu').insert($('main_menu').remove());
+            if ($('project_information_menu')) {
+                $('project_information_menu').removeClassName('tab_menu_dropdown');
+            }
+            if ($('project_settings_main_link')) {
+                var html = '<a class="dropper button" id="edit-project-header-button" href="javascript:void(0);"><i class="fa fa-cog"></i><i class="fa fa-caret-down"></i></a>' +
+                    '<ul class="popup_box more_actions_dropdown" id="project_header_dropper_menu"></ul>';
+
+                $('reportissue_button').insert({before: html});
+                $('project_header_dropper_menu').insert('<li><a href="'+$('project_settings_main_link').href+'">'+$('project_settings_main_link').innerHTML+'</a></li>');
+                if ($('edit-project-dashboard-button')) {
+                $('project_header_dropper_menu').insert('<li class="separator">&nbsp;</li>');
+                    $('project_header_dropper_menu').insert('<li><a href="javascript:void(0);" onclick="$$(\'.dashboard\').each(function (elm) { elm.toggleClassName(\'editable\');});$(this).toggleClassName(\'button-pressed\');">'+$('edit-project-dashboard-button').innerHTML+'</a></li>');
+                }
+            }
         }
 
         jQuery("body").on("click", "#mobile_menu .menu_dropdown", function (e) {

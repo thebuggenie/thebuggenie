@@ -384,10 +384,10 @@
          */
         public function listen_MenustripLinks(framework\Event $event)
         {
-            $project_url = (framework\Context::isProjectContext()) ? framework\Context::getRouting()->generate('publish_article', array('article_name' => ucfirst(framework\Context::getCurrentProject()->getKey()) . ':MainPage')) : null;
-            $wiki_url = (framework\Context::isProjectContext() && framework\Context::getCurrentProject()->hasWikiURL()) ? framework\Context::getCurrentProject()->getWikiURL() : null;
+            $project_url = ($event->getSubject() instanceof Project) ? framework\Context::getRouting()->generate('publish_article', array('article_name' => ucfirst($event->getSubject()->getKey()) . ':MainPage')) : null;
+            $wiki_url = ($event->getSubject() instanceof Project && $event->getSubject()->hasWikiURL()) ? $event->getSubject()->getWikiURL() : null;
             $url = framework\Context::getRouting()->generate('publish');
-            framework\ActionComponent::includeComponent('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'wiki_url' => $wiki_url, 'selected_tab' => $event->getParameter('selected_tab')));
+            framework\ActionComponent::includeComponent('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'project' => $event->getSubject(), 'wiki_url' => $wiki_url, 'selected_tab' => $event->getParameter('selected_tab')));
         }
 
         public function listen_createNewProject(framework\Event $event)

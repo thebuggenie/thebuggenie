@@ -4,14 +4,16 @@
         <span id="mobile_menuanchor" class="mobile_menuanchor" onclick="$('body').toggleClassName('mobile_leftmenu_visible');"><?= fa_image_tag('bars'); ?></span>
         <?php $link = (\thebuggenie\core\framework\Settings::getHeaderLink() == '') ? \thebuggenie\core\framework\Context::getWebroot() : \thebuggenie\core\framework\Settings::getHeaderLink(); ?>
         <a class="logo" href="<?php print $link; ?>"><?php echo image_tag(\thebuggenie\core\framework\Settings::getHeaderIconUrl(), [], \thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon()); ?></a>
-        <?php if (\thebuggenie\core\framework\Settings::getSiteHeaderName() != ''): ?>
+        <?php if (\thebuggenie\core\framework\Settings::getSiteHeaderName() != '' || \thebuggenie\core\framework\Context::isProjectContext()): ?>
             <div id="logo_name" class="logo_name"><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName(); ?></div>
+            <a id="logo_project_name" href="<?= make_url('project_dashboard', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())); ?>" class="logo_name"><?php echo \thebuggenie\core\framework\Context::getCurrentProject()->getName(); ?></a>
         <?php endif; ?>
     </div>
     <?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?>
         <div id="topmenu-container">
-            <?php if (\thebuggenie\core\framework\Event::createNew('core', 'header_mainmenu_decider')->trigger()->getReturnValue() !== false): ?>
-                <?php require THEBUGGENIE_CORE_PATH . 'templates/headermainmenu.inc.php'; ?>
+            <?php require THEBUGGENIE_CORE_PATH . 'templates/headermainmenu.inc.php'; ?>
+            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                <?php require THEBUGGENIE_CORE_PATH . 'templates/headermainmenuprojectcontext.inc.php'; ?>
             <?php endif; ?>
             <?php require THEBUGGENIE_CORE_PATH . 'templates/headerusermenu.inc.php'; ?>
             <?php if ($tbg_user->canSearchForIssues()): ?>

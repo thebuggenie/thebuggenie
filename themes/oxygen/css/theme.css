@@ -310,8 +310,11 @@ header {
     margin-bottom: 5px;
 }
 
-header #main_menu {
+header .main_menu {
     float: left;
+}
+.project-context #main_menu {
+    display: none;
 }
 
 #header_config_link .fa {
@@ -736,6 +739,9 @@ header nav > ul {
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     float: left;
     display: inline-block;
+}
+#logo_project_name {
+    display: none;
 }
 
 .submenu_strip .selected_project {
