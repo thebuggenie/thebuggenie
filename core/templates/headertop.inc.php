@@ -6,7 +6,9 @@
         <a class="logo" href="<?php print $link; ?>"><?php echo image_tag(\thebuggenie\core\framework\Settings::getHeaderIconUrl(), [], \thebuggenie\core\framework\Settings::isUsingCustomHeaderIcon()); ?></a>
         <?php if (\thebuggenie\core\framework\Settings::getSiteHeaderName() != '' || \thebuggenie\core\framework\Context::isProjectContext()): ?>
             <div id="logo_name" class="logo_name"><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName(); ?></div>
-            <a id="logo_project_name" href="<?= make_url('project_dashboard', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())); ?>" class="logo_name"><?php echo \thebuggenie\core\framework\Context::getCurrentProject()->getName(); ?></a>
+            <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
+                <a id="logo_project_name" href="<?= make_url('project_dashboard', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())); ?>" class="logo_name"><?php echo \thebuggenie\core\framework\Context::getCurrentProject()->getName(); ?></a>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
     <?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?>
