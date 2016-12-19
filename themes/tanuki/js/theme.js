@@ -12,6 +12,15 @@ require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], functi
             //     $('mobile_menu').insert(um.remove());
             // }
             $('mobile_menu').insert($('main_menu').remove());
+            if ($('add_comment_button_container') && $('workflow_actions')) {
+                $('workflow_actions').insert($('add_comment_button_container').remove());
+            }
+            if ($('workflow_actions') && $('title_header')) {
+                $('title_header').insert($('workflow_actions').remove());
+            }
+            if ($('posted_at_field') && $('title_header')) {
+                $('title_header').insert($('posted_at_field').remove());
+            }
             if ($('project_information_menu')) {
                 $('project_information_menu').removeClassName('tab_menu_dropdown');
             }

@@ -53,8 +53,7 @@
                         <div class="viewissue_title">
                             <span class="faded_out" id="title_header">
                                 <?php echo image_tag($issue->getProject()->getSmallIconName(), ['class' => 'issue_project_icon'], $issue->getProject()->hasSmallIcon()); ?>
-                                <span class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></span>
-                                /
+                                <span class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?> / </span>
                                 <?php include_component('issueparent_crumbs', array('issue' => $issue)); ?>
                             </span>
                             <span id="issue_title">

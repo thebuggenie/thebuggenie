@@ -6385,6 +6385,13 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .more_actions_dropdown li.form_container {
     padding-left: 5px;
 }
+.identifiable_lookup {
+    width: 240px;
+    padding: 1px 1px 1px;
+}
+.identifiable_lookup + input[type=submit] {
+    width: 60px;
+}
 
 .title_left_images {
     width: 32px;
