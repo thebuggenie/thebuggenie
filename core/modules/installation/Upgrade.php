@@ -139,6 +139,29 @@ class Upgrade
         }
     }
 
+    protected function _upgradeFrom4dot1dot10()
+    {
+        set_time_limit(0);
+
+        \thebuggenie\core\entities\tables\ScopeHostnames::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\Notifications::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\WorkflowTransitionValidationRules::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\WorkflowTransitionActions::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\WorkflowStepTransitions::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\Links::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\Log::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\Teams::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\IssueCustomFields::getTable()->createIndexes();
+        \thebuggenie\core\entities\tables\ListTypes::getTable()->createIndexes();
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.11';
+
+        if (defined('TBG_CLI')) {
+            framework\cli\Command::cli_echo("Successfully upgraded to version {$this->current_version}\n");
+        }
+    }
+
     public function upgrade()
     {
         list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
@@ -175,6 +198,8 @@ class Upgrade
                     $this->_upgradeFrom4dot1dot7();
                 case '4.1.9':
                     $this->_upgradeFrom4dot1dot9();
+                case '4.1.10':
+                    $this->_upgradeFrom4dot1dot10();
                 default:
                     $this->upgrade_complete = true;
                     break;
