@@ -740,7 +740,7 @@ header nav > ul {
     float: left;
     display: inline-block;
 }
-#logo_project_name {
+.project-context #logo_name {
     display: none;
 }
 
