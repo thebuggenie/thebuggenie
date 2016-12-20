@@ -329,6 +329,7 @@ header #main_menu {
     font-size: 0.9em;
 }
 #topmenu-container .header_menu#project_menu > ul > li, #topmenu-container .header_menu#project_menu > ul > li.selected {
+    position: relative;
     font-size: 0.85em;
     background: transparent;
     border: 0;
@@ -362,23 +363,23 @@ header #main_menu {
     background: transparent;
     border-bottom-color: #4A8BEE;
 }
-#topmenu-container .header_menu#project_menu > ul > li a {
+#topmenu-container .header_menu#project_menu > ul > li > a {
     color: #777;
 }
-#topmenu-container .header_menu#project_menu > ul > li.selected a {
+#topmenu-container .header_menu#project_menu > ul > li.selected > a {
     color: #111;
 }
-#topmenu-container .header_menu#project_menu > ul > li div {
+#topmenu-container .header_menu#project_menu > ul > li > div:not(.tab_menu_dropdown) {
     padding-top: 0;
 }
 #topmenu-container .header_menu#project_menu > ul > li .menuitem_container a {
     margin-top: 0;
 }
-#topmenu-container .header_menu#project_menu > ul > li .fa,
-#topmenu-container .header_menu#project_menu > ul > li.with-dropdown a:nth-child(2) {
+#topmenu-container .header_menu#project_menu > ul > li .fa {
     display: none;
 }
 #topmenu-container #project_menu.header_menu #project_settings_main_link,
+#topmenu-container #project_menu.header_menu #project_release_center_main_link,
 #edit-project-dashboard-button {
     display: none;
 }
@@ -2023,9 +2024,9 @@ header #header_userinfo .fa.menu_dropdown {
 
 .tab_menu li img {
     display: inline-block;
-    margin: -2px 6px 0 0;
+    margin: 0 0 0 6px;
     vertical-align: middle;
-    padding: 14px 10px 13px 10px;
+    padding: 0;
 }
 .tab_menu li .fa {
     margin-right: 6px;
@@ -2092,7 +2093,9 @@ a.not_clickable:hover {
     cursor: default;
 }
 
-.more_actions_dropdown li, .tab_menu_dropdown li, .tab_menu .tab_menu_dropdown li {
+.more_actions_dropdown li,
+.tab_menu_dropdown li,
+.tab_menu .tab_menu_dropdown li {
     display: block;
     line-height: 1.3em;
     padding: 0 10px;
@@ -2100,7 +2103,11 @@ a.not_clickable:hover {
     float: none;
     background: transparent;
 }
-.more_actions_dropdown li a, .tab_menu_dropdown li a, .tab_menu .tab_menu_dropdown li a {
+.more_actions_dropdown li a,
+.tab_menu_dropdown li a,
+.tab_menu .tab_menu_dropdown li a,
+.tab_menu .tab_menu_dropdown > a,
+.tab_menu .tab_menu_dropdown > div {
     display: block;
     padding: 5px 8px;
     margin: 0;
@@ -2108,8 +2115,12 @@ a.not_clickable:hover {
     font-size: 1.05em;
     background: transparent;
     white-space: nowrap;
+    line-height: 1.3em;
 }
-.more_actions_dropdown li a:hover, .tab_menu_dropdown li a:hover, .tab_menu .tab_menu_dropdown li a:hover {
+.more_actions_dropdown li a:hover,
+.tab_menu_dropdown li a:hover,
+.tab_menu .tab_menu_dropdown li a:hover,
+.tab_menu .tab_menu_dropdown > a:hover {
     background-color: #F7FAFF;
 }
 .more_actions_dropdown li span, .tab_menu_dropdown li span {
@@ -2125,6 +2136,7 @@ a.not_clickable:hover {
 
 .more_actions_dropdown, .header_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown {
     display: none;
+    text-align: left;
     position: absolute;
     top: 25px;
     margin-left: -5px;
@@ -2139,10 +2151,16 @@ a.not_clickable:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.header_menu .tab_menu_dropdown {
+    font-size: 1em;
+    margin: 0;
+    top: 38px;
+    right: 0;
+    left: auto;
+}
 .header_menu .tab_menu_dropdown .disabled {
     color: #AAA;
     cursor: default;
-    padding: 5px;
 }
 
 .header_menu .tab_menu_dropdown#issues_menu {
@@ -2151,7 +2169,7 @@ a.not_clickable:hover {
 }
 
 .header_menu .tab_menu_dropdown#issues_menu a {
-    width: 100%;
+    width: calc(100% - 10px);
     box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
@@ -2204,23 +2222,19 @@ div.dropdown_separator {
     font-size: 0;
 }
 
-.tab_menu_dropdown {
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-}
-
 .tab_menu_dropdown a img {
     display: inline-block;
     margin-right: 6px;
     vertical-align: middle;
 }
 
-/*#topmenu-container.active .tab_menu_dropdown, li.force_dropdown .tab_menu_dropdown, #topmenu-container.active .tab_menu_container:hover .tab_menu_dropdown {*/
-    /*display: block;*/
-/*}*/
-
-#topmenu-container.active #user_menu {
+#topmenu-container.active li:hover .tab_menu_dropdown, li.force_dropdown .tab_menu_dropdown, #topmenu-container.active .tab_menu_container:hover .tab_menu_dropdown {
     display: block;
 }
+
+/*#topmenu-container.active #user_menu {*/
+    /*display: block;*/
+/*}*/
 
 .tab_menu li.selected .tab_menu_dropdown, .tab_menu_container li.selected .tab_menu_dropdown {
     background-color: #FFF;
@@ -2228,39 +2242,12 @@ div.dropdown_separator {
 }
 
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a {
-    color: inherit;
-    font-weight: normal;
-    display: block;
-    padding: 4px 5px;
-    background-color: transparent;
-}
-
-.tab_menu .tab_menu_dropdown div.header, .header_menu li.selected:hover div.header, .tab_menu_container .tab_menu_dropdown div.header {
-    font-weight: normal;
-    color: #AAA;
-    margin: 15px 5px 2px 5px;
-    text-transform: uppercase;
-    font-size: 1em;
+    line-height: 1.3em;
+    margin: 0 5px;
 }
 
 .tab_menu .tab_menu_dropdown div.header:first-child, .tab_menu_container .tab_menu_dropdown div.header:first-child {
     margin-top: 5px;
-}
-
-.tab_menu .tab_menu_dropdown a:hover, .tab_menu_container .tab_menu_dropdown a:hover {
-    background-color: #669BDA;
-    border: 0;
-}
-
-.tab_menu li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_menu_dropdown a:hover {
-    background-color: #EAEAF5;
-    border: 0;
-}
-
-.tab_menu .tab_menu_dropdown a.selected, .tab_menu_container .tab_menu_dropdown a.selected {
-    background-color: rgb(236, 240, 244);
-    border: 0;
-    padding: 3px 5px;
 }
 
 .tab_menu.inset {
@@ -5415,6 +5402,16 @@ a.friend {
     width: 20px;
 }
 
+#issue_main fieldset legend {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
 #issue_details fieldset {
     box-sizing: border-box;
     margin: 0;
@@ -5693,6 +5690,8 @@ ul.workflow_actions li form {
 ul.workflow_actions li input.button.button-silver,
 ul.workflow_actions li input.button.button-silver:hover,
 ul.workflow_actions li:hover input.button.button-silver,
+#issue_main #add_comment_button_container .button.button-silver,
+#issue_main #add_comment_button_container .button.button-silver:hover,
 #workflow_actions #add_comment_button_container .button.button-silver,
 #workflow_actions #add_comment_button_container .button.button-silver:hover {
     background: #FFF;
@@ -5708,7 +5707,9 @@ ul.workflow_actions li input.button.button-silver:hover {
     border-color: rgba(0, 0, 0, 0.4);
 }
 #workflow_actions #comment_add_button .button.button-silver,
-#workflow_actions #comment_add_button .button.button-silver:hover {
+#workflow_actions #comment_add_button .button.button-silver:hover,
+#issue_main #comment_add_button .button.button-silver,
+#issue_main #comment_add_button .button.button-silver:hover {
     border-color: darkolivegreen;
     color: darkolivegreen;
 }
@@ -6118,8 +6119,6 @@ ul.workflow_actions li input.button.button-silver:hover {
 
 #issue_main .button_container {
     display: inline-block;
-    float: right;
-    margin: -6px 0 0;
     font-size: 1.1em;
 }
 
@@ -6127,11 +6126,6 @@ ul.workflow_actions li input.button.button-silver:hover {
     font-weight: normal;
     padding: 4px 8px;
     font-size: 0.8em;
-}
-
-#viewissue_comments #comment_add_button .button {
-    padding: 2px 10px;
-    font-size: 1em;
 }
 
 .user_pain, .votes {
@@ -7065,6 +7059,21 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-right: 5px;
     padding: 4px;
     border: 1px solid transparent;
+}
+#issue_main fieldset legend.viewissue_comments_header {
+    border-bottom: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    display: block;
+    padding: 10px 0;
+    margin: 15px 0 10px 0;
+    text-align: right;
+    width: 100%;
+}
+.viewissue_comments_header > span {
+    display: none;
+}
+#add_comment_button_container {
+    margin: 0;
 }
 #viewissue_comments .article ul li a.userlink, #viewissue_log_items a.userlink {
     white-space: normal;
@@ -17411,8 +17420,8 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr {
 }
 
 #issue_main > fieldset.comments > legend > div > ul {
-    left: -15px;
-    right: auto;
+    left: auto;
+    right: 0;
 }
 
 #description_form > input,
@@ -18233,10 +18242,6 @@ div[id^='comment_reply_indicator_'] {
     box-shadow: none;
 }
 
-#topmenu-container.active .header_menu li.selected .tab_menu_dropdown {
-    margin-left: -10px;
-}
-
 li#header_usermenu_link > div {
     color: inherit;
 }
@@ -18245,6 +18250,10 @@ li#header_usermenu_link > div {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin: 8px 14px;
     padding: 8px 0 0 0;
+    text-transform: none;
+    font-weight: bold;
+    color: #333;
+    font-size: 1.05em;
 }
 
 #topmenu-container ul li .tab_menu_dropdown div:first-child {

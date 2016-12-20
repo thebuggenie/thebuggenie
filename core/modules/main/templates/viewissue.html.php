@@ -330,7 +330,7 @@
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
                         <fieldset class="comments" id="viewissue_comments_container">
                             <legend class="viewissue_comments_header">
-                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?>
+                                <span><?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></span>
                                 <div class="dropper_container">
                                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
                                     <ul class="more_actions_dropdown dropdown_box popup_box leftie">

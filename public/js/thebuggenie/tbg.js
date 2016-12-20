@@ -223,7 +223,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     var vhc_layout = vihc.getLayout();
                     var vhc_height = vhc_layout.get('height') + vhc_layout.get('padding-top') + vhc_layout.get('padding-bottom');
                     if (y >= $('viewissue_comment_count').offsetTop) {
-                        if ($('comment_add_button') != undefined) {
+                        if ($('comment_add_button') != undefined && !$('comment_add_button').hasClassName('immobile')) {
                             var button = $('comment_add_button').remove();
                             $('workflow_actions').down('ul').insert(button);
                         }
@@ -238,7 +238,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     $('workflow_actions').removeClassName('fixed');
                     if (! $('votes_additional').visible() && $('votes_additional').hasClassName('visible')) $('votes_additional').show();
                     if (! $('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').show();
-                    if ($('comment_add_button') != undefined) {
+                    if ($('comment_add_button') != undefined && !$('comment_add_button').hasClassName('immobile')) {
                         var button = $('comment_add_button').remove();
                         $('add_comment_button_container').update(button);
                     }

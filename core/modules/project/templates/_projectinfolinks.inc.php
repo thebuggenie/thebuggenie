@@ -57,7 +57,7 @@
     <?php endforeach; ?>
 <?php if ($tbg_user->canEditProjectDetails($selected_project)): ?>
     <?php if ($selected_project->isBuildsEnabled()): ?>
-        <?php echo link_tag(make_url('project_release_center', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected') : array())); ?>
+        <?php echo link_tag(make_url('project_release_center', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected', 'id' => 'project_release_center_main_link') : array('id' => 'project_release_center_main_link'))); ?>
     <?php endif; ?>
     <?php echo link_tag(make_url('project_settings', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Settings'), (($tbg_response->getPage() == 'project_settings') ? array('class' => 'selected', 'id' => 'project_settings_main_link') : array('id' => 'project_settings_main_link'))); ?>
     <?php if (!($submenu) && $tbg_response->getPage() == 'project_settings'): ?>
