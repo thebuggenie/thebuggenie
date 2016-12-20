@@ -95,6 +95,7 @@
             $this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
             $this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
             $this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
+            $this->_addIndex('duplicateof', array(self::DUPLICATE_OF));
         }
 
         public function _migrateData(\b2db\Table $old_table)

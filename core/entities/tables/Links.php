@@ -163,5 +163,10 @@
             $this->addMainMenuLink('http://thebuggenie.wordpress.com/', 'The Bug Genie team blog', 7, $scope_id);
             $this->addMainMenuLink('', "''Stay up to date on the latest development''", 8, $scope_id);
         }
-        
+
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('targettype_targetid_scope', array(self::TARGET_TYPE, self::TARGET_ID, self::SCOPE));
+        }
+
     }

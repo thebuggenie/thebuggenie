@@ -18,7 +18,7 @@
                 });
             }
         </script>
-        <div id="tbg___DEBUGINFO___" style="position: fixed; bottom: 0; left: 0; z-index: 100; display: none; width: 100%;">
+        <div id="tbg___DEBUGINFO___" style="position: fixed; bottom: 0; left: 0; z-index: 1100; display: none; width: 100%;">
         </div>
         <?php echo image_tag('spinning_16.gif', array('style' => 'position: fixed; bottom: 5px; right: 23px;', 'id' => 'tbg___DEBUGINFO___indicator')); ?>
     <?php endif; ?>

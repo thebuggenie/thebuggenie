@@ -220,4 +220,9 @@
             }
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('issueid_scope', array(self::ISSUE_ID, self::SCOPE));
+        }
+
     }

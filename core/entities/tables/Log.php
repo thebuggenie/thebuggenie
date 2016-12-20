@@ -327,4 +327,9 @@
             return $retarr;
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('commentid', array(self::COMMENT_ID));
+        }
+
     }

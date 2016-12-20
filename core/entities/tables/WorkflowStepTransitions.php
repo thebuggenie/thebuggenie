@@ -178,5 +178,10 @@
                 $this->doUpdate($crit);
             }
         }
-        
+
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('scope_fromstepid', array(self::SCOPE, self::FROM_STEP_ID));
+        }
+
     }

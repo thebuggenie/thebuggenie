@@ -60,4 +60,9 @@
             return $actions;
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
+        }
+
     }

@@ -120,7 +120,7 @@ class Main extends framework\Action
 
         if ($issue instanceof entities\Issue)
         {
-            if (!array_key_exists('viewissue_list', $_SESSION))
+            if (!array_key_exists('viewissue_list', $_SESSION) || !is_array($_SESSION['viewissue_list']))
             {
                 $_SESSION['viewissue_list'] = array();
             }

@@ -2374,12 +2374,16 @@ class Context
                         $action_pretime = $time[1] + $time[0];
                     }
                     $action_retval = $action->$actionToRunName(self::getRequest());
-                    session_write_close();
+
                     if (self::$_debug_mode)
                     {
                         $time = explode(' ', microtime());
                         $action_posttime = $time[1] + $time[0];
                         self::visitPartial("{$actionClassName}::{$actionToRunName}()", $action_posttime - $action_pretime);
+                    }
+                    else
+                    {
+                        session_write_close();
                     }
                 }
                 if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
@@ -2688,6 +2692,7 @@ class Context
         $tbg_summary['partials'] = self::getVisitedPartials();
         $tbg_summary['log'] = Logging::getEntries();
         $tbg_summary['routing'] = array('name' => self::getRouting()->getCurrentRouteName(), 'module' => self::getRouting()->getCurrentRouteModule(), 'action' => self::getRouting()->getCurrentRouteAction());
+
         if (isset($_SESSION))
         {
             if (!array_key_exists('___DEBUGINFO___', $_SESSION))
@@ -2695,8 +2700,9 @@ class Context
                 $_SESSION['___DEBUGINFO___'] = array();
             }
             $_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
-            while (count($_SESSION['___DEBUGINFO___']) > 25)
+            while (count($_SESSION['___DEBUGINFO___']) > 25) {
                 array_shift($_SESSION['___DEBUGINFO___']);
+            }
         }
     }
 
