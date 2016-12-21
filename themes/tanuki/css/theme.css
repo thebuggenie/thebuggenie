@@ -5906,9 +5906,14 @@ ul.workflow_actions li input.button.button-silver:hover {
 }
 
 #viewissue_changed > form > div > input, #viewissue_changed > form > div > button, #viewissue_saved > div > button {
-    line-height: 21px !important;
-    margin-top: -3px;
-    padding: 1px 8px;
+    background: #FFF;
+    border: 1px solid darkorange;
+    color: darkorange;
+    text-shadow: none;
+    font-size: 1em;
+    padding: 8px 10px;
+    vertical-align: middle;
+    box-shadow: none;
 }
 
 /* issue info boxes */
@@ -5955,12 +5960,8 @@ ul.workflow_actions li input.button.button-silver:hover {
 
 .issue_info .buttons {
     float: right;
+    line-height: 1;
     margin: 0;
-}
-
-.issue_info .buttons .button input, .issue_info .buttons .button button {
-    padding: 0 4px;
-    font-size: 0.9em;
 }
 
 .issue_info a {
@@ -17526,6 +17527,7 @@ li.header div.user_avatar {
 
 #issue_info_container #viewissue_changed {
     color: #6E6E6E;
+    line-height: 2.7em;
 }
 
 #issue_info_container #blocking_div {
