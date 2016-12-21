@@ -139,7 +139,7 @@ class Upgrade
         }
     }
 
-    protected function _upgradeFrom4dot1dot10()
+    protected function _upgradeFrom4dot1dot11()
     {
         set_time_limit(0);
 
@@ -155,7 +155,7 @@ class Upgrade
         \thebuggenie\core\entities\tables\ListTypes::getTable()->createIndexes();
 
         $this->upgrade_complete = true;
-        $this->current_version = '4.1.11';
+        $this->current_version = '4.1.12';
 
         if (defined('TBG_CLI')) {
             framework\cli\Command::cli_echo("Successfully upgraded to version {$this->current_version}\n");
@@ -198,8 +198,8 @@ class Upgrade
                     $this->_upgradeFrom4dot1dot7();
                 case '4.1.9':
                     $this->_upgradeFrom4dot1dot9();
-                case '4.1.10':
-                    $this->_upgradeFrom4dot1dot10();
+                case '4.1.11':
+                    $this->_upgradeFrom4dot1dot11();
                 default:
                     $this->upgrade_complete = true;
                     break;

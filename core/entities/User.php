@@ -368,6 +368,8 @@
 
         protected $_filter_first_notification = null;
 
+        protected $_permissions_cache = [];
+
         /**
          * Retrieve a user by username
          *
@@ -2132,14 +2134,24 @@
          */
         public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $check_global_role = true)
         {
-            framework\Logging::log('Checking permission '.$permission_type);
+            framework\Logging::log('Checking permission '.$permission_type.', target id'.$target_id);
+
+            if (array_key_exists($permission_type . '_' . $target_id, $this->_permissions_cache)) {
+                framework\Logging::log('Returning cached permission');
+                return $this->_permissions_cache[$permission_type . '_' . $target_id];
+            }
+
             $group_id = (int) $this->getGroupID();
             $has_associated_project = is_bool($check_global_role) ? $check_global_role : (is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true);
             $teams = $this->getTeams();
 
-            if ($target_id != 0 && Project::getB2DBTable()->selectById($target_id) instanceof \thebuggenie\core\entities\Project)
+            if ($target_id != 0 && $permission_type == 'cancreateissues')
             {
-                $teams = array_intersect_key($teams, Project::getB2DBTable()->selectById($target_id)->getAssignedTeams());
+                $project = Project::getB2DBTable()->selectById($target_id);
+                if ($project instanceof \thebuggenie\core\entities\Project)
+                {
+                    $teams = array_intersect_key($teams, $project->getAssignedTeams());
+                }
             }
             $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $teams, $target_id, $module_name, $has_associated_project);
             if ($retval !== null)
@@ -2150,6 +2162,8 @@
             {
                 framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was null');
             }
+
+            $this->_permissions_cache[$permission_type . '_' . $target_id] = $retval;
 
             return $retval;
         }
