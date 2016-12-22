@@ -6661,8 +6661,12 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #title_header .issue_project_icon {
     height: 16px;
     display: inline-block;
-    vertical-align: baseline;
+    vertical-align: middle;
     margin-right: 6px;
+}
+#title_header .project_naem {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 #title_form {
@@ -12092,6 +12096,13 @@ li.filtervalue .hidden {
     width: 16px;
     height: 16px;
     vertical-align: text-top;
+}
+.interactive_menu .fa {
+    display: inline-block;
+    margin: 0 3px 0 0;
+    width: 16px;
+    vertical-align: middle;
+    text-align: center;
 }
 
 .interactive_menu li img.checked {

@@ -6626,9 +6626,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 TBG.Search.liveUpdate();
         };
 
-        TBG.Search.saveColumnVisibility = function () {
+        TBG.Search.saveColumnVisibility = function (force) {
             var fif = $('find_issues_form');
-            if (fif.dataset.isSaved === undefined) {
+            if (fif.dataset.isSaved === undefined || force === true) {
                 var scc = $('search_columns_container');
                 var parameters = fif.serialize();
                 TBG.Main.Helpers.ajax(scc.dataset.url, {
@@ -6648,7 +6648,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 TBG.Search.setFilterValue(element, true);
             }
             TBG.Search.toggleColumn(element.dataset.value);
-            TBG.Search.saveColumnVisibility();
+            TBG.Search.saveColumnVisibility(true);
         };
 
         TBG.Search.initializeFilters = function () {
