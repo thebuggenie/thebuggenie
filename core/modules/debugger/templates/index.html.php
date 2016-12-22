@@ -10,6 +10,7 @@
         .catname { text-shadow: none; text-transform: uppercase; }
         h1 .log-selectors { float: right; font-size: 0.7em; }
         h1 .log-selectors .badge { opacity: 0.2; cursor: pointer; }
+        #debug-frames-container .expander { cursor: pointer; }
         h1 .log-selectors .badge.selected { opacity: 1; }
         #log_timing ul, #log_ajax ul, #log_messages ul, #debug_routes ul, #log_sql ol { list-style: none; padding: 0; margin: 0; }
         #log_timing ul li, #log_ajax ul li, #log_messages ul li { font-size: 1.1em; list-style: none; padding: 2px; margin: 2px 0; clear: both; display: block; }
@@ -17,10 +18,20 @@
         #debug_routes ul li.selected { background-color: rgba(160, 230, 160, 0.2); }
         #debug_routes ul li.selected:hover { background-color: rgba(160, 230, 160, 0.4); }
         #log_sql li .sql { font-family: monospace; font-size: 1em; display: block; margin: 5px 0; padding: 5px; border: 1px dotted rgba(100, 100, 100, 0.1); background-color: rgba(200, 200, 200, 0.2); color: #888; text-shadow: none; }
-        #debug-frames-container .partial, #debug-frames-container .logmessage, #debug-frames-container .badge.url, #debug-frames-container badge.method { display: inline-block; font-weight: normal; font-size: 1.1em; }
+        #debug-frames-container .partial, #debug-frames-container .logmessage, #debug-frames-container .badge.url, #debug-frames-container .badge.method, #debug-frames-container .expander { display: inline-block; font-weight: normal; font-size: 1.1em; vertical-align: middle; }
+        #debug-frames-container .partial.code { font-family: 'Droid Sans Mono', monospace; background: rgba(100, 100, 100, 0.1); border: 1px solid rgba(100, 100, 100, 0.2); padding: 1px 3px; text-shadow: none; vertical-align: middle; }
+        #debug-frames-container .partial { display: inline-block; vertical-align: middle; }
+        #debug-frames-container .file-icon { font-size: 1.2em; margin-right: 6px; margin-left: 6px; vertical-align: middle; color: rgba(100, 100, 100, 0.6); }
         #debug-frames-container .badge.url { text-align: left; }
-        #debug-frames-container .partial.hidden { display: none; }
-        #debug-frames-container li:hover > .partial.hidden { display: initial; }
+        #debug-frames-container .partial.hidden, #debug-frames-container .expander .collapse, #debug-frames-container li.expanded .expander .expand { display: none; }
+        #debug-frames-container li:hover > .partial.hidden, #debug-frames-container li.expanded .expander .collapse { display: initial; }
+        #debug-frames-container ul.backtrace { display: none; list-style: none; padding: none; margin: none; }
+        #debug-frames-container ul.backtrace li { padding: 2px 0; }
+        #debug-frames-container ul.backtrace li.b2db-hidden { display: none; }
+        #debug-frames-container ul.backtrace li.b2db-hidden-toggler { cursor: pointer; }
+        #debug-frames-container ul.backtrace.b2db-hidden-visible li.b2db-hidden-toggler { display: none; }
+        #debug-frames-container ul.backtrace.b2db-hidden-visible li.b2db-hidden { display: block; }
+        #debug-frames-container li.expanded ul.backtrace { display: block; margin-top: 15px; }
         #debug-frames-container .badge { display: inline-block; font-weight: normal; border-radius: 3px; padding: 3px 5px; text-align: center; min-width: 30px; margin-right: 5px; text-shadow: none; }
         #debug-frames-container .badge.timing { background-color: rgba(200, 225, 200, 0.5); min-width: 55px; }
         #debug-frames-container .badge.csrf { background-color: rgba(200, 225, 200, 0.5); opacity: 0.2; }
@@ -94,5 +105,5 @@
         <?php include_component('debugger/log', array('log' => $tbg_summary['log'])); ?>
     </ul>
 <?php else: ?>
-    No debug data
+No debug data
 <?php endif; ?>

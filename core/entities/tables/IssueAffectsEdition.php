@@ -95,16 +95,21 @@
         public function preloadValuesByIssueIDs($issue_ids)
         {
             $this->_preloaded_values = array();
+            $edition_ids = [];
             $res = $this->getByIssueIDs($issue_ids);
             if ($res)
             {
                 while ($row = $res->getNextRow())
                 {
+                    $edition_id = $row->get(self::EDITION);
                     $issue_id = $row->get(self::ISSUE);
                     if (!array_key_exists($issue_id, $this->_preloaded_values)) $this->_preloaded_values[$issue_id] = array();
                     $this->_preloaded_values[$issue_id][] = $row;
+                    $edition_ids[$edition_id] = $edition_id;
                 }
             }
+
+            return $edition_ids;
         }
 
         public function clearPreloadedValues()

@@ -1268,6 +1268,7 @@
                         $this->removeFriend($friend);
                     }
                 }
+
                 $this->_friends = $friends;
             }
         }
@@ -1304,26 +1305,8 @@
         public function getFriends()
         {
             $this->_setupFriends();
-            $friends = $this->_friends;
 
-            if (framework\Context::isProjectContext())
-            {
-                $project_assigned_users = framework\Context::getCurrentProject()->getAssignedUsers();
-                $project_assigned_teams = framework\Context::getCurrentProject()->getAssignedTeams();
-                $project_assigned_teams_members = array();
-
-                foreach ($project_assigned_teams as $team)
-                {
-                    $project_assigned_teams_members = array_merge($project_assigned_teams_members, $team->getMembers());
-                }
-
-                foreach ($friends as $friend_id => $friend)
-                {
-                    if (! array_key_exists($friend_id, $project_assigned_users) && ! array_key_exists($friend_id, $project_assigned_teams_members)) unset($friends[$friend_id]);
-                }
-            }
-
-            return $friends;
+            return $this->_friends;
         }
 
         /**

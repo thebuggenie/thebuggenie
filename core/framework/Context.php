@@ -452,6 +452,8 @@ class Context
     {
         try
         {
+            self::$debug_id = uniqid();
+
             // The time the script was loaded
             $starttime = explode(' ', microtime());
             define('NOW', (integer) $starttime[1]);
@@ -487,8 +489,6 @@ class Context
             }
 
             self::loadConfiguration();
-
-            self::$debug_id = uniqid();
 
             Logging::log('Initializing Caspar framework');
             Logging::log('PHP_SAPI says "' . PHP_SAPI . '"');
@@ -2383,7 +2383,7 @@ class Context
                     }
                     else
                     {
-                        session_write_close();
+                        //session_write_close();
                     }
                 }
                 if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
@@ -2622,8 +2622,10 @@ class Context
             }
 
             if (self::performAction($actionObject, $moduleName, $moduleMethod)) {
-                if (self::isDebugMode())
+                if (self::isDebugMode()) {
                     self::generateDebugInfo();
+                }
+
                 if (\b2db\Core::isInitialized())
                 {
                     \b2db\Core::closeDBLink();
@@ -2649,8 +2651,10 @@ class Context
 
         } catch (\thebuggenie\core\framework\exceptions\CSRFFailureException $e) {
             \b2db\Core::closeDBLink();
-            if (self::isDebugMode())
+            if (self::isDebugMode()) {
                 self::generateDebugInfo();
+            }
+
             self::getResponse()->setHttpStatus(301);
             $message = $e->getMessage();
 
@@ -2699,7 +2703,7 @@ class Context
             {
                 $_SESSION['___DEBUGINFO___'] = array();
             }
-            $_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
+            $_SESSION['___DEBUGINFO___'][self::getDebugID()] = $tbg_summary;
             while (count($_SESSION['___DEBUGINFO___']) > 25) {
                 array_shift($_SESSION['___DEBUGINFO___']);
             }

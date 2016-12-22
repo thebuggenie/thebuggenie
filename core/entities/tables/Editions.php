@@ -47,7 +47,17 @@
         const PLANNED_RELEASED = 'editions.isplannedreleased';
         const RELEASE_DATE = 'editions.release_date';
         const LOCKED = 'editions.locked';
-        
+
+        public function preloadEditions($edition_ids)
+        {
+            if (!count($edition_ids))
+                return;
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::ID, $edition_ids, Criteria::DB_IN);
+            $this->select($crit);
+        }
+
         public function getByProjectID($project_id)
         {
             $crit = $this->getCriteria();

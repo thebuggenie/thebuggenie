@@ -78,6 +78,16 @@
             }
         }
 
+        public function preloadBuilds($build_ids)
+        {
+            if (!count($build_ids))
+                return;
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::ID, $build_ids, Criteria::DB_IN);
+            $this->select($crit);
+        }
+
         public function getByProjectID($project_id)
         {
             $crit = $this->getCriteria();

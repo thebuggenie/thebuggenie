@@ -108,6 +108,11 @@
         protected $_system_comment = false;
 
         /**
+         * @Column(type="boolean")
+         */
+        protected $_has_associated_changes = false;
+
+        /**
          * @Column(type="integer", length=10)
          */
         protected $_comment_number = 0;
@@ -774,15 +779,17 @@
 
         public function hasAssociatedChanges()
         {
-            if (is_array($this->_log_items))
-            {
-                $this->_log_item_count = count($this->_log_items);
-            }
-            elseif ($this->_log_item_count === null)
-            {
-                $this->_log_item_count = $this->_b2dbLazycount('_log_items');
-            }
-            return $this->_log_item_count;
+            return $this->_has_associated_changes;
+        }
+
+        public function setHasAssociatedChanges($value = true)
+        {
+            $this->_has_associated_changes = $value;
+        }
+
+        public function getAssociatedChanges()
+        {
+            return $this->getLogItems();
         }
 
         public function getLogItems()

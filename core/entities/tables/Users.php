@@ -53,6 +53,8 @@
         const GROUP_ID = 'users.group_id';
         const OPENID_LOCKED = 'users.openid_locked';
 
+        protected $_username_lookup_cache = [];
+
         public function getAll()
         {
             $users = $this->selectAll();
@@ -89,11 +91,16 @@
          */
         public function getByUsername($username)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(self::DELETED, false);
+            if (!array_key_exists($username, $this->_username_lookup_cache)) {
+                $crit = $this->getCriteria();
+                $crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
+                $crit->addWhere(self::DELETED, false);
 
-            return $this->selectOne($crit);
+                $user = $this->selectOne($crit);
+                $this->_username_lookup_cache[$username] = $user;
+            }
+
+            return $this->_username_lookup_cache[$username];
         }
 
         public function getByRealname($realname)

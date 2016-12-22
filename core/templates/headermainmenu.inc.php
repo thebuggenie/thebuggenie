@@ -19,7 +19,7 @@
                 </div>
             </li>
         <?php endif; ?>
-        <?php if (($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(\thebuggenie\core\entities\tables\Teams::getTable()->getAll())): ?>
+        <?php if (($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(\thebuggenie\core\entities\Team::getAll())): ?>
             <li class="with-dropdown <?php if ($tbg_response->getPage() == 'team'): ?>selected<?php endif; ?>">
                 <div class="menuitem_container">
                     <?php echo link_tag('javascript:void(0)', fa_image_tag('users') . __('Teams'), array('class' => 'not_clickable')); ?>

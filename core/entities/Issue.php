@@ -749,9 +749,12 @@
                     framework\Context::getCurrentProject()->preloadValues();
                 }
                 tables\IssueCustomFields::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsBuild::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsEdition::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsComponent::getTable()->preloadValuesByIssueIDs($ids);
+                $build_ids = tables\IssueAffectsBuild::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Builds::getTable()->preloadBuilds($build_ids);
+                $edition_ids = tables\IssueAffectsEdition::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Editions::getTable()->preloadEditions($edition_ids);
+                $component_ids = tables\IssueAffectsComponent::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Components::getTable()->preloadComponents($component_ids);
                 tables\Comments::getTable()->preloadIssueCommentCounts($ids);
                 tables\IssueFiles::getTable()->preloadIssueFileCounts($ids);
                 $user_ids = array();
@@ -5641,6 +5644,8 @@
                         $item->setComment($comment);
                         $item->save();
                     }
+                    $comment->setHasAssociatedChanges(true);
+                    $comment->save();
                 }
             }
             framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
