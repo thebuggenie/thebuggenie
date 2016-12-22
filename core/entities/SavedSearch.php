@@ -690,7 +690,7 @@
             {
                 if (!strlen($this->_columns))
                 {
-                    if ($columns = \thebuggenie\core\framework\Settings::get('search_scs_'.$this->getTemplateName()))
+                    if ($columns = \thebuggenie\core\framework\Settings::get('search_scs_'.$this->getTemplateName(), 'core', null, framework\Context::getUser()->getID()))
                         $this->_columns = explode(',', $columns);
                     else
                         $this->_columns = self::getDefaultVisibleColumns();
