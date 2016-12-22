@@ -11726,6 +11726,16 @@ div.quickaddtask .close_micro_popup_link {
     text-align: left;
 }
 
+.interactive_plus_button .fa, .filter_remove_button .fa {
+    vertical-align: middle;
+    font-size: 1.1em;
+}
+.filter_remove_button .fa {
+    color: #EB0000;
+    width: 16px;
+    text-align: center;
+}
+
 .interactive_plus_container {
     display: inline-block;
     margin: 0;

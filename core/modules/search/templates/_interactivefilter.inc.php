@@ -113,7 +113,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo image_tag('icon-mono-remove.png'); ?></div>
+                    <div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo fa_image_tag('times'); ?></div>
                 </div>
                 <?php
                 break;
@@ -141,7 +141,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo image_tag('icon-mono-remove.png'); ?></div>
+                    <div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo fa_image_tag('times'); ?></div>
                 </div>
                 <?php
                 break;
