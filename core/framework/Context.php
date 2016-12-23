@@ -34,6 +34,7 @@ class Context
     protected static $_debug_mode = true;
     protected static $debug_id = null;
     protected static $_configuration = null;
+    protected static $_session_initialization_time = null;
     protected static $_partials_visited = array();
 
     /**
@@ -395,6 +396,11 @@ class Context
         return round((($endtime[1] + $endtime[0]) - self::$_loadstart), $precision);
     }
 
+    public static function getSessionLoadTime()
+    {
+        return self::$_session_initialization_time;
+    }
+
     public static function checkInstallMode()
     {
         if (!is_readable(THEBUGGENIE_PATH . 'installed'))
@@ -438,8 +444,16 @@ class Context
     public static function initializeSession()
     {
         Logging::log('Initializing session');
+
+        $starttime = explode(' ', microtime());
+        $before = $starttime[1] + $starttime[0];
         session_name(THEBUGGENIE_SESSION_NAME);
         session_start();
+
+        $endtime = explode(' ', microtime());
+        $after = $endtime[1] + $endtime[0];
+        self::$_session_initialization_time = round(($after - $before), 5);
+
         Logging::log('done (initializing session)');
     }
 
@@ -2678,6 +2692,7 @@ class Context
     {
         $tbg_summary = array();
         $load_time = self::getLoadtime();
+        $session_time = self::$_session_initialization_time;
         if (\b2db\Core::isInitialized())
         {
             $tbg_summary['db']['queries'] = \b2db\Core::getSQLHits();
@@ -2687,6 +2702,7 @@ class Context
             $tbg_summary['db']['objectcount'] = \b2db\Core::getObjectPopulationCount();
         }
         $tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+        $tbg_summary['session_initialization_time'] = ($session_time >= 1) ? round($session_time, 2) . 's' : round($session_time * 1000, 1) . 'ms';
         $tbg_summary['scope'] = array();
         $scope = self::getScope();
         $tbg_summary['scope']['id'] = $scope instanceof Scope ? $scope->getID() : 'unknown';

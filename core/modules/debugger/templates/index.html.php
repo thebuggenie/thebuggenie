@@ -13,8 +13,8 @@
         #debug-frames-container .expander { cursor: pointer; }
         h1 .log-selectors .badge.selected { opacity: 1; }
         #log_timing ul, #log_ajax ul, #log_messages ul, #debug_routes ul, #log_sql ol { list-style: none; padding: 0; margin: 0; }
-        #log_timing ul li, #log_ajax ul li, #log_messages ul li { font-size: 1.1em; list-style: none; padding: 2px; margin: 2px 0; clear: both; display: block; }
-        #log_timing ul li:hover, #log_ajax ul li:hover, #log_messages ul li:hover, #debug_routes ul li:hover { background-color: rgba(230, 230, 230, 0.1); }
+        #log_timing ul li, #log_ajax ul li, #log_messages ul li { font-size: 1.1em; list-style: none; padding: 4px; margin: 1px 0; clear: both; display: block; border: 1px solid transparent; }
+        #log_timing ul li:hover, #log_ajax ul li:hover, #log_messages ul li:hover, #debug_routes ul li:hover { background-color: rgba(230, 230, 230, 0.1); border-color: rgba(100, 100, 100, 0.1); }
         #debug_routes ul li.selected { background-color: rgba(160, 230, 160, 0.2); }
         #debug_routes ul li.selected:hover { background-color: rgba(160, 230, 160, 0.4); }
         #log_sql li .sql { font-family: monospace; font-size: 1em; display: block; margin: 5px 0; padding: 5px; border: 1px dotted rgba(100, 100, 100, 0.1); background-color: rgba(200, 200, 200, 0.2); color: #888; text-shadow: none; }
@@ -33,7 +33,10 @@
         #debug-frames-container ul.backtrace.b2db-hidden-visible li.b2db-hidden { display: block; }
         #debug-frames-container li.expanded ul.backtrace { display: block; margin-top: 15px; }
         #debug-frames-container .badge { display: inline-block; font-weight: normal; border-radius: 3px; padding: 3px 5px; text-align: center; min-width: 30px; margin-right: 5px; text-shadow: none; }
-        #debug-frames-container .badge.timing { background-color: rgba(200, 225, 200, 0.5); min-width: 55px; }
+        #debug-frames-container .badge .fa, #debug-bar .fa { display: inline-block; width: 16px; text-align: center; vertical-align: middle; margin-right: 3px; }
+        #debug-frames-container .badge.timing { background-color: rgba(200, 225, 200, 0.5); min-width: 85px; font-size: 1.05em; text-align: left; }
+        #debug-frames-container .badge.timing.session { background-color: rgba(225, 225, 200, 0.5); }
+        #debug-frames-container .badge.timing.calculated { background-color: rgba(200, 225, 200, 0.3); }
         #debug-frames-container .badge.csrf { background-color: rgba(200, 225, 200, 0.5); opacity: 0.2; }
         #debug-frames-container .badge.csrf.enabled { opacity: 1; }
         #debug-frames-container .badge.timestamp { background-color: rgba(255, 255, 255, 1); min-width: 90px; }
@@ -47,7 +50,8 @@
         #debug-bar > li { display: block; float: left; padding: 11px 20px; border-right: 1px solid rgba(100, 100, 100, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.8); vertical-align: middle; }
         #debug-bar > li:first-child { border-left: none; }
         #debug-bar.enabled > li.selected { background-color: #FFF; box-shadow: 0 -4px 4px rgba(100, 100, 100, 0.3); }
-        #debug-bar > li img { display: inline; margin-right: 5px; float: left; vertical-align: middle; }
+        #debug-bar > li .fa { display: inline-block; margin-right: 5px; vertical-align: middle; }
+        #debug-bar > li > span { display: inline-block; vertical-align: middle; }
         #debug-bar.enabled + #debug-frames-container { display: block; }
         #debug-bar .minimizer { display: none; }
         #debug-bar.enabled .minimizer { display: inline-block; cursor: pointer; float:right; }
@@ -58,39 +62,48 @@
     </style>
     <ul class="" id="debug-bar" onclick="$(this).addClassName('enabled');">
         <li onclick="tbg_debug_show_menu_tab('debug_routes', $(this));">
-            <?php echo image_tag('debug_route.png'); ?>
-            [<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
+            <?php echo fa_image_tag('desktop'); ?>
+            <span>
+                [<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
+            </span>
         </li>
         <li onclick="tbg_debug_show_menu_tab('log_timing', $(this));" title="Click to toggle timing overview">
-            <?php echo image_tag('debug_time.png'); ?>
-            <?php echo $tbg_summary['load_time']; ?> /
-            <?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
+            <?php echo fa_image_tag('tachometer'); ?>
+            <span>
+                <?php echo $tbg_summary['load_time']; ?> <span title="Time spent by php loading session data">(<?= $tbg_summary['session_initialization_time']; ?>)</span> /
+                <?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
+            </span>
         </li>
         <li onclick="tbg_debug_show_menu_tab('log_ajax', $(this));" title="Click to toggle ajax calls list">
-            <?php echo image_tag('debug_ajax.png'); ?>
+            <?php echo fa_image_tag('globe'); ?>
             <span id="debug_ajax_count">1</span>
         </li>
         <li onclick="tbg_debug_show_menu_tab('scope_settings', $(this));"  title="Generated hostname: <?php echo $tbg_summary['scope']['hostnames']; ?>">
-            <?php echo image_tag('debug_scope.png'); ?>
-            <b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?>
+            <?php echo fa_image_tag('clone'); ?>
+            <span><b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?></span>
         </li>
         <?php if (array_key_exists('db', $tbg_summary)): ?>
             <li onclick="tbg_debug_show_menu_tab('log_sql', $(this));" title="Database queries">
-                <?php echo image_tag('debug_database.png'); ?>
-                <b><?php echo count($tbg_summary['db']['queries']); ?></b> (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
+                <?php echo fa_image_tag('database'); ?>
+                <span>
+                    <b><?php echo count($tbg_summary['db']['queries']); ?></b> (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
+                </span>
             </li>
             <li onclick="tbg_debug_show_menu_tab('log_objectpopulation', $(this));" title="Database object population">
-                <?php echo image_tag('debug_population.png'); ?>
-                <b><?php echo $tbg_summary['db']['objectcount']; ?></b> (<?php echo ($tbg_summary['db']['objecttiming'] > 1) ? round($tbg_summary['db']['objecttiming'], 2) . 's' : round($tbg_summary['db']['objecttiming'] * 1000, 1) . 'ms'; ?>)
+                <?php echo fa_image_tag('cubes'); ?>
+                <span>
+                    <b><?php echo $tbg_summary['db']['objectcount']; ?></b> (<?php echo ($tbg_summary['db']['objecttiming'] > 1) ? round($tbg_summary['db']['objecttiming'], 2) . 's' : round($tbg_summary['db']['objecttiming'] * 1000, 1) . 'ms'; ?>)
+                </span>
             </li>
         <?php else: ?>
             <li title="Database queries">
+                <?php echo fa_image_tag('database', ['class' => 'faded_out']); ?>
                 <span class="faded_out">No database queries</span>
             </li>
         <?php endif; ?>
         <li onclick="tbg_debug_show_menu_tab('log_messages', $(this));" style="cursor: pointer;">
-            <?php echo image_tag('debug_log.png'); ?>
-            Log
+            <?php echo fa_image_tag('file-text-o'); ?>
+            <span>Log</span>
         </li>
         <li onclick="setTimeout(function() { $('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="minimizer">
             <?php echo image_tag('tabmenu_dropdown.png'); ?>

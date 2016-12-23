@@ -196,10 +196,14 @@
                         TBG.debug = true;
                         TBG.debugUrl = '<?= make_url('debugger', array('debug_id' => '___debugid___')); ?>';
                         <?php
+                            $session_time = \thebuggenie\core\framework\Context::getSessionLoadTime();
+                            $session_time = ($session_time >= 1) ? round($session_time, 2) . 's' : round($session_time * 1000, 1) . 'ms';
                             $load_time = \thebuggenie\core\framework\Context::getLoadTime();
+                            $calculated_load_time = $load_time - \thebuggenie\core\framework\Context::getSessionLoadTime();
                             $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+                            $calculated_load_time = ($calculated_load_time >= 1) ? round($calculated_load_time, 2) . 's' : round($calculated_load_time * 1000, 1) . 'ms';
                         ?>
-                        TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?= \thebuggenie\core\framework\Context::getDebugID(); ?>', loadtime: '<?= $load_time; ?>'});
+                        TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?= \thebuggenie\core\framework\Context::getDebugID(); ?>', loadtime: '<?= $load_time; ?>', session_loadtime: '<?= $session_time; ?>', calculated_loadtime: '<?= $calculated_load_time; ?>'});
                         TBG.loadDebugInfo('<?= \thebuggenie\core\framework\Context::getDebugID(); ?>', f_init);
                     <?php else: ?>
                         f_init();

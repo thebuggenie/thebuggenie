@@ -812,9 +812,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('tbg___DEBUGINFO___indicator').hide();
                         var d = new Date(),
                             d_id = response.getHeader('x-tbg-debugid'),
-                            d_time = response.getHeader('x-tbg-loadtime');
+                            d_time = response.getHeader('x-tbg-loadtime'),
+                            d_session_time = response.getHeader('x-tbg-sessiontime'),
+                            d_calculated_time = response.getHeader('x-tbg-calculatedtime');
 
-                        TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id, loadtime: d_time});
+                        TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id, loadtime: d_time, session_loadtime: d_session_time, calculated_loadtime: d_calculated_time });
                         TBG.updateDebugInfo();
                     }
                     $(options.loading.indicator).hide();
@@ -839,7 +841,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     return (time < 10) ? '0' + time : time;
                 };
                 TBG.Core.AjaxCalls.each(function (info) {
-                    var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing">' + info.loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
+                    var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing"><i class="fa fa-clock-o"></i>' + info.loadtime + '</span><span class="badge timing session" title="Time spent by php loading session data"><i class="fa fa-hdd-o"></i>' + info.session_loadtime + '</span><span class="badge timing calculated" title="Calculated load time, excluding session load time"><i class="fa fa-calculator"></i>' + info.calculated_loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
                     lai.insert(content, 'top');
                 });
             }
