@@ -334,9 +334,7 @@
          * @var array|\thebuggenie\core\entities\NotificationSetting
          * @Relates(class="\thebuggenie\core\entities\NotificationSetting", collection=true, foreign_column="user_id")
          */
-        protected $_notification_settings = null;
-
-        protected $_notification_settings_sorted = null;
+        protected $_notification_settings = [];
 
         /**
          * List of user's notifications
@@ -2994,28 +2992,27 @@
          */
         public function getNotificationSetting($setting, $default_value = null, $module = 'core')
         {
-            if ($this->_notification_settings === null)
+            if (!array_key_exists($module, $this->_notification_settings))
             {
-                $this->_b2dbLazyload('_notification_settings');
-                $this->_notification_settings_sorted = array();
-                foreach ($this->_notification_settings as $ns)
-                {
-                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = [];
-                    $this->_notification_settings_sorted[$ns->getModuleName()][$ns->getName()] = $ns;
-                }
+                $this->_notification_settings[$module] = [];
             }
-            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = [];
 
-            if (!isset($this->_notification_settings_sorted[$module][$setting]))
+            if (!array_key_exists($setting, $this->_notification_settings[$module]))
             {
-                $notificationsetting = new \thebuggenie\core\entities\NotificationSetting();
-                $notificationsetting->setUser($this);
-                $notificationsetting->setName($setting);
-                $notificationsetting->setModuleName($module);
-                $notificationsetting->setValue($default_value);
-                $this->_notification_settings_sorted[$module][$setting] = $notificationsetting;
+                $notificationsetting = NotificationSetting::getB2DBTable()->getByModuleAndNameAndUserId($module, $setting, $this->getID());
+                if (!$notificationsetting instanceof NotificationSetting)
+                {
+                    $notificationsetting = new \thebuggenie\core\entities\NotificationSetting();
+                    $notificationsetting->setUser($this);
+                    $notificationsetting->setName($setting);
+                    $notificationsetting->setModuleName($module);
+                    $notificationsetting->setValue($default_value);
+                }
+
+                $this->_notification_settings[$module][$setting] = $notificationsetting;
             }
-            return $this->_notification_settings_sorted[$module][$setting];
+
+            return $this->_notification_settings[$module][$setting];
         }
 
         /**

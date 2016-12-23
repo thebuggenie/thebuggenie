@@ -28,4 +28,14 @@
 
         const B2DB_TABLE_VERSION = 2;
 
+        public function getByModuleAndNameAndUserId($module, $name, $user_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere('notificationsettings.module', $module);
+            $crit->addWhere('notificationsettings.name', $name);
+            $crit->addWhere('notificationsettings.user_id', $user_id);
+
+            return $this->selectOne($this->getCriteria());
+        }
+
     }
