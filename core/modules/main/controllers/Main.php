@@ -136,7 +136,7 @@ class Main extends framework\Action
 
             $this->getUser()->markNotificationsRead('issue', $issue->getID());
 
-            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false)->save();
+            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false);
 
             \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         }
@@ -1267,32 +1267,32 @@ class Main extends framework\Action
                         if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
                             foreach ($categories as $category_id => $category) {
                                 if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true);
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false);
                                 }
                             }
                         } elseif ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS) {
                             if ($request->hasParameter('core_' . $setting . '_all')) {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                $this->getUser()->setNotificationSetting($setting, true);
                                 foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false);
                                 }
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                                 foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
                                     if ($request->hasParameter('core_' . $setting . '_' . $project_id)) {
-                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true)->save();
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true);
                                     } else {
-                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false);
                                     }
                                 }
                             }
                         } else {
                             if ($request->hasParameter('core_' . $setting)) {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                $this->getUser()->setNotificationSetting($setting, true);
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                             }
                         }
                     }
@@ -1301,20 +1301,20 @@ class Main extends framework\Action
                         if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
                             foreach ($categories as $category_id => $category) {
                                 if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true);
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false);
                                 }
                             }
                         } else {
                             if ($request->hasParameter('core_' . $setting)) {
                                 if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS) {
-                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting));
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting, true);
                                 }
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                             }
                         }
                     }

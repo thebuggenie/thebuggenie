@@ -3031,6 +3031,7 @@
         {
             $setting_object = $this->getNotificationSetting($setting, null, $module);
             $setting_object->setValue($value);
+            $setting_object->save();
             return $setting_object;
         }
 
