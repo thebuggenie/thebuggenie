@@ -45,6 +45,16 @@
             return $this->select($crit);
         }
 
+        public function getByIds($ids)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
+            $crit->indexBy(self::ID);
+
+            return $this->select($crit);
+        }
+
         public function getAllIDsByScopeID($scope_id)
         {
             $crit = $this->getCriteria();

@@ -59,15 +59,23 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    try
+                    $i_id = $row->get(self::ISSUETYPE_ID);
+                    $return_array[$i_id] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING));
+                }
+                if (count($return_array))
+                {
+                    $i_ids = array_keys($return_array);
+                    $issuetypes = \thebuggenie\core\entities\Issuetype::getB2DBTable()->getByIds($i_ids);
+                    foreach ($i_ids as $i_id)
                     {
-                        $i_id = $row->get(self::ISSUETYPE_ID);
-                        $issuetype = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($i_id);
-                        $return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => $issuetype);
-                    }
-                    catch (\Exception $e)
-                    {
-                        $this->deleteByIssuetypeID($i_id);
+                        if (array_key_exists($i_id, $issuetypes))
+                        {
+                            $return_array[$i_id]['issuetype'] = $issuetypes[$i_id];
+                        }
+                        else
+                        {
+                            unset($return_array[$i_id]);
+                        }
                     }
                 }
             }
