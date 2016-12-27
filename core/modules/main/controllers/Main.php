@@ -4679,11 +4679,11 @@ class Main extends framework\Action
         $this->getResponse()->setContentType('image/png');
         $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
         $chain = str_split($_SESSION['activation_number'], 1);
-        $size = getimagesize(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'numbers/0.png');
+        $size = getimagesize(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'images' . DS . 'numbers' . DS . '0.png');
         $captcha = imagecreatetruecolor($size[0] * sizeof($chain), $size[1]);
         foreach ($chain as $n => $number)
         {
-            $pic = imagecreatefrompng(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . "numbers/{$number}.png");
+            $pic = imagecreatefrompng(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'images' . DS . 'numbers' . DS . "{$number}.png");
             imagecopymerge($captcha, $pic, $size[0] * $n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
             imagedestroy($pic);
         }
