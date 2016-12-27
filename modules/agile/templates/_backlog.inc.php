@@ -19,12 +19,12 @@
 </li>
 <?php foreach ($board->getBacklogSearchObject()->getIssues() as $issue): ?>
     <?php if ($issue->getMilestone() instanceof thebuggenie\core\entities\Milestone) continue; ?>
-    <?php if ($issue->isChildIssue()): ?>
+    <?php /*if ($issue->isChildIssue()): ?>
         <?php foreach ($issue->getParentIssues() as $parent): ?>
             <?php if ($parent->getIssueType()->getID() != $board->getEpicIssuetypeID()) continue 2; ?>
         <?php endforeach; ?>
         <?php include_component('agile/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
-    <?php else: ?>
+    <?php else: */ ?>
         <?php include_component('agile/milestoneissue', array('issue' => $issue, 'board' => $board)); ?>
-    <?php endif; ?>
+    <?php //endif; ?>
 <?php endforeach; ?>

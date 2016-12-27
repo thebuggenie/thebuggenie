@@ -757,6 +757,7 @@
                 tables\Components::getTable()->preloadComponents($component_ids);
                 tables\Comments::getTable()->preloadIssueCommentCounts($ids);
                 tables\IssueFiles::getTable()->preloadIssueFileCounts($ids);
+                tables\IssueRelations::getTable()->preloadIssueRelations($ids);
                 $user_ids = array();
                 foreach ($rows as $key => $row)
                 {
@@ -2333,31 +2334,9 @@
         {
             if ($this->_parent_issues === null || $this->_child_issues === null)
             {
-                $this->_parent_issues = array();
-                $this->_child_issues = array();
-
-                if ($res = tables\IssueRelations::getTable()->getRelatedIssues($this->getID()))
-                {
-                    while ($row = $res->getNextRow())
-                    {
-                        try
-                        {
-                            if ($row->get(tables\IssueRelations::PARENT_ID) == $this->getID())
-                            {
-                                $issue = new Issue($row->get(tables\IssueRelations::CHILD_ID));
-                                $this->_child_issues[$row->get(tables\IssueRelations::ID)] = $issue;
-                            }
-                            else
-                            {
-                                $issue = new Issue($row->get(tables\IssueRelations::PARENT_ID));
-                                $this->_parent_issues[$row->get(tables\IssueRelations::ID)] = $issue;
-                            }
-                        }
-                        catch (\Exception $e)
-                        {
-                        }
-                    }
-                }
+                $related_issues = tables\IssueRelations::getTable()->getRelatedIssues($this->getID());
+                $this->_parent_issues = $related_issues['parents'];
+                $this->_child_issues = $related_issues['children'];
             }
         }
 
