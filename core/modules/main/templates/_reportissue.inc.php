@@ -639,6 +639,24 @@
                                             </select>
                                             <?php
                                             break;
+                                        case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE: ?>
+                                            <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Team) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php foreach (\thebuggenie\core\entities\Team::getAll() as $option): ?>
+                                                    <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE: ?>
+                                            <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+                                                <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Client) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+                                                <?php foreach (\thebuggenie\core\entities\Client::getAll() as $option): ?>
+                                                    <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php
+                                            break;
                                         case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE: ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
                                                 <option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof \thebuggenie\core\entities\Component) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
@@ -951,6 +969,24 @@
                                             ?>
                                             <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
                                                 <?php foreach (\thebuggenie\core\entities\Status::getAll() as $option): ?>
+                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
+                                            ?>
+                                            <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+                                                <?php foreach (\thebuggenie\core\entities\Team::getAll() as $option): ?>
+                                                <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <?php
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
+                                            ?>
+                                            <select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+                                                <?php foreach (\thebuggenie\core\entities\Client::getAll() as $option): ?>
                                                 <option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
