@@ -21,7 +21,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method Users getTable()
+     * @static @method Users getTable()
      *
      * @Table(name="users")
      * @Entity(class="\thebuggenie\core\entities\User")

@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method Modules getTable() Retrieves an instance of this table
+     * @static @method Modules getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Module selectById(integer $id) Retrieves a module
      *
      * @Table(name="modules")

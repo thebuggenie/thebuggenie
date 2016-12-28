@@ -420,12 +420,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mrclay/minify.git",
-                "reference": "1936c946e84bddf17d3f038c4ac8d00accb1f1bf"
+                "reference": "d1786045b2e86c1b3406c08abc8ca8a3e8d84236"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mrclay/minify/zipball/1936c946e84bddf17d3f038c4ac8d00accb1f1bf",
-                "reference": "1936c946e84bddf17d3f038c4ac8d00accb1f1bf",
+                "url": "https://api.github.com/repos/mrclay/minify/zipball/d1786045b2e86c1b3406c08abc8ca8a3e8d84236",
+                "reference": "d1786045b2e86c1b3406c08abc8ca8a3e8d84236",
                 "shasum": ""
             },
             "require": {
@@ -474,7 +474,7 @@
             ],
             "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
             "homepage": "https://github.com/mrclay/minify",
-            "time": "2016-12-08 14:13:19"
+            "time": "2016-12-22 15:49:05"
         },
         {
             "name": "mrclay/props-dic",
@@ -1618,7 +1618,6 @@
                 "testing",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2014-05-14 17:42:22"
         },
         {
