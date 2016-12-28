@@ -150,7 +150,6 @@
         public static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
         {
             $comments = tables\Comments::getTable()->getComments($target_id, $target_type, $sort_order);
-            self::$_comment_count[$target_type][$target_id] = count($comments);
 
             return $comments;
         }
