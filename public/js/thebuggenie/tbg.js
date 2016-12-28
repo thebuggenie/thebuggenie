@@ -1673,14 +1673,44 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Main.setToggleState = function (url, state) {
             url += '/' + (state ? '1' : 0);
             TBG.Main.Helpers.ajax(url, {});
-        }
+        };
 
         TBG.Main.Comment.showPost = function () {
             $$('.comment_editor').each(Element.hide);
             $('comment_add_button').hide();
             $('comment_add').show();
             $('comment_bodybox').focus();
-        }
+        };
+
+        TBG.Main.Comment.toggleOrder = function (target_type, target_id) {
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'post',
+                loading: {
+                    indicator: 'comments_loading_indicator'
+                },
+                params: '&say=togglecommentsorder',
+                success: {
+                    callback: function () {
+                        TBG.Main.Comment.reloadAll(target_type, target_id);
+                    }
+                }
+            });
+        };
+
+        TBG.Main.Comment.reloadAll = function (target_type, target_id) {
+            TBG.Main.Helpers.ajax($('main_container').dataset.url, {
+                url_method: 'get',
+                loading: {
+                    indicator: 'comments_loading_indicator'
+                },
+                params: '&say=loadcomments&target_type='+target_type+'&target_id='+target_id,
+                success: {
+                    callback: function (json) {
+                        $('comments_box').update(json.comments);
+                    }
+                }
+            });
+        };
 
         TBG.Main.Comment.remove = function (url, comment_id, commentcount_span) {
             TBG.Main.Helpers.ajax(url, {
@@ -3696,7 +3726,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 }
             });
-        }
+        };
 
         TBG.Project.Build.add = function (url, edition_id) {
             TBG.Main.Helpers.ajax(url, {
@@ -3708,19 +3738,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     update: {element: 'builds_' + edition_id, insertion: true, from: 'html'}
                 }
             });
-        }
+        };
 
         TBG.Project.saveOther = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'project_other',
                 loading: {indicator: 'settings_save_indicator'}
             });
-        }
+        };
 
         TBG.Project.Edition.edit = function (url, edition_id)
         {
             TBG.Main.Helpers.Backdrop.show(url);
-        }
+        };
 
         TBG.Project.Edition.remove = function (url, eid) {
             TBG.Main.Helpers.ajax(url, {
@@ -3737,7 +3767,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: 'del_edition_' + eid
                 }
             });
-        }
+        };
 
         TBG.Project.Edition.add = function (url) {
             TBG.Main.Helpers.ajax(url, {
@@ -3749,7 +3779,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     update: {element: 'edition_table', insertion: true, from: 'html'}
                 }
             });
-        }
+        };
 
         TBG.Project.Edition.submitSettings = function (url, edition_id) {
             TBG.Main.Helpers.ajax(url, {
@@ -3759,7 +3789,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     update: {element: 'edition_' + edition_id + '_name', from: 'edition_name'}
                 }
             });
-        }
+        };
 
         TBG.Project.Edition.Component.add = function (url, cid) {
             TBG.Main.Helpers.ajax(url, {

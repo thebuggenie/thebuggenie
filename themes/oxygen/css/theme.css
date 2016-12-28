@@ -17286,9 +17286,10 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr {
     padding: 2px 10px !important;
 }
 
-#issue_main > fieldset.comments > legend > div > ul {
+#issue_main > fieldset.comments > legend > div > ul, #article_comments .dropper_container ul {
     left: -15px;
     right: auto;
+    font-size: 0.9em;
 }
 
 #description_form > input,

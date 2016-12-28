@@ -5,7 +5,8 @@ namespace thebuggenie\core\modules\main\controllers;
 use thebuggenie\core\framework,
     thebuggenie\core\entities,
     thebuggenie\core\entities\tables,
-    thebuggenie\modules\agile;
+    thebuggenie\modules\agile,
+    thebuggenie\core\entities\Comment;
 
 /**
  * actions for the main module
@@ -409,6 +410,13 @@ class Main extends framework\Action
                         $this->getUser()->markAllNotificationsRead();
                         $data['all'] = 'read';
                         break;
+                    case 'togglecommentsorder':
+                        $direction = $this->getUser()->getCommentSortOrder();
+                        $new_direction = ($direction == 'asc') ? 'desc' : 'asc';
+
+                        $this->getUser()->setCommentSortOrder($new_direction);
+                        $data['new_direction'] = $new_direction;
+                        break;
                 }
             }
             else
@@ -517,6 +525,31 @@ class Main extends framework\Action
                             }
                         }
                         $data['mentionables'] = array_values($mentionables);
+                        break;
+                    case 'loadcomments':
+                        switch ($request['target_type'])
+                        {
+                            case entities\Comment::TYPE_ISSUE:
+                                $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                                $data['comments'] = $this->getComponentHTML('main/commentlist', [
+                                    'comment_count_div' => 'viewissue_comment_count',
+                                    'mentionable_target_type' => 'issue',
+                                    'target_type' => Comment::TYPE_ISSUE,
+                                    'target_id' => $target->getID(),
+                                    'issue' => $target
+                                ]);
+                                break;
+                            case entities\Comment::TYPE_ARTICLE:
+                                $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
+                                $data['comments'] = $this->getComponentHTML('main/commentlist', [
+                                    'comment_count_div' => 'article_comment_count',
+                                    'mentionable_target_type' => 'article',
+                                    'target_type' => Comment::TYPE_ARTICLE,
+                                    'target_id' => $target->getID(),
+                                    'article' => $target
+                                ]);
+                                break;
+                        }
                         break;
                     default:
                         $data['unread_notifications_count'] = $this->getUser()->getNumberOfUnreadNotifications();

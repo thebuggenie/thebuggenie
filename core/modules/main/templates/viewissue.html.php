@@ -333,10 +333,12 @@
                                 <span><?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></span>
                                 <div class="dropper_container">
                                     <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
-                                    <ul class="more_actions_dropdown dropdown_box popup_box leftie">
-                                        <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
+                                    <ul class="more_actions_dropdown dropdown_box popup_box leftie" id="comment_dropdown_options">
+                                        <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });"><?php echo __('Toggle system-generated comments'); ?></a></li>
+                                        <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
                                     </ul>
                                 </div>
+                                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'comments_loading_indicator')); ?>
                                 <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
                                     <ul class="simple_list button_container" id="add_comment_button_container">
                                         <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>

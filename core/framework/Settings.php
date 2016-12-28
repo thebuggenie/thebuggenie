@@ -110,6 +110,9 @@
         const SETTING_UPLOAD_STORAGE = 'upload_storage';
         const SETTING_UPLOAD_ALLOW_IMAGE_CACHING = 'upload_allow_image_caching';
         const SETTING_UPLOAD_DELIVERY_USE_XSEND = 'upload_delivery_use_xsend';
+
+        const SETTING_USER_COMMENT_ORDER = 'comment_order';
+
         const SETTING_USER_DISPLAYNAME_FORMAT = 'user_displayname_format';
         const SETTING_USER_GROUP = 'defaultgroup';
         const SETTING_USER_TIMEZONE = 'timezone';

@@ -1977,6 +1977,17 @@
             else framework\Settings::deleteSetting(framework\Settings::SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB, 'core', null, $this->getID());
         }
 
+        public function setCommentSortOrder($value)
+        {
+            framework\Settings::saveSetting(framework\Settings::SETTING_USER_COMMENT_ORDER, $value, 'core', null, $this->getID());
+        }
+
+        public function getCommentSortOrder()
+        {
+            $val = framework\Settings::get(framework\Settings::SETTING_USER_COMMENT_ORDER, 'core', framework\Context::getScope(), $this->getID());
+            return ($val !== null) ? $val : 'desc';
+        }
+
         public function getActivationKey()
         {
             return $this->_getOrGenerateActivationKey();
