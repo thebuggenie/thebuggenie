@@ -9,6 +9,16 @@
         <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
             <table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
+                    <td style="padding: 5px;"><label for="hide_wiki_links_no"><?= __('Enable wiki'); ?></label></td>
+                    <td>
+                        <input type="radio" name="hide_wiki_links" value="0" id="hide_wiki_links_no"<?php if ($module->getSetting('hide_wiki_links') != 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_no"><?= __('Yes'); ?></label>&nbsp;
+                        <input type="radio" name="hide_wiki_links" value="1" id="hide_wiki_links_yes"<?php if ($module->getSetting('hide_wiki_links') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_yes"><?= __('No'); ?></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="config_explanation" colspan="2"><?= __('Setting this to "%no" will hide all "Wiki" tabs and links', array('%no' => __('No'))); ?></td>
+                </tr>
+                <tr>
                     <td style="width: 200px; padding: 5px;"><label for="publish_menu_title"><?= __('Menu title'); ?></label></td>
                     <td>
                         <select name="menu_title" id="publish_menu_title" style="width: 250px;"<?= ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL) ? ' disabled' : ''; ?>>
@@ -32,16 +42,6 @@
                 </tr>
                 <tr>
                     <td class="config_explanation" colspan="2"><?= __('Traditionally, %CamelCasing has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting wiki article if you are unsure how to use this feature.', array('%CamelCasing' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
-                </tr>
-                <tr>
-                    <td style="padding: 5px;"><label for="hide_wiki_links_no"><?= __('Show "Wiki" links'); ?></label></td>
-                    <td>
-                        <input type="radio" name="hide_wiki_links" value="0" id="hide_wiki_links_no"<?php if ($module->getSetting('hide_wiki_links') != 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_no"><?= __('Yes'); ?></label>&nbsp;
-                        <input type="radio" name="hide_wiki_links" value="1" id="hide_wiki_links_yes"<?php if ($module->getSetting('hide_wiki_links') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_yes"><?= __('No'); ?></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="config_explanation" colspan="2"><?= __('Setting this to "%no" will hide all "Wiki" tabs and links', array('%no' => __('No'))); ?></td>
                 </tr>
                 <tr>
                     <td style="padding: 5px;"><label for="require_change_reason_yes"><?= __('Require change reason'); ?></label></td>
