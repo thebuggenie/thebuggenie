@@ -18167,7 +18167,7 @@ li#header_usermenu_link > div {
 
 .tab_menu_dropdown .header, .tab_menu_dropdown .header:hover {
     border-top: 1px dotted #CCC;
-    margin-top: 8px;
+    margin: 15px 5px 2px 5px;
     color: #888;
     font-weight: normal;
     text-transform: uppercase;
