@@ -1,0 +1,33 @@
+# X.509 Certificate options
+#
+# DN options
+
+# The organization of the subject.
+organization = "The Bug Genie Development Environment"
+
+# The common name of the certificate owner.
+cn = "The Bug Genie Development Web Server"
+
+# In how many days, counting from today, this certificate will expire.
+expiration_days = 365
+
+# X.509 v3 extensions
+
+# IP address of web server.
+dns_name = "localhost"
+dns_name = "tbg"
+dns_name = "tbg.local"
+ip_address = "127.0.0.1"
+ip_address = "{{ ansible_default_ipv4.address }}"
+
+# Whether this certificate will be used for a TLS server
+tls_www_server
+
+# Whether this certificate will be used to sign data (needed
+# in TLS DHE ciphersuites).
+signing_key
+
+# Whether this certificate will be used to encrypt data (needed
+# in TLS RSA ciphersuites). Note that it is preferred to use different
+# keys for encryption and signing.
+encryption_key

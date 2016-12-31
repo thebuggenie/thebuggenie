@@ -1,0 +1,10 @@
+b2db:
+    username: tbg
+    password: "tbg"
+    dsn: "mysql:host=localhost;port=3306;dbname=tbg"
+    tableprefix: 'tbg_'
+    cacheclass: 'TBGCache'
+
+core:
+    debug: true
+    log_file: /vagrant/thebuggenie.log

@@ -96,11 +96,20 @@
             }
         }
         
+        /**
+         * Sets path for the log file. If the log file does not exist at
+         * designated path, it will be created.
+         *
+         * If it was not possible to create the log file, an exception will be
+         * thrown.
+         *
+         * @param string $filename Path to log file.
+         */
         public static function setLogFilePath($filename)
         {
             if (!file_exists($filename))
             {
-                throw new \Exception('Invalid log filename');
+                touch($filename);
             }
             self::$_logfile = $filename;
         }
