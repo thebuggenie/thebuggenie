@@ -8029,14 +8029,17 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             if (document.viewport.getWidth() > 900) {
                 if ($('mobile_menu').childElements().size() > 1) {
                     var um = $('user_menu');
-                    if (um) {
-                        $('header_userinfo_details').insert({after: um.remove()});
-                    }
                     $('header_userinfo').insert({
                         before: $('main_menu').remove(),
                     });
                 }
+                if ($('header_avatar')) {
+                    $('header_avatar').stopObserving('click');
+                }
             } else {
+                if ($('header_avatar')) {
+                    $('header_avatar').observe('click', function(e) { $('body').toggleClassName('mobile_rightmenu_visible');e.preventDefault(); });
+                }
                 if ($('mobile_menu').childElements().size() == 1) {
                     var um = $('user_menu');
                     if (um) {
