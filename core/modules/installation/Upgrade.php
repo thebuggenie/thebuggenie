@@ -214,7 +214,9 @@ class Upgrade
                     $this->_upgradeFrom4dot1dot6();
                 case '4.1.7':
                     $this->_upgradeFrom4dot1dot7();
+                case '4.1.8':
                 case '4.1.9':
+                case '4.1.10':
                     $this->_upgradeFrom4dot1dot9();
                 case '4.1.11':
                     $this->_upgradeFrom4dot1dot11();
