@@ -1,0 +1,94 @@
+# Base LDAP directory structure.
+dn: ou=people,dc=tbg,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=tbg,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=services,dc=tbg,dc=local
+objectClass: organizationalUnit
+ou: services
+
+# Services.
+dn: cn=tbg,ou=services,dc=tbg,dc=local
+objectClass: applicationProcess
+objectClass: simpleSecurityObject
+cn: tbg
+userPassword: tbg
+
+# Users.
+dn: uid=administrator,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: administrator
+userPassword: administrator
+givenName: Admin
+sn: Adminsky
+cn: Admin Adminsky
+mail: administrator@tbg.local
+
+dn: uid=user1,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: user1
+userPassword: user1
+givenName: First
+sn: User
+cn: First User
+mail: user1@tbg.local
+
+dn: uid=user2,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: user2
+userPassword: user2
+givenName: Second
+sn: User
+cn: Second User
+mail: user2@tbg.local
+
+dn: uid=user3,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: user3
+userPassword: user3
+givenName: Third
+sn: User
+cn: Third User
+mail: user3@tbg.local
+
+dn: uid=user4,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: user4
+userPassword: user4
+givenName: Fourth
+sn: User
+cn: Fourth User
+mail: user4@tbg.local
+
+dn: uid=user5,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: user5
+userPassword: user5
+givenName: Fifth
+sn: User
+cn: Fifth User
+mail: user5@tbg.local
+
+dn: uid=usernoaccess,ou=people,dc=tbg,dc=local
+objectClass: inetOrgPerson
+uid: usernoaccess
+userPassword: usernoaccess
+givenName: Ignored
+sn: User
+cn: Ignored User
+mail: usernoaccess@tbg.local
+
+# Groups.
+dn: cn=tbg,ou=groups,dc=tbg,dc=local
+objectClass: groupOfUniqueNames
+cn: tbg
+uniqueMember: uid=administrator,ou=people,dc=tbg,dc=local
+uniqueMember: uid=user1,ou=people,dc=tbg,dc=local
+uniqueMember: uid=user2,ou=people,dc=tbg,dc=local
+uniqueMember: uid=user3,ou=people,dc=tbg,dc=local
+uniqueMember: uid=user4,ou=people,dc=tbg,dc=local
+uniqueMember: uid=user5,ou=people,dc=tbg,dc=local

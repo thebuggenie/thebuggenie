@@ -166,15 +166,6 @@
       notify:
         - Restart slapd
 
-    - name: Configure TLS on LDAP server
-      ldap_entry:
-        dn: cn=config
-        state: replace
-        olcTLSCertificateFile: "/etc/ssl/certs/slapd.cert.pem"
-        olcTLSCertificateKeyFile: "/etc/ssl/private/slapd.key.pem"
-      notify:
-        - Restart slapd
-
     - name: Set-up LDAP server to listen on legacy SSL port
       lineinfile:
         dest: /etc/default/slapd
@@ -193,105 +184,29 @@
         group: root
         mode: 0644
 
-    - name: Increase LDAP server verbosity
-      ldap_entry:
-        dn: cn=config
-        state: replace
-        olcLogLevel: 256
-
-    - name: Set-up LDAP directory permissions
-      ldap_permissions:
-        filter: "(olcSuffix=dc=tbg,dc=local)"
-        rules:
-          - >-
-            to *
-            by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
-            by dn="cn=admin,dc=tbg,dc=local" manage
-            by * break
-          - >-
-            to attrs=userPassword,shadowLastChange
-            by self write
-            by anonymous auth
-            by * none
-          - >-
-            to dn.base=""
-            by * read
-          - >-
-            to *
-            by self write
-            by dn="cn=admin,dc=tbg,dc=local" write
-            by users read
-            by * none
-
-    # This quotation mark is just fix for Emacs syntax highlighting :P - "
-
-    - name: Create base LDAP directory structure
-      ldap_entry:
-        dn: "ou={{ item }},dc=tbg,dc=local"
-        objectClass:
-          - organizationalUnit
-        ou: "{{ item }}"
+    - name: Deploy LDIF files configuring and setting-up LDAP server
+      copy:
+        src: "{{ item }}"
+        dest: "/root/{{ item }}"
+        owner: root
+        group: root
+        mode: 0640
       with_items:
-        - people
-        - groups
-        - services
+        - permissions.ldif
+        - config.ldif
+        - structure.ldif
 
-    - name: Create service user
-      ldap_entry:
-        dn: cn=tbg,ou=services,dc=tbg,dc=local
-        objectClass:
-          - applicationProcess
-          - simpleSecurityObject
-        cn: tbg
-        userPassword: tbg
-
-    - name: Create administrator and six more regular users
-      ldap_entry:
-        dn: "uid={{ item.uid }},ou=people,dc=tbg,dc=local"
-        objectClass:
-          - inetOrgPerson
-        uid: "{{ item.uid }}"
-        userPassword: "{{ item.uid }}"
-        givenName: "{{ item.name }}"
-        sn: "{{ item.surname }}"
-        cn: "{{ item.name }} {{ item.surname }}"
-        mail: "{{ item.uid }}@tbg.local"
-        state: present
+    - name: Configure LDAP server
+      command: "ldapmodify -Y EXTERNAL -H ldapi:/// -f '/root/{{ item }}'"
       with_items:
-        - uid: administrator
-          name: Admin
-          surname: Adminsky
-        - uid: user1
-          name: First
-          surname: User
-        - uid: user2
-          name: Second
-          surname: User
-        - uid: user3
-          name: Third
-          surname: User
-        - uid: user4
-          name: Fourth
-          surname: User
-        - uid: user5
-          name: Fifth
-          surname: User
-        - uid: usernoaccess
-          name: Ignored
-          surname: User
+        - config.ldif
+        - permissions.ldif
 
-    - name: "Create group that will be used for checking what users are allowed to use TBG"
-      ldap_entry:
-        dn: "cn=tbg,ou=groups,dc=tbg,dc=local"
-        objectClass: groupOfUniqueNames
-        cn: "tbg"
-        uniqueMember:
-          - uid=administrator,ou=people,dc=tbg,dc=local
-          - uid=user1,ou=people,dc=tbg,dc=local
-          - uid=user2,ou=people,dc=tbg,dc=local
-          - uid=user3,ou=people,dc=tbg,dc=local
-          - uid=user4,ou=people,dc=tbg,dc=local
-          - uid=user5,ou=people,dc=tbg,dc=local
+    - name: Create directory structure
+      shell: "ldapadd -c -Y EXTERNAL -H ldapi:/// -f /root/structure.ldif 2>&1 | grep '^ldap_add: ' | sort -u"
+      register: create_directory_structure
+      changed_when: "create_directory_structure.stdout_lines | length == 0"
+      failed_when: "create_directory_structure.stdout_lines | length != 0 and create_directory_structure.stdout_lines != ['ldap_add: Already exists (68)']"
 
     - name: Enable mod_ssl
       apache2_module:
