@@ -1,6 +1,6 @@
 core/config/b2db.yml
 cache
-files/
+./files/
 .settings/
 thebuggenie/.htaccess
 installed
@@ -24,3 +24,25 @@ modules/*/vendor
 vendor/
 /composer.phar
 .directory
+
+# Ignore local PHP configuration overrides.
+public/.user.ini
+
+# Ignore local log file.
+thebuggenie.log
+
+# Ignore user-specific Vagrant files.
+.vagrant
+
+# Ignore Ansible retry files.
+ansible/*.retry
+
+# Ignore files which constitute local-only artefacts.
+artefacts/
+
+# Ignore Apache logs (from Vagrant development machine)
+apache-access.log
+apache-error.log
+
+# Ignore coverage report
+coverage-report

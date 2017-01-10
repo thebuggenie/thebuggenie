@@ -1,0 +1,23 @@
+# X.509 Certificate options
+#
+# DN options
+
+# The organization of the subject.
+organization = "The Bug Genie Development Environment"
+
+# The common name of the certificate owner.
+cn = "The Bug Genie Development Environment CA"
+
+# In how many days, counting from today, this certificate will expire.
+expiration_days = 1825
+
+# X.509 v3 extensions
+
+# Whether this is a CA certificate or not
+ca
+
+# Whether this key will be used to sign other certificates.
+cert_signing_key
+
+# Whether this key will be used to sign CRLs.
+crl_signing_key
