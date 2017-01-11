@@ -202,6 +202,7 @@
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "page_teamlist_access", 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "page_clientlist_access", 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "canvoteforissues", 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canseetimespent", 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "canlockandeditlockedissues", 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "cancreateandeditissues", 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', "caneditissue", 0, $scope_id);

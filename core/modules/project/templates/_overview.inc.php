@@ -83,6 +83,7 @@
         </table>
     <?php elseif ($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>
         <div class="search_results" style="clear: both;">
+        	<?php $current_spent_time = -1; ?>
             <?php include_component('search/results_normal', array('search_object' => $project->getOpenIssuesSearchForFrontpageSummary(), 'actionable' => false)); ?>
         </div>
     <?php elseif ($project->isMilestonesVisibleInFrontpageSummary() && count($project->getVisibleMilestones())): ?>

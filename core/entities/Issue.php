@@ -4867,7 +4867,7 @@
          */
         public function isSpentTimeVisible()
         {
-            return (bool) ($this->isFieldVisible('spent_time') || $this->hasSpentTime());
+            return (bool) ($this->getProject()->canSeeTimeSpent() && ($this->isFieldVisible('spent_time') || $this->hasSpentTime()));
         }
 
         /**

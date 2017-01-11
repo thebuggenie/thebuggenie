@@ -20,7 +20,7 @@ foreach ($search_object->getIssues() as $issue):
     $estimate = $issue->getEstimatedTime(true, true);
     $spenttime = $issue->getSpentTime(true, true);
     foreach ($current_estimated_time as $key => $value) $current_estimated_time[$key] += $estimate[$key];
-    foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key];
+    foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += ($spenttime[$key]);
     if ($showheader):
 ?>
         <h5>
@@ -148,7 +148,7 @@ foreach ($search_object->getIssues() as $issue):
                         <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)); ?>
                     </td>
                     <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasSpentTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?>
+                        <?php echo (!$issue->hasSpentTime() || !$issue->isSpentTimeVisible()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?>
                     </td>
                     <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
                     <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
