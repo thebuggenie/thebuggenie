@@ -380,19 +380,6 @@ class Main extends framework\Action
                         $this->htaccess_error = true;
                     }
                 }
-                if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini')))
-                {
-                        $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini';
-                }
-                else
-                {
-                    $content = file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/user.ini.template');
-                    file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini', $content);
-                    if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') != $content)
-                    {
-                        $this->htaccess_error = true;
-                    }
-                }
             }
         }
         catch (\Exception $e)

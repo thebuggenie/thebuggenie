@@ -30,7 +30,7 @@
             $this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
             $this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
             $this->addOptionalArgument('enable_all_modules', 'Set to "yes" to install all modules');
-            $this->addOptionalArgument('setup_htaccess', 'Set to "yes" to autoconfigure .htaccess and .user.ini files');
+            $this->addOptionalArgument('setup_htaccess', 'Set to "yes" to autoconfigure .htaccess file');
         }
 
         public function do_execute()
@@ -291,14 +291,14 @@
 
                     if ($this->getProvidedArgument('setup_htaccess') != 'yes')
                     {
-                        $this->cliEcho("Setup can autoconfigure your .htaccess and .user.ini files (located in the public/ subfolder), so you don't have to.\n");
+                        $this->cliEcho("Setup can autoconfigure your .htaccess file (located in the public/ subfolder), so you don't have to.\n");
                         $this->cliEcho('Would you like setup to auto-generate those files for you?');
-                        $this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess and .user.ini files: ");
+                        $this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess file: ");
                         $htaccess_ok = $this->askToDecline();
                     }
                     else
                     {
-                        $this->cliEcho('Autoconfiguring .htaccess and .user.ini', 'yellow', 'bold');
+                        $this->cliEcho('Autoconfiguring .htaccess', 'yellow', 'bold');
                         $this->cliEcho("\n");
                         $htaccess_ok = true;
                     }
@@ -329,34 +329,10 @@
                                 $this->cliEcho("The .htaccess file was successfully set up...\n", 'green', 'bold');
                             }
                         }
-
-                    	if (!is_writable(THEBUGGENIE_PATH . 'public/') || (file_exists(THEBUGGENIE_PATH . 'public/.user.ini') && !is_writable(THEBUGGENIE_PATH . 'public/.user.ini')))
-                        {
-                            $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
-                            $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
-                            $this->cliEcho('Please note: ', 'white', 'bold');
-                            $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");
-                        }
-                        else
-                        {
-                            $content = file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template');
-                            file_put_contents(THEBUGGENIE_PATH . 'public/.user.ini', $content);
-                            if (file_get_contents(THEBUGGENIE_PATH . 'public/.user.ini') != $content)
-                            {
-                                $this->cliEcho("Permission denied when trying to save the [main folder]/public/.user.ini\n", 'red', 'bold');
-                                $this->cliEcho("You will have to set up the .user.ini file yourself. See the README file for more information.\n", 'white', 'bold');
-                                $this->cliEcho('Please note: ', 'white', 'bold');
-                                $this->cliEcho("If you're using PHP-FPM, The Bug Genie might not function properly until the .user.ini file is properly set up\n");
-                            }
-                            else
-                            {
-                                $this->cliEcho("The .user.ini file was successfully set up...\n", 'green', 'bold');
-                            }
-                        }
                     }
                     else
                     {
-                        $this->cliEcho("Skipping .htaccess and .user.ini auto-setup.");
+                        $this->cliEcho("Skipping .htaccess auto-setup.");
                     }
 
                     if ($this->getProvidedArgument('setup_htaccess') != 'yes')
