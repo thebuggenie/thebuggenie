@@ -23,7 +23,7 @@ update_tbg()
     refname=$3
 
     # Not working? uncomment the echos and see what's not arriving properly
-    echo "Attempting to update tbg with oldhash: $oldhash newhash: $newhash refname: $refname"
+    #echo "Attempting to update tbg with oldhash: $oldhash newhash: $newhash refname: $refname"
 
     # Ignore tag pushes
     if [[ "$refname" == "refs/tags/"* ]]; then
@@ -38,7 +38,7 @@ update_tbg()
     # Loop through all commits
     echo "$commitlist" | while read -r commithash
     do
-        echo "Update tbg with commit: $commithash"
+        #echo "Update tbg with commit: $commithash"
 
         # Retrieve commit specific information.
         parrent=`git show --no-patch --format="%P" $commithash`
