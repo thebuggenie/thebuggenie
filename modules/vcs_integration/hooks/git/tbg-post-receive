@@ -45,7 +45,7 @@ update_tbg()
         name=`git show --no-patch --format="%an <%ae>" $commithash`
         log=`git show --no-patch --format="%s %b" $commithash`
         time=`git show --no-patch --format="%ct" $commithash`
-        changedfiles=`git diff-tree --name-status -r $newhash --no-commit-id`
+        changedfiles=`git diff-tree --name-status -r $commithash --no-commit-id`
 
         #echo "updating with name: $name"
         #echo "updating with log: $log"
