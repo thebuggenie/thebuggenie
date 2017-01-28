@@ -125,6 +125,7 @@
 
         protected function _preDelete()
         {
+            tables\Permissions::getTable()->deleteRolePermissions($this->getID());
             tables\RolePermissions::getTable()->clearPermissionsForRole($this->getID());
             tables\ProjectAssignedTeams::getTable()->deleteByRoleID($this->getID());
             tables\ProjectAssignedUsers::getTable()->deleteByRoleID($this->getID());
