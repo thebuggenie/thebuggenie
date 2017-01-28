@@ -1484,7 +1484,10 @@
                 $role_id = $role->getID();
                 foreach ($role->getPermissions() as $role_permission)
                 {
-                    $target_id = $this->getID();
+                    // Obtain expanded target ID since some role permissions
+                    // may contain templated project key ID as target_id
+                    // (i.e. wiki article permissions).
+                    $target_id = $role_permission->getExpandedTargetIDForProject($this);
                     tables\Permissions::getTable()->removeSavedPermission($user_id, 0, $team_id, $role_permission->getModule(), $role_permission->getPermission(), $target_id, framework\Context::getScope()->getID(), $role_id);
                     framework\Context::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role_id);
                 }
