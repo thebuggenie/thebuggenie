@@ -1368,273 +1368,164 @@ class Context
         return null;
     }
 
-    protected static function _permissionsCheck($permissions, $uid, $gid, $tid, $permission_roles_allowed, $target_id)
+    /**
+     * Calculates weight of a specific permission. Permission weight is a
+     * non-negative integer value denoting what priority permission should take
+     * when being applied if multiple matching permissions are found.
+     *
+     * In other words, if user requests access to a resource, and there are
+     * multiple permissions that would grant or deny access to the user for this
+     * resource, permission weight can be used to determine which permission
+     * applies.
+     *
+     * Permission weight algorithm takes into account the following:
+     *
+     * - How specific is the resource associated with the permission. I.e. if
+     *   permission is specified against a specific target ID, it should get
+     *   higher priority than the one specified against any (all) target IDs.
+     * - How specific is the designator that matches against the user. User can
+     *   be matched through user ID (most specific), team ID, group ID, or "any
+     *   user" specifier. The weights are set in the same order (so, uid > tid >
+     *   gid > any user).
+     * - What is the permission rule result - i.e. does it allow or deny
+     *   access. Denying access has priority over granting access.
+     *
+     * The weight of the above three items is also proportional to each other,
+     * that is the specificity of target ID brings more weight than specific
+     * uid/gid/tid, which in turns weights more than specific rule result
+     * (allowed/denied).
+     *
+     * @param permission array An array defining permission. Must include the following keys: uid (user ID), gid (group ID), tid (team ID), and allowed (true/false).
+     * @param target_id mixed Either a non-negative integer or string designating target to which the permission applies. 0 means global target.
+     *
+     * @return integer A non-negative integer denoting weight of permission.
+     */
+    protected static function _getPermissionWeight($permission, $target_id)
     {
-        try
+        // The following array contains values used for figuring out permission
+        // weight based on criteria of specificity. Have a look at method
+        // description for logic behind it.
+        $weight_bases = array(
+                              'specific_target_id' => 1000,
+                              'specific_uid'       =>  750,
+                              'specific_tid'       =>  500,
+                              'specific_gid'       =>  250,
+                              'allow_false'        =>   50,
+                              'allow_true'         =>    0,
+                              );
+
+        // Assume least weight initially.
+        $weight = 0;
+
+        // Add weight based on target ID specificity.
+        if ($target_id != 0)
         {
-            if (!is_array($permission_roles_allowed))
-            {
-                $permission_roles_allowed = array();
-            }
-            if ($uid != 0 || $gid != 0 || $tid != 0)
-            {
-                if ($uid != 0)
-                {
-                    $new_permission_roles_allowed = array();
-                    foreach ($permissions as $key => $permission)
-                    {
-                        if (!array_key_exists('uid', $permission))
-                        {
-                            foreach ($permission as $pkey => $pp)
-                            {
-                                if ($pp['uid'] == $uid)
-                                {
-                                    if ($pp['role_id'] == 0)
-                                    {
-                                        return $pp['allowed'];
-                                    }
-
-                                    $new_permission_roles_allowed[] = $pp;
-                                }
-                            }
-                        }
-                        elseif ($permission['uid'] == $uid)
-                        {
-                            if ($permission['role_id'] == 0)
-                            {
-                                return $permission['allowed'];
-                            }
-
-                            $new_permission_roles_allowed[] = $permission;
-                        }
-                    }
-                    if (count($new_permission_roles_allowed))
-                    {
-                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
-                    }
-                }
-
-                if (is_array($tid) || $tid != 0)
-                {
-                    $new_permission_roles_allowed = array();
-                    foreach ($permissions as $key => $permission)
-                    {
-                        if (!array_key_exists('tid', $permission))
-                        {
-                            foreach ($permission as $pkey => $pp)
-                            {
-                                if ((is_array($tid) && in_array($pp['tid'], array_keys($tid))) || $pp['tid'] == $tid)
-                                {
-                                    if ($pp['role_id'] == 0)
-                                    {
-                                        return $pp['allowed'];
-                                    }
-
-                                    if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
-                                    {
-                                        $target_id = self::getCurrentProject()->getID();
-                                    }
-
-                                    if ($target_id != 0)
-                                    {
-                                        $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($pp['role_id'], $target_id);
-
-                                        if (is_array($tid))
-                                        {
-                                            foreach ($tid as $team)
-                                            {
-                                                if (array_key_exists($team->getID(), $role_assigned_teams))
-                                                {
-                                                    $new_permission_roles_allowed[] = $pp;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (array_key_exists($tid, $role_assigned_teams))
-                                            {
-                                                $new_permission_roles_allowed[] = $pp;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $new_permission_roles_allowed[] = $pp;
-                                    }
-                                }
-                            }
-                        }
-                        elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
-                        {
-                            if ($permission['role_id'] == 0)
-                            {
-                                return (bool) array_sum(array_map(function($permission) use($tid)
-                                {
-                                    return ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid) && $permission['role_id'] == 0 ? (int) $permission['allowed'] : 0;
-                                }, $permissions));
-                            }
-
-                            if ($target_id == 0 && self::getCurrentProject() instanceof \thebuggenie\core\entities\Project)
-                            {
-                                $target_id = self::getCurrentProject()->getID();
-                            }
-
-                            if ($target_id != 0)
-                            {
-                                $role_assigned_teams = \thebuggenie\core\entities\tables\ProjectAssignedTeams::getTable()->getTeamsByRoleIDAndProjectID($permission['role_id'], $target_id);
-
-                                if (is_array($tid))
-                                {
-                                    foreach ($tid as $team)
-                                    {
-                                        if (array_key_exists($team->getID(), $role_assigned_teams))
-                                        {
-                                            $new_permission_roles_allowed[] = $permission;
-                                            break;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (array_key_exists($tid, $role_assigned_teams))
-                                    {
-                                        $new_permission_roles_allowed[] = $permission;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                $new_permission_roles_allowed[] = $permission;
-                            }
-                        }
-
-                    }
-                    if (count($new_permission_roles_allowed))
-                    {
-                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
-                    }
-                }
-
-                if ($gid != 0)
-                {
-                    $new_permission_roles_allowed = array();
-                    foreach ($permissions as $key => $permission)
-                    {
-                        if (!array_key_exists('gid', $permission))
-                        {
-                            foreach ($permission as $pkey => $pp)
-                            {
-                                if ($pp['gid'] == $gid)
-                                {
-                                    if ($pp['role_id'] == 0)
-                                    {
-                                        return $pp['allowed'];
-                                    }
-
-                                    $new_permission_roles_allowed[] = 1;
-                                }
-                            }
-                        }
-                        elseif ($permission['gid'] == $gid)
-                        {
-                            if ($permission['role_id'] == 0)
-                            {
-                                return $permission['allowed'];
-                            }
-
-                            $new_permission_roles_allowed[] = 1;
-                        }
-                    }
-                    if (count($new_permission_roles_allowed))
-                    {
-                        return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
-                    }
-                }
-            }
-
-            $new_permission_roles_allowed = array();
-            foreach ($permissions as $key => $permission)
-            {
-                if (!array_key_exists('uid', $permission))
-                {
-                    foreach ($permission as $pkey => $pp)
-                    {
-                        if ($pp['uid'] + $pp['gid'] + $pp['tid'] == 0)
-                        {
-                            if ($pp['role_id'] == 0)
-                            {
-                                return $pp['allowed'];
-                            }
-
-                            $new_permission_roles_allowed[] = 1;
-                        }
-                    }
-                }
-                elseif ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
-                {
-                    if ($permission['role_id'] == 0)
-                    {
-                        return $permission['allowed'];
-                    }
-
-                    $new_permission_roles_allowed[] = 1;
-                }
-            }
-            if (count($new_permission_roles_allowed))
-            {
-                return array_merge($permission_roles_allowed, $new_permission_roles_allowed);
-            }
-        }
-        catch (\Exception $e)
-        {
-
+            $weight += $weight_bases['specific_target_id'];
         }
 
-        return null;
+        // Apply weight based on user matching specificity.
+        if ($permission['uid'] != 0)
+        {
+            $weight += $weight_bases['specific_uid'];
+        }
+        else if ($permission['tid'] != 0)
+        {
+            $weight += $weight_bases['specific_tid'];
+        }
+        else if ($permission['gid'] != 0)
+        {
+            $weight += $weight_bases['specific_gid'];
+        }
+
+        // Add weight based on result specificity.
+        if ($permission['allowed'] === false)
+        {
+            $weight += $weight_bases['allow_false'];
+        }
+        else if ($permission['allowed'] === true)
+        {
+            $weight += $weight_bases['allow_true'];
+        }
+
+        return $weight;
     }
 
     /**
-     * Check to see if a specified user/group/team has access
+     * Checks if users that can be matched against provided user ID, group
+     * membership, or team membership should be granted access to specified
+     * resource.
      *
-     * @param string $permission_type The permission type
-     * @param integer $uid The user id for which the permission is valid, 0 for all
-     * @param integer $gid The group id for which the permission is valid, 0 for all
-     * @param mixed $tid The team id (or an array of teams or team ids) for which the permission is valid, 0 for all
-     * @param integer $target_id [optional] The target id
-     * @param string $module_name [optional] The name of the module for which the permission is valid
+     * @see User::hasPermission() For description of module name, permission type, target ID.
      *
-     * @return unknown_type
+     * @param string module_name Name of the module associated with permission type.
+     * @param string permission_type Permission type.
+     * @param mixed target_id Target (object) ID, if applicable. If not applicable, set to 0. Should be either non-negative integer or string.
+     * @param integer uid User ID for matching the users. Set to 0 if it should not be used for matching, or if $uid, $gid and $team_ids are all 0/empty, match any user.
+     * @param integer gid Group ID for matching the users. Set to 0 if it should not be used for matching, or if $uid, $gid and $team_ids are all 0/empty, match any user.
+     * @param array team_ids List of team IDs for matching the users. Set to empty array if it should not be used for matching, or if $uid, $gid and $team_ids are all 0/empty, match any user.
+     *
+     * @return mixed If permission matching the specified criteria has been found in database (cache, to be more precise), returns permission value (true or false). If no matching permission has been found, returns null. Receiving null means the caller needs to apply a default rule (allow or deny), which depends on caller implementation.
      */
-    public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $check_global_role = true)
+    public static function checkPermission($module_name, $permission_type, $target_id, $uid, $gid, $team_ids)
     {
-        $uid = (int) $uid;
-        $gid = (int) $gid;
-        $retval = null;
+        // Default is that no permission was found/matched against user
+        // specifier.
+        $result = null;
+
+        // Check if there are any permission rules stored for given module and permission type.
         if (array_key_exists($module_name, self::$_permissions) &&
-                array_key_exists($permission_type, self::$_permissions[$module_name]))
+            array_key_exists($permission_type, self::$_permissions[$module_name]))
         {
-            if (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
+            // Permissions relevant to module + permission type are stored in an
+            // array, grouped based on whether they are applied against specific
+            // target ID or globally.
+            $permission_groups = array();
+
+            // Since we could have multiple matches, we need to keep track of
+            // what permission has the most weight.
+            $permission_candidate_weight = -1;
+
+            // Populate permission groups with permissions specific to provided
+            // target IDs and global permissions. Use target_id as index since
+            // we need to pass it in for weight calculation.
+            if (($target_id != 0 || is_string($target_id)) && array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
             {
-                $permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
-
-                $retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid, array(), $target_id);
-
+                $permission_groups[$target_id] = self::$_permissions[$module_name][$permission_type][$target_id];
             }
 
-            if ($check_global_role && array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
+            if (array_key_exists(0, self::$_permissions[$module_name][$permission_type]))
             {
-                $global_permissions = self::$_permissions[$module_name][$permission_type][0];
-                $retval = ($retval !== null && !is_array($retval)) ? $retval : self::_permissionsCheck($global_permissions, $uid, $gid, $tid, $retval, 0, $target_id);
+                $permission_groups[0] = self::$_permissions[$module_name][$permission_type][0];
             }
 
-            if (is_array($retval)) return true;
-
-            if ($retval !== null)
-                return $retval;
+            foreach ($permission_groups as $permission_group_target_id => $permission_group)
+            {
+                foreach ($permission_group as $permission)
+                {
+                    // Permission is applicable if we can match it against the
+                    // user specifier (uid, gid, or one of team IDs), or if the
+                    // permission should be applied to all users.
+                    if (($uid != 0 && $uid == $permission['uid']) ||
+                        (count($team_ids) != 0 && in_array($permission['tid'], $team_ids)) ||
+                        ($gid !=0 && $gid == $permission['gid'])  ||
+                        ($permission['uid'] == 0 && $permission['gid'] == 0 && $permission['tid'] == 0))
+                    {
+                        // Calculate the permissions weight, and apply its
+                        // result (allow/deny) if it outweighs the previously
+                        // matched permission.
+                        $permission_weight = self::_getPermissionWeight($permission, $permission_group_target_id);
+                        if ($permission_weight > $permission_candidate_weight)
+                        {
+                            $permission_candidate_weight = $permission_weight;
+                            $result = $permission['allowed'];
+                        }
+                    }
+                }
+            }
         }
 
-        return $retval;
+        // Return the result (true/false/null).
+        return $result;
     }
 
     public static function getLoadedPermissions()

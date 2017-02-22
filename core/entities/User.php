@@ -2116,46 +2116,77 @@
         }
 
         /**
-         * Perform a permission check on this user
+         * Checks if user has permission to access the specified resource.
          *
-         * @param string $permission_type The permission key
-         * @param integer $target_id [optional] a target id if applicable
-         * @param string $module_name [optional] the module for which the permission is valid
+         * A resource is specified using combination of module name, permission
+         * type, and target ID.
          *
-         * @return boolean
+         * All permission types are tied-in to a specific module. Interpretation
+         * of what a permission type entitles depends on the module itself.
+         *
+         * Target ID provides context for narrowing down the check to a specific
+         * object. Target ID is not applicable for all module + permission type
+         * combinations, and its interpretation is left up to the caller.
+         *
+         * Target ID set to 0 is treated as "all relevant objects", i.e. like a
+         * global check.
+         *
+         * A common use of target ID is to narrow down permission check to a
+         * specific project. For example, the module "core" has a permission
+         * called "canseeproject". Setting the target ID to same value as
+         * project ID would effectively narrow down the check to that specific
+         * project. On the other hand, if you specified target ID as 0 in this
+         * case, this would denote permission check to see if user has a global
+         * access to any project.
+         *
+         * @param string $permission_type Type of permission to check. Available values depend on module specified.
+         * @param mixed $target_id [optional] Target (object) ID, if applicable. Should be non-negative integer or string. Default is 0.
+         * @param string $module_name [optional] Module to which the $permission_type is applicable. Default is 'core'.
+         *
+         * @return mixed If permission matching the specified criteria has been found in database (cache, to be more precise), returns permission value (true or false). If no matching permission has been found, returns null. Receiving null means the caller needs to apply a default rule (allow or deny), which depends on caller implementation.
          */
-        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $check_global_role = true)
+        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core')
         {
-            framework\Logging::log('Checking permission '.$permission_type.', target id'.$target_id);
-
-            if (array_key_exists($permission_type . '_' . $target_id, $this->_permissions_cache)) {
-                framework\Logging::log('Returning cached permission');
-                return $this->_permissions_cache[$permission_type . '_' . $target_id];
+            // Parts of code seem to expected to be able to pass-in target_id as
+            // null. Assume this means target_id 0.
+            if ($target_id === null)
+            {
+                $target_id = 0;
             }
 
+            framework\Logging::log('Checking permission '.$permission_type.', target ID '.$target_id.', module '.$module_name);
+
+            // We store cached results locally in User instance for improving performance.
+            if (array_key_exists($module_name . '_' . $permission_type . '_' . $target_id, $this->_permissions_cache)) {
+                $cached_value = $this->_permissions_cache[$module_name . '_' . $permission_type . '_' . $target_id];
+                framework\Logging::log('Permission check has already been done and cached, using the cached value: ' . ($cached_value === null ? 'null' : $cached_value));
+                return $cached_value;
+            }
+
+            // Obtain group, team, and role memberships for the user.
+            $user_id = $this->getID();
             $group_id = (int) $this->getGroupID();
-            $has_associated_project = is_bool($check_global_role) ? $check_global_role : (is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true);
             $teams = $this->getTeams();
-
-            if ($target_id != 0 && $permission_type == 'cancreateissues')
+            $team_ids = array();
+            foreach ($teams as $team)
             {
-                $project = Project::getB2DBTable()->selectById($target_id);
-                if ($project instanceof \thebuggenie\core\entities\Project)
-                {
-                    $teams = array_intersect_key($teams, $project->getAssignedTeams());
-                }
+                $team_ids[] = $team->getID();
             }
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $teams, $target_id, $module_name, $has_associated_project);
-            if ($retval !== null)
+
+            framework\Logging::log('Checking permission for user ID: '.$user_id.', group ID '.$group_id.',team IDs ' . implode(',', $team_ids));
+
+            $retval = framework\Context::checkPermission($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
+            if ($retval === null)
             {
-                framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
+                framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', no matching rules found.');
             }
             else
             {
-                framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was null');
+                framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', permission granted: '. (($retval) ? 'true' : 'false'));
             }
 
-            $this->_permissions_cache[$permission_type . '_' . $target_id] = $retval;
+            // Cache the check for specified module/permission type/target ID combo in User object.
+            $this->_permissions_cache[$module_name . '_' . $permission_type . '_' . $target_id] = $retval;
 
             return $retval;
         }

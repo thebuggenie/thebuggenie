@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use thebuggenie\core\framework;
+    use thebuggenie\core\entities\Project;
 
     /**
      * Permissions table
@@ -145,13 +146,21 @@
             $this->doDelete($crit);
         }
 
-        public function deleteRolePermission($role_id, $permission_key, $target_id, $scope = null)
+        /**
+         * Removes the specified permission associated with the role.
+         *
+         * @param role_id Role ID.
+         * @param module Module.
+         * @param permission_type Permission type.
+         * @param scope Scope. If null, current scope will be used.
+         */
+        public function deleteRolePermission($role_id, $module, $permission_type, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
             $crit = $this->getCriteria();
             $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::PERMISSION_TYPE, $permission_key);
-            $crit->addWhere(self::TARGET_ID, $target_id);
+            $crit->addWhere(self::MODULE, $module);
+            $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
             $crit->addWhere(self::SCOPE, $scope);
             $this->doDelete($crit);
         }
@@ -177,39 +186,58 @@
         public function loadFixtures(\thebuggenie\core\entities\Scope $scope, $admin_group_id, $guest_group_id)
         {
             $scope_id = $scope->getID();
-            
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
+
+            // Creating public searches, noone.
+            $this->setPermission(0, 0, 0, false, 'core', 'cancreatepublicsearches', 0, $scope_id);
+
+            // Common pages, everyone.
+            $this->setPermission(0, 0, 0, true, 'core', 'page_home_access', 0, $scope_id);
+            $this->setPermission(0, 0, 0, true, 'core', 'page_about_access', 0, $scope_id);
+            $this->setPermission(0, 0, 0, true, 'core', 'page_search_access', 0, $scope_id);
+            $this->setPermission(0, 0, 0, true, 'core', 'page_confirm_scope_access', 0, $scope_id);
+
+            // Search for issues, everyone.
+            $this->setPermission(0, 0, 0, true, 'core', 'canfindissues', 0, $scope_id);
+
+            // Search for issues and save private searches, everyone except guests.
+            $this->setPermission(0, 0, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
+            $this->setPermission(0, $guest_group_id, 0, false, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
+
+            // Account page, everyone except guests.
             $this->setPermission(0, 0, 0, true, 'core', 'page_account_access', 0, $scope_id);
             $this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
-            $this->setPermission(0, 0, 0, false, 'core', 'candoscrumplanning', 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
-            $this->setPermission(0, 0, 0, false, 'core', 'cancreatepublicsearches', 0, $scope_id);
+
+            // Global dashboard, everyone except guests.
+            $this->setPermission(0, 0, 0, true, 'core', 'page_dashboard_access', 0, $scope_id);
+            $this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_dashboard_access', 0, $scope_id);
+
+            // Explicit full access for administrator group.
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canaddextrainformationtoissues', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', 'cancreatepublicsearches', 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'caneditmainmenu', 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', 'caneditissuecustomfieldsown', 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', 'canpostandeditcomments', 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canpostseeandeditallcomments', 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canseeproject", 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'candeleteissues', 0, $scope_id);
             $this->setPermission(0, $admin_group_id, 0, true, 'core', 'candoscrumplanning', 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "page_project_allpages_access", 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', "page_home_access", 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', "page_about_access", 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', "page_dashboard_access", 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', "page_search_access", 0, $scope_id);
-            $this->setPermission(0, 0, 0, true, 'core', 'page_confirm_scope_access', 0, $scope_id);
-            $this->setPermission(0, $guest_group_id, 0, false, 'core', "page_dashboard_access", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "page_teamlist_access", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "page_clientlist_access", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canvoteforissues", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canseetimespent", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canlockandeditlockedissues", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "cancreateandeditissues", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "caneditissue", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "candeleteissues", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "caneditissuecustomfields", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canaddextrainformationtoissues", 0, $scope_id);
-            $this->setPermission(0, $admin_group_id, 0, true, 'core', "canpostseeandeditallcomments", 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'caneditissue', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'caneditissuecustomfields', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'caneditmainmenu', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canfindissues', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canlockandeditlockedissues', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canpostseeandeditallcomments', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canpostseeandeditallcomments', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canseeproject', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canseetimespent', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'canvoteforissues', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_about_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_account_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_clientlist_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_confirm_scope_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_dashboard_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_home_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_project_allpages_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_search_access', 0, $scope_id);
+            $this->setPermission(0, $admin_group_id, 0, true, 'core', 'page_teamlist_access', 0, $scope_id);
         }
 
         public function cloneGroupPermissions($cloned_group_id, $new_group_id)
@@ -257,49 +285,104 @@
             }
         }
 
+        /**
+         * Adds permission for the specified role to permission table based on
+         * user and group role memberships in projects.
+         *
+         * @param role Role to which permission should be granted.
+         * @param rolepermission Role permission to grant.
+         */
         public function addRolePermission(\thebuggenie\core\entities\Role $role, \thebuggenie\core\entities\RolePermission $rolepermission)
         {
-            $role_id = $role->getID();
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $existing_identifiables = array(self::UID => array(), self::TID => array());
-            $target_id = $rolepermission->getExpandedTargetID($role);
-            if ($res = $this->doSelect($crit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $key = ($row->get(self::UID)) ? self::UID : self::TID;
-                    if (! isset($existing_identifiables[$key][$row->get($key)])) $existing_identifiables[$key][$row->get($key)] = array('id' => $row->get($key), 'target_id' => $target_id, 'permission_type_module' => array());
+            // NOTE: When updating this method, make sure to update both user
+            // and team-specific code. They are reperatitive, but kept separate
+            // for clarity.
 
-                    $existing_identifiables[$key][$row->get($key)]['permission_type_module'][] = $row->get(self::PERMISSION_TYPE).';'.$row->get(self::MODULE);
+            // Retrieve user assignments based on role.
+            $assigned_users = ProjectAssignedUsers::getTable()->getAssignmentsByRoleID($role->getID());
+
+            // Iterate over assignments.
+            foreach ($assigned_users as $assigned_user)
+            {
+                // Extract project entity.
+                $project_id = $assigned_user->get(ProjectAssignedUsers::PROJECT_ID);
+                $project = Project::getAllByIDs(array($project_id))[$project_id];
+
+                // Determine values that need to be inserted.
+                $target_id = $rolepermission->getExpandedTargetIDForProject($project);
+                $user_id = $assigned_user->get(ProjectAssignedUsers::USER_ID);
+                $module = $rolepermission->getModule();
+                $role_id = $role->getID();
+                $permission_type = $rolepermission->getPermission();
+                $scope_id = framework\Context::getScope()->getID();
+
+                // Determine if permission already exists.
+                $crit = $this->getCriteria();
+                $crit->addWhere(self::SCOPE, $scope_id);
+                $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
+                $crit->addWhere(self::TARGET_ID, $target_id);
+                $crit->addWhere(self::UID, $user_id);
+                $crit->addWhere(self::ALLOWED, true);
+                $crit->addWhere(self::MODULE, $module);
+                $crit->addWhere(self::ROLE_ID, $role_id);
+                $res = $this->doSelect($crit, 'none');
+
+                // If permission does not exist, add it.
+                if (!$res)
+                {
+                    $crit = $this->getCriteria();
+                    $crit->addInsert(self::SCOPE, $scope_id);
+                    $crit->addInsert(self::PERMISSION_TYPE, $permission_type);
+                    $crit->addInsert(self::TARGET_ID, $target_id);
+                    $crit->addInsert(self::UID, $user_id);
+                    $crit->addInsert(self::ALLOWED, true);
+                    $crit->addInsert(self::MODULE, $module);
+                    $crit->addInsert(self::ROLE_ID, $role_id);
+                    $this->doInsert($crit);
                 }
             }
 
-            foreach (ProjectAssignedUsers::getTable()->getUsersByRoleID($role_id) as $uid => $assigned_user)
-            {
-                if (! isset($existing_identifiables[self::UID][$uid])) $existing_identifiables[self::UID][$uid] = array('id' => $uid, 'target_id' => $target_id, 'permission_type_module' => array());
-            }
+            // Retrieve team assignments based on role.
+            $assigned_teams = ProjectAssignedTeams::getTable()->getAssignmentsByRoleID($role->getID());
 
-            foreach (ProjectAssignedTeams::getTable()->getTeamsByRoleID($role_id) as $tid => $assigned_team)
+            // Iterate over assignments.
+            foreach ($assigned_teams as $assigned_team)
             {
-                if (! isset($existing_identifiables[self::TID][$tid])) $existing_identifiables[self::TID][$tid] = array('id' => $tid, 'target_id' => $target_id, 'permission_type_module' => array());
-            }
+                // Extract project entity.
+                $project_id = $assigned_team->get(ProjectAssignedTeams::PROJECT_ID);
+                $project = Project::getAllByIDs(array($project_id))[$project_id];
 
-            foreach ($existing_identifiables as $key => $identifiables)
-            {
-                foreach ($identifiables as $identifiable)
+                // Determine values that need to be inserted.
+                $target_id = $rolepermission->getExpandedTargetIDForProject($project);
+                $team_id = $assigned_team->get(ProjectAssignedTeams::TEAM_ID);
+                $module = $rolepermission->getModule();
+                $role_id = $role->getID();
+                $permission_type = $rolepermission->getPermission();
+                $scope_id = framework\Context::getScope()->getID();
+
+                // Determine if permission already exists.
+                $crit = $this->getCriteria();
+                $crit->addWhere(self::SCOPE, $scope_id);
+                $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
+                $crit->addWhere(self::TARGET_ID, $target_id);
+                $crit->addWhere(self::TID, $team_id);
+                $crit->addWhere(self::ALLOWED, true);
+                $crit->addWhere(self::MODULE, $module);
+                $crit->addWhere(self::ROLE_ID, $role_id);
+                $res = $this->doSelect($crit, 'none');
+
+                // If permission does not exist, add it.
+                if (!$res)
                 {
-                    if (in_array($rolepermission->getPermission().';'.$rolepermission->getModule(), $identifiable['permission_type_module'])) continue;
-
                     $crit = $this->getCriteria();
-                    $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                    $crit->addInsert(self::PERMISSION_TYPE, $rolepermission->getPermission());
-                    $crit->addInsert(self::TARGET_ID, $identifiable['target_id']);
-                    $crit->addInsert($key, $identifiable['id']);
+                    $crit->addInsert(self::SCOPE, $scope_id);
+                    $crit->addInsert(self::PERMISSION_TYPE, $permission_type);
+                    $crit->addInsert(self::TARGET_ID, $target_id);
+                    $crit->addInsert(self::TID, $team_id);
                     $crit->addInsert(self::ALLOWED, true);
-                    $crit->addInsert(self::MODULE, $rolepermission->getModule());
+                    $crit->addInsert(self::MODULE, $module);
                     $crit->addInsert(self::ROLE_ID, $role_id);
-                    $res = $this->doInsert($crit);
+                    $this->doInsert($crit);
                 }
             }
         }

@@ -81,11 +81,38 @@
             return str_replace('%project_key%', $project->getKey(), $this->_target_id);
         }
 
-        public function getExpandedTargetID(Role $role)
+        /**
+         * Returns expanded target ID specific to passed-in project. Some role
+         * permissions may consist out of parametrised string, in which case the
+         * parameters need to be replaced based on project content.
+         *
+         * This method will take in as argument a project to which the role
+         * permission is applied, perform all the necessary expanding of
+         * target_id, and return a valid target_id that can be further used for
+         * processing permissions.
+         *
+         * If no expansion needs to be done, project ID will be returned.
+         *
+         * @param project \thebuggenie\core\entities\Project Project against for which the extended target ID should be obtained.
+         *
+         * @return int|string Target ID for which the role permission is applicable.
+         */
+        public function getExpandedTargetIDForProject($project)
         {
-            $project = $role->getProject();
+            // If we have explicit target ID, probably need to do some string
+            // replacements.
+            if ($this->hasTargetID())
+            {
+                return $this->getReplacedTargetID($project);
+            }
+            // If this is targeting a specific project, return its ID.
+            else if ($project instanceof Project)
+            {
+                return $project->getID();
+            }
 
-            return $this->hasTargetID() ? ($project instanceof Project && ! $role->isSystemRole() ? $this->getReplacedTargetID($project) : ($role->isSystemRole() ? '0' : $role->getItemdata())) : ($role->isSystemRole() ? '0' : $role->getItemdata());
+            // Otherwise assume global target.
+            return 0;
         }
 
     }

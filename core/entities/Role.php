@@ -125,6 +125,7 @@
 
         protected function _preDelete()
         {
+            tables\Permissions::getTable()->deleteRolePermissions($this->getID());
             tables\RolePermissions::getTable()->clearPermissionsForRole($this->getID());
             tables\ProjectAssignedTeams::getTable()->deleteByRoleID($this->getID());
             tables\ProjectAssignedUsers::getTable()->deleteByRoleID($this->getID());
@@ -171,12 +172,17 @@
             }
         }
 
+        /**
+         * Removes permission from the role.
+         *
+         * @param permission \thebuggenie\core\entities\RolePermission Role permission that should be removed.
+         */
         public function removePermission(\thebuggenie\core\entities\RolePermission $permission)
         {
             $this->_populatePermissions();
             $permission_id = $permission->getID();
             unset($this->_permissions[$permission_id]);
-            tables\Permissions::getTable()->deleteRolePermission($this->getID(), $permission->getPermission(), $permission->getExpandedTargetID($this));
+            tables\Permissions::getTable()->deleteRolePermission($this->getID(), $permission->getModule(), $permission->getPermission());
             $permission->delete();
         }
 
