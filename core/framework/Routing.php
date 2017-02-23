@@ -227,9 +227,19 @@
         {
             $is_internal = Context::isInternalModule($module_name);
             $namespace = ($is_internal) ? '\\thebuggenie\\core\\modules\\' : '\\thebuggenie\\modules\\';
+            $controller_path = ($is_internal) ? THEBUGGENIE_INTERNAL_MODULES_PATH  . $module_name . "/controllers" : THEBUGGENIE_MODULES_PATH . $module_name . "/controllers";
 
-            // Point the annotated routes to the right module controller
-            $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\controllers\\Main', $module_name);
+            if (file_exists($controller_path))
+            {
+                // Point the annotated routes to the right module controllers
+                foreach (new \DirectoryIterator($controller_path) as $controller)
+                {
+                    if (!$controller->isDot())
+                    {
+                        $this->loadModuleAnnotationRoutes($namespace . $module_name . '\\controllers\\' . $controller->getBasename('.php'), $module_name);
+                    }
+                }
+            }
 
             if (!$is_internal)
             {
@@ -290,6 +300,8 @@
             $reflection = new \ReflectionClass($classname);
             $docblock = $reflection->getDocComment();
             $annotationset = new AnnotationSet($docblock);
+            $paths = explode('/', str_replace('\\', '/', $classname));
+            $controller = array_pop($paths);
 
             $route_url_prefix = '';
             $route_name_prefix = '';
@@ -322,8 +334,9 @@
                     }
                     $options = array();
                     $route_annotation = $annotationset->getAnnotation('Route');
-                    $action = substr($method->name, 3);
-                    $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($action));
+                    $actionName = substr($method->name, 3);
+                    $action = $controller . '::' . $actionName;
+                    $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($actionName));
                     $route = $route_url_prefix . $route_annotation->getProperty('url');
                     $options['csrf_enabled'] = $annotationset->hasAnnotation('CsrfProtected');
                     $options['anonymous_route'] = $annotationset->hasAnnotation('AnonymousRoute');
