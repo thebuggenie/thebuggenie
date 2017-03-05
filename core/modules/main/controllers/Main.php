@@ -760,7 +760,9 @@ class Main extends framework\Action
     {
         if ($this->getUser()->hasPassword($request['tbg3_elevated_password']))
         {
-            $expiration = time() + (60 * $request->getParameter('tbg3_elevation_duration', 30));
+            // Calculate expiration period in seconds. setCookie() method should
+            // add expiration period to current time.
+            $expiration = 60 * $request->getParameter('tbg3_elevation_duration', 30);
             framework\Context::getResponse()->setCookie('tbg3_elevated_password', $this->getUser()->getPassword(), $expiration);
             return $this->renderJSON(array('elevated' => true));
         }
