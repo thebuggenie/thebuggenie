@@ -1772,7 +1772,6 @@ class Context
         self::getResponse()->deleteCookie('tbg3_username');
         self::getResponse()->deleteCookie('tbg3_password');
         self::getResponse()->deleteCookie('tbg3_elevated_password');
-        self::getResponse()->deleteCookie('tbg3_persona_session');
         self::getResponse()->deleteCookie('THEBUGGENIE');
         session_regenerate_id(true);
         Event::createNew('core', 'post_logout')->trigger();

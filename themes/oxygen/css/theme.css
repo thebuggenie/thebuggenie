@@ -608,11 +608,11 @@ header #header_userinfo > ul > li > a, header #header_userinfo > ul > li > a:hov
     font-size: 1.3em;
 }
 header #header_userinfo > ul > li#header_usermenu_link > a {
-    padding: 5px 0;
+    padding: 8px 0;
 }
-header #header_userinfo > ul > li#header_usermenu_link > a .fa {
-    font-size: 0.8em;
-}
+/*header #header_userinfo > ul > li#header_usermenu_link > a .fa {*/
+    /*font-size: 0.8em;*/
+/*}*/
 header #header_userinfo li.temporarily_switched {
     background-color: rgb(228, 156, 109);
 }
@@ -1147,8 +1147,9 @@ footer img {
 }
 
 .logindiv.openid_container {
-    width: 600px;
+    width: 100%;
     float: right;
+    box-sizing: border-box;
 }
 
 .logindiv.openid_container form {

@@ -89,19 +89,6 @@
         </td>
     </tr>
     <tr>
-        <td><label for="allowpersona"><?php echo __('Enable Mozilla Persona'); ?></label></td>
-        <td>
-            <?php if (!\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
-                <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_ALLOW_PERSONA; ?>" id="allowpersona" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                    <option value="1"<?php if (\thebuggenie\core\framework\Settings::isPersonaEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes, let users log in with Mozilla Persona'); ?></option>
-                    <option value="0"<?php if (!\thebuggenie\core\framework\Settings::isPersonaEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                </select>
-            <?php else: ?>
-                <div class="faded_out"><?php echo __('Mozilla Persona support is unavailable when not using internal authentication'); ?></div>
-            <?php endif; ?>
-        </td>
-    </tr>
-    <tr>
         <td><label for="allowopenid"><?php echo __('Enable OpenID'); ?></label></td>
         <td>
             <?php if (!\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>

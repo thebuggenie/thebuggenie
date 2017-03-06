@@ -844,49 +844,6 @@ class Main extends framework\Action
         $options = $request->getParameters();
         $forward_url = framework\Context::getRouting()->generate('home');
 
-        if ($request->hasParameter('persona') && $request['persona'] == 'true')
-        {
-            $url = 'https://verifier.login.persona.org/verify';
-            $assert = filter_input(
-                    INPUT_POST, 'assertion', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-            );
-            //Use the $_POST superglobal array for PHP < 5.2 and write your own filter
-            $params = 'assertion=' . urlencode($assert) . '&audience=' .
-                    urlencode(framework\Context::getURLhost() . ':80');
-            $ch = curl_init();
-            $options = array(
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => TRUE,
-                CURLOPT_POST => 2,
-                CURLOPT_POSTFIELDS => $params
-            );
-            curl_setopt_array($ch, $options);
-            $result = curl_exec($ch);
-            curl_close($ch);
-            $details = json_decode($result);
-            $user = null;
-            if ($details->status == 'okay')
-            {
-                $user = entities\User::getByEmail($details->email);
-                if ($user instanceof entities\User)
-                {
-                    framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
-                    framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
-                    framework\Context::getResponse()->setCookie('tbg3_persona_session', true);
-                    $user->setOnline();
-                    $user->save();
-                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referer_route'], array('home', 'login'))));
-                }
-            }
-
-            if (!$user instanceof entities\User)
-            {
-                $this->getResponse()->setHttpStatus(401);
-                $this->renderJSON(array('message' => $this->getI18n()->__('Invalid login')));
-            }
-            return;
-        }
-
         if (framework\Settings::isOpenIDavailable())
             $openid = new \LightOpenID(framework\Context::getRouting()->generate('login_page', array(), false));
 

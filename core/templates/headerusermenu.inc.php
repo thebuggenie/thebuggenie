@@ -50,7 +50,7 @@
                             <?php endif; ?>
                             <?php \thebuggenie\core\framework\Event::createNew('core', 'user_dropdown_reg')->trigger(); ?>
                             <li><?php echo link_tag('http://www.thebuggenie.com/help/'.\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), fa_image_tag('question-circle').__('Help for this page'), array('id' => 'global_help_link')); ?></li>
-                            <li><a href="<?php echo make_url('logout'); ?>" onclick="<?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable()): ?>if (navigator.id) { navigator.id.logout();return false; }<?php endif; ?>"><?php echo fa_image_tag('sign-out').__('Logout'); ?></a></li>
+                            <li><a href="<?php echo make_url('logout'); ?>"><?php echo fa_image_tag('sign-out').__('Logout'); ?></a></li>
                             <li class="header"><?php echo __('Your issues'); ?></li>
                             <li><?php echo link_tag(make_url('my_reported_issues'), fa_image_tag('search') . __('Issues reported by me')); ?></li>
                             <li><?php echo link_tag(make_url('my_assigned_issues'), fa_image_tag('search') . __('Open issues assigned to me')); ?></li>
