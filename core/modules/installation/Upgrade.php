@@ -180,6 +180,30 @@ class Upgrade
         }
     }
 
+    protected function _upgradeFrom4dot1dot13()
+    {
+        set_time_limit(0);
+
+        if (defined('TBG_CLI')) {
+            framework\cli\Command::cli_echo("Updating/fixing status of milestones.\n");
+        }
+
+        $milestones = \thebuggenie\core\entities\tables\Milestones::getTable()->selectAll();
+
+        foreach ($milestones as $milestone)
+        {
+            $milestone->updateStatus();
+            $milestone->save();
+        }
+
+        $this->upgrade_complete = true;
+        $this->current_version = '4.1.14';
+
+        if (defined('TBG_CLI')) {
+            framework\cli\Command::cli_echo("Successfully upgraded to version {$this->current_version}\n");
+        }
+    }
+
     public function upgrade()
     {
         list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
@@ -222,6 +246,8 @@ class Upgrade
                     $this->_upgradeFrom4dot1dot11();
                 case '4.1.12':
                     $this->_upgradeFrom4dot1dot12();
+                case '4.1.13':
+                    $this->_upgradeFrom4dot1dot13();
                 default:
                     $this->upgrade_complete = true;
                     break;

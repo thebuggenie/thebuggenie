@@ -5014,6 +5014,18 @@
             $this->_last_updated = NOW;
         }
 
+        /**
+         * Processes field changes for an issue. Two types of processing occur
+         * within this function:
+         *
+         * - Logging the change in issue history. This happens for every field.
+         * - Updates to other related objects (such as projects, milestones,
+         *   other issues etc). This type of processing is dependant on specific
+         *   field that gets changed.
+         *
+         *
+         * @return array Array of related issues that have been affected in some way and need to be saved.
+         */
         protected function _processChanges()
         {
             $related_issues_to_save = array();
@@ -5218,7 +5230,10 @@
                             case '_milestone':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = Milestone::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
+                                    $old_milestone = Milestone::getB2DBTable()->selectById($original_value);
+                                    $old_milestone->updateStatus();
+                                    $old_milestone->save();
+                                    $old_name = $old_milestone ? $old_milestone->getName() : framework\Context::getI18n()->__('Not determined');
                                 }
                                 else
                                 {
@@ -5323,7 +5338,7 @@
                                                 {
                                                     if ($parent_issue->checkTaskStates())
                                                     {
-                                                        $related_issues_to_save[$parent_issue->getID()] = true;
+                                                        $related_issues_to_save[] = $parent_issue;
                                                     }
                                                 }
                                             }
@@ -5657,13 +5672,9 @@
 
                 $this->triggerSaveEvent($comment, framework\Context::getUser());
 
-                if (count($related_issues_to_save))
+                foreach ($related_issues_to_save as $related_issue)
                 {
-                    foreach (array_keys($related_issues_to_save) as $i_id)
-                    {
-                        $related_issue = Issue::getB2DBTable()->selectById((int) $i_id);
-                        $related_issue->save();
-                    }
+                    $related_issue->save();
                 }
             }
             else
