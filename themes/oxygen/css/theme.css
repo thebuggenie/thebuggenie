@@ -17700,13 +17700,6 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 }
 
 #issue_main #description_header,
-#issue_main #description_content,
-#issue_main #reproduction_steps_header,
-#issue_main #reproduction_steps_content {
-    float: left;
-}
-
-#issue_main #description_header,
 #issue_main #reproduction_steps_header {
     padding-top: 0;
 }
