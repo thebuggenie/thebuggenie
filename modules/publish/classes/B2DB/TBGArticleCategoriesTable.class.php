@@ -17,7 +17,7 @@
 		const ARTICLE_IS_CATEGORY = 'articlecategories.article_is_category';
 		const CATEGORY_NAME = 'articlecategories.category_name';
 		const SCOPE = 'articlecategories.scope';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

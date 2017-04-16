@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	class AnnotationSet
 	{
 

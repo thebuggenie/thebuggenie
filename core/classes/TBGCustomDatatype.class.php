@@ -5,7 +5,7 @@
 	 */
 	class TBGCustomDatatype extends TBGDatatypeBase
 	{
-		
+
 		const DROPDOWN_CHOICE_TEXT = 1;
 		const INPUT_TEXT = 2;
 		const INPUT_TEXTAREA_MAIN = 3;
@@ -51,9 +51,9 @@
 
 		/**
 		 * Returns all custom types available
-		 * 
-		 * @return array 
-		 */		
+		 *
+		 * @return array
+		 */
 		public static function getAll()
 		{
 			if (self::$_types === null)
@@ -103,7 +103,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Delete a custom type by id
 		 *
@@ -151,7 +151,7 @@
 
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param B2DBrow $row [optional] A B2DBrow to use
 		 */
 		public function _construct(\b2db\Row $row, $foreign_key = null)
@@ -185,9 +185,9 @@
 			$option->setItemdata($itemdata);
 			$option->setCustomdatatype($this->_id);
 			$option->save();
-			
+
 			// In order to set permissions correctly the item type has to be the same
-			// as the option id not the item field. set the opton id with the newly generated 
+			// as the option id not the item field. set the opton id with the newly generated
 			// option ID and save again
 			$option->setItemtype($option->getID());
 			$option->save();
@@ -253,7 +253,7 @@
 		{
 			$this->_description = $description;
 		}
-		
+
 		/**
 		 * Get the custom types instructions
 		 */

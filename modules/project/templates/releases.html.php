@@ -4,7 +4,7 @@
 	$tbg_response->setTitle(__('"%project_name%" releases', array('%project_name%' => $selected_project->getName())));
 
 	if (!$selected_project instanceof TBGProject) exit();
-	
+
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>

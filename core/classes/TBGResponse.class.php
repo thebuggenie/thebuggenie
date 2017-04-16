@@ -27,39 +27,39 @@
 
 		/**
 		 * The current page (used to identify the selected tab
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_page = null;
-		
+
 		/**
 		 * Breadcrumb trail for the current page
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_breadcrumb = null;
-		
+
 		/**
 		 * Current page title
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_title = null;
-		
+
 		/**
 		 * List of headers
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_headers = array();
-		
+
 		/**
 		 * List of javascripts
 		 *
 		 * @var array
 		 */
 		protected $_javascripts = array();
-		
+
 		/**
 		 * List of stylesheets
 		 *
@@ -76,45 +76,45 @@
 
 		/**
 		 * Current response status
-		 * 
+		 *
 		 * @var integer
 		 */
 		protected $_http_status = 200;
-		
+
 		/**
 		 * Response content-type
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_content_type = 'text/html';
-		
+
 		/**
 		 * Current template
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_template = '';
 
 		/**
 		 * What decoration to use (default normal)
-		 * 
+		 *
 		 * @var integer
 		 */
 		protected $_decoration = 3;
-		
+
 		/**
 		 * Decoration used to decorate the header
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_decor_header = null;
-		
+
 		/**
 		 * Decoration used to decorate the footer
 		 * @var unknown_type
 		 */
 		protected $_decor_footer = null;
-		
+
 		/**
 		 * Whether to show the project menu strip or not
 		 *
@@ -169,7 +169,7 @@
 
 		/**
 		 * Set the template
-		 * 
+		 *
 		 * @param string $template The template name
 		 */
 		public function setTemplate($template)
@@ -179,28 +179,28 @@
 
 		/**
 		 * Return current template
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getTemplate()
 		{
 			return $this->_template;
 		}
-		
+
 		/**
 		 * Set which page we're on
-		 * 
+		 *
 		 * @param string $page A unique page identifier
 		 */
 		public function setPage($page)
 		{
 			$this->_page = $page;
 		}
-		
+
 		/**
 		 * Set the breadcrumb trail for the current page
-		 * 
-		 * @param array $breadcrumb 
+		 *
+		 * @param array $breadcrumb
 		 */
 		public function setBreadcrumb($breadcrumb)
 		{
@@ -209,8 +209,8 @@
 
 		/**
 		 * Add to the breadcrumb trail for the current page
-		 * 
-		 * @param string $breadcrumb 
+		 *
+		 * @param string $breadcrumb
 		 * @param string $url[optional] The menu item's url if any
 		 * @param array $subitems[optional] An array of submenu items to add
 		 * @param string $class[optional] An optional class
@@ -228,7 +228,7 @@
 
 		/**
 		 * Set the current title
-		 * 
+		 *
 		 * @param string $title The title
 		 */
 		public function setTitle($title)
@@ -238,37 +238,37 @@
 
 		/**
 		 * Get the current title
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getTitle()
 		{
 			return $this->_title;
 		}
-		
+
 		/**
 		 * Check to see if a title is set
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasTitle()
 		{
 			return (trim($this->_title) != '') ? true : false;
 		}
-		
+
 		/**
 		 * Get the current page name
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getPage()
 		{
 			return $this->_page;
 		}
-		
+
 		/**
 		 * Return the breadcrumb trail for the current page
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getBreadcrumbs()
@@ -280,17 +280,17 @@
 			}
 			return $this->_breadcrumb;
 		}
-		
+
 		/**
 		 * Add a header
-		 * 
+		 *
 		 * @param string $header The header to add
 		 */
 		public function addHeader($header)
 		{
 			$this->_headers[] = $header;
 		}
-		
+
 		/**
 		 * Add a javascript
 		 *
@@ -311,7 +311,7 @@
 				$this->_javascripts[$javascript] = $minify;
 			}
 		}
-		
+
 		/**
 		 * Add a stylesheet
 		 *
@@ -346,7 +346,7 @@
 
 		/**
 		 * Forward the user to a different URL
-		 * 
+		 *
 		 * @param string $url the url to forward to
 		 * @param integer $code HTTP status code
 		 */
@@ -369,7 +369,7 @@
 
 		/**
 		 * Forward the user to a different url via meta tag
-		 * 
+		 *
 		 * @param string $url The url to forward to
 		 */
 		static function metaForward($url)
@@ -377,17 +377,17 @@
 			print "<meta http-equiv=\"refresh\" content=\"0;URL={$url}\">";
 			exit();
 		}
-		
+
 		/**
 		 * Set the HTTP status code
-		 * 
+		 *
 		 * @param integer $code The code to set
 		 */
 		public function setHttpStatus($code)
 		{
 			$this->_http_status = $code;
 		}
-		
+
 		/**
 		 * Get the HTTP status code
          *
@@ -400,14 +400,14 @@
 
 		/**
 		 * Whether we're decorating with the header or not
-		 * 
+		 *
 		 * @return string
 		 */
 		public function doDecorateHeader()
 		{
 			return ($this->_decoration == self::DECORATE_HEADER || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_header)) ? true : false;
 		}
-		
+
 		/**
 		 * Whether we're decorating with the footer or not
 		 * @return unknown_type
@@ -416,13 +416,13 @@
 		{
 			return ($this->_decoration == self::DECORATE_FOOTER || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_footer)) ? true : false;
 		}
-		
+
 		/**
 		 * Set the decoration mode
-		 * 
+		 *
 		 * @param integer $mode The mode used (see class constants)
 		 * @param array $params [optional] array('header' => templatename, 'footer' => templatename) optional decoration specifiers
-		 * 
+		 *
 		 * @return null
 		 */
 		public function setDecoration($mode, $params = null)
@@ -464,14 +464,14 @@
 		{
 			return $this->_decor_footer;
 		}
-		
+
 		/**
 		 * Sets a cookie on the client, default expiration is one day
-		 *  
+		 *
 		 * @param $key string the cookie key
 		 * @param $value string the cookie value
 		 * @param $expiration integer when the cookie expires (seconds from now)
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function setCookie($key, $value, $expiration = 864000)
@@ -479,19 +479,19 @@
 			setcookie($key, $value, NOW + $expiration, TBGContext::getTBGPath());
 			return true;
 		}
-		
+
 		/**
 		 * Deletes a cookie on the client
-		 * 
+		 *
 		 * @param $key string the cookie key to delete
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function deleteCookie($key)
 		{
 			setcookie($key, '', NOW - 36000, TBGContext::getTBGPath());
 			return true;
-		}		
+		}
 
 		/**
 		 * Render current headers
@@ -519,27 +519,27 @@
 				header($header);
 			}
 		}
-		
+
 		/**
 		 * Set the current response content type (default text/html)
-		 * 
+		 *
 		 * @param string $content_type The content type to set
 		 */
 		public function setContentType($content_type)
 		{
 			$this->_content_type = $content_type;
 		}
-		
+
 		/**
 		 * Return the current response content type
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getContentType()
 		{
 			return $this->_content_type;
 		}
-		
+
 		/**
 		 * Return all active javascripts
 		 *
@@ -549,7 +549,7 @@
 		{
 			return $this->_javascripts;
 		}
-		
+
 		/**
 		 * Return all active stylesheets
 		 *
@@ -576,7 +576,7 @@
 		public function clearHeaders()
 		{
 			$this->_headers = array();
-			
+
 		}
 
 		public function getPredefinedBreadcrumbLinks($type, $project = null)
@@ -632,7 +632,7 @@
 
 			return $links;
 		}
-		
+
 		public function getAllHeaders()
 		{
 			return $this->_headers;

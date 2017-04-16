@@ -94,9 +94,9 @@
 				$step_object->save();
 				$steps[$key]['step'] = $step_object;
 			}
-			
+
 			$transitions = TBGWorkflowTransition::loadFixtures($scope, $workflow, $steps);
-			
+
 			foreach ($steps as $step)
 			{
 				foreach ($step['transitions'] as $transition)
@@ -104,7 +104,7 @@
 					$step['step']->addOutgoingTransition($transitions[$transition]);
 				}
 			}
-			
+
 		}
 
 		public static function getAllByWorkflowSchemeID($scheme_id)
@@ -153,7 +153,7 @@
 		{
 			$this->_workflow_id = $workflow;
 		}
-		
+
 		/**
 		 * Whether this is a step in the builtin workflow that cannot be
 		 * edited or removed
@@ -167,7 +167,7 @@
 
 		/**
 		 * Return this steps linked status if any
-		 * 
+		 *
 		 * @return TBGStatus
 		 */
 		public function getLinkedStatus()
@@ -318,7 +318,7 @@
 		{
 			return (bool) ($this->getNumberOfIncomingTransitions() > 0);
 		}
-		
+
 		public function getAvailableTransitionsForIssue(TBGIssue $issue)
 		{
 			$return_array = array();
@@ -327,10 +327,10 @@
 				if ($transition->isAvailableForIssue($issue))
 					$return_array[$transition->getID()] = $transition;
 			}
-			
+
 			return $return_array;
 		}
-		
+
 		public function applyToIssue(TBGIssue $issue)
 		{
 			$issue->setWorkflowStep($this);
@@ -347,7 +347,7 @@
 				$issue->open();
 			}
 		}
-		
+
 		public function copy(TBGWorkflow $new_workflow)
 		{
 			$new_step = clone $this;
@@ -355,7 +355,7 @@
 			$new_step->save();
 			return $new_step;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

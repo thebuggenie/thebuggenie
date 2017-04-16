@@ -3,13 +3,13 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGPriority extends TBGDatatype 
+	class TBGPriority extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::PRIORITY;
 
 		protected static $_items = null;
-		
+
 		protected $_itemtype = TBGDatatype::PRIORITY;
 
 		public static function loadFixtures(TBGScope $scope)

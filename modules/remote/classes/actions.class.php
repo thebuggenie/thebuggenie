@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	/**
 	 * actions for the remote module
@@ -21,12 +21,12 @@
 					$this->selected_project = TBGProject::getByKey($project_key);
 				elseif ($project_id = (int) $request['project_id'])
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
-				
+
 				TBGContext::setCurrentProject($this->selected_project);
 			}
 			catch (Exception $e) {}
 		}
-		
+
 		public function runListProjects(TBGRequest $request)
 		{
 			$projects = TBGProject::getAll();

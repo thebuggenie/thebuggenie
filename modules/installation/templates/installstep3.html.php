@@ -1,5 +1,5 @@
 <?php include_template('installation/header'); ?>
-<?php 
+<?php
 
 $dirname = dirname($_SERVER['PHP_SELF']);
 
@@ -30,15 +30,15 @@ if ($dirname != '/')
 			$('continue_error').show();
 			$('continue_error').update('The subdirectory url <i>must start and end with a forward slash</i>');
 		}
-		else 
-		{ 
+		else
+		{
 			$('continue_button').show();
 			$('continue_error').hide();
 			$('url_preview').update($('url_subdir').value);
 		}
-		
+
 		var new_url = $('url_subdir').value;
-		
+
 		if (new_url.endsWith('//'))
 		{
 			$('continue_button').hide();

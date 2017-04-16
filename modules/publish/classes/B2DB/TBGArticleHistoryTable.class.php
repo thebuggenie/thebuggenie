@@ -21,7 +21,7 @@
 		const DATE = 'articlehistory.date';
 		const AUTHOR = 'articlehistory.author';
 		const SCOPE = 'articlehistory.scope';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -77,7 +77,7 @@
 			{
 				$crit->addInsert(self::REASON, $reason);
 			}
-			
+
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(self::DATE, time());
 
@@ -108,7 +108,7 @@
 
 			$res = $this->doSelect($crit);
 			$uids = array();
-			
+
 			if ($res)
 			{
 				while ($row = $res->getNextRow())
@@ -161,6 +161,6 @@
 			$res = $this->doDelete($crit);
 		}
 
-		
+
 
 	}

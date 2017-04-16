@@ -5,4 +5,3 @@
 	 */
 
 	TBGContext::getResponse()->addStylesheet('oxygen.css');
-	

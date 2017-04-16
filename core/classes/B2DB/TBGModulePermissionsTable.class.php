@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="modulepermissions")
 	 */
-	class TBGModulePermissionsTable extends TBGB2DBTable 
+	class TBGModulePermissionsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function deleteByModuleAndUIDandGIDandTIDandScope($module_name, $uid, $gid, $tid, $scope)
 		{
 			$crit = $this->getCriteria();
@@ -56,7 +56,7 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$res = $this->doDelete($crit);
 		}
-		
+
 		public function setPermissionByModuleAndUIDandGIDandTIDandScope($module_name, $uid, $gid, $tid, $allowed, $scope)
 		{
 			$crit = $this->getCriteria();
@@ -68,5 +68,5 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 		}
-		
+
 	}

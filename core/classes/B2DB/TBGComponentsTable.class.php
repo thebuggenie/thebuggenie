@@ -23,7 +23,7 @@
 	 * @Table(name="components")
 	 * @Entity(class="TBGComponent")
 	 */
-	class TBGComponentsTable extends TBGB2DBTable 
+	class TBGComponentsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -37,7 +37,7 @@
 		const PROJECT = 'components.project';
 		const LEAD_BY = 'components.leader';
 		const LEAD_TYPE = 'components.leader_type';
-		
+
 //		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
@@ -50,7 +50,7 @@
 //			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function getByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -58,5 +58,5 @@
 			$res = $this->doSelect($crit, false);
 			return $res;
 		}
-		
+
 	}

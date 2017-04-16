@@ -37,7 +37,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_description;
-		
+
 		/**
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
@@ -178,7 +178,7 @@
 		{
 			$this->_description = $description;
 		}
-		
+
 		public function move($target_path)
 		{
 			if (TBGSettings::getUploadStorage() == 'files')
@@ -205,5 +205,5 @@
 
 			return $event->getReturnValue();
 		}
-		
+
 	}

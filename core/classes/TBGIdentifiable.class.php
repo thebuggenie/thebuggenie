@@ -28,4 +28,3 @@
 		public function getID();
 
 	}
-	

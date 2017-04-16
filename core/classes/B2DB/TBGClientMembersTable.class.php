@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="clientmembers")
 	 */
-	class TBGClientMembersTable extends TBGB2DBTable 
+	class TBGClientMembersTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -31,7 +31,7 @@
 		const SCOPE = 'clientmembers.scope';
 		const UID = 'clientmembers.uid';
 		const CID = 'clientmembers.cid';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -56,7 +56,7 @@
 
 			return $uids;
 		}
-		
+
 		public function clearClientsByUserID($user_id)
 		{
 			$crit = $this->getCriteria();

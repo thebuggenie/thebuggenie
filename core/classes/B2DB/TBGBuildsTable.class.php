@@ -23,7 +23,7 @@
 	 * @Table(name="builds")
 	 * @Entity(class="TBGBuild")
 	 */
-	class TBGBuildsTable extends TBGB2DBTable 
+	class TBGBuildsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -42,7 +42,7 @@
 		const RELEASED = 'builds.isreleased';
 		const FILE_ID = 'builds.file_id';
 		const FILE_URL = 'builds.file_url';
-		
+
 //		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
@@ -60,7 +60,7 @@
 //			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function _migrateData(\b2db\Table $old_table)
 		{
 			$sqls = array();
@@ -79,7 +79,7 @@
 							$editions[$row->get(self::EDITION)] = 0;
 						}
 					}
-					
+
 					$edition_projects = TBGEditionsTable::getTable()->getProjectIDsByEditionIDs(array_keys($editions));
 
 					foreach ($edition_projects as $edition => $project)
@@ -118,7 +118,7 @@
 			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
 			$res = $this->doSelect($crit);
-			
+
 			return $res;
 		}
 
@@ -129,7 +129,7 @@
 			$row = $this->doSelectById($id, $crit);
 			return $row;
 		}
-		
+
 		public function clearDefaultsByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -138,7 +138,7 @@
 			$crit->addWhere(self::PROJECT, $project_id);
 			$res = $this->doUpdate($crit);
 		}
-		
+
 		public function clearDefaultsByEditionID($edition_id)
 		{
 			$crit = $this->getCriteria();
@@ -147,14 +147,14 @@
 			$crit->addWhere(self::EDITION, $edition_id);
 			$res = $this->doUpdate($crit);
 		}
-		
+
 		public function setDefaultBuild($build_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, true);
 			$res = $this->doUpdateById($crit, $build_id);
 		}
-		
-		
-		
+
+
+
 	}

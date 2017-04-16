@@ -29,11 +29,11 @@
 		protected $_name;
 
 		protected $_visiblefields = array();
-		
+
 		protected $_issuetypedetails = null;
-		
+
 		protected $_number_of_projects = null;
-		
+
 		/**
 		 * The issuetype description
 		 *
@@ -54,7 +54,7 @@
 		{
 			TBGCache::delete(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX);
 		}
-		
+
 		/**
 		 * Return all issuetypes in the system
 		 *
@@ -65,7 +65,7 @@
 			self::_populateSchemes();
 			return self::$_schemes;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$scheme = new TBGIssuetypeScheme();
@@ -75,7 +75,7 @@
 			$scheme->save();
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID(), 'core', $scope->getID());
-			
+
 			foreach (TBGIssuetype::getAll() as $issuetype)
 			{
 				$scheme->setIssuetypeEnabled($issuetype);
@@ -88,10 +88,10 @@
 					$scheme->setIssuetypeReportable($issuetype, false);
 				}
 			}
-			
+
 			return $scheme;
 		}
-		
+
 		/**
 		 * Returns the issuetypes description
 		 *
@@ -101,7 +101,7 @@
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Set the issuetypes description
 		 *
@@ -130,7 +130,7 @@
 				$this->_issuetypedetails = TBGIssuetypeSchemeLinkTable::getTable()->getByIssuetypeSchemeID($this->getID());
 			}
 		}
-		
+
 		public function setIssuetypeEnabled(TBGIssuetype $issuetype, $enabled = true)
 		{
 			if ($enabled)
@@ -146,7 +146,7 @@
 			}
 			$this->_issuetypedetails = null;
 		}
-		
+
 		public function setIssuetypeDisabled(TBGIssuetype $issuetype)
 		{
 			$this->setIssuetypeEnabled($issuetype, false);
@@ -157,7 +157,7 @@
 			$this->_populateAssociatedIssuetypes();
 			return array_key_exists($issuetype->getID(), $this->_issuetypedetails);
 		}
-		
+
 		public function isIssuetypeReportable(TBGIssuetype $issuetype)
 		{
 			$this->_populateAssociatedIssuetypes();
@@ -171,7 +171,7 @@
 			if (!$this->isSchemeAssociatedWithIssuetype($issuetype)) return false;
 			return (bool) $this->_issuetypedetails[$issuetype->getID()]['redirect'];
 		}
-		
+
 		public function setIssuetypeRedirectedAfterReporting(TBGIssuetype $issuetype, $val = true)
 		{
 			TBGIssuetypeSchemeLinkTable::getTable()->setIssuetypeRedirectedAfterReportingForScheme($issuetype->getID(), $this->getID(), $val);
@@ -216,7 +216,7 @@
 			}
 			return $issuetypes;
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGIssueFieldsTable::getTable()->deleteByIssuetypeSchemeID($this->getID());
@@ -249,7 +249,7 @@
 			$this->_populateVisibleFieldsForIssuetype($issuetype);
 			return $this->_visiblefields[$issuetype->getID()];
 		}
-		
+
 		public function clearAvailableFieldsForIssuetype(TBGIssuetype $issuetype)
 		{
 			TBGIssueFieldsTable::getTable()->deleteBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID());
@@ -259,7 +259,7 @@
 		{
 			TBGIssueFieldsTable::getTable()->addFieldAndDetailsBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID(), $key, $details);
 		}
-		
+
 		public function isInUse()
 		{
 			if ($this->_number_of_projects === null)
@@ -268,12 +268,12 @@
 			}
 			return (bool) $this->_number_of_projects;
 		}
-		
+
 		public function getNumberOfProjects()
 		{
 			return $this->_number_of_projects;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

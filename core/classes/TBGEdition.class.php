@@ -20,7 +20,7 @@
 	 */
 	class TBGEdition extends TBGQaLeadableItem
 	{
-		
+
 		/**
 		 * The name of the object
 		 *
@@ -37,7 +37,7 @@
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
-		
+
 		/**
 		 * Editions components
 		 *
@@ -45,7 +45,7 @@
 		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponentsTable")
 		 */
 		protected $_components;
-		
+
 		/**
 		 * Edition builds
 		 *
@@ -63,7 +63,7 @@
 		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsersTable")
 		 */
 		protected $_assigned_users;
-		
+
 		/**
 		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeamsTable")
 		 */
@@ -71,12 +71,12 @@
 
 		/**
 		 * The editions documentation URL
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url;
-						
+
 		/**
 		 * Whether the item is locked or not
 		 *
@@ -107,7 +107,7 @@
 				$this->_b2dbLazyload('_components');
 			}
 		}
-		
+
 		/**
 		 * Returns an array with all components
 		 *
@@ -118,12 +118,12 @@
 			$this->_populateComponents();
 			return $this->_components;
 		}
-		
+
 		/**
 		 * Whether or not this edition has a component enabled
-		 * 
+		 *
 		 * @param TBGComponent|integer $component The component to check for
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasComponent($c_id)
@@ -158,7 +158,7 @@
 			}
 			return \b2db\Core::getTable('TBGEditionComponentsTable')->addEditionComponent($this->getID(), $c_id);
 		}
-		
+
 		/**
 		 * Removes an existing component from the edition
 		 *
@@ -172,7 +172,7 @@
 			}
 			\b2db\Core::getTable('TBGEditionComponentsTable')->removeEditionComponent($this->getID(), $c_id);
 		}
-		
+
 		/**
 		 * Returns the description
 		 *
@@ -182,7 +182,7 @@
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Returns the documentation url
 		 *
@@ -192,12 +192,12 @@
 		{
 			return $this->_doc_url;
 		}
-		
+
 		/**
 		 * Returns the component specified
 		 *
 		 * @param integer $c_id
-		 * 
+		 *
 		 * @return TBGComponent
 		 */
 		public function getComponent($c_id)
@@ -210,7 +210,7 @@
 
 			return null;
 		}
-		
+
 		/**
 		 * Populates builds inside the edition
 		 *
@@ -259,7 +259,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Returns the parent project
 		 *
@@ -269,7 +269,7 @@
 		{
 			return $this->_b2dbLazyload('_project');
 		}
-		
+
 		public function setProject($project)
 		{
 			$this->_project = $project;
@@ -280,7 +280,7 @@
 		 *
 		 * @param TBGIdentifiableClass $assignee
 		 * @param integer $role
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addAssignee(TBGIdentifiableClass $assignee, $role)
@@ -319,13 +319,13 @@
 			if ($this->_assigned_teams === null)
 				$this->_b2dbLazyload('_assigned_teams');
 		}
-		
+
 		public function getAssignedUsers()
 		{
 			$this->_populateAssignees();
 			return $this->_assigned_users;
 		}
-		
+
 		public function getAssignedTeams()
 		{
 			$this->_populateAssignees();
@@ -341,7 +341,7 @@
 		{
 			$this->_description = $description;
 		}
-		
+
 		/**
 		 * Set the editions documentation url
 		 *
@@ -358,17 +358,17 @@
 			TBGEditionAssignedUsersTable::getTable()->deleteByEditionID($this->getID());
 			TBGEditionAssignedTeamsTable::getTable()->deleteByEditionID($this->getID());
 		}
-		
+
 		/**
 		 * Whether or not the current user can access the edition
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
 		{
 			return ($this->getProject()->canSeeAllEditions() || TBGContext::getUser()->hasPermission('canseeedition', $this->getID()));
 		}
-		
+
 		/**
 		 * Returns whether or not this item is locked
 		 *

@@ -23,7 +23,7 @@
 	 * @Table(name="clients")
 	 * @Entity(class="TBGClient")
 	 */
-	class TBGClientsTable extends TBGB2DBTable 
+	class TBGClientsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;

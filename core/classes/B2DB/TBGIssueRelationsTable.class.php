@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="issuerelations")
 	 */
-	class TBGIssueRelationsTable extends TBGB2DBTable 
+	class TBGIssueRelationsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::PARENT_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::CHILD_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 		}
-		
+
 		public function getRelatedIssues($issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -52,7 +52,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function getIssueRelation($this_issue_id, $related_issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -66,7 +66,7 @@
 			$res = $this->doSelectOne($crit);
 			return $res;
 		}
-		
+
 		public function addParentIssue($issue_id, $parent_id)
 		{
 			$crit = $this->getCriteria();
@@ -76,7 +76,7 @@
 			$res = $this->doInsert($crit);
 			return $res;
 		}
-		
+
 		public function removeParentIssue($issue_id, $parent_id)
 		{
 			$crit = $this->getCriteria();
@@ -96,7 +96,7 @@
 			$res = $this->doInsert($crit);
 			return $res;
 		}
-		
+
 		public function removeChildIssue($issue_id, $child_id)
 		{
 			$crit = $this->getCriteria();

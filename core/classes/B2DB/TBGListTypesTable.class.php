@@ -25,7 +25,7 @@
 	 * @Entities(identifier="itemtype")
 	 * @SubClasses(status="TBGStatus", category="TBGCategory", priority="TBGPriority", role="TBGRole", resolution="TBGResolution", reproducability="TBGReproducability", severity="TBGSeverity")
 	 */
-	class TBGListTypesTable extends TBGB2DBTable 
+	class TBGListTypesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -38,14 +38,14 @@
 		const APPLIES_TO = 'listtypes.applies_to';
 		const APPLIES_TYPE = 'listtypes.applies_type';
 		const ORDER = 'listtypes.sort_order';
-		
+
 		protected static $_item_cache = null;
 
 		public function clearListTypeCache()
 		{
 			self::$_item_cache = null;
 		}
-		
+
 		protected function _populateItemCache()
 		{
 			if (self::$_item_cache === null)
@@ -61,7 +61,7 @@
 				}
 			}
 		}
-		
+
 		public function getAllByItemType($itemtype)
 		{
 			$this->_populateItemCache();

@@ -18,9 +18,9 @@
 	 *
 	 * @Table(name="TBGBuildsTable")
 	 */
-	class TBGBuild extends TBGReleaseableItem 
+	class TBGBuild extends TBGReleaseableItem
 	{
-		
+
 		/**
 		 * The name of the object
 		 *
@@ -46,7 +46,7 @@
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
-		
+
 		/**
 		 * This builds milestone, if any
 		 *
@@ -55,27 +55,27 @@
 		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone = null;
-		
+
 		/**
 		 * Whether this build is active or not
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean", name="locked")
 		 */
 		protected $_isactive = null;
-		
+
 		/**
 		 * An attached file, if exists
-		 * 
+		 *
 		 * @var TBGFile
 		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_file_id = null;
-		
+
 		/**
 		 * An url to download this releases file, if any
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="string", length=255)
 		 */
@@ -128,14 +128,14 @@
 
 		/**
 		 * Returns the name and the version, nicely formatted
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getPrintableName()
 		{
 			return $this->_name . ' (' . $this->getVersion() . ')';
 		}
-		
+
 		/**
 		 * Returns the edition
 		 *
@@ -145,7 +145,7 @@
 		{
 			return $this->_b2dbLazyload('_edition');
 		}
-		
+
 		public function getEditionID()
 		{
 			return ($this->_edition instanceof TBGEdition) ? $this->_edition->getID() : (int) $this->_edition;
@@ -155,7 +155,7 @@
 		{
 			$this->_edition = $edition;
 		}
-		
+
 		/**
 		 * Returns the project
 		 *
@@ -171,7 +171,7 @@
 		{
 			$this->_project = $project;
 		}
-		
+
 		/**
 		 * Returns the milestone
 		 *
@@ -186,20 +186,20 @@
 		{
 			$this->_milestone = $milestone;
 		}
-		
+
 		public function clearMilestone()
 		{
 			$this->_milestone = null;
 		}
-		
+
 		public function clearEdition()
 		{
 			$this->_edition = null;
 		}
-		
+
 		/**
 		 * Whether this build is under an edition
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function isEditionBuild()
@@ -209,24 +209,24 @@
 
 		/**
 		 * Whether this build is under a project
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function isProjectBuild()
 		{
 			return !is_null($this->_project);
 		}
-		
+
 		/**
 		 * Returns the parent object
-		 * 
+		 *
 		 * @return TBGReleaseableItem
 		 */
 		public function getParent()
 		{
 			return ($this->isProjectBuild()) ? $this->getProject() : $this->getEdition();
 		}
-		
+
 		/**
 		 * Make the build the default for it's edition or project
 		 */
@@ -243,7 +243,7 @@
 			$res = \b2db\Core::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
 			$this->_isdefault = true;
 		}
-		
+
 		/**
 		 * Delete this build
 		 */
@@ -251,15 +251,15 @@
 		{
 			\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
 		}
-		
+
 		/**
 		 * Adds this build to all open issues in this edition or project
 		 * Returns true if any issues were updated, false if not
-		 * 
+		 *
 		 * @param integer $limit_status Limit to only a specific status type
 		 * @param integer $limit_category Limit to only a specific category
 		 * @param integer $limit_issuetype Limit to only a specific issue type
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function addToOpenParentIssues($limit_status = null, $limit_category = null, $limit_issuetype = null)
@@ -272,7 +272,7 @@
 			{
 				$res = TBGIssuesTable::getTable()->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
-			
+
 			$retval = false;
 			if ($res)
 			{
@@ -287,10 +287,10 @@
 			}
 			return $retval;
 		}
-		
+
 		/**
 		 * Whether or not the current user can access the build
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
@@ -300,89 +300,89 @@
 
 		/**
 		 * Return the file associated with this build, if any
-		 * 
+		 *
 		 * @return TBGFile
 		 */
 		public function getFile()
 		{
 			return $this->_b2dbLazyload('_file_id');
 		}
-		
+
 		/**
 		 * Set the file associated with this build
-		 * 
-		 * @param TBGFile $file 
+		 *
+		 * @param TBGFile $file
 		 */
 		public function setFile(TBGFile $file)
 		{
 			$this->_file_id = $file;
 		}
-		
+
 		public function clearFile()
 		{
 			$this->_file_id = null;
 		}
-		
+
 		/**
 		 * Return whether this build has a file associated to it
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasFile()
 		{
 			return (bool) ($this->getFile() instanceof TBGFile);
 		}
-		
+
 		/**
 		 * Return the file download url for this build
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getFileURL()
 		{
 			return $this->_file_url;
 		}
-		
+
 		/**
 		 * Set the file download url for this build
-		 * 
-		 * @param string $file_url 
+		 *
+		 * @param string $file_url
 		 */
 		public function setFileURL($file_url)
 		{
 			$this->_file_url = $file_url;
 		}
-		
+
 		/**
 		 * Return whether this build has a file url
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasFileURL()
 		{
 			return (bool) ($this->_file_url != '');
 		}
-		
+
 		/**
 		 * Whether this build has any download associated with it
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasDownload()
 		{
 			return (bool) ($this->getFile() instanceof TBGFile || $this->_file_url != '');
 		}
-		
+
 		public function isArchived()
 		{
 			return $this->isLocked();
 		}
-		
+
 		public function isActive()
 		{
 			return !$this->isLocked();
 		}
-		
+
 		/**
 		 * Returns the complete version number
 		 *

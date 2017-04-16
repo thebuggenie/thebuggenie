@@ -46,7 +46,7 @@
 			$this->cliEcho("Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n");
 			$this->cliEcho("Press ENTER to continue with the installation: ");
 			$this->pressEnterToContinue();
-			
+
 			$this->cliEcho("\n");
 			$this->cliEcho("How to support future development\n", 'green', 'bold');
 			$this->cliEcho("Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n");
@@ -243,7 +243,7 @@
 							$this->pressEnterToContinue();
 						}
 						$this->cliEcho("\n");
-						
+
 						$this->cliEcho("The Bug Genie subdir\n", 'white', 'bold');
 						$this->cliEcho("This is the sub-path of the Web server where The Bug Genie will be located.\n");
 						if ($this->hasProvidedArgument('url_subdir'))
@@ -326,7 +326,7 @@
 					{
 						$this->cliEcho("Skipping .htaccess auto-setup.");
 					}
-					
+
 					if ($this->getProvidedArgument('setup_htaccess') != 'yes')
 					{
 						$this->cliEcho("Press ENTER to continue ... ");
@@ -340,7 +340,7 @@
 					{
 						$this->cliEcho("You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n");
 					}
-					
+
 					$this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');

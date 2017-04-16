@@ -23,8 +23,8 @@
 	$strings['No such user'] = 'Usuario inexistente';
 	$strings['Save'] = 'Guardar';
 	$strings['VCS Integration'] = 'Integración VCS';
-	$strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Permite detalles del código fuente confirmado que sean mostrados en The Bug Genie'; 
-	$strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente'; 
+	$strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Permite detalles del código fuente confirmado que sean mostrados en The Bug Genie';
+	$strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente';
 	$strings['with project\'s repository set as default'] = 'con el repositorio del proyecto definido por defecto';
 	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
 	$strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';

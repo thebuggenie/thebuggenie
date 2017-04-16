@@ -34,7 +34,7 @@
 		const LOCKED = 'builds.locked';
 		const PROJECT = 'builds.project';
 		const RELEASED = 'builds.isreleased';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -49,5 +49,5 @@
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 	}

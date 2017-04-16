@@ -3,13 +3,13 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGReproducability extends TBGDatatype 
+	class TBGReproducability extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::REPRODUCABILITY;
 
 		protected static $_items = null;
-		
+
 		protected $_itemtype = TBGDatatype::REPRODUCABILITY;
 
 		public static function loadFixtures(TBGScope $scope)

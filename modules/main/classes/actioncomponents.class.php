@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 	/**
 	 * Main action components
 	 */
 	class mainActionComponents extends TBGActionComponent
 	{
-		
+
 		public function componentUserdropdown()
 		{
 			TBGLogging::log('user dropdown component');
@@ -19,13 +19,13 @@
 					TBGLogging::log('done (loading user object in dropdown)');
 				}
 			}
-			catch (Exception $e) 
-			{ 
+			catch (Exception $e)
+			{
 			}
 			$this->show_avatar = (isset($this->show_avatar)) ? $this->show_avatar : true;
 			TBGLogging::log('done (user dropdown component)');
 		}
-		
+
 		public function componentClientusers()
 		{
 			try
@@ -38,11 +38,11 @@
 				}
 				$this->clientusers = $this->client->getMembers();
 			}
-			catch (Exception $e) 
+			catch (Exception $e)
 			{
 			}
 		}
-		
+
 		public function componentArchivedProjects()
 		{
 			if (!isset($this->target))
@@ -66,28 +66,28 @@
 				foreach ($this->team->getAssociatedProjects() as $project_id => $project) {
 					$projects[$project_id] = $project;
 				}
-				
+
 				$final_projects = array();
-				
+
 				foreach ($projects as $project)
 				{
 					if ($project->isArchived()): $final_projects[] = $project; endif;
 				}
-				
+
 				$this->projects = $final_projects;
 			}
 			elseif ($this->target == 'client')
 			{
 				$this->client = TBGContext::factory()->TBGClient($this->id);
 				$projects = TBGProject::getAllByClientID($this->client->getID());
-				
+
 				$final_projects = array();
-				
+
 				foreach ($projects as $project)
 				{
 					if (!$project->isArchived()): $final_projects[] = $project; endif;
 				}
-				
+
 				$this->projects = $final_projects;
 			}
 			elseif ($this->target == 'project')
@@ -95,10 +95,10 @@
 				$this->parent = TBGContext::factory()->TBGProject($this->id);
 				$this->projects = $this->parent->getChildren(true);;
 			}
-			
+
 			$this->project_count = count($this->projects);
 		}
-		
+
 		public function componentTeamdropdown()
 		{
 			TBGLogging::log('team dropdown component');
@@ -113,12 +113,12 @@
 					TBGLogging::log('done (loading team object in dropdown)');
 				}
 			}
-			catch (Exception $e) 
-			{ 
+			catch (Exception $e)
+			{
 			}
 			TBGLogging::log('done (team dropdown component)');
 		}
-		
+
 		public function componentIdentifiableselector()
 		{
 			$this->include_teams = (isset($this->include_teams)) ? $this->include_teams : false;
@@ -126,12 +126,12 @@
 			$this->callback = (isset($this->callback)) ? $this->callback : null;
 			$this->allow_clear = (isset($this->allow_clear)) ? $this->allow_clear : true;
 		}
-		
+
 		public function componentIdentifiableselectorresults()
 		{
 			$this->include_teams = (TBGContext::getRequest()->hasParameter('include_teams')) ? TBGContext::getRequest()->getParameter('include_teams') : false;
 		}
-		
+
 		public function componentMyfriends()
 		{
 			$this->friends = TBGContext::getUser()->getFriends();
@@ -226,17 +226,17 @@
 				$this->available_assignees = $available_assignees;
 			}
 		}
-		
+
 		public function componentIssuedetailslistEditable()
 		{
 			$this->setupVariables();
 		}
-		
+
 		public function componentIssuemaincustomfields()
 		{
 			$this->setupVariables();
 		}
-		
+
 		public function componentHideableInfoBox()
 		{
 			$this->show_box = TBGSettings::isInfoBoxVisible($this->key);
@@ -281,16 +281,16 @@
 			$this->issue = $this->issue ?: null;
 			$this->setupVariables();
 		}
-		
+
 		public function componentRelateissue()
 		{
 		}
-		
+
 		public function componentFindduplicateissues()
 		{
 			$this->setupVariables();
 		}
-		
+
 		public function componentFindrelatedissues()
 		{
 		}
@@ -317,16 +317,16 @@
 				}
 				catch (Exception $e) {}
 			}
-		}		
-		
+		}
+
 		public function componentUsercard()
 		{
 			$this->rnd_no = rand();
 			$this->issues = $this->user->getIssues();
 		}
-		
+
 		public function componentIssueaffected()
-		{	
+		{
 			$this->editions = ($this->issue->getProject()->isEditionsEnabled()) ? $this->issue->getEditions() : array();
 			$this->components = ($this->issue->getProject()->isComponentsEnabled()) ? $this->issue->getComponents() : array();
 			$this->builds = ($this->issue->getProject()->isBuildsEnabled()) ? $this->issue->getBuilds() : array();
@@ -360,7 +360,7 @@
 		{
 			$this->selected_tab = isset($this->section) ? $this->section : 'login';
 			$this->options = $this->getParameterHolder();
-			
+
 			if (array_key_exists('HTTP_REFERER', $_SERVER)):
 				$this->referer = htmlentities($_SERVER['HTTP_REFERER'], ENT_COMPAT, TBGContext::getI18n()->getCharset());
 			elseif (TBGContext::hasMessage('login_referer')):
@@ -368,7 +368,7 @@
 			else:
 				$this->referer = TBGContext::getRouting()->generate('dashboard');
 			endif;
-			
+
 			try
 			{
 				$this->article = null;
@@ -391,15 +391,15 @@
 			//$this->error = TBGContext::geti18n()->__('Please log in');
 			}
 		}
-		
+
 		public function componentLoginRegister()
-		{	
+		{
 		}
-		
+
 		public function componentCaptcha()
 		{
 		}
-		
+
 		public function componentGuestCaptcha()
 		{
 		}
@@ -411,10 +411,10 @@
 			$this->components = $project->getComponents();
 			$this->builds = $project->getBuilds();
 		}
-		
+
 		public function componentDashboardview()
 		{
-			if ($this->view->hasJS()) 
+			if ($this->view->hasJS())
 			{
 				$js = $this->view->getJS();
 				$jss = (is_array($js)) ? $js : array($js);
@@ -422,9 +422,9 @@
 					$this->getResponse()->addJavascript($js, false);
 			}
 		}
-		
+
 		public function componentDashboardConfig()
-		{	
+		{
 			$this->views = TBGDashboardView::getAvailableViews($this->target_type);
 			$this->dashboardViews = TBGDashboardView::getViews($this->tid, $this->target_type);
 		}
@@ -474,12 +474,12 @@
 
 		public function componentReportIssueContainer()
 		{
-			
+
 		}
 
 		public function componentConfirmUsername()
 		{
-			
+
 		}
 
 		public function componentOpenID()
@@ -493,7 +493,7 @@
 		public function componentIssuePermissions()
 		{
 			$al_items = $this->issue->getAccessList();
-			
+
 			foreach ($al_items as $k => $item)
 			{
 				if ($item['target'] instanceof TBGUser && $item['target']->getID() == $this->getUser()->getID())
@@ -501,7 +501,7 @@
 					unset($al_items[$k]);
 				}
 			}
-			
+
 			$this->al_items = $al_items;
 		}
 

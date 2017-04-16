@@ -23,9 +23,9 @@
 	 * @Entity(class="TBGScope")
 	 * @Table(name="scopes")
 	 */
-	class TBGScopesTable extends \TBGB2DBTable 
+	class TBGScopesTable extends \TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'scopes';
 		const ID = 'scopes.id';
@@ -40,7 +40,7 @@
 		const DESCRIPTION = 'scopes.description';
 		const NAME = 'scopes.name';
 		const ADMINISTRATOR = 'scopes.administrator';
-		
+
 //		public function __construct()
 //		{
 //			parent::__construct(self::B2DBNAME, self::ID);
@@ -68,7 +68,7 @@
 			$crit->addUpdate(self::NAME, 'Default scope');
 			$this->doUpdateById($crit, 1);
 		}
-		
+
 		public function getByHostname($hostname)
 		{
 			$crit = $this->getCriteria();

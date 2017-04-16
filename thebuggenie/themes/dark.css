@@ -1,9 +1,9 @@
 /* Dark template
-   Add this file in css folder  
-   Add the next line in template/header.inc.php file before line TBGEvent::createNew('core', 'header_ends')->trigger(); 
+   Add this file in css folder
+   Add the next line in template/header.inc.php file before line TBGEvent::createNew('core', 'header_ends')->trigger();
    <link rel="stylesheet" type="text/css" href="<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/css/dark.css'; ?>">
    The work is in progress but whoever you are welcome to continue and improve it.
-*/   
+*/
 
 /* General styles */
 body, td, th { color: #999999;}

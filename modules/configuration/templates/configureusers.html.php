@@ -54,7 +54,7 @@
 								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 								<td style="padding: 3px;">
 									<script>
-										var import_cb = function () { 
+										var import_cb = function () {
 											TBG.Main.Helpers.Dialog.show('<?php echo addslashes(__('Would you like to add this user to the current scope?')); ?>',
 																		 '<?php echo addslashes(__('The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes%" below. If you want to create a different user, press "%no%" and enter a different username.', array('%yes%' => __('yes'), '%no%' => __('no')))); ?>',
 																		 {

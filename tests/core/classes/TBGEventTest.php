@@ -6,7 +6,7 @@ class TBGLogging
 {
 	public function log($message, $module = '', $level = '')
 	{
-		
+
 	}
 }
 
@@ -150,7 +150,7 @@ class TBGEventTest extends PHPUnit_Framework_TestCase
 		TBGEvent::listen('modulename', 'identifier', array($this, 'listenerCallbackNonProcessingSecond'));
 		TBGEvent::listen('modulename', 'identifier', array($this, 'listenerCallbackProcessing'));
 		$this->assertTrue(TBGEvent::isAnyoneListening('modulename', 'identifier'));
-		
+
 		return $event;
 	}
 

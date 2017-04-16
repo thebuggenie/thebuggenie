@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="buddies")
 	 */
-	class TBGBuddiesTable extends TBGB2DBTable 
+	class TBGBuddiesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;

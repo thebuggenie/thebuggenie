@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * B2DB Saveable class, active record implementation for B2DB
 	 *
@@ -14,7 +14,7 @@
 
 	/**
 	 * B2DB Saveable class, active record implementation for B2DB
-	 * Can be implemented by objects to allow them to be passed to a B2DB table 
+	 * Can be implemented by objects to allow them to be passed to a B2DB table
 	 * class for saving
 	 *
 	 * @package b2db
@@ -25,7 +25,7 @@
 
 		/**
 		 * Return the associated B2DBTable for this class
-		 * 
+		 *
 		 * @return Table
 		 */
 		public static function getB2DBTable()
@@ -96,7 +96,7 @@
 			}
 			return $this->$property;
 		}
-		
+
 		protected function _populatePropertiesFromRow(\b2db\Row $row, $traverse = true, $foreign_key = null)
 		{
 			$table = self::getB2DBTable();
@@ -156,19 +156,19 @@
 				}
 			}
 		}
-		
+
 		protected function _preInitialize() {}
-		
+
 		protected function _construct(\b2db\Row $row, $foreign_key = null) {}
 
 		protected function _clone() {}
-		
+
 		protected function _preSave($is_new) {}
-		
+
 		protected function _postSave($is_new) {}
-		
+
 		protected function _preDelete() {}
-		
+
 		protected function _postDelete() {}
 
 		public function getB2DBSaveablePropertyValue($property_name)
@@ -233,7 +233,7 @@
 				$this->_preInitialize();
 			}
 		}
-		
+
 		final public function __clone()
 		{
 			$this->_id = null;
@@ -248,12 +248,12 @@
 			$this->_id = $res_id;
 			$this->_postSave($is_new);
 		}
-		
+
 		final public function delete()
 		{
 			$this->_preDelete();
 			self::getB2DBTable()->doDeleteById($this->getB2DBID());
 			$this->_postDelete();
 		}
-		
+
 	}

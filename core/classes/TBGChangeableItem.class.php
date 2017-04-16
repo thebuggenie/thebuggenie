@@ -12,7 +12,7 @@
 
 	/**
 	 * Changeable item class
-	 * 
+	 *
 	 * @method boolean revert*() revert*() Reverts a property change
 	 * @method boolean is*Changed() is*Changed() Checks to see whether a property is changed
 	 *
@@ -26,37 +26,37 @@
 
 		/**
 		 * List of changed properties
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_changed_items = array();
-		
+
 		/**
 		 * List of properties that has been changed somewhere else
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_unmergeable_items = array();
-		
+
 		/**
 		 * Whether the constructor is done merging changes with the original object
-		 *  
+		 *
 		 * @var boolean
 		 */
 		protected $_merged = false;
-		
+
 		/**
 		 * Whether there was any errors mergin
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected $_merge_error = false;
-		
+
 		/**
 		 * Returns a list of changed items with a specified class
-		 * 
+		 *
 		 * @param string $class The class name
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getChangedItems($class)
@@ -87,7 +87,7 @@
 			}
 			return $retarr;
 		}
-		
+
 		public function __call($method, $parameters = null)
 		{
 			if (mb_strpos($method, 'is') == 0 && mb_strpos($method, 'Changed') == mb_strlen($method) - 7)
@@ -103,10 +103,10 @@
 				return $this->_revertPropertyChange('_' . mb_strtolower(mb_substr($method, 6)));
 			}
 		}
-		
+
 		/**
 		 * Adds a property to list of changed properties
-		 * 
+		 *
 		 * @param string $property The property key that was changed
 		 * @param mixed $value The new value
 		 */
@@ -156,21 +156,21 @@
 				$this->$property = $value;
 			}
 		}
-		
+
 		/**
 		 * Returns a list of changed properties:
 		 * 		array('property_name' => 'old_value')
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _getChangedProperties()
 		{
 			return $this->_changed_items;
 		}
-		
+
 		/**
 		 * Returns a single changed propertys original value
-		 * 
+		 *
 		 * @param $property
 		 * @return unknown_type
 		 */
@@ -182,40 +182,40 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Whether or not this item has any unsaved changes
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasUnsavedChanges()
 		{
 			return !empty($this->_changed_items);
 		}
-		
+
 		/**
 		 * Whether or not this item has any unmergeable changes
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasMergeErrors()
 		{
 			return !empty($this->_unmergeable_items);
 		}
-		
+
 		/**
 		 * Return the number of unsaved changes this item has
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getNumberOfUnsavedChanges()
 		{
 			return count($this->_changed_items);
 		}
-		
+
 		/**
 		 * Revert all changes made to the item
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function revertAll()
@@ -225,12 +225,12 @@
 				$this->_revertPropertyChange($key);
 			}
 		}
-		
+
 		/**
 		 * Checks to see whether a property has unsaved changes
-		 * 
+		 *
 		 * @param string $property The field key
-		 * 
+		 *
 		 * @return boolean
 		 */
 		protected function _isPropertyChanged($property)
@@ -241,9 +241,9 @@
 
 		/**
 		 * Checks to see whether a property has unmerged changes
-		 * 
+		 *
 		 * @param string $property The field key
-		 * 
+		 *
 		 * @return boolean
 		 */
 		protected function _isPropertyMerged($property)
@@ -252,12 +252,12 @@
 			if (empty($this->_unmergeable_items)) return true;
 			return !array_key_exists($property, $this->_unmergeable_items);
 		}
-		
+
 		/**
 		 * Reverts an unsaved change made to a property
-		 * 
+		 *
 		 * @param string $property The field key
-		 * 
+		 *
 		 * @return boolean
 		 */
 		protected function _revertPropertyChange($property)
@@ -275,7 +275,7 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Clears the list of changed items
 		 */
@@ -287,7 +287,7 @@
 				unset($_SESSION['changeableitems'][get_class($this)][$this->getID()]);
 			}
 		}
-	
+
 		protected function _mergeChangedProperties()
 		{
 			if (isset($_SESSION['changeableitems'][get_class($this)]) && isset($_SESSION['changeableitems'][get_class($this)][$this->getID()]))
@@ -314,5 +314,5 @@
 			}
 			$this->_merged = true;
 		}
-		
+
 	}

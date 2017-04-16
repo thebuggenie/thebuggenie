@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * B2DB Core class
 	 *
@@ -47,9 +47,9 @@
 
 		/**
 		 * Loads a table and adds it to the B2DBObject stack
-		 * 
+		 *
 		 * @param Table $tbl_name
-		 * 
+		 *
 		 * @return Table
 		 */
 		public static function loadNewTable(Table $table)
@@ -102,18 +102,18 @@
 		{
 			if (!defined('B2DB_BASEPATH'))
 				throw new Exception('The constant B2DB_BASEPATH must be defined. B2DB_BASEPATH should be the full system path to B2DB');
-			
+
 			try
 			{
 				if ($bootstrap_location !== null && \file_exists($bootstrap_location))
 					require $bootstrap_location;
-				
+
 			}
 			catch (\Exception $e)
 			{
 				throw $e;
 			}
-			
+
 		}
 
 		/**
@@ -173,12 +173,12 @@
 				throw $e;
 			}
 		}
-		
+
 		/**
 		 * Returns the Table object
 		 *
 		 * @param Table $tbl_name
-		 * 
+		 *
 		 * @return Table
 		 */
 		public static function getTable($tbl_name)
@@ -211,7 +211,7 @@
 					break;
 				}
 			}
-			
+
 			if (!$trace)
 				$trace = array('file' => 'unknown', 'line' => 'unknown');
 
@@ -228,12 +228,12 @@
 		{
 			return self::$_sqlhits;
 		}
-		
+
 		public static function getSQLCount()
 		{
 			return \count(self::$_sqlhits) +1;
 		}
-		
+
 		public static function getSQLTiming()
 		{
 			return self::$_sqltiming;
@@ -267,7 +267,7 @@
 			}
 			return $res;
 		}
-		
+
 		/**
 		 * Set the DSN
 		 *
@@ -372,8 +372,8 @@
 
 		/**
 		 * Set the database port
-		 * 
-		 * @param integer $port 
+		 *
+		 * @param integer $port
 		 */
 		public static function setPort($port)
 		{
@@ -579,7 +579,7 @@
 		{
 			self::$_transaction_active = $state;
 		}
-		
+
 		/**
 		 * Starts a new transaction
 		 */
@@ -587,15 +587,15 @@
 		{
 			return new Transaction();
 		}
-		
+
 		public static function isTransactionActive()
 		{
 			return (bool) self::$_transaction_active == Transaction::STATE_STARTED;
 		}
-		
+
 		/**
 		 * Displays a nicely formatted exception message
-		 *  
+		 *
 		 * @param Exception $exception
 		 */
 		public static function fatalError(\Exception $exception)
@@ -665,7 +665,7 @@
 						else
 						{
 							echo '<span style="color: #C95;">unknown file</span>';
-						}	
+						}
 						echo '</li>';
 					}
 					echo "
@@ -714,7 +714,7 @@
 		public static function getDBtypes()
 		{
 			$retarr = array();
-			
+
 			if (\class_exists('\PDO'))
 			{
 				$retarr['mysql'] = 'MySQL';
@@ -733,7 +733,7 @@
 			{
 				throw new Exception('You need to have PHP PDO installed to be able to use B2DB');
 			}
-			
+
 			return $retarr;
 		}
 
@@ -892,7 +892,7 @@
 				}
 			}
 		}
-		
+
 		protected static function _populateCachedTableClassFiles($classname)
 		{
 			if (!array_key_exists($classname, self::$_cached_table_classes))
@@ -939,7 +939,7 @@
 			}
 			return null;
 		}
-		
+
 		public static function getCachedEntityRelationDetails($classname, $property)
 		{
 			self::_populateCachedClassFiles($classname);
@@ -949,7 +949,7 @@
 			}
 			return null;
 		}
-	
+
 		public static function getCachedColumnDetails($classname, $column)
 		{
 			self::_populateCachedClassFiles($classname);
@@ -1009,4 +1009,3 @@
 		}
 
 	}
-	

@@ -51,14 +51,14 @@
 
 		/**
 		 * Whether the milestone has been reached
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected $_reached;
-		
+
 		/**
 		 * When the milestone was reached
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
@@ -66,19 +66,19 @@
 
 		/**
 		 * Whether the milestone has been scheduled for release
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected $_isscheduled;
-		
+
 		/**
 		 * When the milestone is scheduled for release
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_scheduleddate;
-		
+
 		/**
 		 * Whether the milestone has been scheduled for start
 		 *
@@ -88,34 +88,34 @@
 
 		/**
 		 * When the milestone is scheduled to start
-		 * 
+		 *
 		 * @var integer
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_startingdate;
-		
+
 		/**
 		 * The milestone description
-		 * 
+		 *
 		 * @var string
 		 * @Column(type="text")
 		 */
 		protected $_description;
-		
+
 		/**
 		 * Internal cache of issues assigned
-		 * 
+		 *
 		 * @var string
 		 */
 		protected $_issues = null;
-		
+
 		/**
 		 * Number of closed issues
-		 * 
+		 *
 		 * @var integer
 		 */
 		protected $_closed_issues;
-		
+
 		/**
 		 * Points spent or estimated
 		 *
@@ -166,14 +166,14 @@
 			$this->_populateIssues();
 			return $this->_issues;
 		}
-		
+
 		protected function _populatePointsAndTime()
 		{
 			if ($this->_points === null)
 			{
 				$this->_points = array('estimated' => 0, 'spent' => 0);
 				$this->_hours = array('estimated' => 0, 'spent' => 0);
-				
+
 				if ($res = TBGIssuesTable::getTable()->getPointsAndTimeByMilestone($this->getID()))
 				{
 					while ($row = $res->getNextRow())
@@ -186,10 +186,10 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Get total estimated points for issues assigned to this milestone
-		 *  
+		 *
 		 * @return integer
 		 */
 		public function getPointsEstimated()
@@ -200,7 +200,7 @@
 
 		/**
 		 * Get total spent points for issues assigned to this milestone
-		 *  
+		 *
 		 * @return integer
 		 */
 		public function getPointsSpent()
@@ -266,7 +266,7 @@
 		{
 			return $this->getProject()->countClosedIssuesByMilestone($this->getID(), $this->isSprint());
 		}
-		
+
 		/**
 		 * Populates the internal array with issues
 		 */
@@ -291,7 +291,7 @@
 
 		/**
 		 * Return the number of closed issues
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getClosedIssues()
@@ -301,17 +301,17 @@
 
 		/**
 		 * Get the description
-		 * 
+		 *
 		 * @return string
 		 */
 		public function getDescription()
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Set the milestone description
-		 * 
+		 *
 		 * @param string $description The description
 		 */
 		public function setDescription($description)
@@ -321,14 +321,14 @@
 
 		/**
 		 * Whether or not the milestone has been scheduled for release
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isScheduled()
 		{
 			return ($this->getScheduledDate() > 0);
 		}
-		
+
 		/**
 		 * Set the milestone type
 		 *
@@ -358,42 +358,42 @@
 		{
 			return $this->_b2dbLazyload('_project');
 		}
-		
+
 		public function setProject($project)
 		{
 			$this->_project = $project;
 		}
-		
+
 		/**
 		 * Whether this milestone has been reached or not
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isReached()
 		{
 			return $this->_reached;
 		}
-		
+
 		/**
 		 * Whether or not this milestone is overdue
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isOverdue()
 		{
 			return ($this->getScheduledDate() && $this->getScheduledDate() < time() && !$this->isReached()) ? true : false;
 		}
-		
+
 		/**
 		 * Return when this milestone was reached
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getReachedDate()
 		{
 			return $this->_reacheddate;
 		}
-		
+
 		/**
 		 * Set whether or not the milestone is scheduled for finishing
 		 *
@@ -403,20 +403,20 @@
 		{
 			$this->_isscheduled = $scheduled;
 		}
-		
+
 		/**
 		 * Return when this milestone is scheduled for release
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getScheduledDate()
 		{
 			return $this->_scheduleddate;
 		}
-		
+
 		/**
 		 * Set this milestones scheduled release date
-		 * 
+		 *
 		 * @param integer $date The timestamp for release
 		 */
 		public function setScheduledDate($date)
@@ -426,17 +426,17 @@
 
 		/**
 		 * Return the year the milestone is scheduled for release
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getScheduledYear()
 		{
 			return date("Y", $this->_scheduleddate);
 		}
-		
+
 		/**
 		 * Return the month the milestone is scheduled for release
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getScheduledMonth()
@@ -446,27 +446,27 @@
 
 		/**
 		 * Return the day the milestone is scheduled for release
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getScheduledDay()
 		{
 			return date("j", $this->_scheduleddate);
 		}
-		
+
 		/**
 		 * Return when this milestone is starting
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getStartingDate()
 		{
 			return $this->_startingdate;
 		}
-		
+
 		/**
 		 * Set this milestones starting date
-		 * 
+		 *
 		 * @param integer $date The timestamp for the starting date
 		 */
 		public function setStartingDate($date)
@@ -483,20 +483,20 @@
 		{
 			$this->_isstarting = $starting;
 		}
-		
+
 		/**
-		 * Return the year the milestone is starting 
-		 * 
+		 * Return the year the milestone is starting
+		 *
 		 * @return integer
 		 */
 		public function getStartingYear()
 		{
 			return date("Y", $this->_startingdate);
 		}
-		
+
 		/**
 		 * Return the month the milestone is starting
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getStartingMonth()
@@ -506,17 +506,17 @@
 
 		/**
 		 * Return the day the milestone is starting
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getStartingDay()
 		{
 			return date("j", $this->_startingdate);
 		}
-		
+
 		/**
 		 * Returns the milestones progress
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getPercentComplete()
@@ -539,7 +539,7 @@
 			}
 			return (int) $pct;
 		}
-		
+
 		/**
 		 * Figure out this milestones status
 		 */
@@ -556,7 +556,7 @@
 				$this->_reacheddate = null;
 			}
 		}
-		
+
 		/**
 		 * Delete this milestone
 		 */
@@ -564,10 +564,10 @@
 		{
 			TBGIssuesTable::getTable()->clearMilestone($this->getID());
 		}
-		
+
 		/**
 		 * Whether or not the current user can access the milestones
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function hasAccess()
@@ -642,10 +642,10 @@
 						$issues[] = (int) $child_issue->getID();
 					}
 				}
-				
+
 				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
 				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
-				
+
 				$burndown = array();
 				foreach ($estimations['hours'] as $key => $val)
 				{
@@ -665,7 +665,7 @@
 			$this->_populateBurndownData();
 			return $this->_burndowndata;
 		}
-		
+
 		public function isSprint()
 		{
 			return (bool) ($this->_itemtype == self::TYPE_SCRUMSPRINT);

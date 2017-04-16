@@ -75,7 +75,7 @@
 
 			return $return_array;
 		}
-		
+
 		public function deleteByIssuetypeSchemeID($scheme_id)
 		{
 			$crit = $this->getCriteria();
@@ -83,7 +83,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 		}
-		
+
 		public function deleteByIssuetypeID($type_id)
 		{
 			$crit = $this->getCriteria();
@@ -100,7 +100,7 @@
 			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$this->doInsert($crit);
 		}
-		
+
 		public function unAssociateIssuetypeWithScheme($issuetype_id, $scheme_id)
 		{
 			$crit = $this->getCriteria();
@@ -109,7 +109,7 @@
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$this->doDelete($crit);
 		}
-		
+
 		public function setIssuetypeRedirectedAfterReportingForScheme($issuetype_id, $issuetype_scheme_id, $redirected = true)
 		{
 			$crit = $this->getCriteria();
@@ -119,7 +119,7 @@
 			$crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $redirected);
 			$this->doUpdate($crit);
 		}
-		
+
 		public function setIssuetypeReportableForScheme($issuetype_id, $issuetype_scheme_id, $reportable = true)
 		{
 			$crit = $this->getCriteria();

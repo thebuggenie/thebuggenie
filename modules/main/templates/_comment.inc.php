@@ -1,5 +1,5 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
-<?php if ($comment->isViewableByUser($tbg_user)): ?> 
+<?php if ($comment->isViewableByUser($tbg_user)): ?>
 <div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
 	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
@@ -45,7 +45,7 @@
 			<?php echo tbg_parse_text($comment->getContent(), false, null, $options); ?>
 		</div>
 	</div>
-	
+
 	<div id="comment_edit_<?php echo $comment->getID(); ?>" class="comment_edit" style="display: none;">
 		<form id="comment_edit_form_<?php echo $comment->getID(); ?>" action="<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>" method="post" onSubmit="TBG.Main.Comment.update('<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>', '<?php echo $comment->getID(); ?>'); return false;">
 			<input type="hidden" name="comment_id" value="<?php echo $comment->getID(); ?>" />

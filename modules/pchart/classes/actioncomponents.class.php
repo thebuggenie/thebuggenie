@@ -116,7 +116,7 @@
 				$DataSet->SetAbsciseLabelSerie("Serie2");
 			}
 
-			// Draw the pie chart  
+			// Draw the pie chart
 
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);

@@ -128,15 +128,15 @@
 			if (!empty($postdata))
 			{
 				$content = '';
-				$boundary = "---------------------".mb_substr(md5(rand(0,32000)), 0, 10); 
+				$boundary = "---------------------".mb_substr(md5(rand(0,32000)), 0, 10);
 				$headers .= 'Content-Type: multipart/form-data; boundary='.$boundary."\r\n";
 				$options['http']['header'] = $headers;
 
-				foreach($postdata as $key => $val) 
-				{ 
+				foreach($postdata as $key => $val)
+				{
 					$content .= "--$boundary\n";
 					$content .= "Content-Disposition: form-data; name=\"".$key."\"\n\n".$val."\n";
-				} 
+				}
 
 				$content .= "--$boundary\n";
 				$options['http']['content'] = $content;
@@ -160,7 +160,7 @@
 
 			if (!is_object($response) && !is_array($response))
 				throw new Exception('Could not parse the return value from the server. Please re-check the command being executed.');
-			
+
 			return $response;
 		}
 

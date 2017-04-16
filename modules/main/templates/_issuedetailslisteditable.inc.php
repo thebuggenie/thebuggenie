@@ -96,7 +96,7 @@
 			</dd>
 		</dl>
 		<?php if ($issue->canEditAssignee() && $issue->isEditable()): ?>
-			<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
+			<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change',
 																	'header' 			=> __('Assign this issue'),
 																	'callback'		 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'user', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
 																	'team_callback'	 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'team', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
@@ -261,7 +261,7 @@
 			</dd>
 		</dl>
 		<?php if ($issue->isEditable() && $issue->canEditPostedBy()): ?>
-			<?php include_component('identifiableselector', array(	'html_id' 			=> 'posted_by_change', 
+			<?php include_component('identifiableselector', array(	'html_id' 			=> 'posted_by_change',
 																	'header' 			=> __('Change poster'),
 																	'allow_clear'		=> false,
 																	'clear_link_text'	=> '',
@@ -291,7 +291,7 @@
 			</dd>
 		</dl>
 		<?php if ($issue->isUpdateable() && $issue->canEditOwner()): ?>
-			<?php include_component('identifiableselector', array(	'html_id' 			=> 'owned_by_change', 
+			<?php include_component('identifiableselector', array(	'html_id' 			=> 'owned_by_change',
 																	'header' 			=> __('Change issue owner'),
 																	'callback'		 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'user', 'value' => '%identifiable_value%')) . "', 'owned_by');",
 																	'team_callback'	 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'team', 'value' => '%identifiable_value%')) . "', 'owned_by');",

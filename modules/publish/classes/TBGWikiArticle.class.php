@@ -45,7 +45,7 @@
 
 		/**
 		 * Whether the article is published or not
-		 * 
+		 *
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
@@ -71,7 +71,7 @@
 		 * @var array
 		 */
 		protected $_files = null;
-		
+
 		/**
 		 * A list of subcategories for this category
 		 *
@@ -96,7 +96,7 @@
 		protected $_history = null;
 
 		protected $_category_name = null;
-		
+
 		protected $_namespaces = null;
 
 		/**
@@ -109,7 +109,7 @@
 			$this->_content = str_replace("\r\n", "\n", $this->_content);
 			$this->_old_content = $this->_content;
 		}
-		
+
 		protected function _preSave($is_new)
 		{
 			parent::_preSave($is_new);
@@ -124,12 +124,12 @@
 			TBGArticleHistoryTable::getTable()->deleteHistoryByArticle($this->getName());
 			TBGArticleFilesTable::getTable()->deleteFilesByArticleID($this->getID());
 		}
-		
+
 		public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
 		{
 			$articles = array();
 			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesContaining($content, $project, $limit, $offset);
-			
+
 			if ($res)
 			{
 				while ($row = $res->getNextRow())
@@ -145,7 +145,7 @@
 					}
 				}
 			}
-			
+
 			return array($resultcount, $articles);
 		}
 
@@ -180,7 +180,7 @@
 			$article = new TBGWikiArticle();
 			$article->setName($name);
 			$article->setContent($content);
-			
+
 			if (!isset($options['noauthor']))
 				$article->setAuthor($user_id);
 			else
@@ -190,7 +190,7 @@
 				$article->setScope($scope);
 
 			$article->doSave($options);
-			
+
 			return $article->getID();
 		}
 
@@ -226,7 +226,7 @@
 		{
 			return $this->getPostedDate();
 		}
-		
+
 		protected function _populateLinkingArticles()
 		{
 			if ($this->_linking_articles === null)
@@ -397,7 +397,7 @@
 		}
 
 		public function doSave($options = array(), $reason = null)
-		{	
+		{
 			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
 			{
 				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
@@ -444,7 +444,7 @@
 
 			return true;
 		}
-		
+
 		public function getPostedDate()
 		{
 			return $this->_date;
@@ -522,7 +522,7 @@
 				throw new Exception('No such revision');
 			}
 		}
-		
+
 		public function getNamespaces()
 		{
 			if ($this->_namespaces === null)
@@ -537,7 +537,7 @@
 			}
 			return $this->_namespaces;
 		}
-		
+
 		public function getCombinedNamespaces()
 		{
 			$namespaces = $this->getNamespaces();
@@ -571,7 +571,7 @@
 
 		/**
 		 * Return an array with all files attached to this issue
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getFiles()
@@ -582,7 +582,7 @@
 
 		/**
 		 * Return a file by the filename if it is attached to this issue
-		 * 
+		 *
 		 * @param string $filename The original filename to match against
 		 *
 		 * @return TBGFile
@@ -601,7 +601,7 @@
 
 		/**
 		 * Attach a file to the issue
-		 * 
+		 *
 		 * @param TBGFile $file The file to attach
 		 */
 		public function attachFile(TBGFile $file)
@@ -612,12 +612,12 @@
 				$this->_files[$file->getID()] = $file;
 			}
 		}
-		
+
 		/**
 		 * Remove a file
-		 * 
+		 *
 		 * @param TBGFile $file The file to be removed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function removeFile(TBGFile $file)
@@ -629,11 +629,11 @@
 			}
 			$file->delete();
 		}
-		
+
 		public function canDelete()
 		{
 			$namespaces = $this->getNamespaces();
-			
+
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
@@ -644,14 +644,14 @@
 						return false;
 				}
 			}
-			
+
 			return TBGContext::getModule('publish')->canUserDeleteArticle($this->getName());
 		}
-		
+
 		public function canEdit()
 		{
 			$namespaces = $this->getNamespaces();
-			
+
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
@@ -662,19 +662,19 @@
 						return false;
 				}
 			}
-			
+
 			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
 		}
-		
+
 		public function canRead()
 		{
 			return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
 		}
-		
+
 		public function hasAccess()
 		{
 			$namespaces = $this->getNamespaces();
-			
+
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
@@ -685,7 +685,7 @@
 						return false;
 				}
 			}
-			
+
 			return $this->canRead();
 		}
 

@@ -20,7 +20,7 @@
 	 */
 	class TBGIssuetype extends TBGKeyable
 	{
-		
+
 		/**
 		 * The name of the object
 		 *
@@ -46,13 +46,13 @@
 		 * @Column(type="text")
 		 */
 		protected $_description;
-		
+
 		static $_issuetypes = null;
 
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$scope_id = $scope->getID();
-			
+
 			$bug_report = new TBGIssuetype();
 			$bug_report->setName('Bug report');
 			$bug_report->setIcon('bug_report');
@@ -104,7 +104,7 @@
 
 			return array($bug_report->getID(), $feature_request->getID(), $enhancement->getID(), $task->getID(), $user_story->getID(), $idea->getID());
 		}
-		
+
 		/**
 		 * Returns an array of issue types
 		 *
@@ -137,7 +137,7 @@
 			$icons['support_request'] = $i18n->__('Support request');
 			$icons['task'] = $i18n->__('Task');
 			$icons['developer_report'] = $i18n->__('User story');
-			
+
 			return $icons;
 		}
 
@@ -162,7 +162,7 @@
 		{
 			return (bool) $this->_task;
 		}
-		
+
 		public function setIsTask($val = true)
 		{
 			$this->_task = (bool) $val;
@@ -177,7 +177,7 @@
 		{
 			$this->_icon = $icon;
 		}
-		
+
 		public function getDescription()
 		{
 			return $this->_description;
@@ -210,7 +210,7 @@
 				throw $e;
 			}
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeID($this->getID());
@@ -249,4 +249,4 @@
 		}
 
 	}
-	
+

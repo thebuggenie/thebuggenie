@@ -19,7 +19,7 @@
 			</li>
 		<?php endforeach; ?>
 		</ul>
-		
+
 		<ul id="view_template" style="display: none;">
 			<li id="view_default" class="rounded_box verylightyellow">
 				<span class="template_view dashboard_view_data" id="0_0"><?php echo __('...Select a view...'); ?></span>

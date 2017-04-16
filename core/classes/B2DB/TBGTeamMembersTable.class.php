@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="teammembers")
 	 */
-	class TBGTeamMembersTable extends TBGB2DBTable 
+	class TBGTeamMembersTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -31,7 +31,7 @@
 		const SCOPE = 'teammembers.scope';
 		const UID = 'teammembers.uid';
 		const TID = 'teammembers.tid';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -61,16 +61,16 @@
 
 			return $uids;
 		}
-		
+
 		public function clearTeamsByUserID($user_id)
 		{
 			$team_ids = array();
-			
+
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addJoin(TBGTeamsTable::getTable(), TBGTeamsTable::ID, self::TID);
 			$crit->addWhere(TBGTeamsTable::ONDEMAND, false);
-			
+
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
@@ -78,7 +78,7 @@
 					$team_ids[$row->get(self::TID)] = true;
 				}
 			}
-			
+
 			if (!empty($team_ids))
 			{
 				$crit = $this->getCriteria();
@@ -119,14 +119,14 @@
 				$this->doInsert($crit);
 			}
 		}
-		
+
 		public function getTeamIDsForUserID($user_id, $ondemand = false)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			return $this->doSelect($crit, 'all');
 		}
-		
+
 		public function addUserToTeam($user_id, $team_id)
 		{
 			$crit = $this->getCriteria();
@@ -135,5 +135,5 @@
 			$crit->addInsert(self::UID, $user_id);
 			$this->doInsert($crit);
 		}
-		
+
 	}

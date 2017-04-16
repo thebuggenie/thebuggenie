@@ -32,7 +32,7 @@ $all_columns = $milestone->getProject()->getIssueFields(false, array('status', '
 						<?php endif; ?>
 					</tr>
 				</thead>
-				<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody> 
+				<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody>
 			</table>
 		</form>
 		<input type="hidden" id="milestone_<?php echo $milestone->getID(); ?>_id" value="<?php echo $milestone->getID(); ?>">

@@ -32,7 +32,7 @@
 		const USER_ID = 'componentassignedusers.uid';
 		const ROLE_ID = 'componentassignedusers.role_id';
 		const COMPONENT_ID = 'componentassignedusers.component_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		public function deleteByComponentID($component_id)
 		{
 			$crit = $this->getCriteria();

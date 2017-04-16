@@ -15,26 +15,26 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage publish
-	 * 
+	 *
 	 * @Table(name="TBGModulesTable")
 	 */
-	class TBGPublish extends TBGModule 
+	class TBGPublish extends TBGModule
 	{
-		
+
 		const PERMISSION_READ_ARTICLE = 'readarticle';
 		const PERMISSION_EDIT_ARTICLE = 'editarticle';
 		const PERMISSION_DELETE_ARTICLE = 'deletearticle';
 
 		protected $_longname = 'Wiki';
-		
+
 		protected $_description = 'Enables Wiki-functionality';
-		
+
 		protected $_module_config_title = 'Wiki';
-		
+
 		protected $_module_config_description = 'Set up the Wiki module from this section';
-		
+
 		protected $_has_config_settings = true;
-		
+
 		protected $_module_version = '1.0';
 
 		/**
@@ -92,14 +92,14 @@
 			TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
 			TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
 		}
-		
+
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
 			$this->loadArticles('', $overwrite, $scope);
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
 		}
-		
+
 		public function loadArticles($namespace = '', $overwrite = true, $scope = null)
 		{
 			$scope = TBGContext::getScope()->getID();
@@ -133,7 +133,7 @@
 						{
 							$name_test = urldecode($article_name);
 						}
-						if (mb_strpos($name_test, ':') === false) 
+						if (mb_strpos($name_test, ':') === false)
 							$import = true;
 					}
 					if ($import)
@@ -169,7 +169,7 @@
 			TBGContext::setPermission(self::PERMISSION_EDIT_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
 			TBGContext::setPermission(self::PERMISSION_DELETE_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
 		}
-		
+
 		protected function _uninstall()
 		{
 			if (TBGContext::getScope()->getID() == 1)
@@ -277,7 +277,7 @@
 		{
 			return TBGArticlesTable::getTable()->getArticles($project);
 		}
-	
+
 		public function getMenuItems($target_id = 0)
 		{
 			return TBGLinksTable::getTable()->getLinks('wiki', $target_id);
@@ -309,7 +309,7 @@
 
 			return $articles;
 		}
-		
+
 		public function getFrontpageArticle($type)
 		{
 			$article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';
@@ -319,7 +319,7 @@
 			}
 			return null;
 		}
-		
+
 		public function listen_frontpageArticle(TBGEvent $event)
 		{
 			$article = $this->getFrontpageArticle('main');
@@ -387,7 +387,7 @@
 					break;
 				}
 			}
-			
+
 		}
 
 		public function listen_BreadcrumbProjectLinks(TBGEvent $event)
@@ -457,33 +457,33 @@
 			$retval = $user->hasPermission($permission_name, 0, 'publish', true, $permissive);
 			return ($retval !== null) ? $retval : $permissive;
 		}
-		
+
 		public function canUserReadArticle($article_name)
 		{
 			return $this->_checkArticlePermissions($article_name, self::PERMISSION_READ_ARTICLE);
 		}
-		
+
 		public function canUserEditArticle($article_name)
 		{
 			return $this->_checkArticlePermissions($article_name, self::PERMISSION_EDIT_ARTICLE);
 		}
-		
+
 		public function canUserDeleteArticle($article_name)
 		{
 			return $this->_checkArticlePermissions($article_name, self::PERMISSION_DELETE_ARTICLE);
 		}
-		
+
 		public function listen_quicksearchDropdownFirstItems(TBGEvent $event)
 		{
 			$searchterm = $event->getSubject();
 			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_firstitems', array('searchterm' => $searchterm));
 		}
-		
+
 		public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
 		{
 			$searchterm = $event->getSubject();
 			list ($resultcount, $articles) = TBGWikiArticle::findArticlesByContentAndProject($searchterm, TBGContext::getCurrentProject());
 			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
 		}
-		
+
 	}

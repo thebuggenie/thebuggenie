@@ -144,7 +144,7 @@
 				$res = $this->doInsert($crit);
 			}
 		}
-		
+
 		public function saveIssueCustomFieldOption($option_id, $customdatatype_id, $issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -177,7 +177,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doSelect($crit);
-			
+
 			if ($res)
 			{
 				while ($row = $res->getNextRow())

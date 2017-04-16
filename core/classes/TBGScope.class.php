@@ -20,7 +20,7 @@
 	 */
 	class TBGScope extends TBGIdentifiableClass
 	{
-		
+
 		protected static $_scopes = null;
 
 		/**
@@ -36,20 +36,20 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_description = '';
-		
+
 		/**
 		 * @var boolean
 		 * @Column(type="boolean")
 		 */
 		protected $_enabled = false;
-		
+
 		/**
 		 * @var string
 		 */
 		protected $_shortname = '';
-		
+
 		protected $_administrator = null;
-		
+
 		protected $_hostnames = null;
 
 		protected $_is_secure = false;
@@ -98,7 +98,7 @@
 
 		/**
 		 * Return all available scopes
-		 * 
+		 *
 		 * @return array|TBGScope
 		 */
 		static function getAll()
@@ -110,7 +110,7 @@
 
 			return self::$_scopes;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *
@@ -140,22 +140,22 @@
 		{
 			return in_array('*', $this->getHostnames());
 		}
-		
+
 		public function setEnabled($enabled = true)
 		{
 			$this->_enabled = (bool) $enabled;
 		}
-		
+
 		public function getDescription()
 		{
 			return $this->_description;
 		}
-		
+
 		public function setDescription($description)
 		{
 			$this->_description = $description;
 		}
-		
+
 		protected function _populateHostnames()
 		{
 			if ($this->_hostnames === null)
@@ -172,14 +172,14 @@
 			$this->_populateHostnames();
 			return $this->_hostnames;
 		}
-		
+
 		public function addHostname($hostname)
 		{
 			$hostname = trim($hostname, "/");
 			$this->_populateHostnames();
 			$this->_hostnames[] = $hostname;
 		}
-		
+
 		/**
 		 * Returns the scope administrator
 		 *
@@ -197,7 +197,7 @@
 			}
 			return $this->_administrator;
 		}
-		
+
 		protected function _preDelete()
 		{
 			$tables = array(
@@ -205,7 +205,7 @@
 				'TBGIssueAffectsBuildTable', 'TBGIssueAffectsComponentTable', 'TBGIssueFilesTable',
 				'TBGIssueRelationsTable', 'TBGIssuetypeSchemeLinkTable', 'TBGIssuetypeSchemesTable',
 				'TBGIssueTypesTable', 'TBGListTypesTable', 'TBGIssuesTable', 'TBGCommentsTable',
-				'TBGComponentAssignedTeamsTable', 'TBGComponentAssignedUsersTable', 
+				'TBGComponentAssignedTeamsTable', 'TBGComponentAssignedUsersTable',
 				'TBGProjectAssignedTeamsTable', 'TBGProjectAssignedUsersTable',
 				'TBGEditionAssignedTeamsTable', 'TBGEditionAssignedUsersTable',
 				'TBGComponentsTable', 'TBGEditionsTable', 'TBGBuildsTable', 'TBGMilestonesTable',
@@ -237,7 +237,7 @@
 				}
 			}
 		}
-		
+
 		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			if (TBGContext::isCLI())
@@ -287,7 +287,7 @@
 			}
 			return $this->_hostname;
 		}
-		
+
 		public function loadFixtures()
 		{
 			// Load initial settings
@@ -410,5 +410,5 @@
 		{
 			return ($this->getMaxTeams()) ? (TBGTeam::countAll() < $this->getMaxTeams()) : true;
 		}
-		
+
 	}

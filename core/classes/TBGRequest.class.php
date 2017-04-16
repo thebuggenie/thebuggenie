@@ -18,9 +18,9 @@
 	 */
 	class TBGRequest implements ArrayAccess
 	{
-		
+
 		const POST = 1;
-		const GET = 2; 
+		const GET = 2;
 
 		protected $_request_parameters = array();
 		protected $_post_parameters = array();
@@ -32,13 +32,13 @@
 		protected $_hasfiles = false;
 
 		protected $_is_ajax_call = false;
-		
+
 		/**
 		 * Handles an uploaded file, stores it to the correct folder, adds an entry
 		 * to the database and returns a TBGFile object
-		 * 
+		 *
 		 * @param string $thefile The request parameter the file was sent as
-		 * 
+		 *
 		 * @return TBGFile The TBGFile object
 		 */
 		public function handleUpload($key)
@@ -253,7 +253,7 @@
 			}
 
             // ensure the uploaded status data exists in the session
-            if (!array_key_exists($id, $_SESSION['__upload_status'])) 
+            if (!array_key_exists($id, $_SESSION['__upload_status']))
 			{
 				TBGLogging::log('upload with this id ' .$id. ' is not in progress yet');
                 $_SESSION['__upload_status'][$id] = array(
@@ -311,7 +311,7 @@
 		 * Sanitizes a given parameter and returns it
 		 *
 		 * @param mixed $params
-		 * 
+		 *
 		 * @return mixed
 		 */
 		protected function __sanitize_params($params)
@@ -403,12 +403,12 @@
 		 * Get all parameters from the request
 		 *
 		 * @return array
-		 */		
+		 */
 		public function getParameters()
 		{
 			return array_diff_key($this->_request_parameters, array('url' => null));;
 		}
-		
+
 		/**
 		 * Get a parameter from the request
 		 *
@@ -480,7 +480,7 @@
 		{
 			return array_key_exists($key, $this->_request_parameters);
 		}
-		
+
 		/**
 		 * Check to see if a cookie is set
 		 *
@@ -518,15 +518,15 @@
 					break;
 				case 'post':
 					return self::POST;
-					break; 
-			}			
+					break;
+			}
 		}
-		
+
 		/**
 		 * Check if the current request method is $method
-		 * 
+		 *
 		 * @param $method
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isMethod($method)
@@ -568,7 +568,7 @@
 			}
 			return htmlspecialchars($string, ENT_QUOTES, $charset);
 		}
-		
+
 		/**
 		 * Wrapper around __sanitize_string method
 		 *
@@ -585,7 +585,7 @@
 		{
 			return $this->getParameter('format', 'html');
 		}
-		
+
 		public function offsetExists($offset)
 		{
 			return $this->hasParameter($offset);
@@ -610,5 +610,5 @@
 		{
 			return $this->_querystring;
 		}
-		
+
 	}

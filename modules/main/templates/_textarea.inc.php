@@ -4,7 +4,7 @@
 		<div class="header"><?php echo __('Formatting tips'); ?></div>
 		<p>
 			<?php
-			
+
 				switch (rand(2, 2))
 				{
 					case 1:
@@ -39,7 +39,7 @@
 						echo htmlspecialchars(__('If you want to add text that is not supposed to be parsed, put it inside <nowiki> tags, or start the line with a space.'));
 						break;
 				}
-			
+
 			?><br>
 			<?php echo __('See more formatting tips in %wiki_formatting%.', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_new', 'tabindex' => '-1')))); ?>
 		</p>

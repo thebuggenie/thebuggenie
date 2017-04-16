@@ -35,7 +35,7 @@
 		protected $message_plain = null;
 		protected $message_plain_replaced = null;
 		protected $attachments = array();
-		
+
 		public static function createNewFromTemplate($subject, $template, $parameters = array(), $language = null, $recipients = array(), $charset = 'utf-8')
 		{
 			try
@@ -47,7 +47,7 @@
 				throw $e;
 			}
 		}
-		
+
 		public static function createNewFromMessage($subject, $message_plain, $message_html = null, $recipients = array(), $charset = 'utf-8')
 		{
 			return new self($subject, null, null, null, $message_plain, $message_html, $recipients, $charset);
@@ -60,7 +60,7 @@
 			for ($len = 10, $sep2 = ""; mb_strlen($sep2) < $len; $sep2 .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
 			$this->sep1 = "_1_" . bin2hex($sep1);
 			$this->sep2 = "_2_" . bin2hex($sep2);
-			
+
 			$this->subject = $subject;
 			if ($template !== null)
 			{
@@ -113,18 +113,18 @@
 			$server_name = (TBGContext::isCLI()) ? TBGContext::getModule('mailing')->getCLIMailingUrl(true) : TBGContext::getScope()->getCurrentHostname(true);
 			$this->headers['Message-ID'] = "<{$this->sep1}@{$server_name}>";
 		}
-		
+
 		protected function __sleep()
 		{
-			return array('charset', 'default_message', 
-				'from', 'to', 'cc', 'bcc', 
-				'replacements', 'sep1', 'sep2', 'headers', 
-				'subject', 'subject_translated', 
-				'template', 'language', 
-				'message_plain', 
-				'message_plain_replaced', 
-				'message_html', 
-				'message_html_replaced', 
+			return array('charset', 'default_message',
+				'from', 'to', 'cc', 'bcc',
+				'replacements', 'sep1', 'sep2', 'headers',
+				'subject', 'subject_translated',
+				'template', 'language',
+				'message_plain',
+				'message_plain_replaced',
+				'message_html',
+				'message_html_replaced',
 				'message_html_decoration_before',
 				'message_html_decoration_before_replaced',
 				'message_html_decoration_after',
@@ -222,7 +222,7 @@
 			$this->_translateSubject();
 			return html_entity_decode($this->subject_translated);
 		}
-		
+
 		public function setMessagePlain($message)
 		{
 			$this->message_plain = $message;
@@ -375,7 +375,7 @@
 			{
 				$this->replacements[$pattern] = $replacement;
 			}
-			
+
 			$this->message_plain_replaced = null;
 			$this->message_html_replaced = null;
 			$this->message_html_decoration_after_replaced = null;
@@ -450,7 +450,7 @@
 				$body[] = "------=_AttaPart_{$this->sep2}--\r\n";
 				$body[] = "\r\n";
 			}
-			
+
 			return $body;
 		}
 
@@ -509,7 +509,7 @@
 			{
 				return $this->from['address'];
 			}
-			
+
 			return null;
 		}
 
@@ -615,7 +615,7 @@
 		{
 			return $this->bcc;
 		}
-		
+
 		public function addAttachment($type, $filename)
 		{
 			$attachment = array('type' => $type, 'filename' => $filename);
@@ -636,7 +636,7 @@
 		{
 			return count($this->attachments);
 		}
-		
+
 		public function setCharset($charset)
 		{
 			$this->charset = $charset;

@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="issueaffectsbuild")
 	 */
-	class TBGIssueAffectsBuildTable extends TBGB2DBTable 
+	class TBGIssueAffectsBuildTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
-		
+
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('issue', self::ISSUE);
@@ -58,7 +58,7 @@
 			$res = $this->doSelect($crit, false);
 			return $res;
 		}
-		
+
 		public function getByIssueID($issue_id)
 		{
 			if (is_array($this->_preloaded_values))
@@ -118,7 +118,7 @@
 			$res = $this->doSelectOne($crit);
 			return $res;
 		}
-		
+
 
 		public function deleteByBuildID($build_id)
 		{
@@ -126,7 +126,7 @@
 			$crit->addWhere(self::BUILD, $build_id);
 			$this->doDelete($crit);
 		}
-		
+
 		public function deleteByIssueIDandBuildID($issue_id, $build_id)
 		{
 			if (!$this->getByIssueIDandBuildID($issue_id, $build_id))
@@ -154,11 +154,11 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::CONFIRMED, $confirmed);
 				$this->doUpdateById($crit, $res->get(self::ID));
-				
+
 				return true;
-			}				
+			}
 		}
-		
+
 		public function setStatusByIssueIDandBuildID($issue_id, $build_id, $status_id)
 		{
 			if (!($res = $this->getByIssueIDandBuildID($issue_id, $build_id)))
@@ -170,11 +170,11 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::STATUS, $status_id);
 				$this->doUpdateById($crit, $res->get(self::ID));
-				
+
 				return true;
-			}				
+			}
 		}
-		
+
 		public function setIssueAffected($issue_id, $build_id)
 		{
 			if (!$this->getByIssueIDandBuildID($issue_id, $build_id))
@@ -191,5 +191,5 @@
 				return false;
 			}
 		}
-		
+
 	}

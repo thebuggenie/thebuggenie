@@ -25,49 +25,49 @@
 		 *
 		 */
 		const STATUS = 'status';
-		
+
 		/**
 		 * Item type priority
 		 *
 		 */
 		const PRIORITY = 'priority';
-		
+
 		/**
 		 * Item type reproducability
 		 *
 		 */
 		const REPRODUCABILITY = 'reproducability';
-		
+
 		/**
 		 * Item type resolution
 		 *
 		 */
 		const RESOLUTION = 'resolution';
-		
+
 		/**
 		 * Item type severity
 		 *
 		 */
 		const SEVERITY = 'severity';
-		
+
 		/**
 		 * Item type issue type
 		 *
 		 */
 		const ISSUETYPE = 'issuetype';
-		
+
 		/**
 		 * Item type category
 		 *
 		 */
 		const CATEGORY = 'category';
-		
+
 		/**
 		 * Item type project role
 		 *
 		 */
 		const ROLE = 'role';
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			TBGCategory::loadFixtures($scope);
@@ -82,7 +82,7 @@
 				TBGContext::setPermission('set_datatype_'.$type, 0, 'core', 0, 0, 0, true, $scope->getID());
 			}
 		}
-		
+
 		public static function getTypes()
 		{
 			$types = array();
@@ -92,7 +92,7 @@
 			$types['severity'] = 'TBGSeverity';
 			$types['reproducability'] = 'TBGReproducability';
 			$types['resolution'] = 'TBGResolution';
-			
+
 			return $types;
 		}
 
@@ -100,7 +100,7 @@
 		{
 			return true;
 		}
-		
+
 		public function canBeDeleted()
 		{
 			return true;

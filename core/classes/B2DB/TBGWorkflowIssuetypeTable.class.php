@@ -54,7 +54,7 @@
 				$this->doInsert($crit);
 			}
 		}
-		
+
 		public function setWorkflowIDforIssuetypeIDwithSchemeID($workflow_id, $issuetype_id, $scheme_id)
 		{
 			$crit = $this->getCriteria();

@@ -10,14 +10,14 @@
 			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
 				<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
 			<?php endif; ?>
-			<?php 
+			<?php
 
 				$issue_title = tbg_decodeUTF8($issue->getFormattedTitle(true));
 				if (isset($pad_length))
 				{
 					$issue_title = tbg_truncateText($issue_title, $pad_length);
 				}
-				
+
 			?>
 			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
 				<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => (($log_action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'), 'style' => 'margin-top: 7px;')); ?>

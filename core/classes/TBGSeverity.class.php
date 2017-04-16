@@ -3,13 +3,13 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGSeverity extends TBGDatatype 
+	class TBGSeverity extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::SEVERITY;
 
 		protected static $_items = null;
-		
+
 		protected $_itemtype = TBGDatatype::SEVERITY;
 
 		public static function loadFixtures(TBGScope $scope)
@@ -28,5 +28,5 @@
 				$severity->save();
 			}
 		}
-		
+
 	}

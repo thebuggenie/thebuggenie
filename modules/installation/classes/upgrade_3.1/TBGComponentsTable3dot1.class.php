@@ -32,7 +32,7 @@
 		const PROJECT = 'components.project';
 		const LEAD_BY = 'components.leader';
 		const LEAD_TYPE = 'components.leader_type';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -45,5 +45,5 @@
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 	}

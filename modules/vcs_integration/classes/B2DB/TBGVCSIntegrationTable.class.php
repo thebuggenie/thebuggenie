@@ -3,7 +3,7 @@
 	use b2db\Core,
 		b2db\Criteria,
 		b2db\Criterion;
-	
+
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationTable
 	 *
@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="vcsintegration")
 	 */
-	class TBGVCSIntegrationTable extends TBGB2DBTable 
+	class TBGVCSIntegrationTable extends TBGB2DBTable
 	{
 
 		/*
@@ -42,7 +42,7 @@
 		const AUTHOR = 'vcsintegration.author';
 		const DATE = 'vcsintegration.date';
 		const ACTION = 'vcsintegration.action';
-					
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -56,6 +56,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_NO, TBGIssuesTable::getTable(),  TBGIssuesTable::ID);
 		}
-		
+
 	}
 

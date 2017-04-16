@@ -18,32 +18,32 @@
 	 */
 	class TBGParameterholder implements ArrayAccess
 	{
-		
+
 		protected $_property_list = array();
-		
+
 		public function __set($key, $value)
 		{
 			$this->_property_list[$key] = $value;
 		}
-		
+
 		public function __get($property)
 		{
-			return ($this->hasParameter($property)) ? $this->_property_list[$property] : null; 
+			return ($this->hasParameter($property)) ? $this->_property_list[$property] : null;
 		}
-		
+
 		public function hasParameter($key)
 		{
 			return $this->__isset($key);
 		}
-		
+
 		public function getParameterHolder()
 		{
 			return $this->_property_list;
 		}
-		
+
 		public function __isset($key)
 		{
-			return (array_key_exists($key, $this->_property_list)) ? true : false; 
+			return (array_key_exists($key, $this->_property_list)) ? true : false;
 		}
 
         public function offsetUnset($key)
@@ -68,5 +68,5 @@
         {
             return $this->__isset($key);
         }
-		
+
 	}

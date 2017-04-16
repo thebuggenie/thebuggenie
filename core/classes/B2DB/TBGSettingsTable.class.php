@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="settings")
 	 */
-	class TBGSettingsTable extends TBGB2DBTable 
+	class TBGSettingsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -48,7 +48,7 @@
 		{
 			$this->_addIndex('scope_uid', array(self::SCOPE, self::UID));
 		}
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -58,7 +58,7 @@
 			parent::_addInteger(self::UID, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		public function getSettingsForScope($scope, $uid = 0)
 		{
 			$crit = $this->getCriteria();
@@ -87,7 +87,7 @@
 				$crit2->addWhere(self::SCOPE, $scope);
 				$crit2->addWhere(self::ID, $theID, Criteria::DB_NOT_EQUALS);
 				$res2 = $this->doDelete($crit2);
-				
+
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::NAME, $name);
 				$crit->addUpdate(self::MODULE, $module);
@@ -152,5 +152,5 @@
 				$this->saveSetting($settings_name, 'core', $settings_val, 0, $scope_id);
 			}
 		}
-		
+
 	}

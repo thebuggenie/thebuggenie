@@ -74,7 +74,7 @@
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addJoin(TBGFilesTable::getTable(), TBGFilesTable::ID, self::FILE_ID);
 			$res = $this->doSelect($crit, false);
-			
+
 			$ret_arr = array();
 
 			if ($res)
@@ -86,7 +86,7 @@
 					$ret_arr[$row->get(TBGFilesTable::ID)] = $file;
 				}
 			}
-			
+
 			return $ret_arr;
 		}
 
@@ -163,5 +163,5 @@
 			}
 			return $res;
 		}
-		
+
 	}

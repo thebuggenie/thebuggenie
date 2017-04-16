@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	$tbg_response->addBreadcrumb(__('Teams'), null, tbg_get_breadcrumblinks('main_links'));
 	if ($team instanceof TBGTeam)
@@ -12,14 +12,14 @@
 		$tbg_response->setTitle(__('Team dashboard'));
 		$tbg_response->addBreadcrumb(__('Team dashboard'));
 	}
-	
+
 ?>
 
 <div class="team_dashboard">
 	<div class="dashboard_team_info">
 		<span class="dashboard_team_header"><?php echo $team->getName(); ?></span><br />
 	</div>
-	
+
 	<table class="team_dashboard_table">
 		<tr>
 			<td class="team_dashboard_projects padded">

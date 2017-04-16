@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('Configuration center'));
-	
+
 ?>
 <div class="update_div rounded_box lightgrey">
 	<div class="header"><?php echo __('Check for the latest updates'); ?></div>

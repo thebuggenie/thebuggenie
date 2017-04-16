@@ -225,7 +225,7 @@ Autocompleter.Base = Class.create({
 	while (found_item == false) {
     if(this.index > 0) this.index--;
       else this.index = this.entryCount-1;
-		
+
 		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
 			found_item = true;
 	}
@@ -238,7 +238,7 @@ Autocompleter.Base = Class.create({
 	while (found_item == false) {
     if(this.index < this.entryCount-1) this.index++;
       else this.index = 0;
-	
+
 		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
 			found_item = true;
 	}

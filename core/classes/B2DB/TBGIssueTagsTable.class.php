@@ -32,7 +32,7 @@
 		const TAG_NAME = 'issuetags.tag_name';
 		const ADDED = 'issuetags.added';
 		const SCOPE = 'issuetags.scope';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -41,7 +41,7 @@
 			parent::_addInteger(self::ADDED, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -50,5 +50,5 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 	}

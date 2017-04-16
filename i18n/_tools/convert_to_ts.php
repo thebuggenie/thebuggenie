@@ -95,7 +95,7 @@ $tsFile->startDocument('1.0', 'utf-8');
         foreach ($translations as $category => $categoryContents) {
 
             $tsFile->startElement('context');
-                
+
                 $tsFile->writeElement('name', $category);
 
                 foreach ($categoryContents as $msgid => $msgstr) {
@@ -110,9 +110,9 @@ $tsFile->startDocument('1.0', 'utf-8');
 
                     $msgid = str_replace(array('\"', '\'', "&amp;", "&ndash;", "&gt;", "&lt;"), array('"', "'", '&', '–', '>', '<'), $msgid);
                     $msgstr = str_replace(array('\"', '\'', "&amp;", "&ndash;", "&gt;", "&lt;"), array('"', "'", '&', '–', '>', '<'), $msgstr);
-                      
+
                     $msgstr = html_entity_decode($msgstr, ENT_XHTML, "UTF-8");
-                    
+
                     $tsFile->startElement('message');
                         $tsFile->writeElement('source', $msgid);
                         $tsFile->startElement('translation');
@@ -120,9 +120,9 @@ $tsFile->startDocument('1.0', 'utf-8');
                             if($msgstr == '') {
                                 $tsFile->writeAttribute('type', 'unfinished');
                             }
-                            
+
                             $tsFile->text($msgstr);
-                            
+
                         $tsFile->endElement();
                     $tsFile->endElement();
                 }

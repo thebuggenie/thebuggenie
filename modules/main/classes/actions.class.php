@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	/**
 	 * actions for the main module
@@ -21,21 +21,21 @@
 					$this->selected_project = TBGProject::getByKey($project_key);
 				elseif ($project_id = (int) $request['project_id'])
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
-				
+
 				TBGContext::setCurrentProject($this->selected_project);
 			}
 			catch (Exception $e) {}
 		}
-		
+
 		/**
 		 * View an issue
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runViewIssue(TBGRequest $request)
 		{
 			TBGLogging::log('Loading issue');
-			
+
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = TBGIssue::getIssueFromLink($issue_no);
@@ -62,12 +62,12 @@
 				{
 					$_SESSION['viewissue_list'] = array();
 				}
-				
+
 				$k = array_search($issue->getID(), $_SESSION['viewissue_list']);
 				if ($k !== false) unset($_SESSION['viewissue_list'][$k]);
-				
+
 				array_push($_SESSION['viewissue_list'], $issue->getID());
-				
+
 				if (count($_SESSION['viewissue_list']) > 10)
 					array_shift($_SESSION['viewissue_list']);
 
@@ -81,7 +81,7 @@
 
 			$message = TBGContext::getMessageAndClear('issue_saved');
 			$uploaded = TBGContext::getMessageAndClear('issue_file_uploaded');
-			
+
 			if ($request->isPost() && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
 			{
 				if ($request['issue_action'] == 'save')
@@ -127,7 +127,7 @@
 			{
 				$this->issue_message = TBGContext::getMessageAndClear('issue_message');
 			}
-			
+
 			$issuelist = array();
 			$issues = TBGContext::getUser()->getStarredIssues();
 
@@ -142,7 +142,7 @@
 					}
 				}
 			}
-			
+
 			if (array_key_exists('viewissue_list', $_SESSION) && is_array($_SESSION['viewissue_list'])) {
 				foreach ($_SESSION['viewissue_list'] as $k => $i_id)
 				{
@@ -157,19 +157,19 @@
 					}
 				}
 			}
-			
+
 			if (count($issuelist) == 1)
 			{
 				$issuelist = null;
 			}
-			
+
 			$this->issuelist = $issuelist;
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
 		}
-		
-		public function runMoveIssue(TBGRequest $request) 
+
+		public function runMoveIssue(TBGRequest $request)
 		{
 			$issue = null;
 			$project = null;
@@ -189,7 +189,7 @@
 				}
 				catch (Exception $e) { }
 			}
-			
+
 			if (!$issue instanceof TBGIssue)
 			{
 				return $this->return404(TBGContext::getI18n()->__('Cannot find the issue specified'));
@@ -218,13 +218,13 @@
 			{
 				TBGContext::setMessage('issue_error', TBGContext::getI18n()->__('The issue was not moved, since the project is the same'));
 			}
-			
+
 			return $this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
-		
+
 		/**
 		 * Frontpage
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runIndex(TBGRequest $request)
@@ -254,7 +254,7 @@
 
 		/**
 		 * Developer dashboard
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runDashboard(TBGRequest $request)
@@ -274,10 +274,10 @@
 			}
 			$this->views = TBGDashboardView::getUserViews(TBGContext::getUser()->getID());
 		}
-		
+
 		/**
 		 * Save dashboard configuration (AJAX call)
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runDashboardSave(TBGRequest $request)
@@ -308,15 +308,15 @@
 							throw new Exception($i18n->__('An internal error has occured'));
 						}
 					}
-					else 
+					else
 					{
 						throw new Exception($i18n->__('An internal error has occured'));
 					}
 				}
-				else 
+				else
 				{
 					throw new Exception($i18n->__('An internal error has occured'));
-				}				
+				}
 			}
 			catch (Exception $e)
 			{
@@ -324,10 +324,10 @@
 				return $this->renderJSON(array('error' => $i18n->__($e->getMessage()), 'referer' => htmlentities($request['tbg3_referer'], ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 			}
 		}
-		
+
 		/**
 		 * Client Dashboard
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runClientDashboard(TBGRequest $request)
@@ -337,16 +337,16 @@
 			{
 				$this->client = TBGContext::factory()->TBGClient($request['client_id']);
 				$projects = TBGProject::getAllByClientID($this->client->getID());
-				
+
 				$final_projects = array();
-				
+
 				foreach ($projects as $project)
 				{
 					if (!$project->isArchived()): $final_projects[] = $project; endif;
 				}
-				
+
 				$this->projects = $final_projects;
-				
+
 				$this->forward403Unless($this->client->hasAccess());
 			}
 			catch (Exception $e)
@@ -355,10 +355,10 @@
 				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
 			}
 		}
-		
+
 		/**
 		 * Team Dashboard
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runTeamDashboard(TBGRequest $request)
@@ -367,7 +367,7 @@
 			{
 				$this->team = TBGContext::factory()->TBGTeam($request['team_id']);
 				$this->forward403Unless($this->team->hasAccess());
-				
+
 				$projects = array();
 				foreach (TBGProject::getAllByOwner($this->team) as $project) {
 					$projects[$project->getID()] = $project;
@@ -383,14 +383,14 @@
 				}
 
 				$final_projects = array();
-				
+
 				foreach ($projects as $project)
 				{
 					if (!$project->isArchived()): $final_projects[] = $project; endif;
 				}
-				
+
 				$this->projects = $final_projects;
-				
+
 				$this->users = $this->team->getMembers();
 			}
 			catch (Exception $e)
@@ -399,20 +399,20 @@
 				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
 			}
 		}
-				
+
 		/**
 		 * About page
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runAbout(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 		}
-		
+
 		/**
 		 * 404 not found page
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runNotFound(TBGRequest $request)
@@ -420,10 +420,10 @@
 			$this->getResponse()->setHttpStatus(404);
 			$message = null;
 		}
-		
+
 		/**
 		 * Logs the user out
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runLogout(TBGRequest $request)
@@ -440,7 +440,7 @@
 			}
 			$this->forward(TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute()));
 		}
-		
+
 		/**
 		 * Static login page
 		 * @param TBGRequest $request
@@ -450,7 +450,7 @@
 			if (!TBGContext::getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
 			$this->section = $request->getParameter('section', 'login');
 		}
-		
+
 		public function runSwitchUser(TBGRequest $request)
 		{
 			if (!$this->getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('tbg3_original_username'))
@@ -493,7 +493,7 @@
 
 		/**
 		 * Do login (AJAX call)
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runDoLogin(TBGRequest $request)
@@ -502,7 +502,7 @@
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
 
-			if ($request->hasParameter('persona') && $request['persona'] == 'true') 
+			if ($request->hasParameter('persona') && $request['persona'] == 'true')
 			{
 				$url = 'https://verifier.login.persona.org/verify';
 				$assert = filter_input(
@@ -511,7 +511,7 @@
 					FILTER_UNSAFE_RAW,
 					FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH
 				);
-				//Use the $_POST superglobal array for PHP < 5.2 and write your own filter 
+				//Use the $_POST superglobal array for PHP < 5.2 and write your own filter
 				$params = 'assertion=' . urlencode($assert) . '&audience=' .
 						   urlencode(TBGContext::getURLhost().':80');
 				$ch = curl_init();
@@ -537,7 +537,7 @@
 						return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
 					}
 				}
-				
+
 				if (!$user instanceof TBGUser)
 				{
 					$this->getResponse()->setHttpStatus(401);
@@ -545,21 +545,21 @@
 				}
 				return;
 			}
-			
+
 			if (TBGSettings::isOpenIDavailable())
 				$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
 
-			if (TBGSettings::isOpenIDavailable() && !$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier')) 
+			if (TBGSettings::isOpenIDavailable() && !$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier'))
 			{
 				$openid->identity = $request->getRawParameter('openid_identifier');
 				$openid->required = array('contact/email');
 				$openid->optional = array('namePerson/first', 'namePerson/friendly');
 				return $this->forward($openid->authUrl());
 			}
-			elseif (TBGSettings::isOpenIDavailable() && $openid->mode == 'cancel') 
+			elseif (TBGSettings::isOpenIDavailable() && $openid->mode == 'cancel')
 			{
 				$this->error = TBGContext::getI18n()->__("OpenID authentication cancelled");
-			} 
+			}
 			elseif (TBGSettings::isOpenIDavailable() && $openid->mode)
 			{
 				try
@@ -631,7 +631,7 @@
 
 						TBGContext::setUser($user);
 						if ($this->checkScopeMembership($user)) return true;
-						if ($request->hasParameter('return_to')) 
+						if ($request->hasParameter('return_to'))
 						{
 							$forward_url = $request['return_to'];
 						}
@@ -693,14 +693,14 @@
 
 		/**
 		 * Registration logic
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runRegister(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('common');
 			$i18n = TBGContext::getI18n();
-			
+
 			try
 			{
 				$username = $request['fieldusername'];
@@ -709,17 +709,17 @@
 				$confirmemail = $request['email_confirm'];
 				$security = $request['verification_no'];
 				$realname = $request['realname'];
-				
+
 				$exists = TBGUsersTable::getTable()->getByUsername($username);
-				
+
 				$fields = array();
-				
+
 				if ($exists)
 				{
 					throw new Exception($i18n->__('This username is in use'));
 				}
-				
-				
+
+
 				if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
 				{
 					if ($email != $confirmemail)
@@ -741,14 +741,14 @@
 					{
 						$email_ok = true;
 					}
-					
+
 					if ($email_ok && TBGSettings::get('limit_registration') != '')
 					{
 
-						$allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/' ,'|', TBGSettings::get('limit_registration'));					
+						$allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/' ,'|', TBGSettings::get('limit_registration'));
 						if (preg_match('/@(' . $allowed_domains . ')$/i', $email) == false)
-						{							
-							array_push($fields, 'email_address', 'email_confirm');					
+						{
+							array_push($fields, 'email_address', 'email_confirm');
 							throw new Exception($i18n->__('Email adresses from this domain can not be used.'));
 						}
 						/*if (count($allowed_domains) > 0)
@@ -762,7 +762,7 @@
 									break;
 								}
 							}
-							
+
 						}
 						else
 						{
@@ -771,21 +771,21 @@
 					}
 					/*if ($valid_domain == false)
 					{
-						array_push($fields, 'email_address', 'email_confirm');					
+						array_push($fields, 'email_address', 'email_confirm');
 						throw new Exception($i18n->__('Email adresses from this domain can not be used.'));
 					}*/
-					
+
 					if($email_ok == false)
 					{
 						array_push($fields, 'email_address', 'email_confirm');
 						throw new Exception($i18n->__('The email address must be valid, and must be typed twice.'));
 					}
-					
+
 					if ($security != $_SESSION['activation_number'])
 					{
 						array_push($fields, 'verification_no');
 						throw new Exception($i18n->__('To prevent automatic sign-ups, enter the verification number shown below.'));
-					}					
+					}
 
 					$password = TBGUser::createPassword();
 					$user = new TBGUser();
@@ -820,13 +820,13 @@
 
 		/**
 		 * Activate newly registered account
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runActivate(TBGRequest $request)
 		{
 			$this->getResponse()->setPage('login');
-			
+
 			$user = TBGUsersTable::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
 			if ($user instanceof TBGUser)
 			{
@@ -850,7 +850,7 @@
 
 		/**
 		 * "My account" page
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runMyAccount(TBGRequest $request)
@@ -1003,7 +1003,7 @@
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
 			}
 			catch (Exception $e) {}
-			
+
 			if ($this->selected_project instanceof TBGProject)
 				TBGContext::setCurrentProject($this->selected_project);
 			if ($this->selected_project instanceof TBGProject)
@@ -1250,7 +1250,7 @@
 					$issue->setAssignee($this->selected_project->getLeader());
 				}
 			}
-			
+
 			$issue->save();
 
 			if (isset($this->parent_issue)) $issue->addParentIssue($this->parent_issue);
@@ -1262,10 +1262,10 @@
 
 			return $issue;
 		}
-		
+
 		/**
 		 * "Report issue" page
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runReportIssue(TBGRequest $request)
@@ -1277,9 +1277,9 @@
 			$this->getResponse()->setPage('reportissue');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
-			
+
 			$this->forward403unless(TBGContext::getCurrentProject() instanceof TBGProject && TBGContext::getCurrentProject()->hasAccess() && TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
-			
+
 			if ($request->isPost())
 			{
 				if ($this->_postIssueValidation($request, $errors, $permission_errors))
@@ -1357,10 +1357,10 @@
 			$this->permission_errors = $permission_errors;
             $this->options = $this->getParameterHolder();
 		}
-		
+
 		/**
 		 * Retrieves the fields which are valid for that product and issue type combination
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runReportIssueGetFields(TBGRequest $request)
@@ -1369,7 +1369,7 @@
 			{
 				return $this->renderText('invalid project');
 			}
-			
+
 			$fields_array = $this->selected_project->getReportableFieldsArray($request['issuetype_id']);
 			$available_fields = TBGDatatypeBase::getAvailableFields();
 			$available_fields[] = 'pain_bug_type';
@@ -1386,7 +1386,7 @@
 
 		/**
 		 * Retrieves the fields which are valid for that product and issue type combination
-		 *  
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runToggleFavouriteIssue(TBGRequest $request)
@@ -1406,7 +1406,7 @@
 			{
 				return $this->renderText('no issue');
 			}
-			
+
 			if (TBGContext::getUser()->isIssueStarred($issue_id))
 			{
 				$retval = !TBGContext::getUser()->removeStarredIssue($issue_id);
@@ -1417,15 +1417,15 @@
 			}
 			return $this->renderText(json_encode(array('starred' => $retval)));
 		}
-		
+
 		public function _setFieldFromRequest(TBGRequest $request)
 		{
-			
+
 		}
 
 		/**
 		 * Sets an issue field to a specified value
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runIssueSetField(TBGRequest $request)
@@ -1449,26 +1449,26 @@
 			}
 
 			TBGContext::loadLibrary('common');
-			
+
 			if (!$issue instanceof TBGIssue) return false;
-			
+
 			switch ($request['field'])
 			{
 				case 'description':
 					if (!$issue->canEditDescription()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					$issue->setDescription($request->getRawParameter('value'));
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
 					break;
 				case 'reproduction_steps':
 					if (!$issue->canEditReproductionSteps()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					$issue->setReproductionSteps($request->getRawParameter('value'));
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))));
 					break;
 				case 'title':
 					if (!$issue->canEditTitle()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					if ($request['value'] == '')
 					{
 						$this->getResponse()->setHttpStatus(400);
@@ -1482,14 +1482,14 @@
 					break;
 				case 'percent_complete':
 					if (!$issue->canEditPercentage()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					$issue->setPercentCompleted($request['percent']);
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'field' => 'percent_complete', 'changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
 					break;
 				case 'estimated_time':
 					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					if (!$issue->isUpdateable()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('This issue cannot be updated')));
-					
+
 					if ($request['estimated_time'])
 					{
 						$issue->setEstimatedTime($request['estimated_time']);
@@ -1518,7 +1518,7 @@
 					if ($request['field'] == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					elseif ($request['field'] == 'owned_by' && !$issue->canEditOwner()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					elseif ($request['field'] == 'assigned_to' && !$issue->canEditAssignee()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					if ($request->hasParameter('value'))
 					{
 						if ($request->hasParameter('identifiable_type'))
@@ -1574,7 +1574,7 @@
 					break;
 				case 'spent_time':
 					if (!$issue->canEditSpentTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					if ($request['spent_time'] != TBGContext::getI18n()->__('Enter time spent here') && $request['spent_time'])
 					{
 						$function = ($request->hasParameter('spent_time_added_text')) ? 'addSpentTime' : 'setSpentTime';
@@ -1625,7 +1625,7 @@
 					elseif ($request['field'] == 'issuetype' && !$issue->canEditIssuetype()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					elseif ($request['field'] == 'status' && !$issue->canEditStatus()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					elseif (in_array($request['field'], array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					try
 					{
 						$classname = null;
@@ -1686,7 +1686,7 @@
 								else
 								{
 									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
-									
+
 									if (isset($parameter))
 									{
 										$name = $parameter->getName();
@@ -1695,14 +1695,14 @@
 									{
 										$name = null;
 									}
-									
+
 									$field = array('id' => $parameter_id, 'name' => $name);
 									if ($classname == 'TBGIssuetype')
 									{
 										TBGContext::loadLibrary('ui');
 										$field['src'] = htmlspecialchars(TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
 									}
-									if ($parameter_id == 0) 
+									if ($parameter_id == 0)
 									{
 										return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0)));
 									}
@@ -1732,7 +1732,7 @@
 					if ($customdatatype = TBGCustomDatatype::getByKey($request['field']))
 					{
 						$key = $customdatatype->getKey();
-						
+
 						$customdatatypeoption_value = $request->getParameter("{$key}_value");
 						if (!$customdatatype->hasCustomOptions())
 						{
@@ -1823,14 +1823,14 @@
 					}
 					break;
 			}
-			
+
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request['field']))));
 		}
 
 		/**
 		 * Reverts an issue field back to the original value
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runIssueRevertField(TBGRequest $request)
@@ -1852,7 +1852,7 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderText('no issue');
 			}
-			
+
 			$field = null;
 			TBGContext::loadLibrary('common');
 			switch ($request['field'])
@@ -1945,7 +1945,7 @@
 						$key = $customdatatype->getKey();
 						$revert_methodname = "revertCustomfield{$key}";
 						$issue->$revert_methodname();
-						
+
 						if ($customdatatype->hasCustomOptions())
 						{
 							$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getID(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
@@ -1961,12 +1961,12 @@
 								default:
 									$field = ($issue->getCustomField($key) != '') ? array('value' => $key, 'name' => $issue->getCustomField($key)) : array('id' => 0);
 									break;
-							}							
+							}
 						}
 					}
 					break;
 			}
-			
+
 			if ($field !== null)
 			{
 				return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field));
@@ -1977,10 +1977,10 @@
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request['field']))));
 			}
 		}
-		
+
 		/**
 		 * Unlock the issue
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runUnlockIssue(TBGRequest $request)
@@ -2009,10 +2009,10 @@
 
 			return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
 		}
-		
+
 		/**
 		 * Unlock the issue
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runLockIssue(TBGRequest $request)
@@ -2031,7 +2031,7 @@
 					$issue->save();
 					TBGContext::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
 					TBGContext::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()->getID(), 0, 0, true);
-					
+
 					$al_users = $request->getParameter('access_list_users', array());
 					$al_teams = $request->getParameter('access_list_teams', array());
 					$i_al = $issue->getAccessList();
@@ -2085,10 +2085,10 @@
 
 			return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
 		}
-		
+
 		/**
 		 * Mark the issue as not blocking the next release
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runMarkAsNotBlocker(TBGRequest $request)
@@ -2115,19 +2115,19 @@
 
 			$issue->setBlocking(false);
 			$issue->save();
-			
+
 			return $this->renderJSON('not blocking');
 		}
-		
+
 		/**
 		 * Mark the issue as blocking the next release
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runMarkAsBlocker(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
-						
+
 			if ($issue_id = $request['issue_id'])
 			{
 				try
@@ -2148,13 +2148,13 @@
 
 			$issue->setBlocking();
 			$issue->save();
-			
+
 			return $this->renderJSON('blocking');
 		}
-		
+
 		/**
 		 * Delete an issue
-		 * 
+		 *
 		 * @param TBGRequest $request
 		 */
 		public function runDeleteIssue(TBGRequest $request)
@@ -2178,20 +2178,20 @@
 			$this->forward403unless($issue->canDeleteIssue());
 			$issue->deleteIssue();
 			$issue->save();
-			
+
 			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
-		
+
 		/**
 		 * Find users and show selection links
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 */		
+		 */
 		public function runFindIdentifiable(TBGRequest $request)
 		{
 			$this->forward403unless($request->isPost());
 			$this->users = array();
-			
+
 			if ($find_identifiable_by = $request['find_identifiable_by'])
 			{
 				$this->users = TBGUser::findUsers($find_identifiable_by, 10);
@@ -2207,12 +2207,12 @@
 			$teamup_callback = $request['teamup_callback'];
 			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request['callback'], 'teamup_callback' => $teamup_callback, 'team_callback' => $request['team_callback']));
 		}
-		
+
 		/**
 		 * Hides an infobox with a specific key
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 */		
+		 */
 		public function runHideInfobox(TBGRequest $request)
 		{
 			TBGSettings::hideInfoBox($request['key']);
@@ -2248,7 +2248,7 @@
 				$article = TBGWikiArticle::getByName($request['article_name']);
 				$status['attachmentcount'] = count($article->getFiles());
 			}
-			
+
 			return $this->renderJSON($status);
 		}
 
@@ -2280,7 +2280,7 @@
 
 				$canupload = ($event->isProcessed()) ? (bool) $event->getReturnValue() : true;
 			}
-			
+
 			if ($canupload)
 			{
 				try
@@ -2470,12 +2470,12 @@
 			}
 			return $this->renderJSON('ok');
 		}
-		
+
 		public function runDeleteComment(TBGRequest $request)
 		{
 			$comment = TBGContext::factory()->TBGComment($request['comment_id']);
 			if ($comment instanceof TBGcomment)
-			{							
+			{
 				if (!$comment->canUserDelete($this->getUser()))
 				{
 					$this->getResponse()->setHttpStatus(400);
@@ -2495,13 +2495,13 @@
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Comment ID is invalid')));
 			}
 		}
-		
+
 		public function runUpdateComment(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
 			$comment = TBGContext::factory()->TBGComment($request['comment_id']);
 			if ($comment instanceof TBGcomment)
-			{							
+			{
 				if (!$comment->canUserEdit($this->getUser()))
 				{
 					$this->getResponse()->setHttpStatus(400);
@@ -2514,9 +2514,9 @@
 						$this->getResponse()->setHttpStatus(400);
 						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The comment must have some content')));
 					}
-					
+
 					$comment->setContent($request->getRawParameter('comment_body'));
-					
+
 					if ($request['comment_title'] == '')
 					{
 						$comment->setTitle(TBGContext::getI18n()->__('Untitled comment'));
@@ -2525,14 +2525,14 @@
 					{
 						$comment->setTitle($request['comment_title']);
 					}
-					
+
 					$comment->setIsPublic($request['comment_visibility']);
 					$comment->setUpdatedBy(TBGContext::getUser()->getID());
 					$comment->save();
 
 					TBGContext::loadLibrary('common');
 					$body = tbg_parse_text($comment->getContent());
-					
+
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));
 				}
 			}
@@ -2559,7 +2559,7 @@
 				$this->comment_error_body = TBGContext::getMessageAndClear('comment_error_body');
 			}
 		}
-		
+
 		public function runAddComment(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
@@ -2617,7 +2617,7 @@
 						default:
 							$comment_html = 'OH NO!';
 					}
-					
+
 					if ($comment_applies_type == TBGComment::TYPE_ISSUE)
 					{
 						$issue = TBGContext::factory()->TBGIssue($request['comment_applies_id']);
@@ -3013,10 +3013,10 @@
 			}
 			$options = array('project' => $this->selected_project, 'issues' => $issues, 'count' => $count);
 			if (isset($issue)) $options['issue'] = $issue;
-			
+
 			return $this->renderJSON(array('content' => $this->getComponentHTML('main/find'.$request['type'].'issues', $options)));
 		}
-		
+
 		public function runFindDuplicateIssue(TBGRequest $request)
 		{
 			$status = 200;
@@ -3089,14 +3089,14 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
-			
+
 		}
 
 		public function runRelateIssues(TBGRequest $request)
 		{
 			$status = 200;
 			$message = null;
-			
+
 			if ($issue_id = $request['issue_id'])
 			{
 				try
@@ -3120,7 +3120,7 @@
 				$status = 400;
 				$message = TBGContext::getI18n()->__('You are not allowed to relate issues');
 			}
-			
+
 			$this->getResponse()->setHttpStatus($status);
 			if ($status == 400)
 			{
@@ -3242,7 +3242,7 @@
 				return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured while trying to update your status')));
 			}
 		}
-		
+
 		public function runToggleAffectedConfirmed(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
@@ -3257,7 +3257,7 @@
 				}
 
 				$affected_id = $request['affected_id'];
-				
+
 				switch ($itemtype)
 				{
 					case 'edition':
@@ -3265,18 +3265,18 @@
 						{
 							throw new Exception($this->getI18n()->__('Editions are disabled'));
 						}
-						
+
 						$editions = $issue->getEditions();
 						if (!array_key_exists($affected_id, $editions))
 						{
 							throw new Exception($this->getI18n()->__('This edition is not affected by this issue'));
 						}
 						$edition = $editions[$affected_id];
-						
+
 						if ($edition['confirmed'] == true)
 						{
 							$issue->confirmAffectedEdition($edition['edition'], false);
-							
+
 							$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
@@ -3284,30 +3284,30 @@
 						else
 						{
 							$issue->confirmAffectedEdition($edition['edition']);
-							
+
 							$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now confirmed for this issue', array('%edition%' => $edition['edition']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
-						
+
 						break;
 					case 'component':
 						if (!$issue->getProject()->isComponentsEnabled())
 						{
 							throw new Exception($this->getI18n()->__('Components are disabled'));
 						}
-						
+
 						$components = $issue->getComponents();
 						if (!array_key_exists($affected_id, $components))
 						{
 							throw new Exception($this->getI18n()->__('This component is not affected by this issue'));
 						}
 						$component = $components[$affected_id];
-						
+
 						if ($component['confirmed'] == true)
 						{
 							$issue->confirmAffectedComponent($component['component'], false);
-							
+
 							$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now unconfirmed for this issue', array('%component%' => $component['component']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
@@ -3315,30 +3315,30 @@
 						else
 						{
 							$issue->confirmAffectedComponent($component['component']);
-							
+
 							$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now confirmed for this issue', array('%component%' => $component['component']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
-						
+
 						break;
 					case 'build':
 						if (!$issue->getProject()->isBuildsEnabled())
 						{
 							throw new Exception($this->getI18n()->__('Releases are disabled'));
 						}
-						
+
 						$builds = $issue->getBuilds();
 						if (!array_key_exists($affected_id, $builds))
 						{
 							throw new Exception($this->getI18n()->__('This release is not affected by this issue'));
 						}
 						$build = $builds[$affected_id];
-						
+
 						if ($build['confirmed'] == true)
 						{
 							$issue->confirmAffectedBuild($build['build'], false);
-							
+
 							$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now unconfirmed for this issue', array('%build%' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
@@ -3346,18 +3346,18 @@
 						else
 						{
 							$issue->confirmAffectedBuild($build['build']);
-							
+
 							$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now confirmed for this issue', array('%build%' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
-						
+
 						break;
 					default:
 						throw new Exception('Internal error');
 						break;
 				}
-				
+
 				return $this->renderJSON(array('message' => $message, 'alt' => $alt, 'src' => $src));
 			}
 			catch (Exception $e)
@@ -3366,20 +3366,20 @@
 				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
 		}
-		
+
 		public function runRemoveAffected(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request['issue_id']);
-				
+
 				if (!$issue->canEditIssue())
 				{
 					$this->getResponse()->setHttpStatus(400);
 					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
-				
+
 				switch ($request['affected_type'])
 				{
 					case 'edition':
@@ -3388,14 +3388,14 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Editions are disabled')));
 						}
-						
+
 						$editions = $issue->getEditions();
 						$edition = $editions[$request['affected_id']];
-						
+
 						$issue->removeAffectedEdition($edition['edition']);
-						
+
 						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is no longer affected by this issue', array('%edition%' => $edition['edition']->getName()));
-												
+
 						break;
 					case 'component':
 						if (!$issue->getProject()->isComponentsEnabled())
@@ -3403,14 +3403,14 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Components are disabled')));
 						}
-						
+
 						$components = $issue->getComponents();
 						$component = $components[$request['affected_id']];
-						
+
 						$issue->removeAffectedComponent($component['component']);
-						
+
 						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is no longer affected by this issue', array('%component%' => $component['component']->getName()));
-												
+
 						break;
 					case 'build':
 						if (!$issue->getProject()->isBuildsEnabled())
@@ -3418,29 +3418,29 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Releases are disabled')));
 						}
-						
+
 						$builds = $issue->getBuilds();
 						$build = $builds[$request['affected_id']];
-						
+
 						$issue->removeAffectedBuild($build['build']);
-						
+
 						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is no longer affected by this issue', array('%build%' => $build['build']->getName()));
-											
+
 						break;
 					default:
 						throw new Exception('Internal error');
 						break;
 				}
-				
+
 				$editions = array();
 				$components = array();
 				$builds = array();
-				
+
 				if($issue->getProject()->isEditionsEnabled())
 				{
 					$editions = $issue->getEditions();
 				}
-				
+
 				if($issue->getProject()->isComponentsEnabled())
 				{
 					$components = $issue->getComponents();
@@ -3450,9 +3450,9 @@
 				{
 					$builds = $issue->getBuilds();
 				}
-				
+
 				$count = count($editions) + count($components) + count($builds) - 1;
-				
+
 				return $this->renderJSON(array('message' => $message, 'itemcount' => $count));
 			}
 			catch (Exception $e)
@@ -3461,7 +3461,7 @@
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An internal error has occured')));
 			}
 		}
-		
+
 		public function runStatusAffected(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
@@ -3474,7 +3474,7 @@
 					$this->getResponse()->setHttpStatus(400);
 					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
-				
+
 				switch ($request['affected_type'])
 				{
 					case 'edition':
@@ -3487,9 +3487,9 @@
 						$edition = $editions[$request['affected_id']];
 
 						$issue->setAffectedEditionStatus($edition['edition'], $status);
-						
+
 						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now %status%', array('%edition%' => $edition['edition']->getName(), '%status%' => $status->getName()));
-												
+
 						break;
 					case 'component':
 						if (!$issue->getProject()->isComponentsEnabled())
@@ -3499,11 +3499,11 @@
 						}
 						$components = $issue->getComponents();
 						$component = $components[$request['affected_id']];
-						
+
 						$issue->setAffectedcomponentStatus($component['component'], $status);
-						
+
 						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now %status%', array('%component%' => $component['component']->getName(), '%status%' => $status->getName()));
-												
+
 						break;
 					case 'build':
 						if (!$issue->getProject()->isBuildsEnabled())
@@ -3515,15 +3515,15 @@
 						$build = $builds[$request['affected_id']];
 
 						$issue->setAffectedbuildStatus($build['build'], $status);
-						
+
 						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now %status%', array('%build%' => $build['build']->getName(), '%status%' => $status->getName()));
-												
+
 						break;
 					default:
 						throw new Exception('Internal error');
 						break;
 				}
-				
+
 				return $this->renderJSON(array('message' => $message, 'colour' => $status->getColor(), 'name' => $status->getName()));
 			}
 			catch (Exception $e)
@@ -3531,8 +3531,8 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An internal error has occured')));
 			}
-		}	
-			
+		}
+
 		public function runAddAffected(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
@@ -3555,24 +3555,24 @@
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 						}
 
-						
+
 						$edition = TBGContext::factory()->TBGEdition($request['which_item_edition']);
-						
+
 						if (TBGIssueAffectsEditionTable::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $edition->getName()))));
 						}
-						
+
 						$edition = $issue->addAffectedEdition($edition);
 
 						$item = $edition;
 						$itemtype = 'edition';
 						$itemtypename = TBGContext::getI18n()->__('Edition');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
-						
+
 						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now affected by this issue', array('%edition%' => $edition['edition']->getName()));
-												
+
 						break;
 					case 'component':
 						if (!$issue->getProject()->isComponentsEnabled())
@@ -3585,24 +3585,24 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 						}
-						
+
 						$component = TBGContext::factory()->TBGComponent($request['which_item_component']);
-						
+
 						if (TBGIssueAffectsComponentTable::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $component->getName()))));
 						}
-						
+
 						$component = $issue->addAffectedComponent($component);
-						
+
 						$item = $component;
 						$itemtype = 'component';
 						$itemtypename = TBGContext::getI18n()->__('Component');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
-						
+
 						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now affected by this issue', array('%component%' => $component['component']->getName()));
-												
+
 						break;
 					case 'build':
 						if (!$issue->getProject()->isBuildsEnabled())
@@ -3615,40 +3615,40 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 						}
-						
+
 						$build = TBGContext::factory()->TBGBuild($request['which_item_build']);
 
-						
+
 						if (TBGIssueAffectsBuildTable::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $build->getName()))));
 						}
-												
+
 						$build = $issue->addAffectedBuild($build);
-						
+
 						$item = $build;
 						$itemtype = 'build';
 						$itemtypename = TBGContext::getI18n()->__('Release');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
-												
+
 						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now affected by this issue', array('%build%' => $build['build']->getName()));
-												
+
 						break;
 					default:
 						throw new Exception('Internal error');
 						break;
 				}
-				
+
 				$editions = array();
 				$components = array();
 				$builds = array();
-				
+
 				if($issue->getProject()->isEditionsEnabled())
 				{
 					$editions = $issue->getEditions();
 				}
-				
+
 				if($issue->getProject()->isComponentsEnabled())
 				{
 					$components = $issue->getComponents();
@@ -3658,9 +3658,9 @@
 				{
 					$builds = $issue->getBuilds();
 				}
-				
+
 				$count = count($editions) + count($components) + count($builds);
-				
+
 				return $this->renderJSON(array('content' => $content, 'message' => $message, 'itemcount' => $count));
 			}
 			catch (Exception $e)
@@ -3669,17 +3669,17 @@
 				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
 		}
-		
+
 		/**
 		 * Reset user password
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
-		 * 
+		 *
 		 */
 		public function runReset(TBGRequest $request)
-		{			
+		{
 			$i18n = TBGContext::getI18n();
-			
+
 			if ($request->hasParameter('user') && $request->hasParameter('reset_hash'))
 			{
 				try
@@ -3702,7 +3702,7 @@
 					}
 					else
 					{
-						throw new Exception('User is invalid or does not exist');	
+						throw new Exception('User is invalid or does not exist');
 					}
 				}
 				catch (Exception $e)
@@ -3716,22 +3716,22 @@
 			}
 			return $this->forward(TBGContext::getRouting()->generate('login_page'));
 		}
-		
+
 		/**
 		 * Generate captcha picture
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
 		 * @global array $_SESSION['activation_number'] The session captcha activation number
-		 */			
+		 */
 		public function runCaptcha(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
-			
+
 			if (!function_exists('imagecreatetruecolor'))
 			{
 				return $this->return404();
 			}
-			
+
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$chain = str_split($_SESSION['activation_number'],1);
@@ -3745,10 +3745,10 @@
 			}
 			imagepng($captcha);
 			imagedestroy($captcha);
-			
+
 			return true;
 		}
-		
+
 		public function runIssueGetTempFieldValue(TBGRequest $request)
 		{
 			switch ($request['field'])
@@ -3769,13 +3769,13 @@
 					break;
 			}
 		}
-		
+
 		public function runServe(TBGRequest $request)
 		{
 			if(!TBGContext::isMinifyEnabled())
 			{
 				$itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
-				
+
 				if (array_key_exists('js', $itemarray))
 				{
 					header('Content-type: text/javascript');
@@ -3804,36 +3804,36 @@
 				}
 				exit();
 			}
-			
+
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			define('MINIFY_MIN_DIR', dirname(__FILE__).'/../../../core/min');
 
 			// load config
 			require MINIFY_MIN_DIR . '/config.php';
-			
+
 			// setup include path
 			set_include_path($min_libPath . PATH_SEPARATOR . get_include_path());
-			
+
 			require 'Minify.php';
-			
+
 			Minify::$uploaderHoursBehind = $min_uploaderHoursBehind;
 			Minify::setCache(
 			    isset($min_cachePath) ? $min_cachePath : ''
 			    ,$min_cacheFileLocking
 			);
-			
+
 			if ($min_documentRoot) {
 			    $_SERVER['DOCUMENT_ROOT'] = $min_documentRoot;
 			} elseif (0 === mb_stripos(PHP_OS, 'win')) {
 			    Minify::setDocRoot(); // IIS may need help
 			}
-			
+
 			$min_serveOptions['minifierOptions']['text/css']['symlinks'] = $min_symlinks;
-			
+
 			if ($min_allowDebugFlag && isset($_GET['debug'])) {
 			    $min_serveOptions['debug'] = true;
 			}
-			
+
 			if ($min_errorLogger) {
 			    require_once 'Minify/Logger.php';
 			    if (true === $min_errorLogger) {
@@ -3843,7 +3843,7 @@
 			        Minify_Logger::setLogger($min_errorLogger);
 			    }
 			}
-			
+
 			// check for URI versioning
 			if (preg_match('/&\\d/', $_SERVER['QUERY_STRING'])) {
 			    $min_serveOptions['maxAge'] = 31536000;
@@ -3851,7 +3851,7 @@
 
 			$itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
 			$min_serveOptions['minApp']['groups'] = $itemarray;
-			
+
 			ob_end_clean();
 
 			$data = Minify::serve('MinApp', $min_serveOptions);
@@ -3861,7 +3861,7 @@
 			{
 				header($name . ': ' . $val);
 			}
-			
+
 			header('HTTP/1.1 '.$data['statusCode']);
 
 			if ($data['statusCode'] != 304)
@@ -3871,7 +3871,7 @@
 
 			exit();
 		}
-		
+
 		public function runAccountCheckUsername(TBGRequest $request)
 		{
 			if ($request['desired_username'] && TBGUser::isUsernameAvailable($request['desired_username']))
@@ -3883,7 +3883,7 @@
 				return $this->renderJSON(array('available' => false));
 			}
 		}
-		
+
 		public function runAccountPickUsername(TBGRequest $request)
 		{
 			if (TBGUser::isUsernameAvailable($request['selected_username']))
@@ -3893,14 +3893,14 @@
 				$user->setOpenIdLocked(false);
 				$user->setPassword(TBGUser::createPassword());
 				$user->save();
-				
+
 				$this->getResponse()->setCookie('tbg3_username', $user->getUsername());
 				$this->getResponse()->setCookie('tbg3_password', $user->getPassword());
-				
+
 				TBGContext::setMessage('username_chosen', true);
 				$this->forward($this->getRouting()->generate('account'));
 			}
-			
+
 			TBGContext::setMessage('error', $this->getI18n()->__('Could not pick the username "%username%"', array('%username%' => $request['selected_username'])));
 			$this->forward($this->getRouting()->generate('account'));
 		}

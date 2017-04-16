@@ -18,10 +18,10 @@
 	 */
 	class TBGAction extends TBGParameterholder
 	{
-		
+
 		/**
 		 * Forward the user to a specified url
-		 * 
+		 *
 		 * @param string $url The URL to forward to
 		 * @param integer $code[optional] HTTP status code
 		 * @param integer $method[optional] 2 for meta redirect instead of header
@@ -33,25 +33,25 @@
 				$this->getResponse()->ajaxResponseText($code, TBGContext::getMessageAndClear('forward'));
 			}
 			TBGLogging::log("Forwarding to url {$url}");
-			
+
 			TBGLogging::log('Triggering header redirect function');
 			$this->getResponse()->headerRedirect($url, $code);
 		}
 
 		/**
 		 * Function that is executed before any actions in an action class
-		 * 
+		 *
 		 * @param TBGRequest $request The request object
 		 * @param string $action The action that is being triggered
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
-			
+
 		}
 
 		/**
 		 * Redirect from one action method to another in the same action
-		 * 
+		 *
 		 * @param string $redirect_to The method to redirect to
 		 */
 		public function redirect($redirect_to)
@@ -64,12 +64,12 @@
 			}
 			throw new Exception("The action \"{$actionName}\" does not exist in ".get_class($this));
 		}
-		
+
 		/**
 		 * Render a string
-		 * 
+		 *
 		 * @param string $text The text to render
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function renderText($text)
@@ -77,12 +77,12 @@
 			echo $text;
 			return true;
 		}
-		
+
 		/**
 		 * Renders JSON output, also takes care of setting the correct headers
-		 * 
+		 *
 		 * @param array $content The array to render
-		 *  
+		 *
 		 * @return boolean
 		 */
 		public function renderJSON($text = array())
@@ -93,50 +93,50 @@
 			echo json_encode($text);
 			return true;
 		}
-		
+
 		/**
 		 * Return the response object
-		 * 
+		 *
 		 * @return TBGResponse
 		 */
 		protected function getResponse()
 		{
 			return TBGContext::getResponse();
 		}
-		
+
 		/**
 		 * Return the routing object
-		 * 
+		 *
 		 * @return TBGRouting
 		 */
 		protected function getRouting()
 		{
 			return TBGContext::getRouting();
 		}
-		
+
 		/**
 		 * Return the i18n object
-		 * 
+		 *
 		 * @return TBGI18n
 		 */
 		protected function getI18n()
 		{
 			return TBGContext::getI18n();
 		}
-		
+
 		/**
 		 * Return the current logged in user
-		 * 
+		 *
 		 * @return TBGUser
 		 */
 		protected function getUser()
 		{
 			return TBGContext::getUser();
 		}
-		
+
 		/**
 		 * Sets the response to 404 and shows an error, with an optional message
-		 * 
+		 *
 		 * @param string $message[optional] The message
 		 */
 		public function return404($message = null)
@@ -151,21 +151,21 @@
 			$this->getResponse()->setTemplate('main/notfound');
 			return false;
 		}
-		
+
 		/**
 		 * Forward the user with HTTP status code 403 and an (optional) message
-		 * 
+		 *
 		 * @param string $message[optional] The message
 		 */
 		public function forward403($message = null)
 		{
 			$this->forward403unless(false, $message);
 		}
-		
+
 		/**
 		 * Forward the user with HTTP status code 403 and an (optional) message
 		 * based on a boolean check
-		 * 
+		 *
 		 * @param boolean $condition
 		 * @param string $message[optional] The message
 		 */
@@ -188,19 +188,19 @@
 				}
 			}
 		}
-		
+
 		public function forward403if($condition, $message = null)
 		{
 			$this->forward403unless(!$condition, $message);
 		}
-		
+
 		/**
 		 * Render a template
-		 * 
+		 *
 		 * @param string $template the template name
 		 * @param array $params template parameters
-		 * 
-		 * @return boolean 
+		 *
+		 * @return boolean
 		 */
 		public function renderTemplate($template, $params = array())
 		{
@@ -210,10 +210,10 @@
 
 		/**
 		 * Render a component
-		 * 
+		 *
 		 * @param string $template the component name
 		 * @param array $params component parameters
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function renderComponent($template, $params = array())
@@ -240,13 +240,13 @@
 			echo $current_content;
 			return $component_content;
 		}
-		
+
 		/**
 		 * Returns the HTML output from a component, but doesn't render it
-		 * 
+		 *
 		 * @param string $template the component name
 		 * @param array $params component parameters
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function getComponentHTML($template, $params = array())
@@ -275,15 +275,15 @@
 
 		/**
 		 * Returns the HTML output from a template, but doesn't render it
-		 * 
+		 *
 		 * @param string $template the template name
 		 * @param array $params template parameters
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function getTemplateHTML($template, $params = array())
 		{
 			return self::returnTemplateHTML($template, $params);
 		}
-		
+
 	}

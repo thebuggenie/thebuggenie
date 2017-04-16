@@ -36,7 +36,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_itemtype = null;
-		
+
 		/**
 		 * Extra data for that data type (if any)
 		 *
@@ -44,7 +44,7 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_itemdata = null;
-		
+
 		/**
 		 * Sort order of this item
 		 *
@@ -93,7 +93,7 @@
 		{
 			$this->_itemdata = $itemdata;
 		}
-		
+
 		/**
 		 * Invoked when trying to print the object
 		 *
@@ -103,12 +103,12 @@
 		{
 			return $this->_name;
 		}
-		
+
 		public function getItemtype()
 		{
 			return $this->_itemtype;
 		}
-		
+
 		public function setItemtype($itemtype)
 		{
 			$this->_itemtype = $itemtype;
@@ -117,12 +117,12 @@
 		public static function getAvailableFields($builtin_only = false)
 		{
 			$builtin_types = array('description', 'reproduction_steps', 'status', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'owner', 'assignee', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone', 'user_pain', 'votes');
-			
+
 			if ($builtin_only) return $builtin_types;
 
 			$customtypes = TBGCustomDatatype::getAll();
 			$types = array_merge($builtin_types, array_keys($customtypes));
-			
+
 			return $types;
 		}
 

@@ -81,7 +81,7 @@
 					$sd += 86400;
 				}
 			}
-			
+
 			if (count($issue_ids))
 			{
 				$crit = $this->getCriteria();
@@ -130,5 +130,5 @@
 
 			return array('points' => $points_retarr, 'hours' => $hours_retarr);
 		}
-		
+
 	}

@@ -33,7 +33,7 @@ var TBG = {
 			Message: {},
 			Dialog: {},
 			Backdrop: {}
-		}, 
+		},
 		Profile: {},
 		Dashboard: {
 			views: [],
@@ -110,7 +110,7 @@ var TBG = {
 	debug: false,
 	activated_popoutmenu: undefined,
 	autocompleter_url: undefined,
-	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone']
+	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducibility', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone']
 };
 
 /**
@@ -282,7 +282,7 @@ TBG.Core._detachFile = function(url, file_id, base_id) {
 		},
 		failure: {
 			show: [base_id + file_id + '_remove_link', 'uploaded_files_'+ file_id + '_remove_link'],
-			hide: 'uploaded_files_'+ file_id + '_remove_indicator'			
+			hide: 'uploaded_files_'+ file_id + '_remove_indicator'
 		}
 	});
 };
@@ -347,7 +347,7 @@ TBG.Core._escapeWatcher = function(event) {
 /**
  * Main initializer function
  * Sets up and initializes autocompleters, watchers, etc
- * 
+ *
  * @param {Object} options A {key: value} store with options to set
  */
 TBG.initialize = function(options) {
@@ -401,7 +401,7 @@ TBG.Main.Helpers.Message.clear = function() {
 
 /**
  * Shows an error popup message
- * 
+ *
  * @param title string The title to show
  * @param content string Error details
  */
@@ -423,7 +423,7 @@ TBG.Main.Helpers.Message.error = function(title, content) {
 
 /**
  * Shows a "success"-style popup message
- * 
+ *
  * @param title string The title to show
  * @param content string Message details
  */
@@ -480,13 +480,13 @@ TBG.Main.Helpers.Dialog.dismiss = function() {
 /**
  * Convenience function for running an AJAX call and updating / showing / hiding
  * divs on json feedback
- * 
+ *
  * Available options:
  *   loading: {} Instructions for the onLoading event
  *   success: {} Instructions for the onSuccess event
  *   failure: {} Instructions for the onComplete event
  *   complete: {} Instructions for the onComplete event
- *   
+ *
  *   Common options for all on* events:
  *     hide: string/array A list of / element id(s) to hide
  *     reset: string/array A list of / element id(s) to reset
@@ -495,24 +495,24 @@ TBG.Main.Helpers.Dialog.dismiss = function() {
  *     remove: string/array A list of / element id(s) to remove
  *     enable: string/array A list of / element id(s) to enable
  *     disable: string/array A list of / element id(s) to disable
- *     callback: a function to call at the end of the event. For 
- *		         success/failure/complete events, the callback 
+ *     callback: a function to call at the end of the event. For
+ *		         success/failure/complete events, the callback
  *		         function retrieves the json object
- *   
- *   The loading.indicator element will be toggled off in the onComplete event 
- *    
+ *
+ *   The loading.indicator element will be toggled off in the onComplete event
+ *
  *   Options for the onSuccess event instruction set:
- *     update: either an element id which will receive the value of the 
+ *     update: either an element id which will receive the value of the
  *             json.content property or an object with instructions:
- *     replace: either an element id which will be replace with the value of the 
+ *     replace: either an element id which will be replace with the value of the
  *             json.content property or an object with instructions:
- *             
+ *
  *     Available instructions for the success "update" object:
  *       element: the id of the element to update
  *       insertion: true / false / ommitted. If "true" the element will get the
  *                  content inserted after the existing content, instead of
  *                  the content replacing the existing content
- *       from: if the json return value does not contain a "content" key, 
+ *       from: if the json return value does not contain a "content" key,
  *			   specify which json key should be used
  *
  * @param url The URL to call
@@ -523,7 +523,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 	if (options.form && options.form != undefined) params = Form.serialize(options.form);
 	if (options.additional_params) params += options.additional_params;
 	var url_method = (options.url_method) ? options.url_method : 'post';
-	
+
 	new Ajax.Request(url, {
 		asynchronous: true,
 		method: url_method,
@@ -661,7 +661,7 @@ TBG.updateDebugInfo = function() {
 TBG.Main.Helpers.formSubmit = function(url, form_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: form_id,
-		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
+		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'},
 		success: {enable: form_id + '_button'},
 		failure: {enable: form_id + '_button'}
 	});
@@ -747,9 +747,9 @@ TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 };
 
 TBG.Main.findIdentifiable = function(url, field) {
-	TBG.Main.Helpers.ajax(url, { 
-		form: field + '_form', 
-		loading: {indicator: field + '_spinning'}, 
+	TBG.Main.Helpers.ajax(url, {
+		form: field + '_form',
+		loading: {indicator: field + '_spinning'},
 		success: {update: field + '_results'}
 	});
 };
@@ -761,7 +761,7 @@ TBG.Main.updatePercentageLayout = function(percent) {
 
 TBG.Main.submitIssue = function(url) {
 	if ($('report_issue_submit_button').hasClassName('disabled')) return;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: 'report_issue_form',
 		url_method: 'post',
@@ -845,10 +845,10 @@ TBG.Main.detachFileFromArticle = function(url, file_id, article_name) {
 TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();
-   
+
    src = (src.indexOf('?') != -1) ? src.substr(0, pos) : src;
    $(id).src = src + '?v=' + date.getTime();
-   
+
    return false;
 };
 
@@ -970,20 +970,20 @@ TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);
 	var target_elm = source_elm.up('li').down('span');
-	
+
 	var orig_text = target_elm.innerHTML;
 	var orig_id = target_elm.id
-	
+
 	target_elm.update(source_elm.innerHTML);
 	target_elm.id = source_elm.id;
-	
+
 	source_elm.update(orig_text);
 	source_elm.id = orig_id;
-	
+
 	source_elm.up('li').toggleClassName('verylightyellow');
 	source_elm.up('li').toggleClassName('mediumgrey');
 
-if (target_elm.hasClassName('template_view')) { 
+if (target_elm.hasClassName('template_view')) {
 		target_elm.removeClassName('template_view');
 		source_elm.remove();
 	}
@@ -995,7 +995,7 @@ TBG.Main.Dashboard.View.add = function()
 	element_view.id = 'view_' + new Date().getTime();
 	$('views_list').insert(element_view);
 	element_view = null;
-	
+
 	Sortable.create('views_list');
 }
 
@@ -1023,7 +1023,7 @@ TBG.Main.Dashboard.save = function(url)
 	$('views_list').select('li').each(function (element) {
 		parameters = parameters + element.down('span.dashboard_view_data').id + ';';
 	});
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {
@@ -1213,7 +1213,7 @@ TBG.Main.Login.register = function(url)
 			callback: function(json) {
 				json.fields.each(function(field) {
 					$(field).setStyle({backgroundColor: '#FBB'});
-				});	
+				});
 			}
 		}
 	});
@@ -1253,7 +1253,7 @@ TBG.Main.Login.resetForgotPassword = function(url) {
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			show: 'statistics_main', 
+			show: 'statistics_main',
 			hide: 'statistics_help',
 			callback: function() {
 				$('statistics_main_image').src = '';
@@ -1371,7 +1371,7 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 					$('milestone_'+m_id+'_changed').show();
 					$('milestone_'+m_id+'_issues').update('');
 				}
-				
+
 			}
 		}
 	});
@@ -1448,7 +1448,7 @@ TBG.Project.Scrum.Story.add = function(url)
 TBG.Project.Planning.assign = function(url, dragged, dropped)
 {
 	if (dropped.id == dragged.up('.milestone_box').id) return;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		params: {story_id: $(dragged.down('input')).getValue(), sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {
@@ -1968,7 +1968,7 @@ TBG.Project._submitDetails = function(url, form_id, pid) {
 						$('project_'+element+'s_disabled').show();
 					}
 				});
-				
+
 				if (pid != undefined && $('project_box_' + pid) != undefined) $('project_box_' + pid).update(json.content);
 			}
 		}
@@ -2111,8 +2111,8 @@ TBG.Config.updateCheck = function(url) {
 		},
 		success: {
 			callback: function(json) {
-				(json.uptodate) ? 
-					TBG.Main.Helpers.Message.success(json.title, json.message) : 
+				(json.uptodate) ?
+					TBG.Main.Helpers.Message.success(json.title, json.message) :
 					TBG.Main.Helpers.Message.error(json.title, json.message);
 			}
 		},
@@ -2817,7 +2817,7 @@ TBG.Config.Workflows.Transition.Actions.remove = function(url, action_id, type) 
 }
 
 /**
- * This function updates available issue reporting fields on page to match 
+ * This function updates available issue reporting fields on page to match
  * those returned by thebuggenie
  */
 TBG.Issues.updateFields = function(url)
@@ -2828,7 +2828,7 @@ TBG.Issues.updateFields = function(url)
 	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0) {
 		$('report_more_here').hide();
 		$('report_form').show();
-		
+
 		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'report_issue_more_options_indicator'},
 			params: 'issuetype_id=' + $('issuetype_id').getValue(),
@@ -2911,7 +2911,7 @@ TBG.Issues.updateFields = function(url)
 		$('report_more_here').show();
 		$('issuetype_list').show();
 	}
-	
+
 }
 
 /**
@@ -2935,7 +2935,7 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 				}
 			});
 		}
-			
+
 	}});
 };
 
@@ -2976,12 +2976,12 @@ TBG.Issues.findDuplicate = function(url, transition_id) {
 TBG.Issues.relate = function(url) {
 	var hide_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'no_child_issues' : 'no_parent_issues';
 	var update_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'related_child_issues_inline' : 'related_parent_issues_inline';
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_relate_issues_form',
 		loading: {indicator: 'relate_issues_indicator'},
 		success: {
-			update: {element: update_div, insertion: true}, 
+			update: {element: update_div, insertion: true},
 			hide: hide_div
 		}
 	});
@@ -3006,10 +3006,10 @@ TBG.Issues.removeRelated = function(url, issue_id) {
 
 TBG.Issues._addVote = function(url, direction) {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'vote_' + direction + '_indicator', 
+			indicator: 'vote_' + direction + '_indicator',
 			hide: 'vote_' + direction + '_link'},
 		success: {
 			update: 'issue_votes',
@@ -3190,7 +3190,7 @@ TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, fi
 }
 
 TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
-	TBG.available_fields.each(function (field) 
+	TBG.available_fields.each(function (field)
 	{
 		if ($(field + '_field')) {
 			if (visible_fields[field] != undefined)  {
@@ -3207,10 +3207,10 @@ TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
 /**
  * This function is triggered every time an issue is updated via the web interface
  * It sends a request that performs the update, and gets JSON back
- * 
- * Depending on the JSON return value, it updates fields, shows/hides boxes on the 
+ *
+ * Depending on the JSON return value, it updates fields, shows/hides boxes on the
  * page, and sets some class values
- * 
+ *
  * @param url The URL to request
  * @param field The field that is being changed
  * @param serialize_form Whether a form is being serialized
@@ -3222,9 +3222,9 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 	} else if (serialize_form != undefined) {
 		post_form = serialize_form + '_form';
 	}
-	
+
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: post_form,
 		loading: {
@@ -3244,7 +3244,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 						$(field + '_' + json.issue_id + '_change').hide();
 					}
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
-					
+
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
 					{
@@ -3313,7 +3313,7 @@ TBG.Issues.Field.setTime = function(url, field, issue_id) {
 TBG.Issues.Field.revert = function(url, field)
 {
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: field + '_undo_spinning',
@@ -3326,14 +3326,14 @@ TBG.Issues.Field.revert = function(url, field)
 					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.field);
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
-					
+
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'description' || field == 'reproduction_steps') $(field + '_form_value').update(json.form_value);
 					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect') $('issue_user_pain').update(json.field.user_pain);
 
 					TBG.Issues.markAsUnchanged(field);
 				}
-				
+
 			}
 		},
 		complete: {
@@ -3348,9 +3348,9 @@ TBG.Issues.markAsChanged = function(field)
 		$('viewissue_changed').show();
 		Effect.Pulsate($('issue_info_container'), {pulses: 6, duration: 2});
 	}
-	
+
 	$(field + '_field').addClassName('issue_detail_changed');
-	
+
 	if ($('comment_save_changes')) $('comment_save_changes').checked = true;
 }
 
@@ -3664,7 +3664,7 @@ TBG.Search.checkToggledCheckboxes = function() {
 	} else {
 		$('search_bulk_container_top').removeClassName('unavailable');
 		$('search_bulk_container_bottom').removeClassName('unavailable');
-		if ($('bulk_action_selector_top').getValue() != '') 
+		if ($('bulk_action_selector_top').getValue() != '')
 			$('bulk_action_submit_top').removeClassName('disabled');
 
 		if ($('bulk_action_selector_bottom').getValue() != '')
@@ -3763,7 +3763,7 @@ TBG.Search.bulkPostProcess = function(json) {
 				$('bulk_action_assign_milestone_bottom').setValue(json.milestone_id);
 				$('bulk_action_assign_milestone_bottom_name').hide();
 			}
-		} 
+		}
 		json.issue_ids.each(function(issue_id) {
 			var issue_elm = $('issue_' + issue_id);
 			if (issue_elm != undefined) {

@@ -23,7 +23,7 @@
 	 * @Table(name="editions")
 	 * @Entity(class="TBGEdition")
 	 */
-	class TBGEditionsTable extends TBGB2DBTable 
+	class TBGEditionsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 2;
@@ -44,7 +44,7 @@
 		const PLANNED_RELEASED = 'editions.isplannedreleased';
 		const RELEASE_DATE = 'editions.release_date';
 		const LOCKED = 'editions.locked';
-		
+
 //		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
@@ -64,7 +64,7 @@
 //			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function getByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

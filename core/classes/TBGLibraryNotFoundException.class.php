@@ -18,6 +18,6 @@
 	 */
 	class TBGLibraryNotFoundException extends Exception
 	{
-		
+
 	}
 

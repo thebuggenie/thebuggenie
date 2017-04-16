@@ -21,7 +21,7 @@
 						<div id="commits">
 							<?php include_template('vcs_integration/projectcommits', array('selected_project' => $selected_project, 'commits' => $commits)); ?>
 						</div>
-						
+
 						<div class="commits_next">
 							<input id="commits_offset" value="40" type="hidden">
 							<?php echo image_tag('spinning_16.gif', array('id' => 'commits_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')); ?>

@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="userissues")
 	 */
-	class TBGUserIssuesTable extends TBGB2DBTable 
+	class TBGUserIssuesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -49,9 +49,9 @@
 		{
 			$uids = array();
 			$crit = $this->getCriteria();
-			
+
 			$crit->addWhere(self::ISSUE, $issue_id);
-			
+
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
@@ -60,7 +60,7 @@
 					$uids[$uid] = $uid;
 				}
 			}
-			
+
 			return $uids;
 		}
 
@@ -84,7 +84,7 @@
 				}
 			}
 		}
-		
+
 		public function getUserStarredIssues($user_id)
 		{
 			$crit = $this->getCriteria();
@@ -92,9 +92,9 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::ISSUE);
 			$crit->addWhere(TBGIssuesTable::DELETED, 0);
-			
+
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 	}

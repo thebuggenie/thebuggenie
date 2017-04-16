@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	include_template('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
 	TBGContext::loadLibrary('publish/publish');
@@ -78,12 +78,12 @@
 document.observe('dom:loaded', function() {
 	$('article_serialized').value = $('article_content').serialize();
 });
-	
+
 Event.observe(window, 'beforeunload', function(event) {
 	if ($('article_content').serialize() != $F('article_serialized'))
 	{
 		event.stop();
 	}
 });
-	
+
 </script>

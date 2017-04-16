@@ -3,13 +3,13 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGRole extends TBGDatatype 
+	class TBGRole extends TBGDatatype
 	{
 
 		const ITEMTYPE = TBGDatatype::ROLE;
 
 		protected static $_items = null;
-		
+
 		protected $_itemtype = TBGDatatype::ROLE;
 
 		/**
@@ -75,7 +75,7 @@
 				array('permission' => 'readarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
 				array('permission' => 'editarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
 			);
-			
+
 			foreach ($roles as $name => $permissions)
 			{
 				$role = new TBGRole();
@@ -89,18 +89,18 @@
 
 					if (array_key_exists('target_id', $permission)) $p->setTargetID($permission['target_id']);
 					if (array_key_exists('module', $permission)) $p->setModule($permission['module']);
-					
+
 					$permissions[$k] = $p;
 				}
 				$role->setPermissions($permissions);
 			}
 		}
-		
+
 		/**
 		 * Returns all project roles available
-		 * 
-		 * @return array 
-		 */		
+		 *
+		 * @return array
+		 */
 		public static function getAll()
 		{
 			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, null);

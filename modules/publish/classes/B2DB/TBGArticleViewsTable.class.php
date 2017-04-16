@@ -7,7 +7,7 @@
 	/**
 	 * @Table(name="articleviews")
 	 */
-	class TBGArticleViewsTable extends TBGB2DBTable 
+	class TBGArticleViewsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -16,7 +16,7 @@
 		const ARTICLE_ID = 'articleviews.article_id';
 		const USER_ID = 'articleviews.user_id';
 		const SCOPE = 'articleviews.scope';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

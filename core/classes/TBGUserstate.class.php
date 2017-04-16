@@ -1,5 +1,5 @@
 <?php
-	
+
 	/**
 	 * User state class
 	 *
@@ -53,9 +53,9 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_is_absent = false;
-		
+
 		static $_userstates = null;
-		
+
 		public static function getAll()
 		{
 			if (self::$_userstates === null)
@@ -64,7 +64,7 @@
 			}
 			return self::$_userstates;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$available = new TBGUserstate();
@@ -122,62 +122,62 @@
 			$vacation->setIsAbsent();
 			$vacation->setName('On vacation');
 			$vacation->save();
-			
+
 			TBGSettings::saveSetting(TBGSettings::SETTING_ONLINESTATE, $available->getID(), 'core', $scope->getID());
 			TBGSettings::saveSetting(TBGSettings::SETTING_OFFLINESTATE, $offline->getID(), 'core', $scope->getID());
 			TBGSettings::saveSetting(TBGSettings::SETTING_AWAYSTATE, $away->getID(), 'core', $scope->getID());
 		}
-		
+
 		public function setIsOnline($val = true)
 		{
 			$this->_is_online = $val;
 		}
-		
+
 		public function isOnline()
 		{
 			return $this->_is_online;
 		}
-		
+
 		public function setIsUnavailable($val = true)
 		{
 			$this->_is_unavailable = $val;
 		}
-		
+
 		public function isUnavailable()
 		{
 			return $this->_is_unavailable;
 		}
-		
+
 		public function setIsBusy($val = true)
 		{
 			$this->_is_busy = $val;
 		}
-		
+
 		public function isBusy()
 		{
 			return $this->_is_busy;
 		}
-		
+
 		public function setIsInMeeting($val = true)
 		{
 			$this->_is_in_meeting = $val;
 		}
-		
+
 		public function isInMeeting()
 		{
 			return $this->_is_in_meeting;
 		}
-		
+
 		public function setIsAbsent($val = true)
 		{
 			$this->_is_absent = $val;
 		}
-		
+
 		public function isAbsent()
 		{
 			return $this->_is_absent;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

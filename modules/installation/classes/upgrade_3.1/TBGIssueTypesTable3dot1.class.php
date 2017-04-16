@@ -29,7 +29,7 @@
 		const DESCRIPTION = 'issuetypes.description';
 		const ICON = 'issuetypes.itemdata';
 		const TASK = 'issuetypes.task';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

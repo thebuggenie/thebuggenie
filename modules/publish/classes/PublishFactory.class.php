@@ -2,16 +2,16 @@
 
 	class PublishFactory
 	{
-		
+
 		protected static $_articles = array();
 		protected static $_article_names = array();
-		
+
 		/**
 		 * Returns a publish article
-		 * 
+		 *
 		 * @param $a_id
 		 * @param $row
-		 * 
+		 *
 		 * @return TBGWikiArticle
 		 */
 		static function article($a_id, $row = null)
@@ -64,5 +64,5 @@
 			}
 			return self::$_articles[self::$_article_names[$article_name]];
 		}
-		
+
 	}

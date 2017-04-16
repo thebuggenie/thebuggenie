@@ -55,7 +55,7 @@
 //			parent::_addVarchar(self::CLASSNAME, 50);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function getAll()
 		{
 			$crit = $this->getCriteria();

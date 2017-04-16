@@ -22,7 +22,7 @@
 	 *
 	 * @Table(name="visible_issue_types")
 	 */
-	class TBGVisibleIssueTypesTable extends TBGB2DBTable 
+	class TBGVisibleIssueTypesTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -31,7 +31,7 @@
 		const SCOPE = 'visible_issue_types.scope';
 		const PROJECT_ID = 'visible_issue_types.project_id';
 		const ISSUETYPE_ID = 'visible_issue_types.issuetype_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -39,7 +39,7 @@
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 		public function getAllByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -48,7 +48,7 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
 		public function clearByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -56,7 +56,7 @@
 			$this->doDelete($crit);
 			return true;
 		}
-		
+
 		public function addByProjectIDAndIssuetypeID($project_id, $issuetype_id)
 		{
 			$crit = $this->getCriteria();
@@ -66,7 +66,7 @@
 			$res = $this->doInsert($crit);
 			return true;
 		}
-		
+
 		public function deleteByIssuetypeID($issuetype_id)
 		{
 			$crit = $this->getCriteria();
@@ -75,5 +75,5 @@
 			$this->doDelete($crit);
 			return true;
 		}
-		
+
 	}

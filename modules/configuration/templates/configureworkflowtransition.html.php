@@ -4,7 +4,7 @@
 		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
 	else
 		$tbg_response->setTitle(__('Configure workflows'));
-	
+
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>

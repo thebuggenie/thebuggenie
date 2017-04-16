@@ -11,7 +11,7 @@
 			}
 		});
 	};
-	
+
 	TBG.Modules.mailing.deleteIncomingAccount = function(url, account_id) {
 		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'mailing_account_' + account_id + '_indicator'},

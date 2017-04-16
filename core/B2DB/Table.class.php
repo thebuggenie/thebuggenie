@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Table class
 	 *
@@ -35,7 +35,7 @@
 		{
 			$this->b2db_alias = $this->b2db_name . Core::addAlias();
 		}
-		
+
 		final public function __construct()
 		{
 			if ($entity_class = Core::getCachedTableEntityClass(\get_called_class())) {
@@ -66,15 +66,15 @@
 
 		/**
 		 * Return an instance of this table
-		 * 
-		 * @return Table 
+		 *
+		 * @return Table
 		 */
 		public static function getTable()
 		{
 			$tablename = \get_called_class();
 			return Core::getTable($tablename);
 		}
-		
+
 		protected function _addColumn($column, $details)
 		{
 			$this->_columns[$column] = $details;
@@ -84,12 +84,12 @@
 		{
 			$this->_addColumn($column, array('type' => 'integer', 'name' => $column, 'length' => $length, 'default_value' => $default_value, 'not_null' => $not_null, 'auto_inc' => $auto_inc, 'unsigned' => $unsigned));
 		}
-		
+
 		protected function _addFloat($column, $precision = 2, $default_value = 0, $not_null = false, $auto_inc = false, $unsigned = false)
 		{
 			$this->_addColumn($column, array('type' => 'float', 'name' => $column, 'precision' => $precision, 'default_value' => $default_value, 'not_null' => $not_null, 'auto_inc' => $auto_inc, 'unsigned' => $unsigned));
 		}
-		
+
 		protected function _addVarchar($column, $length = null, $default_value = null, $not_null = false)
 		{
 			$this->_addColumn($column, array('type' => 'varchar', 'name' => $column, 'length' => $length, 'default_value' => $default_value, 'not_null' => $not_null));
@@ -109,7 +109,7 @@
 		{
 			$this->_addColumn($column, array('type' => 'boolean', 'name' => $column, 'default_value' => ($default_value) ? 1 : 0, 'not_null' => $not_null));
 		}
-		
+
 		protected function _addIndex($index_name, $columns, $index_type = null)
 		{
 			if (!is_array($columns)) $columns = array($columns);
@@ -159,12 +159,12 @@
 				}
 			}
 		}
-		
+
 		public function __toString()
 		{
 			return $this->b2db_name;
 		}
-		
+
 		/**
 		 * Sets the charset to something other than "latin1" which is the default
 		 *
@@ -174,7 +174,7 @@
 		{
 			$this->_charset = $charset;
 		}
-		
+
 		/**
 		 * Sets the initial auto_increment value to something else than 1
 		 *
@@ -195,7 +195,7 @@
 			}
 			return $qc;
 		}
-		
+
 		/**
 		 * Returns the table name
 		 *
@@ -205,7 +205,7 @@
 		{
 			return $this->b2db_name;
 		}
-		
+
 		/**
 		 * Returns the shortname / prefix of the table
 		 *
@@ -215,7 +215,7 @@
 		{
 			return $this->b2db_alias;
 		}
-		
+
 		protected function _initializeForeignTables()
 		{
 			$this->_foreigntables = array();
@@ -234,17 +234,17 @@
 			}
 			return $this->_foreigntables;
 		}
-		
+
 		public function getForeignColumns()
 		{
 			return $this->_foreigncolumns;
 		}
-		
+
 		/**
 		 * Returns a foreign table
 		 *
 		 * @param Table $table
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getForeignTable($table)
@@ -261,22 +261,22 @@
 		{
 			return $this->id_column;
 		}
-		
+
 		public function getColumns()
 		{
 			return $this->_columns;
 		}
-		
+
 		public function getColumn($column)
 		{
 			return $this->_columns[$column];
 		}
-		
+
 		protected function _getRealColumnFieldName($column)
 		{
 			return mb_substr($column, mb_stripos($column, '.') + 1);
 		}
-		
+
 		public function getAliasColumns()
 		{
 			$retcolumns = array();
@@ -314,7 +314,7 @@
 		 * @param integer $id
 		 * @param Criteria $crit
 		 * @param mixed $join
-		 * 
+		 *
 		 * @return \b2db\Row
 		 */
 		public function doSelectById($id, Criteria $crit = null, $join = 'all')
@@ -370,7 +370,7 @@
 		 * Selects rows based on given criteria
 		 *
 		 * @param Criteria $crit
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doSelect(Criteria $crit, $join = 'all')
@@ -396,7 +396,7 @@
 		 * Selects one row from the table based on the given criteria
 		 *
 		 * @param Criteria $crit
-		 * 
+		 *
 		 * @return \b2db\Row
 		 */
 		public function doSelectOne(Criteria $crit, $join = 'all')
@@ -409,7 +409,7 @@
 			$statement = Statement::getPreparedStatement($crit);
 			$resultset = $statement->performQuery();
 			$resultset->next();
-			
+
 			return $resultset->getCurrentRow();
 		}
 
@@ -423,7 +423,7 @@
 		 * Inserts a row into the table
 		 *
 		 * @param Criteria $crit
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doInsert(Criteria $crit)
@@ -439,7 +439,7 @@
 		 * Perform an SQL update
 		 *
 		 * @param Criteria $crit
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doUpdate(Criteria $crit)
@@ -457,7 +457,7 @@
 		 *
 		 * @param Criteria $crit
 		 * @param integer $id
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doUpdateById(Criteria $crit, $id)
@@ -476,7 +476,7 @@
 		 * Perform an SQL delete
 		 *
 		 * @param Criteria $crit
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doDelete(Criteria $crit)
@@ -493,7 +493,7 @@
 		 * Perform an SQL delete by an id
 		 *
 		 * @param integer $id
-		 * 
+		 *
 		 * @return Resultset
 		 */
 		public function doDeleteById($id)
@@ -507,7 +507,7 @@
 
 			return $statement->performQuery('delete');
 		}
-		
+
 		/**
 		 * creates the table by executing the sql create statement
 		 *
@@ -518,7 +518,7 @@
 			$sql = '';
 			try {
 				$res = $this->drop();
-				
+
 				$sql = $this->_createToSQL();
 				$statement = Statement::getPreparedStatement($sql);
 				return $statement->performQuery('create');
@@ -526,9 +526,9 @@
 				throw new Exception('Error creating table ' . $this->getB2DBName() . ': ' . $e->getMessage(), $sql);
 			}
 		}
-		
+
 		protected function _setupIndexes() { }
-		
+
 		public function createIndexes()
 		{
 			try {
@@ -567,7 +567,7 @@
 
 		/**
 		 * Drops a table
-		 *  
+		 *
 		 * @return null
 		 */
 		public function drop()
@@ -580,12 +580,12 @@
 				throw new Exception('Error dropping table ' . $this->getB2DBName() . ': ' . $e->getMessage(), $sql);
 			}
 		}
-		
+
 		/**
 		 * Return a new criteria with this table as the from-table
-		 * 
+		 *
 		 * @param boolean $setupjointables[optional] Whether to auto-join all related tables by default
-		 * 
+		 *
 		 * @return Criteria
 		 */
 		public function getCriteria($setupjointables = false)
@@ -593,7 +593,7 @@
 			$crit = new Criteria($this, $setupjointables);
 			return $crit;
 		}
-		
+
 		protected function formatify($value, $type)
 		{
 			switch ($type) {
@@ -610,7 +610,7 @@
 					return $value;
 			}
 		}
-		
+
 		public function saveObject(\b2db\Saveable $object)
 		{
 			$crit = $this->getCriteria();
@@ -637,7 +637,7 @@
 				$res = $this->doInsert($crit);
 				$res_id = $res->getInsertID();
 			}
-			
+
 			return $res_id;
 		}
 
@@ -645,7 +645,7 @@
 		{
 			return static::B2DB_TABLE_VERSION;
 		}
-		
+
 		protected function _getColumnTypeSQL($column)
 		{
 			$fsql = '';
@@ -684,7 +684,7 @@
 			}
 			return $fsql;
 		}
-		
+
 		protected function _getColumnDefaultValueSQL($column)
 		{
 			$fsql = '';
@@ -706,7 +706,7 @@
 			}
 			return $fsql;
 		}
-		
+
 		protected function _getColumnDefinitionSQL($column)
 		{
 			$fsql = $this->_getColumnTypeSQL($column);
@@ -756,26 +756,26 @@
 		{
 			$sql = 'ALTER TABLE ' . $this->_getTableNameSQL();
 			$qc = $this->getQC();
-			
+
 			$field = $this->_getRealColumnFieldName($new_column['name']);
-			
+
 			switch (Core::getDBtype()) {
 				case 'mysql':
 					$sql .= " MODIFY $qc" . $field . "$qc ";
 					$sql .= $this->_getColumnDefinitionSQL($new_column);
 					break;
 				case 'pgsql':
-					
+
 					$csql = array();
-					
+
 					$alter = " ALTER COLUMN $qc" . $field . "$qc ";
-					
+
 					$new_type = $this->_getColumnTypeSQL($new_column);
 					$new_default = $this->_getColumnDefaultValueSQL($new_column);
-					
+
 					$csql[] = $alter . " DROP NOT NULL";
 					$csql[] = $alter . " DROP DEFAULT";
-					
+
 					$type = " TYPE " . $new_type;
 					if ($old_column['type'] == 'boolean' && $new_column['type'] == 'integer') {
 						$type .= " USING CASE WHEN $qc" . $field . "$qc THEN 1 ELSE 0 END";
@@ -783,18 +783,18 @@
 						// TODO Other default conversions provided by MySQL but not PostgreSQL?
 					}
 					$csql[] = $alter . $type;
-					
+
 					if ($new_default != '') {
 						$csql[] = $alter . " SET " . $new_default;
 					}
 					if ($new_column['not_null']) {
 						$csql[] =  $alter . " SET NOT NULL";
 					}
-					
+
 					$sql .= join(", ", $csql);
 					break;
 			}
-			
+
 			return $sql;
 		}
 
@@ -818,10 +818,10 @@
 		{
 			if ($old_table->getVersion() != ($this->getVersion() - 1))
 				throw new Exception('Cannot upgrade from ' . get_class($old_table) . ' version ' . $old_table->getVersion() . ', must be version ' . ($this->getVersion() - 1));
-			
+
 			$old_columns = $old_table->getColumns();
 			$new_columns = $this->getColumns();
-			
+
 			$added_columns = \array_diff_key($new_columns, $old_columns);
 			$altered_columns = Tools::array_diff_recursive($old_columns, $new_columns);
 			$dropped_columns = \array_keys(array_diff_key($old_columns, $new_columns));

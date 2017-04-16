@@ -124,8 +124,8 @@
 				$filters = TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($this->view->getDetail());
 			}
 			list ($this->issues, $this->resultcount) = TBGIssue::findIssues($filters);
-		}		
-		
+		}
+
 		public function componentSidebar()
 		{
 			$savedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
@@ -134,10 +134,10 @@
 
 			foreach ($savedsearches['public'] as $a_savedsearch)
 				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
-			
+
 			$this->savedsearches = $savedsearches;
 		}
-		
+
 		public function componentSearchbuilder()
 		{
 			$this->templates = searchActions::getTemplates();
@@ -163,7 +163,7 @@
 					break;
 				default:
 					preg_match('/((?<=\/)issues).+$/i', TBGContext::getRequest()->getQueryString(), $get);
-					
+
 					if (!isset($get[0])) preg_match('/((?<=url=)issues).+$/i', TBGContext::getRequest()->getQueryString(), $get);
 
 					if (isset($get[0]))
@@ -222,5 +222,5 @@
 			$this->project = $project;
 			$this->available_transitions = $workflow_items;
 		}
-		
+
 	}

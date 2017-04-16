@@ -42,7 +42,7 @@
 		{
 			$this->server = $server;
 		}
-		
+
 		public function setNoDashF($val = true)
 		{
 			$this->no_dash_f = (bool) $val;
@@ -103,7 +103,7 @@
 			{
 				TBGContext::reinitializeI18n(null);
 			}
-			
+
 			if (!$email->hasRecipients())
 			{
 				throw new Exception(TBGContext::getI18n()->__('You need to add at least one recipient'));
@@ -129,7 +129,7 @@
 			{
 				throw $e;
 			}
-			
+
 			return $retval;
 		}
 
@@ -153,7 +153,7 @@
 			{
 				TBGLogging::log("Sending email to {$email->getRecipientsAsString()} not accepted for delivery", TBGLogging::LEVEL_NOTICE);
 			}
-			
+
 			return $retval;
 		}
 

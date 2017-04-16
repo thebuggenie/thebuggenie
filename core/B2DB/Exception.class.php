@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * B2DB Exception class
 	 *
@@ -20,19 +20,19 @@
 	 */
 	class Exception extends \Exception
 	{
-		
+
 		protected $_sql = null;
-		
+
 		public function __construct($message, $sql = null)
 		{
 			parent::__construct($message);
 			$this->_sql = $sql;
 		}
-		
+
 		public function getSQL()
 		{
 			return $this->_sql;
 		}
-		
+
 	}
-	
+

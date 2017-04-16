@@ -10,7 +10,7 @@
 	 */
 	class TBGIncomingEmailAccountTable extends TBGB2DBTable
 	{
-		
+
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'mailing_incoming_email_account';
 		const ID = 'mailing_incoming_email_account.id';
@@ -39,8 +39,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			
+
 			return $this->doSelect($crit);
 		}
-		
+
 	}

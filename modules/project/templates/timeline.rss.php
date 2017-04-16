@@ -101,7 +101,7 @@
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
 			<guid isPermaLink="false"><?php echo sha1($timestamp.$activity['text']); ?></guid>
 		</item>
-		
+
 <?php endif; ?>
 <?php endforeach; ?>
 <?php endforeach; ?>

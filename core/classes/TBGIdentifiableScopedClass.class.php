@@ -18,7 +18,7 @@
 	 */
 	abstract class TBGIdentifiableScopedClass extends TBGIdentifiableClass
 	{
-		
+
 		/**
 		 * The related scope
 		 *
@@ -50,7 +50,7 @@
 
 			return $this->_scope;
 		}
-		
+
 		protected function _preSave($is_new)
 		{
 			if ($is_new && $this->_scope === null)

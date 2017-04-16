@@ -52,7 +52,7 @@
 //			parent::_addInteger(self::TID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
-		
+
 		public function addView($target_id, $target_type, $view)
 		{
 			if ($view['type'])
@@ -67,7 +67,7 @@
 				$this->doInsert($crit);
 			}
 		}
-		
+
 		public function clearViews($target_id, $target_type)
 		{
 			$crit = $this->getCriteria();
@@ -88,7 +88,7 @@
 
 			return $res;
 		}
-		
+
 		public function setDefaultViews($target_id, $target_type)
 		{
 			switch ($target_type)

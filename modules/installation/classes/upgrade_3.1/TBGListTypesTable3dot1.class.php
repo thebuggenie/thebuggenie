@@ -31,7 +31,7 @@
 		const APPLIES_TO = 'listtypes.applies_to';
 		const APPLIES_TYPE = 'listtypes.applies_type';
 		const ORDER = 'listtypes.sort_order';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -42,5 +42,5 @@
 			parent::_addInteger(self::ORDER, 3);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 	}

@@ -58,7 +58,7 @@
 				self::$_schemes = TBGWorkflowSchemesTable::getTable()->getAll();
 			}
 		}
-		
+
 		/**
 		 * Return all workflow schemes in the system
 		 *
@@ -69,7 +69,7 @@
 			self::_populateSchemes();
 			return self::$_schemes;
 		}
-		
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$scheme = new TBGWorkflowScheme();
@@ -95,7 +95,7 @@
 		{
 			return $this->_description;
 		}
-		
+
 		/**
 		 * Set the workflows description
 		 *
@@ -143,7 +143,7 @@
 			$this->_populateAssociatedWorkflows();
 			return array_key_exists($issuetype->getID(), $this->_issuetype_workflows);
 		}
-		
+
 		public function associateIssuetypeWithWorkflow(TBGIssuetype $issuetype, TBGWorkflow $workflow)
 		{
 			TBGWorkflowIssuetypeTable::getTable()->setWorkflowIDforIssuetypeIDwithSchemeID($workflow->getID(), $issuetype->getID(), $this->getID());
@@ -175,7 +175,7 @@
 		{
 			return (bool) $this->getNumberOfProjects();
 		}
-		
+
 		public function getNumberOfProjects()
 		{
 			if ($this->_projects === null)
@@ -184,7 +184,7 @@
 			}
 			return $this->_projects;
 		}
-		
+
 		/**
 		 * Return the items name
 		 *

@@ -39,7 +39,7 @@
 		const PLANNED_RELEASED = 'editions.isplannedreleased';
 		const RELEASE_DATE = 'editions.release_date';
 		const LOCKED = 'editions.locked';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);

@@ -32,7 +32,7 @@
 		const TEAM_ID = 'projectassignedteams.uid';
 		const PROJECT_ID = 'projectassignedteams.project_id';
 		const ROLE_ID = 'projectassignedteams.role_id';
-		
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::TEAM_ID, TBGTeamsTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		public function deleteByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -84,14 +84,14 @@
 			$crit->addWhere(self::TEAM_ID, $team);
 			$this->doDelete($crit);
 		}
-		
+
 		public function getProjectsByTeamID($team)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TEAM_ID, $team);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
-			
+
 			$projects = array();
 			if ($res)
 			{
@@ -101,7 +101,7 @@
 					$projects[$pid] = $pid;
 				}
 			}
-			
+
 			return $projects;
 		}
 

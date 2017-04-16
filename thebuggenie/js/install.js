@@ -27,15 +27,15 @@ function updateURLPreview()
 		Element.show('continue_error');
 		$('url_preview').update('<b>!! </b>The server url <i>cannot end with a forward slash</i>, and the directory url <i>must start and end with a forward slash</i>');
 	}
-	else 
-	{ 
+	else
+	{
 		Element.show('continue_button');
 		Element.hide('continue_error');
 		$('url_preview').update($('url_host').value + $('url_subdir').value + 'index.php');
 	}
-	
+
 	var new_url = $('url_host').value + $('url_subdir').value;
-	
+
 	if (new_url.endsWith('//'))
 	{
 		Element.hide('continue_button');

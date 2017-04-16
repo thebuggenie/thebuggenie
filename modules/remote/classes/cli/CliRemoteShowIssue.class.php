@@ -48,7 +48,7 @@
 			$url_options = array('project_key' => $this->project_key, 'issue_no' => $this->issue_number, 'format' => 'json');
 
 			$this->cliEcho("\n");
-			
+
 			$issue = $this->getRemoteResponse($this->getRemoteURL('viewissue', $url_options));
 
 			TBGContext::loadLibrary('common');
@@ -91,10 +91,10 @@
 				$this->cliEcho('-');
 
 			$this->cliEcho("\n");
-			
+
 			foreach ($issue->visible_fields as $field => $details)
 			{
-				$name = ucfirst(str_replace('_', ' ', $field));				
+				$name = ucfirst(str_replace('_', ' ', $field));
 				$this->cliEcho("{$name}: ", 'white', 'bold');
 				if ($issue->$field)
 				{
@@ -138,7 +138,7 @@
 							$this->cliEcho($comment->posted_by->name);
 						else
 							$this->cliEcho("Unknown user");
-						
+
 						$this->cliEcho("\n");
 						$this->cliEcho('Posted: ', 'white', 'bold');
 						$this->cliEcho(tbg_formatTime($comment->created_at, 21) . ' (' . $comment->created_at . ')');

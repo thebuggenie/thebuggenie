@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGIssueFieldsTable3dot0 extends TBGB2DBTable 
+	class TBGIssueFieldsTable3dot0 extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -41,5 +41,5 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
+
 	}

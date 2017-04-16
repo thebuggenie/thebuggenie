@@ -182,7 +182,7 @@
 		public function current()
 		{
 			$row = $this->getCurrentRow();
-			
+
 			return $row;
 		}
 

@@ -23,7 +23,7 @@
 	 * @Table(name="teams")
 	 * @Entity(class="TBGTeam")
 	 */
-	class TBGTeamsTable extends TBGB2DBTable 
+	class TBGTeamsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
@@ -46,7 +46,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ONDEMAND, false);
-			
+
 			return $this->select($crit);
 		}
 
