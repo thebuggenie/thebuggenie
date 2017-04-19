@@ -1,6 +1,6 @@
 core/config/b2db.yml
 cache
-./files/
+files/*
 .settings/
 thebuggenie/.htaccess
 installed

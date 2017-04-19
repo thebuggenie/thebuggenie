@@ -12887,12 +12887,15 @@ a.action_button:hover {
     border-color: #AAA;
 }
 
+input[type=submit] {
+    padding: 1px 3px;
+    font-size: 12px;
+}
+
 input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     line-height: 17px !important;
     height: auto;
     margin: 0;
-    padding: 1px 3px;
-    font-size: 12px;
     text-decoration: none;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
@@ -13589,6 +13592,45 @@ table.sortable tr th.nosort {
 .persona-button.orange:before { /* Triangle */
     background: -webkit-linear-gradient(-45deg, #f7ad27, #e84a21);
     background: linear-gradient(-45deg, #e84a21, #f7ad27); /* flipped for updated spec */
+}
+
+/* ========================================================
+ *    Orange button
+ * ===================================================== */
+.persona-button.blue {
+    background: -webkit-linear-gradient(top, #4285F4, #4285F4);
+    background: linear-gradient(to bottom, #4285F4, #4285F4);
+}
+
+.persona-button.blue:hover {
+    background: -webkit-linear-gradient(top, #376ECA, #376ECA);
+    background: linear-gradient(to bottom, #376ECA, #376ECA);
+}
+
+.persona-button.blue span:before { /* Icon BG */
+    background: -webkit-linear-gradient(top, #FFF, #FFF);
+    background: linear-gradient(to bottom, #FFF, #FFF);
+}
+
+.persona-button.blue:before { /* Triangle */
+    background: -webkit-linear-gradient(-45deg, #FFF, #FFF);
+    background: linear-gradient(-45deg, #FFF, #FFF); /* flipped for updated spec */
+}
+
+.persona-button.large::before {
+    height: 34px;
+    width: 34px;
+    left: 7px;
+    margin-top: -17px;
+}
+.persona-button.large span {
+    padding: 10px 10px 10px 57px;
+}
+.persona-button.large span::before {
+    width: 30px;
+}
+.persona-button.large span::after {
+    background-position-x: 5px;
 }
 
 .redbox {

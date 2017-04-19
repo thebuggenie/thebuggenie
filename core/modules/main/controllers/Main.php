@@ -814,22 +814,6 @@ class Main extends framework\Action
         $this->forward($this->getRouting()->generate('home'));
     }
 
-    protected function checkScopeMembership(entities\User $user)
-    {
-        if (!framework\Context::getScope()->isDefault() && !$user->isGuest() && !$user->isConfirmedMemberOfScope(framework\Context::getScope()))
-        {
-            $route = self::getRouting()->generate('add_scope');
-            if (framework\Context::getRequest()->isAjaxCall())
-            {
-                return $this->renderJSON(array('forward' => $route));
-            }
-            else
-            {
-                $this->getResponse()->headerRedirect($route);
-            }
-        }
-    }
-
     /**
      * Do login (AJAX call)
      *
@@ -905,8 +889,7 @@ class Main extends framework\Action
                         framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
                         $user->setOnline();
                         $user->save();
-                        if ($this->checkScopeMembership($user))
-                            return true;
+                        $this->verifyScopeMembership($user);
 
                         return $this->forward(framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin')));
                     }
@@ -936,8 +919,8 @@ class Main extends framework\Action
                     $user->setOnline();
                     $user->save();
                     framework\Context::setUser($user);
-                    if ($this->checkScopeMembership($user))
-                        return true;
+                    $this->verifyScopeMembership($user);
+
                     if ($request->hasParameter('return_to'))
                     {
                         $forward_url = $request['return_to'];
@@ -992,8 +975,7 @@ class Main extends framework\Action
             $this->forward403($i18n->__("Invalid login details"));
         }
 
-        if ($this->checkScopeMembership($user))
-            return true;
+        $this->verifyScopeMembership($user);
 
         $user->setOnline();
         $user->save();

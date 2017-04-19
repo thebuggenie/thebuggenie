@@ -38,7 +38,6 @@
         public static function getProviders()
         {
             $providers = array();
-            $providers['google'] = 'google.com';
             $providers['myopenid'] = 'myopenid.com';
             $providers['yahoo'] = 'yahoo.com';
             $providers['livejournal'] = 'livejournal.com';
