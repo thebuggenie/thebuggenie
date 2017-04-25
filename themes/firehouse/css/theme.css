@@ -14,6 +14,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; padding: 3px 3px 3px 0; margin: 5px 
 table, img, a img { border: 0; }
 
 a { color: #00a400; text-decoration: none; }
+a.missing_wiki_page { color: #a40000; text-decoration: none; }
 a.image:hover { border: 0px; }
 a.issue_closed { text-decoration: line-through; }
 a:hover { border-bottom: 1px dotted #AAA; }

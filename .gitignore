@@ -46,3 +46,8 @@ apache-error.log
 
 # Ignore coverage report
 coverage-report
+
+# Ignore GNU Global tag files.
+GPATH
+GRTAGS
+GTAGS

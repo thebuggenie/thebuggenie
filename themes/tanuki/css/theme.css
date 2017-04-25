@@ -60,6 +60,11 @@ a {
     text-decoration: none;
 }
 
+a.missing_wiki_page {
+    color: #a40000;
+    text-decoration: none;
+}
+
 a.image:hover {
     border: 0;
 }
