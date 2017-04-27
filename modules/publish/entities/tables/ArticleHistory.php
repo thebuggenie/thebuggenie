@@ -164,4 +164,24 @@
             $res = $this->doDelete($crit);
         }
 
+        /**
+         * Returns all article history entries tied-in to a specific
+         * user. Entries are sorted based on date, with newest entry at
+         * beginning.
+         *
+         * @param \thebuggenie\core\entities\User $user User for which to fetch article history.
+         *
+         * @return \b2db\Resultset Result set with requested rows.
+         */
+        public function getByUser($user)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::AUTHOR, $user->getID());
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addOrderBy(self::DATE, 'desc');
+
+            $res = $this->doSelect($crit);
+
+            return $res;
+        }
     }

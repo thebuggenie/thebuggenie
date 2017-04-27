@@ -108,6 +108,8 @@ publish_special_whatlinkshere:
       article_name: Special:WhatLinksHere
     csrf_enabled: false
 
+# This is a "catch-all" route. If you are adding additional routes for
+# Special pages etc, make sure they come before the publish_article one.
 publish_article:
     route: '/wiki/:article_name/*'
     module: publish
