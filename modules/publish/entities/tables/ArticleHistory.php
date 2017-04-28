@@ -166,18 +166,23 @@
         }
 
         /**
-         * Returns all article history entries tied-in to a specific
-         * user. Entries are sorted based on date, with newest entry at
-         * beginning.
+         * Returns all article history entries based on passed-in user. Entries
+         * are sorted based on date, with newest entry at beginning.
          *
-         * @param \thebuggenie\core\entities\User $user User for which to fetch article history.
+         * @param \thebuggenie\core\entities\User $user
+         *   User for which to fetch article history. If null, entire history
+         *   will be retrieved.
          *
-         * @return \b2db\Resultset Result set with requested rows.
+         * @retval \b2db\Resultset
+         *   Result set with requested rows.
          */
         public function getByUser($user)
         {
             $crit = $this->getCriteria();
-            $crit->addWhere(self::AUTHOR, $user->getID());
+            if ($user !== null)
+            {
+                $crit->addWhere(self::AUTHOR, $user->getID());
+            }
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
             $crit->addOrderBy(self::DATE, 'desc');
 

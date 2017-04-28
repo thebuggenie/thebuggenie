@@ -26,6 +26,7 @@
     <h3><?php echo __('Wiki maintenance'); ?></h3>
     <ul class="category_list">
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}Contributors")), __('Contributors'), array('title' => "Special:{$projectnamespace}Contributors")); ?></li>
+        <li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}Contributions")), __('Contributions'), array('title' => "Special:{$projectnamespace}Contributions")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}DeadEndPages")), __('Dead end pages'), array('title' => "Special:{$projectnamespace}DeadEndPages")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}UncategorizedPages")), __('Uncategorized pages'), array('title' => "Special:{$projectnamespace}UncategorizedPages")); ?></li>
         <li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}OrphanedPages")), __('Orphaned pages'), array('title' => "Special:{$projectnamespace}OrphanedPages")); ?></li>
