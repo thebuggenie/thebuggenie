@@ -361,6 +361,10 @@
         {
             $href = html_entity_decode($matches[4], ENT_QUOTES, 'UTF-8');
 
+            // Additional options to set in the tag (i.e. for specifying CSS
+            // class etc).
+            $href_options = array();
+
             if (isset($matches[6]) && $matches[6])
             {
                 $title = $matches[6];
@@ -598,7 +602,12 @@
 
                 if (framework\Context::isCLI()) return $href;
 
-                $href = framework\Context::getRouting()->generate('publish_article', array('article_name' => $href));
+                if (!Article::doesArticleExist($href))
+                {
+                    $href_options['class'] = 'missing_wiki_page';
+                }
+
+                $href = framework\Context::getRouting()->generate('publish_article', array('article_name' => $href), $href_options);
             }
             else
             {
@@ -607,7 +616,7 @@
 
             if (framework\Context::isCLI()) return $href;
 
-            return link_tag($href, $title);
+            return link_tag($href, $title, $href_options);
         }
 
         protected function _parse_externallink($matches)
