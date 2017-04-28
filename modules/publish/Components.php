@@ -284,5 +284,13 @@
             }
         }
 
+        public function componentSpecialContributors()
+        {
+            $current_project = framework\Context::getCurrentProject();
+
+            $user_ids = ArticleHistory::getTable()->getContributorIDsByProject($current_project);
+
+            $this->contributors = Users::getTable()->getByUserIDs($user_ids);
+            $this->contributions_base_url = make_url('publish_article', array('article_name' => "Special:{$this->projectnamespace}Contributions"));
         }
     }

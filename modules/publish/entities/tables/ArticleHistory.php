@@ -4,6 +4,7 @@
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
+        thebuggenie\core\entities\tables\Projects,
         b2db\Core,
         b2db\Criteria;
 
@@ -183,5 +184,65 @@
             $res = $this->doSelect($crit);
 
             return $res;
+        }
+
+        /**
+         * Returns an array with user IDs of all users that have contributed to
+         * the project or global wiki.
+         *
+         * @param \thebuggenie\core\entities\Project $project
+         *   Project for which to obtain list of contributors. If it is necessry
+         *   to obtain contributors for global namespace, use null.
+         *
+         * @retval array
+         *   Array with user IDs of all contributors to the requested project or
+         *   global wiki.
+         */
+        public function getContributorIDsByProject($project)
+        {
+            // All user IDs will get stored here.
+            $result = array();
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $crit->addSelectionColumn(self::AUTHOR);
+            $crit->setDistinct();
+
+            // If we need to look-up global wiki contributions, then we must
+            // fetch list of all projects and exclude them from search.
+            if ($project === null)
+            {
+                $projects_table = Projects::getTable();
+
+                $project_crit = $projects_table->getCriteria();
+                $project_crit->addWhere(Projects::SCOPE, framework\Context::getScope()->getID());
+                $project_crit->addSelectionColumn(Projects::KEY);
+
+                $project_res = $projects_table->doSelect($project_crit);
+
+                if ($project_res)
+                {
+                    while ($project_row = $project_res->getNextRow())
+                    {
+                        $crit->addWhere(self::ARTICLE_NAME, "{$project_row[Projects::KEY]}:%", Criteria::DB_NOT_LIKE);
+                    }
+                }
+            }
+            else
+            {
+                $crit->addWhere(self::ARTICLE_NAME, "{$project->getKey()}:%", Criteria::DB_LIKE);
+            }
+
+            $res = $this->doSelect($crit);
+
+            if ($res)
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $result[] = $row[self::AUTHOR];
+                }
+            }
+
+            return $result;
         }
     }
