@@ -607,7 +607,7 @@
                     $href_options['class'] = 'missing_wiki_page';
                 }
 
-                $href = framework\Context::getRouting()->generate('publish_article', array('article_name' => $href), $href_options);
+                $href = framework\Context::getRouting()->generate('publish_article', array('article_name' => $href));
             }
             else
             {
