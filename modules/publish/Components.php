@@ -185,9 +185,10 @@
                         $author_contributions_url = "{$base_url}?user={$author->getUsername()}";
                     }
 
-                    // Ignore articles the currently logged-in user can't read.
+                    // Ignore articles the currently logged-in user can't read
+                    // and those that are not part of current project.
                     $article = Article::getByName($article_name);
-                    if (!$article->canRead() || $article->getProject() != $current_project)
+                    if (!$article->hasAccess() || $article->getProject() != $current_project)
                     {
                         continue;
                     }
@@ -225,11 +226,11 @@
             // Ensure the page size is a valid value (has to be whole number greated than 0).
             if ($page_size < 1 )
             {
-                $page_size = 1;
+                $page_size = $default_page_size;
             }
 
             // Calculate number of contributions and how many pages we have.
-            $contributions_size = sizeof($contributions);
+            $contributions_size = count($contributions);
             $total_pages = ceil($contributions_size / $page_size);
 
             // Ensure we are not out of bounds with page number.
@@ -239,7 +240,7 @@
             }
             elseif ($page < 1)
             {
-                $page = 1;
+                $page = $default_page;
             }
 
             // Determine starting and ending contribution that fits on this specific page.
