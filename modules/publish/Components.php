@@ -139,7 +139,7 @@
             $request = framework\Context::getRequest();
             $current_project = framework\Context::getCurrentProject();
 
-            $available_page_sizes = array(20, 50, 100, 250, 500);
+            $available_page_sizes = [20, 50, 100, 250, 500];
             $default_page_size = 50;
             $default_page = 1;
 
@@ -208,10 +208,10 @@
                                          ($page - 1) * $page_size + $page_size);
 
             // Calculate pagination URLs.
-            $navigation_urls = array();
-            $page_size_urls = array();
+            $navigation_urls = [];
+            $page_size_urls = [];
 
-            $base_url = make_url('publish_article', array('article_name' => "Special:{$this->projectnamespace}Contributions"));
+            $base_url = make_url('publish_article', ['article_name' => "Special:{$this->projectnamespace}Contributions"]);
             $base_url_user_prefix = ($username !== null ? "?user={$username}&" : '?');
             $navigation_url_base = $base_url . $base_url_user_prefix . ($page_size != $default_page_size ? 'page_size=' . $page_size : '');
 
@@ -247,6 +247,6 @@
             $user_ids = ArticleHistory::getTable()->getContributorIDsByProject($current_project);
 
             $this->contributors = Users::getTable()->getByUserIDs($user_ids);
-            $this->contributions_base_url = make_url('publish_article', array('article_name' => "Special:{$this->projectnamespace}Contributions"));
+            $this->contributions_base_url = make_url('publish_article', ['article_name' => "Special:{$this->projectnamespace}Contributions"]);
         }
     }

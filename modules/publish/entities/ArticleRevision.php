@@ -220,7 +220,7 @@
          */
         public static function getAuthorContributionsURL($author=null, $project_namespace="")
         {
-            $base_url = make_url('publish_article', array('article_name' => "Special:{$project_namespace}Contributions"));
+            $base_url = make_url('publish_article', ['article_name' => "Special:{$project_namespace}Contributions"]);
 
             if ($author instanceof User)
             {
@@ -248,8 +248,8 @@
          */
         public function getRevisionURL()
         {
-            return make_url('publish_article_revision', array('article_name' => $this->getArticleName(),
-                                                              'revision' => $this->getRevision()));
+            return make_url('publish_article_revision', ['article_name' => $this->getArticleName(),
+                                                         'revision' => $this->getRevision()]);
         }
 
         /**
@@ -260,7 +260,7 @@
          */
         public function getArticleURL()
         {
-            return make_url('publish_article', array('article_name' => $this->getArticleName()));
+            return make_url('publish_article', ['article_name' => $this->getArticleName()]);
         }
 
         /**
@@ -274,9 +274,9 @@
         {
             if ($this->getRevision() > 1)
             {
-                return make_url('publish_article_diff', array('article_name' => $this->getArticleName(),
-                                                              'from_revision' => $this->getRevision()-1,
-                                                              'to_revision' => $this->getRevision()));
+                return make_url('publish_article_diff', ['article_name' => $this->getArticleName(),
+                                                         'from_revision' => $this->getRevision()-1,
+                                                         'to_revision' => $this->getRevision()]);
             }
             else
             {
@@ -292,6 +292,6 @@
          */
         public function getHistoryURL()
         {
-            return make_url('publish_article_history', array('article_name' => $this->getArticleName()));
+            return make_url('publish_article_history', ['article_name' => $this->getArticleName()]);
         }
     }

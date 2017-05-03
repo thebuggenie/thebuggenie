@@ -285,7 +285,7 @@
             if (!framework\Context::isCLI())
             {
                 framework\Context::loadLibrary('ui');
-                $options = array();
+                $options = [];
 
                 // Assign CSS class to article if it does not exist.
                 if (Articles::getTable()->getArticleByName($matches[0]) === null)
@@ -293,7 +293,7 @@
                     $options["class"] = "missing_wiki_page";
                 }
 
-                return link_tag(make_url('publish_article', array('article_name' => $matches[0])), $article_name, $options);
+                return link_tag(make_url('publish_article', ['article_name' => $matches[0]]), $article_name, $options);
             }
             else
             {

@@ -1,10 +1,10 @@
 <div class="article">
     <div class="header">
-        <?= __('Special:Contributors for %namespace namespace', array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+        <?= __('Special:Contributors for %namespace namespace', ['%namespace' => ($projectnamespace ? $projectnamespace : 'global')]); ?>
     </div>
     <?php if ($contributors): ?>
         <p>
-            <?= __('Below is a listing of all contributors in %namespace namespace', array('%namespace' => ($projectnamespace ? $projectnamespace: 'global'))); ?>
+            <?= __('Below is a listing of all contributors in %namespace namespace', ['%namespace' => ($projectnamespace ? $projectnamespace: 'global')]); ?>
         </p>
         <ul>
             <?php foreach ($contributors as $contributor): ?>
@@ -13,7 +13,7 @@
         </ul>
     <?php else: ?>
         <p>
-            <?= __('No contributors have made any changes in the %namespace namespace', array('%namespace' => ($projectnamespace ? $projectnamespace: 'global'))); ?>
+            <?= __('No contributors have made any changes in the %namespace namespace', ['%namespace' => ($projectnamespace ? $projectnamespace: 'global')]); ?>
         </p>
     <?php endif ?>
 </div>

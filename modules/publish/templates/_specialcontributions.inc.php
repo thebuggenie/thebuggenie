@@ -4,14 +4,14 @@
     <?php if ($username === null): ?>
     <div class="header" >
         <?= __('Special:Contributions to %namespace namespace',
-               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
+               ['%namespace' => ($projectnamespace ? $projectnamespace : __('global'))]); ?>
     </div>
     <p>
         <?php if (empty($contributions)): ?>
             <?= __('There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.'); ?>
         <?php else: ?>
             <?= __('Below is a listing of all contributions made to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
-                   array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+                   ['%namespace' => ($projectnamespace ? $projectnamespace : 'global')]); ?>
         <?php endif ?>
     </p>
 
@@ -19,21 +19,21 @@
     <?php elseif ($username === ""): ?>
     <div class="header" >
         <?= __('Special:Contributions to %namespace namespace created via initial fixtures',
-               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
+               ['%namespace' => ($projectnamespace ? $projectnamespace : __('global'))]); ?>
     </div>
     <p>
         <?php if (empty($contributions)): ?>
         <?= __('There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.'); ?>
             <?php else: ?>
         <?= __('Below is a listing of all contributions made via initial fixtures to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
-               array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+               ['%namespace' => ($projectnamespace ? $projectnamespace : 'global')]); ?>
         <?php endif ?>
     </p>
 
 
     <?php elseif ($invalid_user): ?>
     <div class="header">
-        <?= __('Special:Contributions - No such user %username', array('%username' => $username)); ?>
+        <?= __('Special:Contributions - No such user %username', ['%username' => $username]); ?>
     </div>
     <p>
         <?= __('User with specified username does not exist.'); ?>
@@ -43,15 +43,15 @@
     <?php else: ?>
     <div class="header">
         <?= __('Special:Contributions to %namespace namespace by %user_full_name',
-               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')),
-                     '%user_full_name' => $user_full_name)); ?>
+               ['%namespace' => ($projectnamespace ? $projectnamespace : __('global')),
+                '%user_full_name' => $user_full_name]); ?>
     </div>
     <p>
         <?php if (empty($contributions)): ?>
             <?= __('This user has made no contributions to the wiki or you are not allowed to access any of the articles the user has contributed to.'); ?>
         <?php else: ?>
             <?= __('Below is a listing of all contributions made by this user to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
-                   array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+                   ['%namespace' => ($projectnamespace ? $projectnamespace : 'global')]); ?>
         <?php endif ?>
     </p>
     <?php endif ?>

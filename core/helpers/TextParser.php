@@ -363,7 +363,7 @@
 
             // Additional options to set in the tag (i.e. for specifying CSS
             // class etc).
-            $href_options = array();
+            $href_options = [];
 
             if (isset($matches[6]) && $matches[6])
             {

@@ -288,7 +288,7 @@
         public function getContributorIDsByProject($project)
         {
             // All user IDs will get stored here.
-            $result = array();
+            $result = [];
 
             $crit = $this->getCriteria();
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
