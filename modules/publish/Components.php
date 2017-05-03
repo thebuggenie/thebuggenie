@@ -143,85 +143,44 @@
             $default_page_size = 50;
             $default_page = 1;
 
+            //Author ID associated with articles created automatically during
+            //installation.
+            $fixtures_user = 0;
+
             $username = $request->getParameter('user');
             $page_size = ceil($request->getParameter('page_size', $default_page_size));
             $page = floor($request->getParameter('page', $default_page));
 
-            // All contributions made by the user will be stored within this
-            // array.
-            $contributions = array();
-
-            // Fetch user (if any was passed-in).
-            $user = Users::getTable()->getByUsername($username);
-
-            // Calculate base URL and base URL user prefix. Prefix is used to
-            // avoid extra ? or & signs).
-            $base_url = make_url('publish_article', array('article_name' => "Special:{$this->projectnamespace}Contributions"));
-            $base_url_user_prefix = ($user !== null ? "?user={$username}&" : '?');
-
-            // Fetch history based on user.
-            $history = ArticleHistory::getTable()->getByUser($user);
-
-            if ($history)
+            // Determine full username and whether the user is invalid or not.
+            if ($username === "")
             {
-                // Contributions by the user will be stored in this specific array.
-                $contributions = array();
-
-                while ($row = $history->getNextRow())
+                $invalid_user = false;
+                $user = null;
+                $user_full_name = null;
+            }
+            elseif ($username === null)
+            {
+                $invalid_user = false;
+                $user = null;
+                $user_full_name = null;
+            }
+            else
+            {
+                $user = Users::getTable()->getByUsername($username);
+                if ($user === null)
                 {
-                    // Extract basic information.
-                    $date = $row[ArticleHistory::DATE];
-                    $revision = $row[ArticleHistory::REVISION];
-                    $article_name = $row[ArticleHistory::ARTICLE_NAME];
-                    $reason = $row[ArticleHistory::REASON];
-                    $author_id = $row[ArticleHistory::AUTHOR];
-                    $author = Users::getTable()->getByUserID($author_id);
-                    if ($author === null)
-                    {
-                        $author_contributions_url = null;
-                    }
-                    else
-                    {
-                        $author_contributions_url = "{$base_url}?user={$author->getUsername()}";
-                    }
-
-                    // Ignore articles the currently logged-in user can't read
-                    // and those that are not part of current project.
-                    $article = Article::getByName($article_name);
-                    if (!$article->hasAccess() || $article->getProject() != $current_project)
-                    {
-                        continue;
-                    }
-
-                        // Calculated properties, primarily URLs.
-                    $revision_url = make_url('publish_article_revision', array('article_name' => $article_name,
-                                                                               'revision' => $revision));
-                    $article_url = make_url('publish_article', array('article_name' => $article_name));
-                    if ($revision > 1)
-                    {
-                        $diff_url = make_url('publish_article_diff', array('article_name' => $article_name,
-                                                                           'from_revision' => $revision-1,
-                                                                           'to_revision' => $revision));
-                    }
-                    else
-                    {
-                        $diff_url = null;
-                    }
-                    $history_url = make_url('publish_article_history', array('article_name' => $article_name));
-
-                    // Add contribution for consumption in template.
-                    $contributions[] = array('date' => $date,
-                                             'revision' => $revision,
-                                             'article_name' => $article_name,
-                                             'reason' => $reason,
-                                             'author' => $author,
-                                             'author_contributions_url' => $author_contributions_url,
-                                             'revision_url' => $revision_url,
-                                             'article_url' => $article_url,
-                                             'diff_url' => $diff_url,
-                                             'history_url' => $history_url);
+                    $invalid_user = true;
+                    $user_full_name = null;
+                }
+                else
+                {
+                    $invalid_user = false;
+                    $user_full_name = $user->getNameWithUsername();
                 }
             }
+
+            // Grab author contributions with current user's access rights in mind.
+            $contributions = ArticleHistory::getTable()->getByAuthorUsernameAndCurrentUserAccess($username);
 
             // Ensure the page size is a valid value (has to be whole number greated than 0).
             if ($page_size < 1 )
@@ -243,20 +202,17 @@
                 $page = $default_page;
             }
 
-            // Determine starting and ending contribution that fits on this specific page.
-            $page_start_at = ($page - 1) * $page_size;
-            $page_end_at = ($page - 1) * $page_size + $page_size - 1;
-
-            // Make sure we don't go past the last contribution.
-            if ($page_end_at > $contributions_size - 1)
-            {
-                $page_end_at = $contributions_size - 1;
-            }
+            // Narrow down list of contributions to current page.
+            $contributions = array_slice($contributions,
+                                         ($page - 1) * $page_size,
+                                         ($page - 1) * $page_size + $page_size);
 
             // Calculate pagination URLs.
             $navigation_urls = array();
             $page_size_urls = array();
 
+            $base_url = make_url('publish_article', array('article_name' => "Special:{$this->projectnamespace}Contributions"));
+            $base_url_user_prefix = ($username !== null ? "?user={$username}&" : '?');
             $navigation_url_base = $base_url . $base_url_user_prefix . ($page_size != $default_page_size ? 'page_size=' . $page_size : '');
 
             $navigation_urls['newest'] = $navigation_url_base . '&page=' . '1';
@@ -272,13 +228,13 @@
             // Prepare context for template.
             $this->username = $username;
             $this->user = $user;
+            $this->user_full_name = $user_full_name;
+            $this->invalid_user = $invalid_user;
             $this->contributions = $contributions;
 
             $this->page = $page;
             $this->total_pages = $total_pages;
             $this->page_size = $page_size;
-            $this->page_start_at = $page_start_at;
-            $this->page_end_at = $page_end_at;
             $this->navigation_urls = $navigation_urls;
             $this->page_size_urls = $page_size_urls;
             $this->available_page_sizes = $available_page_sizes;

@@ -1,47 +1,59 @@
 <div class="article">
-    <?php if ($username === null && empty($contributions)): ?>
-        <div class="header" >
-            <?= __('Special:Contributions to %namespace namespace',
-                          array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
-        </div>
-        <p>
-            <?= __('There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.'); ?>
-        </p>
-    <?php elseif ($username === null && !empty($contributions)):  ?>
-        <div class="header" >
-            <?= __('Special:Contributions to %namespace namespace',
-                          array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
-        </div>
-        <p>
-            <?= __('Below is a listing of all contributions made to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
-                          array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
-        </p>
-    <?php elseif ($username !== null && $user === null): ?>
-        <div class="header">
-            <?= __('Special:Contributions - No such user %username', array('%username' => $username)); ?>
-        </div>
-        <p>
-            <?= __('User with specified username does not exist.'); ?>
-        </p>
-    <?php elseif ($username !== null && $user !== null && empty($contributions)): ?>
-        <div class="header">
-            <?= __('Special:Contributions to %namespace namespace by %username',
-                          array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')),
-                                '%username' => $user)); ?>
-        </div>
-        <p>
-            <?= __('This user has made no contributions to the wiki or you are not allowed to access any of the articles the user has contributed to.'); ?>
-        </p>
-    <?php elseif ($username !== null && $user !== null): ?>
-        <div class="header"><?= __('Special:Contributions to %namespace namespace by %username',
-                                          array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')),
-                                                '%username' => $user)); ?>
 
-        </div>
-        <p>
+
+    <?php if ($username === null): ?>
+    <div class="header" >
+        <?= __('Special:Contributions to %namespace namespace',
+               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
+    </div>
+    <p>
+        <?php if (empty($contributions)): ?>
+            <?= __('There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.'); ?>
+        <?php else: ?>
+            <?= __('Below is a listing of all contributions made to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
+                   array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+        <?php endif ?>
+    </p>
+
+
+    <?php elseif ($username === ""): ?>
+    <div class="header" >
+        <?= __('Special:Contributions to %namespace namespace created via initial fixtures',
+               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')))); ?>
+    </div>
+    <p>
+        <?php if (empty($contributions)): ?>
+        <?= __('There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.'); ?>
+            <?php else: ?>
+        <?= __('Below is a listing of all contributions made via initial fixtures to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
+               array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+        <?php endif ?>
+    </p>
+
+
+    <?php elseif ($invalid_user): ?>
+    <div class="header">
+        <?= __('Special:Contributions - No such user %username', array('%username' => $username)); ?>
+    </div>
+    <p>
+        <?= __('User with specified username does not exist.'); ?>
+    </p>
+
+
+    <?php else: ?>
+    <div class="header">
+        <?= __('Special:Contributions to %namespace namespace by %user_full_name',
+               array('%namespace' => ($projectnamespace ? $projectnamespace : __('global')),
+                     '%user_full_name' => $user_full_name)); ?>
+    </div>
+    <p>
+        <?php if (empty($contributions)): ?>
+            <?= __('This user has made no contributions to the wiki or you are not allowed to access any of the articles the user has contributed to.'); ?>
+        <?php else: ?>
             <?= __('Below is a listing of all contributions made by this user to %namespace namespace. Contributions are listed only for articles you are allowed to access.',
-                          array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
-        </p>
+                   array('%namespace' => ($projectnamespace ? $projectnamespace : 'global'))); ?>
+        <?php endif ?>
+    </p>
     <?php endif ?>
 
     <?php if (!empty($contributions)): ?>
@@ -59,25 +71,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php for ($i = $page_start_at; $i <= $page_end_at; $i++): ?>
+                    <?php foreach ($contributions as $revision): ?>
                         <tr>
-                            <td><?= link_tag($contributions[$i]['revision_url'], tbg_formatTime($contributions[$i]['date'], 1)); ?></td>
+                            <td><?= link_tag($revision->getRevisionURL(), tbg_formatTime($revision->getDate(), 1)); ?></td>
                             <td>(
-                                <?= ($contributions[$i]['diff_url']) ? link_tag($contributions[$i]['diff_url'], 'diff') : 'diff'; ?>
+                                <?= ($revision->getDiffURL() ? link_tag($revision->getDiffURL(), 'diff') : 'diff'); ?>
                                 |
-                                <?= link_tag($contributions[$i]['history_url'], 'hist'); ?>
+                                <?= link_tag($revision->getHistoryURL(), 'hist'); ?>
                                 )</td>
-                            <td><?= link_tag($contributions[$i]['article_url'], $contributions[$i]['article_name']); ?></td>
+                            <td><?= link_tag($revision->getArticleURL(), $revision->getArticleName()); ?></td>
                             <?php if ($username === null): ?>
-                                <?php if ($contributions[$i]['author'] !== null): ?>
-                                    <td><?= link_tag($contributions[$i]['author_contributions_url'], $contributions[$i]['author']); ?></td>
+                                <?php if ($revision->getAuthor() !== null): ?>
+                                    <td><?= link_tag($revision->getAuthorContributionsURL($revision->getAuthor()), $revision->getAuthorNameWithUsername()); ?></td>
                                 <?php else: ?>
                                     <td><em><?= __('no author'); ?></em></td>
                                 <?php endif?>
                             <?php endif ?>
-                            <td><?= $contributions[$i]['reason']; ?></td>
+                            <td><?= $revision->getReason(); ?></td>
                         </tr>
-                    <?php endfor ?>
+                    <?php endforeach ?>
                 </tbody>
             </table>
         </div>
