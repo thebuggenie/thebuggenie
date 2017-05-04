@@ -18972,3 +18972,22 @@ body.mobile_leftmenu_visible #main_container {
     text-align: right;
 }
 .mobile_leftmenu_visible .mobile_menu.left + .mobile_menu_aborter, .mobile_rightmenu_visible .mobile_menu.right + .mobile_menu_aborter { display: block; }
+
+/* generic paginator */
+.paginator {
+    text-align: center;
+    width: auto;
+    margin: 10px auto 10px auto;
+    padding: 3px 5px 3px 5px;
+    font-size: 13px;
+}
+
+.paginator .pages {
+    margin: 0 0 5px 0;
+}
+
+.paginator a {
+    font-weight: normal;
+    padding: 2px 5px 1px 5px !important;
+}
+/* end generic paginator */

@@ -2981,3 +2981,22 @@ table.sortable tr th.nosort {
 .fullpage_backdrop.tutorial { background-color: rgba(255, 255, 255, 0.8); }
 .fullpage_backdrop.dark { background-color: rgba(0, 0, 0, 0.7); }
 .fullpage_backdrop.tutorial.seethrough { background-color: rgba(0, 0, 0, 0); }
+
+/* generic paginator */
+.paginator {
+    text-align: center;
+    width: auto;
+    margin: 10px auto 10px auto;
+    padding: 3px 5px 3px 5px;
+    font-size: 13px;
+}
+
+.paginator .pages {
+    margin: 0 0 5px 0;
+}
+
+.paginator a {
+    font-weight: normal;
+    padding: 2px 5px 1px 5px !important;
+}
+/* end generic paginator */

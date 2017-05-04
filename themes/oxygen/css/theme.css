@@ -18761,3 +18761,22 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 #config_modules .address-settings p {
     padding: 0 0 15px 0;
 }
+
+/* generic paginator */
+.paginator {
+    text-align: center;
+    width: auto;
+    margin: 10px auto 10px auto;
+    padding: 3px 5px 3px 5px;
+    font-size: 13px;
+}
+
+.paginator .pages {
+    margin: 0 0 5px 0;
+}
+
+.paginator a {
+    font-weight: normal;
+    padding: 2px 5px 1px 5px !important;
+}
+/* end generic paginator */

@@ -3,10 +3,11 @@
     namespace thebuggenie\modules\publish;
 
     use thebuggenie\core\framework,
+        thebuggenie\core\entities\tables\Users,
+        thebuggenie\core\helpers\Pagination,
         thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\publish\entities\tables\Articles,
-        thebuggenie\modules\publish\entities\tables\ArticleHistory,
-        thebuggenie\core\entities\tables\Users;
+        thebuggenie\modules\publish\entities\tables\ArticleHistory;
 
     class Components extends framework\ActionComponent
     {
@@ -139,17 +140,11 @@
             $request = framework\Context::getRequest();
             $current_project = framework\Context::getCurrentProject();
 
-            $available_page_sizes = [20, 50, 100, 250, 500];
-            $default_page_size = 50;
-            $default_page = 1;
-
             //Author ID associated with articles created automatically during
             //installation.
             $fixtures_user = 0;
 
             $username = $request->getParameter('user');
-            $page_size = ceil($request->getParameter('page_size', $default_page_size));
-            $page = floor($request->getParameter('page', $default_page));
 
             // Determine full username and whether the user is invalid or not.
             if ($username === "")
@@ -182,62 +177,18 @@
             // Grab author contributions with current user's access rights in mind.
             $contributions = ArticleHistory::getTable()->getByAuthorUsernameAndCurrentUserAccess($username);
 
-            // Ensure the page size is a valid value (has to be whole number greated than 0).
-            if ($page_size < 1 )
-            {
-                $page_size = $default_page_size;
-            }
-
-            // Calculate number of contributions and how many pages we have.
-            $contributions_size = count($contributions);
-            $total_pages = ceil($contributions_size / $page_size);
-
-            // Ensure we are not out of bounds with page number.
-            if ($page > $total_pages)
-            {
-                $page = $total_pages;
-            }
-            elseif ($page < 1)
-            {
-                $page = $default_page;
-            }
-
-            // Narrow down list of contributions to current page.
-            $contributions = array_slice($contributions,
-                                         ($page - 1) * $page_size,
-                                         ($page - 1) * $page_size + $page_size);
-
-            // Calculate pagination URLs.
-            $navigation_urls = [];
-            $page_size_urls = [];
-
+            // Pagination.
             $base_url = make_url('publish_article', ['article_name' => "Special:{$this->projectnamespace}Contributions"]);
-            $base_url_user_prefix = ($username !== null ? "?user={$username}&" : '?');
-            $navigation_url_base = $base_url . $base_url_user_prefix . ($page_size != $default_page_size ? 'page_size=' . $page_size : '');
-
-            $navigation_urls['newest'] = $navigation_url_base . '&page=' . '1';
-            $navigation_urls['oldest'] = $navigation_url_base . '&page=' . $total_pages;
-            $navigation_urls['newer']  = $navigation_url_base . '&page=' . ($page > 1 ? $page - 1 : 1);
-            $navigation_urls['older']  = $navigation_url_base . '&page=' . ($page < $total_pages ? $page + 1 : $total_pages);
-
-            foreach ($available_page_sizes as $available_page_size)
-            {
-                $page_size_urls[$available_page_size] = $base_url . $base_url_user_prefix . 'page_size='  . $available_page_size;
-            }
+            $pagination = new Pagination($contributions, $base_url, $request, ['user' => $username]);
 
             // Prepare context for template.
             $this->username = $username;
             $this->user = $user;
             $this->user_full_name = $user_full_name;
             $this->invalid_user = $invalid_user;
-            $this->contributions = $contributions;
+            $this->contributions = $pagination->getPageItems();
 
-            $this->page = $page;
-            $this->total_pages = $total_pages;
-            $this->page_size = $page_size;
-            $this->navigation_urls = $navigation_urls;
-            $this->page_size_urls = $page_size_urls;
-            $this->available_page_sizes = $available_page_sizes;
+            $this->pagination = $pagination;
         }
 
         public function componentSpecialContributors()
