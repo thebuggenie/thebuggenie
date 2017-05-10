@@ -244,6 +244,8 @@
         return implode(' ', array_values($option_strings));
     }
 
+if (!function_exists('geshi_highlight'))
+{
     /**
      * Easy way to highlight stuff. Behaves just like highlight_string
      *
@@ -274,7 +276,8 @@
             return false;
         }
         return true;
-    }
+    };
+}
 
     /**
      * Get RGB (red, green, blue) values of hex colour.

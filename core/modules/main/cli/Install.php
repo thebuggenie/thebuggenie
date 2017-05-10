@@ -392,7 +392,8 @@
                         $this->cliEcho("\n");
 
                         $this->cliEcho("Finishing installation... \n", 'white', 'bold');
-                        $installed_string = \thebuggenie\core\framework\Settings::getMajorVer() . '.' . \thebuggenie\core\framework\Settings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
+                        $installed_string = \thebuggenie\core\framework\Settings::getVersion() . ', installed ' . date('d.m.Y H:i');
+
                         if ((file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH . 'installed')) ||
                             (!file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH)))
                         {
