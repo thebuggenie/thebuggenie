@@ -609,34 +609,14 @@
                         {
                             $external = true;
                             framework\Logging::log('Authenticating without credentials with backend: '.framework\Settings::getAuthenticationBackend(), 'auth', framework\Logging::LEVEL_INFO);
-                            try
-                            {
-                                $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
-                                if ($mod->getType() !== Module::MODULE_AUTH)
-                                {
-                                    framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
-                                }
+                            $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
 
-                                $user = $mod->doAutoLogin();
-
-                                if ($user == false)
-                                {
-                                    // Invalid
-                                    framework\Context::logout();
-                                    throw new \Exception('No such login');
-                                    //framework\Context::getResponse()->headerRedirect(framework\Context::getRouting()->generate('login'));
-                                }
-                                // In case the operation was a success, but no autologin was enabled, set the user to null
-                                // so the rest of the code that deals with guest access can handle it.
-                                else if ($user == true)
-                                {
-                                    $user = null;
-                                }
-                            }
-                            catch (\Exception $e)
+                            if ($mod->getType() !== Module::MODULE_AUTH)
                             {
-                                throw $e;
+                                framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
                             }
+
+                            $user = $mod->doAutoLogin();
                         }
                         elseif ($username !== null && $password !== null && !$user instanceof User)
                         {
