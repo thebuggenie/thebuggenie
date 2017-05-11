@@ -262,6 +262,13 @@ class Context
 
     public static function errorHandler($code, $error, $file, $line)
     {
+        // Do not run the handler for suppressed errors. Normally this should be
+        // only commands where supression is done via the @ operator.
+        if (error_reporting() === 0)
+        {
+            return false;
+        }
+
         if (self::isDebugMode())
             self::generateDebugInfo();
 
