@@ -19,9 +19,9 @@
         {
             $result = framework\Context::getModule('auth_ldap')->testConnection();
 
-            if ($result === true)
+            if ($result['success'] === true)
             {
-                framework\Context::setMessage('module_message', framework\Context::getI18n()->__('Connection test successful'));
+                framework\Context::setMessage('module_message', $result['summary']);
                 $this->forward(framework\Context::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
             }
             else

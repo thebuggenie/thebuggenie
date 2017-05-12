@@ -99,40 +99,75 @@
          *
          * @param thebuggenie\core\framework\Request $request
          *   Request containing submitted information.
+         *
+         * @throws \Exception
+         *   Thrown in case of an error with configuration settings provided via
+         *   request
          */
         public function postConfigSettings(framework\Request $request)
         {
-            $settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth', 'integrated_auth_header');
+            $settings = ['hostname',                 // LDAP URL to connect to.
+                         'b_dn',                     // Base DN under which to search for entries.
+                         'dn_attr',                  // Name of the attribute that stores entry DN.
+
+                         'u_type',                   // Object class for user entries.
+                         'u_attr',                   // Username attribute.
+                         'e_attr',                   // E-mail attribute.
+                         'f_attr',                   // Full name attribute.
+                         'b_attr',                   // Buddy name attribute.
+
+                         'g_type',                   // Object class for group entries.
+                         'groups',                   // Comma-separated list of allowed group CN's.
+                         'g_attr',                   // Group member attribute.
+
+                         'control_user',             // DN for logging-in as control user.
+                         'control_pass',             // Password for logging-in as control user.
+
+                         'integrated_auth',          // Whether to use header value passed-on by web server as username.
+                         'integrated_auth_header'];  // Name of header passed-on by web server to use for username.
+
+            // Verify presence of mandatory settings.
+            $mandatory_settings = ['hostname' => framework\Context::geti18n()->__('LDAP connection URI must be specified.'),
+                                   'b_dn' => framework\Context::geti18n()->__('Base DN must be specified.'),
+                                   'dn_attr' => framework\Context::geti18n()->__('Object DN attribute must be specified.'),
+
+                                   'u_type' => framework\Context::geti18n()->__('User object class must be specified.'),
+                                   'u_attr' => framework\Context::geti18n()->__('User username attribute must be specified.')];
+
+            foreach ($mandatory_settings as $setting => $error_message)
+            {
+                if ($request->getParameter($setting, '') === '')
+                {
+                    throw new \Exception($error_message);
+                }
+            }
+
+            // Verify that group object class and group members attribute is
+            // specified if we need to restrict access based on group
+            // membership.
+            if ($request->getParameter('groups') !== '' && ($request->getParameter('g_type', '') === '' || $request->getParameter('g_attr', '') === ''))
+            {
+                throw new \Exception(framework\Context::geti18n()->__('Both group object class and group member attribute must be specified if allowed groups are provided.'));
+            }
+
+            // Verify that header name is passed if HTTP integrated
+            // authentication is enabled.
+            if ($request->getParameter('integrated_auth') != 0 && $request->getParameter('integrated_auth_header', '') === '')
+            {
+                throw new \Exception(framework\Context::geti18n()->__('HTTP header field must be specified if HTTP Integrated Authentication is enabled.'));
+            }
 
             // Process each setting, and ensure defaults are set if values are
             // not provided for specific options.
             foreach ($settings as $setting)
             {
-                if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
-                {
-                    if ($setting == 'u_type')
-                    {
-                        $this->saveSetting($setting, 'person');
-                    }
-                    elseif ($setting == 'g_type')
-                    {
-                        $this->saveSetting($setting, 'group');
-                    }
-                    else
-                    {
-                        $this->saveSetting($setting, 'entrydn');
-                    }
-                }
-                elseif ($setting == 'integrated_auth')
+                if ($setting == 'integrated_auth')
                 {
                     $this->saveSetting($setting, (int) $request->getParameter($setting, 0));
                 }
                 else
                 {
-                    if ($request->hasParameter($setting))
-                    {
-                        $this->saveSetting($setting, $request->getParameter($setting));
-                    }
+                    $this->saveSetting($setting, $request->getParameter($setting));
                 }
             }
         }
@@ -198,6 +233,10 @@
          *   If HTTP integrated authentication is enabled, and appropriate
          *   header is available in the request, runs login and returns user
          *   entity if login was successful. Otherwise returns null.
+         *
+         * @throws \Exception
+         *   Thrown if HTTP header has not been configured, and HTTP integrated
+         *   authentication has been enabled
          */
         public function doAutoLogin()
         {
@@ -216,6 +255,13 @@
             return $user;
         }
 
+        /**
+         * Handles event for fetching authentication backend.
+         *
+         * @param \thebuggenie\core\framework\Event $event
+         *   Event emitted by caller.
+         *
+         */
         public function listen_configurationAuthenticationMethod(framework\Event $event)
         {
             if (framework\Settings::getAuthenticationBackend() == $this->getName()) {
@@ -232,6 +278,10 @@
          * In case an error occurs while trying to connect and bind, an
          * exception is thrown with appopriatelly set message.
          *
+         *
+         * @throws \Exception
+         *   Thrown in case it was not possible to connect and bind as control
+         *   user.
          */
         protected function _connectAndBindControlUser()
         {
@@ -242,7 +292,8 @@
                 // functions misuse PHP error handling). This function call does
                 // not open an actual connection, it only verifies the URL
                 // syntax.
-                $connection = @ldap_connect($this->getSetting('hostname'));
+                $connection_url = $this->getSetting('hostname');
+                $connection = @ldap_connect($connection_url);
 
                 if ($connection === false)
                 {
@@ -261,7 +312,7 @@
 
                     if ($bind_result === false)
                     {
-                        throw new \Exception(framework\Context::geti18n()->__('Failed to bind control user: ') . ldap_error($connection));
+                        throw new \Exception(framework\Context::geti18n()->__('Failed to bind as control user. Error was: %error', ['%error' => ldap_error($connection)]));
                     }
 
                     // At this point we should have a fully-functioning
@@ -311,6 +362,10 @@
          * @retval array[]
          *   List of matching entries. Format is the same as returned by
          *   ldap_get_entries function.
+         *
+         * @throws \Exception
+         *   Thrown in case the LDAP search operation itself or retrieving the
+         *   search results failed.
          */
         protected function _search($filter, $attributes=null)
         {
@@ -353,6 +408,8 @@
          * Helper function for preparing filter for use with LDAP search. Takes
          * care of properly escaping values used in searches.
          *
+         * The function itself does not perform any kind of syntax checks.
+         *
          * Example use:
          *
          * _prepareFilter('(objectClass=%myclass)', ['%myclass' => 'inetOrgPerson'])");
@@ -387,21 +444,24 @@
          * Performs basic connectivity and settings test. The following is
          * tested:
          *
-         * - Ability to connect and bind as control user (TBG user for
-         *   performing searches).
-         * - Group configuration.
+         * - Ability to connect and bind as control user.
+         * - Availability of all allowed groups (if specified).
+         * - Availability of users in LDAP directory.
          * - Integrated authentication (if enabled).
+         * - Availability of currently logged-in user in LDAP directory.
          *
-         * @retval array|true
-         *   Result of test. In case of success, returns true. If an error
-         *   occurred, an array is returned with the following keys:
+         * @retval array
+         *   Result of test. The following keys are available:
+         *
+         *   success
+         *     A bool value denoting whether the test was successful or not.
          *
          *   summary
-         *     Short summary of error.
+         *     Short summary of operation.
          *
          *   details
-         *     Detailed error message, usually includes an LDAP error message as
-         *     well.
+         *     Operation details. In case of errors usually includes an LDAP
+         *     error message as well.
          */
         public function testConnection()
         {
@@ -442,6 +502,13 @@
                     }
                 }
 
+                // Verify that we can locate users within the LDAP directory.
+                $ldap_users = $this->_getLDAPUserInformation();
+                if (count($ldap_users) == 0)
+                {
+                    throw new \Exception(framework\Context::geti18n()->__('Failed to locate any valid users in LDAP directory.'));
+                }
+
                 // Verify that header is present if HTTP integrated
                 // authentication option is enabled.
                 if ($this->getSetting('integrated_auth'))
@@ -453,14 +520,26 @@
                         throw new \Exception(framework\Context::getI18n()->__('HTTP integrated authentication is enabled but the %headerfield header is not being provided to The Bug Genie. Please check your web server configuration.', ['%headerfield' => $header_field]));
                     }
                 }
+
+                // Verify that our current user can be located within the LDAP directory.
+                $current_username = framework\Context::getUser()->getUsername();
+                $ldap_users = $this->_getLDAPUserInformation($current_username);
+                if (count($ldap_users) != 1)
+                {
+                    throw new \Exception(framework\Context::geti18n()->__('Failed to locate current user (%username) in LDAP directory. If you enable LDAP authentication, you may find yourself locked-out of the settings. All other checks have passed.',
+                                                                          ['%username' => $current_username ]));
+                }
             }
             catch (\Exception $e)
             {
-                return ['summary' => framework\Context::getI18n()->__('LDAP connection test failed'),
+                return ['success' => false,
+                        'summary' => framework\Context::getI18n()->__('LDAP connection test failed'),
                         'details' => $e->getMessage()];
             }
 
-            return true;
+            return ['success' => true,
+                    'summary' => framework\Context::getI18n()->__('Connection test successful'),
+                    'details' => framework\Context::getI18n()->__('All LDAP connection tests have passed.')];
         }
 
 
@@ -473,11 +552,15 @@
          *   List of LDAP user DNs, lower-cased, which are allowed to access
          *   TBG. If group restrictions have not been configured in TBG, returns
          *   null.
+         *
+         * @throws \Exception
+         *   Thrown in case the LDAP module is not configured properly for this
+         *   operation.
          */
         protected function _getAllowedLDAPUsersByGroupMembership()
         {
             // Get list of groups from configuration.
-            $allowed_groups = framework\Context::getModule('auth_ldap')->getSetting('groups');
+            $allowed_groups = $this->getSetting('groups');
 
             // Indicates no checks based on groups.
             if ($allowed_groups == "")
@@ -491,8 +574,14 @@
             $dn_attr = $this->getSetting('dn_attr');
 
             // Extract configuration for access control based on group membership.
-            $group_class = strtolower(framework\Context::getModule('auth_ldap')->getSetting('g_type'));
-            $groups_members_attr = strtolower(framework\Context::getModule('auth_ldap')->getSetting('g_attr'));
+            $group_class = strtolower($this->getSetting('g_type'));
+            $groups_members_attr = strtolower($this->getSetting('g_attr'));
+
+            // Verify we are properly configured before proceeding.
+            if (!$group_class || !$groups_members_attr || !$dn_attr)
+            {
+                throw new \Exception(framework\Context::geti18n()->__('LDAP module has not been configured correctly. Please check your settings and test connection.'));
+            }
 
             // Filter for matching all the different groups. Result should be
             // along the lines of '(cn=group1)(cn=group2)'.
@@ -541,18 +630,28 @@
          *   - realname
          *   - buddyname
          *   - email
+         *
+         * @throws \Exception
+         *   Thrown in case the LDAP module is not configured properly for this
+         *   operation.
          */
         protected function _getLDAPUserInformation($username=null)
         {
             // Extract general LDAP configuration.
-            $dn_attr = framework\Context::getModule('auth_ldap')->getSetting('dn_attr');
+            $dn_attr = $this->getSetting('dn_attr');
 
             // Extract configuration for user attribute mapping.
-            $user_class = framework\Context::getModule('auth_ldap')->getSetting('u_type');
-            $username_attr = framework\Context::getModule('auth_ldap')->getSetting('u_attr');
-            $fullname_attr = framework\Context::getModule('auth_ldap')->getSetting('f_attr');
-            $buddyname_attr = framework\Context::getModule('auth_ldap')->getSetting('b_attr');
-            $email_attr = framework\Context::getModule('auth_ldap')->getSetting('e_attr');
+            $user_class = $this->getSetting('u_type');
+            $username_attr = $this->getSetting('u_attr');
+            $fullname_attr = $this->getSetting('f_attr');
+            $buddyname_attr = $this->getSetting('b_attr');
+            $email_attr = $this->getSetting('e_attr');
+
+            // Verify we are properly configured before proceeding.
+            if (!$user_class || !$username_attr || !$dn_attr)
+            {
+                throw new \Exception(framework\Context::geti18n()->__('LDAP module has not been configured correctly. Please check your settings and test connection.'));
+            }
 
             // Grab allowed LDAP users by group membership.
             $allowed_ldap_users = $this->_getAllowedLDAPUsersByGroupMembership();
