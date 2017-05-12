@@ -450,6 +450,10 @@
          * - Integrated authentication (if enabled).
          * - Availability of currently logged-in user in LDAP directory.
          *
+         * WARNING: Integrated authentication and availability of currently
+         * logged-in user in LDAP directory are not tested when this method is
+         * called from CLI.
+         *
          * @retval array
          *   Result of test. The following keys are available:
          *
@@ -511,7 +515,7 @@
 
                 // Verify that header is present if HTTP integrated
                 // authentication option is enabled.
-                if ($this->getSetting('integrated_auth'))
+                if (!framework\Context::isCLI() && $this->getSetting('integrated_auth'))
                 {
                     $header_field = $this->getSetting('integrated_auth_header');
 
@@ -521,13 +525,17 @@
                     }
                 }
 
-                // Verify that our current user can be located within the LDAP directory.
-                $current_username = framework\Context::getUser()->getUsername();
-                $ldap_users = $this->_getLDAPUserInformation($current_username);
-                if (count($ldap_users) != 1)
+                // Verify that our current user can be located within the LDAP
+                // directory. We don't have a user when in CLI.
+                if (!framework\Context::isCLI())
                 {
-                    throw new \Exception(framework\Context::geti18n()->__('Failed to locate current user (%username) in LDAP directory. If you enable LDAP authentication, you may find yourself locked-out of the settings. All other checks have passed.',
-                                                                          ['%username' => $current_username ]));
+                    $current_username = framework\Context::getUser()->getUsername();
+                    $ldap_users = $this->_getLDAPUserInformation($current_username);
+                    if (count($ldap_users) != 1)
+                    {
+                        throw new \Exception(framework\Context::geti18n()->__('Failed to locate current user (%username) in LDAP directory. If you enable LDAP authentication, you may find yourself locked-out of the settings. All other checks have passed.',
+                                                                              ['%username' => $current_username ]));
+                    }
                 }
             }
             catch (\Exception $e)
