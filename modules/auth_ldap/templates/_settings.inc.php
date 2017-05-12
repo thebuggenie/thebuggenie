@@ -18,14 +18,14 @@
             <div class="header"><?= __('Connection details'); ?></div>
             <table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="ldap_settings_table">
                 <tr>
-                    <td style="padding: 5px;"><label for="hostname"><?= __('LDAP connection URI'); ?></label></td>
+                    <td style="padding: 5px;"><label for="hostname"><strong><?= __('LDAP connection URI'); ?></strong></label></td>
                     <td><input type="text" name="hostname" id="hostname" value="<?= $module->getSetting('hostname'); ?>" style="width: 100%;"></td>
                 </tr>
                 <tr>
                     <td class="config_explanation" colspan="2"><?= __('URI used for connecting to the LDAP server. Format is <schema://[name[:port]]/>, where schema is one of: ldap (plain-text), ldaps (TLS connection), or ldapi (UNIX domain socket). For example: ldap://hostname/, ldap://hostname:1389/, ldaps://hostname:636/, ldaps://hostname:1636/, ldapi:///.'); ?></td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;"><label for="b_dn"><?= __('Base DN'); ?></label></td>
+                    <td style="padding: 5px;"><label for="b_dn"><strong><?= __('Base DN'); ?></strong></label></td>
                     <td><input type="text" name="b_dn" id="b_dn" value="<?= $module->getSetting('b_dn'); ?>" style="width: 100%;"></td>
                 </tr>
                 <tr>
@@ -60,21 +60,21 @@
                     <td class="config_explanation" colspan="2"><?= __('HTTP header field containing the username if HTTP Integrated Authentication is enabled. For example: REMOTE_USER.'); ?></td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;"><label for="dn_attr"><?= __('Object DN attribute'); ?></label></td>
+                    <td style="padding: 5px;"><label for="dn_attr"><strong><?= __('Object DN attribute'); ?></strong></label></td>
                     <td><input type="text" name="dn_attr" id="dn_attr" value="<?= $module->getSetting('dn_attr'); ?>" style="width: 100%;"></td>
                 </tr>
                 <tr>
                     <td class="config_explanation" colspan="2"><?= __('LDAP attribute that contains the distinguished name of an object. On most LDAP servers this shouild be set to entrydn. If using Active Directory, set the value to distinguishedName.'); ?></td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;"><label for="u_type"><?= __('User object class'); ?></label></td>
+                    <td style="padding: 5px;"><label for="u_type"><strong><?= __('User object class'); ?></strong></label></td>
                     <td><input type="text" name="u_type" id="u_type" value="<?= $module->getSetting('u_type'); ?>" style="width: 100%;"></td>
                 </tr>
                 <tr>
                     <td class="config_explanation" colspan="2"><?= __('Object class used for locating valid user entries. For example: person, inetOrgPerson.'); ?></td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px;"><label for="u_attr"><?= __('User username attribute'); ?></label></td>
+                    <td style="padding: 5px;"><label for="u_attr"><strong><?= __('User username attribute'); ?></strong></label></td>
                     <td><input type="text" name="u_attr" id="u_attr" value="<?= $module->getSetting('u_attr'); ?>" style="width: 100%;"></td>
                 </tr>
                 <tr>
