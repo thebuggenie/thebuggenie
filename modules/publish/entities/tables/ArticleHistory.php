@@ -207,6 +207,14 @@
          * Retrieves all contributions based on author username, and based on
          * current user's article permissions.
          *
+         * WARNING: Since article revision is tied to an article via its name,
+         * in case of article renames it is not possible to reliably determine
+         * the article related to revision. Therefore all revisions where
+         * corresponding article cannot be found are not included in the
+         * contribution list, since we can't properly check permissions for
+         * them. In addition, we would not be able to point user to the article
+         * at hand either.
+         *
          * @param string $author_username
          *   Author username for which to fetch all contributions. If set to ""
          *   (empty string), fetches all contributions created via fixtures
@@ -247,7 +255,11 @@
 
             foreach ($history as $revision)
             {
-                if ($revision->getArticle()->hasAccess())
+                $article = $revision->getArticle();
+
+                // Ignore revisions where article cannot be located anymore (due
+                // ot renames or removal).
+                if ($article !== null && $revision->getArticle()->hasAccess())
                 {
                     $result[] = $revision;
                 }
