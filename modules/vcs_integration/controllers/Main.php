@@ -662,7 +662,9 @@
         {
             $this->forward403unless($request->isPost());
 
-            if ($this->access_level == framework\Settings::ACCESS_FULL)
+            $project = Project::getB2DBTable()->selectById($request['project_id']);
+
+            if ($this->getUser()->canEditProjectDetails($project))
             {
                 $project_id = $request['project_id'];
 
