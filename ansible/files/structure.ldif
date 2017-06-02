@@ -83,12 +83,30 @@ cn: Ignored User
 mail: usernoaccess@tbg.local
 
 # Groups.
-dn: cn=tbg,ou=groups,dc=tbg,dc=local
+dn: cn=tbg1,ou=groups,dc=tbg,dc=local
 objectClass: groupOfUniqueNames
 cn: tbg
 uniqueMember: uid=administrator,ou=people,dc=tbg,dc=local
 uniqueMember: uid=user1,ou=people,dc=tbg,dc=local
+
+dn: cn=tbg2,ou=groups,dc=tbg,dc=local
+objectClass: groupOfUniqueNames
+cn: tbg
 uniqueMember: uid=user2,ou=people,dc=tbg,dc=local
 uniqueMember: uid=user3,ou=people,dc=tbg,dc=local
+
+dn: cn=tbg3,ou=groups,dc=tbg,dc=local
+objectClass: groupOfUniqueNames
+cn: tbg
 uniqueMember: uid=user4,ou=people,dc=tbg,dc=local
 uniqueMember: uid=user5,ou=people,dc=tbg,dc=local
+
+dn: cn=groupnoaccess1,ou=groups,dc=tbg,dc=local
+objectClass: groupOfNames
+cn: groupnoaccess1
+member: uid=usernoaccess,ou=people,dc=tbg,dc=local
+
+dn: cn=groupnoaccess2,ou=groups,dc=tbg,dc=local
+objectClass: groupOfNames
+cn: groupnoaccess2
+member: uid=usernoaccess,ou=people,dc=tbg,dc=local
