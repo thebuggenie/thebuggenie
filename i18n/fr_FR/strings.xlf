@@ -3901,7 +3901,7 @@
             </trans-unit>
             <trans-unit id="6d70df8ee4aa09453c54f9ac535ddb6a">
                 <source>Removing the user from this team will remove all automatically inherited permissions from the user. You can easily add the user back to the team in the future.</source>
-                <target>Supprimer cet utilisateur de cette équipe supprimera automatiquement les permissions héritées de l'utilisateur. Vous pourrez facilement ajouter de nouveau cet utilisateur à l'équipe par la suite.</target>
+                <target>Supprimer cet utilisateur de cette équipe supprimera automatiquement les permissions héritées de l\'utilisateur. Vous pourrez facilement ajouter de nouveau cet utilisateur à l\'équipe par la suite.</target>
             </trans-unit>
             <trans-unit id="40fe980d429f1f2ef27363c82344e118">
                 <source>Remove from team</source>
