@@ -21,6 +21,8 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method static tables\Builds getB2DBTable()
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Builds")
      */
     class Build extends Releaseable

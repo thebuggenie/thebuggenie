@@ -23,6 +23,7 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method static tables\Issues getB2DBTable()
      * @method boolean isTitleChanged() Whether the title is changed or not
      * @method boolean isSpentTimeChanged() Whether the spent_time is changed or not
      *
