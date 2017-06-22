@@ -28,6 +28,7 @@
         const AUTHENTICATION_METHOD_RSS_KEY = 'rss_key';
         const AUTHENTICATION_METHOD_APPLICATION_PASSWORD = 'application_password';
         const AUTHENTICATION_METHOD_ELEVATED = 'elevated';
+        const AUTHENTICATION_METHOD_BASIC = 'basic';
 
         public function getAuthenticationMethodForAction($action)
         {

@@ -664,6 +664,31 @@
 
                         if ($user instanceof User && !$user->authenticateApplicationPassword($token)) $user = null;
                         break;
+                    case framework\Action::AUTHENTICATION_METHOD_BASIC:
+                        framework\Logging::log('Using HTTP basic auth', 'auth', framework\Logging::LEVEL_INFO);
+                        
+                        // If we have HTTP basic auth, use that. Else, fall back to parameters.
+                        
+                        if(isset($_SERVER['PHP_AUTH_USER'])) {
+                            $username = $_SERVER['PHP_AUTH_USER'];
+                        } else {
+                            $username = $request['api_username'];
+                        }
+                        
+                        if(isset($_SERVER['PHP_AUTH_PW'])) {
+                            $token = $_SERVER['PHP_AUTH_PW'];
+                        } else {
+                            $token = $request['api_password'];
+                        }
+
+                        framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
+                        
+                        $user = self::getB2DBTable()->getByUsername($username);
+
+                        if ( ! $user instanceof User || $user->getPassword() != self::hashPassword($token, $user->getSalt())) {
+                            $user = null;
+                        }
+                        break;
                 }
 
                 if ($user === null && !framework\Settings::isLoginRequired())
