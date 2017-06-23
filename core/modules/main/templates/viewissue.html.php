@@ -328,45 +328,52 @@
                         </fieldset>
                         <?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
-                        <fieldset class="comments" id="viewissue_comments_container">
-                            <legend class="viewissue_comments_header">
-                                <span><?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></span>
-                                <div class="dropper_container">
-                                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
-                                    <ul class="more_actions_dropdown dropdown_box popup_box leftie" id="comment_dropdown_options">
-                                        <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });"><?php echo __('Toggle system-generated comments'); ?></a></li>
-                                        <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
-                                    </ul>
-                                </div>
-                                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'comments_loading_indicator')); ?>
-                                <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
-                                    <ul class="simple_list button_container" id="add_comment_button_container">
-                                        <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
-                                    </ul>
-                                <?php endif; ?>
-                            </legend>
-                            <div id="viewissue_comments">
-                                <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
+
+                        
+                        <ul id="viewissue_activity">
+                            <li><span><?= __('Activity'); ?></span></li>
+                            <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><?= __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></a></li>
+                            <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
+                            <li id="tab_viewissue_history"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_history', 'viewissue_activity');"><?= __('History'); ?></a></li>
+                        </ul>
+                        <div id="viewissue_activity_panes">
+                            <div id="tab_viewissue_comments_pane">
+                                <fieldset class="comments" id="viewissue_comments_container">
+                                    <div class="viewissue_comments_header">
+                                        <a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });"><?php echo __('Toggle system-generated comments'); ?></a>
+                                        <a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a>
+                                        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'comments_loading_indicator')); ?>
+                                        <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
+                                            <ul class="simple_list button_container" id="add_comment_button_container">
+                                                <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
+                                            </ul>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div id="viewissue_comments">
+                                        <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
+                                    </div>
+                                    <script type="text/javascript">
+                                        require(['prototype'], function (prototype) {
+                                            $('viewissue_comment_count').update($('comments_box').select('.comment').size());
+                                        });
+                                    </script>
+                                </fieldset>
                             </div>
-                            <script type="text/javascript">
-                                require(['prototype'], function (prototype) {
-                                    $('viewissue_comment_count').update($('comments_box').select('.comment').size());
-                                });
-                            </script>
-                        </fieldset>
-                        <fieldset class="viewissue_history">
-                            <legend class="viewissue_history_header">
-                                <?php echo __('History'); ?>
-                                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'viewissue_log_loading_indicator')); ?>
-                                <div class="button_container" id="viewissue_history_button_container">
-                                    <input class="button button-silver first last" type="button" onclick="TBG.Issues.showLog('<?php echo make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Show issue history'); ?>">
-                                </div>
-                            </legend>
-                            <div id="viewissue_log_items"></div>
-                        </fieldset>
-                        <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
-                        <div id="viewissue_panes">
                             <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
+                            <div id="tab_viewissue_history_pane" style="display:none;">
+                                <fieldset class="viewissue_history">
+                                    <div id="viewissue_log_items">
+                                        <ul>
+                                            <?php $previous_time = null; ?>
+                                            <?php foreach (array_reverse($issue->getLogEntries()) as $item): ?>
+                                                <?php if (!$item instanceof \thebuggenie\core\entities\LogItem) continue; ?>
+                                                <?php include_component('main/issuelogitem', compact('item', 'previous_time')); ?>
+                                                <?php $previous_time = $item->getTime(); ?>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </fieldset>
+                            </div>
                         </div>
                     </div>
                 </div>

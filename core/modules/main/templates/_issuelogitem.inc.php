@@ -1,6 +1,6 @@
 <?php if ($item instanceof \thebuggenie\core\entities\LogItem): ?>
     <li>
-        <span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>&nbsp;
+        <span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>
         <?php
 
             $previous_value = null;
