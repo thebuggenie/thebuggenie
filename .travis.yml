@@ -18,4 +18,4 @@ env:
 before_script:
   - composer update
 
-script: phpunit --coverage-text tests/
+script: vendor/phpunit/phpunit/phpunit --coverage-text tests/
