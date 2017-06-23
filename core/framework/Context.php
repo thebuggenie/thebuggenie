@@ -80,6 +80,13 @@ class Context
     protected static $_available_permissions = null;
 
     /**
+     * List of available permission paths
+     *
+     * @var array
+     */
+    protected static $_available_permission_paths = null;
+
+    /**
      * The include path
      *
      * @var string
@@ -1674,26 +1681,23 @@ class Context
                 self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['candeleteissues'.$suffix] = array('description' => $i18n->__('Can delete issue'));
             }
 
-            foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $cdf)
-            {
+            foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $cdf) {
                 foreach ($arr as $suffix => $description) {
                     self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
                 }
 
                 // Set permissions for custom option types
-                if ($cdf->hasCustomOptions())
-                {
+                if ($cdf->hasCustomOptions()) {
                     $options = $cdf->getOptions();
-                    foreach ($options as $option)
-                    {
+                    foreach ($options as $option) {
                         foreach ($arr as $suffix => $description) {
                             self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['set_datatype_' . $option->getID().$suffix] = array('description' => $i18n->__('Can change issue field to "%option_name"', array('%option_name' => $i18n->__($option->getValue()))));
                         }
                     }
                 }
             }
-            foreach (\thebuggenie\core\entities\Datatype::getTypes() as $type => $class)
-            {
+
+            foreach (\thebuggenie\core\entities\Datatype::getTypes() as $type => $class) {
                 foreach ($arr as $suffix => $description) {
                     self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['set_datatype_' . $type . $suffix] = array('description' => $i18n->__('Can change field "%type_name"', array('%type_name' => $i18n->__($type))));
                 }
@@ -1708,7 +1712,50 @@ class Context
             self::$_available_permissions['issues']['canpostandeditcomments']['details']['canpostcomments'] = array('description' => $i18n->__('Can post comments'));
             self::$_available_permissions['issues']['canpostandeditcomments']['details']['caneditcommentsown'] = array('description' => $i18n->__('Can edit own comments'));
             self::$_available_permissions['issues']['canpostandeditcomments']['details']['candeletecommentsown'] = array('description' => $i18n->__('Can delete own comments'));
+
+            foreach (self::$_available_permissions as $category => $permissions) {
+                self::addPermissionsPath($permissions, $category);
+            }
         }
+    }
+
+    protected static function addPermissionsPath($permissions, $category, $parent = [])
+    {
+        foreach ($permissions as $permission => $details) {
+            if (!array_key_exists('details', $details)) {
+                self::$_available_permission_paths[$category][$permission] = array_reverse(array_values($parent));
+            } else {
+                $path = $parent;
+                $path[$permission] = $permission;
+                self::addPermissionsPath($details['details'], $category, $path);
+            }
+        }
+    }
+
+    public static function permissionCheck($module, $permission, $target_id, $uid, $gid, $team_ids)
+    {
+        $key = 'config';
+
+        foreach (self::$_available_permission_paths as $permission_key => $permissions) {
+            if ($permission_key == 'config')
+                continue;
+
+            if (array_key_exists($permission, $permissions)) {
+                $key = $permission_key;
+                break;
+            }
+        }
+
+        if ($key != 'config') {
+            foreach (self::$_available_permission_paths[$key][$permission] as $parent_permission) {
+                $value = self::checkPermission($module, $parent_permission, $target_id, $uid, $gid, $team_ids);
+                if ($value !== null) {
+                    return $value;
+                }
+            }
+        }
+
+        return self::checkPermission($module, $permission, $target_id, $uid, $gid, $team_ids);
     }
 
     /**
@@ -2508,6 +2555,8 @@ class Context
                 self::initializeUser();
 
             self::setupI18n();
+
+            self::_cacheAvailablePermissions();
 
             if (self::$_redirect_login == 'login') {
 

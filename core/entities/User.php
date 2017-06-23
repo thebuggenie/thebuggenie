@@ -2155,7 +2155,7 @@
 
             framework\Logging::log('Checking permission for user ID: '.$user_id.', group ID '.$group_id.',team IDs ' . implode(',', $team_ids));
 
-            $retval = framework\Context::checkPermission($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
+            $retval = framework\Context::permissionCheck($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
             if ($retval === null)
             {
                 framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', no matching rules found.');
