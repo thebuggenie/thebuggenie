@@ -2,6 +2,8 @@
 
 namespace thebuggenie\core\framework;
 
+use thebuggenie\core\entities\CustomDatatype;
+use thebuggenie\core\entities\Datatype;
 use thebuggenie\core\framework\cli,
     thebuggenie\core\entities\Client,
     thebuggenie\core\entities\Module,
@@ -1575,6 +1577,7 @@ class Context
     {
         if (self::$_available_permissions === null)
         {
+            Logging::log("Loading and caching permissions tree");
             $i18n = self::getI18n();
             self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
@@ -1681,7 +1684,7 @@ class Context
                 self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['candeleteissues'.$suffix] = array('description' => $i18n->__('Can delete issue'));
             }
 
-            foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $cdf) {
+            foreach (CustomDatatype::getAll() as $cdf) {
                 foreach ($arr as $suffix => $description) {
                     self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
                 }
@@ -1697,7 +1700,7 @@ class Context
                 }
             }
 
-            foreach (\thebuggenie\core\entities\Datatype::getTypes() as $type => $class) {
+            foreach (Datatype::getTypes() as $type => $class) {
                 foreach ($arr as $suffix => $description) {
                     self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['set_datatype_' . $type . $suffix] = array('description' => $i18n->__('Can change field "%type_name"', array('%type_name' => $i18n->__($type))));
                 }
@@ -1716,6 +1719,8 @@ class Context
             foreach (self::$_available_permissions as $category => $permissions) {
                 self::addPermissionsPath($permissions, $category);
             }
+
+            Logging::log("Done loading and caching permissions tree");
         }
     }
 
