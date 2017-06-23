@@ -613,7 +613,10 @@ header #header_userinfo > ul > li > a, header #header_userinfo > ul > li > a:hov
     font-size: 1.3em;
 }
 header #header_userinfo > ul > li#header_usermenu_link > a {
-    padding: 8px 0;
+    padding: 6px 0;
+}
+header #header_userinfo > ul > li#header_usermenu_link > a .fa-user {
+    font-size: 1.15em;
 }
 /*header #header_userinfo > ul > li#header_usermenu_link > a .fa {*/
     /*font-size: 0.8em;*/
@@ -1978,7 +1981,7 @@ div.autocomplete ul li .hidden {
     background-color: #FFF;
 }
 
-.tab_menu li:hover {
+.tab_menu li:not(.selected):not(.active):hover {
     background-color: #EFEFEF;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
@@ -2252,9 +2255,9 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border-bottom: none;
 }
 
-.header_menu .selected, .header_menu li.selected:hover {
-    background-color: #ECF0F4;
-}
+/*.header_menu .selected, .header_menu li.selected:hover {*/
+    /*background-color: #ECF0F4;*/
+/*}*/
 
 .header_menu > ul {
     height: 100%;
@@ -2282,7 +2285,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border-bottom: 0;
 }
 
-.header_menu > ul > li, .header_menu > ul > li:hover {
+.header_menu > ul > li, .header_menu > ul > li:not(.selected):not(.active):hover {
     background-color: transparent;
     border: 0;
     padding: 0 10px;
@@ -2294,7 +2297,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     color: #FFF;
 }
 
-#topmenu-container .header_menu > ul > li:hover, #topmenu-container.active .header_menu > ul > li:not(.with-dropdown):hover {
+#topmenu-container .header_menu > ul > li:not(.selected):hover, #topmenu-container.active .header_menu > ul > li:not(.with-dropdown):hover {
     color: #555;
     text-shadow: none;
     background: #3B6282;
@@ -12968,6 +12971,11 @@ input.button-silver[type=submit]:hover,
     vertical-align: middle;
 }
 
+.button .fa + span {
+    vertical-align: middle;
+    display: inline-block;
+}
+
 .button-icon img, .button-icon:hover img {
     margin: 1px;
     float: none;
@@ -13599,6 +13607,48 @@ table.sortable tr th.nosort {
 .persona-button.dark:before { /* Triangle */
     background: -webkit-linear-gradient(-45deg, #ebac45, #d34f2d);
     background: linear-gradient(-45deg, #d34f2d, #ebac45); /* flipped for updated spec */
+}
+
+/* ========================================================
+ *    Black + white button
+ * ===================================================== */
+.persona-button.black-white {
+    background: -webkit-linear-gradient(top, #000, #3c3c3c);
+    background: linear-gradient(to bottom, #000, #3c3c3c);
+}
+
+.persona-button.black-white:hover {
+    background: -webkit-linear-gradient(top, #111, #2d2d2d);
+    background: linear-gradient(to bottom, #111, #2d2d2d);
+}
+
+.persona-button.black-white span:before { /* Icon BG */
+    background: #FFF;
+}
+
+.persona-button.black-white:before { /* Triangle */
+    background: #FFF;
+}
+
+/* ========================================================
+ *    Black button
+ * ===================================================== */
+.persona-button.black {
+    background: -webkit-linear-gradient(top, #000, #3c3c3c);
+    background: linear-gradient(to bottom, #000, #3c3c3c);
+}
+
+.persona-button.black:hover {
+    background: -webkit-linear-gradient(top, #111, #2d2d2d);
+    background: linear-gradient(to bottom, #111, #2d2d2d);
+}
+
+.persona-button.black span:before { /* Icon BG */
+    background: #000;
+}
+
+.persona-button.black:before { /* Triangle */
+    background: #000;
 }
 
 /* ========================================================

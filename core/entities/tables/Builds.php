@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Build;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -23,6 +24,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
+     * @method Build selectById()
      * @Table(name="builds")
      * @Entity(class="\thebuggenie\core\entities\Build")
      */

@@ -2180,7 +2180,7 @@
 
             framework\Logging::log('Checking permission for user ID: '.$user_id.', group ID '.$group_id.',team IDs ' . implode(',', $team_ids));
 
-            $retval = framework\Context::checkPermission($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
+            $retval = framework\Context::permissionCheck($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
             if ($retval === null)
             {
                 framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', no matching rules found.');
@@ -2506,12 +2506,12 @@
             return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
         }
 
-        public function canAddScrumSprints(\thebuggenie\core\entities\Project $project)
+        public function canEditMilestones(\thebuggenie\core\entities\Project $project)
         {
             if ($project->isArchived()) return false;
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
-            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'candoscrumplanning', $project->getID(), false);
+            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'canmanageproject', $project->getID(), false);
         }
 
         /**
@@ -2543,10 +2543,10 @@
             if ($this->canSaveConfiguration(framework\Settings::CONFIGURATION_SECTION_PROJECTS)) return true;
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
-            $retval = $this->hasPermission('canassignscrumuserstoriestosprints', $project->getID());
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', $project->getID());
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('canassignscrumuserstoriestosprints', 0);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', 0);
+            $retval = $this->hasPermission('caneditissueassigned_to', $project->getID());
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissue', $project->getID());
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissueassigned_to', 0);
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissue', 0);
 
             return (bool) ($retval !== null) ? $retval : false;
         }

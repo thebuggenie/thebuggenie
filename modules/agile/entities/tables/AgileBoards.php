@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method \thebuggenie\core\entities\tables\AgileBoards getTable() Retrieves an instance of this table
+     * @method static \thebuggenie\core\entities\tables\AgileBoards getTable() Retrieves an instance of this table
      * @method \thebuggenie\modules\agile\entities\AgileBoard selectById(integer $id) Retrieves an agile board
      *
      * @Table(name="agileboards")
