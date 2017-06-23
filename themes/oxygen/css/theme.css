@@ -4980,6 +4980,7 @@ a.friend {
     margin: 0;
 }
 
+#viewissue_activity,
 #issue_view fieldset legend {
     border: 0;
     color: #777;
@@ -4991,6 +4992,41 @@ a.friend {
     border-bottom: 1px dotted #CCC;
 }
 
+#viewissue_activity {
+    list-style: none;
+    margin: 0 0 0 5px;
+}
+#viewissue_activity li {
+    list-style: none;
+    display: inline-block;
+    height: auto;
+}
+#viewissue_activity li > a,
+#viewissue_activity li > span {
+    padding: 5px 15px 10px;
+}
+#viewissue_activity li.selected > a {
+    background: #fff;
+    border: 1px dotted #CCC;
+    border-bottom: none;
+}
+#viewissue_activity li > span {
+    padding-left: 0;
+}
+.viewissue_comments_header {
+    line-height: 2em;
+    padding: 5px 0;
+    position: relative;
+}
+.viewissue_comments_header a {
+    margin-right: 15px;
+}
+#issue_main .viewissue_comments_header .button_container {
+    padding-top: 3px;
+}
+#issue_main .viewissue_comments_header .button_container .button {
+    font-size: 1em;
+}
 #issue_view fieldset:first-of-type legend, #issue_details_container fieldset legend {
     padding-top: 5px;
 }
@@ -6861,8 +6897,10 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-left: 5px;
 }
 
-#viewissue_log_items {
+#viewissue_log_items,
+#viewissue_vcs_integration_commits {
     min-height: 36px;
+    margin-top: 40px;
 }
 
 #viewissue_log_items ul {
@@ -6874,15 +6912,24 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #viewissue_log_items ul li {
     list-style: none;
     margin: 0;
-    padding: 2px 0;
+    padding: 2px 0 0 160px;
+    position: relative;
+}
+
+#viewissue_log_items ul li .date {
+    position: absolute;
+    left: 0;
+    top: 4px;
 }
 
 #viewissue_log_items ul li img {
     margin: 3px 5px -3px 5px;
 }
 
-#viewissue_log_items .fa, .comment_log_items .fa {
-    margin-right: 5px;
+#viewissue_log_items .fa {
+    position: absolute;
+    top: 3px;
+    left: 125px;
     padding: 4px;
     border: 1px solid transparent;
 }
