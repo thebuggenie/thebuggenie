@@ -330,12 +330,13 @@
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
 
                         
-                        <ul id="viewissue_activity">
-                            <li><span><?= __('Activity'); ?></span></li>
-                            <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><?= __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></a></li>
-                            <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
-                            <li id="tab_viewissue_history"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_history', 'viewissue_activity');"><?= __('History'); ?></a></li>
-                        </ul>
+                        <div class="tab_menu inset">
+                            <ul id="viewissue_activity">
+                                <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><i class="fa fa-comments-o"></i><?= __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></a></li>
+                                <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
+                                <li id="tab_viewissue_history"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_history', 'viewissue_activity');"><i class="fa fa-history"></i><?= __('History'); ?></a></li>
+                            </ul>
+                        </div>
                         <div id="viewissue_activity_panes">
                             <div id="tab_viewissue_comments_pane">
                                 <fieldset class="comments" id="viewissue_comments_container">

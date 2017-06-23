@@ -1956,12 +1956,11 @@ div.autocomplete ul li .hidden {
     float: left;
     display: block;
     font-size: 0.9em;
-    border: 1px solid #CCC;
-    border-bottom: 1px solid #BBB;
-    background-color: #ECF0F4;
+    border: 0;
     margin: 0 0 0 5px;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
+    line-height: 1.43;
 }
 
 .tab_menu li.selected, .tab_menu li:hover {
@@ -1976,11 +1975,11 @@ div.autocomplete ul li .hidden {
 
 .tab_menu .selected {
     font-weight: normal;
+    background-color: #FFF;
 }
 
 .tab_menu li:hover {
     background-color: #EFEFEF;
-    border: 1px solid #BBB;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
 }
@@ -2180,9 +2179,11 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .tab_menu.inset li.selected {
-    border-bottom: 1px solid #FFF;
     margin-top: -4px;
     padding: 2px 7px 3px 5px;
+    border-bottom: 1px solid #FFF;
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #DDC;
     border-top: 3px solid #4E81AB;
 }
 
@@ -2192,8 +2193,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .tab_menu.inset li {
     padding: 0;
-    border: 1px solid rgba(78, 129, 171, 0.2);
-    border-radius: 2px;
+    border: 0;
 }
 
 .tab_menu.inset li.right {
@@ -4980,7 +4980,6 @@ a.friend {
     margin: 0;
 }
 
-#viewissue_activity,
 #issue_view fieldset legend {
     border: 0;
     color: #777;
@@ -4992,27 +4991,6 @@ a.friend {
     border-bottom: 1px dotted #CCC;
 }
 
-#viewissue_activity {
-    list-style: none;
-    margin: 0 0 0 5px;
-}
-#viewissue_activity li {
-    list-style: none;
-    display: inline-block;
-    height: auto;
-}
-#viewissue_activity li > a,
-#viewissue_activity li > span {
-    padding: 5px 15px 10px;
-}
-#viewissue_activity li.selected > a {
-    background: #fff;
-    border: 1px dotted #CCC;
-    border-bottom: none;
-}
-#viewissue_activity li > span {
-    padding-left: 0;
-}
 .viewissue_comments_header {
     line-height: 2em;
     padding: 5px 0;
@@ -14017,6 +13995,7 @@ button:focus, input:focus, select:focus {
 .configuration_page .main_configuration_content { padding: 0 15px; }
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,
+* .tab_menu li.selected:hover,
 ul#account_tabs li.selected,
 ul#account_tabs li.selected:hover,
 ul#editions_menu li.selected,
@@ -14026,6 +14005,7 @@ ul#editions_menu li.selected:hover {
 }
 
 .configuration_page .tab_menu li.selected:after,
+* .tab_menu li.selected:after
 ul#account_tabs li.selected:after,
 ul#editions_menu li.selected:after {
     content: "";
