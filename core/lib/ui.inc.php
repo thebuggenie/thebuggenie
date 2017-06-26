@@ -26,7 +26,13 @@
      */
     function image_tag($image, $params = array(), $notheme = false, $module = 'core', $relative = true)
     {
-        $params['src'] = image_url($image, $notheme, $module, $relative);
+        if ( ! \thebuggenie\core\framework\Context::getRequest()->isAjaxCall()) {
+            $params['src'] = image_url('/images/0.png', true);
+            $params['data-src'] = image_url($image, $notheme, $module, $relative);
+        }
+        else {
+            $params['src'] = image_url($image, $notheme, $module, $relative);
+        }
         if (!isset($params['alt']))
             $params['alt'] = $image;
 

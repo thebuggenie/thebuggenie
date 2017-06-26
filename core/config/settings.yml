@@ -1,3 +1,4 @@
 core:
     debug: false
     log_file: ~
+    mode: production

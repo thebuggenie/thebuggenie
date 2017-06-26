@@ -6,12 +6,16 @@
 <nav class="tab_menu header_menu main_menu" id="main_menu">
     <ul>
         <?php if (!framework\Settings::isSingleProjectTracker()): ?>
-            <li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div class="menuitem_container"><?php echo link_tag(make_url('home'), fa_image_tag('home') . __('Projects')); ?></div></li>
+            <li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div class="menuitem_container"><?php echo link_tag(make_url('home'), fa_image_tag('home') . __('Frontpage')); ?></div></li>
         <?php endif; ?>
         <?php if (!$tbg_user->isThisGuest() && !framework\Settings::isSingleProjectTracker()): ?>
             <li class="with-dropdown <?php if ($tbg_response->getPage() == 'dashboard'): ?>selected<?php endif; ?>">
                 <div class="menuitem_container">
-                    <?php echo link_tag(make_url('dashboard'), fa_image_tag('columns') . __('Dashboard'), ((in_array($tbg_response->getPage(), array('dashboard'))) ? array('class' => 'selected') : array())); ?>
+                    <?php echo link_tag('javascript:void(0);', fa_image_tag('columns') . __('Dashboard')); ?>
+                    <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
+                </div>
+                <div class="tab_menu_dropdown">
+                    <?php echo link_tag(make_url('dashboard'), __('My dashboard'), ((in_array($tbg_response->getPage(), array('dashboard'))) ? array('class' => 'selected') : array())); ?>
                 </div>
             </li>
         <?php endif; ?>

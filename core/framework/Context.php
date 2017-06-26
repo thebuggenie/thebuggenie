@@ -2729,4 +2729,16 @@ class Context
         self::$_debug_mode = $value;
     }
 
+    /**
+     * Whether to serve minified resource files
+     *
+     * @return bool
+     *   true, if resouce files shall be delivered minified, false otherwise.
+     */
+    public static function isServeMinified()
+    {
+        //return false;
+        return self::$_configuration['core']['mode'] == 'production';
+    }
+
 }
