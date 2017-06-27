@@ -306,7 +306,11 @@
             {
                 // Extract project entity.
                 $project_id = $assigned_user->get(ProjectAssignedUsers::PROJECT_ID);
-                $project = Project::getAllByIDs(array($project_id))[$project_id];
+                $projects = Project::getAllByIDs(array($project_id));
+                if ( ! isset($projects[$project_id])) {
+                    continue;
+                }
+                $project = $projects[$project_id];
 
                 // Determine values that need to be inserted.
                 $target_id = $rolepermission->getExpandedTargetIDForProject($project);
