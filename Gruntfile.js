@@ -53,6 +53,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [
                     { expand: true, cwd: 'public/css', src: ['**/*.css', '!*.min.css'], dest: 'public/css', ext: '.min.css', extDot: 'last' },
+                    { expand: true, cwd: 'themes', src: ['**/*.css', '!*.min.css'], dest: 'themes', ext: '.min.css', extDot: 'last' },
                     { expand: true, cwd: 'modules', src: ['**/*.css', '!*.min.css', '!vendor/**/*.css'], dest: 'modules', ext: '.min.css', extDot: 'last' }
                 ]
             }
