@@ -2730,15 +2730,14 @@ class Context
     }
 
     /**
-     * Whether to serve minified resource files
+     * Whether to serve minified asset files (JS and CSS)
      *
      * @return bool
-     *   true, if resouce files shall be delivered minified, false otherwise.
+     *   true, if asset files shall be delivered minified, false otherwise.
      */
-    public static function isServeMinified()
+    public static function isMinifiedAssets()
     {
-        //return false;
-        return self::$_configuration['core']['mode'] == 'production';
+        return ! empty(self::$_configuration['core']['minified_assets']);
     }
 
 }

@@ -1,4 +1,4 @@
 core:
     debug: false
     log_file: ~
-    mode: production
+    minified_assets: true

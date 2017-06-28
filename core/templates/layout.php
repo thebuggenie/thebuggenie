@@ -58,7 +58,7 @@
             <link rel="alternate" type="application/rss+xml" title="<?= str_replace('"', '\'', $feed_title); ?>" href="<?= $feed_url; ?>">
         <?php endforeach; ?>
         <?php $rand = substr(md5(microtime()),rand(0,26),5); ?>
-        <?php $minified = ! \thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Context::isServeMinified() ? '.min' :''; ?>
+        <?php $minified = ! \thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Context::isMinifiedAssets() ? '.min' :''; ?>
         <?php $tbgVersion = \thebuggenie\core\framework\Settings::getVersion(); ?>
         <?php include THEBUGGENIE_PATH . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
 
