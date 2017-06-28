@@ -55,6 +55,10 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                     TBG.Main.Profile.clearPopupsAndButtons();
                     e.stopPropagation();
                 });
+                jQuery("img[data-src]:not([data-src-processed])").each(function(){
+                    var $img = jQuery(this);
+                    $img.attr('src', $img.data('src')).data('src-processed', true);
+                });
                 $$("textarea").each(function (ta) {
                     ta.on('focus', function (e) {
                         TBG.Main.initializeMentionable(e.target);

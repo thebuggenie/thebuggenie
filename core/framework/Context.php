@@ -2729,4 +2729,15 @@ class Context
         self::$_debug_mode = $value;
     }
 
+    /**
+     * Whether to serve minified asset files (JS and CSS)
+     *
+     * @return bool
+     *   true, if asset files shall be delivered minified, false otherwise.
+     */
+    public static function isMinifiedAssets()
+    {
+        return ! empty(self::$_configuration['core']['minified_assets']);
+    }
+
 }

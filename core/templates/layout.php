@@ -12,7 +12,7 @@
         <meta name="description" content="The bug genie, friendly issue tracking">
         <meta name="keywords" content="thebuggenie friendly issue tracking">
         <meta name="author" content="thebuggenie.com">
-        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <title><?= ($tbg_response->hasTitle()) ? strip_tags($header_name . ' ~ ' . $tbg_response->getTitle()) : strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName()); ?></title>
         <style>
@@ -57,10 +57,14 @@
         <?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
             <link rel="alternate" type="application/rss+xml" title="<?= str_replace('"', '\'', $feed_title); ?>" href="<?= $feed_url; ?>">
         <?php endforeach; ?>
+        <?php $rand = substr(md5(microtime()),rand(0,26),5); ?>
+        <?php $minified = ! \thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Context::isMinifiedAssets() ? '.min' :''; ?>
+        <?php $tbgVersion = \thebuggenie\core\framework\Settings::getVersion(); ?>
         <?php include THEBUGGENIE_PATH . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
 
         <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
         <?php foreach ($localcss as $css): ?>
+            <?php if ( ! empty($minified)) : $pathinfo = pathinfo($css); $css = $pathinfo['dirname'] . '/' . $pathinfo['filename'] . $minified . '.' . $pathinfo['extension']; endif; ?>
             <link rel="stylesheet" href="<?php print $css; ?>">
         <?php endforeach; ?>
         <?php foreach ($externalcss as $css): ?>
@@ -69,28 +73,66 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimer.min.js"></script>
-        <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimer.silent.min.js"></script>
-        <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimerWorker.min.js"></script>
+        <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimer<?= $minified; ?>.js"></script>
+        <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimerWorker<?= $minified; ?>.js"></script>
         <script>
             var bust = function (path) {
-                return path + '?bust=' + <?= (\thebuggenie\core\framework\Context::isDebugMode()) ? ' Math.random()' : "'" . \thebuggenie\core\framework\Settings::getVersion() . "'"; ?>;
+                return path + '.js?bust=<?= (\thebuggenie\core\framework\Context::isDebugMode()) ? $rand : $tbgVersion; ?>';
             };
 
             var require = {
                 waitSeconds: 0,
                 baseUrl: '<?= make_url('home'); ?>js',
                 paths: {
-                    jquery: 'jquery-2.1.3.min',
-                    'jquery-ui': 'jquery-ui.min',
-                    '<?= \thebuggenie\core\framework\Settings::getThemeName(); ?>/theme': bust('<?= \thebuggenie\core\framework\Settings::getThemeName(); ?>/theme.js'),
-                    'thebuggenie': bust('thebuggenie.js'),
-                    'thebuggenie/tbg': bust('thebuggenie/tbg.js'),
-                    'thebuggenie/tools': bust('thebuggenie/tools.js'),
-                    'TweenMax': bust('greensock/TweenMax.js'),
-                    'TweenLite': bust('greensock/TweenLite.js'),
-                    'GSDraggable': bust('greensock/utils/Draggable.js'),
-                    'jquery.nanoscroller': bust('jquery.nanoscroller.js')
+                    'jquery': bust('jquery-2.1.3<?= $minified ?>'),
+                    <?php foreach([
+                        'bootstrap-typeahead',
+                        'domReady',
+                        'jquery.animate-enhanced',
+                        'jquery.ba-resize',
+                        'jquery.flot',
+                        'jquery.flot.canvas',
+                        'jquery.flot.categories',
+                        'jquery.flot.crosshair',
+                        'jquery.flot.dashes',
+                        'jquery.flot.errorbars',
+                        'jquery.flot.fillbetween',
+                        'jquery.flot.image',
+                        'jquery.flot.navigate',
+                        'jquery.flot.pie',
+                        'jquery.flot.resize',
+                        'jquery.flot.selection',
+                        'jquery.flot.stack',
+                        'jquery.flot.symbol',
+                        'jquery.flot.threshold',
+                        'jquery.flot.time',
+                        'jquery.markitup',
+                        'jquery.nanoscroller',
+                        'jquery-mousewheel',
+                        'jquery-private',
+                        'jquery-ui',
+                        'lightwindow',
+                        'mention',
+                        'notify',
+                        'spectrum',
+                        'prototype',
+                        'effects',
+                        'controls',
+                        'mention',
+                        'scriptaculous',
+                        'slider',
+                        'sound',
+                        'tablekit',
+                        \thebuggenie\core\framework\Settings::getThemeName() .'/theme',
+                        'thebuggenie',
+                        'thebuggenie/tbg',
+                        'thebuggenie/tools',
+                    ] as $path): ?>
+                    '<?= $path ?>': bust('<?= $path.$minified ?>'),
+                    <?php endforeach; ?>
+                    'TweenMax': bust('greensock/TweenMax<?= $minified ?>'),
+                    'TweenLite': bust('greensock/TweenLite<?= $minified ?>'),
+                    'GSDraggable': bust('greensock/utils/Draggable<?= $minified ?>')
                 },
                 map: {
                     '*': { 'jquery': 'jquery-private' },
@@ -157,8 +199,8 @@
                 }
             };
         </script>
-        <script data-main="thebuggenie" src="<?= make_url('home'); ?>js/require.js"></script>
-        <script src="<?= make_url('home'); ?>js/promise-7.0.4.min.js"></script>
+        <script data-main="thebuggenie" src="<?= make_url('home'); ?>js/require<?= $minified; ?>.js"></script>
+        <script src="<?= make_url('home'); ?>js/promise-7.0.4<?= $minified; ?>.js"></script>
         <?php foreach ($externaljs as $js): ?>
             <script type="text/javascript" src="<?= $js; ?>"></script>
         <?php endforeach; ?>
