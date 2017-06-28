@@ -36,6 +36,7 @@ npm-debug.log
 /modules/*/public/js/**/*.min.js
 /modules/*/public/js/**/*.min.js.map
 /modules/*/public/css/**/*.min.css
+/themes/*/css/**/*.min.css
 /themes/*/js/**/*.min.js
 /themes/*/js/**/*.min.js.map
 
