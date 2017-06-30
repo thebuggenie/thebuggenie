@@ -3247,7 +3247,16 @@
         {
             $this->_addChangedProperty('_issuetype', $issuetype_id);
             $project = $this->getProject();
-            $workflowStep = $project->getWorkflowScheme()->getWorkflowForIssuetype($issuetype_id)->getFirstStep();
+            $issueType = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($issuetype_id);
+            if (! $issueType instanceof \thebuggenie\core\entities\Issuetype || ! $project instanceof \thebuggenie\core\entities\Project)
+            {
+                return;
+            }
+            $workflowStep = $project->getWorkflowScheme()->getWorkflowForIssuetype($issueType)->getFirstStep();
+            if (! $workflowStep instanceof \thebuggenie\core\entities\WorkflowStep)
+            {
+                return;
+            }
             if ($workflowStep->hasLinkedStatus())
             {
                 $this->_addChangedProperty('_status', $workflowStep->getLinkedStatusID());
