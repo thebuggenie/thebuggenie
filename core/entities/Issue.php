@@ -3246,6 +3246,13 @@
         public function setIssuetype($issuetype_id)
         {
             $this->_addChangedProperty('_issuetype', $issuetype_id);
+            $project = $this->getProject();
+            $workflowStep = $project->getWorkflowScheme()->getWorkflowForIssuetype($issuetype_id)->getFirstStep();
+            if ($workflowStep->hasLinkedStatus())
+            {
+                $this->_addChangedProperty('_status', $workflowStep->getLinkedStatusID());
+            }
+            $this->_addChangedProperty('_workflow_step_id', $workflowStep->getID());
         }
 
         /**
