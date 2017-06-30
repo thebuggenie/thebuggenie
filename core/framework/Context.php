@@ -1727,9 +1727,8 @@ class Context
     protected static function addPermissionsPath($permissions, $category, $parent = [])
     {
         foreach ($permissions as $permission => $details) {
-            if (!array_key_exists('details', $details)) {
-                self::$_available_permission_paths[$category][$permission] = array_reverse(array_values($parent));
-            } else {
+            self::$_available_permission_paths[$category][$permission] = array_reverse(array_values($parent));
+            if (array_key_exists('details', $details)) {
                 $path = $parent;
                 $path[$permission] = $permission;
                 self::addPermissionsPath($details['details'], $category, $path);
