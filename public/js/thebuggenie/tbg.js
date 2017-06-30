@@ -5862,6 +5862,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 }
 
                 $(field + '_field').addClassName('issue_detail_changed');
+                if (field == 'issuetype') {
+                    jQuery("#workflow_actions input[type='submit'], #workflow_actions input[type='button']").prop("disabled", true);
+                    jQuery("#workflow_actions a").off('click');
+                }
             }
 
             if ($('comment_save_changes'))
@@ -5879,6 +5883,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     $('viewissue_unsaved').hide();
                     if ($('comment_save_changes'))
                         $('comment_save_changes').checked = false;
+                }
+                if (field == 'issuetype') {
+                    jQuery("#workflow_actions input[type='submit'], #workflow_actions input[type='button']").prop("disabled", false);
+                    jQuery("#workflow_actions a").on('click');
                 }
             }
         }

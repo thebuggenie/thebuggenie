@@ -2677,6 +2677,10 @@
          */
         public function setStatus($status_id)
         {
+            if ($this->_isPropertyChanged('_issuetype'))
+            {
+                throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__("You can't change the status after changing the issue type. Please save your changes first."));
+            }
             $this->_addChangedProperty('_status', $status_id);
         }
 
