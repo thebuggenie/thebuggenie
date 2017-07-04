@@ -27,7 +27,7 @@
                     $user = \thebuggenie\core\entities\User::getByUsername($username_or_email);
                     if (!$user instanceof \thebuggenie\core\entities\User)
                     {
-                        $user = \thebuggenie\core\entities\User::getByEmail($username_or_email);
+                        $user = \thebuggenie\core\entities\User::getByEmail($username_or_email, false);
                     }
                     if ($user instanceof \thebuggenie\core\entities\User)
                     {
@@ -36,26 +36,23 @@
                             if ($user->getEmail())
                             {
                                 framework\Context::getModule('mailing')->sendForgottenPasswordEmail($user);
-                                return $this->renderJSON(array('message' => $i18n->__('Please use the link in the email you received')));
                             }
-                            else
-                            {
-                                throw new \Exception($i18n->__('Cannot find an email address for this user'));
-                            }
+                            return $this->renderJSON(array('message' => $i18n->__("If you are a registered user, we sent you an email. Please use the link in the email you received to reset your password.")));
                         }
                         else
                         {
-                            throw new \Exception($i18n->__('Forbidden for this username, please contact your administrator'));
+                            throw new \Exception($i18n->__('Your user account has been disabled. Please contact your administrator.'));
                         }
                     }
                     else
                     {
-                        throw new \Exception($i18n->__('This username does not exist'));
+                        // Protect from user name/email guessing in not telling whether the username/email address exists.
+                        return $this->renderJSON(array('message' => $i18n->__("If you are a registered user, we sent you an email. Please use the link in the email you received to reset your password.")));
                     }
                 }
                 else
                 {
-                    throw new \Exception($i18n->__('Please enter an username'));
+                    throw new \Exception($i18n->__('Please enter a username or email address.'));
                 }
             }
             catch (\Exception $e)

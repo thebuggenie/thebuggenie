@@ -380,10 +380,22 @@
             return self::getB2DBTable()->getByUsername($username);
         }
 
-        public static function getByEmail($email)
+        /**
+         * Retrieve a user by its email address.
+         *
+         * @param string $email
+         *   Email address of the user.
+         * @param bool $createNew
+         *   Whether to create the user if it does not exist.
+         *   Defaults to `true`.
+         * @return \thebuggenie\core\entities\User|null
+         *   User instance or null, if the user was not found.
+         */
+        public static function getByEmail($email, $createNew = true)
         {
             $user = self::getB2DBTable()->getByEmail($email);
-            if (!$user instanceof User && !framework\Settings::isUsingExternalAuthenticationBackend())
+
+            if (!$user instanceof User && $createNew && !framework\Settings::isUsingExternalAuthenticationBackend())
             {
                 $user = new User();
                 $user->setPassword(self::createPassword());
