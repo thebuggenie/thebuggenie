@@ -381,7 +381,7 @@
         }
 
         /**
-         * Retrieve a user by its email address.
+         * Retrieve a user by its email address
          *
          * @param string $email
          *   Email address of the user.

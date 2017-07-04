@@ -52,7 +52,7 @@
                 }
                 else
                 {
-                    throw new \Exception($i18n->__('Please enter a username or email address.'));
+                    throw new \Exception($i18n->__('Please enter an username or email address.'));
                 }
             }
             catch (\Exception $e)
