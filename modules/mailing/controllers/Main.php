@@ -22,38 +22,38 @@
             try
             {
                 $username_or_email = str_replace('%2E', '.', $request['forgot_password_username']);
-                if (!empty($username_or_email))
-                {
-                    $user = \thebuggenie\core\entities\User::getByUsername($username_or_email);
-                    if (!$user instanceof \thebuggenie\core\entities\User)
-                    {
-                        $user = \thebuggenie\core\entities\User::getByEmail($username_or_email, false);
-                    }
-                    if ($user instanceof \thebuggenie\core\entities\User)
-                    {
-                        if ($user->isActivated() && $user->isEnabled() && !$user->isDeleted())
-                        {
-                            if ($user->getEmail())
-                            {
-                                framework\Context::getModule('mailing')->sendForgottenPasswordEmail($user);
-                            }
-                            return $this->renderJSON(array('message' => $i18n->__("If you are a registered user, we sent you an email. Please use the link in the email you received to reset your password.")));
-                        }
-                        else
-                        {
-                            throw new \Exception($i18n->__('Your user account has been disabled. Please contact your administrator.'));
-                        }
-                    }
-                    else
-                    {
-                        // Protect from user name/email guessing in not telling whether the username/email address exists.
-                        return $this->renderJSON(array('message' => $i18n->__("If you are a registered user, we sent you an email. Please use the link in the email you received to reset your password.")));
-                    }
-                }
-                else
+
+                // Whether no username or email address was given.
+                if (empty($username_or_email))
                 {
                     throw new \Exception($i18n->__('Please enter an username or email address.'));
                 }
+
+                // Try retrieving the user.
+                $user = \thebuggenie\core\entities\User::getByUsername($username_or_email);
+                if (!$user instanceof \thebuggenie\core\entities\User)
+                {
+                    $user = \thebuggenie\core\entities\User::getByEmail($username_or_email, false);
+                }
+
+                if ($user instanceof \thebuggenie\core\entities\User)
+                {
+                    // Whether the user was deleted or is otherwise disabled.
+                    if (! $user->isActivated() || ! $user->isEnabled() || $user->isDeleted())
+                    {
+                        throw new \Exception($i18n->__('Your user account has been disabled. Please contact your administrator.'));
+                    }
+
+                    // Whether the user has an email address.
+                    if ($user->getEmail())
+                    {
+                        // Send password reset email.
+                        framework\Context::getModule('mailing')->sendForgottenPasswordEmail($user);
+                    }
+                }
+
+                // Protect from user name/email guessing in not telling whether the username/email address exists.
+                return $this->renderJSON(array('message' => $i18n->__("If you are a registered user, we sent you an email. Please use the link in the email you received to reset your password.")));
             }
             catch (\Exception $e)
             {
