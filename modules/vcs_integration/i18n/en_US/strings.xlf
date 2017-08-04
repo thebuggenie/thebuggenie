@@ -4,31 +4,44 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 13 -->
-<!-- Number of Strings: 73 -->
-<!-- Keys extracted from sources on: 2016 Mar 06. -->
+<!-- Number of Sections: 14 -->
+<!-- Number of Strings: 72 -->
+<!-- Keys extracted from sources on: 2017 Aug 04. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="controllers/Main.php">
+    <file source-language="en" datatype="php" original="templates/_viewissue_commits.inc.php">
         <body>
-            <trans-unit id="d830f533ad8d4207b9efaaaf64296d3b">
-                <source>VCS Integration has been disabled for this project</source>
-            </trans-unit>
-            <trans-unit id="96d4dadd096605d5813d2c6bdf82e82c">
-                <source>Settings saved</source>
+            <trans-unit id="a6fda05ffbf14489419e9c3766103d79">
+                <source>There are no code checkins for this issue</source>
             </trans-unit>
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="templates/_commitbackdrop.inc.php">
+    <file source-language="en" datatype="php" original="templates/_projectconfig_tab.inc.php">
         <body>
-            <trans-unit id="f01a7e06c748e04f696f65489836fad4">
-                <source>Show commit details</source>
+            <trans-unit id="52415a1b91e05b1339d30a34c8081eb1">
+                <source>VCS Integration</source>
             </trans-unit>
-            <trans-unit id="d3d2e617335f08df83599665eef8a418">
-                <source>Close</source>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_menustriplinks.inc.php">
+        <body>
+            <trans-unit id="7b3e99499b99f8c89ac261493ee5c49c">
+                <source>Commits</source>
+            </trans-unit>
+            <trans-unit id="921b5de8df98a3dd70375e6da949701b">
+                <source>Browse source code</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_notification_view_text.inc.php">
+        <body>
+            <trans-unit id="dbd18caed4e4cae3606abfec03efc046">
+                <source>%user_name mentioned you in commit %rev</source>
             </trans-unit>
         </body>
     </file>
@@ -76,36 +89,6 @@
             </trans-unit>
             <trans-unit id="a3b8c541bcaeaccf19233c39c4d0e51d">
                 <source>This commit affects no issues</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="templates/_menustriplinks.inc.php">
-        <body>
-            <trans-unit id="7b3e99499b99f8c89ac261493ee5c49c">
-                <source>Commits</source>
-            </trans-unit>
-            <trans-unit id="921b5de8df98a3dd70375e6da949701b">
-                <source>Browse source code</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="templates/_notification_view.inc.php">
-        <body>
-            <trans-unit id="dbd18caed4e4cae3606abfec03efc046">
-                <source>%user_name mentioned you in commit %rev</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="templates/_projectcommitsbox.inc.php">
-        <body>
-            <trans-unit id="118abc26b32479243422657f3f0496ae">
-                <source>No commits have been found for this project</source>
-            </trans-unit>
-            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
-                <source>Show more</source>
             </trans-unit>
         </body>
     </file>
@@ -229,14 +212,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="templates/_projectconfig_tab.inc.php">
-        <body>
-            <trans-unit id="52415a1b91e05b1339d30a34c8081eb1">
-                <source>VCS Integration</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="templates/_projectheaderbutton.inc.php">
         <body>
             <trans-unit id="a98df7359ac52361af81fa897d556a6a">
@@ -245,16 +220,13 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="templates/_viewissue_commits.inc.php">
+    <file source-language="en" datatype="php" original="templates/_commitbackdrop.inc.php">
         <body>
-            <trans-unit id="63472150e70f25ffe3ae2be23a250069">
-                <source>Commits (%count)</source>
+            <trans-unit id="f01a7e06c748e04f696f65489836fad4">
+                <source>Show commit details</source>
             </trans-unit>
-            <trans-unit id="a6fda05ffbf14489419e9c3766103d79">
-                <source>There are no code checkins for this issue</source>
-            </trans-unit>
-            <trans-unit id="eb92025cb8c66f1850c13a9b602a1856">
-                <source>Show all</source>
+            <trans-unit id="d3d2e617335f08df83599665eef8a418">
+                <source>Close</source>
             </trans-unit>
         </body>
     </file>
@@ -263,6 +235,14 @@
         <body>
             <trans-unit id="51bab8e2b3a781f0dd0034bdec6b45bd">
                 <source>Code checkins (%count)</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_viewissue_activities_tab.inc.php">
+        <body>
+            <trans-unit id="63472150e70f25ffe3ae2be23a250069">
+                <source>Commits (%count)</source>
             </trans-unit>
         </body>
     </file>
@@ -283,6 +263,28 @@
             </trans-unit>
             <trans-unit id="649fdfc207df25011ea7cb22bbcdb2c5">
                 <source>Branch filters</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="templates/_projectcommitsbox.inc.php">
+        <body>
+            <trans-unit id="118abc26b32479243422657f3f0496ae">
+                <source>No commits have been found for this project</source>
+            </trans-unit>
+            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
+                <source>Show more</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="controllers/Main.php">
+        <body>
+            <trans-unit id="d830f533ad8d4207b9efaaaf64296d3b">
+                <source>VCS Integration has been disabled for this project</source>
+            </trans-unit>
+            <trans-unit id="96d4dadd096605d5813d2c6bdf82e82c">
+                <source>Settings saved</source>
             </trans-unit>
         </body>
     </file>

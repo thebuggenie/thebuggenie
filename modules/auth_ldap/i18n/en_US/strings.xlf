@@ -4,79 +4,31 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 3 -->
-<!-- Number of Strings: 63 -->
-<!-- Keys extracted from sources on: 2016 Mar 06. -->
+<!-- Number of Sections: 4 -->
+<!-- Number of Strings: 72 -->
+<!-- Keys extracted from sources on: 2017 Aug 04. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
 
-    <file source-language="en" datatype="php" original="Auth_ldap.php">
+    <file source-language="en" datatype="php" original="cli/Import.php">
         <body>
-            <trans-unit id="a9a70cd6177209344c8eab46cf98610f">
-                <source>Failed to connect to server</source>
+            <trans-unit id="c2aaeb20ceb12d108a77c9383498a988">
+                <source>Import failed</source>
             </trans-unit>
-            <trans-unit id="25449aa6a64ea74062a2a49801822d09">
-                <source>Failed to bind:</source>
-            </trans-unit>
-            <trans-unit id="4baed660575ea555f8f63b3e894ecb08">
-                <source>Search failed:</source>
-            </trans-unit>
-            <trans-unit id="5824791e3431518112d466b295500320">
-                <source>User does not exist in the directory</source>
-            </trans-unit>
-            <trans-unit id="e612e804607a524cc7605a4fb22f570e">
-                <source>This user was found multiple times in the directory, please contact your administrator</source>
-            </trans-unit>
-            <trans-unit id="a4d1777659ac28e5510a35353f7b087d">
-                <source>Search failed</source>
-            </trans-unit>
-            <trans-unit id="e136ad8fb96223ed34fa6d7dc20d5de4">
-                <source>You are not a member of a group allowed to log in</source>
-            </trans-unit>
-            <trans-unit id="4d740b89622d6457825c310d67818969">
-                <source>Your password was not accepted by the server</source>
-            </trans-unit>
-            <trans-unit id="646cb7f774c1e16d0309706de3e0b389">
-                <source>HTTP authentication internal error.</source>
-            </trans-unit>
-            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
-                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
+            <trans-unit id="993e69aa644ac36c99857dd3bacb1a68">
+                <source>Import successful! Imported %imported users and updated %updated users out of total %total valid users found in LDAP</source>
             </trans-unit>
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="controllers/Main.php">
+    <file source-language="en" datatype="php" original="cli/Prune.php">
         <body>
-            <trans-unit id="cb8d5c7c914be3251488798536b30992">
-                <source>Failed to validate groups</source>
-            </trans-unit>
-            <trans-unit id="c9b6d0674d5acbfe4ece8820d253324a">
-                <source>HTTP Authentication Header not present</source>
-            </trans-unit>
-            <trans-unit id="1340ea83100dc18e6044a02cdc5a0cef">
-                <source>Connection test successful. HTTP integrated authentication states your username is "USER"</source>
-            </trans-unit>
-            <trans-unit id="4a4244061a69aa23c612409630910f60">
-                <source>Connection test successful</source>
-            </trans-unit>
-            <trans-unit id="8e300664547d79c9b6480c8ca8210c9c">
-                <source>Some of the groups you specified don't exist</source>
-            </trans-unit>
-            <trans-unit id="a3d1ac81af65f8defc1bbc65118598bf">
-                <source>The following groups for the group restriction could not be found: %groups</source>
-            </trans-unit>
             <trans-unit id="a7a7d550641f9a75e0ac85f8ea14b42c">
                 <source>Pruning failed</source>
             </trans-unit>
-            <trans-unit id="3e7c9333b7e5eb2c67623fe4e1433214">
-                <source>Pruning successful! %del users deleted</source>
-            </trans-unit>
-            <trans-unit id="c2aaeb20ceb12d108a77c9383498a988">
-                <source>Import failed</source>
-            </trans-unit>
-            <trans-unit id="3a464e174e79360cb900340d88add8a5">
-                <source>Import successful! %imp users imported, %upd users updated from LDAP</source>
+            <trans-unit id="e865ecc9c646b31d963569d7409e8cb6">
+                <source>Pruning successful! %deleted users deleted</source>
             </trans-unit>
         </body>
     </file>
@@ -107,83 +59,95 @@
             <trans-unit id="1a1c46a5350bfe727201a2d32974b89b">
                 <source>Connection details</source>
             </trans-unit>
-            <trans-unit id="c8f4b8c435b3d99a66e1b91bec60737c">
-                <source>Hostname</source>
+            <trans-unit id="655392347ae98d205a9f62803663b9c0">
+                <source>LDAP connection URI</source>
             </trans-unit>
-            <trans-unit id="e0afb62fd0b9b9aea51ac8263c1948bc">
-                <source>Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.</source>
+            <trans-unit id="fc43152d2c576a359c98202d86ab0de7">
+                <source>URI used for connecting to the LDAP server. Format is &lt;schema://[name[:port]]/&gt;, where schema is one of: ldap (plain-text), ldaps (TLS connection), or ldapi (UNIX domain socket). For example: ldap://hostname/, ldap://hostname:1389/, ldaps://hostname:636/, ldaps://hostname:1636/, ldapi:///.</source>
             </trans-unit>
             <trans-unit id="6c22befafec962f5002017b68e639f92">
                 <source>Base DN</source>
             </trans-unit>
-            <trans-unit id="0007f19b2a0e3ecd7db6d26eb6d568d1">
-                <source>This should be the DN string for an OU where all user and group OUs can be found. For example, DC=ldap,DC=example,DC=com.</source>
+            <trans-unit id="1fa49c52fa944247e816e46cac7430b7">
+                <source>Base DN under which all user and group entires can be found. For example: dc=ldap,c=example,dc=com.</source>
             </trans-unit>
-            <trans-unit id="87a0e2e59a8cffa3f851bd658f78d476">
-                <source>Object DN attribute</source>
+            <trans-unit id="b05ab8bb55892d64b8ccc28d49c8d73f">
+                <source>Control user DN</source>
             </trans-unit>
-            <trans-unit id="78005bc1bf645bd2500836bdcb82af8d">
-                <source>Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.</source>
-            </trans-unit>
-            <trans-unit id="52aac3377138df91bcb930a3d0f63fde">
-                <source>User class</source>
-            </trans-unit>
-            <trans-unit id="284eb0f3c7ed770ef0ddef8e939f31a8">
-                <source>Enter the value to check for in objectClass for users. Leave blank to use the default of person</source>
-            </trans-unit>
-            <trans-unit id="3ce2098166f1c3743b7e7e8aa017593d">
-                <source>Username attribute</source>
-            </trans-unit>
-            <trans-unit id="540ca156e6a267b7d148f3a10b30fe07">
-                <source>This field should contain the name of the attribute where the username is stored, such as uid.</source>
-            </trans-unit>
-            <trans-unit id="0198145af39181a1e736b76e19e8ee5a">
-                <source>Full name attribute</source>
-            </trans-unit>
-            <trans-unit id="2f3a011d2fbebaf0539e8edf4fba10eb">
-                <source>Given name attribute</source>
-            </trans-unit>
-            <trans-unit id="42e93bbde029bc1fda597d31f19b9888">
-                <source>Email address attribute</source>
-            </trans-unit>
-            <trans-unit id="88e8474e160e9f90b61eb3686aedb510">
-                <source>Group class</source>
-            </trans-unit>
-            <trans-unit id="ade3a2a549168d9acc20736c3f5cae0d">
-                <source>Enter the value to check for in objectClass for groups. Leave blank to use the default of group</source>
-            </trans-unit>
-            <trans-unit id="4a7ecc3372cd3f72e14009ed3183c47c">
-                <source>Group members attribute</source>
-            </trans-unit>
-            <trans-unit id="a762d9307a579085936148238eb90f8a">
-                <source>This field should contain the name of the attribute where the list of members of a group is stored, such as uniqueMember.</source>
-            </trans-unit>
-            <trans-unit id="1512997595cf659aba97fba195e5230b">
-                <source>Allowed groups</source>
-            </trans-unit>
-            <trans-unit id="cef2b1da3724927f07b1b22499ef470f">
-                <source>You may wish to restrict access to users who belong to certain groups in LDAP. If so, write a comma separated list of group names here. Leave blank to disable this feature.</source>
-            </trans-unit>
-            <trans-unit id="694be476c7709c4ae5339348cf53d861">
-                <source>Control username</source>
+            <trans-unit id="89cc88a1490b9d2528d48a198a93cf47">
+                <source>LDAP distinguished name (DN) for control user. Control user needs to be able to access all relevant user and allowed group entries in the LDAP directory. Read-only access is sufficient. The user does not need to be able to read any credentials (passwords). To use anonymous bind for control user, leave the setting blank. For example: cn=tbg,ou=services,c=example,dc=com.</source>
             </trans-unit>
             <trans-unit id="024f80e0418ac3b35f5db6bd3f684392">
                 <source>Control user password</source>
             </trans-unit>
-            <trans-unit id="b85c9f6d492417e5842e3c1956e2a6cc">
-                <source>Please insert the authentication details for a user who can access all LDAP records. Only read only access is necessary, and for an anonyous bind leave this blank.</source>
+            <trans-unit id="46c59952247ae973cd063174a9bc26d7">
+                <source>Password for logging in into LDAP directory using the control user DN. To use anonymous bind for control user, leave the setting blank.</source>
             </trans-unit>
             <trans-unit id="6306b2aaf5471a34bb5aa03885248304">
                 <source>Use HTTP Integrated Authentication</source>
             </trans-unit>
-            <trans-unit id="bd5ce94d06762c3bb0fbf662b2e8538e">
-                <source>Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc).</source>
+            <trans-unit id="1516d6086d18aa9b93f86379557b394a">
+                <source>Enable automated login by using username passed-in into application via HTTP header. This requires that the web server performs authentication on behalf of The Bug Genie (e.g. HTTP Basic Authentication, Kerberos etc).</source>
             </trans-unit>
             <trans-unit id="b0049b73ae9015f0ab0338877ff29333">
                 <source>HTTP header field</source>
             </trans-unit>
-            <trans-unit id="0db4f296eebac6170868075906320a92">
-                <source>If using HTTP integrated authentication specify the HTTP header field that will contain the user name.</source>
+            <trans-unit id="b9947647068afe3238c35d15bb4030c4">
+                <source>HTTP header field containing the username if HTTP Integrated Authentication is enabled. For example: REMOTE_USER.</source>
+            </trans-unit>
+            <trans-unit id="87a0e2e59a8cffa3f851bd658f78d476">
+                <source>Object DN attribute</source>
+            </trans-unit>
+            <trans-unit id="a4bd9e413983c180d04747b5bc594b62">
+                <source>LDAP attribute that contains the distinguished name of an object. On most LDAP servers this shouild be set to entrydn. If using Active Directory, set the value to distinguishedName.</source>
+            </trans-unit>
+            <trans-unit id="e564dd1ed7adec1af823766a3a9a31de">
+                <source>User object class</source>
+            </trans-unit>
+            <trans-unit id="c1a31c1c6c8e1db6258f142c4dcc0804">
+                <source>Object class used for locating valid user entries. For example: person, inetOrgPerson.</source>
+            </trans-unit>
+            <trans-unit id="44c4ca8540aeb95969d89499a33e0d54">
+                <source>User username attribute</source>
+            </trans-unit>
+            <trans-unit id="45ecb0d362a18f72479bb4bf35bb8d3a">
+                <source>LDAP attribute where the username is stored. For example: uid.</source>
+            </trans-unit>
+            <trans-unit id="37051c107698dd902de0c99937fca3d4">
+                <source>User full name attribute</source>
+            </trans-unit>
+            <trans-unit id="281e04e5d2abd43f6c80bc4f9f8b8ba8">
+                <source>LDAP attribute where the full name of the user is stored. If not specified, cn will be used if available. For example: displayName.</source>
+            </trans-unit>
+            <trans-unit id="9ecf278d8ae29bac73cd6e0e21ba5f7a">
+                <source>User buddy name attribute</source>
+            </trans-unit>
+            <trans-unit id="459f2f5bfdf42b843c0356444abe66fd">
+                <source>LDAP attribute where the buddy name is stored. For example: gn.</source>
+            </trans-unit>
+            <trans-unit id="e218d9a57231c21fcd64014d7c310290">
+                <source>User e-mail address attribute</source>
+            </trans-unit>
+            <trans-unit id="c4c481d0c3484174cb82b380028e0f78">
+                <source>LDAP attribute where the e-mail is stored. For example: mail.</source>
+            </trans-unit>
+            <trans-unit id="1512997595cf659aba97fba195e5230b">
+                <source>Allowed groups</source>
+            </trans-unit>
+            <trans-unit id="f85390e64dac72045442b15458d9cc25">
+                <source>Comma-separated list of allowed groups. Each group should be specified by its common name (cn) attribute. If specified, only users that are members of these groups will be able to access The Bug Genie. Leave this option blank to disable group membership checks and allow any valid LDAP user to access The Bug Genie. For example: tbg,mygroup1,mygroup2.</source>
+            </trans-unit>
+            <trans-unit id="6694dc5891f8503cb676925f9daa846c">
+                <source>Group object class</source>
+            </trans-unit>
+            <trans-unit id="579a6132e4e1c58068677307e6addd4e">
+                <source>Object class used for locating valid allowed group entries. For example: groupOfNames, groupOfUniqueNames.</source>
+            </trans-unit>
+            <trans-unit id="4104088f413262352ee10a0fcfc858f2">
+                <source>Group member attribute</source>
+            </trans-unit>
+            <trans-unit id="73736ea25a108da09e5df5eb2f6f06ab">
+                <source>LDAP attribute in allowed group entries where member users are stored. For example: member, uniqueMember.</source>
             </trans-unit>
             <trans-unit id="d243025eb9265954c32e5e5d1cb0c589">
                 <source>Click "%save" to save the settings</source>
@@ -194,8 +158,8 @@
             <trans-unit id="39838db537c95bc8df810c5601601d5b">
                 <source>Test connection</source>
             </trans-unit>
-            <trans-unit id="20bf08545b75d765086aa164dc86c943">
-                <source>After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server, and if any groups you specify exist. If HTTP integrated authentication is enabled, this will also test that your web server is providing the REMOTE_USER header.</source>
+            <trans-unit id="6788b272975d88d967580ffa53468b5c">
+                <source>After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server, and if any groups you specify exist. If HTTP integrated authentication is enabled, this will also test that your web server is providing the configured header.</source>
             </trans-unit>
             <trans-unit id="350ebf7ee69d4f248ff0a219241bdf85">
                 <source>Import all users</source>
@@ -211,6 +175,74 @@
             </trans-unit>
             <trans-unit id="c7ff334c39124c35830536ab0a2e4726">
                 <source>To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="Auth_ldap.php">
+        <body>
+            <trans-unit id="2707a5331f4464f363081c0e4aeb9880">
+                <source>LDAP connection URI must be specified.</source>
+            </trans-unit>
+            <trans-unit id="99fa6b067933b6abba615a5c403ca593">
+                <source>Base DN must be specified.</source>
+            </trans-unit>
+            <trans-unit id="bd74dd8edc8daf4c4af647438806c5c7">
+                <source>Object DN attribute must be specified.</source>
+            </trans-unit>
+            <trans-unit id="c3684e15163766cc96658d2048aefe13">
+                <source>User object class must be specified.</source>
+            </trans-unit>
+            <trans-unit id="c9cea173957d9ce830fdca4a8cd68531">
+                <source>User username attribute must be specified.</source>
+            </trans-unit>
+            <trans-unit id="69a91fbd6bccb8bd40b06174e3d1aaa6">
+                <source>Both group object class and group member attribute must be specified if allowed groups are provided.</source>
+            </trans-unit>
+            <trans-unit id="a62ed15b40b1f0e9c47e6e0c72b13d9a">
+                <source>HTTP header field must be specified if HTTP Integrated Authentication is enabled.</source>
+            </trans-unit>
+            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
+                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
+            </trans-unit>
+            <trans-unit id="ab29362e09f807cc6f5b48d2ff2f1808">
+                <source>LDAP connection URL has invalid syntax.</source>
+            </trans-unit>
+            <trans-unit id="b1831303e8627c025e1f24b496a5cea9">
+                <source>Failed to bind as control user. Error was: %error</source>
+            </trans-unit>
+            <trans-unit id="9f168f1e0bc26f8edeee8918632a73f8">
+                <source>LDAP search failed. Filter: %filter; Error: %error</source>
+            </trans-unit>
+            <trans-unit id="8786909ff329cdf82d1c971a87a95527">
+                <source>Failed to validate groups (groups do not exist or multiple entries were found): %groups</source>
+            </trans-unit>
+            <trans-unit id="455929419a1f8f48cfbcc1ec7225b87e">
+                <source>Failed to locate any valid users in LDAP directory.</source>
+            </trans-unit>
+            <trans-unit id="c94f9cdd3696a8e8f32e2fa28169a9fd">
+                <source>HTTP integrated authentication is enabled but the %headerfield header is not being provided to The Bug Genie. Please check your web server configuration.</source>
+            </trans-unit>
+            <trans-unit id="3a0bda2684d88984c4340f678228b8af">
+                <source>Failed to locate current user (%username) in LDAP directory. If you enable LDAP authentication, you may find yourself locked-out of the settings. All other checks have passed.</source>
+            </trans-unit>
+            <trans-unit id="5d84e51a701820d599a885c00f83ae80">
+                <source>LDAP connection test failed</source>
+            </trans-unit>
+            <trans-unit id="4a4244061a69aa23c612409630910f60">
+                <source>Connection test successful</source>
+            </trans-unit>
+            <trans-unit id="8ef3377c9d791d6cbc18fe2464ef6690">
+                <source>All LDAP connection tests have passed.</source>
+            </trans-unit>
+            <trans-unit id="02f59ff6ee0c4296bec3ba92cd6055e8">
+                <source>LDAP module has not been configured correctly. Please check your settings and test connection.</source>
+            </trans-unit>
+            <trans-unit id="e612e804607a524cc7605a4fb22f570e">
+                <source>This user was found multiple times in the directory, please contact your administrator</source>
+            </trans-unit>
+            <trans-unit id="646cb7f774c1e16d0309706de3e0b389">
+                <source>HTTP authentication internal error.</source>
             </trans-unit>
         </body>
     </file>
