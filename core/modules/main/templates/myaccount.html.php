@@ -2,7 +2,7 @@
 
     use thebuggenie\core\framework\Settings;
 
-    $tbg_response->setTitle('Your account details');
+    $tbg_response->setTitle(__('Your account details'));
     $tbg_response->addBreadcrumb(__('Account details'), make_url('account'));
 
 ?>
@@ -139,6 +139,17 @@
         </div>
         <div id="account_tabs_panes">
             <div id="tab_profile_pane" style="<?php if ($selected_tab != 'profile'): ?> display: none;<?php endif; ?>">
+                <div class="header" style="margin-bottom: 5px;">
+                    <a href="javascript:void(0);" onclick="$('usermenu_changestate').toggle();" id="usermenu_changestate_toggler" class="button button-silver"><?php echo __('Change'); ?></a>
+                    <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'change_userstate_dropdown')); ?>
+                    <?php echo __('You are: %userstate', array('%userstate' => '<span class="current_userstate userstate">'.__($tbg_user->getState()->getName()).'</span>')); ?>
+                </div>
+                <div id="usermenu_changestate" style="display: none;" onclick="$('usermenu_changestate').toggle();">
+                    <?php foreach (\thebuggenie\core\entities\Userstate::getAll() as $state): ?>
+                        <?php if ($state->getID() == \thebuggenie\core\framework\Settings::getOfflineState()->getID()) continue; ?>
+                        <a href="javascript:void(0);" onclick="TBG.Main.Profile.setState('<?php echo make_url('set_state', array('state_id' => $state->getID())); ?>', 'change_userstate_dropdown');"><?php echo __($state->getName()); ?></a>
+                    <?php endforeach; ?>
+                </div>
                 <?php if (\thebuggenie\core\framework\Settings::isUsingExternalAuthenticationBackend()): ?>
                     <?php echo tbg_parse_text(\thebuggenie\core\framework\Settings::get('changedetails_message'), false, null, array('embedded' => true)); ?>
                 <?php else: ?>

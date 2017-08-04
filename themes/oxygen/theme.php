@@ -9,6 +9,7 @@
     \thebuggenie\core\framework\Settings::setIconsetName('oxygen');
 ?>
 <style>
+    #header_banner { background-image: url('<?= image_url('mobile_header_banner.png'); ?>'); }
     #tbg3_username, #fieldusername { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
     #fieldusername.invalid { background-image: url('<?php echo $webroot; ?>images/icon_error.png'); background-color: rgba(255, 220, 220, 0.5); }
     #fieldusername.valid { background-image: url('<?php echo $webroot; ?>images/icon_ok.png'); background-color: rgba(220, 255, 220, 0.5); }
@@ -17,7 +18,7 @@
     #regular-signin-button.persona-button span:after{ background-image: url('<?php echo $webroot; ?>images/footer_logo.png'); }
     #forgot_password_username { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
     #planning_filter_title_input { background-image: url('<?php echo $webroot; ?>images/icon-mono-search.png'); }
-    .login_popup .article h1 { background: url('<?php echo $webroot; ?>images/logo_48.png') 0 0 no-repeat; }
+    .login_popup .article h1 { background: url('<?php echo $webroot; ?>images/logo_48.png') 0 50% no-repeat; }
 
     table.results_normal th.sort_asc { background-image: url('<?php echo $webroot; ?>images/sort_down.png') !important; padding-left: 25px !important; }
     table.results_normal th.sort_desc { background-image: url('<?php echo $webroot; ?>images/sort_up.png') !important; padding-left: 25px !important; }

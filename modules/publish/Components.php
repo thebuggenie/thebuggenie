@@ -3,8 +3,11 @@
     namespace thebuggenie\modules\publish;
 
     use thebuggenie\core\framework,
+        thebuggenie\core\entities\tables\Users,
+        thebuggenie\core\helpers\Pagination,
         thebuggenie\modules\publish\entities\Article,
-        thebuggenie\modules\publish\entities\tables\Articles;
+        thebuggenie\modules\publish\entities\tables\Articles,
+        thebuggenie\modules\publish\entities\tables\ArticleHistory;
 
     class Components extends framework\ActionComponent
     {
@@ -132,4 +135,69 @@
             $this->articles = Articles::getTable()->getAllByLinksToArticleName($this->linked_article_name);
         }
 
+        public function componentSpecialContributions()
+        {
+            $request = framework\Context::getRequest();
+            $current_project = framework\Context::getCurrentProject();
+
+            //Author ID associated with articles created automatically during
+            //installation.
+            $fixtures_user = 0;
+
+            $username = $request->getParameter('user');
+
+            // Determine full username and whether the user is invalid or not.
+            if ($username === "")
+            {
+                $invalid_user = false;
+                $user = null;
+                $user_full_name = null;
+            }
+            elseif ($username === null)
+            {
+                $invalid_user = false;
+                $user = null;
+                $user_full_name = null;
+            }
+            else
+            {
+                $user = Users::getTable()->getByUsername($username);
+                if ($user === null)
+                {
+                    $invalid_user = true;
+                    $user_full_name = null;
+                }
+                else
+                {
+                    $invalid_user = false;
+                    $user_full_name = $user->getNameWithUsername();
+                }
+            }
+
+            // Grab author contributions with current user's access rights in mind.
+            $contributions = ArticleHistory::getTable()->getByAuthorUsernameAndCurrentUserAccess($username);
+
+            // Pagination.
+            $base_url = make_url('publish_article', ['article_name' => "Special:{$this->projectnamespace}Contributions"]);
+            $pagination = new Pagination($contributions, $base_url, $request, ['user' => $username]);
+
+            // Prepare context for template.
+            $this->username = $username;
+            $this->user = $user;
+            $this->user_full_name = $user_full_name;
+            $this->invalid_user = $invalid_user;
+            $this->contributions = $pagination->getPageItems();
+
+            $this->pagination = $pagination;
+        }
+
+        public function componentSpecialContributors()
+        {
+            $current_project = framework\Context::getCurrentProject();
+
+            $user_ids = ArticleHistory::getTable()->getContributorIDsByProject($current_project);
+
+            $this->contributors = Users::getTable()->getByUserIDs($user_ids);
+            $this->contributions_base_url = make_url('publish_article', ['article_name' => "Special:{$this->projectnamespace}Contributions"]);
+        }
     }

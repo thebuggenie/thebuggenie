@@ -1,6 +1,6 @@
 <?php if ($item instanceof \thebuggenie\core\entities\LogItem): ?>
     <li>
-        <span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>&nbsp;
+        <span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>
         <?php
 
             $previous_value = null;
@@ -10,22 +10,23 @@
                 switch($item->getChangeType())
                 {
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CREATED:
-                        echo image_tag('icon_open_new.png');
+                        echo fa_image_tag('file-text-o', ['class' => 'log_issue_created']);
                         echo __('The issue was created');
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:
-                        echo image_tag('icon_close.png');
+                        echo fa_image_tag('check-square', ['class' => 'log_issue_closed']);
                         echo __('The issue was closed');
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REOPEN:
-                        echo image_tag('icon_open_new.png');
+                        echo fa_image_tag('external-link-square', ['class' => 'log_issue_reopen']);
                         echo __('The issue was reopened');
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_DEPENDS:
-                        echo image_tag('icon_new_related_issue.png');
+                        echo fa_image_tag('link', ['class' => 'log_issue_depends']);
                         echo __('The issues dependency changed: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE:
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_update']);
                         echo __('The issue was updated: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
                         if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
                         {
@@ -34,24 +35,27 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE_TITLE:
-                        echo image_tag('icon_title.png');
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_title']);
                         echo __('Title updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE_DESCRIPTION:
-                        echo image_tag('icon_description.png');
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_title']);
                         echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
-                        echo image_tag('icon_status.png');
+                        $new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue());
+                        $background_color = ($new_item instanceof \thebuggenie\core\entities\Status) ? $new_item->getColor() : '#FFF';
+                        $text_color = ($new_item instanceof \thebuggenie\core\entities\Status) ? $new_item->getTextColor() : '#000';
+                        echo fa_image_tag('flag', ['class' => 'log_issue_status', 'style' => "background-color: {$background_color}; color: {$text_color};"]);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
                             $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-                            echo __("Status changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+                            echo __("Status changed: %previous_value => %new_value by  %who_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>', '%who_value' => '<strong>'.$item->getUser().'</strong>'));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
-                        echo image_tag('icon_resolution.png');
+                        echo fa_image_tag('tasks', ['class' => 'log_issue_resolution']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Resolution::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -60,7 +64,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PRIORITY:
-                        echo image_tag('icon_priority.png');
+                        echo fa_image_tag('exclamation-circle', ['class' => 'log_issue_priority']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Priority::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -69,7 +73,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_SEVERITY:
-                        echo image_tag('icon_severity.png');
+                        echo fa_image_tag('exclamation-circle', ['class' => 'log_issue_severity']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Severity::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -78,7 +82,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REPRODUCABILITY:
-                        echo image_tag('icon_reproducability.png');
+                        echo fa_image_tag('repeat', ['class' => 'log_issue_reproducability']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Reproducability::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -87,7 +91,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ISSUETYPE:
-                        echo image_tag('icon_issuetype.png');
+                        echo fa_image_tag('file-code-o', ['class' => 'log_issue_type']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -96,7 +100,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CATEGORY:
-                        echo image_tag('icon_category.png');
+                        echo fa_image_tag('pie-chart', ['class' => 'log_issue_category']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Category::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -105,7 +109,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_MILESTONE:
-                        echo image_tag('icon_milestone.png');
+                        echo fa_image_tag('flag-checkered', ['class' => 'log_issue_milestone']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Milestone::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
@@ -114,23 +118,22 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_OWNED:
-                        echo image_tag('icon_user.png');
+                        echo fa_image_tag('user-plus', ['class' => 'log_issue_owned']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Owned by changed to %user", array('%user' => '<strong>'.$item->getText().'</strong>'));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_POSTED:
-                        echo image_tag('icon_user.png');
+                        echo fa_image_tag('user', ['class' => 'log_issue_posted']);
                         if ($item->hasChangeDetails())
                         {
-                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
-                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
-                            echo __("Posted by changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? get_component_html('main/userdropdown_inline', ['user' => $old_item]) : '<strong>'.__('Unknown').'</strong>') : '<strong>'.__('Not determined').'</strong>';
+                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? get_component_html('main/userdropdown_inline', ['user' => $new_item]) : '<strong>'.__('Unknown').'</strong>') : '<strong>'.__('Not determined').'</strong>';
+                            echo __("Posted by changed: %previous_value => %new_value", array('%previous_value' => $previous_value, '%new_value' => $new_value));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED:
-                        echo image_tag('icon_customdatatype.png');
                         if ($item->hasChangeDetails())
                         {
                             $key_data = explode(':', $item->getText());
@@ -145,8 +148,12 @@
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
-                                        break;
+                                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_customfield']);
+
+                                    break;
                                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                        echo fa_image_tag('calendar', ['class' => 'log_issue_customfield']);
+
                                         $old_value = ($old_value != null) ? date('Y-m-d', (int)$old_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
                                         $new_value = ($new_value != null) ? date('Y-m-d', (int)$new_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
                                         break;
@@ -154,6 +161,7 @@
                                     case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
                                     case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
                                     case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                        echo fa_image_tag('cubes', ['class' => 'log_issue_customfield component']);
                                         $old_object = null;
                                         $new_object = null;
                                         try
@@ -198,6 +206,7 @@
                                         $new_value = (is_object($new_object)) ? $new_object->getName() : \thebuggenie\core\framework\Context::getI18n()->__('Unknown');
                                         break;
                                     default:
+                                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_customfield']);
                                         $old_item = null;
                                         $new_item = null;
                                         try
@@ -216,14 +225,15 @@
                                 }
                                 echo __("%field_name changed: %previous_value => %new_value", array('%field_name' => $customdatatype->getName(), '%previous_value' => '<strong>'.$old_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
                             }
-                            else 
+                            else
                             {
+                                echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_customfield']);
                                 echo __('Custom field changed');
                             }
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_BUG_TYPE:
-                        echo image_tag('icon_priority.png');
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_pain_bugtype']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = $item->getPreviousValue() ? \thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_bug_type', $item->getPreviousValue()) : __('Not determined');
@@ -232,7 +242,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_EFFECT:
-                        echo image_tag('icon_priority.png');
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_pain_effect']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = $item->getPreviousValue() ? \thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_effect', $item->getPreviousValue()) : __('Not determined');
@@ -241,7 +251,7 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_LIKELIHOOD:
-                        echo image_tag('icon_priority.png');
+                        echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_pain_likelihood']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = $item->getPreviousValue() ? \thebuggenie\core\entities\Issue::getPainTypesOrLabel('pain_likelihood', $item->getPreviousValue()) : __('Not determined');
@@ -250,74 +260,74 @@
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_CALCULATED:
-                        echo image_tag('icon_percent.png');
+                        echo fa_image_tag('exclamation-circle', ['class' => 'log_issue_pain_calculated']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Calculated pain on issue changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_USERS:
-                        echo image_tag('icon_user.png');
+                        echo fa_image_tag('user', ['class' => 'log_issue_user_working']);
                         if ($item->hasChangeDetails())
                         {
-                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
-                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getNameWithUsername()) : __('Unknown')) : __('Not determined');
-                            echo __("User working on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+                            $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getPreviousValue())) ? get_component_html('main/userdropdown_inline', ['user' => $old_item]) : '<strong>'.__('Unknown').'</strong>') : '<strong>'.__('Not determined').'</strong>';
+                            $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\User::getB2DBTable()->selectById($item->getCurrentValue())) ? get_component_html('main/userdropdown_inline', ['user' => $new_item]) : '<strong>'.__('Unknown').'</strong>') : '<strong>'.__('Not determined').'</strong>';
+                            echo __("User working on issue changed: %previous_value => %new_value", array('%previous_value' => $previous_value, '%new_value' => $new_value));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
-                        echo image_tag('icon_user.png');
+                        echo fa_image_tag('user-plus', ['class' => 'log_issue_assignee']);
                         echo __("Assignee changed to %new_value", array('%new_value' => '<strong>'.$item->getText().'</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
-                        echo image_tag('icon_time.png');
+                        echo fa_image_tag('clock-o', ['class' => 'log_issue_time_spent']);
                         echo __("Time spent changed: %value", array('%value' => '<strong>'.\thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true).'</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PERCENT:
-                        echo image_tag('icon_percent.png');
+                        echo fa_image_tag('percent', ['class' => 'log_issue_percent']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Percent complete changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_BLOCKED:
-                        echo image_tag('icon_locked.png');
+                        echo fa_image_tag('exclamation-triangle', ['class' => 'log_issue_blocked']);
                         echo __('Blocking status changed: %value', array('%value' => '<strong>'. __('This issue is blocking the next release').'</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UNBLOCKED:
-                        echo image_tag('icon_unlocked.png');
+                        echo fa_image_tag('exclamation-triangle', ['class' => 'log_issue_unblocked']);
                         echo __('Blocking status changed: %value', array('%value' => '<strong>'. __('This issue is no more blocking the next release').'</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
-                        echo image_tag('icon_estimated_time.png');
+                        echo fa_image_tag('clock-o', ['class' => 'log_issue_time_estimated']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Estimated time changed: %value", array('%value' => '<strong>'.\thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true).'</strong>'));
                          }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_AFF_ADD:
-                        echo image_tag('icon_affected_items.png');
+                        echo fa_image_tag('cubes', ['class' => 'log_issue_affected_item_add']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Affected item added: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
                          }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_AFF_UPDATE:
-                        echo image_tag('icon_affected_items.png');
+                        echo fa_image_tag('cubes', ['class' => 'log_issue_affected_item_update']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Affected item updated: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
                          }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_AFF_DELETE:
-                        echo image_tag('icon_affected_items.png');
+                        echo fa_image_tag('cubes', ['class' => 'log_issue_affected_item_delete']);
                         if ($item->hasChangeDetails())
                         {
                             echo __("Affected time removed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
                          }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE_REPRODUCTIONSTEPS:
-                        echo image_tag('icon_reproducability.png');
+                        echo fa_image_tag('list-ol', ['class' => 'log_issue_reproduction_steps']);
                         if ($item->hasChangeDetails())
                         {
                             $previous_value = $item->getPreviousValue() ? $item->getPreviousValue()  : __('Not determined');

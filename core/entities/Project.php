@@ -778,6 +778,7 @@
                 framework\Context::setPermission("canmanageproject", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("page_project_allpages_access", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canvoteforissues", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
+                framework\Context::setPermission("canseetimespent", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canlockandeditlockedissues", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("cancreateandeditissues", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("caneditissue", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
@@ -1483,7 +1484,10 @@
                 $role_id = $role->getID();
                 foreach ($role->getPermissions() as $role_permission)
                 {
-                    $target_id = strtolower($role_permission->getExpandedTargetID($role));
+                    // Obtain expanded target ID since some role permissions
+                    // may contain templated project key ID as target_id
+                    // (i.e. wiki article permissions).
+                    $target_id = $role_permission->getExpandedTargetIDForProject($this);
                     tables\Permissions::getTable()->removeSavedPermission($user_id, 0, $team_id, $role_permission->getModule(), $role_permission->getPermission(), $target_id, framework\Context::getScope()->getID(), $role_id);
                     framework\Context::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role_id);
                 }
@@ -3023,6 +3027,11 @@
         public function canSeeAllMilestones()
         {
             return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectmilestones');
+        }
+
+        public function canSeeTimeSpent()
+        {
+            return (bool) $this->permissionCheck('canseetimespent');
         }
 
         public function canVoteOnIssues()

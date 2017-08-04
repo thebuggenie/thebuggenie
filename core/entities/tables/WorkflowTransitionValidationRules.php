@@ -23,8 +23,8 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method WorkflowTransitionValidationRules getTable() Return an instance of this table
-     * @method WorkflowTransitionValidationRule selectById() Return a WorkflowTransitionValidationRule object
+     * @static @method WorkflowTransitionValidationRules getTable() Return an instance of this table
+     * @method \thebuggenie\core\entities\WorkflowTransitionValidationRule selectById() Return a WorkflowTransitionValidationRule object
      *
      * @Table(name="workflow_transition_validation_rules")
      * @Entity(class="\thebuggenie\core\entities\WorkflowTransitionValidationRule")
@@ -58,6 +58,11 @@
             }
             
             return $actions;
+        }
+
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
         }
 
     }

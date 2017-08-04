@@ -90,4 +90,15 @@
             return ($row instanceof \b2db\Row) ? (int) $row->get(self::SCOPE_ID) : null;
         }
 
+        public function addIndexes()
+        {
+            $this->_setupIndexes();
+        }
+
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('id_hostname', array(self::ID, self::HOSTNAME));
+            $this->_addIndex('scopeid_hostname', array(self::SCOPE_ID, self::HOSTNAME));
+        }
+
     }

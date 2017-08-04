@@ -6,47 +6,60 @@
     }
 
 ?>
-<div class="rounded_box <?php if (!($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes()))): ?>invisible <?php else: ?> white borderless <?php endif; ?>project_strip">
-    <div style="float: left; font-weight: normal;">
-        <?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin: 2px 5px 0 0; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
-        <b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out button-group project-config-buttons" style="float: none;"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver project-settings')); ?></span><?php endif; ?><br>
-        <?php if ($project->hasHomepage()): ?>
-            <a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
+<div class="project_strip">
+    <?php echo image_tag($project->getLargeIconName(), array('class' => 'icon-large', 'alt' => '[i]'), $project->hasLargeIcon()); ?><!--
+    --><div class="project_information_block">
+        <div class="project_information_container">
+            <span class="project_name">
+                <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span class="project_name_span">'.$project->getName()."</span>"); ?><?php if ($project->usePrefix()) echo '<span class="project_prefix_span">'.mb_strtoupper($project->getPrefix()).'</span>'; ?><?php if ($tbg_user->canEditProjectDetails($project)): ?><span class="button-group project-config-buttons"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver project-settings')); ?></span><?php endif; ?>
+            </span>
+            <div class="project_description">
+                <?= tbg_parse_text($project->getDescription()); ?>
+            </div>
+            <div class="project_meta_information">
+                <?php if ($project->hasHomepage()): ?>
+                    <a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
+                <?php endif; ?>
+                <?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
+                    <span class="divider">&nbsp;</span>
+                <?php endif; ?>
+                <?php if ($project->hasDocumentationURL()): ?>
+                    <a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div><!--
+    --><nav class="button-group">
+        <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
+            <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
         <?php endif; ?>
-        <?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
-        |
+        <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
+            <div class="button-dropdown button-issues-container">
+                <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', array('class' => 'button button-silver button-issues righthugging')); ?><!--
+                --><a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
+                --><ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
+                    <li class="finduser_container">
+                        <label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
+                        <form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
+                            <input type="hidden" name="fs[text][o]" value="=">
+                            <input type="search" name="fs[text][v]" id="goto_issue_<?php echo $project->getID(); ?>_input" value="" placeholder="<?php echo __('Enter an issue number to jump to an issue'); ?>">&nbsp;<input type="submit" value="<?php echo __('Go to'); ?>">
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        <?php endif; ?><!--
+        --><?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?><!--
+        --><?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
+            <div class="button-dropdown button-report-issue-container">
+                <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue lefthugging righthugging')); ?><!--
+                --><a class="dropper button button-green last lefthugging reportissue_dropdown_button" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
+                --><ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
+                    <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
+                        <li><?php echo javascript_link_tag(image_tag($issuetype->getIcon() . '_tiny.png' ) . '<span>'.__($issuetype->getName()).'</span>', array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId(), 'issuetype' => $issuetype->getKey())) . "', this);")); ?></li>
+                    <?php endforeach;?>
+                </ul>
+            </div>
         <?php endif; ?>
-        <?php if ($project->hasDocumentationURL()): ?>
-            <a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
-        <?php endif; ?>
-    </div>
-    <nav class="button-group" style="position: relative;">
-<?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
-<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
-    <li class="button-dropdown">
-        <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver button-issues righthugging')); ?>
-        <a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" style="font-size: 0.9em;" href="javascript:void(0);">&#x25BC;</a>
-        <ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
-            <li class="finduser_container">
-                <label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
-                <form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
-                    <input type="hidden" name="fs[text][o]" value="=">
-                    <input type="search" name="fs[text][v]" id="goto_issue_<?php echo $project->getID(); ?>_input" value="" placeholder="<?php echo __('Enter an issue number to jump to an issue'); ?>">&nbsp;<input type="submit" value="<?php echo __('Go to'); ?>">
-                </form>
-            </li>
-        </ul>
-    </li>
-<?php endif; ?>
-<?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
-<?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
-    <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue righthugging')); ?>
-    <a class="dropper button button-green last lefthugging reportissue_dropdown_button" style="font-size: 0.9em; position: relative;" href="javascript:void(0);">&#x25BC;</a>
-    <ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
-        <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
-            <li><?php echo javascript_link_tag(image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName()), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId(), 'issuetype' => $issuetype->getKey())) . "', this);")); ?></li>
-        <?php endforeach;?>
-    </ul>
-<?php endif; ?>
     </nav>
     <?php if ($project->hasChildren()): ?>
     <div class="subprojects_list">
@@ -70,6 +83,7 @@
         </table>
     <?php elseif ($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>
         <div class="search_results" style="clear: both;">
+        	<?php $current_spent_time = -1; ?>
             <?php include_component('search/results_normal', array('search_object' => $project->getOpenIssuesSearchForFrontpageSummary(), 'actionable' => false)); ?>
         </div>
     <?php elseif ($project->isMilestonesVisibleInFrontpageSummary() && count($project->getVisibleMilestones())): ?>
@@ -85,5 +99,4 @@
         <?php endforeach; ?>
         </table>
     <?php endif; ?>
-    <div style="clear: both;"> </div>
 </div>

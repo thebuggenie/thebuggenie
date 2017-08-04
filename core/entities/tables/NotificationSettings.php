@@ -26,6 +26,16 @@
     class NotificationSettings extends ScopedTable
     {
 
-        const B2DB_TABLE_VERSION = 1;
+        const B2DB_TABLE_VERSION = 2;
+
+        public function getByModuleAndNameAndUserId($module, $name, $user_id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere('notificationsettings.module_name', $module);
+            $crit->addWhere('notificationsettings.name', $name);
+            $crit->addWhere('notificationsettings.user_id', $user_id);
+
+            return $this->selectOne($crit);
+        }
 
     }

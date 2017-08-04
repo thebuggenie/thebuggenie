@@ -20,7 +20,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method Modules getTable() Retrieves an instance of this table
+     * @static @method Modules getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Module selectById(integer $id) Retrieves a module
      *
      * @Table(name="modules")
@@ -51,7 +51,9 @@
                 {
                     $module_name = $row->get(self::MODULE_NAME);
                     $classname = "\\thebuggenie\\modules\\{$module_name}\\".ucfirst($module_name);
-                    $modules[$module_name] = new $classname($row->get(self::ID), $row);
+                    if (class_exists($classname)) {
+                        $modules[$module_name] = new $classname($row->get(self::ID), $row);
+                    }
                 }
             }
 

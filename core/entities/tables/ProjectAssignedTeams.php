@@ -189,4 +189,28 @@
             return $teams;
         }
 
+        /**
+         * Obtains information about all teams assigned to different projects
+         * through the same (provided) role.
+         *
+         * @param role_id Role ID.
+         *
+         * @return thebuggenie\core\entities\tables\ProjectAssignedTeams\row[] Array of rows with requested information.
+         */
+        public function getAssignmentsByRoleID($role_id)
+        {
+            $assignments = array();
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::ROLE_ID, $role_id);
+            if ($res = $this->doSelect($crit))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    $assignments[] = $row;
+                }
+            }
+
+            return $assignments;
+        }
     }

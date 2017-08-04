@@ -632,7 +632,7 @@ EOT;
             {
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn())
                 {
-                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), true, 'mailing')->save();
+                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), true, 'mailing');
                 }
             }
         }
@@ -649,7 +649,7 @@ EOT;
             {
                 if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn())
                 {
-                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), true, 'mailing')->save();
+                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), true, 'mailing');
                 }
             }
         }
@@ -704,7 +704,7 @@ EOT;
                         $this->_addProjectEmailAddress($message, $issue->getProject());
                         $this->sendMail($message);
                     }
-                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->save();
+                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing');
                 }
             }
         }
@@ -714,7 +714,7 @@ EOT;
             if (!$event->getSubject() instanceof Issue)
                 return;
 
-            framework\Context::getUser()->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $event->getSubject()->getID(), false, 'mailing')->save();
+            framework\Context::getUser()->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $event->getSubject()->getID(), false, 'mailing');
         }
 
         public function listen_loginPane(framework\Event $event)
@@ -831,17 +831,17 @@ EOT;
             foreach ($notificationsettings as $setting => $description) {
                 if ($setting == $category_key) continue;
                 if ($request->hasParameter('mailing_' . $setting)) {
-                    framework\Context::getUser()->setNotificationSetting($setting, true, 'mailing')->save();
+                    framework\Context::getUser()->setNotificationSetting($setting, true, 'mailing');
                 } else {
-                    framework\Context::getUser()->setNotificationSetting($setting, false, 'mailing')->save();
+                    framework\Context::getUser()->setNotificationSetting($setting, false, 'mailing');
                 }
             }
 
             foreach ($event->getParameter('categories') as $category_id => $category) {
                 if ($request->hasParameter('mailing_' . $category_key . '_' . $category_id)) {
-                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, true, 'mailing')->save();
+                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, true, 'mailing');
                 } else {
-                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, false, 'mailing')->save();
+                    framework\Context::getUser()->setNotificationSetting($category_key . '_' . $category_id, false, 'mailing');
                 }
             }
         }
@@ -1364,6 +1364,16 @@ EOT;
             $account->setNumberOfEmailsLastFetched($count);
             $account->save();
             return $count;
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            return 'envelope-o';
+        }
+
+        public function getFontAwesomeColor()
+        {
+            return '#555';
         }
 
     }

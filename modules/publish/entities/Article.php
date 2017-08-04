@@ -1093,7 +1093,7 @@
 
             if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_article_' . $this->getID(), false)->isOff())
             {
-                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_article_' . $this->getID(), true)->save();
+                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_article_' . $this->getID(), true);
 
                 return true;
             }

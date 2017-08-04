@@ -1,0 +1,10 @@
+dn: cn=config
+changetype: modify
+replace: olcLogLevel
+olcLogLevel: 256
+-
+replace: olcTLSCertificateFile
+olcTLSCertificateFile: "/etc/ssl/certs/slapd.cert.pem"
+-
+replace: olcTLSCertificateKeyFile
+olcTLSCertificateKeyFile: "/etc/ssl/private/slapd.key.pem"

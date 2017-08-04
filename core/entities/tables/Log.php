@@ -327,4 +327,12 @@
             return $retarr;
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('commentid', array(self::COMMENT_ID));
+            $this->_addIndex('targettype_time', array(self::TARGET_TYPE, self::TIME));
+            $this->_addIndex('targettype_changetype', array(self::TARGET_TYPE, self::CHANGE_TYPE));
+            $this->_addIndex('target_uid_commentid_scope', array(self::TARGET, self::UID, self::COMMENT_ID, self::SCOPE));
+        }
+
     }

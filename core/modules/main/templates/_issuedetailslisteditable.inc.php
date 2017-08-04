@@ -582,7 +582,7 @@
                                     case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
                                         ?>
                                         <span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>>
-                                            <?php echo include_component('main/teamdropdown', array('team' => $info['name'])); ?>
+                                            <?php echo include_component('main/teamdropdown', array('team' => $info['identifiable'])); ?>
                                         </span>
                                         <span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>>
                                             <?php echo __('Not determined'); ?>

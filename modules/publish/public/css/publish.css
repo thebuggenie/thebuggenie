@@ -463,3 +463,25 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     word-wrap: break-word;
     -ms-word-break: break-all;
 }
+
+/* BEGIN: modules/publish/ contributions styling */
+.full_width_table.outter {
+    overflow-x: auto;
+}
+
+.full_width_table.inner {
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.full_width_table.inner th, .full_width_table.inner td {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.full_width_table.inner th:last-of-type, .full_width_table.inner td:last-of-type {
+    width: auto;
+    white-space: normal;
+}
+/* END: modules/publish/ contributions styling */

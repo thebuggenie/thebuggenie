@@ -2,9 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
-    use b2db\Core,
-        b2db\Criteria,
-        b2db\Criterion;
+    use b2db\Criteria,
+        thebuggenie\core\framework;
 
     /**
      * Comments table
@@ -30,7 +29,7 @@
     class Comments extends ScopedTable
     {
 
-        const B2DB_TABLE_VERSION = 3;
+        const B2DB_TABLE_VERSION = 4;
         const B2DBNAME = 'comments';
         const ID = 'comments.id';
         const SCOPE = 'comments.scope';
@@ -46,6 +45,7 @@
         const MODULE = 'comments.module';
         const COMMENT_NUMBER = 'comments.comment_number';
         const SYSTEM_COMMENT = 'comments.system_comment';
+        const HAS_ASSOCIATED_CHANGES = 'comments.has_associated_changes';
 
         protected $_preloaded_issue_counts;
 
@@ -53,6 +53,48 @@
         {
             $this->_addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
             $this->_addIndex('type_target_deleted_system', array(self::TARGET_TYPE, self::TARGET_ID, self::DELETED, self::SYSTEM_COMMENT));
+        }
+
+        public function _migrateData(\b2db\Table $old_table)
+        {
+            switch ($old_table::B2DB_TABLE_VERSION)
+            {
+                case 3:
+                    $ids = [];
+                    $crit = $this->getCriteria();
+                    $crit->addSelectionColumn(self::ID, 'id');
+                    $res = $this->doSelect($crit);
+                    if ($res) {
+                        while ($row = $res->getNextRow()) {
+                            $ids[$row['id']] = $row['id'];
+                        }
+                    }
+
+                    $log_table = Log::getTable();
+                    $ids_count = count($ids);
+                    if ($ids_count > 0) {
+                        $step = ceil($ids_count / 100);
+                        $cc = 0;
+                        $pct = 0;
+                        foreach ($ids as $id) {
+                            $log_crit = $log_table->getCriteria();
+                            $log_crit->addWhere(Log::COMMENT_ID, $id);
+                            if ($log_table->count($log_crit)) {
+                                $comment_crit = $this->getCriteria();
+                                $comment_crit->addUpdate(self::HAS_ASSOCIATED_CHANGES, true);
+                                $comment_crit->addWhere(self::ID, $id);
+                                $this->doUpdate($comment_crit);
+                            }
+                            $cc++;
+
+                            if (defined('TBG_CLI') && $step > 10 && $cc % $step == 0) {
+                                $pct += 1;
+                                framework\cli\Command::cli_echo("{$cc} / {$ids_count} ({$pct}%)\n");
+                            }
+                        }
+                    }
+                    break;
+            }
         }
 
         public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)

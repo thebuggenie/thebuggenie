@@ -14,7 +14,7 @@
             <input type="hidden" name="fs[text][o]" value="=">
             <input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo htmlentities($search_object->getSearchTerm(), ENT_QUOTES, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
             <div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
-                <div class="interactive_plus_button" id="interactive_plus_button"><?php echo image_tag('icon-mono-add.png'); ?></div>
+                <div class="interactive_plus_button" id="interactive_plus_button"><?php echo fa_image_tag('plus'); ?></div>
                 <div class="interactive_filters_list <?php echo (count($nondatecustomfields)) ? 'three_columns' : 'two_columns'; ?>">
                     <div class="column">
                         <h1><?php echo __('People filters'); ?></h1>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="interactive_plus_container" id="interactive_settings_container">
-                <div class="interactive_plus_button" id="interactive_grouping_button"><?php echo image_tag('icon-mono-grouping.png'); ?></div>
+                <div class="interactive_plus_button" id="interactive_grouping_button"><?php echo fa_image_tag('columns'); ?></div>
                 <div class="interactive_menu" id="search_columns_container" data-url="<?php echo make_url('search_save_column_settings'); ?>">
                     <div id="search_column_settings_container" class="column">
                         <h1><?php echo __('Select columns to show'); ?></h1>
@@ -103,7 +103,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="interactive_plus_button" id="interactive_template_button"><?php echo image_tag('icon-mono-settings.png'); ?></div>
+                <div class="interactive_plus_button" id="interactive_template_button"><?php echo fa_image_tag('sliders'); ?></div>
                 <div class="interactive_filters_list interactive_menu two_columns wide">
                     <div class="column">
                         <h1><?php echo __('Select how to present search results'); ?></h1>
@@ -168,20 +168,22 @@
                     </div>
                 </div>
                 <?php if (!$tbg_user->isGuest()): ?>
-                    <div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?php echo image_tag('icon-mono-bookmark.png'); ?></div>
+                    <div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?php echo fa_image_tag('bookmark'); ?></div>
                     <div class="interactive_filters_list interactive_menu">
                         <h1><?php echo __('Save or download search results'); ?></h1>
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values" id="filter_export_options">
-                                <li onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon_savedsearch.png', array('class' => 'icon')) . __('Save search filters'); ?></li>
+                                <li onclick="$('saved_search_details').toggle();">
+                                    <?php echo fa_image_tag('bookmark', array('class' => 'icon')) . __('Save search filters'); ?>
+                                </li>
                                 <li onclick="TBG.Search.download('ods');">
-                                    <?php echo image_tag('icon_ods.png', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
+                                    <?php echo fa_image_tag('download', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('xlsx');">
-                                    <?php echo image_tag('icon_xlsx.png', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
+                                    <?php echo fa_image_tag('file-excel-o', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
-                                    <?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>
+                                    <?php echo fa_image_tag('rss', array('class' => 'icon')) . __('Download as RSS feed'); ?>
                                 </li>
                             </ul>
                         </div>

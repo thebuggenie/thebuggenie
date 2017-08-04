@@ -44,21 +44,21 @@ all necessary components for The Bug Genie, and you can continue to the actual
 installation as soon as it is completed.
 
 
-### 3: Install via web
+### 3a: Install via web
 
-Visit the subfolder `/thebuggenie/index.php` in your web-browser.
+Visit the subfolder `https://example.com/thebuggenie/public/index.php` in your web-browser.
 
 The installation script will start automatically and guide you through the
 installation process.
 
 
-### 4: Install via command-line (unix/linux only)
+### 3b: Install via command-line (unix/linux only)
 
 You can use the included command-line client to install, if you prefer that.
-Run `./tbg_cli` from this folder.
+The command line utility can be found in the root folder: `$ php ./tbg_cli`
 
 To install:
-`./tbg_cli install`
+`$ ./tbg_cli install`
 
 
 ## REPORTING ISSUES
@@ -73,3 +73,12 @@ By executing `composer.phar install --dev` during the installation process, phpu
 ```
 vendor/bin/phpunit
 ```
+
+
+## Development and testing using Vagrant
+
+If you are interested in contributing some code to The Bug Genie, you can get quickly up and running using the provided [Vagrant](https://www.vagrantup.com/) and [Ansible](https://www.ansible.com/) configuration. This can save you both time, and reduce the number of software packages you need to install and configure for working with The Bug Genie.
+
+Take note that provided configuration and set-up should *not* be used in production.
+
+For more details and some introduction see [The Bug Genie wiki page](http://issues.thebuggenie.com/wiki/TheBugGenie%3ADevelopment%3AVagrant).

@@ -34,15 +34,5 @@
 <?php endif; ?>
 <div class="faded_out comments_none" id="comments_none" <?php if (\thebuggenie\core\entities\Comment::countComments($target_id, $target_type) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
 <div id="comments_box">
-    <?php foreach (\thebuggenie\core\entities\Comment::getComments($target_id, $target_type, \b2db\Criteria::SORT_DESC) as $comment): ?>
-        <?php
-
-            $options = compact('comment', 'comment_count_div', 'mentionable_target_type');
-            if (isset($issue))
-                $options['issue'] = $issue;
-
-            include_component('main/comment', $options);
-
-        ?>
-    <?php endforeach; ?>
+    <?php include_component('main/commentlist', compact('comment_count_div', 'mentionable_target_type', 'target_type', 'target_id', 'issue')); ?>
 </div>

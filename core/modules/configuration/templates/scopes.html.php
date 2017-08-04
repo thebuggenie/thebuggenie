@@ -2,7 +2,7 @@
 <table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_SCOPES)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <div style="width: 730px;" id="config_scopes">
                 <h3><?php echo __('Configure scopes'); ?></h3>
                 <div class="content faded_out">

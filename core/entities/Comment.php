@@ -108,6 +108,11 @@
         protected $_system_comment = false;
 
         /**
+         * @Column(type="boolean")
+         */
+        protected $_has_associated_changes = false;
+
+        /**
          * @Column(type="integer", length=10)
          */
         protected $_comment_number = 0;
@@ -145,7 +150,6 @@
         public static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
         {
             $comments = tables\Comments::getTable()->getComments($target_id, $target_type, $sort_order);
-            self::$_comment_count[$target_type][$target_id] = count($comments);
 
             return $comments;
         }
@@ -298,7 +302,7 @@
 
           if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . $target_type_string . $this->getTargetID(), false)->isOff())
           {
-              $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . $target_type_string . $this->getTargetID(), true)->save();
+              $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . $target_type_string . $this->getTargetID(), true);
 
               return true;
           }
@@ -362,9 +366,7 @@
                     }
                     $this->_addTargetNotifications();
                 }
-            }
-            else
-            {
+
                 switch ($this->getTargetType())
                 {
                     case self::TYPE_ISSUE:
@@ -774,15 +776,17 @@
 
         public function hasAssociatedChanges()
         {
-            if (is_array($this->_log_items))
-            {
-                $this->_log_item_count = count($this->_log_items);
-            }
-            elseif ($this->_log_item_count === null)
-            {
-                $this->_log_item_count = $this->_b2dbLazycount('_log_items');
-            }
-            return $this->_log_item_count;
+            return $this->_has_associated_changes;
+        }
+
+        public function setHasAssociatedChanges($value = true)
+        {
+            $this->_has_associated_changes = $value;
+        }
+
+        public function getAssociatedChanges()
+        {
+            return $this->getLogItems();
         }
 
         public function getLogItems()

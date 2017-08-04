@@ -1,0 +1,1 @@
+<li id="tab_viewissue_commits"><?php echo javascript_link_tag('<i class="fa fa-code-fork"></i>'.__('Commits (%count)', array('%count' => $count)), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_viewissue_commits', 'viewissue_activity');")); ?></li>

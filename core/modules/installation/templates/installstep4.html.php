@@ -8,7 +8,7 @@
     <?php else: ?>
         <?php if ($htaccess_error !== false): ?>
             <div class="error">
-                The installation routine could not setup your .htaccess and .user.ini files automatically.<br>
+                The installation routine could not setup your .htaccess file automatically.<br>
                 <?php if (!is_bool($htaccess_error)): ?>
                     <br>
                     <b><?php echo $htaccess_error; ?></b><br>
@@ -18,12 +18,11 @@
                 <ul>
                     <li>Rename or copy the <i><?php echo THEBUGGENIE_CORE_PATH; ?>templates/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i></li>
                     <li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u></li>
-                    <li>If you're using PHP-FPM, rename or copy the <i><?php echo THEBUGGENIE_CORE_PATH; ?>templates/user.ini.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.user.ini</i></li>
                 </ul>
             </div>
         <?php elseif ($htaccess_ok): ?>
             <div class="ok">
-                Apache .htaccess and PHP-FPM .user.ini auto-setup completed successfully
+                Apache .htaccess auto-setup completed successfully
             </div>
         <?php endif; ?>
         <div class="ok">
@@ -70,7 +69,7 @@
         The Bug Genie is written using a flexible, module-based architecture, that lets you easily add extra functionality. Even core functionality such as version control integration, email communication and the agile sections are provided using modules, and can be enabled / disabled from the configuration panel.<br>
         <br>
         <div class="feature">
-            Find additional modules online, at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
+            Find additional modules online, at <a href="http://thebuggenie.com/add-ons">www.thebuggenie.com &raquo; Addons</a><br>
         </div>
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and set up the default user and default modules</label>

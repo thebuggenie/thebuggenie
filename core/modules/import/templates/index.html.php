@@ -3,16 +3,16 @@
     $tbg_response->setTitle(__('Import data'));
 
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
+<table cellpadding=0 cellspacing=0 class="configuration_page">
     <tr>
         <?php include_component('configuration/leftmenu', array('selected_section' => \thebuggenie\core\framework\Settings::CONFIGURATION_SECTION_IMPORT)); ?>
-        <td valign="top" style="padding-left: 15px;">
+        <td valign="top" class="main_configuration_content">
             <div style="width: 730px;">
                 <h3><?php echo __('Import data'); ?></h3>
                 <div style="margin-top: 15px;" class="tab_menu inset">
                     <ul id="import_menu">
-                        <li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_import.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
-                        <li id="tab_sample"><?php echo javascript_link_tag(image_tag('cfg_icon_generate_sampledata.png', array('style' => 'float: left; margin-right: 5px;')) . __('Sample data'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_sample', 'import_menu');")); ?></li>
+                        <li id="tab_csv" class="selected"><?php echo javascript_link_tag(fa_image_tag('sign-in') . '<span>'.__('Import from CSV').'</span>', array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
+                        <li id="tab_sample"><?php echo javascript_link_tag(fa_image_tag('gift') . '<span>'.__('Sample data').'</span>', array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_sample', 'import_menu');")); ?></li>
                     </ul>
                 </div>
                 <div id="import_menu_panes">

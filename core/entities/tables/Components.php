@@ -40,7 +40,17 @@
         const PROJECT = 'components.project';
         const LEAD_BY = 'components.leader';
         const LEAD_TYPE = 'components.leader_type';
-        
+
+        public function preloadComponents($component_ids)
+        {
+            if (!count($component_ids))
+                return;
+
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::ID, $component_ids, Criteria::DB_IN);
+            $this->select($crit);
+        }
+
         public function getByProjectID($project_id)
         {
             $crit = $this->getCriteria();

@@ -40,7 +40,7 @@
         <div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
             <img style="float: left; margin: 10px;" src="<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>header.png"><h1>An error occurred in <?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName(); ?></h1>
             <div class="error_content">
-                <?php if (isset($exception) && $exception instanceof Exception): ?>
+                <?php if (isset($exception)): ?>
                     <h2><?php echo nl2br($exception->getMessage()); ?></h2>
                     <?php if ($exception instanceof \thebuggenie\core\framework\exceptions\ActionNotFoundException): ?>
                         <h3>Could not find the specified action</h3>
@@ -127,7 +127,7 @@
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
-                <?php if (class_exists('\thebuggenie\core\framework\Context') && class_exists("\thebuggenie\core\framework\Logging") && \thebuggenie\core\framework\Context::isDebugMode() && (!isset($exception) || !$exception instanceof \thebuggenie\core\framework\exceptions\ComposerException)): ?>
+                <?php if (class_exists('\thebuggenie\core\framework\Context') && class_exists('\thebuggenie\core\framework\Logging') && \thebuggenie\core\framework\Context::isDebugMode() && (!isset($exception) || !$exception instanceof \thebuggenie\core\framework\exceptions\ComposerException)): ?>
                     <h3>Log messages:</h3>
                     <?php foreach (\thebuggenie\core\framework\Logging::getEntries() as $entry): ?>
                         <?php $color = \thebuggenie\core\framework\Logging::getCategoryColor($entry['category']); ?>
@@ -135,7 +135,7 @@
                         <div class="log_<?php echo $entry['category']; ?>"><strong><?php echo $lname; ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-                <?php if (class_exists("\b2db\Core") && \thebuggenie\core\framework\Context::isDebugMode() && (!isset($exception) || !$exception instanceof \thebuggenie\core\framework\exceptions\ComposerException)): ?>
+                <?php if (class_exists('\b2db\Core') && \thebuggenie\core\framework\Context::isDebugMode() && (!isset($exception) || !$exception instanceof \thebuggenie\core\framework\exceptions\ComposerException)): ?>
                     <h3>SQL queries:</h3>
                         <ol>
                         <?php foreach (\b2db\Core::getSQLHits() as $details): ?>

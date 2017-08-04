@@ -12,7 +12,7 @@
     <?php endif; ?>
     <?php \thebuggenie\core\framework\Event::createNew('core', 'project/templates/projectheader', $selected_project)->trigger(); ?>
     <div class="project_header_left">
-        <?php echo image_tag($selected_project->getLargeIconName(), array('class' => 'project_header_logo'), $selected_project->hasLargeIcon()); ?>
+        <?php echo image_tag($selected_project->getLargeIconName(), array('class' => 'project_header_logo', 'alt' => $selected_project->getName()), $selected_project->hasLargeIcon()); ?>
         <div id="project_name">
             <span id="project_name_span">
                 <?php echo $selected_project->getName(); ?>
@@ -21,7 +21,7 @@
         </div>
         <?php if ($tbg_response->getPage() == 'project_dashboard' && $tbg_user->canEditProjectDetails($selected_project)): ?>
             <div class="project_header_right button-group">
-                <a href="javascript:void(0);" class="button button-silver" onclick="$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});$(this).toggleClassName('button-pressed');"><?php echo __('Edit dashboard'); ?></a>
+                <a href="javascript:void(0);" id="edit-project-dashboard-button" class="button button-silver" onclick="$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});$(this).toggleClassName('button-pressed');"><?= fa_image_tag('cog'); ?><span><?= __('Edit dashboard'); ?></span></a>
             </div>
         <?php endif; ?>
     </div>

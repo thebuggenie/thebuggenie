@@ -535,7 +535,7 @@
          */
         public function setCookie($key, $value, $expiration = 864000)
         {
-            $expiration = ($expiration !== null) ? NOW + $expiration : null;
+            $expiration = ($expiration !== null) ? intval(NOW + $expiration) : null;
             $secure = Context::getScope()->isSecure();
             setcookie($key, $value, $expiration, Context::getWebroot(), null, $secure);
             return true;
@@ -583,9 +583,15 @@
             }
             if (Context::isDebugMode()) {
                 header("x-tbg-debugid: ".Context::getDebugID());
+                $session_time = \thebuggenie\core\framework\Context::getSessionLoadTime();
+                $session_time = ($session_time >= 1) ? round($session_time, 2) . 's' : round($session_time * 1000, 1) . 'ms';
+                header("x-tbg-sessiontime: ".$session_time);
                 $load_time = Context::getLoadTime();
+                $calculated_load_time = $load_time - \thebuggenie\core\framework\Context::getSessionLoadTime();
                 $load_time = ($load_time >= 1) ? round($load_time, 2) . 's' : round($load_time * 1000, 1) . 'ms';
+                $calculated_load_time = ($calculated_load_time >= 1) ? round($calculated_load_time, 2) . 's' : round($calculated_load_time * 1000, 1) . 'ms';
                 header("x-tbg-loadtime: ".$load_time);
+                header("x-tbg-calculatedtime: ".$calculated_load_time);
             }
             if (Context::isI18nInitialized())
             {

@@ -53,13 +53,13 @@
         public function preExecute(framework\Request $request, $action)
         {
             $this->article = null;
-            $this->article_name = $request['article_name'];
+            $this->article_name = ($request->hasParameter('new_article_name')) ? $request['new_article_name'] : $request['article_name'];
             $this->article_id = (int) $request['article_id'];
             $this->special = false;
 
-            if ($request->hasParameter('article_name') && mb_strpos($request['article_name'], ':') !== false)
+            if ($this->article_name && mb_strpos($request['article_name'], ':') !== false)
             {
-                $this->article_name = $this->_getArticleNameDetails($request['article_name']);
+                $this->article_name = $this->_getArticleNameDetails($this->article_name);
             }
             else
             {
@@ -320,14 +320,14 @@
          */
         public function runEditArticle(framework\Request $request)
         {
+            $this->article_route = ($this->article->getID()) ? 'publish_article_edit' : 'publish_article_new';
+            $this->article_route_params = ($this->article->getID()) ? array('article_name' => $this->article_name) : array();
+
             if (!$this->article->canEdit())
             {
                 framework\Context::setMessage('publish_article_error', framework\Context::getI18n()->__('You do not have permission to edit this article'));
                 $this->forward(framework\Context::getRouting()->generate('publish_article', array('article_name' => $this->article_name)));
             }
-
-            $this->article_route = ($this->article->getID()) ? 'publish_article_edit' : 'publish_article_new';
-            $this->article_route_params = ($this->article->getID()) ? array('article_name' => $this->article_name) : array();
 
             if ($request->isPost())
             {

@@ -127,4 +127,9 @@
             return $statuses;
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('scope', array(self::SCOPE));
+        }
+
     }

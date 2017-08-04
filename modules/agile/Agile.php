@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\agile;
 
+    use thebuggenie\core\entities\Project;
     use thebuggenie\core\framework;
 
     /**
@@ -72,9 +73,12 @@
          */
         public function userDashboardProjectButtonLinks(framework\Event $event)
         {
-            $routing = framework\Context::getRouting();
-            $i18n = framework\Context::getI18n();
-            $event->addToReturnList(array('url' => $routing->generate('agile_index', array('project_key' => '%project_key%')), 'text' => $i18n->__('Planning')));
+            if ($this->isEnabled())
+            { 
+                $routing = framework\Context::getRouting();
+                $i18n = framework\Context::getI18n();
+                $event->addToReturnList(array('url' => $routing->generate('agile_index', array('project_key' => '%project_key%')), 'text' => $i18n->__('Planning')));
+            }
         }
 
         /**
@@ -86,11 +90,14 @@
          */
         public function projectHeaderLinks(framework\Event $event)
         {
-            $board = entities\AgileBoard::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('board_id'));
-            if ($board instanceof entities\AgileBoard)
-            {
-                framework\ActionComponent::includeComponent('agile/projectheaderstriplinks', array('project' => $event->getSubject(), 'board' => $board));
-            }
+            if ($this->isEnabled())
+            { 
+                $board = entities\AgileBoard::getB2DBTable()->selectById(framework\Context::getRequest()->getParameter('board_id'));
+                if ($board instanceof entities\AgileBoard)
+                {
+                    framework\ActionComponent::includeComponent('agile/projectheaderstriplinks', array('project' => $event->getSubject(), 'board' => $board));
+                }
+            }    
         }
 
         /**
@@ -120,9 +127,9 @@
          */
         public function headerMenuProjectLinks(framework\Event $event)
         {
-            if (framework\Context::isProjectContext())
+            if ($this->isEnabled() && $event->getSubject() instanceof Project)
             {
-                $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), framework\Context::getCurrentProject()->getID());
+                $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), $event->getSubject()->getID());
                 framework\ActionComponent::includeComponent('agile/headermenuprojectlinks', array('project' => $event->getSubject(), 'boards' => $boards));
             }
         }
@@ -136,8 +143,11 @@
          */
         public function dashboardProjectLinks(framework\Event $event)
         {
-            $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), $event->getSubject()->getID());
-            framework\ActionComponent::includeComponent('agile/projectlinks', array('project' => $event->getSubject(), 'boards' => $boards));
+            if ($this->isEnabled())
+            {
+                $boards = \thebuggenie\modules\agile\entities\AgileBoard::getB2DBTable()->getAvailableProjectBoards(framework\Context::getUser()->getID(), $event->getSubject()->getID());
+                framework\ActionComponent::includeComponent('agile/projectlinks', array('project' => $event->getSubject(), 'boards' => $boards));
+            }
         }
 
         /**

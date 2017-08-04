@@ -1,0 +1,295 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Set configuration options for Debian packages
+      debconf:
+        name: "{{ item.package }}"
+        question: "{{ item.question }}"
+        vtype: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - package: slapd
+          question: slapd/domain
+          type: string
+          value: "tbg.local"
+
+    - name: Install MariaDB, Apache httpd with PHP support, and OpenLDAP server
+      apt:
+        name: "{{ item }}"
+        state: installed
+      with_items:
+        # Database server.
+        - mariadb-server
+        - mariadb-client
+        - python-mysqldb
+        # Apache + PHP base requirements.
+        - apache2
+        - libapache2-mod-php5
+        - libapache2-mod-ruid2
+        - php5-gd
+        - php5-curl
+        - php5-mysql
+        # HTTPS/TLS.
+        - gnutls-bin
+        # Developer tools.
+        - php5-xdebug
+        # LDAP server.
+        - slapd
+        - ldap-utils
+        - python-ldap
+        - php5-ldap
+      notify:
+        - Restart apache2
+
+    - name: Create directories for storing artefacts
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: 0750
+      with_items:
+        - /vagrant/artefacts/
+        - /vagrant/artefacts/x509/
+
+    - name: Deploy templates for generating certificates
+      template:
+        src: "x509/{{ item }}.j2"
+        dest: "/vagrant/artefacts/x509/{{ item }}"
+        owner: vagrant
+        group: vagrant
+        mode: 0640
+      with_items:
+        - ca.cfg
+        - apache2.cfg
+        - slapd.cfg
+
+    - name: Create CA private key
+      command: certtool --sec-param high --generate-privkey --outfile /vagrant/artefacts/x509/ca.key.pem
+      args:
+        creates: /vagrant/artefacts/x509/ca.key.pem
+      become_user: vagrant
+
+    - name: Create server private keys
+      command: "certtool --sec-param normal --generate-privkey --outfile /vagrant/artefacts/x509/{{ item }}.key.pem"
+      args:
+        creates: "/vagrant/artefacts/x509/{{ item }}.key.pem"
+      with_items:
+        - apache2
+        - slapd
+      become_user: vagrant
+
+    - name: Issue the CA certificate
+      command: certtool --template /vagrant/artefacts/x509/ca.cfg --generate-self-signed --load-privkey /vagrant/artefacts/x509/ca.key.pem --outfile /vagrant/artefacts/x509/ca.cert.pem
+      args:
+        creates: /vagrant/artefacts/x509/ca.cert.pem
+      become_user: vagrant
+
+    - name: Deploy the CA certificate
+      copy:
+        src: /vagrant/artefacts/x509/ca.cert.pem
+        dest: /usr/local/share/ca-certificates/ca.crt
+        owner: root
+        group: root
+        mode: 0644
+      register: ca_certificate_deployed
+
+    - name: Update CA certificate cache
+      command: /usr/sbin/update-ca-certificates
+      when: ca_certificate_deployed.changed
+
+    - name: Issue Apache2 server certificate
+      command: certtool --generate-certificate
+               --load-ca-privkey "/vagrant/artefacts/x509/ca.key.pem" --load-ca-certificate "/vagrant/artefacts/x509/ca.cert.pem"
+               --template "/vagrant/artefacts/x509/apache2.cfg"
+               --load-privkey "/vagrant/artefacts/x509/apache2.key.pem"
+               --outfile "/vagrant/artefacts/x509/apache2.cert.pem"
+      args:
+        creates: "/vagrant/artefacts/x509/apache2.cert.pem"
+      become_user: vagrant
+
+    - name: Issue slapd server certificate
+      command: certtool --generate-certificate
+               --load-ca-privkey "/vagrant/artefacts/x509/ca.key.pem" --load-ca-certificate "/vagrant/artefacts/x509/ca.cert.pem"
+               --template "/vagrant/artefacts/x509/slapd.cfg"
+               --load-privkey "/vagrant/artefacts/x509/slapd.key.pem"
+               --outfile "/vagrant/artefacts/x509/slapd.cert.pem"
+      args:
+        creates: "/vagrant/artefacts/x509/slapd.cert.pem"
+      become_user: vagrant
+
+    - name: Make sure all users can traverse into directory containing private keys
+      file:
+        path: /etc/ssl/private/
+        mode: o+x
+
+    - name: Deploy private key for Apache2
+      copy:
+        src: /vagrant/artefacts/x509/apache2.key.pem
+        dest: /etc/ssl/private/apache2.key.pem
+        owner: root
+        group: root
+        mode: 0640
+      notify:
+        - Restart apache2
+
+    - name: Deploy certificate for Apache2
+      copy:
+        src: /vagrant/artefacts/x509/apache2.cert.pem
+        dest: /etc/ssl/certs/apache2.cert.pem
+        owner: root
+        group: root
+        mode: 0644
+      notify:
+        - Restart apache2
+
+    - name: Deploy private key for slapd
+      copy:
+        src: /vagrant/artefacts/x509/slapd.key.pem
+        dest: /etc/ssl/private/slapd.key.pem
+        owner: root
+        group: openldap
+        mode: 0640
+      notify:
+        - Restart slapd
+
+    - name: Deploy certificate for slapd
+      copy:
+        src: /vagrant/artefacts/x509/slapd.cert.pem
+        dest: /etc/ssl/certs/slapd.cert.pem
+        owner: root
+        group: root
+        mode: 0644
+      notify:
+        - Restart slapd
+
+    - name: Set-up LDAP server to listen on legacy SSL port
+      lineinfile:
+        dest: /etc/default/slapd
+        state: present
+        backrefs: yes
+        regexp: '^SLAPD_SERVICES=.*'
+        line: 'SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"'
+      notify:
+        - Restart slapd
+
+    - name: Set-up LDAP client configuration
+      copy:
+        src: ldap.conf
+        dest: /etc/ldap/ldap.conf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Deploy LDIF files configuring and setting-up LDAP server
+      copy:
+        src: "{{ item }}"
+        dest: "/root/{{ item }}"
+        owner: root
+        group: root
+        mode: 0640
+      with_items:
+        - permissions.ldif
+        - config.ldif
+        - structure.ldif
+
+    - name: Configure LDAP server
+      command: "ldapmodify -Y EXTERNAL -H ldapi:/// -f '/root/{{ item }}'"
+      with_items:
+        - config.ldif
+        - permissions.ldif
+
+    - name: Create directory structure
+      shell: "ldapadd -c -Y EXTERNAL -H ldapi:/// -f /root/structure.ldif 2>&1 | grep '^ldap_add: ' | sort -u"
+      register: create_directory_structure
+      changed_when: "create_directory_structure.stdout_lines | length == 0"
+      failed_when: "create_directory_structure.stdout_lines | length != 0 and create_directory_structure.stdout_lines != ['ldap_add: Already exists (68)']"
+
+    - name: Enable mod_ssl
+      apache2_module:
+        name: ssl
+        state: present
+      notify:
+        - Restart apache2
+
+    - name: Enable mod_rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+      notify:
+        - Restart apache2
+
+    - name: Configure PHP extensions (Xdebug)
+      template:
+        src: php_extensions.ini.j2
+        dest: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - /etc/php5/apache2/conf.d/99-local.ini
+        - /etc/php5/cli/conf.d/99-local.ini
+      notify:
+        - Restart apache2
+
+    - name: Replace Apache default virtual host configuration
+      copy:
+        src: vhost.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create database
+      mysql_db:
+        name: tbg
+        encoding: utf8
+        collation: utf8_general_ci
+        state: present
+
+    - name: Create database user
+      mysql_user:
+        name: tbg
+        host: localhost
+        password: tbg
+        priv: 'tbg.*:ALL'
+        state: present
+
+    - name: Download composer
+      get_url:
+        url: https://getcomposer.org/download/1.3.0/composer.phar
+        checksum: sha256:92ce3125cae2015c5c1f7657e78a6e239ff47b714eb1418288abf45d55f3be27
+        dest: /usr/local/bin/composer
+        owner: vagrant
+        group: vagrant
+        mode: 0755
+
+    - name: Install TBG requirements via composer
+      become_user: vagrant
+      composer:
+        command: install
+        no_dev: no
+        working_dir: /vagrant
+
+    - name: Deploy TBG configuration file
+      copy:
+        src: b2db.yml
+        dest: /vagrant/core/config/b2db.yml
+        owner: vagrant
+        group: vagrant
+        mode: 0640
+
+  handlers:
+
+    - name: Restart apache2
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Restart slapd
+      service:
+        name: slapd
+        state: restarted

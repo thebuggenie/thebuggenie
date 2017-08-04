@@ -22,7 +22,7 @@
                     </div>
                 <?php endif; ?>
                 <div class="button-group whiteboard-view-mode">
-                    <a class="button button-silver" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('main_container').toggleClassName('fullscreen');"><?php echo image_tag('view-fullscreen.png'); ?></a>
+                    <a class="button button-silver" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('main_container').toggleClassName('fullscreen');"><?php echo fa_image_tag('arrows-alt'); ?></a>
                 </div>
                 <div class="button-group whiteboard-view-mode">
                     <a class="button button-silver button-pressed" href="javascript:void(0);" onclick="TBG.Project.Planning.Whiteboard.setViewMode(this, 'simple');"><?php echo image_tag('whiteboard-simple.png'); ?></a>

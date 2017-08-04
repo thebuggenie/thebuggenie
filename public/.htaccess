@@ -1,26 +1,37 @@
 # .htaccess file for The Bug Genie
 
-# make sure that magic_quotes and register_globals is always off
-<IfModule mod_php5.c>
-  php_flag magic_quotes_gpc off
-  php_flag register_globals off
-</IfModule>
+# Follow symlinks.
+Options +FollowSymlinks
 
-# rewrite rules
+# Apply rewrite rules for pretty URLs.
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # Examples:
-    # RewriteBase /public
-    # RewriteBase /thebuggenie/public
+    # If you have a non-typical set-up, you can set the RewriteBase in order to
+    # make sure that base URLs when generating rewritten URLs are set correctly.
+    #
+    # For example:
+    #
+    # Rewrite Base /
+    #
+    # Rewrite Base /dev/thebuggenie
+    #
     RewriteBase /
 
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule .? - [L]
+    # Try serving a file (if non-zero size), file or directory pointed to by
+    # symlink, or directory directly. If so, serve that file/directory
+    # unmodified, and do not apply any further rewrite rules.
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [L]
 
-    # redirect to front controller
+    # Redirect any other request to front controller. Use case-insensitive
+    # matching, making sure to append any additional query strings
+    # passed-in. Once the rewrite has been done, do not apply any further
+    # rewrite rules.
     RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
+
 </IfModule>
 
-# Stop people accessing directories they shouldn't have access to
-RedirectMatch 403 ^/\.svn(/|$)
+# Prevent access to "hidden" files.
+RedirectMatch 404 ^/\..*$

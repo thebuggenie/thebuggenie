@@ -23,6 +23,19 @@ class Main extends framework\Action
         }
     }
 
+    /**
+     * Check or symlink to the images in the oxygen theme folder exists, otherwise create it.
+     **/
+    public static function checkAssetSymlink()
+    {
+        $rootDir = __DIR__ . '/../../../../';
+        $link = $rootDir . 'public/images';
+        if (!file_exists($link)) {
+            $target = $rootDir . 'themes/oxygen/images';
+            symlink($target, $link);
+        }
+    }
+
     public function preExecute(framework\Request $request, $action)
     {
         $this->getResponse()->setDecoration(framework\Response::DECORATE_NONE);
@@ -367,19 +380,6 @@ class Main extends framework\Action
                         $this->htaccess_error = true;
                     }
                 }
-                if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini')))
-                {
-                        $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini';
-                }
-                else
-                {
-                    $content = file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/user.ini.template');
-                    file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini', $content);
-                    if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.user.ini') != $content)
-                    {
-                        $this->htaccess_error = true;
-                    }
-                }
             }
         }
         catch (\Exception $e)
@@ -445,247 +445,18 @@ class Main extends framework\Action
         framework\Context::clearRoutingCache();
     }
 
-    protected function _upgradeFrom3dot2(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGMilestone::getB2DBTable());
-        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGProjectsTable::getTable());
-        \thebuggenie\core\entities\tables\Log::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGLogTable::getTable());
-        \thebuggenie\core\entities\tables\Users::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable());
-        \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssuesTable::getTable());
-        \thebuggenie\core\entities\tables\Workflows::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGWorkflowsTable::getTable());
-        \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGIssueSpentTimesTable::getTable());
-        \thebuggenie\core\entities\tables\Comments::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGCommentsTable::getTable());
-        \thebuggenie\core\entities\tables\SavedSearches::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSavedSearchesTable::getTable());
-        \thebuggenie\core\entities\tables\Settings::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGSettingsTable::getTable());
-        \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGNotificationsTable::getTable());
-        \thebuggenie\core\entities\tables\Permissions::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGPermissionsTable::getTable());
-        \thebuggenie\core\entities\Dashboard::getB2DBTable()->create();
-        \thebuggenie\core\entities\DashboardView::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_32\TBGDashboardViewsTable::getTable());
-        \thebuggenie\core\entities\ApplicationPassword::getB2DBTable()->create();
-        \thebuggenie\core\entities\NotificationSetting::getB2DBTable()->create();
-
-        $transaction = \b2db\Core::startTransaction();
-
-        // Upgrade user passwords
-        switch ($request['upgrade_passwords'])
-        {
-            case 'manual':
-                $password = $request['manual_password'];
-                foreach (\thebuggenie\core\entities\tables\Users::getTable()->selectAll() as $user)
-                {
-                    $user->setPassword($password);
-                    $user->save();
-                }
-                break;
-            case 'auto':
-                $field = ($request['upgrade_passwords_pick'] == 'username') ? 'username' : 'email';
-                foreach (\thebuggenie\core\entities\tables\Users::getTable()->selectAll() as $user)
-                {
-                    if ($field == 'username' && trim($user->getUsername()))
-                    {
-                        $user->setPassword(trim($user->getUsername()));
-                        $user->save();
-                    }
-                    elseif ($field == 'email' && trim($user->getEmail()))
-                    {
-                        $user->setPassword(trim($user->getEmail()));
-                        $user->save();
-                    }
-                }
-                break;
-        }
-
-        $adminuser = \thebuggenie\core\entities\User::getB2DBTable()->selectById(1);
-        $adminuser->setPassword($request['admin_password']);
-        $adminuser->save();
-
-        // Add new settings
-        framework\Settings::saveSetting(framework\Settings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
-
-        foreach ($request->getParameter('status') as $scope_id => $status_id)
-        {
-            $scope = \thebuggenie\core\entities\tables\Scopes::getTable()->selectById((int) $scope_id);
-            if ($scope instanceof \thebuggenie\core\entities\Scope)
-            {
-                $epic = new \thebuggenie\core\entities\Issuetype();
-                $epic->setName('Epic');
-                $epic->setIcon('epic');
-                $epic->setDescription('Issue type suited for entering epics');
-                $epic->setScope($scope_id);
-                $epic->save();
-                framework\Settings::saveSetting('issuetype_epic', $epic->getID(), 'core', $scope_id);
-
-                foreach (\thebuggenie\core\entities\tables\Workflows::getTable()->getAll((int) $scope_id) as $workflow)
-                {
-                    $transition = new \thebuggenie\core\entities\WorkflowTransition();
-                    $steps = $workflow->getSteps();
-                    $step = array_shift($steps);
-                    $step->setLinkedStatusID((int) $status_id);
-                    $step->save();
-                    $transition->setOutgoingStep($step);
-                    $transition->setName('Issue created');
-                    $transition->setWorkflow($workflow);
-                    $transition->setScope($scope);
-                    $transition->setDescription('This is the initial transition for issues using this workflow');
-                    $transition->save();
-                    $workflow->setInitialTransition($transition);
-                    $workflow->save();
-                }
-                \thebuggenie\core\entities\ActivityType::loadFixtures($scope);
-            }
-        }
-        $transaction->commitAndEnd();
-
-        framework\Context::finishUpgrading();
-        foreach (framework\Context::getModules() as $module)
-        {
-            $module->upgrade();
-        }
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.0';
-    }
-
-    protected function _upgradeFrom4dot1(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_41\Milestone::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.1';
-    }
-
-    protected function _upgradeFrom4dot1dot1(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\modules\installation\upgrade_415\Issue::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Issue::getB2DBTable());
-        \thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_411\Project::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.2';
-    }
-
-    protected function _upgradeFrom4dot1dot2(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\modules\mailing\entities\tables\MailQueueTable::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_412\MailQueueTable::getTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.3';
-    }
-
-    protected function _upgradeFrom4dot1dot3(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\modules\agile\entities\tables\AgileBoards::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_413\AgileBoard::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.4';
-    }
-
-    protected function _upgradeFrom4dot1dot4(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Files::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_414\File::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.5';
-    }
-
-    protected function _upgradeFrom4dot1dot5(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Issues::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\Issue::getB2DBTable());
-        \thebuggenie\core\entities\tables\IssueSpentTimes::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueSpentTime::getB2DBTable());
-        \thebuggenie\core\entities\tables\IssueEstimates::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_415\IssueEstimatesTable::getTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.6';
-    }
-
-    protected function _upgradeFrom4dot1dot6(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_416\Project::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.7';
-    }
-
-    protected function _upgradeFrom4dot1dot7(framework\Request $request)
-    {
-        set_time_limit(0);
-
-        \thebuggenie\core\entities\tables\Notifications::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_417\Notification::getB2DBTable());
-
-        $this->upgrade_complete = true;
-        $this->current_version = '4.1.8';
-    }
-
     public function runUpgrade(framework\Request $request)
     {
-        $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
-        $this->current_version = $version_info[0];
-        $this->upgrade_available = ($this->current_version != framework\Settings::getVersion(false));
+        list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
 
-        if ($this->upgrade_available)
-        {
-            $scope = new \thebuggenie\core\entities\Scope();
-            $scope->setID(1);
-            $scope->setEnabled();
-            framework\Context::setScope($scope);
-
-            if (in_array($this->current_version, array('3.2.0', '3.2'))) {
-                $this->statuses = \thebuggenie\core\entities\tables\ListTypes::getTable()->getStatusListForUpgrade();
-                $this->adminusername = \thebuggenie\core\modules\installation\upgrade_32\TBGUsersTable::getTable()->getAdminUsername();
-            }
-        }
         $this->upgrade_complete = false;
-
         if ($this->upgrade_available && $request->isPost())
         {
-            $this->upgrade_complete = false;
-
-            switch ($this->current_version) {
-                case '3.2.0':
-                case '3.2':
-                    $this->_upgradeFrom3dot2($request);
-                case '4.0':
-                case '4.1':
-                case '4.1.0':
-                    $this->_upgradeFrom4dot1($request);
-                case '4.1.1':
-                    $this->_upgradeFrom4dot1dot1($request);
-                case '4.1.2':
-                    $this->_upgradeFrom4dot1dot2($request);
-                case '4.1.3':
-                    $this->_upgradeFrom4dot1dot3($request);
-                case '4.1.4':
-                    $this->_upgradeFrom4dot1dot4($request);
-                case '4.1.5':
-                    $this->_upgradeFrom4dot1dot5($request);
-                case '4.1.6':
-                    $this->_upgradeFrom4dot1dot6($request);
-                case '4.1.7':
-                    $this->_upgradeFrom4dot1dot7($request);
-                default:
-                    $this->upgrade_complete = true;
-                    break;
-            }
+            $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
+            $this->upgrade_complete = $upgrader->upgrade();
 
             if ($this->upgrade_complete)
             {
-                $existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
-                file_put_contents(THEBUGGENIE_PATH . 'installed', framework\Settings::getVersion(false, true) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
                 $this->current_version = framework\Settings::getVersion(false, false);
                 $this->upgrade_available = false;
             }

@@ -5,7 +5,7 @@
     <div style="margin-top: 10px; font-weight: bold;"><?php echo __('Role permissions'); ?></div>
     <ul class="simple_list" style="display: block; width: auto;">
     <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('project'), 'module' => 'core', 'target_id' => null)); ?>
-    <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('project_pages'), 'module' => 'core', 'target_id' => null)); ?>
+    <?php //include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('project_pages'), 'module' => 'core', 'target_id' => null)); ?>
     <?php include_component('configuration/rolepermissionseditlist', array('role' => $role, 'permissions_list' => \thebuggenie\core\framework\Context::getAvailablePermissions('issues'), 'module' => 'core', 'target_id' => null)); ?>
     <?php \thebuggenie\core\framework\Event::createNew('core', 'rolepermissionsedit', $role)->trigger(); ?>
     </ul>

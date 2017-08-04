@@ -1,4 +1,4 @@
-<ul class="rounded_box white<?php if (isset($absolute) && $absolute): ?> shadowed<?php endif; ?><?php if (isset($classes)): echo ' '.$classes; endif; ?> popup_box more_actions_dropdown identifiable_selector" id="<?php echo $html_id; ?>" style="<?php if (isset($absolute) && $absolute): ?>position: absolute;<?php else: ?>margin: 5px 0 5px 0; clear: both;<?php endif; ?> <?php if (!isset($hidden) || $hidden): ?>display: none;<?php endif; ?> width: 324px; z-index: 10001; <?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
+<ul class="rounded_box white<?php if (isset($absolute) && $absolute): ?> shadowed<?php endif; ?><?php if (isset($classes)): echo ' '.$classes; endif; ?> popup_box more_actions_dropdown identifiable_selector" id="<?php echo $html_id; ?>" style="<?php if (isset($absolute) && $absolute): ?>position: absolute;<?php else: ?>margin: 5px 0 5px 0; clear: both;<?php endif; ?> <?php if (!isset($hidden) || $hidden): ?>display: none;<?php endif; ?> z-index: 10001; <?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
     <li class="header"><?php echo $header; ?></li>
     <?php if ($allow_clear): ?>
         <li>
@@ -27,8 +27,8 @@
             <?php endif; ?>
             <input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
             <input type="hidden" name="include_clients" value="<?php echo (int) $include_clients; ?>">
-            <input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-            <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>"></input>
+            <input type="search" class="identifiable_lookup" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" placeholder="<?php echo $text_title; ?>">
+            <input type="submit" value="<?php echo __('Find'); ?>"></input>
         </form>
     </li>
     <li class="dropdown_content nohover" id="<?php echo $base_id; ?>_results_container" style="display: none;">

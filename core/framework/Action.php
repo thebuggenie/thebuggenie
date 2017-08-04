@@ -11,6 +11,7 @@
      * @package thebuggenie
      * @subpackage mvc
      */
+    use thebuggenie\core\entities\User;
 
     /**
      * Action class used in the MVC part of the framework
@@ -27,6 +28,7 @@
         const AUTHENTICATION_METHOD_RSS_KEY = 'rss_key';
         const AUTHENTICATION_METHOD_APPLICATION_PASSWORD = 'application_password';
         const AUTHENTICATION_METHOD_ELEVATED = 'elevated';
+        const AUTHENTICATION_METHOD_BASIC = 'basic';
 
         public function getAuthenticationMethodForAction($action)
         {
@@ -233,6 +235,28 @@
         public function forward403if($condition, $message = null)
         {
             $this->forward403unless(!$condition, $message);
+        }
+
+        /**
+         * Verify that the specified user has a valid membership in the current scope
+         *
+         * @param User $user
+         * @return bool
+         */
+        protected function verifyScopeMembership(User $user)
+        {
+            if (!Context::getScope()->isDefault() && !$user->isGuest() && !$user->isConfirmedMemberOfScope(Context::getScope()))
+            {
+                $route = self::getRouting()->generate('add_scope');
+                if (Context::getRequest()->isAjaxCall())
+                {
+                    return $this->renderJSON(array('forward' => $route));
+                }
+                else
+                {
+                    $this->getResponse()->headerRedirect($route);
+                }
+            }
         }
 
         /**

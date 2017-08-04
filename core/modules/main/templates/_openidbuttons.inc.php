@@ -18,9 +18,6 @@
         <fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 20px auto 0 auto;">
             <legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%regular_login or %persona_or_openid_login', array('%regular_login' => '', '%persona_or_openid_login' => '')); ?></legend>
         </fieldset>
-        <?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable()): ?>
-            <a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
-        <?php endif; ?>
         <a class="persona-button dark" id="regular-signin-button" href="javascript:void(0);" onclick="$('regular_login_container').toggleClassName('active');$('openid_container').toggleClassName('active');"><span><?php echo __('Regular signin'); ?></span></a>
     </div>
 </div>

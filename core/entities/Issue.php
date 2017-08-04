@@ -23,6 +23,7 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method static tables\Issues getB2DBTable()
      * @method boolean isTitleChanged() Whether the title is changed or not
      * @method boolean isSpentTimeChanged() Whether the spent_time is changed or not
      *
@@ -749,11 +750,15 @@
                     framework\Context::getCurrentProject()->preloadValues();
                 }
                 tables\IssueCustomFields::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsBuild::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsEdition::getTable()->preloadValuesByIssueIDs($ids);
-                tables\IssueAffectsComponent::getTable()->preloadValuesByIssueIDs($ids);
+                $build_ids = tables\IssueAffectsBuild::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Builds::getTable()->preloadBuilds($build_ids);
+                $edition_ids = tables\IssueAffectsEdition::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Editions::getTable()->preloadEditions($edition_ids);
+                $component_ids = tables\IssueAffectsComponent::getTable()->preloadValuesByIssueIDs($ids);
+                tables\Components::getTable()->preloadComponents($component_ids);
                 tables\Comments::getTable()->preloadIssueCommentCounts($ids);
                 tables\IssueFiles::getTable()->preloadIssueFileCounts($ids);
+                tables\IssueRelations::getTable()->preloadIssueRelations($ids);
                 $user_ids = array();
                 foreach ($rows as $key => $row)
                 {
@@ -1506,20 +1511,25 @@
          *
          * @return boolean
          */
-        protected function _permissionCheck($key, $exclusive = false)
+        protected function _permissionCheck($key, $exclusive = false, $defaultPermissiveSetting = true)
         {
             if (framework\Context::getUser()->isGuest()) return false;
             if (isset($this->_can_permission_cache[$key])) return $this->_can_permission_cache[$key];
-            $retval = ($this->isInvolved() && !$exclusive) ? $this->getProject()->permissionCheck($key.'own', true) : null;
-            $retval = ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key, !$this->isInvolved());
+            $permitted = ($this->isInvolved() && !$exclusive) ? $this->getProject()->permissionCheck($key.'own', true) : null;
+            $permitted = ($permitted !== null) ? $permitted : $this->getProject()->permissionCheck($key, !$this->isInvolved());
 
-            $this->_can_permission_cache[$key] = $retval;
-            return $retval;
+            if ($defaultPermissiveSetting) {
+                $permitted = ($permitted !== null) ? $permitted : framework\Settings::isPermissive();
+            }
+
+            $this->_can_permission_cache[$key] = $permitted;
+
+            return $permitted;
         }
 
         public function isWorkflowTransitionsAvailable()
         {
-            return $this->getProject()->isArchived() ? false : $this->_canPermissionOrEditIssue('cantransitionissue');
+            return $this->getProject()->isArchived() ? false : $this->_permissionCheck('cantransitionissue');
         }
 
         public function isInvolved()
@@ -1535,10 +1545,7 @@
          */
         public function canEditAccessPolicy()
         {
-            $retval = $this->_permissionCheck('canlockandeditlockedissues', true);
-            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
-
-            return $retval;
+            return $this->_permissionCheck('canlockandeditlockedissues', true);
         }
 
         /**
@@ -1548,15 +1555,7 @@
          */
         public function canEditIssueDetails()
         {
-            static $retval = null;
-            if ($retval !== null) return $retval;
-
-            $retval = $this->_permissionCheck('caneditissuebasic');
-            $retval = ($retval === null) ? $this->_permissionCheck('cancreateandeditissues') : $retval;
-            $retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
-            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
-
-            return $retval;
+            return $this->_permissionCheck('caneditissuebasic');
         }
 
         /**
@@ -1566,10 +1565,7 @@
          */
         public function canEditTitle()
         {
-            $retval = $this->_permissionCheck('caneditissuetitle');
-            $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
+            return $this->_permissionCheck('caneditissuetitle');
         }
 
         /**
@@ -1579,7 +1575,7 @@
          */
         public function canEditIssuetype()
         {
-            return $this->canEditIssueDetails();
+            return $this->_permissionCheck('caneditissuebasic');
         }
 
         /**
@@ -1589,7 +1585,7 @@
          */
         public function canEditUserPain()
         {
-            return $this->_canPermissionOrEditIssue('caneditissueuserpain');
+            return $this->_permissionCheck('caneditissueuserpain');
         }
 
         /**
@@ -1599,10 +1595,7 @@
          */
         public function canEditDescription()
         {
-            $retval = $this->_permissionCheck('caneditissuedescription');
-            $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
+            return $this->_permissionCheck('caneditissuedescription');
         }
 
         /**
@@ -1612,10 +1605,7 @@
          */
         public function canEditShortname()
         {
-            $retval = $this->_permissionCheck('caneditissueshortname');
-            $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
+            return $this->_permissionCheck('caneditissueshortname');
         }
 
         /**
@@ -1625,10 +1615,7 @@
          */
         public function canEditReproductionSteps()
         {
-            $retval = $this->_permissionCheck('caneditissuereproduction_steps');
-            $retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
-
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
+            return $this->_permissionCheck('caneditissuereproduction_steps');
         }
 
         /**
@@ -1638,28 +1625,12 @@
          */
         public function canEditIssue()
         {
-            return (bool) ($this->_permissionCheck('caneditissue', true));
-        }
-
-        protected function _canPermissionOrEditIssue($permission, $fallback = null)
-        {
-            if (isset($this->_can_permission_cache[$permission])) return $this->_can_permission_cache[$permission];
-
-            $retval = $this->_permissionCheck($permission);
-            $retval = ($retval === null) ? $this->canEditIssue() : $retval;
-
-            if ($retval === null)
-            {
-                $retval = ($fallback !== null) ? $fallback : framework\Settings::isPermissive();
-            }
-
-            $this->_can_permission_cache[$permission] = $retval;
-            return $retval;
+            return $this->_permissionCheck('caneditissue', true);
         }
 
         protected function _canEditIssueField($type)
         {
-            return $this->_canPermissionOrEditIssue('caneditissue'.$type) || ( $this->isInvolved() &&  $this->_permissionCheck("set_datatype_".$type));
+            return $this->_permissionCheck('caneditissue'.$type) || ( $this->isInvolved() && $this->_permissionCheck("set_datatype_".$type));
         }
 
 
@@ -1670,7 +1641,7 @@
          */
         public function canEditPostedBy()
         {
-            return $this->_canPermissionOrEditIssue('caneditissueposted_by');
+            return $this->_permissionCheck('caneditissueposted_by');
         }
 
         /**
@@ -1680,7 +1651,7 @@
          */
         public function canEditAssignee()
         {
-            return $this->_canPermissionOrEditIssue('caneditissueassigned_to');
+            return $this->_permissionCheck('caneditissueassigned_to');
         }
 
         /**
@@ -1690,7 +1661,7 @@
          */
         public function canEditOwner()
         {
-            return $this->_canPermissionOrEditIssue('caneditissueowned_by');
+            return $this->_permissionCheck('caneditissueowned_by');
         }
 
         /**
@@ -1760,7 +1731,7 @@
          */
         public function canEditEstimatedTime()
         {
-            return $this->_canPermissionOrEditIssue('caneditissueestimated_time');
+            return $this->_permissionCheck('caneditissueestimated_time');
         }
 
         /**
@@ -1770,7 +1741,7 @@
          */
         public function canEditSpentTime()
         {
-            return $this->_canPermissionOrEditIssue('caneditissuespent_time');
+            return $this->_permissionCheck('caneditissuespent_time');
         }
 
         /**
@@ -1780,7 +1751,7 @@
          */
         public function canEditPercentage()
         {
-            return $this->_canPermissionOrEditIssue('caneditissuepercent_complete');
+            return $this->_permissionCheck('caneditissuepercent_complete');
         }
 
         /**
@@ -1790,7 +1761,7 @@
          */
         public function canEditMilestone()
         {
-            return $this->_canPermissionOrEditIssue('caneditissuemilestone');
+            return $this->_permissionCheck('caneditissuemilestone');
         }
 
         /**
@@ -1800,7 +1771,7 @@
          */
         public function canDeleteIssue()
         {
-            return $this->_canPermissionOrEditIssue('candeleteissues', false);
+            return $this->_permissionCheck('candeleteissues', false);
         }
 
         /**
@@ -1808,16 +1779,11 @@
          *
          * @return boolean
          */
-        public function canEditCustomFields($key = null)
+        public function canEditCustomFields($key = '')
         {
-            $retval = null;
+            $permission_key = 'caneditissuecustomfields'.$key;
 
-            if (!is_null($key))
-            {
-                $retval = $this->_permissionCheck('caneditissuecustomfields'.$key);
-            }
-
-            return ($retval !== null) ? $retval : (bool)    $this->_permissionCheck('caneditissuecustomfields');
+            return $this->_permissionCheck($permission_key);
         }
 
         /**
@@ -1827,61 +1793,17 @@
          */
         public function canCloseIssue()
         {
-            static $retval = null;
-            if ($retval !== null) return $retval;
-
-            $retval = $this->_permissionCheck('cancloseissues');
-            $retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
-            $retval = ($retval === null) ? $this->canEditIssue() : $retval;
-            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
-
-            return $retval;
+            return $this->_permissionCheck('cancloseissues');
         }
 
         /**
-         * Return if the user can close the issue
+         * Return if the user can close or reopen the issue
          *
          * @return boolean
          */
         public function canReopenIssue()
         {
-            static $retval = null;
-            if ($retval !== null) return $retval;
-
-            $retval = $this->_permissionCheck('canreopenissues');
-            $retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
-            $retval = ($retval === null) ? $this->canEditIssue() : $retval;
-            $retval = ($retval !== null) ? $retval : framework\Settings::isPermissive();
-
-            return $retval;
-        }
-
-        protected function _dualPermissionsCheck($permission_1, $permission_2)
-        {
-            $retval = $this->_permissionCheck($permission_1);
-            $retval = ($retval === null) ? $this->_permissionCheck($permission_2) : $retval;
-
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
-        }
-
-        /**
-         * Return if the user can add/modify extra data for an issue
-         *
-         * @return boolean
-         */
-        public function canAddExtraInformation()
-        {
-            return (bool) $this->_permissionCheck('canaddextrainformationtoissues');
-        }
-
-        protected function _canPermissionsOrExtraInformation($permission)
-        {
-            if (isset($this->_can_permission_cache[$permission])) return $this->_can_permission_cache[$permission];
-            $retval = $this->_permissionCheck($permission);
-            $retval = ($retval === null) ? $this->canAddExtraInformation() : $retval;
-
-            $this->_can_permission_cache[$permission] = $retval;
-            return ($retval !== null) ? $retval : framework\Settings::isPermissive();
+            return $this->_permissionCheck('canreopenissues');
         }
 
         /**
@@ -1891,12 +1813,7 @@
          */
         public function canPostComments()
         {
-            static $retval = null;
-            if ($retval !== null) return $retval;
-
-            $retval = $this->_dualPermissionsCheck('canpostcomments', 'canpostandeditcomments');
-
-            return $retval;
+            return $this->_permissionCheck('canpostcomments');
         }
 
         /**
@@ -1906,7 +1823,7 @@
          */
         public function canAttachFiles()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddfilestoissues');
+            return $this->_permissionCheck('canaddfilestoissues');
         }
 
         /**
@@ -1916,7 +1833,7 @@
          */
         public function canAddRelatedIssues()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddrelatedissues');
+            return $this->_permissionCheck('canaddrelatedissues');
         }
 
         /**
@@ -1926,7 +1843,7 @@
          */
         public function canEditAffectedComponents()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddcomponents');
+            return $this->_permissionCheck('canaddcomponents');
         }
 
         /**
@@ -1936,7 +1853,7 @@
          */
         public function canEditAffectedEditions()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddeditions');
+            return $this->_permissionCheck('canaddeditions');
         }
 
         /**
@@ -1946,7 +1863,7 @@
          */
         public function canEditAffectedBuilds()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddbuilds');
+            return $this->_permissionCheck('canaddbuilds');
         }
 
         /**
@@ -1956,7 +1873,7 @@
          */
         public function canRemoveAttachments()
         {
-            return $this->_canPermissionsOrExtraInformation('canremovefilesfromissues');
+            return $this->_permissionCheck('canremovefilesfromissues');
         }
 
         /**
@@ -1966,7 +1883,7 @@
          */
         public function canAttachLinks()
         {
-            return $this->_canPermissionsOrExtraInformation('canaddlinkstoissues');
+            return $this->_permissionCheck('canaddlinkstoissues');
         }
 
         /**
@@ -2330,31 +2247,9 @@
         {
             if ($this->_parent_issues === null || $this->_child_issues === null)
             {
-                $this->_parent_issues = array();
-                $this->_child_issues = array();
-
-                if ($res = tables\IssueRelations::getTable()->getRelatedIssues($this->getID()))
-                {
-                    while ($row = $res->getNextRow())
-                    {
-                        try
-                        {
-                            if ($row->get(tables\IssueRelations::PARENT_ID) == $this->getID())
-                            {
-                                $issue = new Issue($row->get(tables\IssueRelations::CHILD_ID));
-                                $this->_child_issues[$row->get(tables\IssueRelations::ID)] = $issue;
-                            }
-                            else
-                            {
-                                $issue = new Issue($row->get(tables\IssueRelations::PARENT_ID));
-                                $this->_parent_issues[$row->get(tables\IssueRelations::ID)] = $issue;
-                            }
-                        }
-                        catch (\Exception $e)
-                        {
-                        }
-                    }
-                }
+                $related_issues = tables\IssueRelations::getTable()->getRelatedIssues($this->getID());
+                $this->_parent_issues = $related_issues['parents'];
+                $this->_child_issues = $related_issues['children'];
             }
         }
 
@@ -2782,6 +2677,10 @@
          */
         public function setStatus($status_id)
         {
+            if ($this->_isPropertyChanged('_issuetype'))
+            {
+                throw new \Exception(\thebuggenie\core\framework\Context::getI18n()->__("You can't change the status after changing the issue type. Please save your changes first."));
+            }
             $this->_addChangedProperty('_status', $status_id);
         }
 
@@ -3351,6 +3250,22 @@
         public function setIssuetype($issuetype_id)
         {
             $this->_addChangedProperty('_issuetype', $issuetype_id);
+            $project = $this->getProject();
+            $issueType = \thebuggenie\core\entities\Issuetype::getB2DBTable()->selectById($issuetype_id);
+            if (! $issueType instanceof \thebuggenie\core\entities\Issuetype || ! $project instanceof \thebuggenie\core\entities\Project)
+            {
+                return;
+            }
+            $workflowStep = $project->getWorkflowScheme()->getWorkflowForIssuetype($issueType)->getFirstStep();
+            if (! $workflowStep instanceof \thebuggenie\core\entities\WorkflowStep)
+            {
+                return;
+            }
+            if ($workflowStep->hasLinkedStatus())
+            {
+                $this->_addChangedProperty('_status', $workflowStep->getLinkedStatusID());
+            }
+            $this->_addChangedProperty('_workflow_step_id', $workflowStep->getID());
         }
 
         /**
@@ -4885,7 +4800,7 @@
          */
         public function isSpentTimeVisible()
         {
-            return (bool) ($this->isFieldVisible('spent_time') || $this->hasSpentTime());
+            return (bool) ($this->getProject()->canSeeTimeSpent() && ($this->isFieldVisible('spent_time') || $this->hasSpentTime()));
         }
 
         /**
@@ -5032,6 +4947,18 @@
             $this->_last_updated = NOW;
         }
 
+        /**
+         * Processes field changes for an issue. Two types of processing occur
+         * within this function:
+         *
+         * - Logging the change in issue history. This happens for every field.
+         * - Updates to other related objects (such as projects, milestones,
+         *   other issues etc). This type of processing is dependant on specific
+         *   field that gets changed.
+         *
+         *
+         * @return array Array of related issues that have been affected in some way and need to be saved.
+         */
         protected function _processChanges()
         {
             $related_issues_to_save = array();
@@ -5236,7 +5163,10 @@
                             case '_milestone':
                                 if ($original_value != 0)
                                 {
-                                    $old_name = ($old_item = Milestone::getB2DBTable()->selectById($original_value)) ? $old_item->getName() : framework\Context::getI18n()->__('Not determined');
+                                    $old_milestone = Milestone::getB2DBTable()->selectById($original_value);
+                                    $old_milestone->updateStatus();
+                                    $old_milestone->save();
+                                    $old_name = $old_milestone ? $old_milestone->getName() : framework\Context::getI18n()->__('Not determined');
                                 }
                                 else
                                 {
@@ -5341,7 +5271,7 @@
                                                 {
                                                     if ($parent_issue->checkTaskStates())
                                                     {
-                                                        $related_issues_to_save[$parent_issue->getID()] = true;
+                                                        $related_issues_to_save[] = $parent_issue;
                                                     }
                                                 }
                                             }
@@ -5498,7 +5428,7 @@
 
             if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $this->getID(), false)->isOff())
             {
-                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $this->getID(), true)->save();
+                $user->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $this->getID(), true);
 
                 return true;
             }
@@ -5641,6 +5571,8 @@
                         $item->setComment($comment);
                         $item->save();
                     }
+                    $comment->setHasAssociatedChanges(true);
+                    $comment->save();
                 }
             }
             framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::save_pre_notifications', $this)->trigger();
@@ -5673,13 +5605,9 @@
 
                 $this->triggerSaveEvent($comment, framework\Context::getUser());
 
-                if (count($related_issues_to_save))
+                foreach ($related_issues_to_save as $related_issue)
                 {
-                    foreach (array_keys($related_issues_to_save) as $i_id)
-                    {
-                        $related_issue = Issue::getB2DBTable()->selectById((int) $i_id);
-                        $related_issue->save();
-                    }
+                    $related_issue->save();
                 }
             }
             else
@@ -6337,7 +6265,7 @@
          */
         public function canEditColor()
         {
-            return $this->_canPermissionOrEditIssue('caneditissuecolor');
+            return $this->_permissionCheck('caneditissuecolor');
         }
 
         /**

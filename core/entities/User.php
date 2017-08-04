@@ -334,9 +334,7 @@
          * @var array|\thebuggenie\core\entities\NotificationSetting
          * @Relates(class="\thebuggenie\core\entities\NotificationSetting", collection=true, foreign_column="user_id")
          */
-        protected $_notification_settings = null;
-
-        protected $_notification_settings_sorted = null;
+        protected $_notification_settings = [];
 
         /**
          * List of user's notifications
@@ -368,6 +366,8 @@
 
         protected $_filter_first_notification = null;
 
+        protected $_permissions_cache = [];
+
         /**
          * Retrieve a user by username
          *
@@ -380,10 +380,22 @@
             return self::getB2DBTable()->getByUsername($username);
         }
 
-        public static function getByEmail($email)
+        /**
+         * Retrieve a user by its email address
+         *
+         * @param string $email
+         *   Email address of the user.
+         * @param bool $createNew
+         *   Whether to create the user if it does not exist.
+         *   Defaults to `true`.
+         * @return \thebuggenie\core\entities\User|null
+         *   User instance or null, if the user was not found.
+         */
+        public static function getByEmail($email, $createNew = true)
         {
             $user = self::getB2DBTable()->getByEmail($email);
-            if (!$user instanceof User && !framework\Settings::isUsingExternalAuthenticationBackend())
+
+            if (!$user instanceof User && $createNew && !framework\Settings::isUsingExternalAuthenticationBackend())
             {
                 $user = new User();
                 $user->setPassword(self::createPassword());
@@ -609,34 +621,14 @@
                         {
                             $external = true;
                             framework\Logging::log('Authenticating without credentials with backend: '.framework\Settings::getAuthenticationBackend(), 'auth', framework\Logging::LEVEL_INFO);
-                            try
-                            {
-                                $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
-                                if ($mod->getType() !== Module::MODULE_AUTH)
-                                {
-                                    framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
-                                }
+                            $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
 
-                                $user = $mod->doAutoLogin();
-
-                                if ($user == false)
-                                {
-                                    // Invalid
-                                    framework\Context::logout();
-                                    throw new \Exception('No such login');
-                                    //framework\Context::getResponse()->headerRedirect(framework\Context::getRouting()->generate('login'));
-                                }
-                                // In case the operation was a success, but no autologin was enabled, set the user to null
-                                // so the rest of the code that deals with guest access can handle it.
-                                else if ($user == true)
-                                {
-                                    $user = null;
-                                }
-                            }
-                            catch (\Exception $e)
+                            if ($mod->getType() !== Module::MODULE_AUTH)
                             {
-                                throw $e;
+                                framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
                             }
+
+                            $user = $mod->doAutoLogin();
                         }
                         elseif ($username !== null && $password !== null && !$user instanceof User)
                         {
@@ -683,6 +675,31 @@
                         $user = self::getB2DBTable()->getByUsername($username);
 
                         if ($user instanceof User && !$user->authenticateApplicationPassword($token)) $user = null;
+                        break;
+                    case framework\Action::AUTHENTICATION_METHOD_BASIC:
+                        framework\Logging::log('Using HTTP basic auth', 'auth', framework\Logging::LEVEL_INFO);
+                        
+                        // If we have HTTP basic auth, use that. Else, fall back to parameters.
+                        
+                        if(isset($_SERVER['PHP_AUTH_USER'])) {
+                            $username = $_SERVER['PHP_AUTH_USER'];
+                        } else {
+                            $username = $request['api_username'];
+                        }
+                        
+                        if(isset($_SERVER['PHP_AUTH_PW'])) {
+                            $token = $_SERVER['PHP_AUTH_PW'];
+                        } else {
+                            $token = $request['api_password'];
+                        }
+
+                        framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
+                        
+                        $user = self::getB2DBTable()->getByUsername($username);
+
+                        if ( ! $user instanceof User || $user->getPassword() != self::hashPassword($token, $user->getSalt())) {
+                            $user = null;
+                        }
                         break;
                 }
 
@@ -1266,6 +1283,7 @@
                         $this->removeFriend($friend);
                     }
                 }
+
                 $this->_friends = $friends;
             }
         }
@@ -1302,26 +1320,8 @@
         public function getFriends()
         {
             $this->_setupFriends();
-            $friends = $this->_friends;
 
-            if (framework\Context::isProjectContext())
-            {
-                $project_assigned_users = framework\Context::getCurrentProject()->getAssignedUsers();
-                $project_assigned_teams = framework\Context::getCurrentProject()->getAssignedTeams();
-                $project_assigned_teams_members = array();
-
-                foreach ($project_assigned_teams as $team)
-                {
-                    $project_assigned_teams_members = array_merge($project_assigned_teams_members, $team->getMembers());
-                }
-
-                foreach ($friends as $friend_id => $friend)
-                {
-                    if (! array_key_exists($friend_id, $project_assigned_users) && ! array_key_exists($friend_id, $project_assigned_teams_members)) unset($friends[$friend_id]);
-                }
-            }
-
-            return $friends;
+            return $this->_friends;
         }
 
         /**
@@ -1994,6 +1994,17 @@
             else framework\Settings::deleteSetting(framework\Settings::SETTING_USER_DESKTOP_NOTIFICATIONS_NEW_TAB, 'core', null, $this->getID());
         }
 
+        public function setCommentSortOrder($value)
+        {
+            framework\Settings::saveSetting(framework\Settings::SETTING_USER_COMMENT_ORDER, $value, 'core', null, $this->getID());
+        }
+
+        public function getCommentSortOrder()
+        {
+            $val = framework\Settings::get(framework\Settings::SETTING_USER_COMMENT_ORDER, 'core', framework\Context::getScope(), $this->getID());
+            return ($val !== null) ? $val : 'desc';
+        }
+
         public function getActivationKey()
         {
             return $this->_getOrGenerateActivationKey();
@@ -2122,34 +2133,77 @@
         }
 
         /**
-         * Perform a permission check on this user
+         * Checks if user has permission to access the specified resource.
          *
-         * @param string $permission_type The permission key
-         * @param integer $target_id [optional] a target id if applicable
-         * @param string $module_name [optional] the module for which the permission is valid
+         * A resource is specified using combination of module name, permission
+         * type, and target ID.
          *
-         * @return boolean
+         * All permission types are tied-in to a specific module. Interpretation
+         * of what a permission type entitles depends on the module itself.
+         *
+         * Target ID provides context for narrowing down the check to a specific
+         * object. Target ID is not applicable for all module + permission type
+         * combinations, and its interpretation is left up to the caller.
+         *
+         * Target ID set to 0 is treated as "all relevant objects", i.e. like a
+         * global check.
+         *
+         * A common use of target ID is to narrow down permission check to a
+         * specific project. For example, the module "core" has a permission
+         * called "canseeproject". Setting the target ID to same value as
+         * project ID would effectively narrow down the check to that specific
+         * project. On the other hand, if you specified target ID as 0 in this
+         * case, this would denote permission check to see if user has a global
+         * access to any project.
+         *
+         * @param string $permission_type Type of permission to check. Available values depend on module specified.
+         * @param mixed $target_id [optional] Target (object) ID, if applicable. Should be non-negative integer or string. Default is 0.
+         * @param string $module_name [optional] Module to which the $permission_type is applicable. Default is 'core'.
+         *
+         * @return mixed If permission matching the specified criteria has been found in database (cache, to be more precise), returns permission value (true or false). If no matching permission has been found, returns null. Receiving null means the caller needs to apply a default rule (allow or deny), which depends on caller implementation.
          */
-        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $check_global_role = true)
+        public function hasPermission($permission_type, $target_id = 0, $module_name = 'core')
         {
-            framework\Logging::log('Checking permission '.$permission_type);
-            $group_id = (int) $this->getGroupID();
-            $has_associated_project = is_bool($check_global_role) ? $check_global_role : (is_numeric($target_id) && $target_id != 0 ? array_key_exists($target_id, $this->getAssociatedProjects()) : true);
-            $teams = $this->getTeams();
-
-            if ($target_id != 0 && Project::getB2DBTable()->selectById($target_id) instanceof \thebuggenie\core\entities\Project)
+            // Parts of code seem to expected to be able to pass-in target_id as
+            // null. Assume this means target_id 0.
+            if ($target_id === null)
             {
-                $teams = array_intersect_key($teams, Project::getB2DBTable()->selectById($target_id)->getAssignedTeams());
+                $target_id = 0;
             }
-            $retval = framework\Context::checkPermission($permission_type, $this->getID(), $group_id, $teams, $target_id, $module_name, $has_associated_project);
-            if ($retval !== null)
+
+            framework\Logging::log('Checking permission '.$permission_type.', target ID '.$target_id.', module '.$module_name);
+
+            // We store cached results locally in User instance for improving performance.
+            if (array_key_exists($module_name . '_' . $permission_type . '_' . $target_id, $this->_permissions_cache)) {
+                $cached_value = $this->_permissions_cache[$module_name . '_' . $permission_type . '_' . $target_id];
+                framework\Logging::log('Permission check has already been done and cached, using the cached value: ' . ($cached_value === null ? 'null' : $cached_value));
+                return $cached_value;
+            }
+
+            // Obtain group, team, and role memberships for the user.
+            $user_id = $this->getID();
+            $group_id = (int) $this->getGroupID();
+            $teams = $this->getTeams();
+            $team_ids = array();
+            foreach ($teams as $team)
             {
-                framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
+                $team_ids[] = $team->getID();
+            }
+
+            framework\Logging::log('Checking permission for user ID: '.$user_id.', group ID '.$group_id.',team IDs ' . implode(',', $team_ids));
+
+            $retval = framework\Context::permissionCheck($module_name, $permission_type, $target_id, $user_id, $group_id, $team_ids);
+            if ($retval === null)
+            {
+                framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', no matching rules found.');
             }
             else
             {
-                framework\Logging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was null');
+                framework\Logging::log('... Done checking permission '.$permission_type.', target id'.$target_id.', module '.$module_name.', permission granted: '. (($retval) ? 'true' : 'false'));
             }
+
+            // Cache the check for specified module/permission type/target ID combo in User object.
+            $this->_permissions_cache[$module_name . '_' . $permission_type . '_' . $target_id] = $retval;
 
             return $retval;
         }
@@ -2464,12 +2518,12 @@
             return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
         }
 
-        public function canAddScrumSprints(\thebuggenie\core\entities\Project $project)
+        public function canEditMilestones(\thebuggenie\core\entities\Project $project)
         {
             if ($project->isArchived()) return false;
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
-            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'candoscrumplanning', $project->getID(), false);
+            return $this->_dualPermissionsCheck('canaddscrumsprints', $project->getID(), 'canmanageproject', $project->getID(), false);
         }
 
         /**
@@ -2501,10 +2555,10 @@
             if ($this->canSaveConfiguration(framework\Settings::CONFIGURATION_SECTION_PROJECTS)) return true;
             if ($project->getOwner() instanceof User && $project->getOwner()->getID() == $this->getID()) return true;
 
-            $retval = $this->hasPermission('canassignscrumuserstoriestosprints', $project->getID());
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', $project->getID());
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('canassignscrumuserstoriestosprints', 0);
-            $retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', 0);
+            $retval = $this->hasPermission('caneditissueassigned_to', $project->getID());
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissue', $project->getID());
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissueassigned_to', 0);
+            $retval = ($retval !== null) ? $retval : $this->hasPermission('caneditissue', 0);
 
             return (bool) ($retval !== null) ? $retval : false;
         }
@@ -2997,28 +3051,27 @@
          */
         public function getNotificationSetting($setting, $default_value = null, $module = 'core')
         {
-            if ($this->_notification_settings === null)
+            if (!array_key_exists($module, $this->_notification_settings))
             {
-                $this->_b2dbLazyload('_notification_settings');
-                $this->_notification_settings_sorted = array();
-                foreach ($this->_notification_settings as $ns)
-                {
-                    if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = [];
-                    $this->_notification_settings_sorted[$ns->getModuleName()][$ns->getName()] = $ns;
-                }
+                $this->_notification_settings[$module] = [];
             }
-            if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = [];
 
-            if (!isset($this->_notification_settings_sorted[$module][$setting]))
+            if (!array_key_exists($setting, $this->_notification_settings[$module]))
             {
-                $notificationsetting = new \thebuggenie\core\entities\NotificationSetting();
-                $notificationsetting->setUser($this);
-                $notificationsetting->setName($setting);
-                $notificationsetting->setModuleName($module);
-                $notificationsetting->setValue($default_value);
-                $this->_notification_settings_sorted[$module][$setting] = $notificationsetting;
+                $notificationsetting = NotificationSetting::getB2DBTable()->getByModuleAndNameAndUserId($module, $setting, $this->getID());
+                if (!$notificationsetting instanceof NotificationSetting)
+                {
+                    $notificationsetting = new \thebuggenie\core\entities\NotificationSetting();
+                    $notificationsetting->setUser($this);
+                    $notificationsetting->setName($setting);
+                    $notificationsetting->setModuleName($module);
+                    $notificationsetting->setValue($default_value);
+                }
+
+                $this->_notification_settings[$module][$setting] = $notificationsetting;
             }
-            return $this->_notification_settings_sorted[$module][$setting];
+
+            return $this->_notification_settings[$module][$setting];
         }
 
         /**
@@ -3034,6 +3087,7 @@
         {
             $setting_object = $this->getNotificationSetting($setting, null, $module);
             $setting_object->setValue($value);
+            $setting_object->save();
             return $setting_object;
         }
 

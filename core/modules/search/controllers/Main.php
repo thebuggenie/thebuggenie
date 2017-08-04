@@ -586,7 +586,7 @@ class Main extends framework\Action
 
     public function runSaveColumnSettings(framework\Request $request)
     {
-        framework\Settings::saveSetting('search_scs_' . $request['template'], join(',', $request['columns']));
+        framework\Settings::saveSetting('search_scs_' . $request['template'], join(',', $request['columns']), 'core', 0, $this->getUser()->getID());
         return $this->renderJSON(array('columns' => 'ok'));
     }
 

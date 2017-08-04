@@ -1,0 +1,47 @@
+/* sortable tables */
+.sortcol {
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+}
+.sortasc {
+    background-color: #D4E5FF !important;
+    background-image: url('../../images/sort_up.png') !important;
+    background-repeat: no-repeat;
+}
+.sortdesc {
+    background-color: #FAF3B8 !important;
+    background-image: url('../../images/sort_down.png') !important;
+    background-repeat: no-repeat;
+}
+.nosort {
+    cursor: default;
+}
+th.resize-handle-active {
+    cursor: e-resize;
+}
+
+div.resize-handle {
+    cursor: e-resize;
+    width: 2px;
+    border-right: 1px dashed #88C !important;
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+table.sortable tr th {
+    padding-left: 25px !important;
+    background-repeat: no-repeat;
+    background-image: url('../../images/sort_none.png');
+    background-position: 5px center;
+}
+
+table.sortable tr th.nosort {
+    padding-left: 0px !important;
+    background-image: none;
+}
+
+.roweven {
+    background-color: #F8F8F8;
+}

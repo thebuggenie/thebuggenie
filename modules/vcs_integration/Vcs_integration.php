@@ -98,7 +98,8 @@
             framework\Event::listen('core', 'project_sidebar_links', array($this, 'listen_project_links'));
             framework\Event::listen('core', 'breadcrumb_project_links', array($this, 'listen_breadcrumb_links'));
             framework\Event::listen('core', 'get_backdrop_partial', array($this, 'listen_getcommit'));
-            framework\Event::listen('core', 'viewissue_left_after_attachments', array($this, 'listen_viewissue_panel'));
+            framework\Event::listen('core', 'viewissue_before_tabs', array($this, 'listen_viewissue_panel_tab'));
+            framework\Event::listen('core', 'viewissue_after_tabs', array($this, 'listen_viewissue_panel'));
             framework\Event::listen('core', 'config_project_tabs_other', array($this, 'listen_projectconfig_tab'));
             framework\Event::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
             framework\Event::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
@@ -251,12 +252,21 @@
             }
         }
 
+        public function listen_viewissue_panel_tab(framework\Event $event)
+        {
+            if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == self::MODE_DISABLED)
+                return;
+
+            $links_total_count = IssueLinks::getTable()->countByIssueID($event->getSubject()->getID());
+            include_component('vcs_integration/viewissue_activities_tab', array('count' => $links_total_count));
+        }
+
         public function listen_viewissue_panel(framework\Event $event)
         {
             if (framework\Context::getModule('vcs_integration')->getSetting('vcs_mode_' . framework\Context::getCurrentProject()->getID()) == self::MODE_DISABLED)
                 return;
 
-            $links = IssueLink::getCommitsByIssue($event->getSubject(), 3);
+            $links = IssueLink::getCommitsByIssue($event->getSubject());
             $links_total_count = IssueLinks::getTable()->countByIssueID($event->getSubject()->getID());
             include_component('vcs_integration/viewissue_commits', array('issue' => $event->getSubject(), 'links' => $links, 'links_total_count' => $links_total_count, 'selected_project' => $event->getSubject()->getProject()));
         }

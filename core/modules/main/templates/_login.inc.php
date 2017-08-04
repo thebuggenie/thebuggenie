@@ -29,17 +29,12 @@
             <input type="submit" id="login_button" class="button button-silver" value="<?php echo __('Log in'); ?>">
         </div>
     </form>
-    <?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable() || \thebuggenie\core\framework\Settings::isOpenIDavailable()): ?>
+    <?php if (\thebuggenie\core\framework\Settings::isOpenIDavailable()): ?>
         <div style="text-align: center;">
             <fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 15px auto 0 auto;">
                 <legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%regular_login or %persona_or_openid_login', array('%regular_login' => '', '%persona_or_openid_login' => '')); ?></legend>
             </fieldset>
-            <?php if (\thebuggenie\core\framework\Settings::isPersonaAvailable()): ?>
-                <a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
-            <?php endif; ?>
-            <?php if (\thebuggenie\core\framework\Settings::isOpenIDavailable()): ?>
-                <a class="persona-button orange" id="openid-signin-button" href="javascript:void(0);" onclick="$('regular_login_container').toggleClassName('active');$('openid_container').toggleClassName('active');"><span><?php echo __('Sign in with OpenID'); ?></span></a>
-            <?php endif; ?>
+            <a class="persona-button orange" id="openid-signin-button" href="javascript:void(0);" onclick="$('regular_login_container').toggleClassName('active');$('openid_container').toggleClassName('active');"><span><?php echo __('Sign in with OpenID'); ?></span></a>
         </div>
     <?php endif; ?>
 </div>

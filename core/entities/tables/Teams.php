@@ -80,4 +80,9 @@
             return $this->doCount($crit);
         }
 
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('scope_ondemand', array(self::SCOPE, self::ONDEMAND));
+        }
+
     }

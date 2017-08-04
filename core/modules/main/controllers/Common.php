@@ -26,6 +26,7 @@ class Common extends framework\Action
     /**
      * 404 not found page
      *
+     * @Route(name="notfound", url="/404")
      * @param \thebuggenie\core\framework\Request $request
      */
     public function runNotFound(framework\Request $request)

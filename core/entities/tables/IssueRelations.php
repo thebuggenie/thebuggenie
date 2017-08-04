@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Criteria;
+    use thebuggenie\core\entities\Issue;
     use thebuggenie\core\framework;
 
     /**
@@ -33,6 +35,8 @@
         const CHILD_ID = 'issuerelations.child_id';
         const MUSTFIX = 'issuerelations.mustfix';
 
+        protected $_relations_cache = [];
+
         protected function _initialize()
         {
             parent::_setup(self::B2DBNAME, self::ID);
@@ -41,15 +45,68 @@
             parent::_addForeignKeyColumn(self::CHILD_ID, Issues::getTable(), Issues::ID);
         }
 
+        public function preloadIssueRelations($issue_ids)
+        {
+            foreach ($issue_ids as $key => $issue_id)
+            {
+                if (!array_key_exists($issue_id, $this->_relations_cache))
+                {
+                    $this->_relations_cache[$issue_id] = [
+                        'children' => [],
+                        'parents' => []
+                    ];
+                }
+                else
+                {
+                    unset($issue_ids[$key]);
+                }
+            }
+
+            if (count($issue_ids))
+            {
+                $crit = $this->getCriteria();
+                $ctn = $crit->returnCriterion(self::PARENT_ID, $issue_ids, Criteria::DB_IN);
+                $ctn->addOr(self::CHILD_ID, $issue_ids, Criteria::DB_IN);
+                $crit->addWhere($ctn);
+                $crit->addWhere(Issues::DELETED, 0);
+                $res = $this->doSelect($crit);
+
+                $issues_table = Issues::getTable();
+                if ($res)
+                {
+                    while ($row = $res->getNextRow())
+                    {
+                        $child_id = $row->get(self::CHILD_ID);
+                        $parent_id = $row->get(self::PARENT_ID);
+                        if (in_array($parent_id, $issue_ids))
+                        {
+                            $child_issue = $issues_table->selectById($child_id);
+                            if ($child_issue instanceof Issue)
+                            {
+                                $this->_relations_cache[$parent_id]['children'][$child_id] = $child_issue;
+                            }
+                        }
+                        if (in_array($child_id, $issue_ids))
+                        {
+                            $parent_issue = $issues_table->selectById($parent_id);
+                            if ($parent_issue instanceof Issue)
+                            {
+                                $this->_relations_cache[$child_id]['parents'][$parent_id] = $parent_issue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public function getRelatedIssues($issue_id)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::PARENT_ID, $issue_id);
-            $ctn->addOr(self::CHILD_ID, $issue_id);
-            $crit->addWhere($ctn);
-            $crit->addWhere(Issues::DELETED, 0);
-            $res = $this->doSelect($crit);
-            return $res;
+            if (!array_key_exists($issue_id, $this->_relations_cache))
+            {
+                $this->preloadIssueRelations([$issue_id]);
+            }
+
+            return $this->_relations_cache[$issue_id];
         }
 
         public function getIssueRelation($this_issue_id, $related_issue_id)

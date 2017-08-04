@@ -28,6 +28,8 @@
     class UserScopes extends ScopedTable
     {
 
+        protected $_scope_confirmed_cache = [];
+
         const B2DB_TABLE_VERSION = 1;
         const B2DBNAME = 'userscopes';
         const ID = 'userscopes.id';
@@ -133,12 +135,23 @@
 
         public function getUserConfirmedByScope($user_id, $scope_id)
         {
+            if (!array_key_exists($scope_id, $this->_scope_confirmed_cache)) {
+                $this->_scope_confirmed_cache[$scope_id] = [];
+            }
+
+            if (array_key_exists($user_id, $this->_scope_confirmed_cache[$scope_id])) {
+                return $this->_scope_confirmed_cache[$scope_id][$user_id];
+            }
+
             $crit = $this->getCriteria();
             $crit->addWhere(self::USER_ID, $user_id);
             $crit->addWhere(self::SCOPE, $scope_id);
             $row = $this->doSelectOne($crit);
 
-            return ($row) ? (boolean) $row->get(self::CONFIRMED) : false;
+            $value = ($row) ? (boolean) $row->get(self::CONFIRMED) : false;
+            $this->_scope_confirmed_cache[$scope_id][$user_id] = $value;
+
+            return $value;
         }
 
         public function getUserDetailsByScope($user_id, $scope_id)

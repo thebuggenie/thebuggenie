@@ -62,7 +62,6 @@
         const SETTING_ADMIN_GROUP = 'admingroup';
         const SETTING_ALLOW_REGISTRATION = 'allowreg';
         const SETTING_ALLOW_OPENID = 'allowopenid';
-        const SETTING_ALLOW_PERSONA = 'allowpersona';
         const SETTING_ALLOW_USER_THEMES = 'userthemes';
         const SETTING_AWAYSTATE = 'awaystate';
         const SETTING_DEFAULT_CHARSET = 'charset';
@@ -110,6 +109,9 @@
         const SETTING_UPLOAD_STORAGE = 'upload_storage';
         const SETTING_UPLOAD_ALLOW_IMAGE_CACHING = 'upload_allow_image_caching';
         const SETTING_UPLOAD_DELIVERY_USE_XSEND = 'upload_delivery_use_xsend';
+
+        const SETTING_USER_COMMENT_ORDER = 'comment_order';
+
         const SETTING_USER_DISPLAYNAME_FORMAT = 'user_displayname_format';
         const SETTING_USER_GROUP = 'defaultgroup';
         const SETTING_USER_TIMEZONE = 'timezone';
@@ -147,9 +149,9 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 1;
-        protected static $_ver_rev = 9;
-        protected static $_ver_name = "Abstract Apricot";
+        protected static $_ver_mn = 2;
+        protected static $_ver_rev = 0;
+        protected static $_ver_name = "On the road again";
         protected static $_defaultscope = null;
         protected static $_settings = null;
 
@@ -305,6 +307,15 @@
             return $retvar;
         }
 
+        public static function getUpgradeStatus()
+        {
+            $version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+            $current_version = $version_info[0];
+            $upgrade_available = ($current_version != self::getVersion(false));
+
+            return [$current_version, $upgrade_available];
+        }
+
         public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
         {
             return self::get($name, $module, $scope, $user_id);
@@ -421,12 +432,6 @@
             return ($setting === null) ? 'all' : $setting;
         }
 
-        public static function isPersonaEnabled()
-        {
-            $setting = self::get(self::SETTING_ALLOW_PERSONA);
-            return ($setting === null) ? true : (bool) $setting;
-        }
-
         public static function isOpenIDavailable()
         {
             if (self::isUsingExternalAuthenticationBackend())
@@ -434,15 +439,6 @@
                 return false; // No openID when using external auth
             }
             return (bool) (self::getOpenIDStatus() != 'none');
-        }
-
-        public static function isPersonaAvailable()
-        {
-            if (self::isUsingExternalAuthenticationBackend())
-            {
-                return false; // No openID when using external auth
-            }
-            return (bool) self::isPersonaEnabled();
         }
 
         public static function getUserDisplaynameFormat()
@@ -506,7 +502,7 @@
                 if (!Context::isReadySetup()) return 'The Bug Genie';
                 $name = self::get(self::SETTING_TBG_NAME);
                 if (!self::isHeaderHtmlFormattingAllowed()) $name = htmlspecialchars($name, ENT_COMPAT, Context::getI18n()->getCharset());
-                return $name;
+                return trim($name);
             }
             catch (\Exception $e)
             {
@@ -1059,27 +1055,33 @@
             $config_sections = array('general' => array(), self::CONFIGURATION_SECTION_MODULES => array());
 
             if (Context::getScope()->getID() == 1)
-                $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'icon' => 'scopes', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
+                $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'fa_icon' => 'clone', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
-            $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general_small', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'icon' => 'themes', 'details' => $i18n->__('Configure the selected theme from this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'icon' => 'roles', 'details' => $i18n->__('Configure roles in this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'details' => $i18n->__('Configure the authentication method in this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'fa_icon' => 'cog', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'fa_icon' => 'paint-brush', 'details' => $i18n->__('Configure the selected theme from this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'fa_icon' => 'user-md', 'details' => $i18n->__('Configure roles in this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'fa_icon' => 'lock', 'details' => $i18n->__('Configure the authentication method in this section'));
 
             if (Context::getScope()->isUploadsEnabled())
-                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads and attachments'), 'icon' => 'files', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
+                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads and attachments'), 'fa_icon' => 'upload', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
 
-            $config_sections['general'][self::CONFIGURATION_SECTION_IMPORT] = array('route' => 'import_home', 'description' => $i18n->__('Import data'), 'icon' => 'import_small', 'details' => $i18n->__('Import data from CSV files and other sources.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'icon' => 'projects', 'details' => $i18n->__('Set up all projects in this configuration section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUETYPES] = array('route' => 'configure_issuetypes', 'icon' => 'issuetypes', 'description' => $i18n->__('Issue types'), 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUEFIELDS] = array('route' => 'configure_issuefields', 'icon' => 'resolutiontypes', 'description' => $i18n->__('Issue fields'), 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_WORKFLOW] = array('route' => 'configure_workflow', 'icon' => 'workflow', 'description' => $i18n->__('Workflow'), 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams and clients'), 'icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_MODULES] = array('route' => 'configure_modules', 'description' => $i18n->__('Manage modules'), 'icon' => 'modules', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
+            $config_sections['general'][self::CONFIGURATION_SECTION_IMPORT] = array('route' => 'import_home', 'description' => $i18n->__('Import data'), 'fa_icon' => 'download', 'details' => $i18n->__('Import data from CSV files and other sources.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'fa_icon' => 'code', 'details' => $i18n->__('Set up all projects in this configuration section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUETYPES] = array('route' => 'configure_issuetypes', 'fa_icon' => 'files-o', 'description' => $i18n->__('Issue types'), 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUEFIELDS] = array('route' => 'configure_issuefields', 'fa_icon' => 'list', 'description' => $i18n->__('Issue fields'), 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_WORKFLOW] = array('route' => 'configure_workflow', 'fa_icon' => 'code-fork', 'description' => $i18n->__('Workflow'), 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams and clients'), 'fa_icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_MODULES] = array('route' => 'configure_modules', 'description' => $i18n->__('Manage modules'), 'fa_icon' => 'puzzle-piece', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
             foreach (Context::getModules() as $module)
             {
-                if ($module->hasConfigSettings() && $module->isEnabled())
-                    $config_sections[self::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => Context::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'details' => Context::geti18n()->__($module->getConfigDescription()), 'module' => $module->getName());
+                if ($module->hasConfigSettings() && $module->isEnabled()) {
+                    $module_array = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => Context::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'details' => Context::geti18n()->__($module->getConfigDescription()), 'module' => $module->getName());
+                    if ($module->hasFontAwesomeIcon()) {
+                        $module_array['fa_icon'] = $module->getFontAwesomeIcon();
+                        $module_array['fa_color'] = $module->getFontAwesomeColor();
+                    }
+                    $config_sections[self::CONFIGURATION_SECTION_MODULES][] = $module_array;
+                }
             }
 
             return $config_sections;

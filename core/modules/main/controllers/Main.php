@@ -5,7 +5,8 @@ namespace thebuggenie\core\modules\main\controllers;
 use thebuggenie\core\framework,
     thebuggenie\core\entities,
     thebuggenie\core\entities\tables,
-    thebuggenie\modules\agile;
+    thebuggenie\modules\agile,
+    thebuggenie\core\entities\Comment;
 
 /**
  * actions for the main module
@@ -120,7 +121,7 @@ class Main extends framework\Action
 
         if ($issue instanceof entities\Issue)
         {
-            if (!array_key_exists('viewissue_list', $_SESSION))
+            if (!array_key_exists('viewissue_list', $_SESSION) || !is_array($_SESSION['viewissue_list']))
             {
                 $_SESSION['viewissue_list'] = array();
             }
@@ -136,7 +137,7 @@ class Main extends framework\Action
 
             $this->getUser()->markNotificationsRead('issue', $issue->getID());
 
-            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false)->save();
+            framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false);
 
             \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         }
@@ -409,6 +410,13 @@ class Main extends framework\Action
                         $this->getUser()->markAllNotificationsRead();
                         $data['all'] = 'read';
                         break;
+                    case 'togglecommentsorder':
+                        $direction = $this->getUser()->getCommentSortOrder();
+                        $new_direction = ($direction == 'asc') ? 'desc' : 'asc';
+
+                        $this->getUser()->setCommentSortOrder($new_direction);
+                        $data['new_direction'] = $new_direction;
+                        break;
                 }
             }
             else
@@ -517,6 +525,31 @@ class Main extends framework\Action
                             }
                         }
                         $data['mentionables'] = array_values($mentionables);
+                        break;
+                    case 'loadcomments':
+                        switch ($request['target_type'])
+                        {
+                            case entities\Comment::TYPE_ISSUE:
+                                $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                                $data['comments'] = $this->getComponentHTML('main/commentlist', [
+                                    'comment_count_div' => 'viewissue_comment_count',
+                                    'mentionable_target_type' => 'issue',
+                                    'target_type' => Comment::TYPE_ISSUE,
+                                    'target_id' => $target->getID(),
+                                    'issue' => $target
+                                ]);
+                                break;
+                            case entities\Comment::TYPE_ARTICLE:
+                                $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
+                                $data['comments'] = $this->getComponentHTML('main/commentlist', [
+                                    'comment_count_div' => 'article_comment_count',
+                                    'mentionable_target_type' => 'article',
+                                    'target_type' => Comment::TYPE_ARTICLE,
+                                    'target_id' => $target->getID(),
+                                    'article' => $target
+                                ]);
+                                break;
+                        }
                         break;
                     default:
                         $data['unread_notifications_count'] = $this->getUser()->getNumberOfUnreadNotifications();
@@ -727,7 +760,9 @@ class Main extends framework\Action
     {
         if ($this->getUser()->hasPassword($request['tbg3_elevated_password']))
         {
-            $expiration = time() + (60 * $request->getParameter('tbg3_elevation_duration', 30));
+            // Calculate expiration period in seconds. setCookie() method should
+            // add expiration period to current time.
+            $expiration = 60 * $request->getParameter('tbg3_elevation_duration', 30);
             framework\Context::getResponse()->setCookie('tbg3_elevated_password', $this->getUser()->getPassword(), $expiration);
             return $this->renderJSON(array('elevated' => true));
         }
@@ -779,22 +814,6 @@ class Main extends framework\Action
         $this->forward($this->getRouting()->generate('home'));
     }
 
-    protected function checkScopeMembership(entities\User $user)
-    {
-        if (!framework\Context::getScope()->isDefault() && !$user->isGuest() && !$user->isConfirmedMemberOfScope(framework\Context::getScope()))
-        {
-            $route = self::getRouting()->generate('add_scope');
-            if (framework\Context::getRequest()->isAjaxCall())
-            {
-                return $this->renderJSON(array('forward' => $route));
-            }
-            else
-            {
-                $this->getResponse()->headerRedirect($route);
-            }
-        }
-    }
-
     /**
      * Do login (AJAX call)
      *
@@ -808,49 +827,6 @@ class Main extends framework\Action
         $i18n = framework\Context::getI18n();
         $options = $request->getParameters();
         $forward_url = framework\Context::getRouting()->generate('home');
-
-        if ($request->hasParameter('persona') && $request['persona'] == 'true')
-        {
-            $url = 'https://verifier.login.persona.org/verify';
-            $assert = filter_input(
-                    INPUT_POST, 'assertion', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-            );
-            //Use the $_POST superglobal array for PHP < 5.2 and write your own filter
-            $params = 'assertion=' . urlencode($assert) . '&audience=' .
-                    urlencode(framework\Context::getURLhost() . ':80');
-            $ch = curl_init();
-            $options = array(
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => TRUE,
-                CURLOPT_POST => 2,
-                CURLOPT_POSTFIELDS => $params
-            );
-            curl_setopt_array($ch, $options);
-            $result = curl_exec($ch);
-            curl_close($ch);
-            $details = json_decode($result);
-            $user = null;
-            if ($details->status == 'okay')
-            {
-                $user = entities\User::getByEmail($details->email);
-                if ($user instanceof entities\User)
-                {
-                    framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
-                    framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
-                    framework\Context::getResponse()->setCookie('tbg3_persona_session', true);
-                    $user->setOnline();
-                    $user->save();
-                    return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referer_route'], array('home', 'login'))));
-                }
-            }
-
-            if (!$user instanceof entities\User)
-            {
-                $this->getResponse()->setHttpStatus(401);
-                $this->renderJSON(array('message' => $this->getI18n()->__('Invalid login')));
-            }
-            return;
-        }
 
         if (framework\Settings::isOpenIDavailable())
             $openid = new \LightOpenID(framework\Context::getRouting()->generate('login_page', array(), false));
@@ -913,8 +889,7 @@ class Main extends framework\Action
                         framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
                         $user->setOnline();
                         $user->save();
-                        if ($this->checkScopeMembership($user))
-                            return true;
+                        $this->verifyScopeMembership($user);
 
                         return $this->forward(framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin')));
                     }
@@ -944,8 +919,8 @@ class Main extends framework\Action
                     $user->setOnline();
                     $user->save();
                     framework\Context::setUser($user);
-                    if ($this->checkScopeMembership($user))
-                        return true;
+                    $this->verifyScopeMembership($user);
+
                     if ($request->hasParameter('return_to'))
                     {
                         $forward_url = $request['return_to'];
@@ -1000,8 +975,7 @@ class Main extends framework\Action
             $this->forward403($i18n->__("Invalid login details"));
         }
 
-        if ($this->checkScopeMembership($user))
-            return true;
+        $this->verifyScopeMembership($user);
 
         $user->setOnline();
         $user->save();
@@ -1267,32 +1241,32 @@ class Main extends framework\Action
                         if ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
                             foreach ($categories as $category_id => $category) {
                                 if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true);
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false);
                                 }
                             }
                         } elseif ($setting == framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS) {
                             if ($request->hasParameter('core_' . $setting . '_all')) {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                $this->getUser()->setNotificationSetting($setting, true);
                                 foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false);
                                 }
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                                 foreach (\thebuggenie\core\entities\Project::getAll() as $project_id => $project) {
                                     if ($request->hasParameter('core_' . $setting . '_' . $project_id)) {
-                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true)->save();
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, true);
                                     } else {
-                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false)->save();
+                                        $this->getUser()->setNotificationSetting($setting . '_' . $project_id, false);
                                     }
                                 }
                             }
                         } else {
                             if ($request->hasParameter('core_' . $setting)) {
-                                $this->getUser()->setNotificationSetting($setting, true)->save();
+                                $this->getUser()->setNotificationSetting($setting, true);
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                             }
                         }
                     }
@@ -1301,20 +1275,20 @@ class Main extends framework\Action
                         if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY) {
                             foreach ($categories as $category_id => $category) {
                                 if ($request->hasParameter('core_' . $setting . '_' . $category_id)) {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, true);
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false)->save();
+                                    $this->getUser()->setNotificationSetting($setting . '_' . $category_id, false);
                                 }
                             }
                         } else {
                             if ($request->hasParameter('core_' . $setting)) {
                                 if ($setting == framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS) {
-                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting))->save();
+                                    $this->getUser()->setNotificationSetting($setting, $request->getParameter('core_' . $setting));
                                 } else {
-                                    $this->getUser()->setNotificationSetting($setting, true)->save();
+                                    $this->getUser()->setNotificationSetting($setting, true);
                                 }
                             } else {
-                                $this->getUser()->setNotificationSetting($setting, false)->save();
+                                $this->getUser()->setNotificationSetting($setting, false);
                             }
                         }
                     }
@@ -3268,7 +3242,7 @@ class Main extends framework\Action
                 {
                     if ($isFile && \thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()) {
                         $this->getResponse()->addHeader('X-Sendfile: ' . framework\Settings::getUploadsLocalpath() . $file->getRealFilename());
-                        $this->getResponse()->addHeader('X-Accel-Redirect: /files/' . $file->getRealFilename());
+                        $this->getResponse()->addHeader('X-Accel-Redirect: /private/' . $file->getRealFilename());
 
                         $this->getResponse()->renderHeaders($disableCache);
                     }
@@ -4679,11 +4653,11 @@ class Main extends framework\Action
         $this->getResponse()->setContentType('image/png');
         $this->getResponse()->setDecoration(\thebuggenie\core\framework\Response::DECORATE_NONE);
         $chain = str_split($_SESSION['activation_number'], 1);
-        $size = getimagesize(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'numbers/0.png');
+        $size = getimagesize(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'images' . DS . 'numbers' . DS . '0.png');
         $captcha = imagecreatetruecolor($size[0] * sizeof($chain), $size[1]);
         foreach ($chain as $n => $number)
         {
-            $pic = imagecreatefrompng(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . "numbers/{$number}.png");
+            $pic = imagecreatefrompng(THEBUGGENIE_PATH . DS . 'themes' . DS . framework\Settings::getThemeName() . DS . 'images' . DS . 'numbers' . DS . "{$number}.png");
             imagecopymerge($captcha, $pic, $size[0] * $n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
             imagedestroy($pic);
         }
@@ -4914,7 +4888,7 @@ class Main extends framework\Action
 
         try
         {
-            if (!($this->getUser()->canAddScrumSprints($this->selected_project) || ($this->getUser()->canManageProjectReleases($this->selected_project) && $this->getUser()->canManageProject($this->selected_project))))
+            if (!($this->getUser()->canEditMilestones($this->selected_project) || ($this->getUser()->canManageProjectReleases($this->selected_project) && $this->getUser()->canManageProject($this->selected_project))))
                 throw new \Exception($this->getI18n()->__("You don't have access to modify milestones"));
 
             switch (true)

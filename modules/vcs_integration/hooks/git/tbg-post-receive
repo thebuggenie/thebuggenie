@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
+
 # TheBugGenie post-receive hook for git, for direct access (git and tbg on same machine)
-# To use, this needs to be marked executable, and linked in to your git repo,
-# user@server:/path/to/repo/.git/hooks $ 
-#   ln -s /tbg_install/modules/vcs_integration/hooks/git/tbg-post-receive post-receive
-#   chmod +x /tbg_install/modules/vcs_integration/hooks/git/tbg-post-receive
+# To use, this needs to be marked executable, and copied into your git repo,
+# user@server:/path/to/repo/.git/hooks $
+#   cp /tbg_install/modules/vcs_integration/hooks/git/tbg-post-receive post-receive
+#   chmod +x ./post-receive
 
 #>>>>> User config
 
-# projectid comes from http://tbg_server/configure/module/vcs_integration
-# on the project settings tab
+# projectid comes from Project Settings -> VCS Integration
 projectid=1
 
 # this is the path to the installed thebuggenie.
@@ -23,29 +23,40 @@ update_tbg()
     refname=$3
 
     # Not working? uncomment the echos and see what's not arriving properly
+    #echo "Attempting to update tbg with oldhash: $oldhash newhash: $newhash refname: $refname"
 
-    #echo "Attempting to update tbg with oldhash:$oldhash newhash:$newhash"
-    changedfiles=`git diff-tree --name-status -r $newhash --no-commit-id`
-
-    # Retrieve name, log, and time. Make sure to use correct syntax for the
-    # first commit of repository (where there's no parent/oldrev).
-    if [ "$oldhash" = "0000000000000000000000000000000000000000" ]; then
-        name=`git log $newhash --pretty=format:"%an <%ae>"`
-        log=`git log $newhash --pretty=format:"%s %b"`
-        time=`git log $newhash --pretty=format:"%ct"`
+    # Ignore tag pushes
+    if [[ "$refname" == "refs/tags/"* ]]; then
+        return
+    # If no previous hash is defined then we assume this is the first commit, so process all previous commits
+    elif [[ "$oldhash" == "0000000000000000000000000000000000000000" ]]; then
+        commitlist=`git rev-list ${newhash}`
     else
-        name=`git log ^$oldhash $newhash --pretty=format:"%an <%ae>"`
-        log=`git log ^$oldhash $newhash --pretty=format:"%s %b"`
-        time=`git log ^$oldhash $newhash --pretty=format:"%ct"`
+        commitlist=`git rev-list ${oldhash}..${newhash}`
     fi
 
-    #echo "updating with name: $name"
-    #echo "updating with log: $log"
-    #echo "updating with time: $time"
-    #echo "updating files: $changedfiles"
+    # Loop through all commits
+    echo "$commitlist" | while read -r commithash
+    do
+        #echo "Update tbg with commit: $commithash"
 
-    cd $tbg_cli_path
-    ./tbg_cli vcs_integration:report_commit $projectid "$name" $newhash "$log" "$changedfiles" $oldhash $time
+        # Retrieve commit specific information.
+        parrent=`git show --no-patch --format="%P" $commithash`
+        name=`git show --no-patch --format="%an <%ae>" $commithash`
+        log=`git show --no-patch --format="%s %b" $commithash`
+        time=`git show --no-patch --format="%ct" $commithash`
+        changedfiles=`git diff-tree --name-status -r $commithash --no-commit-id`
+
+        #echo "updating with name: $name"
+        #echo "updating with log: $log"
+        #echo "updating with time: $time"
+        #echo "updating files: $changedfiles"
+
+        # Report commit to TBG
+        cd $tbg_cli_path
+        ./tbg_cli vcs_integration:report_commit $projectid "$name" $commithash "$log" "$changedfiles" $parrent $time $refname
+        cd - > /dev/null # back to git repo folder
+    done
 }
 
 if [ -n "$1" -a -n "$2" ]; then

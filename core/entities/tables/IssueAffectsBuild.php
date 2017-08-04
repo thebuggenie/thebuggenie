@@ -55,8 +55,8 @@
         {
             $crit = $this->getCriteria();
             $crit->addWhere(self::ISSUE, $issue_ids, Criteria::DB_IN);
-            $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE, array(), Criteria::DB_INNER_JOIN);
-            $crit->addJoin(Builds::getTable(), Builds::ID, self::BUILD, array(), Criteria::DB_INNER_JOIN);
+            $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE, [], Criteria::DB_INNER_JOIN);
+            $crit->addJoin(Builds::getTable(), Builds::ID, self::BUILD, [], Criteria::DB_INNER_JOIN);
             $res = $this->doSelect($crit, false);
             return $res;
         }
@@ -73,13 +73,13 @@
                 }
                 else
                 {
-                    return array();
+                    return [];
                 }
             }
             else
             {
                 $res = $this->getByIssueIDs(array($issue_id));
-                $rows = array();
+                $rows = [];
                 if ($res)
                 {
                     while ($row = $res->getNextRow())
@@ -94,17 +94,22 @@
 
         public function preloadValuesByIssueIDs($issue_ids)
         {
-            $this->_preloaded_values = array();
+            $this->_preloaded_values = [];
+            $build_ids = [];
             $res = $this->getByIssueIDs($issue_ids);
             if ($res)
             {
                 while ($row = $res->getNextRow())
                 {
                     $issue_id = $row->get(self::ISSUE);
-                    if (!array_key_exists($issue_id, $this->_preloaded_values)) $this->_preloaded_values[$issue_id] = array();
+                    $build_id = $row->get(self::BUILD);
+                    if (!array_key_exists($issue_id, $this->_preloaded_values)) $this->_preloaded_values[$issue_id] = [];
                     $this->_preloaded_values[$issue_id][] = $row;
+                    $build_ids[$build_id] = $build_id;
                 }
             }
+
+            return $build_ids;
         }
 
         public function clearPreloadedValues()

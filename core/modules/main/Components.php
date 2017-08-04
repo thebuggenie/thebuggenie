@@ -232,6 +232,8 @@
                     elseif ($customdatatype->hasPredefinedOptions())
                     {
                         $customfields_list[$key]['name'] = ($customvalue instanceof entities\common\Identifiable) ? $customvalue->getName() : '';
+                        $customfields_list[$key]['value'] = ($customvalue instanceof entities\common\Identifiable) ? $customvalue->getId() : '';
+                        $customfields_list[$key]['identifiable'] = ($customvalue instanceof entities\common\Identifiable) ? $customvalue : null;
                         $customfields_list[$key]['name_visible'] = (bool) ($customvalue instanceof entities\common\Identifiable);
                         $customfields_list[$key]['noname_visible'] = (bool) (!$customvalue instanceof entities\common\Identifiable);
                         $customfields_list[$key]['choices'] = $customdatatype->getOptions();
@@ -537,6 +539,10 @@
             else
             {
                 //$this->error = framework\Context::geti18n()->__('Please log in');
+            }
+
+            if (framework\Context::hasMessage('login_error')) {
+                $this->error = framework\Context::getMessageAndClear('login_error');
             }
         }
 

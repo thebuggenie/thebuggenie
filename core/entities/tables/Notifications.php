@@ -239,5 +239,10 @@
                     break;
             }
         }
-        
+
+        protected function _setupIndexes()
+        {
+            $this->_addIndex('userid_targetid_notificationtype_scope', array(self::USER_ID, self::TARGET_ID, self::NOTIFICATION_TYPE, self::SCOPE));
+        }
+
     }

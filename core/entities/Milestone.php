@@ -21,8 +21,8 @@
      * @package thebuggenie
      * @subpackage main
      *
-         * @method \thebuggenie\core\entities\tables\Milestones getB2DBTable Returns an instance of the associated table object
-         *
+     * @method static \thebuggenie\core\entities\tables\Milestones getB2DBTable Returns an instance of the associated table object
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Milestones")
      */
     class Milestone extends IdentifiableScoped
