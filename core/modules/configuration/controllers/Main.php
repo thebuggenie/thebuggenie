@@ -64,37 +64,22 @@
          */
         public function runCheckUpdates(framework\Request $request)
         {
-            $data = json_decode(file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
-            if (!is_object($data))
+            $update_check = framework\Context::checkForUpdates();
+
+            if ($update_check["uptodate"] === null)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Failed to check for updates'), 'message' => framework\Context::getI18n()->__('The response from The Bug Genie website was invalid')));
+                return $this->renderJSON([
+                    'title' => $update_check['title'],
+                    'message' => $update_check['message']
+                ]);
             }
 
-            $outofdate = false;
-
-            // major
-            if ($data->maj > framework\Settings::getMajorVer())
-            {
-                $outofdate = true;
-            }
-            elseif ($data->min > framework\Settings::getMinorVer() && ($data->maj == framework\Settings::getMajorVer()))
-            {
-                $outofdate = true;
-            }
-            elseif ($data->rev > framework\Settings::getRevision() && ($data->maj == framework\Settings::getMajorVer()) && ($data->min == framework\Settings::getMinorVer()))
-            {
-                $outofdate = true;
-            }
-
-            if (!$outofdate)
-            {
-                return $this->renderJSON(array('uptodate' => true, 'title' => framework\Context::getI18n()->__('The Bug Genie is up to date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver', array('%ver' => $data->nicever))));
-            }
-            else
-            {
-                return $this->renderJSON(array('uptodate' => false, 'title' => framework\Context::getI18n()->__('The Bug Genie is out of date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', array('%ver' => $data->nicever))));
-            }
+            return $this->renderJSON([
+                'uptodate' => $update_check['uptodate'],
+                'title' => $update_check['title'],
+                'message' => $update_check['message']
+            ]);
         }
 
         /**

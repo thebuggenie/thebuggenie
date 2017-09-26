@@ -2745,4 +2745,77 @@ class Context
         return ! empty(self::$_configuration['core']['minified_assets']);
     }
 
+    /**
+     * Checks if the running version is up-to-date against information
+     * available on official TBG website.
+     *
+     *
+     * @return array
+     *   An array describing whether the running version is up-to-date. Contains the following keys:
+     *
+     *   uptodate (true, false, or null)
+     *     Denotes whether the running version is up-to-date or
+     *     not. If null, there was a failure while trying to open the
+     *     version information from TBG website, or the TBG website
+     *     returned invalid data.
+     *
+     *   title (string)
+     *     User-friendly localised message title that can be shown to
+     *     user.
+     *
+     *   message (string)
+     *     User-friendly localised message that can be shown to user.
+     */
+    public static function checkForUpdates()
+    {
+        // Suppress warnings from file_get_contents, in case file
+        // cannot be opened we will only show a simple error message
+        // to user instead since json_decode will fail too.
+        $data = json_decode(@file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
+
+        // Failed to fetch data, parse it, or missing the necessary information.
+        if (!is_object($data) || !isset($data->maj, $data->min, $data->rev, $data->nicever))
+        {
+            $uptodate = null;
+            $title = Context::getI18n()->__('Failed to check for updates');
+            $message = Context::getI18n()->__('The response from The Bug Genie website was invalid');
+        }
+        else
+        {
+            // Assume we are up-to-date unless proven otherwise.
+            $uptodate = true;
+
+            // Check if we are out of date.
+            if ($data->maj > Settings::getMajorVer())
+            {
+                $uptodate = false;
+            }
+            elseif ($data->min > Settings::getMinorVer() && ($data->maj == Settings::getMajorVer()))
+            {
+                $uptodate = false;
+            }
+            elseif ($data->rev > Settings::getRevision() && ($data->maj == Settings::getMajorVer()) && ($data->min == Settings::getMinorVer()))
+            {
+                $uptodate = false;
+            }
+
+            // Set nice title/message for user.
+            if ($uptodate)
+            {
+                $title = Context::getI18n()->__('The Bug Genie is up to date');
+                $message = Context::getI18n()->__('The latest version is %ver', ['%ver' => $data->nicever]);
+            }
+            else
+            {
+                $title = Context::getI18n()->__('The Bug Genie is out of date');
+                $message = Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $data->nicever]);
+            }
+        }
+
+        return [
+            "uptodate" => $uptodate,
+            "title" => $title,
+            "message" => $message
+        ];
+    }
 }
