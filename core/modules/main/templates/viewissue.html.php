@@ -366,9 +366,10 @@
                                     <div id="viewissue_log_items">
                                         <ul>
                                             <?php $previous_time = null; ?>
+                                            <?php $include_user = true; ?>
                                             <?php foreach (array_reverse($issue->getLogEntries()) as $item): ?>
                                                 <?php if (!$item instanceof \thebuggenie\core\entities\LogItem) continue; ?>
-                                                <?php include_component('main/issuelogitem', compact('item', 'previous_time')); ?>
+                                                <?php include_component('main/issuelogitem', compact('item', 'previous_time', 'include_user')); ?>
                                                 <?php $previous_time = $item->getTime(); ?>
                                             <?php endforeach; ?>
                                         </ul>

@@ -6,7 +6,7 @@
             <?php endif; ?>
         </td>
         <td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-bottom: <?php echo (isset($extra_padding) && $extra_padding) ? 15 : 10; ?>px;<?php endif; ?>">
-            <?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_time) && $include_time == true)): ?><span class="time "><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
+            <?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_time) && $include_time == true)): ?><span class="time"><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
                 <?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo image_tag($issue->getProject()->getSmallIconName(), array('class' => 'issuelog-project-logo'), $issue->getProject()->hasSmallIcon()); ?></span><?php endif; ?>
             <?php endif; ?>
