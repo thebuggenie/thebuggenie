@@ -3751,7 +3751,12 @@ class Main extends framework\Action
                     break;
                 case 'project_config':
                     $template_name = 'project/projectconfig_container';
-                    $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    if ($request['project_id']) {
+                        $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    } else {
+                        $project = new entities\Project();
+                        framework\Context::setCurrentProject($project);
+                    }
                     $options['project'] = $project;
                     $options['section'] = $request->getParameter('section', 'info');
                     if ($request->hasParameter('edition_id'))

@@ -23,6 +23,9 @@
                 <div class="project_overview">
                     <div class="header">
                         <span><?php echo __('Projects'); ?></span>
+                        <div class="button-group">
+                            <?php echo javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
+                        </div>
                         <div class="dropper_container">
                             <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
                             <ul class="more_actions_dropdown popup_box">
