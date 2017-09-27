@@ -189,11 +189,11 @@
                     'jquery.ui.touch-punch': {
                         deps: ['jquery-ui']
                     },
-                    'jquery.animate-enhanced.min': {
+                    'jquery.animate-enhanced<?= $minified ?>': {
                         deps: ['jquery']
                     },
                      'jquery-ui': {
-                         deps: ['jquery.animate-enhanced.min']
+                         deps: ['jquery.animate-enhanced<?= $minified ?>']
                      },
                     deps: [<?= join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }

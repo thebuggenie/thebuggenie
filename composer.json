@@ -35,6 +35,7 @@
         "ext-json" : "*",
         "ext-mbstring" : "*",
         "ext-pcre" : "*",
+        "ext-xml" : "*",
         "ext-Reflection" : "*",
         "lib-pcre" : "8.*",
         "net/http" : "dev-master"

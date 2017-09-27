@@ -1,4 +1,4 @@
 core:
     debug: false
     log_file: ~
-    minified_assets: true
+    minified_assets: false
