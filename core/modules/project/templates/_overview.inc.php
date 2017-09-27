@@ -11,7 +11,7 @@
     --><div class="project_information_block">
         <div class="project_information_container">
             <span class="project_name">
-                <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span class="project_name_span">'.$project->getName()."</span>"); ?><?php if ($project->usePrefix()) echo '<span class="project_prefix_span">'.mb_strtoupper($project->getPrefix()).'</span>'; ?><?php if ($tbg_user->canEditProjectDetails($project)): ?><span class="button-group project-config-buttons"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver project-settings')); ?></span><?php endif; ?>
+                <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span class="project_name_span">'.$project->getName()."</span>"); ?><?php if ($project->usePrefix()) echo '<span class="project_prefix_span">'.mb_strtoupper($project->getPrefix()).'</span>'; ?>
             </span>
             <div class="project_description">
                 <?= tbg_parse_text($project->getDescription()); ?>
@@ -29,37 +29,13 @@
             </div>
         </div>
     </div><!--
-    --><nav class="button-group">
-        <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-            <?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
-        <?php endif; ?>
-        <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
-            <div class="button-dropdown button-issues-container">
-                <?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', array('class' => 'button button-silver button-issues righthugging')); ?><!--
-                --><a class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
-                --><ul id="goto_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; margin-top: 25px; display: none;">
-                    <li class="finduser_container">
-                        <label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
-                        <form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
-                            <input type="hidden" name="fs[text][o]" value="=">
-                            <input type="search" name="fs[text][v]" id="goto_issue_<?php echo $project->getID(); ?>_input" value="" placeholder="<?php echo __('Enter an issue number to jump to an issue'); ?>">&nbsp;<input type="submit" value="<?php echo __('Go to'); ?>">
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        <?php endif; ?><!--
+    --><nav class="button-group"><!--
         --><?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?><!--
-        --><?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
-            <div class="button-dropdown button-report-issue-container">
-                <?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'button button-green button-report-issue lefthugging righthugging')); ?><!--
-                --><a class="dropper button button-green last lefthugging reportissue_dropdown_button" href="javascript:void(0);"><?= fa_image_tag('caret-down'); ?></a><!--
-                --><ul id="create_issue_<?php echo $project->getID(); ?>" class="more_actions_dropdown popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
-                    <?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
-                        <li><?php echo javascript_link_tag(image_tag($issuetype->getIcon() . '_tiny.png' ) . '<span>'.__($issuetype->getName()).'</span>', array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId(), 'issuetype' => $issuetype->getKey())) . "', this);")); ?></li>
-                    <?php endforeach;?>
-                </ul>
-            </div>
-        <?php endif; ?>
+        --><?php if ($tbg_user->canSearchForIssues() && $tbg_user->hasPageAccess('project_issues', $project->getID())): ?><!--
+            --><?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', array('class' => 'nav-button button-issues')); ?><!--
+        --><?php endif; ?><?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?><!--
+            --><?php echo javascript_link_tag(fa_image_tag('plus-square') . '<span>'.__('New issue').'</span>', array('onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $project->getId())) . "', this);", 'class' => 'nav-button button-report-issue')); ?><!--
+        --><?php endif; ?>
     </nav>
     <?php if ($project->hasChildren()): ?>
     <div class="subprojects_list">
@@ -83,8 +59,14 @@
         </table>
     <?php elseif ($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>
         <div class="search_results" style="clear: both;">
-        	<?php $current_spent_time = -1; ?>
-            <?php include_component('search/results_normal', array('search_object' => $project->getOpenIssuesSearchForFrontpageSummary(), 'actionable' => false)); ?>
+            <?php $current_spent_time = -1; ?>
+            <?php include_component(
+                    'search/results_normal', 
+                    array(
+                        'search_object' => $project->getOpenIssuesSearchForFrontpageSummary(), 
+                        'actionable'    => false,
+                        'show_summary'  => false
+                    )); ?>
         </div>
     <?php elseif ($project->isMilestonesVisibleInFrontpageSummary() && count($project->getVisibleMilestones())): ?>
         <table style="width: 100%; margin-top: 5px;" cellpadding=0 cellspacing=0>
