@@ -2560,7 +2560,13 @@ class Context
 
             self::setupI18n();
 
-            self::_cacheAvailablePermissions();
+            // Available permissions cannot be cached during
+            // installation because the scope is not set-up at that
+            // point. Permissions also must be cached at this point,
+            // and not together with self::initializeUser since i18n
+            // system must be initialised beforehand.
+            if (!self::isInstallmode())
+                self::_cacheAvailablePermissions();
 
             if (self::$_redirect_login == 'login') {
 
