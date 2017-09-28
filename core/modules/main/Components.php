@@ -15,6 +15,11 @@
     class Components extends framework\ActionComponent
     {
 
+        public function componentIssueLogItem()
+        {
+            $this->showtrace = (date('YmdHis', $this->previous_time) != date('YmdHis', $this->item->getTime()));
+        }
+
         public function componentUserdropdown()
         {
             framework\Logging::log('user dropdown component');

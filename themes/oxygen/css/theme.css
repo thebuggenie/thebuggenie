@@ -6952,7 +6952,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #viewissue_log_items > ul > li {
     list-style: none;
     margin: 0 0 15px 0;
-    padding: 2px 0 0 160px;
+    padding: 2px 0 0 180px;
     position: relative;
     min-height: 55px;
 }
@@ -6964,7 +6964,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #viewissue_log_items .fa {
     position: absolute;
     top: 3px;
-    left: 125px;
+    left: 153px;
     padding: 4px;
     border: 1px solid transparent;
 }
