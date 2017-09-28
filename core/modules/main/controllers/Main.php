@@ -311,7 +311,7 @@ class Main extends framework\Action
         $this->forward403unless($this->getUser()->hasPageAccess('home'));
         $this->links = tables\Links::getTable()->getMainLinks();
         $this->show_project_list = framework\Settings::isFrontpageProjectListVisible();
-        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS);
+        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
         if ($this->show_project_list || $this->show_project_config_link)
         {
             $projects = entities\Project::getAllRootProjects(false);
