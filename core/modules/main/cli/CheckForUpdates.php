@@ -22,6 +22,7 @@ use thebuggenie\core\framework;
  */
 class CheckForUpdates extends \thebuggenie\core\framework\cli\Command
 {
+    const UPTODATE = 0;
     const OUTDATED = 1;
     const ERROR = 2;
 
@@ -33,30 +34,43 @@ class CheckForUpdates extends \thebuggenie\core\framework\cli\Command
 
     public function do_execute()
     {
-        $update_check = framework\Context::checkForUpdates();
+        $latest_version = framework\Context::getLatestAvailableVersionInformation();
 
-        if ($update_check["uptodate"] === null)
+        if ($latest_version === null)
         {
-            $this->cliEcho($update_check["title"], "red", "bold");
-            $this->cliEcho("\n");
-            $this->cliEcho($update_check["message"]);
-            $this->cliEcho("\n");
-            exit(self::ERROR);
+            $uptodate = null;
+            $title = framework\Context::getI18n()->__('Failed to check for updates');
+            $message = framework\Context::getI18n()->__('The response from The Bug Genie website was invalid');
+            $title_color = "red";
+            $exit_code = self::UPTODATE;
         }
-        elseif ($update_check["uptodate"] === false)
+        else
         {
-            $this->cliEcho($update_check["title"], "yellow", "bold");
-            $this->cliEcho("\n");
-            $this->cliEcho($update_check["message"]);
-            $this->cliEcho("\n");
-            exit(self::OUTDATED);
+            $update_available = framework\Context::isUpdateAvailable($latest_version);
+
+            if ($update_available)
+            {
+                $uptodate = false;
+                $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
+                $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                $title_color = "yellow";
+                $exit_code = self::OUTDATED;
+            }
+            else
+            {
+                $uptodate = true;
+                $title = framework\Context::getI18n()->__('The Bug Genie is up to date');
+                $message = framework\Context::getI18n()->__('The latest version is %ver', ['%ver' => $latest_version->nicever]);
+                $title_color = "green";
+                $exit_code = self::ERROR;
+            }
         }
-        elseif ($update_check["uptodate"] === true)
-        {
-            $this->cliEcho($update_check["title"], "green", "bold");
-            $this->cliEcho("\n");
-            $this->cliEcho($update_check["message"]);
-            $this->cliEcho("\n");
-        }
+
+        $this->cliEcho($title, $title_color, "bold");
+        $this->cliEcho("\n");
+        $this->cliEcho($message);
+        $this->cliEcho("\n");
+
+        exit($exit_code);
     }
 }

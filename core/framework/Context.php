@@ -218,6 +218,14 @@ class Context
     protected static $_redirect_login = null;
 
     /**
+     * Information about the latest available version. Should be null
+     * in case the information has not been fetched (or fetching
+     * failed), or an array with keys: maj, min, rev, nicever.
+     *
+     */
+    protected static $_latest_available_version = null;
+
+    /**
      * Returns whether or not we're in install mode
      *
      * @return boolean
@@ -2746,76 +2754,89 @@ class Context
     }
 
     /**
-     * Checks if the running version is up-to-date against information
-     * available on official TBG website.
+     * Retrieves information about the latest available version from
+     * TBG website.
      *
      *
      * @return array
-     *   An array describing whether the running version is up-to-date. Contains the following keys:
      *
-     *   uptodate (true, false, or null)
-     *     Denotes whether the running version is up-to-date or
-     *     not. If null, there was a failure while trying to open the
-     *     version information from TBG website, or the TBG website
-     *     returned invalid data.
+     *   null, if latest available version information could not be
+     *   retrieved due to errors, otherwise an array describing the
+     *   latest available version with the following keys:
      *
-     *   title (string)
-     *     User-friendly localised message title that can be shown to
-     *     user.
+     *   maj
+     *     Major version number.
      *
-     *   message (string)
-     *     User-friendly localised message that can be shown to user.
+     *   min
+     *     Minor version number.
+     *
+     *   rev
+     *     Revision version number.
+     *
+     *   nicever
+     *     Formatted version string suitable for showing to user.
      */
-    public static function checkForUpdates()
+    public static function getLatestAvailableVersionInformation()
     {
-        // Suppress warnings from file_get_contents, in case file
-        // cannot be opened we will only show a simple error message
-        // to user instead since json_decode will fail too.
-        $data = json_decode(@file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
-
-        // Failed to fetch data, parse it, or missing the necessary information.
-        if (!is_object($data) || !isset($data->maj, $data->min, $data->rev, $data->nicever))
+        // Use cached information if available.
+        if (self::$_latest_available_version !== null)
         {
-            $uptodate = null;
-            $title = Context::getI18n()->__('Failed to check for updates');
-            $message = Context::getI18n()->__('The response from The Bug Genie website was invalid');
+            return self::$_latest_available_version;
         }
-        else
+
+        // Set-up client and retrieve version information.
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://www.thebuggenie.com/',
+            'http_errors' => false]);
+        $response = $client->request('GET', '/updatecheck.php');
+
+        // Verify status code.
+        if ($response->getStatusCode() == 200)
         {
-            // Assume we are up-to-date unless proven otherwise.
-            $uptodate = true;
+            // Decode response.
+            $info = json_decode($response->getBody());
 
-            // Check if we are out of date.
-            if ($data->maj > Settings::getMajorVer())
+            // Cache value if response was decoded and necessary
+            // information was read from it.
+            if (is_object($info) && isset($info->maj, $info->min, $info->rev, $info->nicever))
             {
-                $uptodate = false;
-            }
-            elseif ($data->min > Settings::getMinorVer() && ($data->maj == Settings::getMajorVer()))
-            {
-                $uptodate = false;
-            }
-            elseif ($data->rev > Settings::getRevision() && ($data->maj == Settings::getMajorVer()) && ($data->min == Settings::getMinorVer()))
-            {
-                $uptodate = false;
-            }
-
-            // Set nice title/message for user.
-            if ($uptodate)
-            {
-                $title = Context::getI18n()->__('The Bug Genie is up to date');
-                $message = Context::getI18n()->__('The latest version is %ver', ['%ver' => $data->nicever]);
-            }
-            else
-            {
-                $title = Context::getI18n()->__('The Bug Genie is out of date');
-                $message = Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $data->nicever]);
+                self::$_latest_available_version = $info;
             }
         }
 
-        return [
-            "uptodate" => $uptodate,
-            "title" => $title,
-            "message" => $message
-        ];
+        return self::$_latest_available_version;
     }
+
+    /**
+     * Checks if an update is available based on passed-in version
+     * information.
+     *
+     * @param array version Version information. Should contain keys: maj (major version number),
+     *                      min (minor version number), rev (revision number),
+     *                      nicever (formatted version string that can be shown to user).
+     *
+     * @return bool
+     *   true, if an update is available, false otherwise.
+     */
+    public static function isUpdateAvailable($version)
+    {
+        $update_available = false;
+
+        // Check if we are out of date.
+        if ($version->maj > Settings::getMajorVer())
+        {
+            $update_available = true;
+        }
+        elseif ($version->min > Settings::getMinorVer() && ($version->maj == Settings::getMajorVer()))
+        {
+            $update_available = true;
+        }
+        elseif ($version->rev > Settings::getRevision() && ($version->maj == Settings::getMajorVer()) && ($version->min == Settings::getMinorVer()))
+        {
+            $update_available = true;
+        }
+
+        return $update_available;
+    }
+
 }

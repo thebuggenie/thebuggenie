@@ -64,21 +64,37 @@
          */
         public function runCheckUpdates(framework\Request $request)
         {
-            $update_check = framework\Context::checkForUpdates();
+            $latest_version = framework\Context::getLatestAvailableVersionInformation();
 
-            if ($update_check["uptodate"] === null)
+            if ($latest_version === null)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON([
-                    'title' => $update_check['title'],
-                    'message' => $update_check['message']
-                ]);
+                $uptodate = null;
+                $title = framework\Context::getI18n()->__('Failed to check for updates');
+                $message = framework\Context::getI18n()->__('The response from The Bug Genie website was invalid');
+            }
+            else
+            {
+                $update_available = framework\Context::isUpdateAvailable($latest_version);
+
+                if ($update_available)
+                {
+                    $uptodate = false;
+                    $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
+                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                }
+                else
+                {
+                    $uptodate = true;
+                    $title = framework\Context::getI18n()->__('The Bug Genie is up to date');
+                    $message = framework\Context::getI18n()->__('The latest version is %ver', ['%ver' => $latest_version->nicever]);
+                }
             }
 
             return $this->renderJSON([
-                'uptodate' => $update_check['uptodate'],
-                'title' => $update_check['title'],
-                'message' => $update_check['message']
+                'uptodate' => $uptodate,
+                'title' => $title,
+                'message' => $message
             ]);
         }
 
