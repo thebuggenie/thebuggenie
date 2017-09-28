@@ -23,14 +23,17 @@
          */
         public function preExecute(framework\Request $request, $action)
         {
-            if (in_array($action, $this->anonymous_project_routes)) {
+            $project_id = $request['project_id'];
+            $project_key = $request['project_key'];
+
+            if (!$project_id && !$project_key && in_array($action, $this->anonymous_project_routes)) {
                 $this->selected_project = new entities\Project();
 
             } else {
                 try {
-                    if ($project_id = $request['project_id'])
+                    if ($project_id)
                         $this->selected_project = entities\Project::getB2DBTable()->selectById($project_id);
-                    elseif ($project_key = $request['project_key'])
+                    elseif ($project_key)
                         $this->selected_project = entities\Project::getByKey($project_key);
                 }
                 catch (\Exception $e) { }
