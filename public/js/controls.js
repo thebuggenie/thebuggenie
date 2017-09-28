@@ -226,7 +226,7 @@ Autocompleter.Base = Class.create({
     if(this.index > 0) this.index--;
       else this.index = this.entryCount-1;
 		
-		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
+		if (this.update.getElementsByTagName('li')[this.index].hasClassName('disabled') == false || this.index == curr_index)
 			found_item = true;
 	}
     this.getEntry(this.index).scrollIntoView(true);
@@ -239,14 +239,14 @@ Autocompleter.Base = Class.create({
     if(this.index < this.entryCount-1) this.index++;
       else this.index = 0;
 	
-		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
+		if (this.update.getElementsByTagName('li')[this.index].hasClassName('disabled') == false || this.index == curr_index)
 			found_item = true;
 	}
     this.getEntry(this.index).scrollIntoView(false);
   },
 
   getEntry: function(index) {
-    return this.update.firstChild.childNodes[index];
+    return this.update.getElementsByTagName('li')[index];
   },
 
   getCurrentEntry: function() {

@@ -810,7 +810,7 @@ header nav > ul {
     transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 #quicksearchform input[type="search"]:focus {
-    width: 300px;
+    width: 320px;
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -1762,14 +1762,17 @@ div.autocomplete {
     z-index: 200000;
     background-color: white;
     border: 0;
-    padding: 0;
-    box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.2);
+    padding: 7px 0;
+    box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin: 2px 0 0 0;
 }
 
 div.autocomplete ul {
     list-style-type: none;
     margin: 0;
-    width: 320px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 0;
     border: 0;
     display: block;
@@ -1777,9 +1780,11 @@ div.autocomplete ul {
 
 div.autocomplete li.header {
     padding-top: 15px;
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 0.85em;
+    font-weight: normal;
     border-top: 0;
+    color: #AAA;
+    text-transform: uppercase;
 }
 
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover {
@@ -1790,12 +1795,17 @@ div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover {
     color: #333;
 }
 
-div.autocomplete ul li div {
-    font-weight: bold;
+div.autocomplete ul li .link_container {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 div.autocomplete ul li img {
-    float: left;
+    display: inline-block;
+    vertical-align: middle;
     margin-right: 5px;
 }
 
@@ -1851,18 +1861,19 @@ div.autocomplete ul li.no_issues_found {
 
 div.autocomplete ul li {
     border-top: 1px dotted #CCC;
-    font-size: 0.9em;
+    font-size: 1em;
     list-style-type: none;
     display: block;
     width: 100%;
     margin: 0;
-    padding: 2px 2px 2px 5px;
+    padding: 7px 10px;
     cursor: pointer;
     font-weight: normal;
     text-align: left;
     background-color: #FFF;
     color: #555;
     line-height: 1.4;
+    box-sizing: border-box;
 }
 
 div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected {
@@ -1873,10 +1884,26 @@ div.autocomplete ul li.searchterm:first-line {
     font-style: italic;
 }
 
+div.autocomplete ul li.searchterm .informal {
+    color: #AAA;
+}
+
 div.autocomplete ul li .hidden {
     display: none;
 }
 
+div.autocomplete ul li .informal {
+    font-size: 0.9em;
+}
+
+div.autocomplete ul li div.informal.attached {
+    margin-top: 0;
+}
+
+div.autocomplete ul li > img:first-child {
+    width: 16px;
+    height: 16px;
+}
 /* end autocompleter */
 
 /* tabbed menu styles */
@@ -18276,50 +18303,6 @@ div[id^='comment_reply_indicator_'] {
 
 /* Menu */
 
-#searchfor_autocomplete_choices {
-    left: 7px !important;
-    width: 331px !important;
-    box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.2);
-}
-
-#searchfor_autocomplete_choices li {
-    font-size: 1em;
-}
-
-#searchfor_autocomplete_choices li .informal {
-    font-size: 0.9em;
-}
-
-#searchfor_autocomplete_choices ul li {
-    padding: 5px 4px 5px 7px;
-}
-
-#searchfor_autocomplete_choices {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#searchfor_autocomplete_choices ul > li:last-child {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#searchfor_autocomplete_choices li > div:first-of-type {
-    margin-bottom: 2px;
-}
-
-#searchfor_autocomplete_choices li > div.informal {
-    margin-top: 2px;
-}
-
-#searchfor_autocomplete_choices li > div.informal.attached {
-    margin-top: 0;
-}
-
-#searchfor_autocomplete_choices li > img:first-child {
-    width: 16px !important;
-    height: 16px !important;
-}
 
 #topmenu-container .tab_menu li .menuitem_container a {
     margin-top: 2px;
