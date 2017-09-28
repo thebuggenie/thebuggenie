@@ -35,7 +35,7 @@ namespace thebuggenie\core\helpers;
  *
  * $pagination = new Pagination($my_items, $base_url, $request, $extra_get_parameters);
  *
- * // Set-up the tempalte context.
+ * // Set-up the template context.
  * $this->my_items = $pagination->getPageItems();
  * $this->pagination = $pagination;
  *
@@ -202,7 +202,6 @@ class Pagination
 
     /**
      * Returns an array containing all items that belong to requested page.
-     *
      *
      * @return array
      */

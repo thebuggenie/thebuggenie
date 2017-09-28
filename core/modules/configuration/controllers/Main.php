@@ -2383,7 +2383,10 @@
             }
             $this->scope_deleted = framework\Context::getMessageAndClear('scope_deleted');
             $this->scope_saved = framework\Context::getMessageAndClear('scope_saved');
-            $this->scopes = entities\Scope::getAll();
+            $pagination_scopes = tables\Scopes::getTable()->getPaginationItems();
+            $pagination = new \thebuggenie\core\helpers\Pagination($pagination_scopes, $this->getRouting()->generate('configure_scopes'), $request);
+            $this->scopes = tables\Scopes::getTable()->getByIds($pagination->getPageItems());
+            $this->pagination = $pagination;
         }
 
         public function runScope(framework\Request $request)

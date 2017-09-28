@@ -57,11 +57,13 @@
                     </form>
                     <br style="clear: both;">
                 </div>
+                <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
                 <div id="scopes_list" style="margin-top: 5px;">
                     <?php foreach ($scopes as $scope): ?>
                         <?php include_component('configuration/scopebox', array('scope' => $scope)); ?>
                     <?php endforeach; ?>
                 </div>
+                <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
             </div>
         </td>
     </tr>
