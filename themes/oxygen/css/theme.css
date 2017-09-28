@@ -1001,7 +1001,7 @@ input[type=checkbox].semi-checked {
     width: 310px;
     background-color: transparent;
     vertical-align: top;
-    padding: 7px 5px 0 5px;
+    padding: 5px;
     position: relative;
     transition: width 0.3s ease;
     box-shadow: 10px 0 15px -17px rgba(0, 0, 0, 0.8);
@@ -2514,9 +2514,6 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     display: inline-block;
     vertical-align: middle;
     margin-left: 15px;
-}
-.project_strip .project_description {
-    display: none;
 }
 .project_strip .divider {
     width: 1px;
@@ -18912,3 +18909,47 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     padding: 2px 5px 1px 5px !important;
 }
 /* end generic paginator */
+
+/* onboarding blocks */
+
+.onboarding {
+    font-size: 1.6em;
+    font-weight: normal;
+    color: rgba(100, 100, 100, 0.3);
+    text-align: center;
+    line-height: 1.6;
+    padding: 0 0 35px 0;
+    display: block;
+    margin: 0 auto;
+}
+
+.onboarding .helper-text {
+    display: block;
+    text-align: left;
+}
+
+.onboarding img {
+    opacity: 0.2;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 25px;
+}
+
+.onboarding.large {
+    width: 450px;
+}
+
+.onboarding.large img {
+    width: calc(100% - 50px);
+}
+
+.onboarding.small {
+    width: 128px;
+}
+
+.onboarding.small img {
+    width: calc(100% - 20px);
+}
+
+/* end onboarding images */

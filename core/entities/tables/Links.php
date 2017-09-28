@@ -155,13 +155,9 @@
             $scope_id = $scope->getID();
             
             $this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
-            $this->addMainMenuLink('http://forum.thebuggenie.com', 'The Bug Genie forums', 2, $scope_id);
-            $this->addMainMenuLink(null, null, 3, $scope_id);
+            $this->addMainMenuLink(null, null, 2, $scope_id);
             $this->addMainMenuLink('http://issues.thebuggenie.com', 'Online issue tracker', 4, $scope_id);
             $this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope_id);
-            $this->addMainMenuLink(null, null, 6, $scope_id);
-            $this->addMainMenuLink('http://thebuggenie.wordpress.com/', 'The Bug Genie team blog', 7, $scope_id);
-            $this->addMainMenuLink('', "''Stay up to date on the latest development''", 8, $scope_id);
         }
 
         protected function _setupIndexes()
