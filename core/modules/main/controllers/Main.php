@@ -320,7 +320,9 @@ class Main extends framework\Action
                 if (!$project->hasAccess())
                     unset($projects[$k]);
             }
-            $this->projects = $projects;
+            $pagination = new \thebuggenie\core\helpers\Pagination($projects, $this->getRouting()->generate('home'), $request);
+            $this->pagination = $pagination;
+            $this->projects = $pagination->getPageItems();
             $this->project_count = count($this->projects);
         }
     }
