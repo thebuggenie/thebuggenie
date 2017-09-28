@@ -153,6 +153,7 @@
             $ctn = $crit->returnCriterion(self::NAME, "%{$projectname}%", Criteria::DB_LIKE);
             $ctn->addOr(self::KEY, strtolower("%{$projectname}%"), Criteria::DB_LIKE);
             $crit->addWhere($ctn);
+            $crit->addWhere(self::DELETED, false);
             $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
 
             return $this->select($crit);
