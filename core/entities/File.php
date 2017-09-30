@@ -240,4 +240,13 @@
             return $event->getReturnValue();
         }
 
-    }
+
+        public static function getFileExtension($filename)
+        {
+            if (strlen($filename) > 0)
+            {
+                return pathinfo($filename, PATHINFO_EXTENSION);
+            }
+            return '';
+        }
+     }
