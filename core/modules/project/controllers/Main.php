@@ -9,17 +9,16 @@ use thebuggenie\core\framework,
 
 /**
  * actions for the project module
+ *
+ * @property entities\Client $selected_client
  */
 class Main extends helpers\ProjectActions
 {
 
-    /**
-     * The currently selected client
-     *
-     * @var entities\Client
-     * @access protected
-     * @property $selected_client
-     */
+    protected $anonymous_project_routes = [
+        'getUpdatedProjectKey',
+        'configureProjectSettings'
+    ];
 
     public function getAuthenticationMethodForAction($action)
     {
@@ -1329,8 +1328,9 @@ class Main extends helpers\ProjectActions
 
             $message = ($old_key != $this->selected_project->getKey()) ? framework\Context::getI18n()->__('%IMPORTANT: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT' => '<b>' . framework\Context::getI18n()->__('IMPORTANT') . '</b>')) : '';
 
-            if ($request->hasParameter('project_key'))
+            if ($request->hasParameter('project_key')) {
                 $this->selected_project->setKey($request['project_key']);
+            }
 
             if ($request->hasParameter('use_prefix'))
                 $this->selected_project->setUsePrefix((bool) $request['use_prefix']);
@@ -1436,8 +1436,19 @@ class Main extends helpers\ProjectActions
             if ($request->hasParameter('time_units'))
                 $this->selected_project->setTimeUnits($request['time_units']);
 
-            $this->selected_project->save();
-            return $this->renderJSON(array('message' => $this->getI18n()->__('Settings saved')));
+            try {
+                $this->selected_project->save();
+                $response = ['message' => $this->getI18n()->__('Settings saved')];
+
+                if (!$request['project_id'] && !$request['project_key']) {
+                    $response['forward'] = $this->getRouting()->generate('project_dashboard', ['project_key' => $this->selected_project->getKey()]);
+                }
+            } catch (\Exception $e) {
+                $this->getResponse()->setHttpStatus(400);
+                $response = ['message' => $e->getMessage()];
+            }
+
+            return $this->renderJSON($response);
         }
     }
 
@@ -1861,7 +1872,11 @@ class Main extends helpers\ProjectActions
     {
         try
         {
-            $this->selected_project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+            if ($request['project_id']) {
+                $this->selected_project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+            } else {
+                $this->selected_project = new entities\Project();
+            }
         }
         catch (\Exception $e)
         {

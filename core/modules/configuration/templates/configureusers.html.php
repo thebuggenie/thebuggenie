@@ -39,7 +39,7 @@
                         </div>
                         <div id="users_more_actions_container" style="position: relative;">
                             <button class="button button-silver last dropper" id="users_more_actions" onclick="if ($(this).hasClassName('button-pressed')){ $('findusers').focus(); }"><?php echo __('Search'); ?></button>
-                            <ul id="users_more_actions_dropdown" style="width: 400px; font-size: 1.1em; z-index: 1000; margin-top: 21px;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();">
+                            <ul id="users_more_actions_dropdown" style="width: 400px; font-size: 1.1em; z-index: 1000; margin-top: 21px;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown">
                                 <li class="finduser_container">
                                     <label for="findusers"><?php echo __('Find user(s)'); ?>:</label><br>
                                     <form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="TBG.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
@@ -192,9 +192,14 @@
     <script type="text/javascript">
         require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, jQuery) {
             domReady(function () {
-                jQuery("body").on("click", "#findusers", function(event) {
+                jQuery('body').on('click', '#findusers', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
+                });
+
+                jQuery('body').on('click', '#users_more_actions_dropdown', function (event) {
+                    $('users_more_actions').toggleClassName('button-pressed');
+                    $('users_more_actions_dropdown').toggle();
                 });
                 <?php if ($finduser): ?>
                     tbgjs.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', '<?php echo $finduser; ?>');

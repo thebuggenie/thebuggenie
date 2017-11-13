@@ -22,6 +22,8 @@
      *
      * @package thebuggenie
      * @subpackage tables
+     * 
+     * @method static Scopes getTable()
      *
      * @Entity(class="\thebuggenie\core\entities\Scope")
      * @Table(name="scopes")
@@ -59,6 +61,22 @@
             $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
 
             return $this->select($crit);
+        }
+
+        public function getPaginationItems()
+        {
+            $crit = $this->getCriteria();
+            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
+            $crit->indexBy(self::ID);
+
+            $res = $this->doSelect($crit);
+            $scope_ids = [];
+            
+            while ($row = $res->getNextRow()) {
+                $scope_ids[] = $row[self::ID];
+            }
+            
+            return $scope_ids;
         }
 
         public function getDefault()

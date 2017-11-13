@@ -64,37 +64,38 @@
          */
         public function runCheckUpdates(framework\Request $request)
         {
-            $data = json_decode(file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
-            if (!is_object($data))
+            $latest_version = framework\Context::getLatestAvailableVersionInformation();
+
+            if ($latest_version === null)
             {
                 $this->getResponse()->setHttpStatus(400);
-                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Failed to check for updates'), 'message' => framework\Context::getI18n()->__('The response from The Bug Genie website was invalid')));
-            }
-
-            $outofdate = false;
-
-            // major
-            if ($data->maj > framework\Settings::getMajorVer())
-            {
-                $outofdate = true;
-            }
-            elseif ($data->min > framework\Settings::getMinorVer() && ($data->maj == framework\Settings::getMajorVer()))
-            {
-                $outofdate = true;
-            }
-            elseif ($data->rev > framework\Settings::getRevision() && ($data->maj == framework\Settings::getMajorVer()) && ($data->min == framework\Settings::getMinorVer()))
-            {
-                $outofdate = true;
-            }
-
-            if (!$outofdate)
-            {
-                return $this->renderJSON(array('uptodate' => true, 'title' => framework\Context::getI18n()->__('The Bug Genie is up to date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver', array('%ver' => $data->nicever))));
+                $uptodate = null;
+                $title = framework\Context::getI18n()->__('Failed to check for updates');
+                $message = framework\Context::getI18n()->__('The response from The Bug Genie website was invalid');
             }
             else
             {
-                return $this->renderJSON(array('uptodate' => false, 'title' => framework\Context::getI18n()->__('The Bug Genie is out of date'), 'message' => framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', array('%ver' => $data->nicever))));
+                $update_available = framework\Context::isUpdateAvailable($latest_version);
+
+                if ($update_available)
+                {
+                    $uptodate = false;
+                    $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
+                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                }
+                else
+                {
+                    $uptodate = true;
+                    $title = framework\Context::getI18n()->__('The Bug Genie is up to date');
+                    $message = framework\Context::getI18n()->__('The latest version is %ver', ['%ver' => $latest_version->nicever]);
+                }
             }
+
+            return $this->renderJSON([
+                'uptodate' => $uptodate,
+                'title' => $title,
+                'message' => $message
+            ]);
         }
 
         /**
@@ -2383,7 +2384,10 @@
             }
             $this->scope_deleted = framework\Context::getMessageAndClear('scope_deleted');
             $this->scope_saved = framework\Context::getMessageAndClear('scope_saved');
-            $this->scopes = entities\Scope::getAll();
+            $pagination_scopes = tables\Scopes::getTable()->getPaginationItems();
+            $pagination = new \thebuggenie\core\helpers\Pagination($pagination_scopes, $this->getRouting()->generate('configure_scopes'), $request);
+            $this->scopes = tables\Scopes::getTable()->getByIds($pagination->getPageItems());
+            $this->pagination = $pagination;
         }
 
         public function runScope(framework\Request $request)

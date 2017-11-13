@@ -7,8 +7,6 @@
 <?php if ($show_project_config_link && $show_project_list): ?>
     <?php if ($project_count == 1): ?>
         <?php include_component('main/hideableInfoBoxModal', array('key' => 'index_single_project_mode', 'title' => __('Only using The Bug Genie to track issues for one project?'), 'template' => 'main/intro_index_single_tracker')); ?>
-    <?php elseif ($project_count == 0): ?>
-        <?php include_component('main/hideableInfoBoxModal', array('key' => 'index_no_projects', 'title' => __('Get started using The Bug Genie'), 'template' => 'main/intro_index_no_projects')); ?>
     <?php endif; ?>
 <?php endif; ?>
 <table cellpadding=0 cellspacing=0 id="main-table">
@@ -23,6 +21,9 @@
                 <div class="project_overview">
                     <div class="header">
                         <span><?php echo __('Projects'); ?></span>
+                        <div class="button-group">
+                            <?php echo javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
+                        </div>
                         <div class="dropper_container">
                             <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
                             <ul class="more_actions_dropdown popup_box">
@@ -39,15 +40,20 @@
                             <li><?php include_component('project/overview', array('project' => $project)); ?></li>
                         <?php endforeach; ?>
                         </ul>
+                        <?php if ($pagination->getTotalPages() > 1): ?>
+                            <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
+                        <?php endif; ?>
                     <?php else: ?>
-                        <p class="content">
-                            <?php echo __('There are no top-level projects'); ?>.
-                            <?php if ($show_project_config_link): ?>
-                                <?php echo link_tag(make_url('configure_projects'), __('Go to project management').' &gt;&gt;'); ?>
-                            <?php else: ?>
-                                <?php echo __('Projects can only be created by an administrator'); ?>.
-                            <?php endif; ?>
-                        </p>
+                        <div class="onboarding large">
+                            <?php echo image_tag('onboard_noprojects.png'); ?>
+                            <div class="helper-text">
+                                <?php if ($show_project_config_link): ?>
+                                    <?php echo __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
+                                <?php else: ?>
+                                    <?php echo __("You don't have access to any projects yet."); ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>

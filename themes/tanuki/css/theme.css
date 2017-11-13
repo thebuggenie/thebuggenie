@@ -2575,7 +2575,7 @@ div.dropdown_separator {
     width: 32px;
     height: 32px;
     vertical-align: middle;
-    border-radius: 26px;
+    border-radius: 100%;
     padding: 3px;
     background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.1);

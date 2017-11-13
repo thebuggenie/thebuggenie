@@ -35,9 +35,11 @@
         "ext-json" : "*",
         "ext-mbstring" : "*",
         "ext-pcre" : "*",
+        "ext-xml" : "*",
         "ext-Reflection" : "*",
         "lib-pcre" : "8.*",
-        "net/http" : "dev-master"
+        "net/http" : "dev-master",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",

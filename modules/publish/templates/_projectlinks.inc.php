@@ -1,5 +1,7 @@
-<?php if (!$project->hasWikiURL()): ?>
-    <?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), __('Wiki'), array('class' => 'button button-silver button-wiki')); ?>
-<?php else: ?>
-    <?php echo link_tag($project->getWikiURL(), __('Wiki'), array('target' => 'blank', 'class' => 'button button-silver button-wiki')); ?>
-<?php endif; ?>
+<?php
+
+    if (!$project->hasWikiURL()) {
+        echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), fa_image_tag('book').'<span>'.__('Wiki').'</span>', array('class' => 'nav-button button-wiki'));
+    } else {
+        echo link_tag($project->getWikiURL(), fa_image_tag('book') . '<span>'.__('Wiki').'</span>', array('target' => 'blank', 'class' => 'nav-button button-wiki'));
+    }

@@ -810,7 +810,7 @@ header nav > ul {
     transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 #quicksearchform input[type="search"]:focus {
-    width: 300px;
+    width: 320px;
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -1001,7 +1001,7 @@ input[type=checkbox].semi-checked {
     width: 310px;
     background-color: transparent;
     vertical-align: top;
-    padding: 7px 5px 0 5px;
+    padding: 5px;
     position: relative;
     transition: width 0.3s ease;
     box-shadow: 10px 0 15px -17px rgba(0, 0, 0, 0.8);
@@ -1458,6 +1458,7 @@ footer img {
 
 .dropper_container .dropper {
     cursor: pointer;
+    color: #555;
     margin-left: 5px;
     opacity: 0.4;
     transition: opacity 0.3s ease;
@@ -1465,12 +1466,18 @@ footer img {
 
 .dropper_container .dropper:hover {
     opacity: 1;
+    color: #555;
+}
+
+.project_overview .header .dropper_container {
+    float: right;
+    margin-right: 5px;
 }
 
 .project_overview .header .dropper_container .more_actions_dropdown {
-    left: 5px;
+    right: 0;
     margin-top: 3px;
-    right: auto;
+    left: auto;
     font-size: 0.9em;
     text-transform: none;
 }
@@ -1755,14 +1762,17 @@ div.autocomplete {
     z-index: 200000;
     background-color: white;
     border: 0;
-    padding: 0;
-    box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.2);
+    padding: 7px 0;
+    box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin: 2px 0 0 0;
 }
 
 div.autocomplete ul {
     list-style-type: none;
     margin: 0;
-    width: 320px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 0;
     border: 0;
     display: block;
@@ -1770,9 +1780,11 @@ div.autocomplete ul {
 
 div.autocomplete li.header {
     padding-top: 15px;
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 0.85em;
+    font-weight: normal;
     border-top: 0;
+    color: #AAA;
+    text-transform: uppercase;
 }
 
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover {
@@ -1783,12 +1795,17 @@ div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover {
     color: #333;
 }
 
-div.autocomplete ul li div {
-    font-weight: bold;
+div.autocomplete ul li .link_container {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 div.autocomplete ul li img {
-    float: left;
+    display: inline-block;
+    vertical-align: middle;
     margin-right: 5px;
 }
 
@@ -1844,18 +1861,19 @@ div.autocomplete ul li.no_issues_found {
 
 div.autocomplete ul li {
     border-top: 1px dotted #CCC;
-    font-size: 0.9em;
+    font-size: 1em;
     list-style-type: none;
     display: block;
     width: 100%;
     margin: 0;
-    padding: 2px 2px 2px 5px;
+    padding: 7px 10px;
     cursor: pointer;
     font-weight: normal;
     text-align: left;
     background-color: #FFF;
     color: #555;
     line-height: 1.4;
+    box-sizing: border-box;
 }
 
 div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected {
@@ -1866,10 +1884,26 @@ div.autocomplete ul li.searchterm:first-line {
     font-style: italic;
 }
 
+div.autocomplete ul li.searchterm .informal {
+    color: #AAA;
+}
+
 div.autocomplete ul li .hidden {
     display: none;
 }
 
+div.autocomplete ul li .informal {
+    font-size: 0.9em;
+}
+
+div.autocomplete ul li div.informal.attached {
+    margin-top: 0;
+}
+
+div.autocomplete ul li > img:first-child {
+    width: 16px;
+    height: 16px;
+}
 /* end autocompleter */
 
 /* tabbed menu styles */
@@ -2457,6 +2491,14 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 /* end project menu */
 
 /* project front page menu */
+.project_strip {
+    display: block;
+    border: 1px solid rgba(100, 100, 100, 0.15);
+    box-shadow: 0 0 5px rgba(100, 100, 100, 0.1);
+    padding: 10px;
+    margin: 0;
+}
+
 .project_strip .project_information_block {
     float: none;
     font-weight: normal;
@@ -2473,9 +2515,6 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     vertical-align: middle;
     margin-left: 15px;
 }
-.project_strip .project_description {
-    display: none;
-}
 .project_strip .divider {
     width: 1px;
     border-right: 1px solid rgba(0, 0, 0, 0.3);
@@ -2484,14 +2523,17 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     display: inline-block;
 }
 .project_strip .icon-large {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 100%;
     display: inline-block;
-    margin: 0 8px 0 0;
-    width: 32px;
     height: 32px;
-    vertical-align: middle;
-    padding: 3px 3px 3px 0;
     line-height: 38px;
+    margin: 0 8px 0 0;
+    padding: 3px;
     text-align: center;
+    vertical-align: middle;
+    width: 32px;
 }
 
 .project_strip .project_name a {
@@ -2504,6 +2546,8 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .project_strip .project_name a:hover {
     color: #555;
+    text-decoration: none;
+    border: none;
 }
 
 .project_strip .project_prefix_span {
@@ -2528,10 +2572,9 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .project_strip nav {
-    float: right;
     display: inline-block;
     vertical-align: middle;
-    width: auto;
+    width: calc(40% - 48px);
     box-sizing: border-box;
     min-width: 300px;
     margin: 5px 0;
@@ -2540,8 +2583,26 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     text-align: right;
 }
 
-.project_strip nav a {
+.project_strip nav a.nav-button {
     font-weight: normal;
+    color: #555;
+    background-color: rgba(200, 200, 200, 0);
+    padding: 10px;
+    vertical-align: middle;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    float: none;
+}
+
+.project_strip nav a.nav-button:hover {
+    background-color: rgba(200, 200, 200, 0.15);
+    border: none;
+    text-decoration: none;
+}
+
+.project_strip nav a.nav-button .fa {
+    margin-right: 5px;
 }
 
 .project_strip nav a.button {
@@ -4381,11 +4442,11 @@ ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
     font-weight: bold;
-    padding: 10px 10px 10px 0;
+    padding: 10px 0;
     clear: both;
 }
 
-.client_dashboard, .project_overview {
+.team_dashboard, .client_dashboard, .project_overview {
     clear: both;
 }
 
@@ -4400,10 +4461,6 @@ ul.project_list > li {
 
 .client_dashboard {
     padding: 10px;
-}
-
-.team_dashboard, .project_overview {
-    clear: both;
 }
 
 .project_overview .button-group .button, .project_overview .button-group > .button-dropdown {
@@ -4914,7 +4971,7 @@ a.friend {
 #issue_main_container {
     float: none;
     box-sizing: border-box;
-    overflow: hidden;
+    /*overflow: hidden;*/
     width: calc(100% - 375px);
     vertical-align: top;
     display: inline-block;
@@ -5231,6 +5288,9 @@ a.friend {
 .button-group .button,
 .button-group > .button-dropdown {
     float: left;
+}
+.project_strip .button-group > .button-dropdown {
+    float: none;
 }
 
 .button-group > .button-dropdown {
@@ -6320,7 +6380,7 @@ dd {
     font-weight: normal;
 }
 
-.more_actions_dropdown li:first-child {
+.more_actions_dropdown li:first-child:not(.header) {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
@@ -6881,7 +6941,6 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 #viewissue_log_items,
 #viewissue_vcs_integration_commits {
     min-height: 36px;
-    margin-top: 40px;
 }
 
 #viewissue_log_items ul {
@@ -6890,27 +6949,22 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     padding: 0;
 }
 
-#viewissue_log_items ul li {
+#viewissue_log_items > ul > li {
     list-style: none;
-    margin: 0;
-    padding: 2px 0 0 160px;
+    margin: 0 0 15px 0;
+    padding: 2px 0 0 180px;
     position: relative;
+    min-height: 55px;
 }
 
-#viewissue_log_items ul li .date {
-    position: absolute;
-    left: 0;
-    top: 4px;
-}
-
-#viewissue_log_items ul li img {
+#viewissue_log_items > ul > li > img {
     margin: 3px 5px -3px 5px;
 }
 
 #viewissue_log_items .fa {
     position: absolute;
     top: 3px;
-    left: 125px;
+    left: 153px;
     padding: 4px;
     border: 1px solid transparent;
 }
@@ -6947,6 +7001,24 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     color: #AAA;
     display: inline-block;
     min-width: 150px;
+    position: absolute;
+    left: 0;
+    top: 4px;
+}
+#viewissue_log_items ul li div.userdropdown {
+    font-size: 0.85em;
+    display: inline-block;
+    width: 150px;
+    position: absolute;
+    left: 0;
+    top: 30px;
+}
+#viewissue_log_items ul li a.userlink {
+    margin-left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 125px;
 }
 
 .comment_log_items {
@@ -12442,6 +12514,12 @@ li.filtervalue .hidden {
     margin-bottom: 0;
     table-layout: auto;
 }
+.project_strip .search_results table.results_container {
+    margin-bottom: 25px;
+}
+.project_strip .search_results table.results_container:last-child {
+    margin-bottom: 0;
+}
 
 .search_results table.results_container tbody {
     border-collapse: collapse;
@@ -12474,6 +12552,9 @@ li.filtervalue .hidden {
     width: 16px;
     height: 16px;
     display: inline-block;
+    vertical-align: middle;
+}
+.search_results th .fa {
     vertical-align: middle;
 }
 
@@ -12786,6 +12867,14 @@ li.filtervalue .hidden {
     font-size: 1.2em;
     text-transform: uppercase;
     color: #888;
+}
+
+.project_overview .header .button-group {
+    float: right;
+    font-size: 0.8em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -3px;
 }
 
 .metallic_header {
@@ -16789,9 +16878,16 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a {
 }
 
 .project_strip .button-group .button-report-issue {
-    border-left: 1px solid #438739;
-    margin-left: -1px;
-    position: relative;
+    background-color: #FFF;
+    border: 1px solid rgba(58, 186, 69, 0.8);
+    color: rgba(58, 186, 69, 1);
+    padding: 9px;
+}
+.project_strip .button-group .button-report-issue:hover {
+    background-color: rgba(58, 186, 69, 1);
+    border: 0;
+    color: #FFF;
+    padding: 10px;
 }
 
 .legendColorBox > div {
@@ -18204,50 +18300,6 @@ div[id^='comment_reply_indicator_'] {
 
 /* Menu */
 
-#searchfor_autocomplete_choices {
-    left: 7px !important;
-    width: 331px !important;
-    box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.2);
-}
-
-#searchfor_autocomplete_choices li {
-    font-size: 1em;
-}
-
-#searchfor_autocomplete_choices li .informal {
-    font-size: 0.9em;
-}
-
-#searchfor_autocomplete_choices ul li {
-    padding: 5px 4px 5px 7px;
-}
-
-#searchfor_autocomplete_choices {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#searchfor_autocomplete_choices ul > li:last-child {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#searchfor_autocomplete_choices li > div:first-of-type {
-    margin-bottom: 2px;
-}
-
-#searchfor_autocomplete_choices li > div.informal {
-    margin-top: 2px;
-}
-
-#searchfor_autocomplete_choices li > div.informal.attached {
-    margin-top: 0;
-}
-
-#searchfor_autocomplete_choices li > img:first-child {
-    width: 16px !important;
-    height: 16px !important;
-}
 
 #topmenu-container .tab_menu li .menuitem_container a {
     margin-top: 2px;
@@ -18857,3 +18909,47 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     padding: 2px 5px 1px 5px !important;
 }
 /* end generic paginator */
+
+/* onboarding blocks */
+
+.onboarding {
+    font-size: 1.6em;
+    font-weight: normal;
+    color: rgba(100, 100, 100, 0.3);
+    text-align: center;
+    line-height: 1.6;
+    padding: 0 0 35px 0;
+    display: block;
+    margin: 0 auto;
+}
+
+.onboarding .helper-text {
+    display: block;
+    text-align: left;
+}
+
+.onboarding img {
+    opacity: 0.2;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 25px;
+}
+
+.onboarding.large {
+    width: 450px;
+}
+
+.onboarding.large img {
+    width: calc(100% - 50px);
+}
+
+.onboarding.small {
+    width: 128px;
+}
+
+.onboarding.small img {
+    width: calc(100% - 20px);
+}
+
+/* end onboarding images */

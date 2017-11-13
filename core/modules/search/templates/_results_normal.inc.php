@@ -6,15 +6,15 @@ $current_spent_time = $current_estimated_time;
 foreach ($search_object->getIssues() as $issue):
     // shows only issues with permissions, useful when if we're including subprojects
     if (!$issue->hasAccess())
-        return;
+        continue;
 
-    list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
-    if (($showtablestart || $showheader) && $cc > 1):
-                echo '</tbody></table>';
-                include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
-                $current_count = 0;
-                $current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
-                $current_spent_time = $current_estimated_time;
+    list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $current_count, $prevgroup_id);
+    if (($showtablestart || $showheader) && $current_count > 1):
+        echo '</tbody></table>';
+        if (!isset($show_summary) || $show_summary) include_component('search/results_summary', compact('search_object', 'current_count', 'current_estimated_time', 'current_spent_time'));
+        $current_count = 0;
+        $current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
+        $current_spent_time = $current_estimated_time;
     endif;
     $current_count++;
     $estimate = $issue->getEstimatedTime(true, true);
@@ -60,8 +60,10 @@ foreach ($search_object->getIssues() as $issue):
                     <?php foreach ($custom_columns as $column): ?>
                         <th data-sort-direction="<?php echo $search_object->getSortDirection($column->getKey()); ?>" data-sort-field="<?php echo $column->getKey(); ?>" class="sc_<?php echo $column->getKey(); ?> <?php if ($dir = $search_object->getSortDirection($column->getKey())) echo "sort_{$dir}"; ?> <?php if ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) echo 'numeric sc_datetime'; ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __($column->getName()); ?></th>
                     <?php endforeach; ?>
-                    <th class="sc_comments nosort" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
-                    <th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
+                    <th class="sc_comments nosort" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo fa_image_tag('comment', array('title' => __('Number of user comments on this issue'))); ?></th>
+                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
+                        <th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -188,21 +190,25 @@ foreach ($search_object->getIssues() as $issue):
                     <td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
                         <?php echo $issue->countUserComments(); ?>
                     </td>
-                    <td class="sc_actions">
-                        <div style="position: relative;">
-                            <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
-                            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
-                        </div>
-                    </td>
+                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
+                        <td class="sc_actions">
+                            <div style="position: relative;">
+                                <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
+                                <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
+                            </div>
+                        </td>
+                    <?php endif; ?>
                 </tr>
-    <?php if ($cc == $search_object->getNumberOfIssues()): ?>
-            </tbody>
-        </table>
-        <?php include_component('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
-    <?php endif; ?>
-    <?php $cc++; ?>
+    <?php $current_count++; ?>
 <?php endforeach; ?>
-<?php if (!$tbg_user->isGuest()) include_component('search/bulkactions', array('mode' => 'bottom')); ?>
+<?php if ($current_count > 0): ?>
+        </tbody>
+    </table>
+    <?php if ($search_object->getNumberOfIssues() && (!isset($show_summary) || $show_summary)): ?>
+        <?php include_component('search/results_summary', compact('search_object', 'current_count', 'current_estimated_time', 'current_spent_time')); ?>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'bottom')); ?>
 <style type="text/css">
 .sc_actions .image { background-image:url(<?php echo image_url('action_dropdown_small.png'); ?>); }
 </style>

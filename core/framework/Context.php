@@ -218,6 +218,14 @@ class Context
     protected static $_redirect_login = null;
 
     /**
+     * Information about the latest available version. Should be null
+     * in case the information has not been fetched (or fetching
+     * failed), or an array with keys: maj, min, rev, nicever.
+     *
+     */
+    protected static $_latest_available_version = null;
+
+    /**
      * Returns whether or not we're in install mode
      *
      * @return boolean
@@ -2560,7 +2568,13 @@ class Context
 
             self::setupI18n();
 
-            self::_cacheAvailablePermissions();
+            // Available permissions cannot be cached during
+            // installation because the scope is not set-up at that
+            // point. Permissions also must be cached at this point,
+            // and not together with self::initializeUser since i18n
+            // system must be initialised beforehand.
+            if (!self::isInstallmode())
+                self::_cacheAvailablePermissions();
 
             if (self::$_redirect_login == 'login') {
 
@@ -2737,6 +2751,92 @@ class Context
     public static function isMinifiedAssets()
     {
         return ! empty(self::$_configuration['core']['minified_assets']);
+    }
+
+    /**
+     * Retrieves information about the latest available version from
+     * TBG website.
+     *
+     *
+     * @return array
+     *
+     *   null, if latest available version information could not be
+     *   retrieved due to errors, otherwise an array describing the
+     *   latest available version with the following keys:
+     *
+     *   maj
+     *     Major version number.
+     *
+     *   min
+     *     Minor version number.
+     *
+     *   rev
+     *     Revision version number.
+     *
+     *   nicever
+     *     Formatted version string suitable for showing to user.
+     */
+    public static function getLatestAvailableVersionInformation()
+    {
+        // Use cached information if available.
+        if (self::$_latest_available_version !== null)
+        {
+            return self::$_latest_available_version;
+        }
+
+        // Set-up client and retrieve version information.
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://www.thebuggenie.com/',
+            'http_errors' => false]);
+        $response = $client->request('GET', '/updatecheck.php');
+
+        // Verify status code.
+        if ($response->getStatusCode() == 200)
+        {
+            // Decode response.
+            $info = json_decode($response->getBody());
+
+            // Cache value if response was decoded and necessary
+            // information was read from it.
+            if (is_object($info) && isset($info->maj, $info->min, $info->rev, $info->nicever))
+            {
+                self::$_latest_available_version = $info;
+            }
+        }
+
+        return self::$_latest_available_version;
+    }
+
+    /**
+     * Checks if an update is available based on passed-in version
+     * information.
+     *
+     * @param array version Version information. Should contain keys: maj (major version number),
+     *                      min (minor version number), rev (revision number),
+     *                      nicever (formatted version string that can be shown to user).
+     *
+     * @return bool
+     *   true, if an update is available, false otherwise.
+     */
+    public static function isUpdateAvailable($version)
+    {
+        $update_available = false;
+
+        // Check if we are out of date.
+        if ($version->maj > Settings::getMajorVer())
+        {
+            $update_available = true;
+        }
+        elseif ($version->min > Settings::getMinorVer() && ($version->maj == Settings::getMajorVer()))
+        {
+            $update_available = true;
+        }
+        elseif ($version->rev > Settings::getRevision() && ($version->maj == Settings::getMajorVer()) && ($version->min == Settings::getMinorVer()))
+        {
+            $update_available = true;
+        }
+
+        return $update_available;
     }
 
 }

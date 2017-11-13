@@ -27,7 +27,7 @@
     function image_tag($image, $params = array(), $notheme = false, $module = 'core', $relative = true)
     {
         if ( ! \thebuggenie\core\framework\Context::getRequest()->isAjaxCall()) {
-            $params['src'] = image_url('/images/0.png', true);
+            $params['src'] = image_url(\thebuggenie\core\framework\Context::getWebroot() . 'images/0.png', true);
             $params['data-src'] = image_url($image, $notheme, $module, $relative);
         }
         else {

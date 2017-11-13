@@ -311,7 +311,7 @@ class Main extends framework\Action
         $this->forward403unless($this->getUser()->hasPageAccess('home'));
         $this->links = tables\Links::getTable()->getMainLinks();
         $this->show_project_list = framework\Settings::isFrontpageProjectListVisible();
-        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS);
+        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
         if ($this->show_project_list || $this->show_project_config_link)
         {
             $projects = entities\Project::getAllRootProjects(false);
@@ -320,7 +320,9 @@ class Main extends framework\Action
                 if (!$project->hasAccess())
                     unset($projects[$k]);
             }
-            $this->projects = $projects;
+            $pagination = new \thebuggenie\core\helpers\Pagination($projects, $this->getRouting()->generate('home'), $request);
+            $this->pagination = $pagination;
+            $this->projects = $pagination->getPageItems();
             $this->project_count = count($this->projects);
         }
     }
@@ -3751,7 +3753,12 @@ class Main extends framework\Action
                     break;
                 case 'project_config':
                     $template_name = 'project/projectconfig_container';
-                    $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    if ($request['project_id']) {
+                        $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    } else {
+                        $project = new entities\Project();
+                        framework\Context::setCurrentProject($project);
+                    }
                     $options['project'] = $project;
                     $options['section'] = $request->getParameter('section', 'info');
                     if ($request->hasParameter('edition_id'))
