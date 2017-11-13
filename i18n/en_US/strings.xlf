@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 275 -->
-<!-- Number of Strings: 3126 -->
-<!-- Keys extracted from sources on: 2017 Aug 04. -->
+<!-- Number of Strings: 3118 -->
+<!-- Keys extracted from sources on: 2017 Nov 13. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -738,6 +738,29 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/cli/CheckForUpdates.php">
+        <body>
+            <trans-unit id="61addce22990d2ffa87577a98dd69980">
+                <source>Failed to check for updates</source>
+            </trans-unit>
+            <trans-unit id="ab75d62b2b4d7effe81e554d83e600a9">
+                <source>The response from The Bug Genie website was invalid</source>
+            </trans-unit>
+            <trans-unit id="cb9712766fa398af53298526ce439ec1">
+                <source>The Bug Genie is out of date</source>
+            </trans-unit>
+            <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
+                <source>The latest version is %ver. Update now from www.thebuggenie.com.</source>
+            </trans-unit>
+            <trans-unit id="cae247767e57e8da2a241b44f2a6121d">
+                <source>The Bug Genie is up to date</source>
+            </trans-unit>
+            <trans-unit id="21ac06326f1755711f94bc744d5c3f11">
+                <source>The latest version is %ver</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/Components.php">
         <body>
             <trans-unit id="3adbdb3ac060038aa0e6e6c138ef9873">
@@ -1358,11 +1381,11 @@
             <trans-unit id="131129f807db0e229703e67dff2c4cbd">
                 <source>Only using The Bug Genie to track issues for one project?</source>
             </trans-unit>
-            <trans-unit id="f6ae3a8a9811f700f7fb84607cba98c4">
-                <source>Get started using The Bug Genie</source>
-            </trans-unit>
             <trans-unit id="7298e4abc5483d6bfd7a0ec46ba8bdd6">
                 <source>Quick links</source>
+            </trans-unit>
+            <trans-unit id="7e94fd31ac489c6edc9b9ee8820b5500">
+                <source>Create project</source>
             </trans-unit>
             <trans-unit id="f727cac0ddae92d9de3567e9a3b11511">
                 <source>Manage projects</source>
@@ -1370,14 +1393,11 @@
             <trans-unit id="095a6e6329dcce7db39cae7230255712">
                 <source>Show archived projects</source>
             </trans-unit>
-            <trans-unit id="a1a59b927585a449ddbdee60dbb698fd">
-                <source>There are no top-level projects</source>
+            <trans-unit id="e4af4e3c68640fcb17c5851e757e6a46">
+                <source>There are no projects. Get started by clicking the "%create_project" button</source>
             </trans-unit>
-            <trans-unit id="c074ea3967594e54455187165ddc4c12">
-                <source>Go to project management</source>
-            </trans-unit>
-            <trans-unit id="eca984eb19f7f141ada25f74ecdd4532">
-                <source>Projects can only be created by an administrator</source>
+            <trans-unit id="5634c38e003625e623ae677a69c1cf99">
+                <source>You don't have access to any projects yet.</source>
             </trans-unit>
         </body>
     </file>
@@ -1531,6 +1551,9 @@
             </trans-unit>
             <trans-unit id="85d84e32f7be700151a4e605b015a6ce">
                 <source>Open issues assigned to your teams</source>
+            </trans-unit>
+            <trans-unit id="f6ae3a8a9811f700f7fb84607cba98c4">
+                <source>Get started using The Bug Genie</source>
             </trans-unit>
         </body>
     </file>
@@ -2758,26 +2781,6 @@
             </trans-unit>
             <trans-unit id="ea80ace13d1f296d26cadbaca1992e36">
                 <source>Authenticate</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_intro_index_no_projects.inc.php">
-        <body>
-            <trans-unit id="5f066a3dd753584c37de87153bf7d93a">
-                <source>Welcome to The Bug Genie. This seems like the first time you're using this instance, and it doesn't look like you have had the chance to add any projects yet.</source>
-            </trans-unit>
-            <trans-unit id="36e5864347eedd76d0e8b42b2e077776">
-                <source>If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can generate sample data before adding your own projects. To get started, create a project.</source>
-            </trans-unit>
-            <trans-unit id="14674f63ba569d58ee70337f92bbd34a">
-                <source>Generate sample data</source>
-            </trans-unit>
-            <trans-unit id="30e501db64283703d7570640def47830">
-                <source>%generate_sample_data% or %create_a_project%</source>
-            </trans-unit>
-            <trans-unit id="be86ca474df5e14056bc0f20d2cdb767">
-                <source>Create a project</source>
             </trans-unit>
         </body>
     </file>
@@ -5675,20 +5678,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_overview.inc.php">
         <body>
-            <trans-unit id="97103ba29a76285d257bc605ba77c4a9">
-                <source>Quick edit</source>
-            </trans-unit>
             <trans-unit id="176f475073acbdd6051a56098f464ba4">
                 <source>Go to project website</source>
             </trans-unit>
-            <trans-unit id="dc00026e8fb3b88e2debcc2a75e9e660">
-                <source>Jump to an issue</source>
-            </trans-unit>
-            <trans-unit id="90850eee3c7e97765c7d63ec263eb13b">
-                <source>Enter an issue number to jump to an issue</source>
-            </trans-unit>
-            <trans-unit id="e43ec38a93023bde02ff70f28b925702">
-                <source>Go to</source>
+            <trans-unit id="6cdac531da425dac31bbb3e3e007d707">
+                <source>New issue</source>
             </trans-unit>
             <trans-unit id="0504ff6d5a8aecf8fe45e66bbafd1483">
                 <source>Subprojects</source>
@@ -5728,6 +5722,9 @@
         <body>
             <trans-unit id="5bd456a76d69c9c1760a867e054d3927">
                 <source>Quick edit project</source>
+            </trans-unit>
+            <trans-unit id="56b2a5f0e178a43f91b9f856d6a59887">
+                <source>Create new project</source>
             </trans-unit>
             <trans-unit id="9cdde52ce9ba783cd522835daae95b57">
                 <source>More settings</source>
@@ -6633,9 +6630,6 @@
             </trans-unit>
             <trans-unit id="0b60e8fecbfed3cdc2b22bdd3db8a60e">
                 <source>Create a new project</source>
-            </trans-unit>
-            <trans-unit id="7e94fd31ac489c6edc9b9ee8820b5500">
-                <source>Create project</source>
             </trans-unit>
             <trans-unit id="af307eeb6d70b14606bfa0c6efd33d5e">
                 <source>Additional settings</source>
@@ -8591,6 +8585,9 @@
             <trans-unit id="13050bc53eb599a9a63a219689b2632e">
                 <source>Module-specific permissions are also available from the "%configure_modules" configuration page</source>
             </trans-unit>
+            <trans-unit id="743e97e5b14b9598d466c34e80f74b2e">
+                <source>The recommended way to set project-specific permissions is to use roles. Assigning teams and users to projects with a specific role keeps all permissions synchronized with roles, whereas editing it from here should only be done in very specific scenarios.</source>
+            </trans-unit>
             <trans-unit id="0826c84a6a5e92c501bb8b3460282c64">
                 <source>These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions" tab.</source>
             </trans-unit>
@@ -9012,24 +9009,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/controllers/Main.php">
         <body>
-            <trans-unit id="61addce22990d2ffa87577a98dd69980">
-                <source>Failed to check for updates</source>
-            </trans-unit>
-            <trans-unit id="ab75d62b2b4d7effe81e554d83e600a9">
-                <source>The response from The Bug Genie website was invalid</source>
-            </trans-unit>
-            <trans-unit id="cae247767e57e8da2a241b44f2a6121d">
-                <source>The Bug Genie is up to date</source>
-            </trans-unit>
-            <trans-unit id="21ac06326f1755711f94bc744d5c3f11">
-                <source>The latest version is %ver</source>
-            </trans-unit>
-            <trans-unit id="cb9712766fa398af53298526ce439ec1">
-                <source>The Bug Genie is out of date</source>
-            </trans-unit>
-            <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
-                <source>The latest version is %ver. Update now from www.thebuggenie.com.</source>
-            </trans-unit>
             <trans-unit id="fdc710799453874a6aac1ba5f0fbc591">
                 <source>Please provide a valid setting for highlighting interval</source>
             </trans-unit>
@@ -10005,21 +9984,6 @@
             <trans-unit id="2a9f3583a43eb5c68fb601574c798bc1">
                 <source>Press "Enter" twice to find issues matching your query</source>
             </trans-unit>
-            <trans-unit id="f6fb8cea0e021de655a695d4ee082d3d">
-                <source>Select this to search for this user</source>
-            </trans-unit>
-            <trans-unit id="4d4a00003fba2622c02229400a3f906e">
-                <source>%num user(s) found</source>
-            </trans-unit>
-            <trans-unit id="dc9fe72411cb782b3d376b402ba71e3b">
-                <source>See %num more users ...</source>
-            </trans-unit>
-            <trans-unit id="6476c5e0f3151056d9c425880c4870e4">
-                <source>%num team(s) found</source>
-            </trans-unit>
-            <trans-unit id="d74905e2acb6423ec586cb5e0417232d">
-                <source>%num client(s) found</source>
-            </trans-unit>
             <trans-unit id="b6bcb25ccac8d0202519a590f9701264">
                 <source>%num project(s) found</source>
             </trans-unit>
@@ -10043,6 +10007,18 @@
             </trans-unit>
             <trans-unit id="fbad073b0db1d97abfefe8eccfa55863">
                 <source>No issues found matching your query</source>
+            </trans-unit>
+            <trans-unit id="4d4a00003fba2622c02229400a3f906e">
+                <source>%num user(s) found</source>
+            </trans-unit>
+            <trans-unit id="dc9fe72411cb782b3d376b402ba71e3b">
+                <source>See %num more users ...</source>
+            </trans-unit>
+            <trans-unit id="6476c5e0f3151056d9c425880c4870e4">
+                <source>%num team(s) found</source>
+            </trans-unit>
+            <trans-unit id="d74905e2acb6423ec586cb5e0417232d">
+                <source>%num client(s) found</source>
             </trans-unit>
         </body>
     </file>
