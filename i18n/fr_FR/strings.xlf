@@ -11627,7 +11627,7 @@
             </trans-unit>
             <trans-unit id="9e3ae9e0341f37edf4b7dd5441546510">
                 <source>Please confirm that you want to remove this user from the project team</source>
-                <target>Veuillez confirmer que vous souhaitez supprimer cet utilisateur de l'équipe projet</target>
+                <target>Veuillez confirmer que vous souhaitez supprimer cet utilisateur de l\'équipe projet</target>
             </trans-unit>
             <trans-unit id="cd64c221e26c566964382b65bf16f93d">
                 <source>Assigned teams</source>
