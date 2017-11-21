@@ -1358,8 +1358,9 @@ EOT;
                 {
 
                 }
-                if (framework\Context::isCLI() || framework\Context::getUser()->getID() != $current_user->getID())
-                    framework\Context::switchUserContext($current_user);
+                if (!framework\Context::isCLI())
+                    if (framework\Context::getUser()->getID() != $current_user->getID())
+                        framework\Context::switchUserContext($current_user);
             }
             $account->setTimeLastFetched(time());
             $account->setNumberOfEmailsLastFetched($count);
