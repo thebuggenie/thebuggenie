@@ -4,6 +4,7 @@
 
     use thebuggenie\core\entities\Category;
     use thebuggenie\core\entities\tables\Settings;
+    use thebuggenie\core\entities\File;
     use thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\mailing\entities\IncomingEmailAccount,
         thebuggenie\modules\mailing\entities\tables\MailQueueTable,
@@ -1322,7 +1323,7 @@ EOT;
                                     {
                                         $filename = $name;
                                     }
-                                    Logging::log('Creating issue attachment ' . $filename . ' from attachment ' . $attachment_no);
+                                    framework\Logging::log('Creating issue attachment ' . $filename . ' from attachment ' . $attachment_no);
                                     echo 'Creating issue attachment ' . $filename . ' from attachment ' . $attachment_no;
                                     $content_type = $attachment['type'] . '/' . $attachment['subtype'];
                                     $file = new File();
@@ -1337,7 +1338,7 @@ EOT;
                                     }
                                     else
                                     {
-                                        Logging::log('Saving file ' . $new_filename . ' with content from attachment ' . $attachment_no);
+                                        framework\Logging::log('Saving file ' . $new_filename . ' with content from attachment ' . $attachment_no);
                                         file_put_contents($new_filename, $attachment['data']);
                                     }
                                     $file->save();
@@ -1357,7 +1358,7 @@ EOT;
                 {
 
                 }
-                if (framework\Context::getUser()->getID() != $current_user->getID())
+                if (framework\Context::isCLI() || framework\Context::getUser()->getID() != $current_user->getID())
                     framework\Context::switchUserContext($current_user);
             }
             $account->setTimeLastFetched(time());
