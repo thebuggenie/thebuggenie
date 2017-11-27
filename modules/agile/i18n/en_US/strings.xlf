@@ -6,7 +6,7 @@
 
 <!-- Number of Sections: 25 -->
 <!-- Number of Strings: 208 -->
-<!-- Keys extracted from sources on: 2017 Aug 04. -->
+<!-- Keys extracted from sources on: 2017 Nov 13. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -301,9 +301,6 @@
             <trans-unit id="657fd3eec6624217c3ad5de3744a69d2">
                 <source>Agile</source>
             </trans-unit>
-            <trans-unit id="f3df3239fc557f82121c2694851d3b08">
-                <source>No project boards available</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -334,6 +331,9 @@
             </trans-unit>
             <trans-unit id="395e4c0ac45cac61711cc8a1e13027b9">
                 <source>Project boards</source>
+            </trans-unit>
+            <trans-unit id="f3df3239fc557f82121c2694851d3b08">
+                <source>No project boards available</source>
             </trans-unit>
         </body>
     </file>
