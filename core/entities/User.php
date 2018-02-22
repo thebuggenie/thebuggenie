@@ -134,6 +134,8 @@
          */
         protected $teams = null;
 
+        protected $_teams = null;
+
         /**
          * Array of client ids where the current user is a member
          *

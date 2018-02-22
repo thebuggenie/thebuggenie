@@ -26,68 +26,34 @@
             <?php include THEBUGGENIE_PATH . 'themes' . DS . 'oxygen' . DS . 'css' . DS . 'theme.css'; ?>
         </style>
         <style type="text/css">
-            @font-face {
-              font-family: 'Droid Sans Mono';
-              font-style: normal;
-              font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.eot');
-              src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/droid_sans_mono.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: normal;
-              font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.eot');
-              src: local('Open Sans'), local('OpenSans'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: italic;
-              font-weight: normal;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.eot');
-              src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_italic.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: normal;
-              font-weight: bold;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.eot');
-              src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold.ttf') format('truetype');
-            }
-            @font-face {
-              font-family: 'Open Sans';
-              font-style: italic;
-              font-weight: bold;
-              src: url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.eot');
-              src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo \thebuggenie\core\framework\Context::getWebroot(); ?>fonts/open_sans_bold_italic.ttf') format('truetype');
-            }
+            @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
 
-            body { font-size: 12px; }
-            body, html, div, p, td, input { font-family: "Open Sans", arial; color: #555; }
-            h1, h2, h3, h4, h5 { text-shadow: none; border-bottom: 1px dotted #CCC; text-transform: uppercase; font-weight: normal; color: #888; }
+            body { font-size: 14px; }
+            body, html, div, p, td, input { font-family: "Source Sans Pro", arial; color: #555; }
+            h1, h2, h3, h4, h5 { text-shadow: none; border-bottom: 1px dotted #CCC; text-transform: uppercase; font-weight: 400; color: #888; }
             h1 { font-size: 1.6em; }
             h2 { font-size: 1.4em; margin-bottom: 8px; }
             h3 { font-size: 1.2em; }
             h4 { font-size: 1.1em; }
             h5 { font-size: 1.05em; }
+            b, strong { font-weight: 600; }
             h2 .smaller { font-size: 0.9em; text-shadow: none; }
-            p { font-size: 1.1em; }
-            label { vertical-align: middle; font-weight: normal; font-size: 1em; }
-            label[for=agree_license] { font-size: 1.05em; margin-top: -7px; display: inline-block; }
-            .install_progress { font-weight: normal; border: 1px solid #DDD; padding: 3px; font-size: 1em; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
-            .install_progress.prereq_fail:first-line { font-weight: bold; }
+            label { vertical-align: middle; font-weight: 300; font-size: 1em; }
+            label[for=agree_license] { font-size: 1.05em; display: inline-block; vertical-align: middle; font-weight: 400; }
+            .install_progress { font-weight: 300; border: 1px solid #DDD; padding: 3px; font-size: 1em; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
+            .install_progress.prereq_fail:first-line { font-weight: 600; }
             .install_progress img { float: right; vertical-align: middle; }
-            .progress_bar { display: block; width: 500px; position: relative; height: 20px; background-color: #F5F5F5; box-shadow: inset 0 0 3px rgba(100, 100, 100, 0.3); padding: 0; margin: 5px auto; border-radius: 10px; }
-            .progress_bar .filler { background-color: rgba(133, 185, 0, 0.7); position: absolute; left: 0; top: 0; height: 19px; min-width: 20px; border-bottom: 1px solid rgba(165, 202, 72, 1); border-radius: 10px; }
+            .progress_bar { display: block; width: 500px; position: relative; height: 20px; background-color: #F5F5F5; box-shadow: inset 0 0 3px rgba(100, 100, 100, 0.3); padding: 0; margin: 5px auto; border-radius: 0; }
+            .progress_bar .filler { background-color: rgba(133, 185, 0, 0.7); position: absolute; left: 0; top: 0; height: 19px; min-width: 20px; border-bottom: 1px solid rgba(165, 202, 72, 1); border-radius: 0; box-shadow: inset 3px 0 4px rgba(100, 100, 100, 0.3); }
             .prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
-            .prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; margin-top: 10px; }
+            .prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 1em; background-color: #F38888; margin-top: 10px; }
             .prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
-            .installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 1.05em; line-height: 1.6; }
+            .installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 1em; line-height: 1.6; }
             .installation_box dl { font-size: 1em; }
-            .installation_box dl dd, .installation_box dl dt { vertical-align: middle; font-weight: normal; margin-left: 0; }
+            .installation_box dl dd, .installation_box dl dt { vertical-align: middle; font-weight: 300; margin-left: 0; }
             .donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 0; }
             .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-            .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; margin-top: 5px; margin-bottom: 15px; }
+            .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Fira Mono', monospace; margin-top: 5px; margin-bottom: 15px; font-size: 0.9em; }
             .features { width: 400px; float: right; margin-left: 10px; }
             .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
             .feature .description { background-color: #FFF; padding: 10px; }
@@ -95,14 +61,14 @@
             .install_list dd { padding: 2px 0 5px 0; width: 760px; display: inline-block; float: none; }
             .helptext { color: #AAA; vertical-align: middle; display: inline-block; margin-left: 5px; }
             .install_list dt { width: 200px; padding: 7px 0; display: inline-block; float: none; }
-            .install_list dt .faded_out { font-weight: normal; }
+            .install_list dt .faded_out { font-weight: 300; }
             .install_list select { padding: 5px; font-weight: 1.1em; height: auto; vertical-align: middle; border: 1px solid #BEBEBE; border-radius: 4px; }
             .main_header_print
             {
                 background: #4E81AB; /* Old browsers */
                 color: white;
-                border-radius: 2px;
-                margin-top: 10px;
+                border-radius: 0;
+                margin-top: 0;
                 display: block;
                 -moz-border-radius-bottomleft: 7px;
                 -moz-border-radius-bottomright: 7px;
@@ -121,19 +87,19 @@
             .padded_box { padding: 3px 10px 10px 10px; }
             .error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
             .ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
-            .error:first-line, .ok:first-line { font-weight: bold; }
+            .error:first-line, .ok:first-line { font-weight: 600; }
 
             .logo_small { font-size: 1.1em; color: white; white-space: nowrap; margin-top: 5px; }
 
             fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
-            legend { font-weight: normal; font-size: 1.1em; color: #555; text-transform: uppercase; padding: 5px 10px; }
+            legend { font-weight: 300; font-size: 1.1em; color: #555; text-transform: uppercase; padding: 5px 10px; }
 
             ul.outlined { margin-top: 5px; }
-            ul.outlined li { font-weight: bold; }
+            ul.outlined li { font-weight: 600; }
 
             #logo_container { line-height: 1em; }
             #logo_container .logo { display: inline-block; vertical-align: middle; margin-right: 10px; }
-            #logo_container .logo_name { font-size: 1.8em; float: none; line-height: 1.1em; color: #ECF0F4; }
+            #logo_container .logo_name { font-size: 1.5em; float: none; line-height: 1.1em; color: #ECF0F4; margin: 0; }
 
             .scope_upgrade { margin: 5px; padding: 0; font-size: 0.9em; }
             .scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; display: inline-block; width: 450px; }
@@ -149,7 +115,7 @@
             .installpage { font-size: 1.1em; }
             ul.backuplist { margin: 15px 0; padding: 0; }
             ul.backuplist > li { background-position: 0 13px; background-repeat: no-repeat; list-style: none; padding: 10px 0 10px 40px; }
-            ul.backuplist > li:first-line { font-weight: bold; font-size: 1.1em; }
+            ul.backuplist > li:first-line { font-weight: 600; font-size: 1.1em; }
             ul.backuplist > li.faded { opacity: 0.3; }
             ul.backuplist > li label, ul.backuplist > li input, ul.passwordlist li label, ul.passwordlist li input { vertical-align: middle; }
             ul.backuplist > li > ul { margin: 10px 0; padding: 0; }

@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\helpers;
 
+    use Highlight\Highlighter;
     use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\tables\Articles,
         thebuggenie\modules\publish\entities\Article;
@@ -1135,6 +1136,7 @@
                 $this->deflist = false;
                 $this->ignore_newline = false;
 
+                $text = preg_replace_callback('/<source((?:\s+[^\s]+=.*)*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
                 $text = preg_replace_callback('/<(nowiki|pre)>(.*)<\/(\\1)>(?!<\/(\\1)>)/ismU', array($this, "_parse_save_nowiki"), $text);
                 $text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
                 $text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
@@ -1150,7 +1152,6 @@
                     $text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_remove_includeonly"), $text);
                     $text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_preserve_noinclude"), $text);
                 }
-                $text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
                 // Thanks to Mike Smith (scgtrp) for the above regexp
 
                 $text = tbg_decodeUTF8($text, true);
@@ -1323,71 +1324,74 @@
                     $numbering_startfrom = 1;
                 }
 
-                $geshi = new \GeSHi($codeblock, $language);
+//                $geshi = new \GeSHi($codeblock, $language);
+                $highlighter = new Highlighter();
+                $codeblock = $highlighter->highlight($language, $codeblock);
 
-                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
-                if ($highlighting !== 0)
-                {
-                    $highlighting = $matches[0];
-                }
-                else
-                {
-                    $highlighting = false;
-                }
-
-                $interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
-                if ($interval !== 0)
-                {
-                    $interval = $matches[0];
-                }
-                else
-                {
-                    $interval = \thebuggenie\core\framework\Settings::get('highlight_default_interval');
-                }
-
-                if ($highlighting === false)
-                {
-                    switch (\thebuggenie\core\framework\Settings::get('highlight_default_numbering'))
-                    {
-                        case 1:
-                            // Line numbering with a highloght every n rows
-                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 2:
-                            // Normal line numbering
-                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 3:
-                            break; // No numbering
-                    }
-                }
-                else
-                {
-                    switch($highlighting)
-                    {
-                        case 'highlighted':
-                        case 'GESHI_FANCY_LINE_NUMBERS':
-                            // Line numbering with a highloght every n rows
-                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 'normal':
-                        case 'GESHI_NORMAL_LINE_NUMBERS':
-                            // Normal line numbering
-                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 3:
-                            break; // No numbering
-                    }
-                }
-
-                $codeblock = $geshi->parse_code();
-                unset($geshi);
+//                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
+//                if ($highlighting !== 0)
+//                {
+//                    $highlighting = $matches[0];
+//                }
+//                else
+//                {
+//                    $highlighting = false;
+//                }
+//
+//                $interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
+//                if ($interval !== 0)
+//                {
+//                    $interval = $matches[0];
+//                }
+//                else
+//                {
+//                    $interval = \thebuggenie\core\framework\Settings::get('highlight_default_interval');
+//                }
+//
+//                if ($highlighting === false)
+//                {
+//                    switch (\thebuggenie\core\framework\Settings::get('highlight_default_numbering'))
+//                    {
+//                        case 1:
+//                            // Line numbering with a highloght every n rows
+//                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+//                            $geshi->start_line_numbers_at($numbering_startfrom);
+//                            break;
+//                        case 2:
+//                            // Normal line numbering
+//                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+//                            $geshi->start_line_numbers_at($numbering_startfrom);
+//                            break;
+//                        case 3:
+//                            break; // No numbering
+//                    }
+//                }
+//                else
+//                {
+//                    switch($highlighting)
+//                    {
+//                        case 'highlighted':
+//                        case 'GESHI_FANCY_LINE_NUMBERS':
+//                            // Line numbering with a highloght every n rows
+//                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+//                            $geshi->start_line_numbers_at($numbering_startfrom);
+//                            break;
+//                        case 'normal':
+//                        case 'GESHI_NORMAL_LINE_NUMBERS':
+//                            // Normal line numbering
+//                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+//                            $geshi->start_line_numbers_at($numbering_startfrom);
+//                            break;
+//                        case 3:
+//                            break; // No numbering
+//                    }
+//                }
+//
+//                $codeblock = $geshi->parse_code();
+                unset($highlighter);
             }
-            return '<code>' . $codeblock . '</code>';
+            framework\Context::getResponse()->addStylesheet('/css/highlight.php/github.css');
+            return '<pre class="hljs ' . strtolower($language) . '"><code>' . $codeblock->value . '</code></pre>';
         }
 
         protected function _parse_restore_code($matches)

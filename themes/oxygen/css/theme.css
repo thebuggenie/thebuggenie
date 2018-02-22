@@ -1,12 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
+
 /* General styles */
 body, td, th {
     padding: 0;
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 300;
     text-align: left;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.43;
     color: #555;
 }
@@ -46,7 +48,7 @@ h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
+    font-weight: 600;
     padding: 3px 3px 3px 0;
     margin: 5px 0 5px 0;
 }
@@ -86,13 +88,20 @@ form, p {
     padding: 0;
 }
 
+b, strong { font-weight: 600; }
+code {
+    font-size: 0.9em;
+    font-family: 'Fira Mono', monospace;
+    letter-spacing: -1px;
+}
 input, select, textarea, button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 1em;
     color: #555;
     border: 1px solid #AAA;
     padding: 2px;
     vertical-align: middle;
+    font-weight: 300;
 }
 
 input, select, textarea {
@@ -150,13 +159,13 @@ select {
 
 textarea {
     padding: 5px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     box-sizing: border-box;
 }
 
 input#login_button, input#register_button {
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
     padding: 8px 12px !important;
 }
 
@@ -167,7 +176,7 @@ input#login_button, input#register_button {
 }
 
 th {
-    font-weight: bold;
+    font-weight: 600;
     border-bottom: 1px solid #DDD;
     padding: 2px;
     background-color: #F5F5F5;
@@ -189,7 +198,7 @@ dd {
 }
 
 label {
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
     padding: 2px;
     cursor: pointer;
@@ -198,11 +207,11 @@ label {
 }
 
 label .faded_out {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 label.optional {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 label > input[type="checkbox"] {
@@ -214,7 +223,7 @@ label > input[type="checkbox"] {
     border: 1px dashed #DDD;
     background-color: #F5F5F5;
     padding: 4px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     display: inline-block;
     margin: 0 5px;
 }
@@ -250,7 +259,7 @@ div.image_container.thumb img.image {
 
 .generic_offline {
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
     font-size: larger;
 }
 
@@ -289,7 +298,7 @@ header {
     padding: 10px 0 5px 0;
     border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.2em;
     margin: 0 7px;
     text-transform: uppercase;
@@ -302,7 +311,7 @@ header {
 }
 
 .backdrop_details_submit input[type="submit"], .backdrop_details_submit input[type="submit"]:hover, .backdrop_details_submit input[type="button"], .backdrop_details_submit input[type="button"]:hover {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
     padding: 3px 7px;
 }
@@ -342,7 +351,7 @@ header #user_notifications_count {
     height: auto;
     min-width: 0;
     color: rgba(255, 255, 255, 0.4);
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     line-height: 1;
     transition: color 0.3s ease, background-color 0.3s ease;
@@ -455,7 +464,7 @@ header #user_notifications_count.unread {
 
 #user_notifications h1 {
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 5px 0;
     margin: 3px 5px 5px 5px;
     color: #888;
@@ -470,7 +479,7 @@ header #user_notifications_count.unread {
 
 #user_notifications_ist > li h1 {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     color: #555;
     border: 0;
     padding: 0;
@@ -481,7 +490,7 @@ header #user_notifications_count.unread {
 #user_notifications_list li .notification_content {
     color: #999;
     font-style: italic;
-    font-weight: normal;
+    font-weight: 300;
     margin: 0 0 5px 0;
     padding: 0 4px;
     clear: both;
@@ -532,7 +541,7 @@ header #user_notifications_count.unread {
 #user_notifications_list li time {
     font-size: 0.85em;
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     font-style: normal;
     display: inline-block;
     margin-right: 2px;
@@ -549,7 +558,7 @@ header #user_notifications_count.unread {
 }
 
 #user_notifications_list li.read h1, #user_notifications_list li.read .notification_content, #user_notifications_list li.read time {
-    font-weight: normal;
+    font-weight: 300;
     color: #CCC;
 }
 
@@ -639,14 +648,14 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown {
 }
 
 .userlink {
-    font-weight: normal;
+    font-weight: 300;
     margin-left: 5px;
 }
 
 .userlink:hover {
     text-decoration: none;
     border: none;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 img.userstate {
@@ -754,7 +763,7 @@ header nav > ul {
 
 .submenu_strip .selected_project {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     color: #555;
     border-color: #D9D9BB;
 }
@@ -883,7 +892,7 @@ input[type=checkbox].semi-checked {
 }
 
 .popup_message .messagetitle {
-    font-weight: normal;
+    font-weight: 300;
     color: #555;
     display: block;
 }
@@ -1075,7 +1084,7 @@ footer img {
 
 .login_popup .article h1 {
     font-size: 1.7em;
-    font-weight: normal;
+    font-weight: 300;
     border-bottom: none;
     margin: 5px 0;
     color: #555;
@@ -1166,7 +1175,7 @@ footer img {
 
 .login_popup h2.login_header {
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
     padding: 5px 0;
     margin: 5px 0;
@@ -1185,7 +1194,7 @@ footer img {
 }
 
 .login_formlist label, .account_popupform label {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.1em;
     padding: 5px 0;
     clear: both;
@@ -1202,7 +1211,7 @@ footer img {
 .login_formlist label.login_fieldlabel {
     clear: none;
     display: inline-block;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
     vertical-align: middle;
     padding: 2px 0;
@@ -1221,7 +1230,7 @@ footer img {
 .login_button_container .button, .login_button_container .button:hover {
     font-size: 1.1em;
     padding: 3px 7px !important;
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 .registration_button_container {
@@ -1237,7 +1246,7 @@ footer img {
 .loggedindiv {
     margin: 10px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .login_page_div {
@@ -1407,7 +1416,7 @@ footer img {
     padding: 5px 0;
     color: #888;
     border-bottom: none;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 /* comments and commits styling */
@@ -1445,7 +1454,7 @@ footer img {
 }
 
 .commenttitle {
-    font-weight: bold;
+    font-weight: 600;
     display: inline-block;
 }
 
@@ -1502,7 +1511,7 @@ footer img {
     float: right;
     font-size: 2.0em;
     line-height: 1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #B1B8E9;
     text-align: center;
 }
@@ -1517,7 +1526,7 @@ footer img {
 }
 
 .comments_none {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .comment_restricted {
@@ -1528,7 +1537,7 @@ footer img {
 
 .commentdate {
     color: #AAA;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     display: inline-block;
     margin-left: 5px;
@@ -1547,7 +1556,7 @@ footer img {
 
 .comment_add_title {
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 5px 0;
     margin-top: 0;
     color: #888;
@@ -1599,7 +1608,7 @@ footer img {
 }
 
 .comment_editsave, .comment_addsave {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .comment_titlebox {
@@ -1687,7 +1696,7 @@ footer img {
 }
 
 .commit_left table b {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .commit_left table img {
@@ -1702,7 +1711,7 @@ footer img {
 
 .commitbranch {
     display: inline-block;
-    font-weight: normal;
+    font-weight: 300;
     background-color: #EAF2FF;
     color: #99C;
     padding: 0 4px 2px 4px;
@@ -1720,7 +1729,7 @@ footer img {
 
 .issue_blocking td {
     color: #F44;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* end closed / blocking */
@@ -1781,7 +1790,7 @@ div.autocomplete ul {
 div.autocomplete li.header {
     padding-top: 15px;
     font-size: 0.85em;
-    font-weight: normal;
+    font-weight: 300;
     border-top: 0;
     color: #AAA;
     text-transform: uppercase;
@@ -1790,7 +1799,7 @@ div.autocomplete li.header {
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover {
     background-color: #F1F1F1;
     text-align: left;
-    font-weight: normal;
+    font-weight: 300;
     border-top: 1px dotted #BBB;
     color: #333;
 }
@@ -1827,7 +1836,7 @@ div.autocomplete ul li.issue_closed {
 
 div.autocomplete .extra {
     display: none;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1em;
 }
 
@@ -1846,7 +1855,7 @@ div.autocomplete .extra.attached img {
 }
 
 div.autocomplete .extra span {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
 }
 
@@ -1868,7 +1877,7 @@ div.autocomplete ul li {
     margin: 0;
     padding: 7px 10px;
     cursor: pointer;
-    font-weight: normal;
+    font-weight: 300;
     text-align: left;
     background-color: #FFF;
     color: #555;
@@ -2011,7 +2020,7 @@ div.autocomplete ul li > img:first-child {
 }
 
 .tab_menu .selected {
-    font-weight: normal;
+    font-weight: 300;
     background-color: #FFF;
 }
 
@@ -2121,12 +2130,12 @@ a.not_clickable:hover {
 }
 
 #header_userinfo .tab_menu_dropdown a {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
 }
 
 #header_userinfo .tab_menu_dropdown .userstate {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #header_userinfo:hover img.dropdown {
@@ -2163,14 +2172,14 @@ li.selected .tab_menu_dropdown, .tab_menu_container li.selected .tab_menu_dropdo
 
 .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a {
     color: inherit;
-    font-weight: normal;
+    font-weight: 300;
     display: block;
     padding: 4px 5px;
     background-color: transparent;
 }
 
 .tab_menu_dropdown div.header, .header_menu li.selected:hover div.header, .tab_menu_container .tab_menu_dropdown div.header {
-    font-weight: normal;
+    font-weight: 300;
     color: #AAA;
     margin: 15px 5px 2px 5px;
     text-transform: uppercase;
@@ -2381,7 +2390,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 .reportissue_button_container .button, .reportissue_button_container .button:hover {
     color: rgba(0, 0, 0, 0.8);
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) !important;
-    font-weight: normal;
+    font-weight: 300;
     margin-top: 4px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
     font-size: 1.1em !important;
@@ -2457,19 +2466,19 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .project_stuff li.project_name {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     padding-top: 1px;
 }
 
 .project_stuff li.no_project_name {
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
     padding-top: 2px;
     color: #888;
 }
 
 .project_stuff li.project_name span {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     color: #886;
 }
@@ -2501,7 +2510,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .project_strip .project_information_block {
     float: none;
-    font-weight: normal;
+    font-weight: 300;
     display: inline-block;
     vertical-align: middle;
     box-sizing: border-box;
@@ -2541,7 +2550,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     font-size: 1.1em;
     display: inline-block;
     vertical-align: middle;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .project_strip .project_name a:hover {
@@ -2567,7 +2576,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .project_strip .subprojects_list .subproject_link {
-    font-weight: normal;
+    font-weight: 300;
     margin-left: 10px;
 }
 
@@ -2584,7 +2593,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .project_strip nav a.nav-button {
-    font-weight: normal;
+    font-weight: 300;
     color: #555;
     background-color: rgba(200, 200, 200, 0);
     padding: 10px;
@@ -2606,7 +2615,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .project_strip nav a.button {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .project_strip nav .button .fa-file-text {
@@ -2641,7 +2650,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 /* generic header formatting */
 .header {
-    font-weight: bold;
+    font-weight: 600;
     text-align: left;
 }
 
@@ -2655,7 +2664,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     font-size: 1.2em;
     color: #999;
     border: 0;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .editor_container .textarea_hint {
@@ -2698,7 +2707,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .textarea_hint .header {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .textarea_hint .example {
@@ -2730,7 +2739,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .syntax_picker + ul li.selected a {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .syntax_picker + ul li {
@@ -2773,7 +2782,7 @@ a.shadowed:active {
 
 .user_popup .user_realname {
     font-size: 1.2em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 0;
     width: 240px;
     float: left;
@@ -2781,7 +2790,7 @@ a.shadowed:active {
 
 #user_details_popup .user_realname {
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 2px 0 0 0;
     float: left;
     line-height: 1.2;
@@ -2795,7 +2804,7 @@ a.shadowed:active {
 
 .account_details .user_realname {
     font-size: 1.2em;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 1.3;
     padding-bottom: 2px;
 }
@@ -2817,7 +2826,7 @@ a.shadowed:active {
 
 #account_user_info {
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     color: #CCC;
     margin: 15px 0 0 0;
     line-height: 1.2;
@@ -2825,7 +2834,7 @@ a.shadowed:active {
 
 #account_user_info:first-line {
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
 }
 
@@ -2859,7 +2868,7 @@ a.shadowed:active {
 }
 
 .profile_buttons .button, .profile_buttons .button:hover {
-    font-weight: normal !important;
+    font-weight: 300 !important;
     padding: 2px 3px 3px 3px !important;
 }
 
@@ -2876,7 +2885,7 @@ a.shadowed:active {
     background-color: #FFF;
     text-align: center;
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
     width: 100px;
     color: #888;
 }
@@ -2910,7 +2919,7 @@ a.shadowed:active {
 }
 
 #account_tabs_panes h3, .configuration_page h3, #project_config_menu_panes h3 {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.4em;
     color: #888;
     border-bottom: 1px dotted #CCC;
@@ -2923,11 +2932,11 @@ a.shadowed:active {
 }
 
 label[for=profile_prefer_wiki_markdown] {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #gravatar_change {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
     margin: 8px 0;
     padding: 4px 6px !important;
@@ -2940,7 +2949,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 #account_tabs_panes h4 {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 0;
     margin: 0;
 }
@@ -2969,7 +2978,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 #account_tabs_panes .access_keys_list p {
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     font-style: italic;
 }
@@ -2996,7 +3005,7 @@ label[for=profile_prefer_wiki_markdown] {
 }
 
 .usercard .user_username {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     color: #AAA;
     font-style: italic;
@@ -3008,19 +3017,19 @@ label[for=profile_prefer_wiki_markdown] {
 .usercard .user_id {
     float: right;
     font-size: 2.3em;
-    font-weight: normal;
+    font-weight: 300;
     color: #C4CAE9;
 }
 
 .user_popup .user_realname .user_status, .usercard .user_realname .user_status {
     font-size: 0.8em;
-    font-weight: normal;
+    font-weight: 300;
     color: #AAA;
 }
 
 .usercard .user_realname .user_email {
     font-size: 0.7em;
-    font-weight: normal;
+    font-weight: 300;
     color: #AAA;
     display: block;
     margin-top: 7px;
@@ -3042,7 +3051,7 @@ label[for=profile_prefer_wiki_markdown] {
 .usercard .user_details {
     font-size: 1.1em;
     line-height: 1.7;
-    font-weight: normal;
+    font-weight: 300;
     padding: 5px 15px;
     clear: both;
     width: 455px;
@@ -3053,7 +3062,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 .usercard .user_profile {
     font-size: 1.0em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 3px;
     width: 180px;
     float: left;
@@ -3073,7 +3082,7 @@ label[for=profile_prefer_wiki_markdown] {
 .user_popup .user_details {
     font-size: 0.8em;
     width: 230px;
-    font-weight: normal;
+    font-weight: 300;
     padding: 3px 0;
     display: inline-block;
     clear: none;
@@ -3087,7 +3096,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 .user_popup .user_details:first-line {
     font-size: 1.7em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .user_details ul.teamlist {
@@ -3286,7 +3295,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 .rounded_box.blue a {
     color: #B5B5FF;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .rounded_box.lightgreen a, .rounded_box.green a {
@@ -3296,7 +3305,7 @@ label[for=profile_prefer_wiki_markdown] {
 
 .rounded_box.blue a:hover {
     color: #C9C9FF;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .rounded_box.lightgreen a:hover, .rounded_box.green a:hover {
@@ -3310,7 +3319,7 @@ label[for=profile_prefer_wiki_markdown] {
 }
 
 .rounded_box.white th {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #F1F1F1;
     border-bottom: 1px solid #DDD;
     padding-bottom: 2px;
@@ -3435,7 +3444,7 @@ table.cleantable th {
 .configuration_container h1 {
     margin: 15px 0 5px 0;
     background-color: transparent;
-    font-weight: normal;
+    font-weight: 300;
     border: 0;
     padding: 7px 0 3px 0;
     border-bottom: 1px dotted #CCC;
@@ -3453,7 +3462,7 @@ table.cleantable th {
 
 .config_explanation a {
     color: #549D54;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .config_buttons, .config_badges {
@@ -3486,7 +3495,7 @@ table.cleantable th {
 
 .config_buttons li.config_selected {
     background-color: #FFF;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .config_buttons li a {
@@ -3548,7 +3557,7 @@ table.cleantable th {
     font-size: 1.2em;
     display: block;
     margin-bottom: 5px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .config_badges b img {
@@ -3745,7 +3754,7 @@ table.cleantable th {
 }
 
 .issuetype_scheme_associate_link {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
 }
 
@@ -3777,7 +3786,7 @@ table.cleantable th {
 
 .tab_header {
     padding-top: 10px;
-    font-weight: bold;
+    font-weight: 600;
     border-bottom: 1px solid #DDD;
 }
 
@@ -3786,7 +3795,7 @@ table.cleantable th {
     background-color: transparent;
     color: #888;
     text-transform: uppercase;
-    font-weight: normal;
+    font-weight: 300;
     padding: 15px 2px 5px 2px;
 }
 
@@ -3823,7 +3832,7 @@ table.cleantable th {
 .permission_list ul li {
     margin: 0;
     padding: 0;
-    font-weight: normal;
+    font-weight: 300;
     clear: both;
     background-color: transparent;
 }
@@ -3895,7 +3904,7 @@ table.cleantable th {
     border: 1px solid rgba(121, 35, 35, 0.4);
     padding: 10px;
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     display: block;
     margin: 10px 0 10px 0;
     color: rgb(183, 24, 24);
@@ -3904,7 +3913,7 @@ table.cleantable th {
 
 .permissions_warning strong {
     display: block;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
@@ -3923,11 +3932,11 @@ table.cleantable th {
 }
 
 .groupbox_header, .teambox_header, .clientbox_header {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .groupbox_membercount, .teambox_membercount, .clientbox_membercount {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.8em;
     color: #888;
 }
@@ -3945,7 +3954,7 @@ table.cleantable th {
 }
 
 #tab_users_pane > strong {
-    font-weight: bold;
+    font-weight: 600;
     display: block;
 }
 
@@ -3983,11 +3992,11 @@ table.cleantable th {
 }
 
 #adduser_div dt label {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #adduser_div dt label.required {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #adduser_div dt label.required:before {
@@ -4013,7 +4022,7 @@ table.cleantable th {
 }
 
 .teamlist_container label {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
 }
 
@@ -4037,7 +4046,7 @@ table.cleantable th {
 
 .collection_user_list li > .button {
     float: right;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 /* end users / teams / groups */
@@ -4068,14 +4077,14 @@ table.cleantable th {
 
 .scheme_list td.workflow_inactive {
     color: #A88;
-    font-weight: bold;
+    font-weight: 600;
     width: 100px;
     text-align: center;
 }
 
 .scheme_list td.workflow_active {
     color: #390;
-    font-weight: bold;
+    font-weight: 600;
     width: 100px;
     text-align: center;
 }
@@ -4086,7 +4095,7 @@ table.cleantable th {
 }
 
 .scheme_list td.workflow_steps span {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .scheme_list td.workflow_scheme_issuetypes {
@@ -4101,12 +4110,12 @@ table.cleantable th {
 }
 
 .scheme_list td.workflow_scheme_issuetypes span, .scheme_list td.workflow_scheme_projects span {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .scheme_list td.workflow_actions {
     width: 170px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.9em;
     text-align: right;
 }
@@ -4120,12 +4129,12 @@ table.cleantable th {
 }
 
 .workflow_name {
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 5px;
 }
 
 .workflow_description, .workflow_name span.builtin {
-    font-weight: normal;
+    font-weight: 300;
     font-style: italic;
     font-size: 0.9em;
 }
@@ -4210,7 +4219,7 @@ table.cleantable th {
 }
 
 #workflow_steps_list_tbody dt label.optional span {
-    font-weight: normal;
+    font-weight: 300;
     color: #AAA;
 }
 
@@ -4233,15 +4242,15 @@ table.cleantable th {
 
 #workflow_steps_list_tbody input[type="submit"] {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #workflow_steps_list_tbody form a {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .workflow_step_transition_name {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.9em;
     font-style: italic;
     margin: 5px 0;
@@ -4251,7 +4260,7 @@ table.cleantable th {
     margin-left: 5px;
     font-size: 0.95em;
     color: #AAA;
-    font-weight: normal;
+    font-weight: 300;
     font-style: italic;
 }
 
@@ -4342,7 +4351,7 @@ table.cleantable th {
 
 #add_post_action.more_actions_dropdown h1 {
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
     border-bottom: 1px dotted #CCC;
     color: #AAA;
     padding: 5px 0;
@@ -4400,7 +4409,7 @@ table.cleantable th {
     padding: 5px;
     font-size: 1.1em;
     font-style: italic;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 input[type=submit].workflow_transition_submit_button, input[type=submit].workflow_transition_submit_button:hover {
@@ -4416,7 +4425,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 .side_bar .header {
     margin: 2px 0 5px 0;
     padding: 3px 3px 3px 5px;
-    font-weight: bold;
+    font-weight: 600;
     border-bottom: 1px solid #CCC;
     background-color: transparent;
 }
@@ -4441,7 +4450,7 @@ ul.project_list {
 ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 10px 0;
     clear: both;
 }
@@ -4456,7 +4465,7 @@ ul.project_list > li {
     border-bottom: 1px dotted #DDD;
     font-size: 1.1em;
     text-transform: uppercase;
-    font-weight: normal
+    font-weight: 300
 }
 
 .client_dashboard {
@@ -4464,7 +4473,7 @@ ul.project_list > li {
 }
 
 .project_overview .button-group .button, .project_overview .button-group > .button-dropdown {
-    font-weight: normal;
+    font-weight: 300;
     vertical-align: middle;
     display: inline-block;
 }
@@ -4505,7 +4514,7 @@ ul.project_list > li {
 }
 
 .dashboard_team_info .dashboard_team_header {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 2.1em;
 }
 
@@ -4601,7 +4610,7 @@ a.friend {
 .issuetype_list .button, .issuetype_list .button:hover {
     margin: 10px;
     font-size: 1.5em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 15px !important;
     text-align: center;
     min-width: 320px;
@@ -4626,7 +4635,7 @@ a.friend {
 .report_issue_header {
     margin: 10px auto 0 auto;
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 2px 0 10px 0;
     width: 990px;
 }
@@ -4682,14 +4691,14 @@ a.friend {
 #report_form label {
     font-size: 1.1em;
     padding: 3px 0 3px 0;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .backdrop_detail_content #report_form label {
     font-size: 1em;
     text-transform: uppercase;
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #report_form label span {
@@ -4697,7 +4706,7 @@ a.friend {
 }
 
 #report_form label.required {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #report_form label.required span {
@@ -4854,7 +4863,7 @@ a.friend {
     color: rgba(100, 100, 100, 0.3);
     cursor: pointer;
     font-size: 2em;
-    font-weight: normal;
+    font-weight: 300;
     text-align: center;
     border: 2px rgba(100, 100, 100, 0.2) dashed;
     border-radius: 5px;
@@ -4908,7 +4917,7 @@ a.friend {
     width: 180px;
     display: inline-block;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #file_upload_list li label:first-of-type {
@@ -4938,12 +4947,16 @@ a.friend {
     padding: 3px;
     background-color: #F1F1F1;
     border: 1px dotted #AAA;
+    font-size: 0.9em;
+    font-family: 'Fira Mono', monospace;
 }
 
 #viewissue_vcs_integration_commits pre {
     padding: 0;
     background-color: initial;
     border: none;
+    font-size: 0.9em;
+    font-family: 'Fira Mono', monospace;
 }
 
 .textarea_save_container {
@@ -4959,7 +4972,7 @@ a.friend {
 
 .textarea_save_container .button, .textarea_save_container .button:hover {
     padding: 7px 10px;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
 }
 
@@ -5045,7 +5058,7 @@ a.friend {
     color: #777;
     display: block;
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 30px 0 5px;
     width: 100%;
     border-bottom: 1px dotted #CCC;
@@ -5096,7 +5109,7 @@ a.friend {
 }
 
 #reportissue_extrafields li {
-    font-weight: normal;
+    font-weight: 300;
     clear: none;
     margin: 5px;
     min-height: 26px;
@@ -5145,7 +5158,7 @@ a.friend {
     border-top: 1px solid #9D9;
     color: #FFF;
     padding: 3px;
-    font-weight: bold;
+    font-weight: 600;
     background-color: #5a5;
     cursor: pointer;
 }
@@ -5173,7 +5186,7 @@ a.friend {
     border-top: 1px solid #F9F9F9;
     color: #AAA;
     padding: 3px;
-    font-weight: bold;
+    font-weight: 600;
     background-color: #EEE;
     cursor: pointer;
 }
@@ -5199,7 +5212,7 @@ a.friend {
     border-bottom: 1px solid #CDC895;
     color: #6E6E53;
     padding: 2px 3px;
-    font-weight: normal;
+    font-weight: 300;
     background-color: #E3DDA5;
     cursor: pointer;
 }
@@ -5326,7 +5339,7 @@ a.friend {
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover {
     padding: 4px 8px;
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .project_header_right .button.reportissue_dropdown_button, .project_header_right .button.reportissue_dropdown_button:hover {
@@ -5339,7 +5352,7 @@ a.friend {
     padding: 8px 12px;
     color: #555;
     box-shadow: none;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .button-group.inset .button.button-pressed, .button-group.inset .button.button-pressed:hover {
@@ -5548,7 +5561,7 @@ a.dropper.dropdown_link:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-weight: normal;
+    font-weight: 300;
     color: rgb(125, 125, 125);
 }
 
@@ -5637,7 +5650,7 @@ ul.workflow_actions li:hover {
 }
 
 #fullpage_backdrop ul.duplicate_issues li {
-    font-weight: normal;
+    font-weight: 300;
     margin: 0 0 3px 0;
     text-align: left;
 }
@@ -5664,7 +5677,7 @@ ul.workflow_actions li:hover {
     z-index: 100001;
     color: #999;
     font-size: 15px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .fullpage_backdrop_content {
@@ -5729,7 +5742,7 @@ ul.workflow_actions li:hover {
 }
 
 .backdrop_detail_content {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.0em;
     padding: 5px;
     background: transparent;
@@ -5747,7 +5760,7 @@ ul.workflow_actions li:hover {
 }
 
 #reportissue_container .backdrop_detail_footer a {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .backdrop_detail_content #report_issue_add_extra, .backdrop_detail_content #reproduction_steps_div {
@@ -5779,7 +5792,7 @@ ul.workflow_actions li:hover {
     padding: 0 0 7px 0;
     color: #999;
     border-bottom: 1px dotted rgb(185, 185, 185);
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #dialog_content, #dialog_modal_content {
@@ -5843,7 +5856,7 @@ ul.workflow_actions li:hover {
     z-index: 0;
     vertical-align: middle;
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #F5F5F5;
     width: auto;
     position: relative;
@@ -5858,7 +5871,7 @@ ul.workflow_actions li:hover {
     text-shadow: 1px 1px 0 #FFF;
     position: relative;
     padding: 3px 3px 3px 5px;
-    font-weight: normal;
+    font-weight: 300;
     min-height: 22px;
 }
 
@@ -5874,7 +5887,7 @@ ul.workflow_actions li:hover {
 
 .issue_info a {
     font-size: 0.95em;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .issue_info.aligned {
@@ -5901,7 +5914,7 @@ ul.workflow_actions li:hover {
 }
 
 .issue_info .content, .notfound_error .content {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.95em;
     line-height: 1;
 }
@@ -5934,7 +5947,7 @@ ul.workflow_actions li:hover {
 }
 
 #notfound_error .content {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #notfound_error .header {
@@ -6040,7 +6053,7 @@ ul.workflow_actions li:hover {
 }
 
 #issue_main .button_container .button {
-    font-weight: normal;
+    font-weight: 300;
     padding: 4px 8px;
     font-size: 0.8em;
 }
@@ -6052,7 +6065,7 @@ ul.workflow_actions li:hover {
 
 .user_pain, .votes {
     font-size: 2.3em;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 1.2;
 }
 
@@ -6083,7 +6096,7 @@ ul.workflow_actions li:hover {
 
 .user_pain_calculated {
     font-size: 0.8em;
-    font-weight: normal;
+    font-weight: 300;
     color: rgb(119, 133, 116);
 }
 
@@ -6098,7 +6111,7 @@ ul.workflow_actions li:hover {
     display: block;
     margin: 0;
     padding: 5px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.1em;
     text-align: center;
     width: 100%;
@@ -6222,7 +6235,7 @@ ul.workflow_actions li:hover {
 }
 
 .issue_timespent_form li label.optional {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #spent_time_content a {
@@ -6294,7 +6307,7 @@ dl {
 
 dt {
     width: 85px;
-    font-weight: bold;
+    font-weight: 600;
     padding: 3px 2px 2px 2px;
     clear: both;
 }
@@ -6303,7 +6316,7 @@ dd {
     float: left;
     display: block;
     width: 195px;
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
     padding: 3px 5px 1px 2px;
     min-height: 16px;
@@ -6323,15 +6336,15 @@ dd {
 
 #viewissue_left_box_issuetype table tr td {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 #viewissue_left_box_status {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #viewissue_left_box_status table tr td {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .issue_closed .status_badge {
@@ -6339,7 +6352,7 @@ dd {
 }
 
 .status_badge {
-    font-weight: normal;
+    font-weight: 300;
     display: inline-block;
     color: rgba(0, 0, 0, 0.45);
     text-transform: uppercase;
@@ -6377,7 +6390,7 @@ dd {
     line-height: 1.7;
     text-transform: none;
     white-space: nowrap;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .more_actions_dropdown li:first-child:not(.header) {
@@ -6393,7 +6406,7 @@ dd {
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover {
     display: block;
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
     color: #333;
     text-decoration: none;
     border: 0;
@@ -6553,7 +6566,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 /* left hand dropdown boxes */
 .dropdown_header, .more_actions_dropdown li.header {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.05em;
     color: #888;
     border-bottom: 1px dotted #CCC;
@@ -6562,7 +6575,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 .dropdown_content {
-    font-weight: normal;
+    font-weight: 300;
     padding-top: 5px;
     font-size: 0.9em;
 }
@@ -6580,7 +6593,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 .dropdown_content ul li {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
     text-align: left;
     min-height: 18px;
@@ -6588,7 +6601,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 .dropdown_content table, .dropdown_content table td {
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
     text-align: left;
     height: 18px;
@@ -6602,7 +6615,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .dropdown_content label {
     display: block;
     text-transform: uppercase;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
 }
 
@@ -6620,7 +6633,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 .error_message {
     color: #E44;
-    font-weight: bold;
+    font-weight: 600;
     margin: 10px 5px 5px 0;
 }
 
@@ -6664,7 +6677,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     border-radius: 4px;
     background-color: rgba(150, 150, 150, 0.2);
     padding: 2px 4px;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.8em;
     margin-right: 2px;
     text-transform: uppercase;
@@ -6788,18 +6801,18 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 #title_form .title_form_save_container .button, #title_form .title_form_save_container .button:hover {
     padding: 5px 8px;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
 }
 
 .viewissue_description_header, .viewissue_affects_header, .viewissue_reproduction_steps_header, .viewissue_customfield_header {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.1em;
     padding: 0 0 5px 0;
 }
 
 .viewissue_description, .viewissue_affects, .viewissue_reproduction_steps, .viewissue_customfield {
-    font-weight: normal;
+    font-weight: 300;
     padding: 0;
     margin: 0;
 }
@@ -6813,14 +6826,14 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     border-bottom: 1px solid #CCC;
     padding: 3px;
     margin-top: 5px;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     font-size: 1.1em;
     text-transform: uppercase;
 }
 
 .header_div td {
-    font-weight: bold;
+    font-weight: 600;
     vertical-align: middle;
 }
 
@@ -6876,14 +6889,14 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 .statistics_percentage .hover_highlight > td:first-child {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 13px !important;
     padding-left: 3px;
 }
 
 .statistics_percentage .hover_highlight > td:nth-child(2) {
     text-align: right;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     padding-right: 5px;
     vertical-align: middle;
 }
@@ -7129,7 +7142,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 #viewissue_relation_results .faded_out {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 ul.attached_items {
@@ -7344,7 +7357,7 @@ ul.attached_items {
     padding: 4px 0;
     vertical-align: top;
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
     text-transform: uppercase;
 }
@@ -7476,7 +7489,7 @@ table.issue_affects td img {
 
 .dashboard.layout_standard ul.dashboard_column > li {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     clear: both;
     margin: 5px 0;
     padding: 0;
@@ -7511,12 +7524,12 @@ table.issue_affects td img {
 
 .dashboard.layout_standard ul.dashboard_column > li .faded_out {
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .dashboard.layout_standard ul.dashboard_column > li table tr td {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     vertical-align: top;
 }
 
@@ -7540,7 +7553,7 @@ table.issue_affects td img {
 .dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand .header, #dashboard_righthand .header {
     margin: 2px 5px;
     padding: 3px 3px 5px 2px;
-    font-weight: normal;
+    font-weight: 400;
     font-size: 1em;
     border-bottom: 1px dotted #CCC;
     background-color: #FFF;
@@ -7554,7 +7567,7 @@ table.issue_affects td img {
 }
 
 .dashboard.layout_standard .dashboard_view_header {
-    font-weight: bold;
+    font-weight: 600;
     color: #666;
     font-size: 1em;
     padding: 4px;
@@ -7680,7 +7693,7 @@ table.issue_affects td img {
 
 .dashboard_add_view_container > div {
     font-size: 1.7em;
-    font-weight: normal;
+    font-weight: 300;
     border: 1px dashed #DDD;
     padding: 50px 0;
     text-align: center;
@@ -7747,7 +7760,7 @@ table.issue_affects td img {
 }
 
 #add_dashboard_views h3, #add_dashboard_views h4 {
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     text-transform: uppercase;
     border-bottom: 1px dotted #CCC;
@@ -7920,7 +7933,7 @@ table.issue_affects td img {
 }
 
 .backdrop_box.sectioned h2 {
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     padding: 5px 0;
     margin: 15px 5px 5px 5px;
@@ -7982,7 +7995,7 @@ table.issue_affects td img {
     border: 1px solid rgba(100, 100, 100, 0.3);
     background-color: #F7F4DF;
     padding: 6px;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
     margin: 20px 5px;
     color: rgba(0, 0, 0, 0.6);
@@ -8088,7 +8101,7 @@ table.issue_affects td img {
 }
 
 #epics_list li.add_epic_container label {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     padding: 5px 0 0 0;
     display: block;
@@ -8119,7 +8132,7 @@ table.issue_affects td img {
 }
 
 #epics_list li.add_epic_container form .actionbuttons .button {
-    font-weight: normal;
+    font-weight: 300;
     padding: 2px 5px;
     font-size: 1em;
     margin-right: -1px;
@@ -8165,7 +8178,7 @@ table.issue_affects td img {
 
 #builds_list .release_name, #epics_list .epic_name {
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -8402,7 +8415,7 @@ table.issue_affects td img {
     padding: 4px 0;
     border: none;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .milestone_box .milestone_basic_container, .milestone_box .milestone_counts_container {
@@ -8437,7 +8450,7 @@ table.issue_affects td img {
 .milestone_counts_container td {
     padding: 0;
     text-align: center;
-    font-weight: normal;
+    font-weight: 300;
     min-width: 75px;
 }
 
@@ -8454,7 +8467,7 @@ table.issue_affects td img {
 }
 
 .milestone_box .milestone_name {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.2em;
     text-transform: uppercase;
     color: #777;
@@ -8562,7 +8575,7 @@ dl.info dt, dl.info dd {
     float: none;
     padding: 2px;
     vertical-align: middle;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 dl.info dt {
@@ -8860,7 +8873,7 @@ dl.info dt {
     width: 15px;
     height: 15px;
     font-size: 1px;
-    font-weight: normal;
+    font-weight: 300;
     padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.5);
     margin-right: 5px;
@@ -8877,7 +8890,7 @@ dl.info dt {
     text-align: center;
     padding: 0 2px;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
     vertical-align: middle;
     line-height: 1em;
@@ -8889,7 +8902,7 @@ dl.info dt {
     text-align: center;
     padding: 0;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
     vertical-align: middle;
     line-height: 1em;
@@ -8909,17 +8922,17 @@ dl.info dt {
 
 .issue_container .priority.priority_4, .whiteboard-issue .priority.priority_4 {
     color: #00892C;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .issue_container .priority.priority_5, .whiteboard-issue .priority.priority_5, .issue_container .priority.priority_6, .whiteboard-issue .priority.priority_6 {
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .issue_container .priority.priority_0, .whiteboard-issue .priority.priority_0 {
     color: #DDD;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .whiteboard-issue .priority.priority_1 {
@@ -9047,7 +9060,7 @@ dl.info dt {
 .whiteboard-issue .issue_estimates {
     color: #AAA;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     border: none;
     text-shadow: none;
     padding: 0 0 0 17px;
@@ -9189,7 +9202,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     color: #888;
     font-size: 0.85em;
     padding: 2px;
-    font-weight: normal;
+    font-weight: 300;
     text-transform: uppercase;
     border-bottom: 1px dotted #CCC;
 }
@@ -9242,7 +9255,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 #associated_projects li .project_name {
     text-align: left;
     padding: 5px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.9em;
     float: left;
 }
@@ -9340,7 +9353,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 
 .project_boards_list ul li .board_name {
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9349,7 +9362,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 
 .project_boards_list ul li .board_description {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     font-style: italic;
 }
@@ -9464,7 +9477,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 
 .fancydropdown + ul li h1, .fancydropdown + ul li h1:first-child {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.3em;
     margin: 0 0 5px;
     padding: 0;
@@ -9473,7 +9486,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 }
 
 .fancydropdown + ul li p {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1em;
 }
 
@@ -9515,19 +9528,19 @@ ul.milestone_issues_container li {
 
 ul.milestone_issues_container li .header, .infobox .header {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 ul.milestone_issues_container li .content {
     padding-top: 3px;
     line-height: 15px;
-    font-weight: normal;
+    font-weight: 300;
     margin-bottom: 12px;
 }
 
 ul.milestone_issues_container li .story_title {
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: 600;
     padding-top: 1px;
     height: 18px;
     overflow: hidden;
@@ -9554,11 +9567,11 @@ ul.milestone_issues_container li:hover .story_color {
 .story_estimation_div .header {
     float: left;
     padding-top: 3px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .story_estimation_div a {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .story_estimation_div input[type="text"] {
@@ -9568,7 +9581,7 @@ ul.milestone_issues_container li:hover .story_color {
 ul.milestone_issues_container li .story_no {
     float: left;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
     font-style: italic;
     background-color: transparent;
     color: #AAA;
@@ -9579,7 +9592,7 @@ ul.milestone_issues_container li .story_no {
 ul.milestone_issues_container li .story_estimate {
     float: right;
     margin-left: 3px;
-    font-weight: normal;
+    font-weight: 300;
     padding: 1px 0 0 0;
 }
 
@@ -9593,14 +9606,14 @@ ul.milestone_issues_container li .story_owner {
     bottom: 1px;
     left: 8px;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 1px 4px 1px 1px;
 }
 
 ul.milestone_issues_container li .story_tags {
     padding-top: 3px;
     line-height: 15px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 ul.milestone_issues_container li .actions {
@@ -9615,7 +9628,7 @@ ul.milestone_issues_container li .actions a:hover {
 
 ul.milestone_issues_container li .actions .task_count {
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #AAA;
 }
 
@@ -9625,7 +9638,7 @@ ul.milestone_issues_container li:hover .actions {
 
 ul.milestone_issues_container li .actions label {
     float: left;
-    font-weight: bold;
+    font-weight: 600;
     margin: 0 5px 0 0;
     padding: 0;
     font-size: 0.9em;
@@ -9640,7 +9653,7 @@ ul.milestone_issues_container li .actions label {
 }
 
 #scrum #scrum_menu .header {
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 5px;
 }
 
@@ -9655,7 +9668,7 @@ ul.milestone_issues_container li .actions label {
     border: 1px solid #D6D6a1;
     margin: 2px;
     padding: 2px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .related_issue {
@@ -9665,7 +9678,7 @@ ul.milestone_issues_container li .actions label {
     border: 1px solid #DDD;
     margin: 2px;
     padding: 2px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #related_parent_issues_inline td, #related_child_issues_inline td {
@@ -9732,7 +9745,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 #scrum_unassigned .add_story_header {
-    font-weight: bold;
+    font-weight: 600;
     float: left;
 }
 
@@ -9741,7 +9754,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 .planning_container h3, .project_information_main h3 {
-    font-weight: normal;
+    font-weight: 300;
     text-transform: uppercase;
     color: #888;
 }
@@ -9757,7 +9770,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 
 .planning_container label, .planning_container input[type="submit"], .planning_container input[type="submit"]:hover {
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .planning_container .milestone_box.unavailable {
@@ -9772,7 +9785,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     font-size: 0.9em;
     padding: 0 15px;
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     text-transform: uppercase;
 }
 
@@ -9852,7 +9865,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 #milestone_details_overview td.estimates {
     padding: 3px;
     text-align: center;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #milestone_details_overview td.milestone_issue_actions {
@@ -9955,7 +9968,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 
 .whiteboard.edit-mode .edit-column > label {
     display: block;
-    font-weight: normal;
+    font-weight: 300;
     padding-left: 0;
 }
 
@@ -10032,7 +10045,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 .whiteboard-columns thead h1,
 .whiteboard-columns .thead h1 {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
     color: #777;
     margin: 0;
     border-bottom: 3px solid rgba(200, 200, 200, 0.3);
@@ -10070,7 +10083,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 .whiteboard-columns thead h1 .column_count,
 .whiteboard-columns .thead h1 .column_count {
     display: inline-block;
-    font-weight: normal;
+    font-weight: 300;
     background-color: #FFF;
     color: #888;
     text-transform: none;
@@ -10102,7 +10115,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     float: right;
     line-height: 1em;
     margin-left: 2px;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     color: rgba(0, 0, 0, 0.7);
 }
@@ -10167,7 +10180,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     font-size: 1.1em;
     margin: 5px 0 0 0;
     padding: 10px;
-    font-weight: normal;
+    font-weight: 300;
     border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
 }
 
@@ -10226,7 +10239,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 .transition-selector h2 {
-    font-weight: normal;
+    font-weight: 300;
     margin: 25px 5px 5px 5px;
     padding: 5px 0;
     color: #888;
@@ -10312,7 +10325,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     margin: 0 5px 0 17px;
     text-decoration: none;
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     line-height: 1.6;
 }
 
@@ -10507,7 +10520,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 .menu_links .header {
     font-size: 1em;
     border-bottom: 0;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 5px;
 }
 
@@ -10533,16 +10546,16 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 .menu_links .content a {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .menu_links .content a.selected {
-    font-weight: bold;
+    font-weight: 600;
     color: #006700;
 }
 
 .menu_links .content a.selected:hover {
-    font-weight: bold;
+    font-weight: 600;
     color: #00a400;
 }
 
@@ -10590,7 +10603,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 .infobox .close_me input[type="submit"] {
-    font-weight: bold;
+    font-weight: 600;
     margin-left: 5px;
 }
 
@@ -10598,7 +10611,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     padding: 0;
     font-size: 0.95em;
     text-align: left;
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
 }
 
@@ -10612,7 +10625,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 }
 
 .infobox_modal .close_me label {
-    font-weight: normal;
+    font-weight: 300;
     vertical-align: middle;
     font-size: 0.9em;
 }
@@ -10672,7 +10685,7 @@ div.quickaddtask .close_micro_popup_link {
 
 .dashboard_view_content a.more {
     float: right;
-    font-weight: bold;
+    font-weight: 600;
     padding-top: 5px;
 }
 
@@ -10698,7 +10711,7 @@ div.quickaddtask .close_micro_popup_link {
 
 #project_name {
     font-size: 1.7em;
-    font-weight: normal;
+    font-weight: 300;
     margin: 8px 5px 5px 0;
     line-height: 1.3;
     display: inline-block;
@@ -10707,7 +10720,7 @@ div.quickaddtask .close_micro_popup_link {
 #project_key_span {
     margin: 3px 0 0 0;
     font-size: 0.7em;
-    font-weight: normal;
+    font-weight: 300;
     display: inline;
     padding: 3px;
     color: #AAA;
@@ -10717,12 +10730,12 @@ div.quickaddtask .close_micro_popup_link {
     display: block;
     font-size: 0.65em;
     text-transform: uppercase;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
 }
 
 #project_team, #project_client {
-    font-weight: normal;
+    font-weight: 300;
     margin: 0 5px 5px 0;
 }
 
@@ -10879,7 +10892,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .project_info_container h1, .project_info_container h2, .project_info_container h3, .project_info_container h4 {
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     margin: 5px 0;
     padding: 5px 0;
@@ -10944,13 +10957,13 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .dashboard_view_content .project_role {
-    font-weight: normal;
+    font-weight: 300;
     margin: 5px 0;
     font-size: 0.9em;
 }
 
 .project_role .label {
-    font-weight: bold;
+    font-weight: 600;
     float: left;
     margin: 0 10px 0 0;
 }
@@ -11016,7 +11029,7 @@ div.quickaddtask .close_micro_popup_link {
 
 .project_team_list .roles_list {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
     display: block;
     clear: both;
     margin-top: 5px;
@@ -11106,7 +11119,7 @@ div.quickaddtask .close_micro_popup_link {
 
 #project_description {
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #666;
 }
 
@@ -11152,7 +11165,7 @@ div.quickaddtask .close_micro_popup_link {
 
 #search_sidebar .header {
     background: transparent;
-    font-weight: normal;
+    font-weight: 300;
     margin: 0;
     padding: 6px 0;
     border-bottom: 1px dotted #AAA;
@@ -11203,7 +11216,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 #search_sidebar .container_div li a, #search_sidebar .container_div li a:hover {
-    font-weight: normal;
+    font-weight: 300;
     display: inline-block;
     vertical-align: top;
     text-decoration: none;
@@ -11341,7 +11354,7 @@ div.quickaddtask .close_micro_popup_link {
     border-right-color: #FFF;
     margin-left: 0;
     padding: 12px;
-    font-weight: bold;
+    font-weight: 600;
     background-color: #FFF;
     box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.1);
 }
@@ -11403,7 +11416,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .project_client_info .project_client_header {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.5em;
 }
 
@@ -11485,7 +11498,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 #timeline .latest_action_dates {
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     text-transform: uppercase;
     border-bottom: 1px dotted #CCC;
@@ -11523,7 +11536,7 @@ div.quickaddtask .close_micro_popup_link {
 
 .recent_activities td.latest_action_dates {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
     padding: 15px 0 0 0;
 }
 
@@ -11539,7 +11552,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .timeline_actions a {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .timeline_actions .content {
@@ -11612,7 +11625,7 @@ div.quickaddtask .close_micro_popup_link {
 
 .milestone_points {
     color: #888;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .roadmap_percentbar .percentcontainer {
@@ -11626,7 +11639,7 @@ div.quickaddtask .close_micro_popup_link {
 .roadmap_percentdescription {
     float: left;
     padding: 5px;
-    font-weight: normal;
+    font-weight: 300;
     color: #555;
 }
 
@@ -11643,7 +11656,7 @@ div.quickaddtask .close_micro_popup_link {
 .roadmap_dates {
     display: inline-block;
     margin-left: 5px;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     font-size: 0.9em;
     text-transform: none;
@@ -11694,7 +11707,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .roadmap_issue.blocking .issue_title {
-    font-weight: bold;
+    font-weight: 600;
     color: red;
 }
 
@@ -11793,7 +11806,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 #find_issues .results_header {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.4em;
     padding: 0 0 5px 2px;
     margin-bottom: 0;
@@ -11912,7 +11925,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .interactive_dropdown label {
-    font-weight: normal;
+    font-weight: 300;
     display: inline-block;
     padding: 0;
     float: none;
@@ -11952,7 +11965,7 @@ div.quickaddtask .close_micro_popup_link {
 
 .interactive_menu h1, .interactive_filters_list h1 {
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
     padding: 5px 0;
     margin: 0 5px;
@@ -12076,7 +12089,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .interactive_filters_list .column .search_template_list li h1 {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
     text-transform: uppercase;
     color: #888;
@@ -12314,18 +12327,18 @@ li.filtervalue .hidden {
     right: 25px;
     top: -25px;
     font-size: 2em;
-    font-weight: normal;
+    font-weight: 300;
     color: #CCC;
     padding: 15px;
 }
 
 #find_issues .results_header .searchterm {
-    font-weight: normal;
+    font-weight: 300;
     font-style: italic;
 }
 
 #find_issues .results_header .faded_out, .num_results_badge {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.8em;
     background-color: rgba(200, 200, 200, 0.3);
     color: rgba(50, 50, 50, 0.6);
@@ -12337,7 +12350,7 @@ li.filtervalue .hidden {
 
 #find_issues .main_content {
     font-size: 0.9em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 3px;
 }
 
@@ -12412,7 +12425,7 @@ li.filtervalue .hidden {
 .search_buttons .button, .search_buttons .button:hover {
     font-size: 1.15em !important;
     padding: 2px 10px !important;
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 #find_issues #search_filters ul {
@@ -12446,23 +12459,23 @@ li.filtervalue .hidden {
 }
 
 #search_button_bottom, #search_button_bottom:hover {
-    font-weight: bold !important;
+    font-weight: 600 !important;
 }
 
 #find_issues button {
-    font-weight: normal;
+    font-weight: 300;
     padding: 2px 5px 1px 5px !important;
 }
 
 /* end boxes */
 
 #search_error, #search_message {
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
 }
 
 .generic_error_message {
-    font-weight: normal;
+    font-weight: 300;
     color: #E44;
 }
 
@@ -12498,7 +12511,7 @@ li.filtervalue .hidden {
     margin: 0;
     padding: 6px;
     font-size: 1.2em;
-    font-weight: normal;
+    font-weight: 300;
     text-transform: uppercase;
     border: none;
     background-color: #FFF;
@@ -12528,7 +12541,7 @@ li.filtervalue .hidden {
 .search_results th {
     background: #FFF no-repeat 5px center;
     padding: 2px;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
     font-size: 0.85em;
     border: none;
@@ -12621,7 +12634,7 @@ li.filtervalue .hidden {
 }
 
 .search_results td.result_issue a, .search_results td.result_issue a:hover {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1em;
 }
 
@@ -12638,12 +12651,12 @@ li.filtervalue .hidden {
 }
 
 .search_results div.results_summary .summary_header {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.1em;
 }
 
 .search_results div.results_summary .issue_count, .search_results div.results_summary .issue_spent_time_summary, .search_results div.results_summary .issue_estimated_time_summary {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1.1em;
 }
 
@@ -12807,7 +12820,7 @@ li.filtervalue .hidden {
 
 .saved_searches a {
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: 600;
     padding-left: 3px;
 }
 
@@ -12856,7 +12869,7 @@ li.filtervalue .hidden {
     padding: 5px 0;
     border: none;
     border-bottom: 1px dotted #CCC;
-    font-weight: normal;
+    font-weight: 400;
     font-size: 1.1em;
     color: #888;
     box-sizing: border-box;
@@ -12988,7 +13001,7 @@ a:hover .issue_title {
 #scopes_list ul.simple_list li span {
     color: #333;
     font-size: 1em;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #scopes_list .scope_description {
@@ -13021,7 +13034,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     text-decoration: none;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
-    font-weight: normal;
+    font-weight: 300;
     display: inline-block;
     vertical-align: middle;
     text-align: center;
@@ -13379,7 +13392,7 @@ input[type=button][disabled], input[type=button].disabled, input[type=submit][di
 }
 
 .openid_provider_name {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* sortable tables */
@@ -13447,12 +13460,12 @@ table.sortable tr th.nosort {
 }
 
 .markItUpContainer {
-    font: 11px 'Droid Sans', sans-serif;
+    font: 11px 'Source Sans Pro', sans-serif;
 }
 
 .markItUpEditor {
     box-sizing: border-box;
-    font: 12px 'Droid Sans Mono', monospace;
+    font: 12px 'Fira Mono', monospace;
     padding: 5px;
     width: 690px;
     height: 320px;
@@ -13581,7 +13594,7 @@ table.sortable tr th.nosort {
     display: inline-block;
     font-size: 14px;
     font-family: Helvetica, Arial, sans-serif;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 1.1;
     overflow: hidden;
     position: relative;
@@ -13859,9 +13872,9 @@ table.sortable tr th.nosort {
     padding: 10px;
     text-align: left;
     border-radius: 3px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 300;
     position: fixed;
     z-index: 9999999;
 }
@@ -13966,7 +13979,7 @@ table.sortable tr th.nosort {
     padding: 0 0 7px 0;
     color: #999;
     border-bottom: 1px dotted rgb(185, 185, 185);
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .tutorial.block_overlay {
@@ -13987,7 +14000,7 @@ table.sortable tr th.nosort {
 }
 
 .tutorial-message .button.button-silver {
-    font-weight: normal !important;
+    font-weight: 300 !important;
     font-size: 1em !important;
     margin: 22px 5px 0 0;
     padding: 3px 7px !important;
@@ -13996,7 +14009,7 @@ table.sortable tr th.nosort {
 .tutorial-status {
     text-align: right;
     font-size: 0.8em;
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     margin-bottom: 5px;
 }
@@ -14045,7 +14058,7 @@ div.calendar th {
 }
 
 div.calendar td.title {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.4em;
 }
 
@@ -14053,7 +14066,7 @@ div.calendar th {
     background: #ddd;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #ccc;
-    font-weight: bold;
+    font-weight: 600;
     color: #555;
 }
 
@@ -14081,13 +14094,13 @@ div.calendar td.button:active {
 }
 
 div.calendar tr.days td.selected {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #fff;
     color: #000;
 }
 
 div.calendar tr.days td.today {
-    font-weight: bold;
+    font-weight: 600;
     color: #D50000;
 }
 
@@ -14785,7 +14798,7 @@ form[id^='edit_issuetype_'][id$='_form'] > div {
 
 form[id^='edit_issuetype_'][id$='_form'] input[type=submit] {
     padding: 4px 6px;
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 #issuetypes_list div[id^='issuetype_'][id$='_box'] .button-group {
@@ -14922,7 +14935,7 @@ span[id^='update_'][id$='_choices_indicator'] {
 
 form[id^='edit_custom_type_'][id$='_form'] input[type=submit] {
     padding: 4px 6px !important;
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 img[id^='edit_custom_type_'][id$='_indicator'] {
@@ -15263,7 +15276,7 @@ input[type=checkbox][name=send_login_details] {
 }
 
 #user_details_popup .user_realname {
-    font-weight: normal;
+    font-weight: 300;
     margin-top: 5px;
     clear: both;
 }
@@ -15302,7 +15315,7 @@ input[type=checkbox][name=send_login_details] {
 
 #user_details_popup .teamlist .userdropdown .user_realname {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 600;
     margin-top: -1px;
     margin-left: -4px;
 }
@@ -15452,11 +15465,11 @@ div[id^='team_members_'][id$='_list'] > ul > li > .userdropdown > ul > li.header
 
 .dropdown_content.copy_team_link a {
     font-size: 13px;
-    font-weight: bold !important;
+    font-weight: 600 !important;
 }
 
 .dropdown_content.copy_team_link b a {
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 div[id^='team_members_'][id$='_no_users'],
@@ -15691,7 +15704,7 @@ tr > td[id$='_permissions_container'] > img {
 form > .config_header {
     padding: 3px 3px 3px 0;
     margin: 5px 0 10px 0;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.4em;
     color: #888;
     border-bottom: 1px dotted #CCC;
@@ -15873,7 +15886,7 @@ select[id^='edition_'][id$='_release_year'] {
 
 #change_workflow_box h3 {
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #change_workflow_box select {
@@ -16374,7 +16387,7 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
 }
 
 .dashboard_team_header {
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 .team_dashboard_users .userdropdown .header {
@@ -16589,7 +16602,7 @@ form[id^='acl_'][id$='_restrictedform'] input[type=submit] {
 
 div[id^='acl_'][id$='_restricted'] h4 {
     margin-left: 4px;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .issue_access_list > .faded_out {
@@ -16678,7 +16691,7 @@ ul[id^='popup_find_acl_'][id$='_results'] > li.disabled {
 
 .issue_access_policy_box #acl-users-teams-selector h4,
 .report-issue-custom-access-check #acl-users-teams-selector h4 {
-    font-weight: normal;
+    font-weight: 300;
     margin-left: 5px;
 }
 
@@ -16819,7 +16832,7 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled {
 
 .dashboard_view_content div[id$='_recent_issues_pane'] table .issue_open > b,
 .dashboard_view_content div[id$='_recent_issues_pane'] table .issue_closed > b {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 14px;
 }
 
@@ -17585,7 +17598,7 @@ li.header div.user_avatar {
 }
 
 #issue_info_container .issue_info .header {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #viewissue_header_container .title_area {
@@ -18011,7 +18024,7 @@ div[id^='comment_reply_indicator_'] {
 }
 
 .typeahead.dropdown-menu {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .typeahead.dropdown-menu a:hover {
@@ -18059,7 +18072,7 @@ div[id^='comment_reply_indicator_'] {
 .issue_inline_description h1, .issue_inline_description h2,
 .issue_inline_description h3, .issue_inline_description h4,
 .issue_inline_description h5, .issue_inline_description h6 {
-    font-weight: normal;
+    font-weight: 300;
     padding: 5px 0;
     margin: 20px 0 5px 0;
 }
@@ -18089,7 +18102,7 @@ div[id^='comment_reply_indicator_'] {
 /* Your account */
 
 #account_info_container #user_name_span {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 #account_info_container #account_user_info img {
@@ -18339,7 +18352,7 @@ li#header_usermenu_link > div {
     border-top: 1px dotted #CCC;
     margin: 15px 5px 2px 5px;
     color: #888;
-    font-weight: normal;
+    font-weight: 300;
     text-transform: uppercase;
     padding: 8px;
 }
@@ -18681,7 +18694,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 #viewissue_vcs_integration_commits .commentbody {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     background-color: #F3F3F3;
     padding: 5px;
     margin-bottom: 5px;
@@ -18735,7 +18748,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 #vcs_integration_getcommit_backdrop_box .commit .commenttitle,
 #project_commits .commit .commenttitle {
-    font-weight: normal;
+    font-weight: 300;
     line-height: 1.9em;
     margin-top: -4px;
 }
@@ -18778,7 +18791,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 .system_comment .commit_main {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     padding: 5px;
     margin-bottom: -10px;
     border-radius: 3px;
@@ -18808,7 +18821,7 @@ table.desktop-notifications-settings tr:first-child > td:last-child {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
     padding: 10px 15px 10px 60px;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     color: #333;
     background-color: #FFF;
     border-radius: 2px;
@@ -18845,7 +18858,7 @@ table.desktop-notifications-settings tr:first-child > td:last-child {
     height: 45px;
     box-sizing: border-box;
     font-size: 1.1em;
-    font-weight: normal;
+    font-weight: 300;
     padding: 0 13px;
     vertical-align: top;
 }
@@ -18905,7 +18918,7 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 
 .paginator a {
-    font-weight: normal;
+    font-weight: 300;
     padding: 2px 5px 1px 5px !important;
 }
 /* end generic paginator */
@@ -18914,7 +18927,7 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 
 .onboarding {
     font-size: 1.6em;
-    font-weight: normal;
+    font-weight: 300;
     color: rgba(100, 100, 100, 0.3);
     text-align: center;
     line-height: 1.6;

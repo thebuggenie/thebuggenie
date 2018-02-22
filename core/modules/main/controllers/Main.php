@@ -9,6 +9,7 @@ use thebuggenie\core\framework,
     thebuggenie\core\entities\Comment;
 
 /**
+ * @property entities\Project $selected_project
  * actions for the main module
  */
 class Main extends framework\Action
@@ -29,6 +30,10 @@ class Main extends framework\Action
             elseif ($project_id = (int) $request['project_id'])
                 $this->selected_project = tables\Projects::getTable()->selectById($project_id);
 
+            if ($this->selected_project instanceof entities\Project && !$this->selected_project->hasAccess($this->getUser())) {
+                $this->selected_project = null;
+            }
+
             framework\Context::setCurrentProject($this->selected_project);
         }
         catch (\Exception $e)
@@ -37,6 +42,13 @@ class Main extends framework\Action
         }
     }
 
+    /**
+     * Detect and return the requested issue
+     *
+     * @param framework\Request $request
+     * @return entities\Issue
+     * @throws \Exception
+     */
     protected function _getIssueFromRequest(framework\Request $request)
     {
         $issue = null;
@@ -66,6 +78,7 @@ class Main extends framework\Action
      * Go to the next/previous open issue
      *
      * @param \thebuggenie\core\framework\Request $request
+     * @throws \Exception
      */
     public function runNavigateIssue(framework\Request $request)
     {
@@ -99,12 +112,12 @@ class Main extends framework\Action
 
         if ($found_issue instanceof entities\Issue)
         {
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
+            $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
         }
         else
         {
             framework\Context::setMessage('issue_message', $this->getI18n()->__('There are no more issues in that direction.'));
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+            $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
         }
     }
 
@@ -161,7 +174,7 @@ class Main extends framework\Action
                         }
                         $issue->save();
                         framework\Context::setMessage('issue_saved', true);
-                        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+                        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     }
                     catch (\thebuggenie\core\exceptions\WorkflowException $e)
                     {
@@ -291,7 +304,7 @@ class Main extends framework\Action
             framework\Context::setMessage('issue_error', framework\Context::getI18n()->__('The issue was not moved, since the project is the same'));
         }
 
-        return $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+        return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
     }
 
     /**
@@ -305,7 +318,7 @@ class Main extends framework\Action
         {
             if (($projects = entities\Project::getAllRootProjects(false)) && $project = array_shift($projects))
             {
-                $this->forward(framework\Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
+                $this->forward($this->getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
             }
         }
         $this->forward403unless($this->getUser()->hasPageAccess('home'));
@@ -750,7 +763,7 @@ class Main extends framework\Action
      */
     public function runLogin(framework\Request $request)
     {
-        //if (!$this->getUser()->isGuest()) return $this->forward(framework\Context::getRouting()->generate('home'));
+        //if (!$this->getUser()->isGuest()) return $this->forward($this->$this->getRouting()->generate('home'));
         $this->section = $request->getParameter('section', 'login');
     }
 
@@ -781,7 +794,7 @@ class Main extends framework\Action
     public function runElevatedLogin(framework\Request $request)
     {
         if ($this->getUser()->isGuest())
-            return $this->forward(framework\Context::getRouting()->generate('login_page'));
+            return $this->forward($this->getRouting()->generate('login_page'));
     }
 
     public function runDisableTutorial(framework\Request $request)
@@ -828,10 +841,10 @@ class Main extends framework\Action
     {
         $i18n = framework\Context::getI18n();
         $options = $request->getParameters();
-        $forward_url = framework\Context::getRouting()->generate('home');
+        $forward_url = $this->getRouting()->generate('home');
 
         if (framework\Settings::isOpenIDavailable())
-            $openid = new \LightOpenID(framework\Context::getRouting()->generate('login_page', array(), false));
+            $openid = new \LightOpenID($this->getRouting()->generate('login_page', array(), false));
 
         if (framework\Settings::isOpenIDavailable() && !$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier'))
         {
@@ -893,7 +906,7 @@ class Main extends framework\Action
                         $user->save();
                         $this->verifyScopeMembership($user);
 
-                        return $this->forward(framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin')));
+                        return $this->forward($this->getRouting()->generate(framework\Settings::get('returnfromlogin')));
                     }
                     else
                     {
@@ -931,11 +944,11 @@ class Main extends framework\Action
                     {
                         if (framework\Settings::get('returnfromlogin') == 'referer')
                         {
-                            $forward_url = $request->getParameter('tbg3_referer', framework\Context::getRouting()->generate('dashboard'));
+                            $forward_url = $request->getParameter('tbg3_referer', $this->getRouting()->generate('dashboard'));
                         }
                         else
                         {
-                            $forward_url = framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin'));
+                            $forward_url = $this->getRouting()->generate(framework\Settings::get('returnfromlogin'));
                         }
                     }
                     $forward_url = htmlentities($forward_url, ENT_COMPAT, framework\Context::getI18n()->getCharset());
@@ -1147,7 +1160,7 @@ class Main extends framework\Action
         {
             framework\Context::setMessage('login_message_err', framework\Context::getI18n()->__('This activation link is not valid'));
         }
-        $this->forward(framework\Context::getRouting()->generate('login_page'));
+        $this->forward($this->getRouting()->generate('login_page'));
     }
 
     /**
@@ -1946,7 +1959,7 @@ class Main extends framework\Action
                     }
                     if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
                     {
-                        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
+                        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
                     }
                     else
                     {
@@ -2897,7 +2910,7 @@ class Main extends framework\Action
         $issue->save();
 
         framework\Context::setMessage('issue_deleted', true);
-        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
+        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
     }
 
     /**
@@ -3158,13 +3171,13 @@ class Main extends framework\Action
                     if (!$issue instanceof entities\Issue)
                         break;
 
-                    $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+                    $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     break;
                 case 'article':
                     if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                         break;
 
-                    $this->forward(framework\Context::getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
+                    $this->forward($this->getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
                     break;
             }
         }
@@ -4604,7 +4617,7 @@ class Main extends framework\Action
                                 $user->save();
                                 framework\Context::setMessage('login_message', $i18n->__('Your password has been reset. Please log in.'));
                                 framework\Context::setMessage('login_referer', $this->getRouting()->generate('home'));
-                                return $this->forward(framework\Context::getRouting()->generate('login_page'));
+                                return $this->forward($this->getRouting()->generate('login_page'));
                             }
                             else
                             {
@@ -4635,7 +4648,7 @@ class Main extends framework\Action
         catch (\Exception $e)
         {
             framework\Context::setMessage('login_message_err', $i18n->__($e->getMessage()));
-            return $this->forward(framework\Context::getRouting()->generate('login_page'));
+            return $this->forward($this->getRouting()->generate('login_page'));
         }
     }
 
@@ -4702,7 +4715,7 @@ class Main extends framework\Action
     {
         if ($request['desired_username'] && entities\User::isUsernameAvailable($request['desired_username']))
         {
-            return $this->renderJSON(array('available' => true, 'url' => framework\Context::getRouting()->generate('get_partial_for_backdrop', array('key' => 'confirm_username', 'username' => $request['desired_username']))));
+            return $this->renderJSON(array('available' => true, 'url' => $this->getRouting()->generate('get_partial_for_backdrop', array('key' => 'confirm_username', 'username' => $request['desired_username']))));
         }
         else
         {
@@ -4809,7 +4822,7 @@ class Main extends framework\Action
             $this->getUser()->addScope($scope, false);
             $this->getUser()->confirmScope($scope->getID());
             $route = (framework\Settings::getLoginReturnRoute() != 'referer') ? framework\Settings::getLoginReturnRoute() : 'home';
-            $this->forward(framework\Context::getRouting()->generate($route));
+            $this->forward($this->getRouting()->generate($route));
         }
     }
 

@@ -87,9 +87,6 @@
         protected function _install($scope)
         {
             framework\Context::setPermission('article_management', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
             $this->saveSetting('allow_camelcase_links', 1);
             $this->saveSetting('require_change_reason', 1);
 
