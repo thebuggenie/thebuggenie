@@ -32,6 +32,3 @@ Options +FollowSymlinks
     RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
 
 </IfModule>
-
-# Prevent access to "hidden" files.
-RedirectMatch 404 ^/\..*$
