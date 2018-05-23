@@ -1326,6 +1326,9 @@
 
 //                $geshi = new \GeSHi($codeblock, $language);
                 $highlighter = new Highlighter();
+
+                if ($language == 'html4strict') $language = 'html';
+
                 $codeblock = $highlighter->highlight($language, $codeblock);
 
 //                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
