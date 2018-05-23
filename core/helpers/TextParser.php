@@ -499,7 +499,7 @@
                         $caption = (!empty($options)) ? array_pop($options) : false;
                     }
 
-                    if ((($file instanceof \thebuggenie\core\entities\File && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && \thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled())
+                    if ((($file instanceof \thebuggenie\core\entities\File && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && framework\Settings::isCommentImagePreviewEnabled())
                     {
                         $divclasses = array('image_container');
                         $style_dimensions = '';
@@ -823,7 +823,7 @@
                     return (isset($this->options['included'])) ? '' : '{{TOC}}';
                 case 'SITENAME':
                 case 'SITETAGLINE':
-                    return \thebuggenie\core\framework\Settings::getSiteHeaderName();
+                    return framework\Settings::getSiteHeaderName();
                 default:
                     $details = explode('|', $matches[1]);
                     $template_name = array_shift($details);
@@ -1311,7 +1311,7 @@
                 }
                 else
                 {
-                    $language = \thebuggenie\core\framework\Settings::get('highlight_default_lang');
+                    $language = framework\Settings::get(framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE);
                 }
 
                 $numbering_startfrom = preg_match('/(?<=line start=")(.+?)(?=")/', $params, $matches);

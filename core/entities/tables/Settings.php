@@ -156,7 +156,7 @@
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = 0;
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = 0;
             $settings[\thebuggenie\core\framework\Settings::SETTING_TBG_NAME] = 'The Bug Genie';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html4strict';
+            $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
             $settings[\thebuggenie\core\framework\Settings::SETTING_ICONSET] = 'oxygen';
