@@ -399,21 +399,37 @@
          */
         public function runToggleFavouriteArticle(framework\Request $request)
         {
-            if ($article_id = $request['article_id'])
-            {
-                try
-                {
-                    $article = Articles::getTable()->selectById($article_id);
-                    $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['user_id']);
-                }
-                catch (\Exception $e)
-                {
-                    return $this->renderText('fail');
-                }
-            }
-            else
+            // Read request parameters.
+            $article_id = $request['article_id'];
+            $user_id = $request['user_id'];
+
+            // Validate request parameters.
+            if ($article_id === null)
             {
                 return $this->renderText('no article');
+            }
+
+            if ($user_id === null)
+            {
+                return $this->renderText('fail');
+            }
+
+            // Retrieve article and user from database, making sure they exist.
+            $article = Articles::getTable()->selectById($article_id);
+            $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
+
+            if ($article === null || $user === null )
+            {
+                return $this->renderText('fail');
+            }
+
+            // Grab current user (user sending the request).
+            $current_user = framework\Context::getUser();
+
+            // Check permissions.
+            if ($user->getID() !== $current_user->getID() || !$article->hasAccess())
+            {
+                return $this->renderText('fail');
             }
 
             if ($user->isArticleStarred($article_id))
