@@ -788,14 +788,17 @@
                 tables\Comments::getTable()->clearPreloadedIssueCommentCounts();
                 tables\IssueFiles::getTable()->clearPreloadedIssueFileCounts();
             }
-            return array($issues, $count);
+            return array($issues, count($issues));
         }
 
         public static function findIssuesByText($text, $project = null)
         {
             $issue = self::getIssueFromLink($text);
-            if ($issue instanceof Issue)
+
+            if ($issue instanceof Issue && $issue->hasAccess())
+            {
                 return array(array($issue), 1);
+            }
 
             $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
             if ($project instanceof Project)
