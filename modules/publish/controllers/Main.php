@@ -406,21 +406,22 @@
             // Validate request parameters.
             if ($article_id === null)
             {
-                return $this->renderText('no article');
+                return $this->return400(framework\Context::getI18n()->__('Article ID not specified'));
             }
 
             if ($user_id === null)
             {
-                return $this->renderText('fail');
+                return $this->return400(framework\Context::getI18n()->__('User ID not specified'));
             }
 
             // Retrieve article and user from database, making sure they exist.
             $article = Articles::getTable()->selectById($article_id);
             $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
 
-            if ($article === null || $user === null )
+            if ($article === null || $user === null)
             {
-                return $this->renderText('fail');
+                // Try not to reveal any additional information to caller about existence of user/article.
+                $this->forward403();
             }
 
             // Grab current user (user sending the request).
@@ -429,7 +430,8 @@
             // Check permissions.
             if ($user->getID() !== $current_user->getID() || !$article->hasAccess())
             {
-                return $this->renderText('fail');
+                // Try not to reveal any additional information to caller about existence of user/article.
+                $this->forward403();
             }
 
             if ($user->isArticleStarred($article_id))
