@@ -3,6 +3,7 @@
     namespace thebuggenie\modules\publish\controllers;
 
     use thebuggenie\core\framework,
+        thebuggenie\core\entities\User,
         thebuggenie\modules\publish\entities,
         thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\publish\entities\tables\Articles;
@@ -416,9 +417,9 @@
 
             // Retrieve article and user from database, making sure they exist.
             $article = Articles::getTable()->selectById($article_id);
-            $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
+            $user = User::getB2DBTable()->selectById($user_id);
 
-            if ($article === null || $user === null)
+            if (!$article instanceof Article || !$user instanceof User)
             {
                 // Try not to reveal any additional information to caller about existence of user/article.
                 $this->forward403();
