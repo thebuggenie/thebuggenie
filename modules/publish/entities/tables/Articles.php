@@ -145,6 +145,14 @@
             return $this->selectOne($crit, 'none');
         }
 
+        public function getArticleByID($id)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+
+            return $this->doSelectById($id, $crit);
+        }
+
         public function doesArticleExist($name)
         {
             $crit = $this->getCriteria();

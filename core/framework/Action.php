@@ -205,6 +205,26 @@
         }
 
         /**
+         * Sets response code to 400 (bad request), sending optional
+         * error message to caller.
+         *
+         * @param string $message [optional] Error message to return to caller.
+         */
+        public function return400($message = null)
+        {
+            if (Context::getRequest()->isAjaxCall() || Context::getRequest()->getRequestedFormat() == 'json')
+            {
+                $this->getResponse()->ajaxResponseText(Response::HTTP_STATUS_BAD_REQUEST, $message);
+            }
+
+            $this->message = $message;
+            $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_BAD_REQUEST);
+            $this->getResponse()->setTemplate('main/http400');
+
+            return false;
+        }
+
+        /**
          * Forward the user with HTTP status code 403 and an (optional) message
          *
          * @param string $message [optional] The message

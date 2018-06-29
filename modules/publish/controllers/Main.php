@@ -3,6 +3,7 @@
     namespace thebuggenie\modules\publish\controllers;
 
     use thebuggenie\core\framework,
+        thebuggenie\core\entities\User,
         thebuggenie\modules\publish\entities,
         thebuggenie\modules\publish\entities\Article,
         thebuggenie\modules\publish\entities\tables\Articles;
@@ -399,21 +400,39 @@
          */
         public function runToggleFavouriteArticle(framework\Request $request)
         {
-            if ($article_id = $request['article_id'])
+            // Read request parameters.
+            $article_id = $request['article_id'];
+            $user_id = $request['user_id'];
+
+            // Validate request parameters.
+            if ($article_id === null)
             {
-                try
-                {
-                    $article = Articles::getTable()->selectById($article_id);
-                    $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($request['user_id']);
-                }
-                catch (\Exception $e)
-                {
-                    return $this->renderText('fail');
-                }
+                return $this->return400(framework\Context::getI18n()->__('Article ID not specified'));
             }
-            else
+
+            if ($user_id === null)
             {
-                return $this->renderText('no article');
+                return $this->return400(framework\Context::getI18n()->__('User ID not specified'));
+            }
+
+            // Retrieve article and user from database, making sure they exist.
+            $article = Articles::getTable()->selectById($article_id);
+            $user = User::getB2DBTable()->selectById($user_id);
+
+            if (!$article instanceof Article || !$user instanceof User)
+            {
+                // Try not to reveal any additional information to caller about existence of user/article.
+                $this->forward403();
+            }
+
+            // Grab current user (user sending the request).
+            $current_user = framework\Context::getUser();
+
+            // Check permissions.
+            if ($user->getID() !== $current_user->getID() || !$article->hasAccess())
+            {
+                // Try not to reveal any additional information to caller about existence of user/article.
+                $this->forward403();
             }
 
             if ($user->isArticleStarred($article_id))
