@@ -787,6 +787,10 @@
          */
         public function updateStatus()
         {
+            if (!$this->getProject() instanceof Project) {
+                return;
+            }
+
             $all_issues_closed = (bool) ($this->countClosedIssues() == $this->countIssues());
             if (!$this->hasReachedDate() && $all_issues_closed)
             {
