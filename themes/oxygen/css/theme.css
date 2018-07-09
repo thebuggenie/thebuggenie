@@ -5645,7 +5645,7 @@ ul.workflow_actions li:hover {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
-#viewissue_find_issue_input {
+#viewissue_find_related_issues_input {
     width: 350px;
 }
 
@@ -7133,13 +7133,13 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-top: -3px;
 }
 
-#viewissue_find_issue_form div {
+#viewissue_find_related_issues_form div {
     text-align: left;
     font-size: 0.9em;
     margin-top: 10px;
 }
 
-#viewissue_find_issue_form input[type="text"] {
+#viewissue_find_related_issues_form input[type="text"] {
     width: 300px;
 }
 
@@ -16511,7 +16511,7 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     padding: 2px 14px;
 }
 
-#viewissue_add_relation_div #find_issue_indicator {
+#viewissue_add_relation_div #viewissue_find_related_issues_indicator {
     position: absolute;
     margin-left: 5px;
 }
@@ -17097,11 +17097,11 @@ div[id^='issue_transition_container_'] .button-group {
     margin-top: -4px;
 }
 
-div[id^='issue_transition_container_'] .duplicate_search input[id^='viewissue_find_issue_'][id$='_input'] {
+div[id^='issue_transition_container_'] .duplicate_search input[id^='viewissue_find_duplicated_issue_'][id$='_input'] {
     width: 566px;
 }
 
-div[id^='issue_transition_container_'] .duplicate_search input[id^='viewissue_find_issue_'][id$='_submit'] {
+div[id^='issue_transition_container_'] .duplicate_search input[id^='viewissue_find_duplicated_issue_'][id$='_submit'] {
     line-height: 18px !important;
     margin-left: -5px;
 }
