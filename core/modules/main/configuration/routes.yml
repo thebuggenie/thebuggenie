@@ -466,9 +466,9 @@ move_issue:
     csrf_enabled: false
 
 viewissue_find_issue:
-    route: /:project_key/findissues/:issue_id/:type
+    route: /:project_key/findrelatedissues/:issue_id/:type
     module: main
-    action: findIssue
+    action: findRelatedIssues
     parameters:
       format: json
     csrf_enabled: false

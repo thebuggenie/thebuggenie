@@ -74,6 +74,49 @@ class Main extends framework\Action
         return $issue;
     }
 
+
+    /**
+     * Helper method for sorting two issues based on their project and
+     * IDs.
+     *
+     * Sorting algorithm takes into account the following factors (in
+     * decreasing weight of importance):
+     *
+     * - Issue belongs to selected project.
+     * - Issue project name (alphabetical sorting).
+     * - Issue ID.
+     *
+     * @param \thebuggenie\core\entities\Issue $a Issue to compare.
+     * @param \thebuggenie\core\entities\Issue $b Issue to compare.
+     *
+     * @return -1 if issue $a comes ahead of issue $b, 0 if issue $a is the same as issue $b, 1 if issue $b comes ahead of issue $a.
+     */
+    protected function compareIssuesByProject($a, $b)
+    {
+        $project_a = $a->getProject();
+        $project_b = $b->getProject();
+
+        if ($project_a == $this->selected_project && $project_b != $this->selected_project)
+        {
+            $result = -1;
+        }
+        elseif ($project_b == $this->selected_project && $project_a != $this->selected_project)
+        {
+            $result = 1;
+        }
+        else
+        {
+            $result = strcasecmp($a->getProject()->getName(), $b->getProject()->getName());
+
+            if ($result == 0)
+            {
+                $result = $a->getID() > $b->getID();
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Go to the next/previous open issue
      *
@@ -3810,52 +3853,94 @@ class Main extends framework\Action
         return $this->renderJSON(array('error' => $error));
     }
 
-    public function runFindIssue(framework\Request $request)
+    /**
+     * Find issues that might be related to selected issue.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runFindRelatedIssues(framework\Request $request)
     {
-        $status = 200;
-        $message = null;
-        if ($issue_id = $request['issue_id'])
+        $issue_id = $request['issue_id'];
+        $searchfor = trim($request['searchfor']);
+
+        // Verify request parameters.
+        if ($issue_id === null)
         {
-            try
+            return $this->return400(framework\Context::getI18n()->__('Please provide an issue number'));
+        }
+        else if ($searchfor === null or $searchfor === "")
+        {
+            return $this->return400(framework\Context::getI18n()->__('Please provide search text'));
+        }
+        // Valid project has been referenced, user has permissions
+        // to access it (preExecute performs access check already).
+        else if ($this->selected_project instanceof entities\Project)
+        {
+            $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+
+            if ($issue instanceof entities\Issue && $issue->hasAccess($this->getUser()))
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                // Try to get both exact match and text-based search.
+                $exact_match = entities\Issue::getIssue($searchfor);
+                $found_issues = entities\Issue::findIssuesByText($searchfor, null);
+
+                // Exclude selected issue from search results.
+                if ($exact_match == $issue)
+                {
+                    $exact_match = null;
+                }
+
+                if (($key = array_search($issue, $found_issues)) !== false)
+                {
+                    unset($found_issues[$key]);
+                }
+
+                // Exclude exact match from general search results.
+                if (($key = array_search($exact_match, $found_issues)) !== false)
+                {
+                    unset($found_issues[$key]);
+                }
+
+                // Sort issues by project. Selected project at top.
+                usort($found_issues, array($this, 'compareIssuesByProject'));
+
+                // Group issues, exact match first, followed by
+                // current project, then other projects.
+                $grouped_issues = [];
+
+                foreach ($found_issues as $found_issue)
+                {
+                    $project_name = $found_issue->getProject()->getName();
+
+                    if (!array_key_exists($project_name, $found_issues))
+                    {
+                        $grouped_issues[$project_name] = [];
+                    }
+
+                    $grouped_issues[$project_name][] = $found_issue;
+                }
+
+                if ($exact_match instanceof entities\Issue)
+                {
+                    $grouped_issues = [$this->getI18n()->__('Exact match') => [$exact_match]] + $grouped_issues;
+                }
             }
-            catch (\Exception $e)
+            else
             {
-                $status = 400;
-                $message = framework\Context::getI18n()->__('Could not find this issue');
+                return $this->return404(framework\Context::getI18n()->__('Could not find this issue'));
             }
         }
-        elseif ($request->hasParameter('issue_id'))
-        {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please provide an issue number');
-        }
 
-        $searchfor = $request['searchfor'];
+        // Prepare response and return it.
+        $this->getResponse()->setHttpStatus(framework\Response::HTTP_STATUS_OK);
 
-        if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && mb_substr($searchfor, 0, 1) != '#')
-        {
-//                $status = 400;
-//                $message = framework\Context::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
-            $issues = array();
-            $count = 0;
-        }
-        else
-        {
-            $this->getResponse()->setHttpStatus($status);
-            if ($status == 400)
-            {
-                return $this->renderJSON(array('error' => $message));
-            }
+        $parameters = [
+            'selected_project' => $this->selected_project,
+            'issue' => $issue,
+            'grouped_issues' => $grouped_issues
+        ];
 
-            list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
-        }
-        $options = array('project' => $this->selected_project, 'issues' => $issues, 'count' => $count);
-        if (isset($issue))
-            $options['issue'] = $issue;
-
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/find' . $request['type'] . 'issues', $options)));
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/find' . $request['type'] . 'issues', $parameters)));
     }
 
     public function runFindDuplicateIssue(framework\Request $request)
@@ -3894,8 +3979,14 @@ class Main extends framework\Action
             return $this->renderJSON(array('error' => $message));
         }
 
-        list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
+        $issues = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
+
+        if (($key = array_search($issue, $found_issues)) !== false)
+        {
+            unset($issues[$key]);
+        }
+
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => count($issues)))));
     }
 
     public function runRemoveRelatedIssue(framework\Request $request)

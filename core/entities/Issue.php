@@ -720,6 +720,31 @@
             return ($found_issue instanceof Issue) ? $found_issue : null;
         }
 
+
+        /**
+         * Retrieves issue by identifier, taking into account access
+         * permissions.
+         *
+         * This method behaves the same as Issue::getIssueFromLink method,
+         * except it performs an additional permission check to ensure
+         * the current user has access to the issue.
+         *
+         * @param string $identifier Issue identifier.
+         *
+         * @return Issue
+         */
+        public static function getIssue($identifier)
+        {
+            $issue = self::getIssueFromLink($identifier);
+
+            if ($issue instanceof Issue && $issue->hasAccess())
+            {
+                return $issue;
+            }
+
+            return null;
+        }
+
         /**
          * Extract issue no from issue integer or string with prefix '#'.
          *
@@ -739,6 +764,24 @@
             return $issue_no;
         }
 
+        /**
+         * Finds all issues satisfying the passed-in filters to which
+         * the current user has access.
+         *
+         * Method comes with paging controls and ability to perform
+         * sorting/grouping of issues.
+         *
+         * @param array $filters Filters for matching the issues. Each element should be an instance of \thebuggenie\core\entities\SearchFilter.
+         * @param int $results_per_page Number of results per page.
+         * @param int $offset Offset (in number of issues, not pages) for performing paged searches.
+         * @param string $groupby Group issues by field. Supported values are:
+         *   category, status, milestone, assignee, posted_by, state, posted, severity, user_pain, votes, resolution, edition, build, component.
+         * @param string $grouporder Sorting order for returned issues. Set to 'asc' for ascending order, anything else for descending.
+         * @param array $sortfields Fields to sort issues by, in order of preference.
+         * @param bool $include_deleted Specify if deleted issues should be included in the search or not.
+         *
+         * @return Array where first element is an array of matched issues (taking into account offsent and results per page), and second is the total count of issues found.
+         */
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'desc'), $include_deleted = false)
         {
             $issues = array();
@@ -789,24 +832,33 @@
                 tables\Comments::getTable()->clearPreloadedIssueCommentCounts();
                 tables\IssueFiles::getTable()->clearPreloadedIssueFileCounts();
             }
+
             return array($issues, $count);
         }
 
+        /**
+         * Finds issues that contain the passed-in text in one of
+         * their (text-based) fields (such as title, description,
+         * custom fields etc). Only a limited number of results is
+         * returned - see Issue::findIssues for default.
+         *
+         * @param string $text Text to search for in issue fields.
+         * @param \thebuggenie\core\entities\Project $project Project to limit the search under. If null, issues are search for within all projects.
+         *
+         * @return List of matched issues.
+         */
         public static function findIssuesByText($text, $project = null)
         {
-            $issue = self::getIssueFromLink($text);
-
-            if ($issue instanceof Issue && $issue->hasAccess())
-            {
-                return array(array($issue), 1);
-            }
-
             $filters = array('text' => SearchFilter::createFilter('text', array('v' => $text, 'o' => '=')));
+
             if ($project instanceof Project)
             {
                 $filters['project_id'] = SearchFilter::createFilter('project_id', array('v' => $project->getID(), 'o' => '='));
             }
-            return self::findIssues($filters);
+
+            list($issues, $total_count) = self::findIssues($filters);
+
+            return $issues;
         }
 
         /**
@@ -3946,6 +3998,22 @@
         public function getState()
         {
             return $this->_state;
+        }
+
+        /**
+         * Helper method that returns state as text. This method
+         * should only be used for displaying result to the end user.
+         *
+         * @return State of issue (OPEN/CLOSED) as text.
+         */
+        public function getStateAsText()
+        {
+            if ($this->isOpen())
+            {
+                return "OPEN";
+            }
+
+            return "CLOSED";
         }
 
         /**
