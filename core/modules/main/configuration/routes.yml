@@ -465,8 +465,8 @@ move_issue:
     parameters: [ ]
     csrf_enabled: false
 
-viewissue_find_issue:
-    route: /:project_key/findrelatedissues/:issue_id/:type
+viewissue_find_related_issues:
+    route: /:project_key/find_issues/:issue_id/related
     module: main
     action: findRelatedIssues
     parameters:
@@ -486,6 +486,14 @@ viewissue_remove_related_issue:
     module: main
     action: removeRelatedIssue
     parameters: [ ]
+    csrf_enabled: false
+
+viewissue_find_duplicated_issue:
+    route: /:project_key/find_issues/:issue_id/duplicated
+    module: main
+    action: findDuplicatedIssue
+    parameters:
+      format: json
     csrf_enabled: false
 
 viewissue_remove_duplicated_issue:

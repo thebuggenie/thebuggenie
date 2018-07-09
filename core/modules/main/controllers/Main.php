@@ -3930,6 +3930,10 @@ class Main extends framework\Action
                 return $this->return404(framework\Context::getI18n()->__('Could not find this issue'));
             }
         }
+        else
+        {
+            return $this->return404(framework\Context::getI18n()->__('This project does not exist'));
+        }
 
         // Prepare response and return it.
         $this->getResponse()->setHttpStatus(framework\Response::HTTP_STATUS_OK);
@@ -3940,53 +3944,83 @@ class Main extends framework\Action
             'grouped_issues' => $grouped_issues
         ];
 
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/find' . $request['type'] . 'issues', $parameters)));
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findrelatedissues', $parameters)));
     }
 
-    public function runFindDuplicateIssue(framework\Request $request)
+    /**
+     * Find issues that might be duplicates of selected issue.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runFindDuplicatedIssue(framework\Request $request)
     {
-        $status = 200;
-        $message = null;
-        if ($issue_id = $request['issue_id'])
+        $issue_id = $request['issue_id'];
+        $searchfor = trim($request['searchfor']);
+
+        // Verify request parameters.
+        if ($issue_id === null)
         {
-            try
+            return $this->return400(framework\Context::getI18n()->__('Please provide an issue number'));
+        }
+        else if ($searchfor === null or $searchfor === "")
+        {
+            return $this->return400(framework\Context::getI18n()->__('Please provide search text'));
+        }
+        // Valid project has been referenced, user has permissions
+        // to access it (preExecute performs access check already).
+        else if ($this->selected_project instanceof entities\Project)
+        {
+            $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+
+            if ($issue instanceof entities\Issue && $issue->hasAccess($this->getUser()))
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                // Try to get both exact match and text-based search.
+                $exact_match = entities\Issue::getIssue($searchfor);
+                $matched_issues = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
+
+                // Exclude selected issue from search results.
+                if ($exact_match == $issue)
+                {
+                    $exact_match = null;
+                }
+
+                if (($key = array_search($issue, $matched_issues)) !== false)
+                {
+                    unset($matched_issues[$key]);
+                }
+
+                // Exclude exact match from general search results.
+                if (($key = array_search($exact_match, $matched_issues)) !== false)
+                {
+                    unset($matched_issues[$key]);
+                }
+
+                // Add exact match to top of the list.
+                if ($exact_match instanceof entities\Issue)
+                {
+                    array_unshift($matched_issues, $exact_match);
+                }
             }
-            catch (\Exception $e)
+            else
             {
-                $status = 400;
-                $message = framework\Context::getI18n()->__('Could not find this issue');
+                return $this->return404(framework\Context::getI18n()->__('Could not find this issue'));
             }
         }
         else
         {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please provide an issue number');
+            return $this->return404(framework\Context::getI18n()->__('This project does not exist'));
         }
 
-        $searchfor = $request['searchfor'];
+        // Prepare response and return it.
+        $this->getResponse()->setHttpStatus(framework\Response::HTTP_STATUS_OK);
 
-        if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
-        {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
-        }
+        $parameters = [
+            'selected_project' => $this->selected_project,
+            'issue' => $issue,
+            'matched_issues' => $matched_issues
+        ];
 
-        $this->getResponse()->setHttpStatus($status);
-        if ($status == 400)
-        {
-            return $this->renderJSON(array('error' => $message));
-        }
-
-        $issues = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
-
-        if (($key = array_search($issue, $found_issues)) !== false)
-        {
-            unset($issues[$key]);
-        }
-
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => count($issues)))));
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', $parameters)));
     }
 
     public function runRemoveRelatedIssue(framework\Request $request)
