@@ -150,7 +150,7 @@ select {
 
 textarea {
     padding: 5px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     box-sizing: border-box;
 }
 
@@ -214,7 +214,7 @@ label > input[type="checkbox"] {
     border: 1px dashed #DDD;
     background-color: #F5F5F5;
     padding: 4px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     display: inline-block;
     margin: 0 5px;
 }
@@ -13469,12 +13469,12 @@ table.sortable tr th.nosort {
 }
 
 .markItUpContainer {
-    font: 11px 'Droid Sans', sans-serif;
+    font: 11px 'Open Sans', sans-serif;
 }
 
 .markItUpEditor {
     box-sizing: border-box;
-    font: 12px 'Droid Sans Mono', monospace;
+    font: 12px 'Fira Mono', monospace;
     padding: 5px;
     width: 690px;
     height: 320px;
@@ -18596,7 +18596,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 #viewissue_vcs_integration_commits .commentbody {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     background-color: #F3F3F3;
     padding: 5px;
     margin-bottom: 5px;
@@ -18693,7 +18693,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 .system_comment .commit_main {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     padding: 5px;
     margin-bottom: -10px;
     border-radius: 3px;

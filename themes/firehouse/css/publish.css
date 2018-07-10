@@ -33,7 +33,7 @@
 .article h6 a { font-size: 10px; }
 .article .no_articles { color: #AAA; margin: 10px 0; }
 
-.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }
+.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Fira Mono", monospace; font-size: 12px; }
 
 .article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 0 5px; margin-right: 5px; float: left; }
 .article .publish_article_actions { margin-left: 5px; }
@@ -41,7 +41,7 @@
 .article.edit label { font-size: 1.2em; }
 .article.edit label.small { font-size: 1em; }
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
-.article.edit textarea { font-family: "Droid Sans Mono", monospace; }
+.article.edit textarea { font-family: "Fira Mono", monospace; }
 
 .article .header, #article_attachments > h4, #article_comments > h4 { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: none; }
 #article_attachments > h4, #article_comments > h4 { font-size: 17px; border-bottom: 1px solid #CCC; }

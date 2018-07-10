@@ -58,7 +58,7 @@
     background-color: #F1F1F1;
     border: 1px solid #B4B4B4;
     border-radius: 3px;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     font-size: 12px;
 }
 
@@ -117,7 +117,7 @@
 .article.edit label.small { font-size: 1em; }
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea {
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     border: none;
     padding: 15px;
     box-sizing: border-box;

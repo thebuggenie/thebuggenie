@@ -19,7 +19,7 @@
         #debug_routes ul li.selected:hover { background-color: rgba(160, 230, 160, 0.4); }
         #log_sql li .sql { font-family: monospace; font-size: 1em; display: block; margin: 5px 0; padding: 5px; border: 1px dotted rgba(100, 100, 100, 0.1); background-color: rgba(200, 200, 200, 0.2); color: #888; text-shadow: none; }
         #debug-frames-container .partial, #debug-frames-container .logmessage, #debug-frames-container .badge.url, #debug-frames-container .badge.method, #debug-frames-container .expander { display: inline-block; font-weight: normal; font-size: 1.1em; vertical-align: middle; }
-        #debug-frames-container .partial.code { font-family: 'Droid Sans Mono', monospace; background: rgba(100, 100, 100, 0.1); border: 1px solid rgba(100, 100, 100, 0.2); padding: 1px 3px; text-shadow: none; vertical-align: middle; }
+        #debug-frames-container .partial.code { font-family: 'Fira Mono', monospace; background: rgba(100, 100, 100, 0.1); border: 1px solid rgba(100, 100, 100, 0.2); padding: 1px 3px; text-shadow: none; vertical-align: middle; }
         #debug-frames-container .partial { display: inline-block; vertical-align: middle; }
         #debug-frames-container .file-icon { font-size: 1.2em; margin-right: 6px; margin-left: 6px; vertical-align: middle; color: rgba(100, 100, 100, 0.6); }
         #debug-frames-container .badge.url { text-align: left; }
