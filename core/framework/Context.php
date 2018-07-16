@@ -633,9 +633,9 @@ class Context
                 $event->trigger();
 
                 if ($event->isProcessed())
-                    self::loadUser($event->getReturnValue());
+                    self::loadUser($event->getReturnValue(), true);
                 elseif (!self::isCLI())
-                    self::loadUser();
+                    self::loadUser(null, true);
                 else
                     self::$_user = new User();
 
@@ -924,10 +924,10 @@ class Context
     {
         try
         {
-            self::$_user = ($user === null) ? User::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
+            self::$_user = ($user === null) ? User::identify(self::getRequest(), self::getCurrentAction(), true) : $user;
             if (self::$_user->isAuthenticated())
             {
-                if (!self::getRequest()->hasCookie('tbg3_original_username'))
+                if (!self::getRequest()->hasCookie('tbg_original_username'))
                 {
                     self::$_user->updateLastSeen();
                 }
@@ -1824,16 +1824,10 @@ class Context
      */
     public static function logout()
     {
-        if (Settings::isUsingExternalAuthenticationBackend())
-        {
-            $mod = self::getModule(Settings::getAuthenticationBackend());
-            $mod->logout();
-        }
+        $authentication_backend = Settings::getAuthenticationBackend();
+        $authentication_backend->logout();
 
         Event::createNew('core', 'pre_logout')->trigger();
-        self::getResponse()->deleteCookie('tbg3_username');
-        self::getResponse()->deleteCookie('tbg3_password');
-        self::getResponse()->deleteCookie('tbg3_elevated_password');
         self::getResponse()->deleteCookie('THEBUGGENIE');
         session_regenerate_id(true);
         Event::createNew('core', 'post_logout')->trigger();

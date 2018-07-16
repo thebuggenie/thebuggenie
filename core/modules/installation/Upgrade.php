@@ -2,6 +2,7 @@
 
 namespace thebuggenie\core\modules\installation;
 
+use thebuggenie\core\entities\tables\UserSessions;
 use thebuggenie\core\framework;
 
 class Upgrade
@@ -188,8 +189,7 @@ class Upgrade
             framework\cli\Command::cli_echo("Updating/fixing status of milestones.\n");
         }
 
-        \thebuggenie\core\entities\tables\Milestones::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_4113\Milestone::getB2DBTable());
-        \thebuggenie\core\entities\tables\Projects::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_4113\Project::getB2DBTable());
+        UserSessions::getTable()->create();
 
         $milestones = \thebuggenie\core\entities\tables\Milestones::getTable()->selectAll();
 

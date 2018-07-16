@@ -45,7 +45,8 @@
         "lib-pcre" : "8.*",
         "net/http" : "dev-master",
         "guzzlehttp/guzzle": "~6.0",
-        "scrivo/highlight.php": "v9.12.0.1"
+        "scrivo/highlight.php": "v9.12.0.1",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",

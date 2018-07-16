@@ -2,12 +2,12 @@
     <div class="backdrop_detail_content login_content">
         <div class="logindiv regular active" id="reset_password_container">
             <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $user->getUsername(), 'reset_hash' => $user->getActivationKey())); ?>" method="post" onsubmit="['reset_button', 'reset_indicator'].each(Element.toggle);">
-                <input type="hidden" id="tbg3_referer" name="reset_referer" value="<?php echo make_url('home'); ?>" />
+                <input type="hidden" id="tbg_referer" name="reset_referer" value="<?php echo make_url('home'); ?>" />
                 <h2 class="login_header"><?php echo __('Reset your password'); ?></h2>
                 <ul class="login_formlist">
                     <li>
-                        <label for="tbg3_username"><?php echo __('Username'); ?></label>
-                        <input type="text" id="tbg3_username" name="username" value="<?php echo $user->getUsername(); ?>" disabled>
+                        <label for="tbg_username"><?php echo __('Username'); ?></label>
+                        <input type="text" id="tbg_username" name="username" value="<?php echo $user->getUsername(); ?>" disabled>
                     </li>
                     <li>
                         <label for="_password"><?php echo __('New password'); ?></label>

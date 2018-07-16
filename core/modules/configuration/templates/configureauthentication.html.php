@@ -20,12 +20,12 @@
                     <td><label for="auth_backend"><?php echo __('Authentication backend'); ?></label></td>
                     <td>
                         <select name="auth_backend" id="auth_backend">
-                            <option value="tbg"<?php if (\thebuggenie\core\framework\Settings::getAuthenticationBackend() == 'tbg' || \thebuggenie\core\framework\Settings::getAuthenticationBackend() == null): ?> selected="selected"<?php endif; ?>><?php echo __('The Bug Genie authentication (use internal user mechanisms)'); ?></option>
+                            <option value="tbg"<?php if (\thebuggenie\core\framework\Settings::getAuthenticationBackendIdentifier() == 'tbg' || \thebuggenie\core\framework\Settings::getAuthenticationBackendIdentifier() == null): ?> selected="selected"<?php endif; ?>><?php echo __('The Bug Genie authentication (use internal user mechanisms)'); ?></option>
                             <?php
                             foreach ($modules as $module)
                             {
                                 $selected = null;
-                                if (\thebuggenie\core\framework\Settings::getAuthenticationBackend() == $module->getTabKey()):
+                                if (\thebuggenie\core\framework\Settings::getAuthenticationBackendIdentifier() == $module->getTabKey()):
                                     $selected = ' selected="selected"';
                                 endif;
                                 echo '<option value="'.$module->getTabKey().'"'.$selected.'>'.$module->getLongName().'</option>';

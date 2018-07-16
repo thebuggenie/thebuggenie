@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\auth_ldap;
 
+    use thebuggenie\core\entities\common\AuthenticationProviderInterface;
+    use thebuggenie\core\entities\Module;
     use thebuggenie\core\framework;
 
     /**
@@ -22,7 +24,7 @@
      *
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    class Auth_ldap extends \thebuggenie\core\entities\Module
+    class Auth_ldap extends Module
     {
         // Module information.
         const VERSION = '2.0';
@@ -37,20 +39,18 @@
          * LDAP connection handler. Handler is used for control user LDAP
          * operations. Verification of user login credentials is performed via
          * dedicated connection.
-         *
          */
-        protected $_connection = null;
+        protected $_connection;
 
+        protected $_backend;
 
         /**
          * Initialises the module. No module-specific steps are taken for this
          * module.
-         *
          */
         protected function _initialize()
         {
         }
-
 
         /**
          * Installs the module. No module-specific steps are taken for this
@@ -63,7 +63,6 @@
         {
         }
 
-
         /**
          * Uninstalls the module. No module-specific steps are taken for this
          * module.
@@ -72,10 +71,8 @@
         {
         }
 
-
         /**
          * Returns module type.
-         *
          *
          * @return int
          */
@@ -92,7 +89,6 @@
         {
             framework\Event::listen('core', 'thebuggenie\core\modules\configuration\controllers\Main\getAuthenticationMethodForAction', array($this, 'listen_configurationAuthenticationMethod'));
         }
-
 
         /**
          * Processes configuration settings submitted by user.
@@ -172,87 +168,18 @@
             }
         }
 
-
         /**
-         * Log-in the user with provided credentials.
-         *
-         * @param string $username
-         *   Username  to log-in with.
-         *
-         * @param string $password
-         *   Password to log-in with.
-         *
-         *
-         * @retval thebuggenie\core\entities\User | null
-         *   User object associated with the login. If login has failed, returns
-         *   null.
+         * @return AuthenticationProviderInterface
          */
-        public function doLogin($username, $password)
+        public function getAuthenticationBackend()
         {
-            return $this->_loginUser($username, $password, true);
-        }
-
-
-        /**
-         * Verify log-in credentials for previously logged-in user.
-         *
-         * @param string $username
-         *   Username  to log-in with.
-         *
-         * @param string $password
-         *   Password to log-in with.
-         *
-         *
-         * @retval thebuggenie\core\entities\User | null
-         *   User object associated with the login. If login verification has
-         *   failed, returns null.
-         */
-        public function verifyLogin($username, $password)
-        {
-            return $this->_loginUser($username, $password, false);
-        }
-
-
-        /**
-         * Logs out the user. No module-specific steps are taken for this
-         * module.
-         *
-         */
-        public function logout()
-        {
-        }
-
-
-        /**
-         * Automatic login, triggered if no credentials were supplied.
-         *
-         * LDAP authentication auto-login implementation is used in conjunction
-         * with HTTP integrated authentication.
-         *
-         * @retval \thebuggenie\core\entities\User | null
-         *   If HTTP integrated authentication is enabled, and appropriate
-         *   header is available in the request, runs login and returns user
-         *   entity if login was successful. Otherwise returns null.
-         *
-         * @throws \Exception
-         *   Thrown if HTTP header has not been configured, and HTTP integrated
-         *   authentication has been enabled
-         */
-        public function doAutoLogin()
-        {
-            $user = null;
-
-            if ($this->getSetting('integrated_auth'))
+            if (!$this->_backend instanceof LdapAuthenticationBackend)
             {
-                if (!isset($_SERVER[$this->getSetting('integrated_auth_header')]))
-                {
-                    throw new \Exception(framework\Context::geti18n()->__('HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.'));
-                }
-
-                $user = $this->_loginUser($_SERVER[$this->getSetting('integrated_auth_header')], "", true);
+                $this->_backend = new LdapAuthenticationBackend();
+                $this->_backend->setModule($this);
             }
 
-            return $user;
+            return $this->_backend;
         }
 
         /**
@@ -264,11 +191,10 @@
          */
         public function listen_configurationAuthenticationMethod(framework\Event $event)
         {
-            if (framework\Settings::getAuthenticationBackend() == $this->getName()) {
+            if (framework\Settings::getAuthenticationBackendIdentifier() == $this->getName()) {
                 $event->setReturnValue(framework\Action::AUTHENTICATION_METHOD_CORE);
             }
         }
-
 
         /**
          * Connects to LDAP server and binds as control user using the module
@@ -322,15 +248,14 @@
             }
         }
 
-
         /**
          * Returns LDAP connection handle. Initialises the handle (connects and
          * binds) if handle is not initialised.
          *
          *
-         * @return LDAP connection handle.
+         * @return resource LDAP connection handle.
          */
-        protected function _getConnection()
+        pupblic function getConnection()
         {
             if ($this->_connection === null)
             {
@@ -370,7 +295,7 @@
         protected function _search($filter, $attributes=null)
         {
             // Get the LDAP connection handle.
-            $connection = $this->_getConnection();
+            $connection = $this->getConnection();
 
             // ldap_search accepts only empty array, null is there for user
             // convenience.
@@ -507,7 +432,7 @@
                 }
 
                 // Verify that we can locate users within the LDAP directory.
-                $ldap_users = $this->_getLDAPUserInformation();
+                $ldap_users = $this->getLDAPUserInformation();
                 if (count($ldap_users) == 0)
                 {
                     throw new \Exception(framework\Context::geti18n()->__('Failed to locate any valid users in LDAP directory.'));
@@ -530,7 +455,7 @@
                 if (!framework\Context::isCLI())
                 {
                     $current_username = framework\Context::getUser()->getUsername();
-                    $ldap_users = $this->_getLDAPUserInformation($current_username);
+                    $ldap_users = $this->getLDAPUserInformation($current_username);
                     if (count($ldap_users) != 1)
                     {
                         throw new \Exception(framework\Context::geti18n()->__('Failed to locate current user (%username) in LDAP directory. If you enable LDAP authentication, you may find yourself locked-out of the settings. All other checks have passed.',
@@ -643,7 +568,7 @@
          *   Thrown in case the LDAP module is not configured properly for this
          *   operation.
          */
-        protected function _getLDAPUserInformation($username=null)
+        public function getLDAPUserInformation($username=null)
         {
             // Extract general LDAP configuration.
             $dn_attr = $this->getSetting('dn_attr');
@@ -767,7 +692,7 @@
         public function importAndUpdateUsers()
         {
             // Fetch user information from LDAP server.
-            $ldap_users = $this->_getLDAPUserInformation();
+            $ldap_users = $this->getLDAPUserInformation();
 
             // Counters for statistics.
             $import_count = 0;
@@ -780,7 +705,7 @@
              */
             foreach ($ldap_users as $ldap_user)
             {
-                list($user, $created) = $this->_createOrUpdateUser($ldap_user);
+                list($user, $created) = $this->createOrUpdateUser($ldap_user);
 
                 if ($created === true)
                 {
@@ -818,7 +743,7 @@
         public function pruneUsers()
         {
             // Fetch user information from LDAP server.
-            $ldap_users = $this->_getLDAPUserInformation();
+            $ldap_users = $this->getLDAPUserInformation();
 
             // Fetch TBG users.
             $tbg_users = \thebuggenie\core\entities\User::getAll();
@@ -847,46 +772,6 @@
                     'total_tbg' => $total_tbg_count];
         }
 
-
-        /**
-         * Verifies username and password login against LDAP server.
-         *
-         * @param string $username
-         *   Username to log-in with. Keep in mind this is DN in case of LDAP.
-         *
-         * @param string $password
-         *   Password to log-in with.
-         *
-         *
-         * @retval bool
-         *   Returns true, if username + password combination is valid, false
-         *   otherwise.
-         */
-        protected function _verifyLDAPLogin($username, $password)
-        {
-            // Assume failure.
-            $result = false;
-
-            // Make sure to use separate connection for verifying regular
-            // users. Do not reuse the control user connection.
-            $connection = @ldap_connect($this->getSetting('hostname'));
-
-            if ($connection !== false)
-            {
-                // Default LDAP protocol version used is 2, ensure we are
-                // using version 3 instead.
-                ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-                ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
-
-                // Ignore PHP errors from this function (all PHP ldap_*
-                // functions misuse PHP error handling).
-                $result = @ldap_bind($connection, $username, $password);
-            }
-
-            return $result;
-        }
-
-
         /**
          * Creates or updates an existing user based on passed-in LDAP user
          * information.
@@ -909,7 +794,7 @@
          *   \thebuggenie\core\entities\User, and second is a bool value
          *   denoting if the user was created just now.
          */
-        protected function _createOrUpdateUser($ldap_user)
+        public function createOrUpdateUser($ldap_user)
         {
             $user = \thebuggenie\core\entities\User::getByUsername($ldap_user['username']);
 
@@ -941,79 +826,4 @@
             return [$user, $created];
         }
 
-
-        /**
-         * Logs-in the user based on provided username and password, and
-         * retrieves the user entity.
-         *
-         * Initial logins are always verified against the LDAP directory, while
-         * subsequent ones are assumed to succeed automatically, since password
-         * will be in a hashed format that we cannot use for verification.
-         *
-         * @param string $username
-         *   Username to log-in with. Ignored if using HTTP integrated
-         *   authentication. This should be regular TBG username, not the LDAP
-         *   one (the LDAP one will be looked-up based on this value).
-         *
-         * @param string $password
-         *   Password to log-in with. Ignored if using HTTP integrated
-         *   authentication.
-         *
-         * @param bool $initial_login
-         *   Specify login mode. If initial login is requested, we will test
-         *   username and password against the LDAP server, otherwise it is
-         *   assumed that login has been performed before successfully.
-         *
-         * @retval \thebuggenie\core\entities\User | null
-         *   User entity if login was successful, null otherwise.
-         */
-        protected function _loginUser($username, $password, $initial_login)
-        {
-            // Retrieve LDAP user information.
-            $ldap_user_info = $this->_getLDAPUserInformation($username);
-
-            // If we could not locate user, return null to denote invalid login.
-            if (count($ldap_user_info) == 0)
-            {
-                return null;
-            }
-            // Bail-out if we locate more than one user, something is wrong with
-            // either module settings, or LDAP structure itself.
-            elseif (count($ldap_user_info) > 1)
-            {
-                framework\Logging::log("More than one user in LDAP directory has username '${username}'. Please verify integrity and structure of your LDAP installation.",
-                                       'ldap', framework\Logging::LEVEL_FATAL);
-                throw new \Exception(framework\Context::geti18n()->__('This user was found multiple times in the directory, please contact your administrator'));
-            }
-
-            // Extract user information.
-            $ldap_user = $ldap_user_info[0];
-
-            // Perform authentication based on whether we are using integrated
-            // authentication or not.
-            if ($this->getSetting('integrated_auth') == true && $initial_login === true)
-            {
-                if (!isset($_SERVER[$this->getSetting('integrated_auth_header')]) || $_SERVER[$this->getSetting('integrated_auth_header')] != $username)
-                {
-                    throw new \Exception(framework\Context::geti18n()->__('HTTP authentication internal error.'));
-                }
-            }
-            elseif ($initial_login === true)
-            {
-                $login_result = $this->_verifyLDAPLogin($ldap_user['ldap_username'], $password);
-
-                if ($login_result === false)
-                {
-                    return null;
-                }
-            }
-
-            // Create or update the existing user with up-to-date information.
-            list($user, $created) = $this->_createOrUpdateUser($ldap_user);
-
-            framework\Context::getResponse()->setCookie('tbg3_username', $username);
-            framework\Context::getResponse()->setCookie('tbg3_password', $user->getHashPassword());
-
-            return $user;
-        }
     }

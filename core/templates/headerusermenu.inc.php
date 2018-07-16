@@ -26,7 +26,7 @@
                 <?php echo link_tag(make_url('configure'), fa_image_tag('cog')); ?>
             </li>
         <?php endif; ?>
-        <li class="with-dropdown <?php if ($tbg_request->hasCookie('tbg3_original_username')): ?>temporarily_switched<?php endif; ?>" id="header_usermenu_link">
+        <li class="with-dropdown <?php if ($tbg_request->hasCookie('tbg_original_username')): ?>temporarily_switched<?php endif; ?>" id="header_usermenu_link">
             <?php if ($tbg_user->isGuest()): ?>
                 <a href="javascript:void(0);" <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo fa_image_tag('user'); ?></a>
             <?php else: ?>
@@ -44,7 +44,7 @@
                                 <li><?php echo javascript_link_tag(fa_image_tag('pencil-square-o').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});")); ?></li>
                             <?php endif; ?>
                             <li><?php echo link_tag(make_url('account'), fa_image_tag('user-md').__('Your account')); ?></li>
-                            <?php if ($tbg_request->hasCookie('tbg3_original_username')): ?>
+                            <?php if ($tbg_request->hasCookie('tbg_original_username')): ?>
                                 <li class="header"><?php echo __('You are temporarily this user'); ?></li>
                                 <li><?php echo link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?></li>
                             <?php endif; ?>

@@ -5,22 +5,22 @@
     <?php endif; ?>
     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
         <?php if (!\thebuggenie\core\framework\Context::hasMessage('login_force_redirect') || \thebuggenie\core\framework\Context::getMessage('login_force_redirect') !== true): ?>
-            <input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
+            <input type="hidden" id="tbg_referer" name="referer" value="<?php echo $referer; ?>" />
         <?php else: ?>
             <input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
         <?php endif; ?>
         <h2 class="login_header"><?php echo __('Log in with your username and password'); ?></h2>
         <ul class="login_formlist">
             <li>
-                <label for="tbg3_username"><?php echo __('Username'); ?></label>
-                <input type="text" id="tbg3_username" name="tbg3_username">
+                <label for="tbg_username"><?php echo __('Username'); ?></label>
+                <input type="text" id="tbg_username" name="username">
             </li>
             <li>
-                <label for="tbg3_password"><?php echo __('Password'); ?></label>
-                <input type="password" id="tbg3_password" name="tbg3_password"><br>
+                <label for="tbg_password"><?php echo __('Password'); ?></label>
+                <input type="password" id="tbg_password" name="password"><br>
             </li>
             <li>
-                <input type="checkbox" name="tbg3_rememberme" value="1" id="tbg3_rememberme"><label class="login_fieldlabel" for="tbg3_rememberme"><?php echo __('Keep me logged in'); ?></label>
+                <input type="checkbox" name="rememberme" value="1" id="tbg_rememberme"><label class="login_fieldlabel" for="tbg_rememberme"><?php echo __('Keep me logged in'); ?></label>
             </li>
         </ul>
         <div class="login_button_container">

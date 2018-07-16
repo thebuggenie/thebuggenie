@@ -533,8 +533,17 @@
 
             if (framework\Settings::isLoginRequired())
             {
-                framework\Context::getResponse()->deleteCookie('tbg3_username');
-                framework\Context::getResponse()->deleteCookie('tbg3_password');
+                $authentication_backend = framework\Settings::getAuthenticationBackend();
+                if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+                {
+                    framework\Context::getResponse()->deleteCookie('tbg_username');
+                    framework\Context::getResponse()->deleteCookie('tbg_session_token');
+                }
+                else
+                {
+                    framework\Context::getResponse()->deleteCookie('tbg_username');
+                    framework\Context::getResponse()->deleteCookie('tbg_password');
+                }
                 $this->error = framework\Context::geti18n()->__('You need to log in to access this site');
             }
             elseif (!framework\Context::getUser()->isAuthenticated())

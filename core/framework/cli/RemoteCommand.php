@@ -86,7 +86,7 @@
                 {
                     throw new \Exception("Please specify an installation of The Bug Genie to connect to by running the remote:authenticate command first");
                 }
-                $headers .= "Cookie: tbg3_username={$this->_getCurrentRemoteUser()}; tbg3_password={$this->_getCurrentRemotePasswordHash()}\r\n";
+                $headers .= "Cookie: tbg_username={$this->_getCurrentRemoteUser()}; tbg_application_password={$this->_getCurrentRemotePasswordHash()}\r\n";
             }
 
             $options = array('http' => array('method' => (empty($postdata)) ? 'GET' : 'POST', 'header' => $headers));

@@ -1099,7 +1099,7 @@ footer img {
     border: none;
 }
 
-#tbg3_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
+#tbg_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
     background-repeat: no-repeat;
     background-position: 7px 10px;
     padding: 8px 8px 8px 28px;
