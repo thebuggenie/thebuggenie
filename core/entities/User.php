@@ -322,8 +322,6 @@
          */
         protected $_prefer_wiki_markdown = false;
 
-        protected $_openid_accounts;
-
         /**
          * List of user's notification settings
          *
@@ -405,39 +403,6 @@
                 $user->setPassword(self::createPassword());
                 $user->setUsername($email);
                 $user->setEmail($email);
-                $user->setActivated();
-                $user->setEnabled();
-                $user->setValidated();
-                $user->save();
-            }
-
-            return $user;
-        }
-
-        /**
-         * Return (or create, assuming no external auth backend) a user based on
-         * a provided openid identity
-         *
-         * @param string $identity
-         *
-         * @return \thebuggenie\core\entities\User
-         */
-        public static function getByOpenID($identity)
-        {
-            $user = null;
-            if ($user_id = tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($identity))
-            {
-                $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
-            }
-            elseif (!framework\Settings::isUsingExternalAuthenticationBackend() && framework\Settings::getOpenIDStatus() == 'all')
-            {
-                $user = new self();
-                $user->setPassword(self::createPassword());
-                $username = explode('/', rtrim($identity, '/'));
-                $username = end($username);
-                $username = urldecode($username);
-                $user->setUsername($username);
-                $user->setOpenIdLocked();
                 $user->setActivated();
                 $user->setEnabled();
                 $user->setValidated();
@@ -547,25 +512,25 @@
                     {
                         if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
                         {
-                            $user = $authentication_backend->verifyToken($request->getCookie('tbg_username'), $request->getCookie('tbg_session_token'));
+                            $user = $authentication_backend->autoVerifyToken($request->getCookie('username'), $request->getCookie('session_token'));
                             if ($user instanceof User && $authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
                             {
-                                $user = $authentication_backend->verifyToken($request->getCookie('tbg_username'), $request->getCookie('tbg_elevated_session_token'), true);
+                                $user = $authentication_backend->autoVerifyToken($request->getCookie('username'), $request->getCookie('elevated_session_token'), true);
                             }
                         }
                         else
                         {
-                            $user = $authentication_backend->verifyLogin($request->getCookie('tbg_username'), $request->getCookie('tbg_password'));
+                            $user = $authentication_backend->autoVerifyLogin($request->getCookie('username'), $request->getCookie('password'));
                             if ($user instanceof User && $authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
                             {
-                                $user = $authentication_backend->verifyLogin($request->getCookie('tbg_username'), $request->getCookie('tbg_elevated_password'), true);
+                                $user = $authentication_backend->autoVerifyLogin($request->getCookie('username'), $request->getCookie('elevated_password'), true);
                             }
                         }
                     }
                     else
                     {
-                        // If we don't have login details, the backend may autologin
-                        $user = $authentication_backend->doAutoLogin($request);
+                        // If we don't have login details, try logging in with provided parameters
+                        $user = $authentication_backend->doExplicitLogin($request);
                     }
 
                     break;
@@ -877,7 +842,7 @@
          */
         public function isAuthenticated()
         {
-            return (bool) ($this->getID() == framework\Context::getUser()->getID());
+            return (bool) ($this->getID() == framework\Context::getUser()->getID() && ($this->getID() != framework\Settings::getDefaultUserID() || !framework\Settings::isDefaultUserGuest()));
         }
 
         /**
@@ -2508,36 +2473,6 @@
         }
 
         /**
-         * Populates openid accounts array when needed
-         */
-        protected function _populateOpenIDAccounts()
-        {
-            if ($this->_openid_accounts === null)
-            {
-                framework\Logging::log('Populating openid accounts');
-                $this->_openid_accounts = tables\OpenIdAccounts::getTable()->getIdentitiesForUserID($this->getID());
-                framework\Logging::log('...done (Populating user clients)');
-            }
-        }
-
-        /**
-         * Get associated openid accounts
-         *
-         * @return array
-         */
-        public function getOpenIDAccounts()
-        {
-            $this->_populateOpenIDAccounts();
-            return $this->_openid_accounts;
-        }
-
-        public function hasOpenIDIdentity($identity)
-        {
-            $this->_populateOpenIDAccounts();
-            return array_key_exists($identity, $this->_openid_accounts);
-        }
-
-        /**
          * Return the users associated scopes
          *
          * @return array|Scope
@@ -2777,7 +2712,7 @@
 
         public function regenerateRssKey()
         {
-            $key = Uuid::uuid4();
+            $key = Uuid::uuid4()->toString();
             framework\Settings::saveUserSetting($this->getID(), framework\Settings::USER_RSS_KEY, $key);
 
             return $key;

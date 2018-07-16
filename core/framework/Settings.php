@@ -61,7 +61,6 @@
 
         const SETTING_ADMIN_GROUP = 'admingroup';
         const SETTING_ALLOW_REGISTRATION = 'allowreg';
-        const SETTING_ALLOW_OPENID = 'allowopenid';
         const SETTING_ALLOW_USER_THEMES = 'userthemes';
         const SETTING_AWAYSTATE = 'awaystate';
         const SETTING_DEFAULT_CHARSET = 'charset';
@@ -429,21 +428,6 @@
         public static function isRegistrationEnabled()
         {
             return (bool) self::get(self::SETTING_ALLOW_REGISTRATION);
-        }
-
-        public static function getOpenIDStatus()
-        {
-            $setting = self::get(self::SETTING_ALLOW_OPENID);
-            return ($setting === null) ? 'all' : $setting;
-        }
-
-        public static function isOpenIDavailable()
-        {
-            if (self::isUsingExternalAuthenticationBackend())
-            {
-                return false; // No openID when using external auth
-            }
-            return (bool) (self::getOpenIDStatus() != 'none');
         }
 
         public static function getUserDisplaynameFormat()

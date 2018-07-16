@@ -30,7 +30,7 @@
             return AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN;
         }
 
-        function verifyLogin($username, $password, $is_elevated = false)
+        function autoVerifyLogin($username, $password, $is_elevated = false)
         {
         }
 
@@ -44,7 +44,7 @@
          * @return User|null
          * @throws ElevatedLoginException
          */
-        function verifyToken($username, $token, $is_elevated = false)
+        function autoVerifyToken($username, $token, $is_elevated = false)
         {
             $user = Users::getTable()->getByUsername($username);
 
@@ -75,9 +75,9 @@
 
         function logout()
         {
-            Context::getResponse()->deleteCookie('tbg_username');
-            Context::getResponse()->deleteCookie('tbg_session_token');
-            Context::getResponse()->deleteCookie('tbg_elevated_session_token');
+            Context::getResponse()->deleteCookie('username');
+            Context::getResponse()->deleteCookie('session_token');
+            Context::getResponse()->deleteCookie('elevated_session_token');
         }
 
         /**
@@ -85,8 +85,25 @@
          *
          * @return null|User
          */
-        function doAutoLogin(Request $request)
+        function doExplicitLogin(Request $request)
         {
+            $username = $request['username'];
+            $password = $request['password'];
+
+            $user = Users::getTable()->getByUsername($username);
+
+            if (!$user instanceof User)
+            {
+                Context::logout();
+                return;
+            }
+
+            if (!$user->hasPassword($password))
+            {
+                $user = null;
+            }
+
+            return $user;
         }
 
         /**
@@ -99,13 +116,13 @@
         {
             if ($session_only)
             {
-                Context::getResponse()->setSessionCookie('tbg_username', $user->getUsername());
-                Context::getResponse()->setSessionCookie('tbg_session_token', $token->getToken());
+                Context::getResponse()->setSessionCookie('username', $user->getUsername());
+                Context::getResponse()->setSessionCookie('session_token', $token->getToken());
             }
             else
             {
-                Context::getResponse()->setCookie('tbg_username', $user->getUsername());
-                Context::getResponse()->setCookie('tbg_session_token', $token->getToken());
+                Context::getResponse()->setCookie('username', $user->getUsername());
+                Context::getResponse()->setCookie('session_token', $token->getToken());
             }
         }
 
@@ -113,13 +130,13 @@
         {
             if ($session_only)
             {
-                Context::getResponse()->setSessionCookie('tbg_username', $user->getUsername());
-                Context::getResponse()->setSessionCookie('tbg_password', $password);
+                Context::getResponse()->setSessionCookie('username', $user->getUsername());
+                Context::getResponse()->setSessionCookie('password', $password);
             }
             else
             {
-                Context::getResponse()->setCookie('tbg_username', $user->getUsername());
-                Context::getResponse()->setCookie('tbg_password', $password);
+                Context::getResponse()->setCookie('username', $user->getUsername());
+                Context::getResponse()->setCookie('password', $password);
             }
         }
 

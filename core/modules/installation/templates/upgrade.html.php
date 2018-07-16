@@ -47,7 +47,7 @@
                     <ul class="backuplist">
                         <li style="background-image: url('images/backup_database.png');">
                             The Bug Genie database<br>
-                            Currently connected to <?php echo b2db\Core::getDBtype(); ?> database <span class="command_box"><?php echo b2db\Core::getDBname(); ?></span> running on <span class="command_box"><?php echo b2db\Core::getHost(); ?></span>
+                            Currently connected to <?php echo b2db\Core::getDBtype(); ?> database <span class="command_box"><?php echo b2db\Core::getDBname(); ?></span> running on <span class="command_box"><?php echo b2db\Core::getHost(); ?></span>, table prefix <span class="command_box"><?php echo b2db\Core::getTablePrefix(); ?></span>
                         </li>
                         <li style="background-image: url('images/backup_uploads.png');" class="<?php if (\thebuggenie\core\framework\Settings::getUploadStorage() != 'files') echo 'faded'; ?>">
                             Uploaded files<br>

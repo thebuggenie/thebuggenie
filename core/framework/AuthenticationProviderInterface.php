@@ -26,7 +26,7 @@
          *
          * @return User|null
          */
-        function verifyLogin($username, $password, $is_elevated = false);
+        function autoVerifyLogin($username, $password, $is_elevated = false);
 
         /**
          * @param $username
@@ -35,7 +35,7 @@
          *
          * @return User|null
          */
-        function verifyToken($username, $token, $is_elevated = false);
+        function autoVerifyToken($username, $token, $is_elevated = false);
 
         /**
          * @param $username
@@ -51,7 +51,7 @@
          * @param Request $request
          * @return User|null
          */
-        function doAutoLogin(Request $request);
+        function doExplicitLogin(Request $request);
 
         /**
          * @param User $user

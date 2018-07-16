@@ -778,7 +778,21 @@ class Main extends framework\Action
             // Calculate expiration period in seconds. setCookie() method should
             // add expiration period to current time.
             $expiration = 60 * $request->getParameter('elevation_duration', 30);
-            framework\Context::getResponse()->setCookie('elevated_password', $this->getUser()->getHashPassword(), $expiration);
+            $authentication_backend = framework\Settings::getAuthenticationBackend();
+
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+            {
+                $token = $this->getUser()->createUserSession();
+                $token->setExpiresAt(time() + $expiration);
+                $token->setIsElevated(true);
+                $token->save();
+
+                framework\Context::getResponse()->setCookie('elevated_session_token', $token->getToken(), $expiration);
+            }
+            else
+            {
+                framework\Context::getResponse()->setCookie('elevated_password', $this->getUser()->getHashPassword(), $expiration);
+            }
             return $this->renderJSON(array('elevated' => true));
         }
         else
@@ -807,7 +821,7 @@ class Main extends framework\Action
 
     public function runSwitchUser(framework\Request $request)
     {
-        if (!$this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('tbg_original_username'))
+        if (!$this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('original_username'))
             return $this->forward403();
 
         $response = $this->getResponse();
@@ -817,34 +831,34 @@ class Main extends framework\Action
             $user = new entities\User($request['user_id']);
             if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
             {
-                $response->setCookie('tbg_original_username', $request->getCookie('tbg_username'));
-                $response->setCookie('tbg_original_session_token', $request->getCookie('tbg_session_token'));
-                framework\Context::getResponse()->setCookie('tbg_username', $user->getUsername());
-                framework\Context::getResponse()->setCookie('tbg_session_token', $user->createUserSession()->getToken());
+                $response->setCookie('original_username', $request->getCookie('username'));
+                $response->setCookie('original_session_token', $request->getCookie('session_token'));
+                framework\Context::getResponse()->setCookie('username', $user->getUsername());
+                framework\Context::getResponse()->setCookie('session_token', $user->createUserSession()->getToken());
             }
             else
             {
-                $response->setCookie('tbg_original_username', $request->getCookie('tbg_username'));
-                $response->setCookie('tbg_original_password', $request->getCookie('tbg_password'));
-                framework\Context::getResponse()->setCookie('tbg_password', $user->getHashPassword());
-                framework\Context::getResponse()->setCookie('tbg_username', $user->getUsername());
+                $response->setCookie('original_username', $request->getCookie('username'));
+                $response->setCookie('original_password', $request->getCookie('password'));
+                framework\Context::getResponse()->setCookie('password', $user->getHashPassword());
+                framework\Context::getResponse()->setCookie('username', $user->getUsername());
             }
         }
         else
         {
             if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
             {
-                $response->setCookie('tbg_username', $request->getCookie('tbg_original_username'));
-                $response->setCookie('tbg_session_token', $request->getCookie('tbg_original_session_token'));
-                framework\Context::getResponse()->deleteCookie('tbg_original_session_token');
-                framework\Context::getResponse()->deleteCookie('tbg_original_username');
+                $response->setCookie('username', $request->getCookie('original_username'));
+                $response->setCookie('session_token', $request->getCookie('original_session_token'));
+                framework\Context::getResponse()->deleteCookie('original_session_token');
+                framework\Context::getResponse()->deleteCookie('original_username');
             }
             else
             {
-                $response->setCookie('tbg_username', $request->getCookie('tbg_original_username'));
-                $response->setCookie('tbg_password', $request->getCookie('tbg_original_password'));
-                framework\Context::getResponse()->deleteCookie('tbg_original_password');
-                framework\Context::getResponse()->deleteCookie('tbg_original_username');
+                $response->setCookie('username', $request->getCookie('original_username'));
+                $response->setCookie('password', $request->getCookie('original_password'));
+                framework\Context::getResponse()->deleteCookie('original_password');
+                framework\Context::getResponse()->deleteCookie('original_username');
             }
         }
         $this->forward($this->getRouting()->generate('home'));
@@ -862,92 +876,7 @@ class Main extends framework\Action
     {
         $authentication_backend = framework\Settings::getAuthenticationBackend();
 
-        if (framework\Settings::isOpenIDavailable())
-        {
-            $openid = new \LightOpenID($this->getRouting()->generate('login_page', array(), false));
-
-            if (!$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier'))
-            {
-                $openid->identity = $request->getRawParameter('openid_identifier');
-                $openid->required = array('contact/email');
-                $openid->optional = array('namePerson/first', 'namePerson/friendly');
-                return $this->forward($openid->authUrl());
-            }
-            elseif ($openid->mode == 'cancel')
-            {
-                $this->error = $this->getI18n()->__("OpenID authentication cancelled");
-            }
-            elseif ($openid->mode)
-            {
-                try
-                {
-                    if ($openid->validate())
-                    {
-                        if ($this->getUser()->isAuthenticated() && !$this->getUser()->isGuest())
-                        {
-                            if (tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($openid->identity))
-                            {
-                                framework\Context::setMessage('openid_used', true);
-                                throw new \Exception('OpenID already in use');
-                            }
-                            $user = $this->getUser();
-                        }
-                        else
-                        {
-                            $user = entities\User::getByOpenID($openid->identity);
-                        }
-                        if ($user instanceof entities\User)
-                        {
-                            $attributes = $openid->getAttributes();
-                            $email = (array_key_exists('contact/email', $attributes)) ? $attributes['contact/email'] : null;
-                            if (!$user->getEmail())
-                            {
-                                if (array_key_exists('contact/email', $attributes))
-                                    $user->setEmail($attributes['contact/email']);
-                                if (array_key_exists('namePerson/first', $attributes))
-                                    $user->setRealname($attributes['namePerson/first']);
-                                if (array_key_exists('namePerson/friendly', $attributes))
-                                    $user->setBuddyname($attributes['namePerson/friendly']);
-
-                                if (!$user->getNickname() || $user->isOpenIdLocked())
-                                    $user->setBuddyname($user->getEmail());
-                                if (!$user->getRealname())
-                                    $user->setRealname($user->getBuddyname());
-
-                                $user->save();
-                            }
-                            if (!$user->hasOpenIDIdentity($openid->identity))
-                            {
-                                tables\OpenIdAccounts::getTable()->addIdentity($openid->identity, $user->getID());
-                            }
-                            $user->setOnline();
-                            $user->save();
-                            $this->verifyScopeMembership($user);
-
-                            if (!$user->isGuest())
-                            {
-                                $this->_persistLogin($authentication_backend, $user, $persist);
-                            }
-
-                            return $this->forward($this->getRouting()->generate(framework\Settings::get('returnfromlogin')));
-                        }
-                        else
-                        {
-                            $this->error = $this->getI18n()->__("Didn't recognize this OpenID. Please log in using your username and password, associate it with your user account in your account settings and try again.");
-                        }
-                    }
-                    else
-                    {
-                        $this->error = $this->getI18n()->__("Could not validate against the OpenID provider");
-                    }
-                }
-                catch (\Exception $e)
-                {
-                    $this->error = $this->getI18n()->__("Could not validate against the OpenID provider: %message", array('%message' => htmlentities($e->getMessage(), ENT_COMPAT, $this->getI18n()->getCharset())));
-                }
-            }
-        }
-        elseif ($request->isPost())
+        if ($request->isPost())
         {
             try
             {
@@ -985,7 +914,7 @@ class Main extends framework\Action
                 if ($request->isAjaxCall())
                 {
                     $this->getResponse()->setHttpStatus(401);
-                    framework\Logging::log($e->getMessage(), 'openid', framework\Logging::LEVEL_WARNING_RISK);
+                    framework\Logging::log($e->getMessage(), 'auth', framework\Logging::LEVEL_WARNING_RISK);
                     return $this->renderJSON(array("error" => $this->getI18n()->__("Invalid login details")));
                 }
                 else
@@ -1034,7 +963,7 @@ class Main extends framework\Action
      */
     public function runRegisterCheckUsernameAvailability(framework\Request $request)
     {
-        $username = mb_strtolower(trim($request['fieldusername']));
+        $username = mb_strtolower(trim($request['username']));
         $available = ($username != '') ? tables\Users::getTable()->isUsernameAvailable($username) : false;
 
         return $this->renderJSON(array('available' => (bool) $available));
@@ -1056,7 +985,7 @@ class Main extends framework\Action
 
         try
         {
-            $username = mb_strtolower(trim($request['fieldusername']));
+            $username = mb_strtolower(trim($request['username']));
             $buddyname = $request['buddyname'];
             $email = mb_strtolower(trim($request['email_address']));
             $confirmemail = mb_strtolower(trim($request['email_confirm']));
@@ -3677,9 +3606,6 @@ class Main extends framework\Action
                 case 'attachlink':
                     $template_name = 'main/attachlink';
                     break;
-                case 'openid':
-                    $template_name = 'main/openid';
-                    break;
                 case 'notifications':
                     $template_name = 'main/notifications';
                     $options['first_notification_id'] = $request['first_notification_id'];
@@ -4756,13 +4682,13 @@ class Main extends framework\Action
 
             if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
             {
-                $this->getResponse()->setCookie('tbg_username', $user->getUsername());
-                $this->getResponse()->setCookie('tbg_session_token', $user->createUserSession()->getToken());
+                $this->getResponse()->setCookie('username', $user->getUsername());
+                $this->getResponse()->setCookie('session_token', $user->createUserSession()->getToken());
             }
             else
             {
-                $this->getResponse()->setCookie('tbg_username', $user->getUsername());
-                $this->getResponse()->setCookie('tbg_password', $user->getHashPassword());
+                $this->getResponse()->setCookie('username', $user->getUsername());
+                $this->getResponse()->setCookie('password', $user->getHashPassword());
             }
 
             framework\Context::setMessage('username_chosen', true);
@@ -4787,19 +4713,6 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('content' => $this->returnComponentHTML($view->getTemplate(), array('view' => $view))));
-    }
-
-    public function runRemoveOpenIDIdentity(framework\Request $request)
-    {
-        $identity = tables\OpenIdAccounts::getTable()->getIdentityFromID($request['openid']);
-        if ($identity && $this->getUser()->hasOpenIDIdentity($identity))
-        {
-            tables\OpenIdAccounts::getTable()->doDeleteById($request['openid']);
-            return $this->renderJSON(array('message' => $this->getI18n()->__('The OpenID identity has been removed from this user account')));
-        }
-
-        $this->getResponse()->setHttpStatus(400);
-        return $this->renderJSON(array('error' => $this->getI18n()->__('Could not remove this OpenID account')));
     }
 
     public function runGetTempIdentifiable(framework\Request $request)

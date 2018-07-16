@@ -104,9 +104,9 @@
          */
         public function logout()
         {
-            self::getResponse()->deleteCookie('tbg_username');
-            self::getResponse()->deleteCookie('tbg_password');
-            self::getResponse()->deleteCookie('tbg_elevated_password');
+            self::getResponse()->deleteCookie('username');
+            self::getResponse()->deleteCookie('password');
+            self::getResponse()->deleteCookie('elevated_password');
         }
 
         /**
@@ -257,8 +257,8 @@
             // Create or update the existing user with up-to-date information.
             list($user, $created) = $this->getModule()->createOrUpdateUser($ldap_user);
 
-            framework\Context::getResponse()->setCookie('tbg_username', $username);
-            framework\Context::getResponse()->setCookie('tbg_password', $user->getHashPassword());
+            framework\Context::getResponse()->setCookie('username', $username);
+            framework\Context::getResponse()->setCookie('password', $user->getHashPassword());
 
             return $user;
         }

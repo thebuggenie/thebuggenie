@@ -79,7 +79,7 @@
         {
             if ($is_new)
             {
-                $this->_token = Uuid::uuid4();
+                $this->_token = Uuid::uuid4()->toString();
                 $this->_created_at = time();
 
                 // Set session token to expire after 30 days

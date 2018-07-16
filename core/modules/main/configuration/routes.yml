@@ -349,13 +349,6 @@ account_pick_username:
     parameters: [ ]
     csrf_enabled: true
 
-account_remove_openid:
-    route: /account/remove/openid/:openid/:csrf_token
-    module: main
-    action: removeOpenIDIdentity
-    parameters: [ ]
-    csrf_enabled: true
-
 account_confirm_scope:
     route: /account/confirm/scope/:scope_id/:csrf_token
     module: main

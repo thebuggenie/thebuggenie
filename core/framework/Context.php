@@ -927,7 +927,7 @@ class Context
             self::$_user = ($user === null) ? User::identify(self::getRequest(), self::getCurrentAction(), true) : $user;
             if (self::$_user->isAuthenticated())
             {
-                if (!self::getRequest()->hasCookie('tbg_original_username'))
+                if (!self::getRequest()->hasCookie('original_username'))
                 {
                     self::$_user->updateLastSeen();
                 }

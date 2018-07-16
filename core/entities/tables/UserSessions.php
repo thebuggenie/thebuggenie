@@ -24,7 +24,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @Table(name="userstate")
+     * @Table(name="usersession")
      * @Entity(class="\thebuggenie\core\entities\UserSession")
      */
     class UserSessions extends Table
