@@ -3,6 +3,7 @@
 namespace thebuggenie\core\modules\installation\controllers;
 
 use thebuggenie\core\framework;
+use thebuggenie\core\modules\installation\upgrade_4112\UsersTable;
 
 class Main extends framework\Action
 {
@@ -450,28 +451,38 @@ class Main extends framework\Action
         list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
 
         $this->upgrade_complete = false;
-        if ($this->upgrade_available && $request->isPost())
+        $this->adminusername = UsersTable::getTable()->getAdminUsername();
+        $this->requires_password_reset = true;
+        try
         {
-            $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
-            $this->upgrade_complete = $upgrader->upgrade();
+            if ($this->upgrade_available)
+            {
+                $this->permissions_ok = false;
+                if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
+                {
+                    $this->permissions_ok = true;
+                }
+            }
 
-            if ($this->upgrade_complete)
+            if ($this->upgrade_available && $request->isPost())
             {
-                $this->current_version = framework\Settings::getVersion(false, false);
-                $this->upgrade_available = false;
+                $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
+                $this->upgrade_complete = $upgrader->upgrade($request);
+
+                if ($this->upgrade_complete)
+                {
+                    $this->current_version = framework\Settings::getVersion(false, false);
+                    $this->upgrade_available = false;
+                }
+            }
+            elseif ($this->upgrade_complete)
+            {
+                $this->forward(framework\Context::getRouting()->generate('home'));
             }
         }
-        elseif ($this->upgrade_available)
+        catch (\Exception $e)
         {
-            $this->permissions_ok = false;
-            if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
-            {
-                $this->permissions_ok = true;
-            }
-        }
-        elseif ($this->upgrade_complete)
-        {
-            $this->forward(framework\Context::getRouting()->generate('home'));
+            $this->error = $e->getMessage();
         }
     }
 
