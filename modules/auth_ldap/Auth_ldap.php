@@ -255,7 +255,7 @@
          *
          * @return resource LDAP connection handle.
          */
-        pupblic function getConnection()
+        public function getConnection()
         {
             if ($this->_connection === null)
             {
