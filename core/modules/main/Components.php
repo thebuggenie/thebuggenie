@@ -546,14 +546,6 @@
                 }
                 $this->error = framework\Context::geti18n()->__('You need to log in to access this site');
             }
-            elseif (!framework\Context::getUser()->isAuthenticated())
-            {
-                $this->error = framework\Context::geti18n()->__('Please log in');
-            }
-            else
-            {
-                //$this->error = framework\Context::geti18n()->__('Please log in');
-            }
 
             if (framework\Context::hasMessage('login_error')) {
                 $this->error = framework\Context::getMessageAndClear('login_error');

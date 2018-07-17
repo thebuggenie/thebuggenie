@@ -21,18 +21,20 @@
                 <div class="project_overview">
                     <div class="header">
                         <span><?php echo __('Projects'); ?></span>
-                        <div class="button-group">
-                            <?php echo javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
-                        </div>
-                        <div class="dropper_container">
-                            <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
-                            <ul class="more_actions_dropdown popup_box">
-                                <?php if ($show_project_config_link): ?>
-                                    <li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
-                                <?php endif; ?>
-                                <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a></li>
-                            </ul>
-                        </div>
+                        <?php if ($tbg_user->isAuthenticated()): ?>
+                            <div class="button-group">
+                                <?php echo javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
+                            </div>
+                            <div class="dropper_container">
+                                <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
+                                <ul class="more_actions_dropdown popup_box">
+                                    <?php if ($show_project_config_link): ?>
+                                        <li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
+                                    <?php endif; ?>
+                                    <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a></li>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <?php if ($project_count > 0): ?>
                         <ul class="project_list simple_list">
