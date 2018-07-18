@@ -5022,7 +5022,7 @@ class Main extends framework\Action
      * @param $user
      * @param $persist
      */
-    protected function _persistLogin($authentication_backend, $user, $persist): void
+    protected function _persistLogin($authentication_backend, $user, $persist)
     {
         if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN) {
             $token = $user->createUserSession();
