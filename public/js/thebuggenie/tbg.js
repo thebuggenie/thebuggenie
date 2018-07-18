@@ -5181,7 +5181,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             $('workflow_transition_fullpage').appear({duration: 0.2});
             workflow_div.appear({duration: 0.2, afterFinish: function () {
                 if ($('duplicate_finder_transition_' + transition_id)) {
-                    $('viewissue_find_duplicated_issue_' + transition_id + '_input').observe('keypress', function (event) {
+                    $('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function (event) {
                         if (event.keyCode == Event.KEY_RETURN) {
                             TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
                             event.stop();
@@ -5239,8 +5239,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Issues.findRelated = function (url) {
             TBG.Main.Helpers.ajax(url, {
-                form: 'viewissue_find_related_issues_form',
-                loading: {indicator: 'viewissue_find_related_issues_indicator'},
+                form: 'viewissue_find_issue_form',
+                loading: {indicator: 'viewissue_find_issue_indicator'},
                 success: {update: 'viewissue_relation_results'}
             });
             return false;
@@ -5248,8 +5248,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Issues.findDuplicate = function (url, transition_id) {
             TBG.Main.Helpers.ajax(url, {
-                additional_params: 'searchfor=' + $('viewissue_find_duplicated_issue_' + transition_id + '_input').getValue(),
-                loading: {indicator: 'viewissue_find_duplicated_issue_' + transition_id + '_indicator'},
+                additional_params: 'searchfor=' + $('viewissue_find_issue_' + transition_id + '_input').getValue(),
+                loading: {indicator: 'viewissue_find_issue_' + transition_id + '_indicator'},
                 success: {update: 'viewissue_' + transition_id + '_duplicate_results'}
             });
         };
