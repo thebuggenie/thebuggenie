@@ -34,16 +34,16 @@
                         if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
                         {
                             echo '<br>';
-                            echo $item->getPreviousValue() . ' &rArr; ' . $item->getCurrentValue();
+                            echo tbg_template_escape($item->getPreviousValue()) . ' &rArr; ' . tbg_template_escape($item->getCurrentValue());
                         }
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE_TITLE:
                         echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_title']);
-                        echo __('Title updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
+                        echo __('Title updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . tbg_template_escape($item->getPreviousValue()) . '</strong>', '%new_value' => '<strong>' . tbg_template_escape($item->getCurrentValue()) . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE_DESCRIPTION:
                         echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_title']);
-                        echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
+                        echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . tbg_template_escape($item->getPreviousValue()) . '</strong>', '%new_value' => '<strong>' . tbg_template_escape($item->getCurrentValue()) . '</strong>'));
                         break;
                     case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
                         $new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue());
@@ -151,6 +151,8 @@
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                     case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                        $old_value = tbg_template_escape($item->getPreviousValue());
+                                        $new_value = tbg_template_escape($item->getCurrentValue());
                                         echo fa_image_tag('pencil-square-o', ['class' => 'log_issue_customfield']);
 
                                     break;
