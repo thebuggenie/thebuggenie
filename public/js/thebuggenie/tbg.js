@@ -5240,7 +5240,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Issues.findRelated = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'viewissue_find_issue_form',
-                loading: {indicator: 'find_issue_indicator'},
+                loading: {indicator: 'viewissue_find_issue_indicator'},
                 success: {update: 'viewissue_relation_results'}
             });
             return false;
@@ -5249,7 +5249,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Issues.findDuplicate = function (url, transition_id) {
             TBG.Main.Helpers.ajax(url, {
                 additional_params: 'searchfor=' + $('viewissue_find_issue_' + transition_id + '_input').getValue(),
-                loading: {indicator: 'find_issue_' + transition_id + '_indicator'},
+                loading: {indicator: 'viewissue_find_issue_' + transition_id + '_indicator'},
                 success: {update: 'viewissue_' + transition_id + '_duplicate_results'}
             });
         };
