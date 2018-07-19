@@ -295,6 +295,7 @@ img.smiley {
 header {
     background: #4E81AB;
     color: white;
+    height: 35px;
 }
 
 .backdrop_detail_header, .backdrop_box h1 {
@@ -318,14 +319,6 @@ header {
     font-weight: 300;
     font-size: 1.1em;
     padding: 3px 7px;
-}
-
-#header_container {
-}
-
-header {
-    height: 35px;
-    margin-bottom: 5px;
 }
 
 header .main_menu {
