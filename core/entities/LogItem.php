@@ -119,7 +119,7 @@
 
         public function getPreviousValue()
         {
-            return $this->_previous_value;
+            return htmlspecialchars($this->_previous_value);
         }
 
         public function setPreviousValue($previous_value)
@@ -129,7 +129,7 @@
 
         public function getCurrentValue()
         {
-            return $this->_current_value;
+            return htmlspecialchars($this->_current_value);
         }
 
         public function setCurrentValue($current_value)
