@@ -7429,6 +7429,10 @@ ul.attached_items {
     box-sizing: border-box;
 }
 
+.duplicate_search select {
+    text-transform: uppercase;
+}
+
 table.issue_affects td {
     padding: 3px;
 }

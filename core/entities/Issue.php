@@ -4001,22 +4001,6 @@
         }
 
         /**
-         * Helper method that returns state as text. This method
-         * should only be used for displaying result to the end user.
-         *
-         * @return State of issue (OPEN/CLOSED) as text.
-         */
-        public function getStateAsText()
-        {
-            if ($this->isOpen())
-            {
-                return "OPEN";
-            }
-
-            return "CLOSED";
-        }
-
-        /**
          * Whether or not the issue is closed
          *
          * @see getState()

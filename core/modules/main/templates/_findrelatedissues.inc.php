@@ -18,7 +18,7 @@
                         <tr>
                             <td style="width: 20px;"><input type="checkbox" value="<?= $matched_issue->getID(); ?>" name="relate_issues[<?= $matched_issue->getID(); ?>]" id="relate_issue_<?= $matched_issue->getID(); ?>"></td>
                             <td class="issue_title">
-                                <label for="relate_issue_<?= $matched_issue->getID(); ?>" style="font-weight: normal;">[<?= __($matched_issue->getStateAsText()); ?>] <?= $matched_issue->getFormattedTitle(); ?></label>
+                                <label for="relate_issue_<?= $matched_issue->getID(); ?>" style="font-weight: normal;">[<?= ($matched_issue->isOpen()) ? __('Open') : __('Closed'); ?>] <?= $matched_issue->getFormattedTitle(); ?></label>
                             </td>
                         </tr>
                     <?php endforeach; ?>

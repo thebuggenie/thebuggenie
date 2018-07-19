@@ -3,7 +3,7 @@
     <input type="hidden" name="issue_action" value="duplicate">
     <select name="duplicate_issue_id" style="width: 100%">
         <?php foreach ($matched_issues as $matched_issue): ?>
-            <option value="<?= $matched_issue->getID(); ?>">[<?= $matched_issue->getStateAsText(); ?>] <?= $matched_issue->getFormattedTitle(); ?></option>
+            <option value="<?= $matched_issue->getID(); ?>">[<?= ($matched_issue->isOpen()) ? __('Open') : __('Closed'); ?>] <?= $matched_issue->getFormattedTitle(); ?></option>
         <?php endforeach; ?>
     </select>
 <?php else: ?>
