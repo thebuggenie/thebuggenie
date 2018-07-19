@@ -789,7 +789,7 @@
                 tables\Comments::getTable()->clearPreloadedIssueCommentCounts();
                 tables\IssueFiles::getTable()->clearPreloadedIssueFileCounts();
             }
-            return array($issues, count($issues));
+            return array($issues, $count);
         }
 
         public static function findIssuesByText($text, $project = null)

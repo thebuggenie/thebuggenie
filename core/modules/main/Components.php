@@ -533,27 +533,23 @@
 
             if (framework\Settings::isLoginRequired())
             {
-                framework\Context::getResponse()->deleteCookie('tbg3_username');
-                framework\Context::getResponse()->deleteCookie('tbg3_password');
+                $authentication_backend = framework\Settings::getAuthenticationBackend();
+                if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+                {
+                    framework\Context::getResponse()->deleteCookie('username');
+                    framework\Context::getResponse()->deleteCookie('session_token');
+                }
+                else
+                {
+                    framework\Context::getResponse()->deleteCookie('username');
+                    framework\Context::getResponse()->deleteCookie('password');
+                }
                 $this->error = framework\Context::geti18n()->__('You need to log in to access this site');
-            }
-            elseif (!framework\Context::getUser()->isAuthenticated())
-            {
-                $this->error = framework\Context::geti18n()->__('Please log in');
-            }
-            else
-            {
-                //$this->error = framework\Context::geti18n()->__('Please log in');
             }
 
             if (framework\Context::hasMessage('login_error')) {
                 $this->error = framework\Context::getMessageAndClear('login_error');
             }
-        }
-
-        public function componentOpenidButtons()
-        {
-            $this->openidintro = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->getArticleByName('OpenidIntro');
         }
 
         public function componentLoginRegister()
@@ -649,11 +645,6 @@
         }
 
         public function componentConfirmUsername()
-        {
-
-        }
-
-        public function componentOpenID()
         {
 
         }

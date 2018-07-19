@@ -61,7 +61,6 @@
 
         const SETTING_ADMIN_GROUP = 'admingroup';
         const SETTING_ALLOW_REGISTRATION = 'allowreg';
-        const SETTING_ALLOW_OPENID = 'allowopenid';
         const SETTING_ALLOW_USER_THEMES = 'userthemes';
         const SETTING_AWAYSTATE = 'awaystate';
         const SETTING_DEFAULT_CHARSET = 'charset';
@@ -152,20 +151,25 @@
         protected static $_ver_mn = 2;
         protected static $_ver_rev = 0;
         protected static $_ver_name = "On the road again";
-        protected static $_defaultscope = null;
-        protected static $_settings = null;
+        protected static $_defaultscope;
+        protected static $_settings;
 
         /**
          * @var \DateTimeZone
          */
-        protected static $_timezone = null;
+        protected static $_timezone;
 
         protected static $_loadedsettings = array();
 
-        protected static $_core_workflow = null;
+        protected static $_core_workflow;
         protected static $_verified_theme = false;
-        protected static $_core_workflowscheme = null;
-        protected static $_core_issuetypescheme = null;
+        protected static $_core_workflowscheme;
+        protected static $_core_issuetypescheme;
+
+        /**
+         * @var AuthenticationBackend
+         */
+        protected static $_authentication_backend;
 
         public static function forceSettingsReload()
         {
@@ -426,21 +430,6 @@
             return (bool) self::get(self::SETTING_ALLOW_REGISTRATION);
         }
 
-        public static function getOpenIDStatus()
-        {
-            $setting = self::get(self::SETTING_ALLOW_OPENID);
-            return ($setting === null) ? 'all' : $setting;
-        }
-
-        public static function isOpenIDavailable()
-        {
-            if (self::isUsingExternalAuthenticationBackend())
-            {
-                return false; // No openID when using external auth
-            }
-            return (bool) (self::getOpenIDStatus() != 'none');
-        }
-
         public static function getUserDisplaynameFormat()
         {
             $format = self::get(self::SETTING_USER_DISPLAYNAME_FORMAT);
@@ -592,7 +581,7 @@
 
         public static function getDefaultUserID()
         {
-            return self::get(self::SETTING_DEFAULT_USER_ID);
+            return (int) self::get(self::SETTING_DEFAULT_USER_ID);
         }
 
         /**
@@ -604,7 +593,7 @@
         {
             try
             {
-                return \thebuggenie\core\entities\User::getB2DBTable()->selectByID((int) self::get(self::SETTING_DEFAULT_USER_ID));
+                return tables\Users::getTable()->selectByID(self::getDefaultUserID());
             }
             catch (\Exception $e)
             {
@@ -868,7 +857,29 @@
             return self::get(self::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL);
         }
 
+        /**
+         * @return AuthenticationBackend
+         * @throws \Exception
+         *
+         */
         public static function getAuthenticationBackend()
+        {
+            if (self::$_authentication_backend === null)
+            {
+                if (self::isUsingExternalAuthenticationBackend())
+                {
+                    self::$_authentication_backend = Context::getModule(self::getAuthenticationBackendIdentifier())->getAuthenticationBackend();
+                }
+                else
+                {
+                    self::$_authentication_backend = new AuthenticationBackend();
+                }
+            }
+
+            return self::$_authentication_backend;
+        }
+
+        public static function getAuthenticationBackendIdentifier()
         {
             return self::get(self::SETTING_AUTH_BACKEND);
         }
@@ -983,7 +994,7 @@
          */
         public static function isUsingExternalAuthenticationBackend()
         {
-            if (self::getAuthenticationBackend() !== null && self::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;
+            return (self::getAuthenticationBackendIdentifier() !== null && self::getAuthenticationBackendIdentifier() !== 'tbg');
         }
 
         /**

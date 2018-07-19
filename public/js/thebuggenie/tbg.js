@@ -1961,7 +1961,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 if (section == 'register') {
                     $('fieldusername').focus();
                 } else if (section == 'regular_login_container') {
-                    $('tbg3_username').focus();
+                    $('tbg_username').focus();
                 }
             }, 250);
         };

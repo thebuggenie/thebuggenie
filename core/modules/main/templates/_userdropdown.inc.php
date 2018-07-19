@@ -42,7 +42,7 @@
                     <a href="<?php echo make_url('configure_users'); ?>?finduser=<?php echo $user->getUsername(); ?>"><?php echo __('Edit this user'); ?></a>
                 </li>
             <?php endif; ?>
-            <?php if (!$tbg_request->hasCookie('tbg3_original_username')): ?>
+            <?php if (!$tbg_request->hasCookie('original_username')): ?>
                 <li><?php echo link_tag(make_url('switch_to_user', array('user_id' => $user->getID())), __('Switch to this user')); ?></li>
             <?php else: ?>
                 <li><?php echo link_tag(make_url('switch_back_user'), __('Switch back to original user')); ?></li>

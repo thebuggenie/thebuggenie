@@ -18,7 +18,7 @@
         <?php elseif (\thebuggenie\core\framework\Context::hasMessage('login_message_err')): ?>
             TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('login_message_err'); ?>');
         <?php endif; ?>
-            jquery('#tbg3_username').focus();
+            jquery('#tbg_username').focus();
         });
     });
 </script>

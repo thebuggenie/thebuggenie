@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Table;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -26,7 +27,7 @@
      * @Table(name="users")
      * @Entity(class="\thebuggenie\core\entities\User")
      */
-    class Users extends ScopedTable
+    class Users extends Table
     {
 
         const B2DB_TABLE_VERSION = 3;

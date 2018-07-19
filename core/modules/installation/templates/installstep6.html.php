@@ -18,9 +18,9 @@
         If you want to get involved with The Bug Genie, don't hesitate to visit our community website <a target="_new" href="http://thebuggenie.org/community">www.thebuggenie.org</a> to see how you can join our growing community.
     </div>
     <form action="<?php echo make_url('login'); ?>" method="post">
-        <input type="hidden" name="tbg3_username" value="administrator">
-        <input type="hidden" name="tbg3_password" value="admin">
-        <input type="hidden" name="tbg3_referer" value="<?php echo make_url('about'); ?>">
+        <input type="hidden" name="username" value="administrator">
+        <input type="hidden" name="password" value="admin">
+        <input type="hidden" name="referer" value="<?php echo make_url('about'); ?>">
         <div style="font-size: 15px; text-align: center; padding: 25px;">
             <input type="submit" value="Got it!" style="font-size: 15px; margin-top: 10px; padding: 8px; height: 40px; font-weight: normal;">
         </div>

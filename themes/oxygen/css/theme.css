@@ -735,7 +735,9 @@ header nav > ul {
 }
 
 #logo_container .logo {
-    float: left;
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
     margin: 0 5px 0 0;
     text-decoration: none;
     border: 0;
@@ -754,12 +756,13 @@ header nav > ul {
 #logo_container .logo_name {
     font-size: 1.2em;
     color: #ECF0F4;
-    margin: 2px 30px 2px 5px;
+    margin: 0 30px 0 5px;
     padding: 0;
     line-height: 1.3;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-    float: left;
+    float: none;
     display: inline-block;
+    vertical-align: middle;
 }
 .project-context #logo_name {
     display: none;
@@ -1103,7 +1106,7 @@ footer img {
     border: none;
 }
 
-#tbg3_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
+#tbg_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
     background-repeat: no-repeat;
     background-position: 7px 10px;
     padding: 8px 8px 8px 28px;
@@ -2044,9 +2047,14 @@ div.autocomplete ul li > img:first-child {
     margin: 0;
 }
 
+.tab_menu.header_menu li div.menuitem_container > a {
+    display: inline-block;
+}
+
 .tab_menu li a {
     color: inherit;
-    float: left;
+    float: none;
+    display: block;
 }
 
 .tab_menu li a:hover {
@@ -2318,7 +2326,9 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 .header_menu > ul > li div {
     color: #ECF0F4;
-    padding-top: 6px;
+    padding-top: 3px;
+    display: block;
+    float: none;
 }
 
 .header_menu > ul > li.selected div {
@@ -3535,8 +3545,8 @@ table.cleantable th {
 
 .config_badges li a {
     display: block;
-    height: 60px;
-    padding: 7px;
+    height: 72px;
+    padding: 10px;
 }
 
 .config_badges li a:hover {
@@ -3551,7 +3561,7 @@ table.cleantable th {
     color: #555;
     width: 16px;
     text-align: center;
-    margin-right: 0;
+    margin-right: 3px;
 }
 .button.destroy-link .fa {
     color: #cb1a00;
@@ -7537,6 +7547,10 @@ table.issue_affects td img {
 .dashboard.layout_standard ul.dashboard_column > li .faded_out {
     font-size: 0.9em;
     font-weight: 300;
+}
+
+.dashboard.layout_standard ul.dashboard_column > li div.faded_out {
+    margin: 5px 10px;
 }
 
 .dashboard.layout_standard ul.dashboard_column > li table tr td {
@@ -11584,7 +11598,7 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .dashboard_view_content .dashboard_project_recent_activities, .dashboard_view_content .dashboard_recent_comments, .dashboard_view_content .dashboard_logged_actions {
-    margin-right: -11px;
+    margin-right: -10px;
     margin-left: -10px;
 }
 

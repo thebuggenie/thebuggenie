@@ -1329,6 +1329,10 @@
 
                 if ($language == 'html4strict') $language = 'html';
 
+                if (!in_array($language, $highlighter->listLanguages())) {
+                    $language = 'html';
+                }
+
                 $codeblock = $highlighter->highlight($language, $codeblock);
 
 //                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);

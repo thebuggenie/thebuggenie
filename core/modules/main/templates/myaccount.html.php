@@ -552,41 +552,6 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <?php if (\thebuggenie\core\framework\Settings::isOpenIDavailable()): ?>
-                    <h3>
-                        <?php echo __('Linked OpenID accounts'); ?>
-                        <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Link an OpenID account'); ?></button>
-                    </h3>
-                    <p><?php echo __("Via %openid you can log in to The Bug Genie by authenticating via Google, Wordpress and a lot of other websites. This means you don't have to register an account specifically for The Bug Genie, but authenticate with your existing Google, Wordpress, etc. user account instead. The Bug Genie will not receive or store your external usernames or passwords.", array('%openid' => link_tag('http://openid.net', 'OpenID'))); ?></p>
-                    <div class="faded_out" id="no_openid_accounts"<?php if (count($tbg_user->getOpenIDAccounts())): ?> style="display: none;"<?php endif; ?>><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
-                    <?php if (count($tbg_user->getOpenIDAccounts())): ?>
-                        <ul class="simple_list openid_accounts_list hover_highlight" id="openid_accounts_list">
-                        <?php foreach ($tbg_user->getOpenIDAccounts() as $identity => $details): ?>
-                            <li id="openid_account_<?php echo $details['id']; ?>">
-                                <?php if (count($tbg_user->getOpenIDAccounts()) > 1 || !$tbg_user->isOpenIDLocked()): ?>
-                                    <button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => \thebuggenie\core\framework\Context::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
-                                <?php endif; ?>
-                                <?php echo image_tag('openid_providers.small/'.$details['type'].'.ico.png'); ?>
-                                <span class="openid_provider_name">
-                                    <?php if ($details['type'] == 'google' || $details['type'] == 'google_profile'): ?>
-                                        <?php echo __('Google account'); ?>
-                                    <?php elseif ($details['type'] == 'yahoo'): ?>
-                                        <?php echo __('Yahoo account'); ?>
-                                    <?php elseif ($details['type'] == 'blogger'): ?>
-                                        <?php echo __('Blogger (google) account'); ?>
-                                    <?php elseif ($details['type'] == 'wordpress'): ?>
-                                        <?php echo __('Wordpress account'); ?>
-                                    <?php elseif ($details['type'] == 'launchpad'): ?>
-                                        <?php echo __('Launchpad account'); ?>
-                                    <?php else: ?>
-                                        <?php echo __('Other OpenID provider'); ?>
-                                    <?php endif; ?>
-                                </span>
-                            </li>
-                        <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                <?php endif; ?>
             </div>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tab_panes')->trigger(); ?>
             <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
