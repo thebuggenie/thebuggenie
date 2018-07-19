@@ -51,7 +51,23 @@
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 .article .no_articles { color: #AAA; margin: 10px 0; }
 
-.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }
+.article pre {
+    padding: 3px;
+    margin: 5px 0 5px 0;
+    line-height: 1.4;
+    background-color: #F1F1F1;
+    border: 1px solid #B4B4B4;
+    border-radius: 3px;
+    font-family: "Fira Mono", monospace;
+    font-size: 12px;
+}
+
+/* Undo some of the default styling done for code tag if it is nested
+   with pre tag. */
+.article pre code {
+    padding: 0px;
+    border: none;
+}
 
 .article .publish_article_actions {
     display: block;
@@ -101,7 +117,7 @@
 .article.edit label.small { font-size: 1em; }
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea {
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     border: none;
     padding: 15px;
     box-sizing: border-box;

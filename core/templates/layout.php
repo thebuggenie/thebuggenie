@@ -17,13 +17,6 @@
         <title><?= ($tbg_response->hasTitle()) ? strip_tags($header_name . ' ~ ' . $tbg_response->getTitle()) : strip_tags(\thebuggenie\core\framework\Settings::getSiteHeaderName()); ?></title>
         <style>
             @font-face {
-              font-family: 'Droid Sans Mono';
-              font-style: normal;
-              font-weight: normal;
-              src: url('<?= $webroot; ?>fonts/droid_sans_mono.eot');
-              src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?= $webroot; ?>fonts/droid_sans_mono.woff') format('woff'), url('<?= $webroot; ?>fonts/droid_sans_mono.ttf') format('truetype');
-            }
-            @font-face {
               font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;

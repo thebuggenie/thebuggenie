@@ -46,7 +46,7 @@ input:-moz-placeholder {
 pre { overflow: auto; }
 
 select { height: 22px; }
-textarea { padding: 0; font-family: 'Droid Sans Mono', monospace; }
+textarea { padding: 0; font-family: 'Fira Mono', monospace; }
 
 input#login_button, input#register_button { cursor: pointer; font-weight: bold; }
 
@@ -2556,10 +2556,10 @@ table.sortable tr th.nosort {
     margin:5px 0 5px 0;
 }
 .markItUpContainer  {
-    font:11px 'Droid Sans', sans-serif;
+    font:11px 'Open Sans', sans-serif;
 }
 .markItUpEditor {
-    font:12px 'Droid Sans Mono', monospace;
+    font:12px 'Fira Mono', monospace;
     padding:0;
     width:690px;
     height:320px;

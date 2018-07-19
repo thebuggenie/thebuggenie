@@ -90,6 +90,10 @@ form, p {
 
 b, strong { font-weight: 600; }
 code {
+    padding: 0px 3px 0px 3px;
+    background-color: #F1F1F1;
+    border: 1px solid #DCDCDC;
+    border-radius: 2px;
     font-size: 0.9em;
     font-family: 'Fira Mono', monospace;
     letter-spacing: -1px;
@@ -4955,10 +4959,18 @@ a.friend {
 
 #issue_view pre {
     padding: 3px;
+    line-height: 1.4;
     background-color: #F1F1F1;
-    border: 1px dotted #AAA;
-    font-size: 0.9em;
+    border: 1px solid #B4B4B4;
+    border-radius: 3px;
     font-family: 'Fira Mono', monospace;
+}
+
+/* Undo some of the default styling done for code tag if it is nested
+   with pre tag. */
+#issue_view pre code {
+    padding: 0px;
+    border: none;
 }
 
 #viewissue_vcs_integration_commits pre {
