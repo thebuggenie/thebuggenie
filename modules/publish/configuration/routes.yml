@@ -121,6 +121,5 @@ toggle_favourite_article:
     route: /toggle_favourite_article/:article_id/:user_id
     module: publish
     action: toggleFavouriteArticle
-    parameters:
-      format: json
+    parameters: [ ]
     csrf_enabled: false

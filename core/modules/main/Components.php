@@ -162,6 +162,7 @@
             $this->include_users = (isset($this->include_users)) ? $this->include_users : true;
             $this->callback = (isset($this->callback)) ? $this->callback : null;
             $this->allow_clear = (isset($this->allow_clear)) ? $this->allow_clear : true;
+            $this->use_form = (isset($this->use_form)) ? $this->use_form : true;
         }
 
         public function componentIdentifiableselectorresults()
@@ -339,11 +340,11 @@
             {
                 case isset($this->issue):
                     $this->target = $this->issue;
-                    $this->existing_files = $this->issue->getFiles();
+                    $this->existing_files = array_reverse($this->issue->getFiles());
                     break;
                 case isset($this->article):
                     $this->target = $this->article;
-                    $this->existing_files = $this->article->getFiles();
+                    $this->existing_files = array_reverse($this->article->getFiles());
                     break;
                 default:
                     // @todo: dispatch a framework\Event that allows us to retrieve the
@@ -359,12 +360,12 @@
                 case 'issue':
                     $this->form_action = make_url('issue_upload', array('issue_id' => $this->issue->getID()));
                     $this->poller_url = make_url('issue_upload_status', array('issue_id' => $this->issue->getID()));
-                    $this->existing_files = $this->issue->getFiles();
+                    $this->existing_files = array_reverse($this->issue->getFiles());
                     break;
                 case 'article':
                     $this->form_action = make_url('article_upload', array('article_name' => $this->article->getName()));
                     $this->poller_url = make_url('article_upload_status', array('article_name' => $this->article->getName()));
-                    $this->existing_files = $this->article->getFiles();
+                    $this->existing_files = array_reverse($this->article->getFiles());
                     break;
                 default:
                     // @todo: dispatch a framework\Event that allows us to retrieve the
@@ -486,13 +487,7 @@
 
         public function componentRelatedissues()
         {
-            $child_issues = array();
-            foreach ($this->issue->getChildIssues() as $child_issue)
-            {
-                if ($child_issue->hasAccess())
-                    $child_issues[] = $child_issue;
-            }
-            $this->child_issues = $child_issues;
+            $this->child_issues = $this->issue->getAccessibleChildIssues();
         }
 
         public function componentDuplicateissues()

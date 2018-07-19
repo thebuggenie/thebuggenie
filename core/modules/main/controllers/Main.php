@@ -2453,6 +2453,7 @@ class Main extends framework\Action
 
                                 return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
                             case entities\CustomDatatype::DATE_PICKER:
+                            case entities\CustomDatatype::DATETIME_PICKER:
                                 if ($customdatatypeoption_value == '')
                                 {
                                     $issue->setCustomField($key, "");
@@ -2465,7 +2466,7 @@ class Main extends framework\Action
                                 if (!$issue->$changed_methodname())
                                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
 
-                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d', (int) $request->getRawParameter("{$key}_value")))));
+                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d' . ($customdatatype->getType() == entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $request->getRawParameter("{$key}_value")))));
                             default:
                                 if ($customdatatypeoption_value == '')
                                 {
@@ -2996,7 +2997,7 @@ class Main extends framework\Action
         }
         $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
+        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_reverse(array_merge($files, $image_files)), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
     }
 
     public function runUploadFile(framework\Request $request)
@@ -5031,5 +5032,185 @@ class Main extends framework\Action
             $password = $user->getHashPassword();
             $authentication_backend->persistPasswordSession($user, $password, $persist);
         }
+    }
+
+    /**
+     * Delete an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runDeleteTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->deleteTodo($request['comment_id'], $request['todo']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Toggle done for issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runToggleDoneTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        if (! isset($request['mark']) || ! in_array($request['mark'], array('done', 'not_done')))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "mark" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->markTodo($request['comment_id'], $request['todo'], $request['mark']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Save order of issue todos.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runSaveOrderTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
+        $ordered_todos = $request->getParameter(($request['comment_id'] == 0
+            ? ''
+            : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
+
+        if (! is_array($ordered_todos))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Add an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runAddTodo(framework\Request $request)
+    {
+        // If todos item is submitted via form and not ajax forward 403 error.
+        $this->forward403unless($request->isAjaxCall());
+
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (!$issue->canEditDescription())
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
+        }
+
+        if (! isset($request['todo_body']) || !trim($request['todo_body']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo_body" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->addTodo($request['todo_body']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
     }
 }

@@ -29,6 +29,7 @@
                         <ul>
                             <li data-filter="posted" id="additional_filter_posted_link"><?php echo __('Created before / after'); ?></li>
                             <li data-filter="last_updated" id="additional_filter_last_updated_link"><?php echo __('Last updated before / after'); ?></li>
+                            <li data-filter="time_spent" id="additional_filter_time_spent_link"><?php echo __('Time spent before / after'); ?></li>
                             <?php foreach ($datecustomfields as $field): ?>
                                 <li data-filter="<?php echo $field->getKey(); ?>" id="additional_filter_<?php echo $field->getKey(); ?>_link"><?php echo __($field->getDescription()); ?></li>
                             <?php endforeach; ?>
@@ -57,6 +58,7 @@
                             <li data-filter="resolution" id="additional_filter_resolution_link"><?php echo __('Resolution'); ?></li>
                             <li data-filter="reproducability" id="additional_filter_reproducability_link"><?php echo __('Reproducability'); ?></li>
                             <li data-filter="blocking" id="additional_filter_blocking_link"><?php echo __('Blocker status'); ?></li>
+                            <li data-filter="relation" id="additional_filter_relation_link"><?php echo __('Relation'); ?></li>
                         </ul>
                     </div>
                     <?php if (count($nondatecustomfields)): ?>
@@ -197,8 +199,15 @@
             </div>
             <div id="searchbuilder_filterstrip_filtercontainer">
                 <?php foreach ($search_object->getFilters() as $filter): ?>
-                    <?php if (in_array($filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category', 'text'))) continue; ?>
-                    <?php include_component('search/interactivefilter', compact('filter')); ?>
+                    <?php if (is_array($filter)): ?>
+                        <?php foreach ($filter as $filter_filter): ?>
+                            <?php if (in_array($filter_filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category', 'text'))) continue; ?>
+                            <?php include_component('search/interactivefilter', array('filter' => $filter_filter)); ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php if (in_array($filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category', 'text'))) continue; ?>
+                        <?php include_component('search/interactivefilter', compact('filter')); ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -207,18 +216,18 @@
         <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
             <?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter('subprojects'))); ?>
         <?php endif; ?>
-        <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking') as $key): ?>
+        <?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking', 'relation') as $key): ?>
             <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key))); ?>
         <?php endforeach; ?>
-        <?php foreach (array('posted', 'last_updated') as $key): ?>
-            <?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
+        <?php foreach (array('posted', 'last_updated', 'time_spent') as $key): ?>
+            <?php include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
         <?php foreach ($nondatecustomfields as $customtype): ?>
-            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) continue; ?>
+            <?php if ($customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $customtype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) continue; ?>
             <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey()))); ?>
         <?php endforeach; ?>
         <?php foreach ($datecustomfields as $customtype): ?>
-            <?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
+            <?php include_component('search/interactivefilter', array('filter' => \thebuggenie\core\entities\SearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
         <?php endforeach; ?>
     </div>
     <?php if (!$tbg_user->isGuest()): ?>

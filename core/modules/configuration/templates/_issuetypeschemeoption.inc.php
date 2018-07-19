@@ -76,7 +76,7 @@
             <?php endif; ?>
         <?php endif; ?>
     <td style="padding: 2px; text-align: center;">
-        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee')) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER)): ?>
+        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee')) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER)): ?>
             <input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> -
         <?php else: ?>
             <?php if (!$scheme->isCore()): ?>

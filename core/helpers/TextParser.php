@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\helpers;
 
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use Highlight\Highlighter;
     use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\tables\Articles,
@@ -25,6 +26,7 @@
      */
     class TextParser implements ContentParser
     {
+        use TextParserTodo;
 
         protected static $additional_regexes = null;
 
@@ -211,6 +213,7 @@
             $listtypes = array('*' => 'ul', '#' => 'ol');
             $output = "";
 
+            $matches[1] = trim($matches[1]);
             $newlevel = ($close) ? 0 : mb_strlen($matches[1]);
 
             while ($this->list_level != $newlevel)
@@ -1042,7 +1045,7 @@
             $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
             $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
             $line_regexes['newline'] = '^$';
-            $line_regexes['list'] = '^([\*\#]+)(.*?)$';
+            $line_regexes['list'] = '^([\*\#]+ )(.*?)$';
             $line_regexes['tableopener'] = '^\{\|(.*?)$';
             $line_regexes['tablecloser'] = '^\|\}$';
             $line_regexes['tablerow'] = '^\|-(.*?)$';
@@ -1050,6 +1053,8 @@
             $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
             $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
             $line_regexes['horizontalrule'] = '^----$';
+            $line_regexes['todo'] = '^(\[\] )(.*?)$';
+            $line_regexes['donetodo'] = '^(\[x\] )(.*?)$';
 
             $char_regexes = array();
             $char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));

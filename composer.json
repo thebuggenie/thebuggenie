@@ -58,8 +58,12 @@
     "autoload": {
         "psr-4" : {
             "thebuggenie\\modules\\" : "modules/",
-            "thebuggenie\\core\\" : "core/"
-        }
+            "thebuggenie\\core\\" : "core/",
+            "thebuggenie\\extensions\\" : "extensions/"
+        },
+        "files": [
+            "core/helpers/helpers.php"
+        ]
     },
     "minimum-stability" : "dev",
     "prefer-stable" : true,

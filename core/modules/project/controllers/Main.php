@@ -20,20 +20,6 @@ class Main extends helpers\ProjectActions
         'configureProjectSettings'
     ];
 
-    public function getAuthenticationMethodForAction($action)
-    {
-        switch ($action)
-        {
-            case 'listIssues':
-            case 'updateIssueDetails':
-                return framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
-                break;
-            default:
-                return framework\Action::AUTHENTICATION_METHOD_CORE;
-                break;
-        }
-    }
-
     /**
      * The project dashboard
      *
@@ -582,297 +568,6 @@ class Main extends helpers\ProjectActions
         $this->key = $request['key'];
         $this->image_number = (int) $request['image_number'];
         $this->_generateImageDetailsFromKey($request['mode']);
-    }
-
-    public function runListIssues(framework\Request $request)
-    {
-        $filters = array('project_id' => \thebuggenie\core\entities\SearchFilter::createFilter('project_id', array('v' => $this->selected_project->getID(), 'o' => '=')));
-        $filter_state = $request->getParameter('state', 'open');
-        $filter_issuetype = $request->getParameter('issuetype', 'all');
-        $filter_assigned_to = $request->getParameter('assigned_to', 'all');
-
-        if (mb_strtolower($filter_state) != 'all')
-        {
-            $filters['state'] = array('o' => '=', 'v' => '');
-            if (mb_strtolower($filter_state) == 'open')
-                $filters['state']['v'] = entities\Issue::STATE_OPEN;
-            elseif (mb_strtolower($filter_state) == 'closed')
-                $filters['state']['v'] = entities\Issue::STATE_CLOSED;
-        }
-
-        if (mb_strtolower($filter_issuetype) != 'all')
-        {
-            $issuetype = entities\Issuetype::getByKeyish($filter_issuetype);
-            if ($issuetype instanceof entities\Issuetype)
-            {
-                $filters['issuetype'] = array('o' => '=', 'v' => $issuetype->getID());
-            }
-        }
-
-        if (mb_strtolower($filter_assigned_to) != 'all')
-        {
-            $user_id = 0;
-            switch (mb_strtolower($filter_assigned_to))
-            {
-                case 'me':
-                    $user_id = framework\Context::getUser()->getID();
-                    break;
-                case 'none':
-                    $user_id = 0;
-                    break;
-                default:
-                    try
-                    {
-                        $user = entities\User::findUser(mb_strtolower($filter_assigned_to));
-                        if ($user instanceof entities\User)
-                            $user_id = $user->getID();
-                    }
-                    catch (\Exception $e)
-                    {
-
-                    }
-                    break;
-            }
-
-            $filters['assignee_user'] = array('o' => '=', 'v' => $user_id);
-        }
-
-        list ($this->issues, $this->count) = entities\Issue::findIssues($filters, 50);
-        $this->return_issues = array();
-    }
-
-    public function runListWorkflowTransitions(framework\Request $request)
-    {
-        $i18n = framework\Context::getI18n();
-        $issue = entities\Issue::getIssueFromLink($request['issue_no']);
-        if ($issue->getProject()->getID() != $this->selected_project->getID())
-        {
-            throw new \Exception($i18n->__('This issue is not valid for this project'));
-        }
-        $transitions = array();
-        foreach ($issue->getAvailableWorkflowTransitions() as $transition)
-        {
-            if (!$transition instanceof entities\WorkflowTransition)
-                continue;
-            $details = array('name' => $transition->getName(), 'description' => $transition->getDescription(), 'template' => $transition->getTemplate());
-            if ($details['template'])
-            {
-                $details['post_validation'] = array();
-                foreach ($transition->getPostValidationRules() as $rule)
-                {
-                    $details['post_validation'][] = array('name' => $rule->getRule(), 'values' => $rule->getRuleValueAsJoinedString());
-                }
-            }
-            $transitions[] = $details;
-        }
-        $this->transitions = $transitions;
-    }
-
-    public function runUpdateIssueDetails(framework\Request $request)
-    {
-        $this->forward403if(framework\Context::getCurrentProject()->isArchived());
-        $this->error = false;
-        try
-        {
-            $i18n = framework\Context::getI18n();
-            $issue = entities\Issue::getIssueFromLink($request['issue_no']);
-            if ($issue->getProject()->getID() != $this->selected_project->getID())
-            {
-                throw new \Exception($i18n->__('This issue is not valid for this project'));
-            }
-            if (!$issue instanceof entities\Issue)
-            {
-                throw new \Exception($i18n->__('Cannot find this issue'));
-            }
-
-            $workflow_transition = null;
-            if ($passed_transition = $request['workflow_transition'])
-            {
-                //echo "looking for transition ";
-                $key = str_replace(' ', '', mb_strtolower($passed_transition));
-                //echo $key . "\n";
-                foreach ($issue->getAvailableWorkflowTransitions() as $transition)
-                {
-                    //echo str_replace(' ', '', mb_strtolower($transition->getName())) . "?";
-                    if (mb_strpos(str_replace(' ', '', mb_strtolower($transition->getName())), $key) !== false)
-                    {
-                        $workflow_transition = $transition;
-                        //echo "found transition " . $transition->getID();
-                        break;
-                    }
-                    //echo "no";
-                }
-
-                if (!$workflow_transition instanceof entities\WorkflowTransition)
-                    throw new \Exception("This transition ({$key}) is not valid");
-            }
-            $fields = $request->getRawParameter('fields', array());
-            $return_values = array();
-            if ($workflow_transition instanceof entities\WorkflowTransition)
-            {
-                foreach ($fields as $field_key => $field_value)
-                {
-                    $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
-                    $method = "set" . ucfirst($field_key);
-                    $choices = $classname::getAll();
-                    $found = false;
-                    foreach ($choices as $choice_key => $choice)
-                    {
-                        if (mb_strpos(str_replace(' ', '', mb_strtolower($choice->getName())), str_replace(' ', '', mb_strtolower($field_value))) !== false)
-                        {
-                            $request->setParameter($field_key . '_id', $choice->getId());
-                            break;
-                        }
-                    }
-                }
-                $request->setParameter('comment_body', $request['message']);
-                $return_values['applied_transition'] = $workflow_transition->getName();
-                if ($workflow_transition->validateFromRequest($request))
-                {
-                    $retval = $workflow_transition->transitionIssueToOutgoingStepFromRequest($issue, $request);
-                    $return_values['transition_ok'] = ($retval === false) ? false : true;
-                }
-                else
-                {
-                    $return_values['transition_ok'] = false;
-                    $return_values['message'] = "Please pass all information required for this transition";
-                }
-            }
-            elseif ($issue->isUpdateable())
-            {
-                foreach ($fields as $field_key => $field_value)
-                {
-                    try
-                    {
-                        if (in_array($field_key, array_merge(array('title', 'state'), entities\Datatype::getAvailableFields(true))))
-                        {
-                            switch ($field_key)
-                            {
-                                case 'state':
-                                    $issue->setState(($field_value == 'open') ? entities\Issue::STATE_OPEN : entities\Issue::STATE_CLOSED);
-                                    break;
-                                case 'title':
-                                    if ($field_value != '')
-                                        $issue->setTitle($field_value);
-                                    else
-                                        throw new \Exception($i18n->__('Invalid title'));
-                                    break;
-                                case 'shortname':
-                                case 'description':
-                                case 'reproduction_steps':
-                                    $method = "set" . ucfirst($field_key);
-                                    $issue->$method($field_value);
-                                    break;
-                                case 'status':
-                                case 'resolution':
-                                case 'reproducability':
-                                case 'priority':
-                                case 'severity':
-                                case 'category':
-                                    $classname = "\\thebuggenie\\core\\entities\\" . ucfirst($field_key);
-                                    $method = "set" . ucfirst($field_key);
-                                    $choices = $classname::getAll();
-                                    $found = false;
-                                    foreach ($choices as $choice_key => $choice)
-                                    {
-                                        if (str_replace(' ', '', mb_strtolower($choice->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
-                                        {
-                                            $issue->$method($choice);
-                                            $found = true;
-                                        }
-                                    }
-                                    if (!$found)
-                                    {
-                                        throw new \Exception('Could not find this value');
-                                    }
-                                    break;
-                                case 'percent_complete':
-                                    $issue->setPercentCompleted($field_value);
-                                    break;
-                                case 'owner':
-                                case 'assignee':
-                                    $set_method = "set" . ucfirst($field_key);
-                                    $unset_method = "un{$set_method}";
-                                    switch (mb_strtolower($field_value))
-                                    {
-                                        case 'me':
-                                            $issue->$set_method(framework\Context::getUser());
-                                            break;
-                                        case 'none':
-                                            $issue->$unset_method();
-                                            break;
-                                        default:
-                                            try
-                                            {
-                                                $user = entities\User::findUser(mb_strtolower($field_value));
-                                                if ($user instanceof entities\User)
-                                                    $issue->$set_method($user);
-                                            }
-                                            catch (\Exception $e)
-                                            {
-                                                throw new \Exception('No such user found');
-                                            }
-                                            break;
-                                    }
-                                    break;
-                                case 'estimated_time':
-                                case 'spent_time':
-                                    $set_method = "set" . ucfirst(str_replace('_', '', $field_key));
-                                    $issue->$set_method($field_value);
-                                    break;
-                                case 'milestone':
-                                    $found = false;
-                                    foreach ($this->selected_project->getMilestones() as $milestone)
-                                    {
-                                        if (str_replace(' ', '', mb_strtolower($milestone->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
-                                        {
-                                            $issue->setMilestone($milestone->getID());
-                                            $found = true;
-                                        }
-                                    }
-                                    if (!$found)
-                                    {
-                                        throw new \Exception('Could not find this milestone');
-                                    }
-                                    break;
-                                default:
-                                    throw new \Exception($i18n->__('Invalid field'));
-                            }
-                        }
-                        $return_values[$field_key] = array('success' => true);
-                    }
-                    catch (\Exception $e)
-                    {
-                        $return_values[$field_key] = array('success' => false, 'error' => $e->getMessage());
-                    }
-                }
-            }
-
-            if (!$workflow_transition instanceof entities\WorkflowTransition)
-                $issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
-
-            if (!array_key_exists('transition_ok', $return_values) || $return_values['transition_ok'])
-            {
-                $comment = new entities\Comment();
-                $comment->setContent($request->getParameter('message', null, false));
-                $comment->setPostedBy(framework\Context::getUser()->getID());
-                $comment->setTargetID($issue->getID());
-                $comment->setTargetType(entities\Comment::TYPE_ISSUE);
-                $comment->setModuleName('core');
-                $comment->setIsPublic(true);
-                $comment->setSystemComment(false);
-                $comment->save();
-                $issue->setSaveComment($comment);
-                $issue->save();
-            }
-
-            $this->return_values = $return_values;
-        }
-        catch (\Exception $e)
-        {
-            //$this->getResponse()->setHttpStatus(400);
-            return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
-        }
     }
 
     public function runGetMilestoneRoadmapIssues(framework\Request $request)
@@ -2025,6 +1720,21 @@ class Main extends helpers\ProjectActions
         }
         $this->getResponse()->setHttpStatus(400);
         return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to create new project roles')));
+    }
+
+    public function listen_issueCreate(framework\Event $event)
+    {
+        $request = framework\Context::getRequest();
+        $issue = $event->getSubject();
+
+        if ($issue->isUnlocked())
+        {
+            $this->_unlockIssueAfter($request, $issue);
+        }
+        else if ($issue->isLocked())
+        {
+            $this->_lockIssueAfter($request, $issue);
+        }
     }
 
 }

@@ -52,7 +52,12 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                         return;
                     else if (e.target && typeof(e.target.hasAttribute) == 'function' && e.target.hasAttribute('onclick'))
                         return;
+                    else if (e.target && typeof(e.target.hasAttribute) == 'function' && e.target.hasAttribute('onclick'))
+                        return;
                     TBG.Main.Profile.clearPopupsAndButtons();
+                    if (e.target && jQuery(e.target).parents('#searchfor_autocomplete_choices').length > 0)
+                        return;
+                    TBG.autocompleter.options.forceHide();
                     e.stopPropagation();
                 });
                 jQuery("img[data-src]:not([data-src-processed])").each(function(){
