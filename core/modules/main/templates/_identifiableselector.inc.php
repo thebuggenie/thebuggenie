@@ -33,7 +33,6 @@
             <input type="hidden" name="include_clients" value="<?php echo (int) $include_clients; ?>">
             <input type="search" class="identifiable_lookup" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" placeholder="<?php echo $text_title; ?>">
         </form>
-            <input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
         <?php if ($use_form): ?>
                 <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>">
             </form>
