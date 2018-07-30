@@ -872,7 +872,7 @@ class Main extends framework\Action
         if ($request['user_id'])
         {
             $user = new entities\User($request['user_id']);
-            if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
             {
                 $response->setCookie('original_username', $request->getCookie('username'));
                 $response->setCookie('original_session_token', $request->getCookie('session_token'));
@@ -889,7 +889,7 @@ class Main extends framework\Action
         }
         else
         {
-            if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
             {
                 $response->setCookie('username', $request->getCookie('original_username'));
                 $response->setCookie('session_token', $request->getCookie('original_session_token'));
@@ -4805,7 +4805,7 @@ class Main extends framework\Action
             $user->setPassword(entities\User::createPassword());
             $user->save();
 
-            if ($authentication_backend->getAuthenticationMethod() == entities\common\AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
             {
                 $this->getResponse()->setCookie('username', $user->getUsername());
                 $this->getResponse()->setCookie('session_token', $user->createUserSession()->getToken());
