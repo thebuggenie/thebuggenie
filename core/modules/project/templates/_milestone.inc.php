@@ -2,9 +2,9 @@
 
     use thebuggenie\core\entities\Milestone;
 
-    $savebuttonlabel = (isset($savebuttonlabel)) ? $savebuttonlabel : __e('Save milestone');
-    $milestonenamelabel = (isset($milestonenamelabel)) ? $milestonenamelabel : __e('Milestone name');
-    $milestoneplaceholder = (isset($milestoneplaceholder)) ? $milestoneplaceholder : __e('Enter a milestone name');
+    $savebuttonlabel = (isset($savebuttonlabel)) ? $savebuttonlabel : __('Save milestone');
+    $milestonenamelabel = (isset($milestonenamelabel)) ? $milestonenamelabel : __('Milestone name');
+    $milestoneplaceholder = (isset($milestoneplaceholder)) ? $milestoneplaceholder : __('Enter a milestone name');
     if (!isset($milestoneheader)) {
         $milestoneheader = ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone');
     }

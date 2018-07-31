@@ -27,7 +27,7 @@
     -
     <?php endif; ?>
 </td>
-<td style="padding: 3px;"><?php echo ($user->isActivated()) ? __e('Yes') : __e('No'); ?></td>
+<td style="padding: 3px;"><?php echo ($user->isActivated()) ? __('Yes') : __('No'); ?></td>
 <td style="padding: 3px; position: relative; text-align: right;">
     <?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_12_indicator", 'style' => 'display: none;')); ?>
     <button class="button button-silver button-icon dropper" id="user_<?php echo $user->getID(); ?>_more_actions"><?php echo image_tag('action_dropdown_small.png'); ?></button>
@@ -35,7 +35,7 @@
         <?php if ($user->isScopeConfirmed()): ?>
             <li><?php echo javascript_link_tag(__('Edit this user'), array('onclick' => "TBG.Config.User.getEditForm('".make_url('configure_users_edit_user_form', array('user_id' => $user->getID()))."', ".$user->getID().");")); ?></li>
         <?php else: ?>
-            <li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __e('This user cannot be edited'); ?>', '<?php echo __e('The user must confirm his membership in this scope before you can perform this action'); ?>');" class="disabled"><?php echo __('Edit this user'); ?></a></li>
+            <li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This user cannot be edited'); ?>', '<?php echo __('The user must confirm his membership in this scope before you can perform this action'); ?>');" class="disabled"><?php echo __('Edit this user'); ?></a></li>
         <?php endif; ?>
         <li><?php echo javascript_link_tag(__('Edit permissions for this user'), array('onclick' => "TBG.Config.User.getPermissionsBlock('".make_url('configure_permissions_get_configurator', array('user_id' => $user->getID(), 'base_id' => $user->getID())). "', ".$user->getID().");", 'id' => 'permissions_'.$user->getID().'_link')); ?></li>
         <?php if (\thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
@@ -52,14 +52,14 @@
         <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_12"; ?>').hide();"><?php echo __('Show user details'); ?></a></li>
         <?php if (!in_array($user->getID(), array(1, (int) \thebuggenie\core\framework\Settings::get(\thebuggenie\core\framework\Settings::SETTING_DEFAULT_USER_ID)))): ?>
             <?php if (\thebuggenie\core\framework\Context::getScope()->isDefault()): ?>
-                <li><?php echo javascript_link_tag(__('Delete this user'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__e('Permanently delete this user?')."', '".__e('Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
+                <li><?php echo javascript_link_tag(__('Delete this user'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Permanently delete this user?')."', '".__('Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
             <?php elseif ($user->isScopeConfirmed()): ?>
-                <li><?php echo javascript_link_tag(__('Remove user from this scope'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__e('Remove this user?')."', '".__e('Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
+                <li><?php echo javascript_link_tag(__('Remove user from this scope'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Remove this user?')."', '".__('Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
             <?php else: ?>
-                <li><?php echo javascript_link_tag(__('Cancel invitation'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__e('Cancel membership in this scope?')."', '".__e('If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
+                <li><?php echo javascript_link_tag(__('Cancel invitation'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Cancel membership in this scope?')."', '".__('If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
             <?php endif; ?>
         <?php else: ?>
-            <li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __e('This user cannot be removed'); ?>', '<?php echo __e('This is a system user which cannot be removed'); ?>');" class="disabled"><?php echo __('Delete this user'); ?></a></li>
+            <li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This user cannot be removed'); ?>', '<?php echo __('This is a system user which cannot be removed'); ?>');" class="disabled"><?php echo __('Delete this user'); ?></a></li>
         <?php endif; ?>
     </ul>
 </td>
