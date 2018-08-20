@@ -327,8 +327,28 @@
                             <?php endif; ?>
                         </fieldset>
                         <?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
+                        <fieldset class="todos" id="viewissue_todos_container">
+                            <div id="viewissue_todos">
+                                <?php include_component('main/todos', compact('issue')); ?>
+                            </div>
+                            <div id="todo_add" class="todo_add todo_editor" style="<?php if (!(isset($todo_error) && $todo_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
+                                <div class="todo_add_main">
+                                    <div class="todo_add_title"><?php echo __('Create a todo'); ?></div>
+                                    <form id="todo_form" accept-charset="<?php echo mb_strtoupper(\thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" action="<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" onSubmit="TBG.Issues.addTodo('<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
+                                        <label for="todo_bodybox"><?php echo __('Todo'); ?></label><br />
+                                        <?php include_component('main/textarea', array('area_name' => 'todo_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'todo_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($todo_error) && $todo_error) ? $todo_error_body : ''))); ?>
+                                        <div id="todo_add_indicator" style="display: none;">
+                                            <?php echo image_tag('spinning_20.gif'); ?>
+                                        </div>
+                                        <div id="todo_add_controls" class="todo_controls">
+                                            <input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>">
+                                            <?php echo __('%create_todo or %cancel', array('%create_todo' => '<input type="submit" class="button button-green" value="'.__('Create todo').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick'=> "$('todo_add').hide();$('todo_add_button').show();")))); ?>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </fieldset>
                         <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
-
 
                         <div class="tab_menu inset">
                             <ul id="viewissue_activity">
@@ -341,8 +361,13 @@
                             <div id="tab_viewissue_comments_pane">
                                 <fieldset class="comments" id="viewissue_comments_container">
                                     <div class="viewissue_comments_header">
-                                        <a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });"><?php echo __('Toggle system-generated comments'); ?></a>
-                                        <a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a>
+                                        <div class="dropper_container">
+                                            <?= fa_image_tag('cog', ['class' => 'dropper']); ?>
+                                            <ul class="more_actions_dropdown dropdown_box popup_box leftie">
+                                                <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
+                                                <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
+                                            </ul>
+                                        </div>
                                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'comments_loading_indicator')); ?>
                                         <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
                                             <ul class="simple_list button_container" id="add_comment_button_container">
@@ -376,69 +401,7 @@
                                     </div>
                                 </fieldset>
                             </div>
-                        <?php if (($issue->countTodos() + $issue->countDoneTodos()) !== 0): ?>
-                            <fieldset class="todos"
-                                id="viewissue_todos_container">
-                                <div id="viewissue_todos">
-                                    <?php include_component('main/todos', compact('issue')); ?>
-                                </div>
-                                <div id="todo_add" class="todo_add todo_editor" style="<?php if (!(isset($todo_error) && $todo_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
-                                    <div class="todo_add_main">
-                                        <div class="todo_add_title"><?php echo __('Create a todo'); ?></div>
-                                        <form id="todo_form" accept-charset="<?php echo mb_strtoupper(\thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" action="<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" onSubmit="TBG.Issues.addTodo('<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
-                                            <label for="todo_bodybox"><?php echo __('Todo'); ?></label><br />
-                                            <?php include_component('main/textarea', array('area_name' => 'todo_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'todo_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($todo_error) && $todo_error) ? $todo_error_body : ''))); ?>
-                                            <div id="todo_add_indicator" style="display: none;">
-                                                <?php echo image_tag('spinning_20.gif'); ?>
-                                            </div>
-                                            <div id="todo_add_controls" class="todo_controls">
-                                                <input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>">
-                                                <?php echo __('%create_todo or %cancel', array('%create_todo' => '<input type="submit" class="button button-green" value="'.__('Create todo').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick'=> "$('todo_add').hide();$('todo_add_button').show();")))); ?>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        <?php endif; ?>
-                        <fieldset class="comments" id="viewissue_comments_container">
-                            <legend class="viewissue_comments_header">
-                                <?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?>
-                                <div class="dropper_container">
-                                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
-                                    <ul class="more_actions_dropdown dropdown_box popup_box leftie">
-                                        <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
-                                    </ul>
-                                </div>
-                                <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
-                                    <ul class="simple_list button_container" id="add_comment_button_container">
-                                        <li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
-                                    </ul>
-                                <?php endif; ?>
-                            </legend>
-                            <div id="viewissue_comments">
-                                <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
-                            </div>
-                            <script type="text/javascript">
-                                require(['prototype'], function (prototype) {
-                                    $('viewissue_comment_count').update($('comments_box').select('.comment').size());
-                                });
-                            </script>
-                        </fieldset>
-                        <fieldset class="viewissue_history">
-                            <legend class="viewissue_history_header">
-                                <?php echo __('History'); ?>
-                                <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'viewissue_log_loading_indicator')); ?>
-                                <div class="button_container" id="viewissue_history_button_container">
-                                    <input class="button button-silver first last" type="button" onclick="TBG.Issues.showLog('<?php echo make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Show issue history'); ?>">
-                                </div>
-                            </legend>
-                            <div id="viewissue_log_items"></div>
-                        </fieldset>
-                        <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
-                        <div id="viewissue_panes">
-                            <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

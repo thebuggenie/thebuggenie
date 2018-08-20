@@ -32,8 +32,15 @@
          * @var array|\thebuggenie\core\entities\User
          */
         protected $mentions = array();
+
+        protected $options = [];
         
         public $code_attr_on_pre = true;
+
+        protected function _parse_line($text, $options = [])
+        {
+            return $text;
+        }
 
         public function transform($text)
         {
@@ -42,6 +49,8 @@
 
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
             $text = parent::transform($text);
+            $text = preg_replace_callback('/^(?:\<(.*?)\>)?(\[\] )(?P<text>.*?)(?:\<(.*?)\>)?$/mi', [$this, '_parse_todo'], $text);
+            $text = preg_replace_callback('/^(?:\<(.*?)\>)?(\[x\] )(?P<text>.*?)(?:\<(.*?)\>)?$/mi', [$this, '_parse_donetodo'], $text);
             $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 

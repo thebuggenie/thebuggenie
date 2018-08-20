@@ -1430,8 +1430,8 @@ footer img {
 .comment {
     padding-bottom: 10px;
     clear: both;
-    border-top: 85px solid transparent;
-    margin-top: -85px;
+    border-bottom: 85px solid transparent;
+    margin-bottom: -85px;
 }
 
 #article_comments .comment {
@@ -3074,7 +3074,7 @@ label[for=profile_prefer_wiki_markdown] {
     font-weight: 300;
     padding: 5px 15px;
     clear: both;
-    width: 455px;
+    width: 655px;
     float: right;
     border-left: 1px solid #DDD;
     box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8);
@@ -6406,10 +6406,16 @@ dd {
     position: absolute;
     z-index: 99999;
     right: 0;
+    left: auto;
     display: none;
     background: #FFF;
     border: 1px solid #CCC;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.more_actions_dropdown.leftie {
+    right: auto;
+    left: 0;
 }
 
 .more_actions_dropdown li {
@@ -15309,8 +15315,8 @@ input[type=checkbox][name=send_login_details] {
 /* Backdrop -> User details popup */
 
 #user_details_popup {
-    width: 700px;
-    margin: 0 -350px 200px -350px;
+    width: 900px;
+    margin: 0 -450px 200px -450px;
 }
 
 #user_details_popup .user_realname {
@@ -18025,10 +18031,6 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 
 #issue_main #reproduction_steps_field {
     margin-top: 25px;
-}
-
-#issue_main #viewissue_comments_container .viewissue_comments_header {
-    padding-top: 45px;
 }
 
 #issue_main #comment_bodybox_syntax_picker,

@@ -1,6 +1,7 @@
 <?php
 
     namespace thebuggenie\core\entities\traits;
+    use thebuggenie\core\helpers\TextParser;
 
     /**
      * Trait for looking up files that are not linked
@@ -18,9 +19,9 @@
         {
             if (!isset($matches)) return '';
 
-            $this->todos[] = $matches[2];
+            $this->todos[] = $matches['text'];
 
-            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
         }
 
         public function getTodos()
@@ -32,9 +33,9 @@
         {
             if (!isset($matches)) return '';
 
-            $this->done_todos[] = $matches[2];
+            $this->done_todos[] = $matches['text'];
 
-            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches[2], $this->options);
+            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
         }
 
         public function getDoneTodos()
