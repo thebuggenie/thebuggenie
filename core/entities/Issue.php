@@ -612,13 +612,6 @@
         protected $_todos;
 
         /**
-         * List of done todos for this issue
-         *
-         * @var array
-         */
-        protected $_done_todos;
-
-        /**
          * Should log entry be added
          * 
          * @var bool
@@ -6631,12 +6624,12 @@
                     $mark_todo_index_nth = 0;
 
                     foreach ($comment_todos as $todo_index => $todo) {
-                        if ($todo === $mark_todo && $todo_index != $mark_todo_index) {
+                        if ($todo['text'] === $mark_todo && $todo_index != $mark_todo_index) {
                             $mark_todo_index_nth++;
                             continue;
                         }
 
-                        if ($todo !== $mark_todo || $todo_index != $mark_todo_index) {
+                        if ($todo['text'] !== $mark_todo || $todo_index != $mark_todo_index) {
                             continue;
                         }
 
@@ -6663,7 +6656,6 @@
         protected function resetTodos()
         {
             $this->_todos = null;
-            $this->_done_todos = null;
             $this->_description_parser = null;
         }
 

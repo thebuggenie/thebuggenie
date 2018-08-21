@@ -19095,7 +19095,11 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     font-size: 15px;
 }
 .todo-comment-author {
-    margin-top: 15px;
+    display: inline-block;
+    margin: 2px 7px;
+    background-color: rgba(225, 225, 225, 0.3);
+    padding: 2px 7px;
+    border-radius: 3px;
 }
 .todo-comment-author > span {
     color: #AAA;

@@ -18,32 +18,20 @@
         <?php endif; ?>
     </legend>
     <ul class="simple_list todos-list" id="todos_list">
-    <?php if ($issue->countTodos()): ?>
-        <?php foreach ($issue->getTodos()['issue'] as $todo_index => $todo): ?>
-            <?php include_component('main/todo',
-                [
-                    'todo' => $todo,
-                    'issue' => $issue,
-                    'todo_index' => $todo_index,
-                    'todo_key' => 'todos_' . ($todo_index + 1),
-                    'comment_id' => 0,
-                ]
-            ); ?>
-        <?php endforeach; ?>
-    <?php endif; ?>
-    </ul>
-    <?php if ($issue->countTodos()): ?>
-        <?php foreach ($issue->getTodos()['comments'] as $comment_id => $comment_todos): ?>
-            <div class="todo-comment-author">
-                <?php echo include_component('main/userdropdown',
-                    ['user' => $issue->getComments()[$comment_id]->getPostedBy(), 'size' => 'small']); ?>
-                <span><?php echo __('todos from comment %comment_number', [
-                        '%comment_number' => link_tag("#comment_{$issue->getComments()[$comment_id]->getID()}",
-                            '#' . $issue->getComments()[$comment_id]->getCommentNumber()),
-                    ]); ?></span>
-            </div>
-            <ul class="simple_list comment-todos-list"
-                id="comment_<?php echo $comment_id; ?>_todos_list">
+        <?php if ($issue->countTodos()): ?>
+            <?php foreach ($issue->getTodos()['issue'] as $todo_index => $todo): ?>
+                <?php include_component('main/todo',
+                    [
+                        'todo' => $todo,
+                        'issue' => $issue,
+                        'todo_index' => $todo_index,
+                        'todo_key' => 'todos_' . ($todo_index + 1)
+                    ]
+                ); ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <?php if ($issue->countTodos()): ?>
+            <?php foreach ($issue->getTodos()['comments'] as $comment_id => $comment_todos): ?>
                 <?php foreach ($comment_todos as $todo_index => $todo): ?>
                     <?php include_component('main/todo',
                         [
@@ -51,11 +39,11 @@
                             'issue' => $issue,
                             'todo_index' => $todo_index,
                             'todo_key' => 'comment_' . $comment_id . '_todos_' . ($todo_index + 1),
-                            'comment_id' => $comment_id,
+                            'comment' => $issue->getComments()[$comment_id],
                         ]
                     ); ?>
                 <?php endforeach; ?>
-            </ul>
-        <?php endforeach; ?>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </ul>
 </div>
