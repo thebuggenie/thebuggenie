@@ -686,13 +686,6 @@ todo_mark:
     parameters: [ ]
     csrf_enabled: false
 
-todo_saveorder:
-    route: /:project_key/issues/:issue_id/save-order/:comment_id
-    module: main
-    action: saveOrderTodo
-    parameters: [ ]
-    csrf_enabled: false
-
 todo_add:
     route: /:project_key/issues/:issue_id/add-todo
     module: main

@@ -5124,53 +5124,6 @@ class Main extends framework\Action
     }
 
     /**
-     * Save order of issue todos.
-     *
-     * @param \thebuggenie\core\framework\Request $request
-     */
-    public function runSaveOrderTodo(framework\Request $request)
-    {
-        if ($issue_id = $request['issue_id'])
-        {
-            try
-            {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-            }
-            catch (\Exception $e)
-            {
-                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
-            }
-        }
-        else
-        {
-            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
-        }
-
-        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
-        {
-            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
-        }
-
-        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
-
-        $ordered_todos = $request->getParameter(($request['comment_id'] == 0
-            ? ''
-            : 'comment_' . $request['comment_id'] . '_') . 'todos_list');
-
-        if (! is_array($ordered_todos))
-        {
-            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('No valid parameter for ordered todos list')));
-        }
-
-        framework\Context::loadLibrary('common');
-        $issue->saveOrderTodo($request['comment_id'], $ordered_todos);
-
-        return $this->renderJSON(array(
-            'content' => $this->getComponentHTML('todos', compact('issue'))
-        ));
-    }
-
-    /**
      * Add an issue todos item.
      *
      * @param \thebuggenie\core\framework\Request $request

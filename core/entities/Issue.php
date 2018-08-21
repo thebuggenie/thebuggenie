@@ -6693,51 +6693,6 @@
         }
 
         /**
-         * Save order of todos. This is done by changing order of lines in text in sources.
-         *
-         * @param $comment_id
-         * @param $ordered_todos
-         *
-         * @return void
-         */
-        public function saveOrderTodo($comment_id, $ordered_todos)
-        {
-            $todos = $this->getTodos($comment_id);
-            // Prefix keys of todos so that they are string.
-            $todos = array_prefix_keys(array_prefix_values($todos, '[] '), 'order_');
-            $ordered_todos = array_map(function ($todo_order)
-            {
-                // Decrement order since we incremented it in template for plugin "Sortable" to work.
-                return 'order_' . strval($todo_order - 1);
-            }, $ordered_todos);
-            $new_todos = array_merge(array_flip($ordered_todos), $todos);
-
-            if ($comment_id == 0)
-            {
-                $this->setDescription(str_replace(
-                    tbg_encodeUTF8(implode("\n", $todos), true),
-                    tbg_encodeUTF8(implode("\n", $new_todos), true),
-                    $this->getDescription()
-                ));
-                $this->saveTodos();
-                $this->resetTodos();
-            }
-            else
-            {
-                if (! isset($this->getComments()[$comment_id])) return;
-
-                $comment = $this->getComments()[$comment_id];
-                $comment->setContent(str_replace(
-                    tbg_encodeUTF8(implode("\n", $todos), true),
-                    tbg_encodeUTF8(implode("\n", $new_todos), true),
-                    $comment->getContent()
-                ));
-                $comment->save();
-                $comment->resetTodos();
-            }
-        }
-
-        /**
          * Add todos item. This is done by adding it to text in description.
          *
          * @param $add_todo
