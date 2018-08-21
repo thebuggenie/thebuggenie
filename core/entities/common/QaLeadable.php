@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class QaLeadable extends Releaseable
+    abstract class QaLeadable extends Releaseable
     {
 
         /**

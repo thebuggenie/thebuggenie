@@ -171,6 +171,11 @@
             return $this->_name;
         }
 
+        public function getName()
+        {
+            return $this->_name;
+        }
+
         public function setRuleValue($rule_value)
         {
             $this->_rule_value = $rule_value;

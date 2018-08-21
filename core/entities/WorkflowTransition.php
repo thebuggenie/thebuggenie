@@ -387,7 +387,7 @@
 
         /**
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransitionValidationRule
+         * @return \thebuggenie\core\entities\WorkflowTransitionValidationRule[]
          */
         public function getPostValidationRules()
         {

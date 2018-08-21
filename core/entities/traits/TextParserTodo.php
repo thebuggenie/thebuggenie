@@ -1,6 +1,7 @@
 <?php
 
     namespace thebuggenie\core\entities\traits;
+    use thebuggenie\core\framework\Context;
     use thebuggenie\core\helpers\TextParser;
 
     /**
@@ -12,35 +13,26 @@
     trait TextParserTodo
     {
 
-        protected $todos = array();
-        protected $done_todos = array();
+        protected $todos = [];
 
         protected function _parse_todo($matches)
         {
+            Context::loadLibrary('ui');
             if (!isset($matches)) return '';
 
-            $this->todos[] = $matches['text'];
+            $is_closed = (isset($matches['closed']) && $matches['closed'] != '');
+            $this->todos[] = [
+                'closed' => $is_closed,
+                'text' => $matches['text']
+            ];
+            $image = ($is_closed) ? 'check-square' : 'square-o';
 
-            return '<br>' . fa_image_tag('square-o', ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
+            return '<br>' . fa_image_tag($image, ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
         }
 
         public function getTodos()
         {
             return $this->todos;
-        }
-
-        protected function _parse_donetodo($matches)
-        {
-            if (!isset($matches)) return '';
-
-            $this->done_todos[] = $matches['text'];
-
-            return '<br>' . fa_image_tag('check-square', ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
-        }
-
-        public function getDoneTodos()
-        {
-            return $this->done_todos;
         }
 
     }

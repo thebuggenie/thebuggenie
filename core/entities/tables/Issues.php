@@ -967,7 +967,7 @@
          * @param int $user_id user ID
          * @param int $limit [optional] number of issues to retrieve
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getIssuesPostedByUser($user_id, $limit = 15)
         {

@@ -956,7 +956,7 @@
         /**
          * Return all this user's clients
          *
-         * @return array|Client
+         * @return Client[]
          */
         public function getClients()
         {
@@ -987,7 +987,7 @@
         /**
          * Returns an array of issue ids which are directly assigned to the current user
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserAssignedIssues()
         {
@@ -1011,7 +1011,7 @@
          *
          * @param integer $team_id The team id
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserTeamAssignedIssues($team_id)
         {
@@ -1147,7 +1147,7 @@
         /**
          * Get all this users friends
          *
-         * @return array|User An array of users
+         * @return User An array of users[]
          */
         public function getFriends()
         {
@@ -1329,7 +1329,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getTeams()
         {
@@ -1369,7 +1369,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getOndemandTeams()
         {
@@ -2397,7 +2397,7 @@
         /**
          * Get all the projects a user is associated with
          *
-         * @return array|Project
+         * @return Project[]
          */
         public function getAssociatedProjects()
         {
@@ -2475,7 +2475,7 @@
         /**
          * Return the users associated scopes
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getScopes()
         {
@@ -2514,7 +2514,7 @@
         /**
          * Get users unconfirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getUnconfirmedScopes()
         {
@@ -2525,7 +2525,7 @@
         /**
          * Get users confirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getConfirmedScopes()
         {
@@ -2628,7 +2628,7 @@
         /**
          * Returns an array of notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getNotifications($first_notification_id = null, $last_notification_id = null)
         {
@@ -2639,7 +2639,7 @@
         /**
          * Returns an array of unread notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getUnreadNotifications()
         {
@@ -2740,7 +2740,7 @@
         /**
          * Returns an array of user dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {

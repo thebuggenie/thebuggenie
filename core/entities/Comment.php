@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\helpers\MentionableProvider;
     use thebuggenie\core\framework;
     use thebuggenie\modules\publish;
@@ -313,7 +314,7 @@
         /**
          * Returns the associated parser object
          *
-         * @return \thebuggenie\core\helpers\ContentParser
+         * @return \thebuggenie\core\helpers\ContentParser|TextParserTodo
          */
         protected function _getParser()
         {
@@ -630,6 +631,11 @@
             return $this->_content;
         }
 
+        public function getName()
+        {
+            return '';
+        }
+
         protected function _parseContent($options = array())
         {
             switch ($this->_syntax)
@@ -830,16 +836,6 @@
         public function getTodos()
         {
             return $this->_getParser()->getTodos();
-        }
-
-        /**
-         * Get done todos.
-         *
-         * @return array
-         */
-        public function getDoneTodos()
-        {
-            return $this->_getParser()->getDoneTodos();
         }
 
         /**

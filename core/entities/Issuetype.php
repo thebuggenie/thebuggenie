@@ -121,7 +121,7 @@
         /**
          * Returns an array of issue types
          *
-         * @return array|Issuetype
+         * @return Issuetype[]
          */
         public static function getAll()
         {

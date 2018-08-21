@@ -2,10 +2,12 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\common\Changeable,
         thebuggenie\core\helpers\Attachable,
         thebuggenie\core\helpers\MentionableProvider;
+    use thebuggenie\core\helpers\TextParser;
 
     /**
      * Issue class
@@ -523,7 +525,7 @@
         /**
          * List of issues which are duplicates of this one
          *
-         * @var array|\thebuggenie\core\entities\Issue
+         * @var \thebuggenie\core\entities\Issue[]
          * @Relates(class="\thebuggenie\core\entities\Issue", collection=true, foreign_column="duplicate_of")
          */
         protected $_duplicate_issues;
@@ -1135,7 +1137,7 @@
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|WorkflowTransition
+         * @return WorkflowTransition[]
          */
         public function getAvailableWorkflowTransitions()
         {
@@ -1145,7 +1147,7 @@
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|WorkflowTransition
+         * @return WorkflowTransition[]
          */
         public function getAvailableWorkflowStatusIDsAndTransitions()
         {
@@ -1189,7 +1191,7 @@
         /**
          * Get current available statuses
          *
-         * @return array|Status
+         * @return Status[]
          */
         public function getAvailableStatuses()
         {
@@ -1409,7 +1411,7 @@
         /**
          * Returns an array of all issues which are duplicates of this one
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getDuplicateIssues()
         {
@@ -2340,7 +2342,7 @@
         /**
          * Return issues relating to this
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getParentIssues()
         {
@@ -2383,7 +2385,7 @@
         /**
          * Return related issues
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getChildIssues()
         {
@@ -4533,7 +4535,7 @@
         /**
          * Return an array with all files attached to this issue
          *
-         * @return array|File
+         * @return File[]
          */
         public function getFiles()
         {
@@ -4645,7 +4647,7 @@
         /**
          * Retrieve all spent times for this issue
          *
-         * @return array|IssueSpentTime
+         * @return IssueSpentTime[]
          */
         public function getSpentTimes()
         {
@@ -4667,7 +4669,7 @@
         /**
          * Retrieve all comments for this issue
          *
-         * @return array|Comment
+         * @return Comment[]
          */
         public function getComments()
         {
@@ -5552,7 +5554,7 @@
         /**
          * Returns an array with everyone related to this project
          *
-         * @return array|User
+         * @return User[]
          */
         public function getRelatedUsers()
         {
@@ -6280,7 +6282,7 @@
         /**
          * Return an array of subscribed users
          *
-         * @return array|User
+         * @return User[]
          */
         public function getSubscribers()
         {
@@ -6297,7 +6299,7 @@
         /**
          * Return an array of users available for mention autocompletion
          *
-         * @return array|User
+         * @return User[]
          */
         public function getMentionableUsers()
         {
@@ -6353,6 +6355,9 @@
             return $this->_milestone_order;
         }
 
+        /**
+         * @return TextParser|TextParserTodo
+         */
         protected function _getDescriptionParser()
         {
             if (is_null($this->_description_parser))
@@ -6428,15 +6433,39 @@
         }
 
         /**
+         * Parse through comments and description to get todos
+         */
+        protected function _populateTodos()
+        {
+            if ($this->_todos !== []) {
+                $todos = [
+                    'issue' => [],
+                    'comments' => []
+                ];
+                $todos['issue'] = $this->_getDescriptionParser()->getTodos();
+
+                foreach ($this->getComments() as $comment) {
+                    $comment_todos = $comment->getTodos();
+
+                    if (!count($comment_todos)) continue;
+
+                    $todos['comments'][$comment->getID()] = $comment_todos;
+                }
+
+                $this->_todos = $todos;
+            }
+        }
+
+        /**
          * Get number of todos.
          *
          * @param string $method
          *
          * @return integer
          */
-        public function countTodos($method = 'getTodos')
+        public function countTodos()
         {
-            return count($this->$method()['issue']) + array_sum(array_map('count', $this->$method()['comments']));
+            return count($this->getTodos()['issue']) + array_sum(array_map('count', $this->getTodos()['comments']));
         }
 
         /**
@@ -6446,7 +6475,19 @@
          */
         public function countDoneTodos()
         {
-            return $this->countTodos('getDoneTodos');
+            $done_counter = 0;
+            $todos = $this->getTodos();
+            foreach ($todos['issue'] as $todo) {
+                if ($todo['closed']) $done_counter += 1;
+            }
+
+            foreach ($todos['comments'] as $todos) {
+                foreach ($todos as $todo) {
+                    if ($todo['closed']) $done_counter += 1;
+                }
+            }
+
+            return $done_counter;
         }
 
         /**
@@ -6459,55 +6500,17 @@
          *
          * @return array
          */
-        public function getTodos($comment_id = null, $method = 'getTodos', $property = '_todos')
+        public function getTodos($comment_id = null)
         {
-            if (is_null($this->$property))
+            $this->_populateTodos();
+            $todos = $this->_todos;
+
+            if ($comment_id)
             {
-                $todos = array('issue' => $this->_getDescriptionParser()->$method());
-                $todos['comments'] = array();
-
-                foreach ($this->getComments() as $comment)
-                {
-                    $comment_todos = $comment->$method();
-
-                    if (! count($comment_todos)) continue;
-
-                    $todos['comments'][$comment->getID()] = array_merge(
-                        isset($todos['comments'][$comment->getID()])
-                            ? $todos['comments'][$comment->getID()]
-                            : array(),
-                        $comment_todos
-                    );
-                }
-
-                $this->$property = $todos;
-            }
-
-            $todos = $this->$property;
-
-            if (! is_null($comment_id))
-            {
-                if ($comment_id == 0)
-                {
-                    return $todos['issue'];
-                }
-
-                return isset($todos['comments'][$comment_id])
-                    ? $todos['comments'][$comment_id]
-                    : array();
+                return isset($todos['comments'][$comment_id]) ? $todos['comments'][$comment_id] : [];
             }
 
             return $todos;
-        }
-
-        /**
-         * Get done todos.
-         *
-         * @return array
-         */
-        public function getDoneTodos()
-        {
-            return $this->getTodos(null, 'getDoneTodos', '_done_todos');
         }
 
         /**
@@ -6523,23 +6526,19 @@
             list($delete_todo, $delete_todo_index) = explode('.', $delete_todo);
             $delete_todo = base64_decode($delete_todo);
             $delete_todo_utf8 = tbg_encodeUTF8($delete_todo, true);
-            
-            if ($todo_comment_id == 0)
-            {
+
+            if ($todo_comment_id == 0) {
                 // Counter of iterated todos with same text, but different index.
                 $delete_todo_index_nth = 0;
 
-                foreach ($this->getTodos()['issue'] as $todo_index => $todo)
-                {
-                    if ($todo === $delete_todo
-                      && $todo_index != $delete_todo_index) {
-                      $delete_todo_index_nth++;
-                      continue;
+                foreach ($this->getTodos()['issue'] as $todo_index => $todo) {
+                    if ($todo === $delete_todo && $todo_index != $delete_todo_index) {
+                        $delete_todo_index_nth++;
+                        continue;
                     }
 
-                    if ($todo !== $delete_todo
-                      || $todo_index != $delete_todo_index) {
-                      continue;
+                    if ($todo !== $delete_todo || $todo_index != $delete_todo_index) {
+                        continue;
                     }
 
                     $this->setDescription(str_replace_nth(
@@ -6550,89 +6549,27 @@
                     ));
                     $this->saveTodos();
                 }
-
-                $delete_todo_index_nth = 0;
-
-                foreach ($this->getDoneTodos()['issue'] as $todo_index => $todo)
-                {
-                    if ($todo === $delete_todo
-                      && $todo_index != $delete_todo_index) {
-                      $delete_todo_index_nth++;
-                      continue;
-                    }
-
-                    if ($todo !== $delete_todo
-                      || $todo_index != $delete_todo_index) {
-                      continue;
-                    }
-
-                    $this->setDescription(str_replace_nth(
-                        '[x] ' . $delete_todo_utf8,
-                        '',
-                        $this->getDescription(),
-                        $delete_todo_index_nth
-                    ));
-                    $this->saveTodos();
-                }
-            }
-            else
-            {
-                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos)
-                {
+            } else {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos) {
                     if ($comment_id != $todo_comment_id) {
-                      continue;
+                        continue;
                     }
 
                     $delete_todo_index_nth = 0;
 
-                    foreach ($comment_todos as $todo_index => $todo)
-                    {
-                        if ($todo === $delete_todo
-                          && $todo_index != $delete_todo_index) {
-                          $delete_todo_index_nth++;
-                          continue;
+                    foreach ($comment_todos as $todo_index => $todo) {
+                        if ($todo === $delete_todo && $todo_index != $delete_todo_index) {
+                            $delete_todo_index_nth++;
+                            continue;
                         }
 
-                        if ($todo !== $delete_todo
-                          || $todo_index != $delete_todo_index) {
-                          continue;
+                        if ($todo !== $delete_todo || $todo_index != $delete_todo_index) {
+                            continue;
                         }
 
                         $comment = $this->getComments()[$comment_id];
                         $comment->setContent(str_replace_nth(
                             '[] ' . $delete_todo_utf8,
-                            '',
-                            $comment->getContent(),
-                            $delete_todo_index_nth
-                        ));
-                        $comment->save();
-                        $comment->resetTodos();
-                    }
-                }
-                foreach ($this->getDoneTodos()['comments'] as $comment_id => $comment_todos)
-                {
-                    if ($comment_id != $todo_comment_id) {
-                      continue;
-                    }
-
-                    $delete_todo_index_nth = 0;
-
-                    foreach ($comment_todos as $todo_index => $todo)
-                    {
-                        if ($todo === $delete_todo
-                          && $todo_index != $delete_todo_index) {
-                          $delete_todo_index_nth++;
-                            continue;
-                        }
-
-                        if ($todo !== $delete_todo
-                          || $todo_index != $delete_todo_index) {
-                          continue;
-                        }
-
-                        $comment = $this->getComments()[$comment_id];
-                        $comment->setContent(str_replace_nth(
-                            '[x] ' . $delete_todo_utf8,
                             '',
                             $comment->getContent(),
                             $delete_todo_index_nth
@@ -6659,31 +6596,26 @@
             list($mark_todo, $mark_todo_index) = explode('.', $mark_todo);
             $mark_todo = base64_decode($mark_todo);
             $mark_todo_utf8 = tbg_encodeUTF8($mark_todo, true);
-            list ($syntax1, $syntax2, $method) = $as === 'done'
-                ? array('[] ', '[x] ', 'getTodos')
-                : array('[x] ', '[] ', 'getDoneTodos');
+            list($from, $to) = ($as === 'done') ? ['[] ', '[x] '] : ['[x] ', '[] '];
 
             if ($todo_comment_id == 0)
             {
-              // Counter of iterated todos with same text, but different index.
-              $mark_todo_index_nth = 0;
+                // Counter of iterated todos with same text, but different index.
+                $mark_todo_index_nth = 0;
 
-                foreach ($this->$method()['issue'] as $todo_index => $todo)
-                {
-                  if ($todo === $mark_todo
-                    && $todo_index != $mark_todo_index) {
-                    $mark_todo_index_nth++;
-                    continue;
-                  }
+                foreach ($this->getTodos()['issue'] as $todo_index => $todo) {
+                    if ($todo === $mark_todo && $todo_index != $mark_todo_index) {
+                        $mark_todo_index_nth++;
+                        continue;
+                    }
 
-                    if ($todo !== $mark_todo
-                      || $todo_index != $mark_todo_index) {
+                    if ($todo !== $mark_todo || $todo_index != $mark_todo_index) {
                         continue;
                     }
 
                     $this->setDescription(str_replace_nth(
-                        $syntax1 . $mark_todo_utf8,
-                        $syntax2 . $mark_todo_utf8,
+                        $from . $mark_todo_utf8,
+                        $to . $mark_todo_utf8,
                         $this->getDescription(),
                         $mark_todo_index_nth
                     ));
@@ -6692,30 +6624,26 @@
             }
             else
             {
-                foreach ($this->$method()['comments'] as $comment_id => $comment_todos)
-                {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos) {
                     if ($comment_id != $todo_comment_id) {
-                      continue;
-                    }
-                  $mark_todo_index_nth = 0;
-
-                    foreach ($comment_todos as $todo_index => $todo)
-                    {
-                      if ($todo === $mark_todo
-                        && $todo_index != $mark_todo_index) {
-                        $mark_todo_index_nth++;
                         continue;
-                      }
+                    }
+                    $mark_todo_index_nth = 0;
 
-                        if ($todo !== $mark_todo
-                          || $todo_index != $mark_todo_index) {
+                    foreach ($comment_todos as $todo_index => $todo) {
+                        if ($todo === $mark_todo && $todo_index != $mark_todo_index) {
+                            $mark_todo_index_nth++;
+                            continue;
+                        }
+
+                        if ($todo !== $mark_todo || $todo_index != $mark_todo_index) {
                             continue;
                         }
 
                         $comment = $this->getComments()[$comment_id];
                         $comment->setContent(str_replace_nth(
-                            $syntax1 . $mark_todo_utf8,
-                            $syntax2 . $mark_todo_utf8,
+                            $from . $mark_todo_utf8,
+                            $to . $mark_todo_utf8,
                             $comment->getContent(),
                             $mark_todo_index_nth
                         ));

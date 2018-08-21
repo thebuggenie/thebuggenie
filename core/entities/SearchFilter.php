@@ -872,4 +872,9 @@
             }
         }
 
+        public function getName()
+        {
+            return $this->_filter_key;
+        }
+
     }

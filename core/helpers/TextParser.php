@@ -1053,8 +1053,7 @@
             $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
             $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
             $line_regexes['horizontalrule'] = '^----$';
-            $line_regexes['todo'] = '^(\[\] )(?P<text>.*?)$';
-            $line_regexes['donetodo'] = '^(\[x\] )(?P<text>.*?)$';
+            $line_regexes['todo'] = '^(\[(?P<closed>x)?\] )(?P<text>.*?)$';
 
             $char_regexes = array();
             $char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));

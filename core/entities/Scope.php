@@ -124,7 +124,7 @@
         /**
          * Return all available scopes
          *
-         * @return array|\thebuggenie\core\entities\Scope
+         * @return \thebuggenie\core\entities\Scope[]
          */
         static function getAll()
         {

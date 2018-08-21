@@ -1,3 +1,5 @@
+<?php /** @var \thebuggenie\core\entities\User $tbg_user */ ?>
+<?php /** @var \thebuggenie\core\framework\Response $tbg_response */ ?>
 <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
     <?php
 
@@ -8,7 +10,7 @@
     ?>
     <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
     <div id="issuetype_indicator_fullpage" style="display: none;" class="fullpage_backdrop">
-        <div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
+        <div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
             <?php echo image_tag('spinning_32.gif'); ?><br>
             <?php echo __('Please wait while updating issue type'); ?>...
         </div>
@@ -336,7 +338,7 @@
                                     <div class="todo_add_title"><?php echo __('Create a todo'); ?></div>
                                     <form id="todo_form" accept-charset="<?php echo mb_strtoupper(\thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" action="<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" onSubmit="TBG.Issues.addTodo('<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
                                         <label for="todo_bodybox"><?php echo __('Todo'); ?></label><br />
-                                        <?php include_component('main/textarea', array('area_name' => 'todo_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'todo_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($todo_error) && $todo_error) ? $todo_error_body : ''))); ?>
+                                        <?php include_component('main/textarea', array('area_name' => 'todo_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'todo_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($todo_error) && $todo_error) ? $todo_error : ''))); ?>
                                         <div id="todo_add_indicator" style="display: none;">
                                             <?php echo image_tag('spinning_20.gif'); ?>
                                         </div>
@@ -364,7 +366,7 @@
                                         <div class="dropper_container">
                                             <?= fa_image_tag('cog', ['class' => 'dropper']); ?>
                                             <ul class="more_actions_dropdown dropdown_box popup_box leftie">
-                                                <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
+                                                <li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });"><?php echo __('Toggle system-generated comments'); ?></a></li>
                                                 <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ISSUE; ?>', '<?= $issue->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
                                             </ul>
                                         </div>
@@ -379,7 +381,7 @@
                                         <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
                                     </div>
                                     <script type="text/javascript">
-                                        require(['prototype'], function (prototype) {
+                                        require(['prototype'], function ($) {
                                             $('viewissue_comment_count').update($('comments_box').select('.comment').size());
                                         });
                                     </script>

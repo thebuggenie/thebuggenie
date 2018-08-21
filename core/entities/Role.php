@@ -206,7 +206,7 @@
         /**
          * Returns all permissions assigned to this role
          * 
-         * @return array|\thebuggenie\core\entities\RolePermission An array of all permissions
+         * @return \thebuggenie\core\entities\RolePermission[]
          */
         public function getPermissions()
         {
