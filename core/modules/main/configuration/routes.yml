@@ -465,18 +465,20 @@ move_issue:
     parameters: [ ]
     csrf_enabled: false
 
-viewissue_find_issue:
-    route: /:project_key/findissues/:issue_id/:type
+viewissue_find_related_issues:
+    route: /:project_key/find_issues/:issue_id/related
     module: main
-    action: findIssue
-    parameters: [ ]
+    action: findRelatedIssues
+    parameters:
+      format: json
     csrf_enabled: false
 
 viewissue_relate_issues:
     route: /:project_key/issues/:issue_id/relate
     module: main
     action: relateIssues
-    parameters: [ ]
+    parameters:
+      format: json
     csrf_enabled: false
 
 viewissue_remove_related_issue:
@@ -484,6 +486,14 @@ viewissue_remove_related_issue:
     module: main
     action: removeRelatedIssue
     parameters: [ ]
+    csrf_enabled: false
+
+viewissue_find_duplicated_issue:
+    route: /:project_key/find_issues/:issue_id/duplicated
+    module: main
+    action: findDuplicatedIssue
+    parameters:
+      format: json
     csrf_enabled: false
 
 viewissue_remove_duplicated_issue:
@@ -588,7 +598,8 @@ toggle_favourite_issue:
     route: /toggle_favourite_issue/:issue_id/:user_id
     module: main
     action: toggleFavouriteIssue
-    parameters: [ ]
+    parameters:
+      format: json
     csrf_enabled: false
 
 project_reportissue:

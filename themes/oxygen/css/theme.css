@@ -7454,6 +7454,10 @@ ul.attached_items {
     box-sizing: border-box;
 }
 
+.duplicate_search select {
+    text-transform: uppercase;
+}
+
 table.issue_affects td {
     padding: 3px;
 }
@@ -16541,7 +16545,7 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     padding: 2px 14px;
 }
 
-#viewissue_add_relation_div #find_issue_indicator {
+#viewissue_add_relation_div #viewissue_find_issue_indicator {
     position: absolute;
     margin-left: 5px;
 }
