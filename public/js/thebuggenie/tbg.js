@@ -6156,16 +6156,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
-        TBG.Issues.saveTodosOrder = function (container, url) {
-            TBG.Main.Helpers.ajax(url, {
-                additional_params: Sortable.serialize(container),
-                loading: {
-                    indicator: 'todos_sort_indicator'
-                },
-                success: {update: 'viewissue_todos'}
-            });
-        };
-
         TBG.Issues.showTodo = function () {
             $$('.todo_editor').each(Element.hide);
             $('todo_add_button').hide();
