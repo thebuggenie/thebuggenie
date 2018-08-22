@@ -33,6 +33,12 @@
         const SEARCH_ID = 'savedsearchfilters.search_id';
         const FILTER_KEY = 'savedsearchfilters.filter_key';
 
+        const FILTER_RELATION_NEITHER_CHILD_NOR_PARENT = 0;
+        const FILTER_RELATION_WITHOUT_PARENT = 1;
+        const FILTER_RELATION_ONLY_PARENT = 2;
+        const FILTER_RELATION_WITHOUT_CHILD = 3;
+        const FILTER_RELATION_ONLY_CHILD = 4;
+
         /**
          * The value of the filter
          *
@@ -724,25 +730,25 @@
                                 $fk  = tables\IssueAffectsBuild::ISSUE;
                                 break;
                             case 'relation':
-                                if ($this->hasValue(4))
+                                if ($this->hasValue(self::FILTER_RELATION_ONLY_CHILD))
                                 {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
                                 }
-                                else if ($this->hasValue(3))
+                                else if ($this->hasValue(self::FILTER_RELATION_WITHOUT_CHILD))
                                 {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
                                     return $crit->returnCriterion(tables\IssueRelations::CHILD_ID, '', Criteria::DB_IS_NULL);
                                 }
-                                else if ($this->hasValue(2))
+                                else if ($this->hasValue(self::FILTER_RELATION_ONLY_PARENT))
                                 {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), Criteria::DB_INNER_JOIN);
                                 }
-                                else if ($this->hasValue(1))
+                                else if ($this->hasValue(self::FILTER_RELATION_WITHOUT_PARENT))
                                 {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
                                     return $crit->returnCriterion(tables\IssueRelations::PARENT_ID, '', Criteria::DB_IS_NULL);
                                 }
-                                else if ($this->hasValue(0))
+                                else if ($this->hasValue(self::FILTER_RELATION_NEITHER_CHILD_NOR_PARENT))
                                 {
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
                                     $crit->addJoin(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
