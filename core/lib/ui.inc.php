@@ -316,26 +316,3 @@ if (!function_exists('geshi_highlight'))
 
         return array('red' => $r, 'green' => $g, 'blue' => $b);
     }
-
-    function font_face_woffs($style_name, $file, $weight, $style, $local1, $local2, $unicode_ranges) {
-        $filepath = \thebuggenie\core\framework\Context::getWebroot() . 'fonts/' . $file;
-        $css_font_faces = '';
-
-        foreach (array('latin', 'latin_ext', 'cyrillic') as $charset)
-        {
-            $filepath_charset = $filepath . '_' . $charset;
-
-            $css_font_faces .= "
-            @font-face {
-                font-family: '{$style_name}';
-                font-style: {$style};
-                font-weight: {$weight};
-                src: local('{$local1}'), local('{$local2}'),
-                    url({$filepath_charset}.woff2) format('woff2'),
-                    url({$filepath}.woff) format('woff');
-                unicode-range: {$unicode_ranges[$charset]};
-            }\n";
-        }
-
-        return $css_font_faces;
-    }

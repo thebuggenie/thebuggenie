@@ -647,35 +647,3 @@
     {
         return array_merge(array_fill_keys($keys, $default), array_intersect_key($array, array_flip((array) $keys)));
     }
-
-    /**
-     * Use prefix to add or remove from array keys
-     *
-     * @param array $array
-     * @param       $prefix
-     * @param bool  $subtract
-     * @return array
-     */
-    function array_prefix_keys(array $array = [], $prefix, $subtract = false)
-    {
-        return array_combine(array_map(function ($key) use ($prefix, $subtract)
-        {
-            return $subtract ? preg_replace("/$prefix/", '', $key, 1) : ($prefix . $key);
-        }, array_keys($array)), $array);
-    }
-
-    /**
-     * Use prefix to add or remove from array values
-     *
-     * @param array $array
-     * @param       $prefix
-     * @param bool  $subtract
-     * @return array
-     */
-    function array_prefix_values(array $array = [], $prefix, $subtract = false)
-    {
-        return array_combine(array_keys($array), array_map(function ($value) use ($prefix, $subtract)
-        {
-            return $subtract ? preg_replace("/$prefix/", '', $value, 1) : ($prefix . $value);
-        }, $array));
-    }
