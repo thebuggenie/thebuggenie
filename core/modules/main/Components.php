@@ -487,7 +487,7 @@
 
         public function componentRelatedissues()
         {
-            $this->child_issues = $this->issue->getAccessibleChildIssues();
+            $this->child_issues = $this->issue->getChildIssues();
         }
 
         public function componentDuplicateissues()

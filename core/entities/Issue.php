@@ -28,6 +28,8 @@
      * @method static tables\Issues getB2DBTable()
      * @method boolean isTitleChanged() Whether the title is changed or not
      * @method boolean isSpentTimeChanged() Whether the spent_time is changed or not
+     * @method boolean isIssuetypeChanged() Whether the issue_type is changed or not
+     * @method boolean isIssuetypeMerged() Whether the issue_type is merged or not
      *
      * @Table(name="\thebuggenie\core\entities\tables\Issues")
      */
@@ -502,25 +504,11 @@
         protected $_parent_issues;
 
         /**
-         * List of issues this issue depends on, accessible by user
-         *
-         * @var array
-         */
-        protected $_accessible_parent_issues;
-
-        /**
          * List of issues that depends on this issue
          *
          * @var array
          */
         protected $_child_issues;
-
-        /**
-         * List of issues that depends on this issue, accessible by user
-         *
-         * @var array
-         */
-        protected $_accessible_child_issues;
 
         /**
          * List of issues which are duplicates of this one
@@ -2335,41 +2323,6 @@
         }
 
         /**
-         * populates accessible related issues for current or target user
-         *
-         * @param null $target_user
-         */
-        protected function _populateAccessibleRelatedIssues($target_user = null)
-        {
-            if ($this->_accessible_parent_issues === null || $this->_accessible_child_issues === null)
-            {
-                $this->_accessible_parent_issues = array();
-                $this->_accessible_child_issues = array();
-            }
-
-            $user = ($target_user === null) ? framework\Context::getUser() : $target_user;
-            $user_id = $user->getID();
-
-            if (!isset($this->_accessible_parent_issues[$user_id]) || !isset($this->_accessible_child_issues[$user_id]))
-            {
-                $this->_accessible_parent_issues[$user_id] = array();
-                $this->_accessible_child_issues[$user_id] = array();
-
-                foreach ($this->getChildIssues() as $child_issue)
-                {
-                    if ($child_issue->hasAccess($user))
-                        $this->_accessible_child_issues[$user_id][] = $child_issue;
-                }
-
-                foreach ($this->getParentIssues() as $parent_issue)
-                {
-                    if ($parent_issue->hasAccess($user))
-                        $this->_accessible_parent_issues[$user_id][] = $parent_issue;
-                }
-            }
-        }
-
-        /**
          * populates list of issues which are duplicates of this one
          */
         protected function _populateDuplicateIssues()
@@ -2393,19 +2346,6 @@
         {
             $this->_populateRelatedIssues();
             return $this->_parent_issues;
-        }
-
-        /**
-         * Return issues relating to this, accessible by current or target user
-         *
-         * @param null $target_user
-         * @return array
-         */
-        public function getAccessibleParentIssues($target_user = null)
-        {
-            $this->_populateAccessibleRelatedIssues($target_user);
-            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
-            return $this->_accessible_parent_issues[$user_id];
         }
 
         public function isChildIssue()
@@ -2456,19 +2396,6 @@
         }
 
         /**
-         * Return related issues, accessible by current or target user
-         *
-         * @param null $target_user
-         * @return array
-         */
-        public function getAccessibleChildIssues($target_user = null)
-        {
-            $this->_populateAccessibleRelatedIssues($target_user);
-            $user_id = ($target_user === null) ? framework\Context::getUser()->getID() : $target_user->getID();
-            return $this->_accessible_child_issues[$user_id];
-        }
-
-        /**SS
          * Returns the vote sum for this issue
          *
          * @return integer
@@ -6586,7 +6513,7 @@
                         continue;
                     }
 
-                    $this->setDescription(str_replace_nth(
+                    $this->setDescription(TextParser::replaceNth(
                         '[] ' . $delete_todo_utf8,
                         '',
                         $this->getDescription(),
@@ -6613,7 +6540,7 @@
                         }
 
                         $comment = $this->getComments()[$comment_id];
-                        $comment->setContent(str_replace_nth(
+                        $comment->setContent(TextParser::replaceNth(
                             '[] ' . $delete_todo_utf8,
                             '',
                             $comment->getContent(),
@@ -6658,7 +6585,7 @@
                         continue;
                     }
 
-                    $this->setDescription(str_replace_nth(
+                    $this->setDescription(TextParser::replaceNth(
                         $from . $mark_todo_utf8,
                         $to . $mark_todo_utf8,
                         $this->getDescription(),
@@ -6686,7 +6613,7 @@
                         }
 
                         $comment = $this->getComments()[$comment_id];
-                        $comment->setContent(str_replace_nth(
+                        $comment->setContent(TextParser::replaceNth(
                             $from . $mark_todo_utf8,
                             $to . $mark_todo_utf8,
                             $comment->getContent(),
