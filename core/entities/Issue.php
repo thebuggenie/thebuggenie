@@ -260,7 +260,7 @@
         /**
          * The category
          *
-         * @var \thebuggenie\core\entities\Category
+         * @var Category
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\Category")
          */
@@ -1102,7 +1102,7 @@
                 framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
                 return false;
             }
-            if ($this->isLockedCategory() && $this->getCategory() instanceof \thebuggenie\core\entities\Category && !$this->getCategory()->hasAccess($user))
+            if ($this->isLockedCategory() && $this->getCategory() instanceof Category && !$this->getCategory()->hasAccess($user))
             {
                 \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
                 return false;
