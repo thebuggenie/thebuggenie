@@ -3061,9 +3061,8 @@
                 {
                     $this->_removeParentIssue($related_issue, $relation_id);
                 }
-                $last_updated = time();
-                $this->touch($last_updated);
-                $related_issue->touch($last_updated);
+                $this->touch();
+                $related_issue->touch();
                 tables\IssueRelations::getTable()->doDeleteById($relation_id);
             }
         }
@@ -3126,9 +3125,8 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $related_issue->calculateTime();
                 $related_issue->save();
-                $last_updated = time();
-                $this->touch($last_updated);
-                $related_issue->touch($last_updated);
+                $this->touch();
+                $related_issue->touch();
 
                 return true;
             }
@@ -3164,9 +3162,8 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $this->calculateTime();
                 $this->save();
-                $last_updated = time();
-                $this->touch($last_updated);
-                $related_issue->touch($last_updated);
+                $this->touch();
+                $related_issue->touch();
 
                 return true;
             }
@@ -6664,6 +6661,7 @@
             // Since todos are saved in description don't log entry of that field changing.
             $this->should_log_entry = false;
             $this->save();
+            $this->should_log_entry = true;
 
             foreach ($changed_properties as $property => $property_values)
             {
