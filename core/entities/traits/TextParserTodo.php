@@ -13,6 +13,8 @@
     trait TextParserTodo
     {
 
+        protected $todo_regex = '(\[(?P<closed>x)?\] )(?P<text>.*?)';
+
         protected $todos = [];
 
         protected function _parse_todo($matches)
@@ -28,6 +30,11 @@
             $image = ($is_closed) ? 'check-square' : 'square-o';
 
             return '<br>' . fa_image_tag($image, ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
+        }
+
+        protected function getTodoRegex()
+        {
+            return $this->todo_regex;
         }
 
         public function getTodos()
