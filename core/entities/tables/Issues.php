@@ -898,7 +898,7 @@
                         $ids[] = $row->get(self::ID);
                         $sum = array();
 
-                        foreach (\thebuggenie\core\entities\common\Timeable::$units as $time_unit)
+                        foreach (\thebuggenie\core\entities\common\Timeable::getUnits() as $time_unit)
                         {
                             if (! isset($row['spent_'. $time_unit .'_sum']))
                                 continue;

@@ -6716,7 +6716,7 @@
             $any_exists = false;
             $time = array();
 
-            foreach (common\Timeable::$units as $time_unit)
+            foreach (common\Timeable::getUnits() as $time_unit)
             {
                 if (! array_key_exists('spent_' . $time_unit, $this->_sums))
                 {
