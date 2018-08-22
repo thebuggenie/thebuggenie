@@ -593,7 +593,7 @@
         protected $_new_subscribers = array();
 
         /**
-         * List of not done todos for this issue
+         * List of todos for this issue
          *
          * @var array
          */
