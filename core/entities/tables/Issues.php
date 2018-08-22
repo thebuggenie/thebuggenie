@@ -715,7 +715,7 @@
             }
         }
 
-        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'), $include_deleted = false)
+        public function findIssues($filters = [], $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = [self::LAST_UPDATED => 'asc'], $include_deleted = false)
         {
             $crit = $this->getCriteria();
             if (!$include_deleted) $crit->addWhere(self::DELETED, false);
@@ -888,15 +888,15 @@
                 }
 
                 $res = $this->doSelect($crit, 'none');
-                $ids = array();
-                $sums = array();
+                $ids = [];
+                $sums = [];
 
                 if ($res)
                 {
                     while ($row = $res->getNextRow())
                     {
                         $ids[] = $row->get(self::ID);
-                        $sum = array();
+                        $sum = [];
 
                         foreach (\thebuggenie\core\entities\common\Timeable::getUnits() as $time_unit)
                         {
@@ -928,17 +928,17 @@
                 }
                 else
                 {
-                    $rows = array();
+                    $rows = [];
                 }
 
                 unset($res);
                 unset($res3);
 
-                return array($rows, $count, $ids, $sums);
+                return [$rows, $count, $ids, $sums];
             }
             else
             {
-                return array(null, 0, array(), array());
+                return [null, 0, [], []];
             }
 
         }
