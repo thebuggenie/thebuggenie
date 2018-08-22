@@ -58,8 +58,7 @@
     "autoload": {
         "psr-4" : {
             "thebuggenie\\modules\\" : "modules/",
-            "thebuggenie\\core\\" : "core/",
-            "thebuggenie\\extensions\\" : "extensions/"
+            "thebuggenie\\core\\" : "core/"
         }
     },
     "minimum-stability" : "dev",
