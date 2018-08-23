@@ -311,6 +311,26 @@
             case 24:
                 $tstring = strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(18), $tstamp);
                 break;
+            case 25:
+                $tstring = '';
+                $days = day_delta($tstamp, $tzoffset);
+                if ($days == 0)
+                {
+                    $tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                elseif ($days == -1)
+                {
+                    $tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                elseif ($days == 1)
+                {
+                    $tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
+                }
+                else
+                {
+                    $tstring .= strftime(\thebuggenie\core\framework\Context::getI18n()->getDateTimeFormat(10), $tstamp);
+                }
+                break;
             default:
                 return $tstamp;
         }
@@ -375,6 +395,29 @@
         {
             $str = htmlentities($str, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
         }
+        return $str;
+    }
+
+    /**
+     * The opposite of custom function "tbg_decodeUTF8".
+     *
+     * @param string $str the encode string
+     * @param boolean $htmlentities [optional] whether to convert applicable characters to HTML entities
+     *
+     * @return string
+     */
+    function tbg_encodeUTF8($str, $htmlentities = false)
+    {
+        if ($htmlentities)
+        {
+            $str = html_entity_decode($str, ENT_NOQUOTES+ENT_IGNORE, \thebuggenie\core\framework\Context::getI18n()->getCharset());
+        }
+
+        if (! tbg_isUTF8($str) && !mb_stristr(\thebuggenie\core\framework\Context::getI18n()->getCharset(), 'UTF-8'))
+        {
+            $str = utf8_encode($str);
+        }
+
         return $str;
     }
 

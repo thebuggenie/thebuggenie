@@ -103,7 +103,8 @@
                                     echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ?: __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? date('Y-m-d', (int) $action->getTargetValue()) : __('Value provided by user')) . '</span>'));
+                                case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                                    echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $action->getTargetValue()) : __('Value provided by user')) . '</span>'));
                                     break;
                                 case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                                     echo __('Set issue field %key to ', array('%key' => $action->getCustomActionType()));
@@ -255,8 +256,9 @@
                                             case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                                 echo include_component('main/textarea', array('area_name' => 'target_value', 'target_type' => 'workflowtransitionaction', 'target_id' => $action->getID(), 'area_id' => 'workflowtransitionaction_'. $action->getID() .'_value', 'height' => '100px', 'width' => '100%', 'value' => $action->getTargetValue()));
                                                 break;
-                                            case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER: ?>
-                                                <input type="hidden" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ? date('Y-m-d', $action->getTargetValue()) : ''); ?>">
+                                            case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                            case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER: ?>
+                                                <input type="hidden" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ? date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $action->getTargetValue()) : ''); ?>">
                                                 <div id="customfield_<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_calendar_container"></div>
                                                 <script type="text/javascript">
                                                     Calendar.setup({

@@ -609,40 +609,6 @@ project_reportissue:
     parameters: [ ]
     csrf_enabled: false
 
-nextopenissue:
-    route: /:project_key/issues/:issue_no/next/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-      mode: open
-    csrf_enabled: false
-
-nextissue:
-    route: /:project_key/issues/:issue_no/next
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-    csrf_enabled: false
-
-previousopenissue:
-    route: /:project_key/issues/:issue_no/previous/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-      mode: open
-    csrf_enabled: false
-
-previousissue:
-    route: /:project_key/issues/:issue_no/previous
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-    csrf_enabled: false
-
 issue_log:
     route: /:project_key/issuelog/:issue_id
     module: main
@@ -716,3 +682,24 @@ asset_js_unthemed:
     module: main
     action: Asset::resolve
     anonymous_route: true
+
+todo_delete:
+    route: /:project_key/issues/:issue_id/delete-todo/:comment_id
+    module: main
+    action: deleteTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_mark:
+    route: /:project_key/issues/:issue_id/mark-todo/:comment_id/:mark
+    module: main
+    action: toggleDoneTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_add:
+    route: /:project_key/issues/:issue_id/add-todo
+    module: main
+    action: addTodo
+    parameters: [ ]
+    csrf_enabled: false

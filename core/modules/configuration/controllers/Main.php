@@ -1998,7 +1998,8 @@
                                         case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                            return $this->renderJSON(array('content' => date('Y-m-d', (int) $text)));
+                                        case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                                            return $this->renderJSON(array('content' => date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($this->action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $text)));
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                                             return $this->renderJSON(array('content' => $this->getComponentHTML('main/userdropdown', array('user' => $text))));

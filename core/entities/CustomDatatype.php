@@ -25,6 +25,7 @@
         const DATE_PICKER = 19;
         const MILESTONE_CHOICE = 20;
         const CLIENT_CHOICE = 21;
+        const DATETIME_PICKER = 22;
 
         protected static $_types = null;
 
@@ -77,6 +78,17 @@
             return $return_fields;
         }
 
+        public static function getByFieldTypes($types)
+        {
+            $return_fields = array();
+            foreach (self::getAll() as $field)
+            {
+                if (in_array($field->getType(), $types)) $return_fields[$field->getID()] = $field;
+            }
+
+            return $return_fields;
+        }
+
         public static function getAllExceptTypes($types)
         {
             $return_fields = array();
@@ -107,6 +119,7 @@
             $types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
             $types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
             $types[self::CLIENT_CHOICE] = $i18n->__('Find and pick a client');
+            $types[self::DATETIME_PICKER] = $i18n->__('Datetime picker');
 
             return $types;
 

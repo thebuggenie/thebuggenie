@@ -1,4 +1,4 @@
-<div class="backdrop_box large backdrop_detail_content usercard" id="user_details_popup">
+<div class="backdrop_box x-large backdrop_detail_content usercard" id="user_details_popup">
     <div id="backdrop_detail_content" class="backdrop_detail_content rounded_top" style="padding: 10px; text-align: left;">
         <?php if (!$user->isScopeConfirmed()): ?>
             <div class="user_realname">

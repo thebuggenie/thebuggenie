@@ -16,7 +16,12 @@
          *
          * @var array
          */
-        public static $units = array('months', 'weeks', 'days', 'hours', 'minutes');
+        protected static $units = array('months', 'weeks', 'days', 'hours', 'minutes');
+
+        public static function getUnits()
+        {
+            return self::$units;
+        }
 
         /**
          * Get time units with points.
@@ -25,7 +30,7 @@
          */
         public static function getUnitsWithPoints()
         {
-            $units = static::$units;
+            $units = self::$units;
             $units[] = 'points';
 
             return $units;
@@ -50,7 +55,7 @@
          */
         public static function getUnitsWithout(array $without)
         {
-            return array_diff(static::$units, $without);
+            return array_diff(self::$units, $without);
         }
 
         /**

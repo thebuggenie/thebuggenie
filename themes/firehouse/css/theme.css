@@ -1103,6 +1103,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_box.mediumsmall { width: 500px; margin: 0 -250px 0 -250px; }
 .backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
+.backdrop_box.x-large { width: 900px; margin: 0 auto 200px auto; }
 .backdrop_box.huge { width: 1010px; margin: 0 -500px 200px -500px; }
 .backdrop_box .backdrop_detail_header { text-align: left; }
 .backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; text-align: left; }

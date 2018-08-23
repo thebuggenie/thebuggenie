@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Ownable extends IdentifiableScoped
+    abstract class Ownable extends IdentifiableScoped
     {
 
         /**

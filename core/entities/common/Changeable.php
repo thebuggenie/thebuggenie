@@ -21,7 +21,7 @@
      * @package thebuggenie
      * @subpackage main
      */
-    class Changeable extends Ownable
+    abstract class Changeable extends Ownable
     {
 
         /**

@@ -295,6 +295,7 @@ img.smiley {
 header {
     background: #4E81AB;
     color: white;
+    height: 35px;
 }
 
 .backdrop_detail_header, .backdrop_box h1 {
@@ -318,14 +319,6 @@ header {
     font-weight: 300;
     font-size: 1.1em;
     padding: 3px 7px;
-}
-
-#header_container {
-}
-
-header {
-    height: 35px;
-    margin-bottom: 5px;
 }
 
 header .main_menu {
@@ -837,6 +830,13 @@ header nav > ul {
     z-index: 10;
     font-size: 1.2em;
     color: rgba(255, 255, 255, 0.8);
+}
+
+#quicksearch_clear {
+    position: absolute;
+    right: 56px;
+    top: 5px;
+    z-index: 10;
 }
 
 div.autocomplete ul li.quicksearch_user_item img {
@@ -1430,8 +1430,8 @@ footer img {
 .comment {
     padding-bottom: 10px;
     clear: both;
-    border-top: 85px solid transparent;
-    margin-top: -85px;
+    border-bottom: 85px solid transparent;
+    margin-bottom: -85px;
 }
 
 #article_comments .comment {
@@ -1571,7 +1571,7 @@ footer img {
 }
 
 .commentbody {
-    padding: 1px 5px 5px 40px;
+    padding: 5px 5px 5px 40px;
     font-size: 1em;
     overflow: hidden;
 }
@@ -1604,12 +1604,16 @@ footer img {
     border-bottom-color: #AAA;
 }
 
-.comment_controls {
+.comment_controls,
+.todo_controls {
     margin-top: 10px;
     font-size: 1em;
 }
 
-.comment_controls .button, .comment_controls .button:hover {
+.comment_controls .button,
+.comment_controls .button:hover,
+.todo_controls .button,
+.todo_controls .button:hover {
     font-size: 1.1em;
     padding: 4px 8px;
 }
@@ -1638,7 +1642,8 @@ footer img {
     border: 1px solid #D8E6D8;
 }
 
-.comment_editor {
+.comment_editor,
+.todo_editor {
     position: fixed;
     width: 650px;
     z-index: 120;
@@ -1650,7 +1655,8 @@ footer img {
     border: 0;
 }
 
-.comment_editor .typeahead.dropdown-menu {
+.comment_editor .typeahead.dropdown-menu,
+.todo_editor .typeahead.dropdown-menu {
     overflow-y: scroll;
     max-height: 100px;
 }
@@ -3068,7 +3074,7 @@ label[for=profile_prefer_wiki_markdown] {
     font-weight: 300;
     padding: 5px 15px;
     clear: both;
-    width: 455px;
+    width: 655px;
     float: right;
     border-left: 1px solid #DDD;
     box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8);
@@ -6063,7 +6069,8 @@ ul.workflow_actions li:hover {
     border-radius: 4px;
 }
 
-#comment_add_button {
+#comment_add_button,
+#todo_add_button {
     padding: 0;
 }
 
@@ -6399,10 +6406,16 @@ dd {
     position: absolute;
     z-index: 99999;
     right: 0;
+    left: auto;
     display: none;
     background: #FFF;
     border: 1px solid #CCC;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.more_actions_dropdown.leftie {
+    right: auto;
+    left: 0;
 }
 
 .more_actions_dropdown li {
@@ -9041,6 +9054,11 @@ dl.info dt {
     margin: 1px 1px 0 1px;
     line-height: 1em;
     text-shadow: none;
+}
+
+.whiteboard-issue .epic_badge {
+  font-weight: normal;
+  font-size: 1em;
 }
 
 .whiteboard-issue .issue_component, .milestone_issue .issue_component {
@@ -15301,8 +15319,8 @@ input[type=checkbox][name=send_login_details] {
 /* Backdrop -> User details popup */
 
 #user_details_popup {
-    width: 700px;
-    margin: 0 -350px 200px -350px;
+    width: 900px;
+    margin: 0 -450px 200px -450px;
 }
 
 #user_details_popup .user_realname {
@@ -17612,7 +17630,7 @@ li.header div.user_avatar {
 .commentbody.article br {
     display: block;
     content: "";
-    margin-top: 5px;
+    margin-top: 7px;
 }
 
 #issue_view #issue_details_container.collapsed img.collapser {
@@ -18021,13 +18039,14 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
 
 #issue_main #comment_bodybox_syntax_picker,
 ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
-ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
+ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
+#issue_main #todo_bodybox_syntax_picker {
     margin-top: 22px;
 }
 
 #issue_main .issue_inline_description,
 #issue_main .commentcontent {
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
 #issue_main .commentcontent .image_container.thumb {
@@ -18049,7 +18068,8 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker'] {
 
 #comment_add_indicator,
 div[id^='comment_edit_indicator_'],
-div[id^='comment_reply_indicator_'] {
+div[id^='comment_reply_indicator_'],
+#todo_add_indicator {
     margin-top: 13px;
 }
 
@@ -18342,7 +18362,6 @@ div[id^='comment_reply_indicator_'] {
 }
 
 /* Menu */
-
 
 #topmenu-container .tab_menu li .menuitem_container a {
     margin-top: 2px;
@@ -18996,3 +19015,50 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 
 /* end onboarding images */
+
+.relate_issue_with_selected {
+    margin-top: -3px;
+}
+
+.todos-list .todo {
+    margin-left: 4px;
+}
+.comment-todos-list {
+    margin-top: 0;
+}
+.comment-todos-list .todo {
+    margin-left: 21px;
+}
+.todo .todo-delete {
+    opacity: 0;
+    top: 4px;
+    position: relative;
+}
+.todo:hover .todo-delete {
+    opacity: 1;
+}
+.todo .todo-mark-done,
+.todo .todo-mark-not-done,
+.todo .todo-mark-indicator {
+    top: 1px;
+    position: relative;
+    font-size: 15px;
+}
+.todo-comment-author {
+    display: inline-block;
+    margin: 2px 7px;
+    background-color: rgba(225, 225, 225, 0.3);
+    padding: 2px 7px;
+    border-radius: 3px;
+}
+.todo-comment-author > span {
+    color: #AAA;
+    font-weight: normal;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 2px;
+}
+.todo-checkbox {
+    margin-right: 3px;
+    color: #AAA;
+}

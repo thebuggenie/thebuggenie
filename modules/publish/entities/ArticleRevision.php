@@ -93,6 +93,11 @@
             return $this->_article_name;
         }
 
+        public function getName()
+        {
+            return $this->getArticleName();
+        }
+
         /**
          * Returns old content of the article (prior to change).
          *

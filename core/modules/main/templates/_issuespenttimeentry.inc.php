@@ -2,13 +2,16 @@
     <li style="position: relative;">
         <label for="issue_<?php echo $issue->getID(); ?>_timeentry"><?php echo __('Add time spent'); ?></label>
         <input type="text" id="issue_<?php echo $issue->getID(); ?>_timeentry" name="timespent_manual" placeholder="<?php echo __("'1 hour', '1 day, 3 hours' or similar"); ?>." style="width: 250px;">
-        <div class="tooltip from-above" style="width: 400px; font-size: 1em; margin: 10px 0 0 50px;">
-            <?php echo __('Entering time spent is easy. TBG will make a best effort at understanding what you type, as long as you follow some basic rules:'); ?>
-            <ul style="list-style: circle;">
-                <li><?php echo __('Separate time with commas: "1 day, 3 hours" is fine, but "1 day 3 hours" will not be understood'); ?></li>
-                <li><?php echo __('TBG (currently) only understands english: "2 hours" makes sense, "En time" not so much'); ?></li>
-            </ul>
-        </div>
+        <span class="config_explanation" style="position: relative;">
+            <?= image_tag('icon_info.png', ['style' => 'margin: 0 5px 0 0; vertical-align: middle; cursor: pointer;']); ?>
+            <span class="tooltip from-above leftie" style="width: 400px; font-size: 1em; margin: 5px 0 0 -10px;">
+                <?= __('Entering time spent is easy. TBG will make a best effort at understanding what you type, as long as you follow some basic rules:'); ?>
+                <ul style="list-style: circle;">
+                    <li><?= __('Separate time with commas: "1 day, 3 hours" is fine, but "1 day 3 hours" will not be understood'); ?></li>
+                    <li><?= __('TBG (currently) only understands english: "2 hours" makes sense, "En time" not so much'); ?></li>
+                </ul>
+            </span>
+        </span>
         <?php echo __('%specify_manually or select %list', array('%specify_manually' => '', '%list' => '')); ?>
         <input type="text" name="timespent_specified_value" style="width: 50px;">
         <select name="timespent_specified_type">

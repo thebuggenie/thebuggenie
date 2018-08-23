@@ -633,9 +633,9 @@ class Context
                 $event->trigger();
 
                 if ($event->isProcessed())
-                    self::loadUser($event->getReturnValue(), true);
+                    self::loadUser($event->getReturnValue());
                 elseif (!self::isCLI())
-                    self::loadUser(null, true);
+                    self::loadUser(null);
                 else
                     self::$_user = new User();
 

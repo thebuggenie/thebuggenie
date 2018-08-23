@@ -537,7 +537,7 @@
         /**
          * Retrieve all projects
          *
-         * @return array|Project
+         * @return Project[]
          */
         public static function getAll()
         {
@@ -548,7 +548,7 @@
         /**
          * Retrieve all projects by id
          *
-         * @return array|Project
+         * @return Project[]
          */
         public static function getAllByIDs($ids)
         {
@@ -1300,7 +1300,7 @@
         /**
          * Returns an array with all the milestones
          *
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestones()
         {
@@ -1311,7 +1311,7 @@
         /**
          * Returns an array with all open milestones
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getOpenMilestones()
         {
@@ -1327,7 +1327,7 @@
         /**
          * Returns an array with all milestones visible for the roadmap
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestonesForRoadmap()
         {
@@ -1345,7 +1345,7 @@
         /**
          * Returns an array with all milestones visible for issues
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestonesForIssues()
         {
@@ -1363,7 +1363,7 @@
         /**
          * Returns an array with all milestones visible for issues or the roadmap
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getAvailableMilestones()
         {
@@ -1873,7 +1873,7 @@
         /**
          * Returns all issue types visible in the project summary block
          *
-         * @return array|\thebuggenie\core\entities\Issuetype
+         * @return \thebuggenie\core\entities\Issuetype[]
          */
         public function getVisibleIssuetypes()
         {
@@ -3320,7 +3320,7 @@
         /**
          * Returns an array of project dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
@@ -3435,7 +3435,7 @@
         /**
          * Get reportable time units
          *
-         * @return array|null
+         * @return array
          */
         public function getTimeUnits()
         {

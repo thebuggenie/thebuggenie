@@ -252,7 +252,7 @@
         /**
          * Get all outgoing transitions from this step
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransition An array of \thebuggenie\core\entities\WorkflowTransition objects
+         * @return \thebuggenie\core\entities\WorkflowTransition[]
          */
         public function getOutgoingTransitions()
         {

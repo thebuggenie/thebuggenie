@@ -2,10 +2,12 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\common\Changeable,
         thebuggenie\core\helpers\Attachable,
         thebuggenie\core\helpers\MentionableProvider;
+    use thebuggenie\core\helpers\TextParser;
 
     /**
      * Issue class
@@ -26,6 +28,8 @@
      * @method static tables\Issues getB2DBTable()
      * @method boolean isTitleChanged() Whether the title is changed or not
      * @method boolean isSpentTimeChanged() Whether the spent_time is changed or not
+     * @method boolean isIssuetypeChanged() Whether the issue_type is changed or not
+     * @method boolean isIssuetypeMerged() Whether the issue_type is merged or not
      *
      * @Table(name="\thebuggenie\core\entities\tables\Issues")
      */
@@ -256,7 +260,7 @@
         /**
          * The category
          *
-         * @var \thebuggenie\core\entities\Category
+         * @var Category
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\Category")
          */
@@ -509,7 +513,7 @@
         /**
          * List of issues which are duplicates of this one
          *
-         * @var array|\thebuggenie\core\entities\Issue
+         * @var \thebuggenie\core\entities\Issue[]
          * @Relates(class="\thebuggenie\core\entities\Issue", collection=true, foreign_column="duplicate_of")
          */
         protected $_duplicate_issues;
@@ -587,6 +591,27 @@
         protected $_subscribers = null;
 
         protected $_new_subscribers = array();
+
+        /**
+         * List of todos for this issue
+         *
+         * @var array
+         */
+        protected $_todos;
+
+        /**
+         * Should log entry be added
+         * 
+         * @var bool
+         */
+        protected $should_log_entry = true;
+
+        /**
+         * Custom sums columns.
+         *
+         * @var array
+         */
+        protected $_sums = array();
 
         /**
          * All custom data type properties
@@ -785,7 +810,7 @@
         public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(tables\Issues::LAST_UPDATED => 'desc'), $include_deleted = false)
         {
             $issues = array();
-            list ($rows, $count, $ids) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
+            list ($rows, $count, $ids, $sums) = tables\Issues::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields, $include_deleted);
             if ($rows)
             {
                 if (framework\Context::isProjectContext())
@@ -810,6 +835,7 @@
                         $issue = new Issue($row->get(tables\Issues::ID), $row);
                         $user_ids[$row['issues.posted_by']] = true;
                         $issues[] = $issue;
+                        $issue->setSums($sums[$row->get(tables\Issues::ID)]);
                         unset($rows[$key]);
                     }
                     catch (\Exception $e) {}
@@ -1046,16 +1072,7 @@
             $specific_access = $user->hasPermission("canviewissue", $i_id, 'core');
             if ($specific_access !== null)
             {
-                if ($this->isLockedCategory() && $this->getCategory() instanceof Category)
-                {
-                    if (!$this->getCategory()->hasAccess($user))
-                    {
-                        framework\Logging::log('done checking, not allowed to access issues in this category');
-                        return false;
-                    }
-                }
-
-                framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
+                \thebuggenie\core\framework\Logging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
                 return $specific_access;
             }
             if ($this->getPostedByID() == $user->getID())
@@ -1085,13 +1102,10 @@
                 framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
                 return false;
             }
-            if ($this->isLockedCategory() && $this->getCategory() instanceof Category)
+            if ($this->isLockedCategory() && $this->getCategory() instanceof Category && !$this->getCategory()->hasAccess($user))
             {
-                if (!$this->getCategory()->hasAccess($user))
-                {
-                    framework\Logging::log('done checking, not allowed to access issues in this category');
-                    return false;
-                }
+                \thebuggenie\core\framework\Logging::log('done checking, not allowed to access issues in this category');
+                return false;
             }
             if ($this->getProject()->hasAccess($user))
             {
@@ -1156,7 +1170,7 @@
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|WorkflowTransition
+         * @return WorkflowTransition[]
          */
         public function getAvailableWorkflowTransitions()
         {
@@ -1166,7 +1180,7 @@
         /**
          * Returns an array of workflow transitions
          *
-         * @return array|WorkflowTransition
+         * @return WorkflowTransition[]
          */
         public function getAvailableWorkflowStatusIDsAndTransitions()
         {
@@ -1210,7 +1224,7 @@
         /**
          * Get current available statuses
          *
-         * @return array|Status
+         * @return Status[]
          */
         public function getAvailableStatuses()
         {
@@ -1430,7 +1444,7 @@
         /**
          * Returns an array of all issues which are duplicates of this one
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getDuplicateIssues()
         {
@@ -2326,7 +2340,7 @@
         /**
          * Return issues relating to this
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getParentIssues()
         {
@@ -2356,7 +2370,7 @@
         /**
          * Return related issues
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getChildIssues()
         {
@@ -2808,6 +2822,19 @@
             return $retarr;
         }
 
+        public function getCustomFieldsOfTypes($types)
+        {
+            $retarr = array();
+            foreach (CustomDatatype::getAll() as $key => $customdatatype)
+            {
+                if (!in_array($customdatatype->getType(), $types)) continue;
+
+                $var_name = '_customfield'.$key;
+                $retarr[$key] = $this->$var_name;
+            }
+            return $retarr;
+        }
+
         /**
          * Set the value of a custom field
          *
@@ -3034,9 +3061,8 @@
                 {
                     $this->_removeParentIssue($related_issue, $relation_id);
                 }
-                $last_updated = time();
-                $this->touch($last_updated);
-                $related_issue->touch($last_updated);
+                $this->touch();
+                $related_issue->touch();
                 tables\IssueRelations::getTable()->doDeleteById($relation_id);
             }
         }
@@ -3099,6 +3125,8 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $related_issue->calculateTime();
                 $related_issue->save();
+                $this->touch();
+                $related_issue->touch();
 
                 return true;
             }
@@ -3134,9 +3162,8 @@
                 $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $this->calculateTime();
                 $this->save();
-                $last_updated = time();
-                $this->touch($last_updated);
-                $related_issue->touch($last_updated);
+                $this->touch();
+                $related_issue->touch();
 
                 return true;
             }
@@ -4381,6 +4408,7 @@
          */
         public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
         {
+            if (!$this->should_log_entry) return;
             $uid = ($system) ? 0 : framework\Context::getUser()->getID();
             $log_item = new LogItem();
             $log_item->setChangeType($change_type);
@@ -4476,7 +4504,7 @@
         /**
          * Return an array with all files attached to this issue
          *
-         * @return array|File
+         * @return File[]
          */
         public function getFiles()
         {
@@ -4588,7 +4616,7 @@
         /**
          * Retrieve all spent times for this issue
          *
-         * @return array|IssueSpentTime
+         * @return IssueSpentTime[]
          */
         public function getSpentTimes()
         {
@@ -4610,7 +4638,7 @@
         /**
          * Retrieve all comments for this issue
          *
-         * @return array|Comment
+         * @return Comment[]
          */
         public function getComments()
         {
@@ -4937,6 +4965,7 @@
                     case CustomDatatype::INPUT_TEXTAREA_SMALL:
                     case CustomDatatype::INPUT_TEXTAREA_MAIN:
                     case CustomDatatype::DATE_PICKER:
+                    case CustomDatatype::DATETIME_PICKER:
                         $option_id = $this->getCustomField($key);
                         tables\IssueCustomFields::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
                         break;
@@ -5494,7 +5523,7 @@
         /**
          * Returns an array with everyone related to this project
          *
-         * @return array|User
+         * @return User[]
          */
         public function getRelatedUsers()
         {
@@ -5610,7 +5639,8 @@
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
 
-                if ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS . '_' . $this->getCategory()->getID(), false)->isOn()) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
+                if ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn())
+                    $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
         }
 
@@ -5643,10 +5673,11 @@
             if (!$user instanceof User) return false;
 
             if ($this->getCategory() instanceof Category) {
-                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn()) return true;
+                if ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn())
+                    return true;
             }
 
-            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProjectID(), false)->isOn());
+            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProject()->getId(), false)->isOn());
         }
 
         protected function _postSave($is_new)
@@ -6062,6 +6093,10 @@
                                 $value = new Milestone();
                                 $value->setID(0);
                             }
+                            if (!$value->getProject() instanceof Project)
+                            {
+                                $value->setProject($this->getProject());
+                            }
                             break;
                         case 'owner':
                             $value = $this->getOwner();
@@ -6153,6 +6188,11 @@
             } else {
                 $this->_addChangedProperty('_assignee_user', $assignee->getID());
                 $this->_addChangedProperty('_assignee_team', null);
+
+                if ($assignee instanceof \thebuggenie\core\entities\User && $assignee->getNotificationSetting(\thebuggenie\core\framework\Settings::SETTINGS_USER_SUBSCRIBE_ASSIGNED_ISSUES, false)->isOn() && !$this->isSubscriber($assignee))
+                {
+                    $this->addSubscriber($assignee->getID());
+                }
             }
         }
 
@@ -6211,7 +6251,7 @@
         /**
          * Return an array of subscribed users
          *
-         * @return array|User
+         * @return User[]
          */
         public function getSubscribers()
         {
@@ -6228,7 +6268,7 @@
         /**
          * Return an array of users available for mention autocompletion
          *
-         * @return array|User
+         * @return User[]
          */
         public function getMentionableUsers()
         {
@@ -6284,6 +6324,9 @@
             return $this->_milestone_order;
         }
 
+        /**
+         * @return TextParser|TextParserTodo
+         */
         protected function _getDescriptionParser()
         {
             if (is_null($this->_description_parser))
@@ -6356,6 +6399,348 @@
             $last_time_unit = array_pop($time_logger_units);
 
             return 'Adds ' . implode(', ', $time_logger_units) . ' and ' . $last_time_unit;
+        }
+
+        /**
+         * Parse through comments and description to get todos
+         */
+        protected function _populateTodos()
+        {
+            if ($this->_todos !== []) {
+                $todos = [
+                    'issue' => [],
+                    'comments' => []
+                ];
+                $todos['issue'] = $this->_getDescriptionParser()->getTodos();
+
+                foreach ($this->getComments() as $comment) {
+                    $comment_todos = $comment->getTodos();
+
+                    if (!count($comment_todos)) continue;
+
+                    $todos['comments'][$comment->getID()] = $comment_todos;
+                }
+
+                $this->_todos = $todos;
+            }
+        }
+
+        /**
+         * Get number of todos.
+         *
+         * @param string $method
+         *
+         * @return integer
+         */
+        public function countTodos()
+        {
+            return count($this->getTodos()['issue']) + array_sum(array_map('count', $this->getTodos()['comments']));
+        }
+
+        /**
+         * Get number of done todos.
+         *
+         * @return integer
+         */
+        public function countDoneTodos()
+        {
+            $done_counter = 0;
+            $todos = $this->getTodos();
+            foreach ($todos['issue'] as $todo) {
+                if ($todo['closed']) $done_counter += 1;
+            }
+
+            foreach ($todos['comments'] as $todos) {
+                foreach ($todos as $todo) {
+                    if ($todo['closed']) $done_counter += 1;
+                }
+            }
+
+            return $done_counter;
+        }
+
+        /**
+         * Get todos from issue description and comments.
+         *
+         * @param null $comment_id
+         * @param string $method
+         * @param string $property
+         * @return mixed
+         *
+         * @return array
+         */
+        public function getTodos($comment_id = null)
+        {
+            $this->_populateTodos();
+            $todos = $this->_todos;
+
+            if ($comment_id)
+            {
+                return isset($todos['comments'][$comment_id]) ? $todos['comments'][$comment_id] : [];
+            }
+
+            return $todos;
+        }
+
+        /**
+         * Delete todos item. This is done by removing it from text in sources.
+         *
+         * @param $todo_comment_id
+         * @param $delete_todo
+         *
+         * @return void
+         */
+        public function deleteTodo($todo_comment_id, $delete_todo)
+        {
+            list($delete_todo, $delete_todo_index) = explode('.', $delete_todo);
+            $delete_todo = base64_decode($delete_todo);
+            $delete_todo_utf8 = tbg_encodeUTF8($delete_todo, true);
+
+            if ($todo_comment_id == 0) {
+                // Counter of iterated todos with same text, but different index.
+                $delete_todo_index_nth = 0;
+
+                foreach ($this->getTodos()['issue'] as $todo_index => $todo) {
+                    if ($todo === $delete_todo && $todo_index != $delete_todo_index) {
+                        $delete_todo_index_nth++;
+                        continue;
+                    }
+
+                    if ($todo !== $delete_todo || $todo_index != $delete_todo_index) {
+                        continue;
+                    }
+
+                    $this->setDescription(TextParser::replaceNth(
+                        '[] ' . $delete_todo_utf8,
+                        '',
+                        $this->getDescription(),
+                        $delete_todo_index_nth
+                    ));
+                    $this->saveTodos();
+                }
+            } else {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos) {
+                    if ($comment_id != $todo_comment_id) {
+                        continue;
+                    }
+
+                    $delete_todo_index_nth = 0;
+
+                    foreach ($comment_todos as $todo_index => $todo) {
+                        if ($todo === $delete_todo && $todo_index != $delete_todo_index) {
+                            $delete_todo_index_nth++;
+                            continue;
+                        }
+
+                        if ($todo !== $delete_todo || $todo_index != $delete_todo_index) {
+                            continue;
+                        }
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(TextParser::replaceNth(
+                            '[] ' . $delete_todo_utf8,
+                            '',
+                            $comment->getContent(),
+                            $delete_todo_index_nth
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Mark todos item as either "done" or "not done". This is done by changing mediawiki syntax in text in sources.
+         *
+         * @param $todo_comment_id
+         * @param $mark_todo
+         * @param $as
+         *
+         * @return void
+         */
+        public function markTodo($todo_comment_id, $mark_todo, $as)
+        {
+            list($mark_todo, $mark_todo_index) = explode('.', $mark_todo);
+            $mark_todo = base64_decode($mark_todo);
+            $mark_todo_utf8 = tbg_encodeUTF8($mark_todo, true);
+            list($from, $to) = ($as === 'done') ? ['[] ', '[x] '] : ['[x] ', '[] '];
+
+            if ($todo_comment_id == 0)
+            {
+                // Counter of iterated todos with same text, but different index.
+                $mark_todo_index_nth = 0;
+
+                foreach ($this->getTodos()['issue'] as $todo_index => $todo) {
+                    if ($todo === $mark_todo && $todo_index != $mark_todo_index) {
+                        $mark_todo_index_nth++;
+                        continue;
+                    }
+
+                    if ($todo !== $mark_todo || $todo_index != $mark_todo_index) {
+                        continue;
+                    }
+
+                    $this->setDescription(TextParser::replaceNth(
+                        $from . $mark_todo_utf8,
+                        $to . $mark_todo_utf8,
+                        $this->getDescription(),
+                        $mark_todo_index_nth
+                    ));
+                    $this->saveTodos();
+                }
+            }
+            else
+            {
+                foreach ($this->getTodos()['comments'] as $comment_id => $comment_todos) {
+                    if ($comment_id != $todo_comment_id) {
+                        continue;
+                    }
+                    $mark_todo_index_nth = 0;
+
+                    foreach ($comment_todos as $todo_index => $todo) {
+                        if ($todo['text'] === $mark_todo && $todo_index != $mark_todo_index) {
+                            $mark_todo_index_nth++;
+                            continue;
+                        }
+
+                        if ($todo['text'] !== $mark_todo || $todo_index != $mark_todo_index) {
+                            continue;
+                        }
+
+                        $comment = $this->getComments()[$comment_id];
+                        $comment->setContent(TextParser::replaceNth(
+                            $from . $mark_todo_utf8,
+                            $to . $mark_todo_utf8,
+                            $comment->getContent(),
+                            $mark_todo_index_nth
+                        ));
+                        $comment->save();
+                        $comment->resetTodos();
+                    }
+                }
+            }
+            $this->resetTodos();
+        }
+
+        /**
+         * Reset "cached" todos.
+         *
+         * @return void
+         */
+        protected function resetTodos()
+        {
+            $this->_todos = null;
+            $this->_description_parser = null;
+        }
+
+        /**
+         * Save only issue column "description" that is todos text source. This is done by reverting other columns before save and adding changes back after save.
+         *
+         * @return void
+         */
+        public function saveTodos()
+        {
+            $todos_changed_items = array();
+            $changed_properties = $this->_getChangedProperties();
+
+            foreach (array('_description') as $property)
+            {
+                if (! $this->_isPropertyChanged($property)) continue;
+
+                $todos_changed_items[$property] = $changed_properties[$property];
+                unset($changed_properties[$property]);
+            }
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_revertPropertyChange($property);
+            }
+
+            // Since todos are saved in description don't log entry of that field changing.
+            $this->should_log_entry = false;
+            $this->save();
+            $this->should_log_entry = true;
+
+            foreach ($changed_properties as $property => $property_values)
+            {
+                $this->_addChangedProperty($property, $property_values['current_value']);
+            }
+        }
+
+        /**
+         * Add todos item. This is done by adding it to text in description.
+         *
+         * @param $add_todo
+         *
+         * @return void
+         */
+        public function addTodo($add_todo)
+        {
+            // Replace new lines with single space since todos item has to be on one line.
+            $this->setDescription($this->getDescription() . "\n[] " . tbg_encodeUTF8(trim(preg_replace('/\s+/', ' ', $add_todo)), true));
+            $this->saveTodos();
+            $this->resetTodos();
+        }
+
+        /**
+         * Set sums columns.
+         *
+         * @param array $sums
+         */
+        public function setSums(array $sums)
+        {
+            $this->_sums = $sums;
+        }
+
+        /**
+         * Get sums columns.
+         *
+         * @return array
+         */
+        public function getSums()
+        {
+            return $this->_sums;
+        }
+
+        /**
+         * Get sums spent time columns.
+         *
+         * @return string
+         */
+        public function getSumsSpentTime()
+        {
+            $any_exists = false;
+            $time = array();
+
+            foreach (common\Timeable::getUnits() as $time_unit)
+            {
+                if (! array_key_exists('spent_' . $time_unit, $this->_sums))
+                {
+                    $time[$time_unit] = 0;
+                    continue;
+                }
+
+                $time[$time_unit] = $this->_sums['spent_' . $time_unit];
+
+                if (! $any_exists)
+                    $any_exists = true;
+            }
+
+            if (isset($time['hours']) && $time['hours'] != 0)
+                $time['hours'] = $time['hours'] / 100;
+
+            if (isset($time['minutes']) && $time['minutes'] != 0)
+            {
+                $time['hours'] += floor($time['minutes'] / 60);
+                $time['minutes'] = $time['minutes'] % 60;
+            }
+
+            if (! $any_exists)
+                $time = $this->getSpentTime(true, true);
+            
+            return $this->getFormattedTime($time);
         }
 
     }

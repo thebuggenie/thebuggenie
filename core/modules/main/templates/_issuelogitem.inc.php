@@ -157,10 +157,11 @@
 
                                     break;
                                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                    case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                                         echo fa_image_tag('calendar', ['class' => 'log_issue_customfield']);
 
-                                        $old_value = ($old_value != null) ? date('Y-m-d', (int)$old_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
-                                        $new_value = ($new_value != null) ? date('Y-m-d', (int)$new_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
+                                        $old_value = ($old_value != null) ? date('Y-m-d' . ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int)$old_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
+                                        $new_value = ($new_value != null) ? date('Y-m-d' . ($customdatatype->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int)$new_value) : \thebuggenie\core\framework\Context::getI18n()->__('Not determined');
                                         break;
                                     case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
                                     case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:

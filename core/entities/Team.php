@@ -263,7 +263,7 @@
         /**
          * Returns an array of team dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {

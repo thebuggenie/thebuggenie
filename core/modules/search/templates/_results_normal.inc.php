@@ -57,8 +57,9 @@ foreach ($search_object->getIssues() as $issue):
                     <th class="sc_spent_time nosort sc_datetime"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent'); ?></th>
                     <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::LAST_UPDATED); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::LAST_UPDATED; ?>" class="sc_last_updated <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::LAST_UPDATED)) echo "sort_{$dir}"; ?> numeric sc_datetime"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
                     <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::POSTED); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\Issues::POSTED; ?>" class="sc_posted <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\Issues::POSTED)) echo "sort_{$dir}"; ?> numeric sc_datetime"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Posted at'); ?></th>
+                    <th data-sort-direction="<?php echo $search_object->getSortDirection(\thebuggenie\core\entities\tables\IssueSpentTimes::EDITED_AT); ?>" data-sort-field="<?php echo \thebuggenie\core\entities\tables\IssueSpentTimes::EDITED_AT; ?>" class="sc_time_spent <?php if ($dir = $search_object->getSortDirection(\thebuggenie\core\entities\tables\IssueSpentTimes::EDITED_AT)) echo "sort_{$dir}"; ?> numeric sc_datetime"<?php if (!in_array('time_spent', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent at'); ?></th>
                     <?php foreach ($custom_columns as $column): ?>
-                        <th data-sort-direction="<?php echo $search_object->getSortDirection($column->getKey()); ?>" data-sort-field="<?php echo $column->getKey(); ?>" class="sc_<?php echo $column->getKey(); ?> <?php if ($dir = $search_object->getSortDirection($column->getKey())) echo "sort_{$dir}"; ?> <?php if ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) echo 'numeric sc_datetime'; ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __($column->getName()); ?></th>
+                        <th data-sort-direction="<?php echo $search_object->getSortDirection($column->getKey()); ?>" data-sort-field="<?php echo $column->getKey(); ?>" class="sc_<?php echo $column->getKey(); ?> <?php if ($dir = $search_object->getSortDirection($column->getKey())) echo "sort_{$dir}"; ?> <?php if ($column->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $column->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) echo 'numeric sc_datetime'; ?>"<?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __($column->getName()); ?></th>
                     <?php endforeach; ?>
                     <th class="sc_comments nosort" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo fa_image_tag('comment', array('title' => __('Number of user comments on this issue'))); ?></th>
                     <?php if (!$tbg_user->isGuest() && $actionable): ?>
@@ -154,6 +155,7 @@ foreach ($search_object->getIssues() as $issue):
                     </td>
                     <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
                     <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
+                    <td class="smaller sc_time_spent" title="<?php echo $issue->getSumsSpentTime(); ?>"<?php if (!in_array('time_spent', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo $issue->getSumsSpentTime(); ?></td>
                     <?php foreach ($custom_columns as $column): ?>
                         <td class="smaller sc_<?php echo $column->getKey(); ?>" <?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php
                             $value = $issue->getCustomField($column->getKey());
@@ -183,6 +185,9 @@ foreach ($search_object->getIssues() as $issue):
                                 case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
                                 case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                                     echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
+                                    break;
+                                case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                                    echo tbg_formatTime($value, 25);
                                     break;
                             }
                         ?></td>

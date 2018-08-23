@@ -54,7 +54,7 @@
                 </div>
             <?php endif; ?>
             <?php if ($article->getID()): ?>
-                <?php $attachments = $article->getFiles(); ?>
+                <?php $attachments = array_reverse($article->getFiles()); ?>
                 <div id="article_attachments">
                     <?php /*if (\thebuggenie\core\framework\Settings::isUploadsEnabled() && $article->canEdit()): ?>
                         <?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>

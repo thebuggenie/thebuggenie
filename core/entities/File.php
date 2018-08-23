@@ -136,12 +136,22 @@
 
         public function getOriginalFilename()
         {
+            return $this->getName();
+        }
+
+        public function getName()
+        {
             return $this->_name;
+        }
+
+        public function setName($name)
+        {
+            $this->_name = $name;
         }
 
         public function setOriginalFilename($original_filename)
         {
-            $this->_name = $original_filename;
+            $this->setName($original_filename);
         }
 
         public function getContent()

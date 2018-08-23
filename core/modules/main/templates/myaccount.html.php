@@ -122,18 +122,18 @@
     <div style="margin: 30px 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
         <div style="clear: both;" class="tab_menu inset">
             <ul id="account_tabs">
-                <li <?php if ($selected_tab == 'profile'): ?> class="selected"<?php endif; ?> id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo fa_image_tag('pencil-square-o').__('Profile'); ?></a></li>
-                <li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo fa_image_tag('cog').__('Settings'); ?></a></li>
-                <li id="tab_notificationsettings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_notificationsettings', 'account_tabs');" href="javascript:void(0);"><?php echo fa_image_tag('bell').__('Notification settings'); ?></a></li>
+                <li <?php if ($selected_tab == 'profile'): ?> class="selected"<?php endif; ?> id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs', true);" href="javascript:void(0);"><?php echo fa_image_tag('pencil-square-o').__('Profile'); ?></a></li>
+                <li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs', true);" href="javascript:void(0);"><?php echo fa_image_tag('cog').__('Settings'); ?></a></li>
+                <li id="tab_notificationsettings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_notificationsettings', 'account_tabs', true);" href="javascript:void(0);"><?php echo fa_image_tag('bell').__('Notification settings'); ?></a></li>
                 <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
                 <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
                     <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo $module->getAccountSettingsLogo().__($module->getAccountSettingsName()); ?></a></li>
+                        <li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?php echo $module->getAccountSettingsLogo().__($module->getAccountSettingsName()); ?></a></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs');" href="javascript:void(0);"><?php echo fa_image_tag('lock').__('Security'); ?></a></li>
+                <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs', true);" href="javascript:void(0);"><?php echo fa_image_tag('lock').__('Security'); ?></a></li>
                 <?php if (count($tbg_user->getScopes()) > 1): ?>
-                    <li id="tab_scopes"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_scopes', 'account_tabs');" href="javascript:void(0);"><?php echo fa_image_tag('clone').__('Scope memberships'); ?></a></li>
+                    <li id="tab_scopes"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_scopes', 'account_tabs', true);" href="javascript:void(0);"><?php echo fa_image_tag('clone').__('Scope memberships'); ?></a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -588,6 +588,8 @@
     require(['domReady', 'thebuggenie/tbg', 'jquery', 'jquery.nanoscroller'], function (domReady, tbgjs, jquery, nanoscroller) {
         domReady(function () {
             TBG = tbgjs;
+
+            TBG.Main.Helpers.tabSwitchFromHash('account_tabs');
 
             $$('.filter').each(function (filter) {
                 TBG.Search.initializeFilterField(filter);

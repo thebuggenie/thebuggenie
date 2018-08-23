@@ -956,7 +956,7 @@
         /**
          * Return all this user's clients
          *
-         * @return array|Client
+         * @return Client[]
          */
         public function getClients()
         {
@@ -987,7 +987,7 @@
         /**
          * Returns an array of issue ids which are directly assigned to the current user
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserAssignedIssues()
         {
@@ -1011,7 +1011,7 @@
          *
          * @param integer $team_id The team id
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserTeamAssignedIssues($team_id)
         {
@@ -1147,7 +1147,7 @@
         /**
          * Get all this users friends
          *
-         * @return array|User An array of users
+         * @return User An array of users[]
          */
         public function getFriends()
         {
@@ -1329,7 +1329,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getTeams()
         {
@@ -1369,7 +1369,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getOndemandTeams()
         {
@@ -2397,7 +2397,7 @@
         /**
          * Get all the projects a user is associated with
          *
-         * @return array|Project
+         * @return Project[]
          */
         public function getAssociatedProjects()
         {
@@ -2475,7 +2475,7 @@
         /**
          * Return the users associated scopes
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getScopes()
         {
@@ -2514,7 +2514,7 @@
         /**
          * Get users unconfirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getUnconfirmedScopes()
         {
@@ -2525,7 +2525,7 @@
         /**
          * Get users confirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getConfirmedScopes()
         {
@@ -2628,7 +2628,7 @@
         /**
          * Returns an array of notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getNotifications($first_notification_id = null, $last_notification_id = null)
         {
@@ -2639,7 +2639,7 @@
         /**
          * Returns an array of unread notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getUnreadNotifications()
         {
@@ -2689,7 +2689,7 @@
             $grouped_notifications_minutes = $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue();
             if ($type == 'issue')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED, Notification::TYPE_ISSUE_MENTIONED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ISSUE);
                 if (count($comment_ids))
                 {
@@ -2698,7 +2698,7 @@
             }
             if ($type == 'article')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED, Notification::TYPE_ARTICLE_MENTIONED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ARTICLE);
                 if (count($comment_ids))
                 {
@@ -2740,7 +2740,7 @@
         /**
          * Returns an array of user dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
@@ -2835,7 +2835,7 @@
          * Authenticates a request via application password.
          * The given token is created by requesting authentication via an API endpoint,
          * which also marks the password as "used" and thus usable here.
-         * 
+         *
          * @param string $token
          * @return boolean
          */
@@ -2843,7 +2843,7 @@
         {
             $applicationPasswords = $this->getApplicationPasswords();
             framework\Logging::log('Cycling application passwords for given user. Count: '.count($applicationPasswords), 'auth', framework\Logging::LEVEL_INFO);
-            
+
             foreach ($applicationPasswords as $password)
             {
                 if (password_verify($token, $password->getHashPassword()))

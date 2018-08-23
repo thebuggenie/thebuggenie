@@ -210,7 +210,7 @@
         /**
          * Returns an array with issues
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getIssues()
         {

@@ -188,6 +188,9 @@
                      'jquery-ui': {
                          deps: ['jquery.animate-enhanced<?= $minified ?>']
                      },
+                     'dragdrop': {
+                         deps: ['effects']
+                     },
                     deps: [<?= join(', ', array_map(function ($element) { return "\"{$element}\""; }, $localjs)); ?>]
                 }
             };

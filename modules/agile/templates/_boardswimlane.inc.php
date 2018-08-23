@@ -16,7 +16,7 @@ if (isset($issues) && !empty($issues) && !current($issues)->hasAccess())
                     <?php echo image_tag('icon-mono-collapse.png', array('class' => 'collapser', 'onclick' => "$(this).up('.tbody').toggleClassName('collapsed');")); ?>
                     <?php if ($swimlane->getBoard()->getSwimlaneType() == AgileBoard::SWIMLANES_ISSUES): ?>
                         <span class="issue_header <?php if ($swimlane->getIdentifierIssue()->isClosed()) echo 'closed'; ?>">
-                            <?php echo link_tag(make_url('viewissue', array('issue_no' => $swimlane->getIdentifierIssue()->getFormattedIssueNo(), 'project_key' => $swimlane->getIdentifierIssue()->getProject()->getKey())), $swimlane->getIdentifierIssue()->getFormattedIssueNo(true, false), array('title' => $swimlane->getIdentifierIssue()->getFormattedTitle(), 'target' => '_new', 'class' => 'issue_header')); ?>
+                            <?php echo link_tag(make_url('viewissue', array('issue_no' => $swimlane->getIdentifierIssue()->getFormattedIssueNo(), 'project_key' => $swimlane->getIdentifierIssue()->getProject()->getKey())), $swimlane->getIdentifierIssue()->getFormattedIssueNo(true, false), array('title' => $swimlane->getIdentifierIssue()->getFormattedTitle(), 'target' => '_blank', 'class' => 'issue_header')); ?>
                             <?php echo $swimlane->getIdentifierIssue()->getTitle(); ?>
                         </span>
                     <?php else: ?>

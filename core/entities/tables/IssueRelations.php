@@ -19,6 +19,7 @@
     /**
      * Issue relations table
      *
+     * @static @method IssueRelations getTable() Retrieves an instance of this table
      * @package thebuggenie
      * @subpackage tables
      *
@@ -81,7 +82,7 @@
                         if (in_array($parent_id, $issue_ids))
                         {
                             $child_issue = $issues_table->selectById($child_id);
-                            if ($child_issue instanceof Issue)
+                            if ($child_issue instanceof Issue && $child_issue->hasAccess())
                             {
                                 $this->_relations_cache[$parent_id]['children'][$child_id] = $child_issue;
                             }
@@ -89,7 +90,7 @@
                         if (in_array($child_id, $issue_ids))
                         {
                             $parent_issue = $issues_table->selectById($parent_id);
-                            if ($parent_issue instanceof Issue)
+                            if ($parent_issue instanceof Issue && $parent_issue->hasAccess())
                             {
                                 $this->_relations_cache[$child_id]['parents'][$parent_id] = $parent_issue;
                             }

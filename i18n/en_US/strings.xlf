@@ -53,7 +53,7 @@
                 <source>Notify when issues are created in selected categories</source>
             </trans-unit>
             <trans-unit id="157cc2b42a7565f57ebd38f173ddbf50">
-                <source>Show notifications about issue updates that are grouped as one notification based on interval in minutes:</source>
+                <source>Group similar notifications together if they are related</source>
             </trans-unit>
             <trans-unit id="15df2d7099a07b59fc6adb166c74e4b6">
                 <source>Don't send email notification if I'm currently logged in and active</source>

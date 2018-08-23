@@ -45,8 +45,9 @@
         #debug-frames-container .badge.classname { background-color: rgba(235, 235, 205, 0.5); min-width: 200px; }
         #debug-frames-container .badge.classcount { background-color: rgba(205, 205, 235, 0.5); min-width: 30px; }
         #debug-frames-container .badge.modulename { background-color: rgba(225, 225, 225, 0.5); margin: 0; }
-        #debug-bar { cursor: pointer; text-align: left; border-top: 1px solid rgba(100, 100, 100, 0.2); width: 100%; padding: 0; background-color: #FAFAFA; z-index: 10000; box-shadow: 0 -3px 2px rgba(100, 100, 100, 0.2); font-size: 1.1em; list-style: none; margin: 0; height: 41px; }
+        #debug-bar { cursor: pointer; text-align: left; border-top: 1px solid rgba(100, 100, 100, 0.2); width: 100%; padding: 0; background-color: #FAFAFA; z-index: 10000; box-shadow: 0 -3px 2px rgba(100, 100, 100, 0.2); font-size: 1.1em; list-style: none; margin: 0; height: 41px; transition: height 0.3s ease-in-out, width 0.3s ease-in-out, top 0.3s ease-in-out; }
         #debug-bar.enabled { position: fixed; top: 0; left: 0; border: 0; }
+        #debug-bar.minimized { width: 50px; }
         #debug-bar > li { display: block; float: left; padding: 11px 20px; border-right: 1px solid rgba(100, 100, 100, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.8); vertical-align: middle; }
         #debug-bar > li:first-child { border-left: none; }
         #debug-bar.enabled > li.selected { background-color: #FFF; box-shadow: 0 -4px 4px rgba(100, 100, 100, 0.3); }
@@ -54,7 +55,10 @@
         #debug-bar > li > span { display: inline-block; vertical-align: middle; }
         #debug-bar.enabled + #debug-frames-container { display: block; }
         #debug-bar .minimizer { display: none; }
+        #debug-bar.minimized > li:not(.maximizer) { display: none; }
+        #debug-bar.enabled .maximizer { display: none; }
         #debug-bar.enabled .minimizer { display: inline-block; cursor: pointer; float:right; }
+        #debug-bar .maximizer { display: inline-block; cursor: pointer; float:right; }
         #debug-frames-container { display: none; width: 100%; height: calc(100% - 40px); box-sizing: border-box; padding: 0; margin: 0; position: fixed; left: 0; top: 40px; background: #FFF; }
         #debug-frames-container > li { display: none }
         #debug-frames-container > li.selected { display: block; text-align: left; position: absolute; height: 100%; width: 100%; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 5px; background: #FFF; margin: 0; overflow: auto; }
@@ -106,7 +110,10 @@
             <span>Log</span>
         </li>
         <li onclick="setTimeout(function() { $('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="minimizer">
-            <?php echo image_tag('tabmenu_dropdown.png'); ?>
+            <?php echo fa_image_tag('arrows'); ?>
+        </li>
+        <li onclick="event.preventDefault(); event.stopPropagation(); setTimeout(function() { $('debug-bar').toggleClassName('minimized');$('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="maximizer">
+            <?php echo fa_image_tag('arrows-h'); ?>
         </li>
     </ul>
     <ul id="debug-frames-container">

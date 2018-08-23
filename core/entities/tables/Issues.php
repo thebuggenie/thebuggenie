@@ -715,7 +715,7 @@
             }
         }
 
-        public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'), $include_deleted = false)
+        public function findIssues($filters = [], $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = [self::LAST_UPDATED => 'asc'], $include_deleted = false)
         {
             $crit = $this->getCriteria();
             if (!$include_deleted) $crit->addWhere(self::DELETED, false);
@@ -871,6 +871,13 @@
                             $crit3->addJoin(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), Criteria::DB_LEFT_JOIN, IssueAffectsComponent::getTable());
                             $crit3->addOrderBy(Components::NAME, $grouporder);
                             break;
+                        case 'time_spent':
+                            $crit->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit->addSelectionColumn(IssueSpentTimes::EDITED_AT);
+                            $crit->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit3->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            break;
                     }
                 }
 
@@ -881,37 +888,57 @@
                 }
 
                 $res = $this->doSelect($crit, 'none');
-                $ids = array();
+                $ids = [];
+                $sums = [];
 
                 if ($res)
                 {
                     while ($row = $res->getNextRow())
                     {
                         $ids[] = $row->get(self::ID);
+                        $sum = [];
+
+                        foreach (\thebuggenie\core\entities\common\Timeable::getUnits() as $time_unit)
+                        {
+                            if (! isset($row['spent_'. $time_unit .'_sum']))
+                                continue;
+
+                            $sum['spent_' . $time_unit] = $row->get('spent_'. $time_unit .'_sum');
+                        }
+
+                        $sums[$row->get(self::ID)] = $sum;
                     }
                     $ids = array_reverse($ids);
 
                     $crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
                     foreach ($sortfields as $field => $sortorder)
                     {
+                        if ($field == IssueSpentTimes::EDITED_AT)
+                        {
+                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $crit3->addGroupBy(self::ID);
+                            $crit3->addSelectionColumn($field);
+                        }
+
                         $crit3->addOrderBy($field, $sortorder);
                     }
 
-                    $res = $this->doSelect($crit3);
-                    $rows = $res->getAllRows();
+                    $res3 = $this->doSelect($crit3);
+                    $rows = $res3->getAllRows();
                 }
                 else
                 {
-                    $rows = array();
+                    $rows = [];
                 }
 
                 unset($res);
+                unset($res3);
 
-                return array($rows, $count, $ids);
+                return [$rows, $count, $ids, $sums];
             }
             else
             {
-                return array(null, 0, array());
+                return [null, 0, [], []];
             }
 
         }
@@ -940,7 +967,7 @@
          * @param int $user_id user ID
          * @param int $limit [optional] number of issues to retrieve
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getIssuesPostedByUser($user_id, $limit = 15)
         {

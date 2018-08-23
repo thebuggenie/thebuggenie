@@ -106,7 +106,7 @@
         /**
          * Returns an array with all components
          *
-         * @return array|\thebuggenie\core\entities\Component
+         * @return \thebuggenie\core\entities\Component[]
          */
         public function getComponents()
         {
@@ -213,7 +213,7 @@
         /**
          * Returns an array with all builds
          *
-         * @return array|\thebuggenie\core\entities\Build
+         * @return \thebuggenie\core\entities\Build[]
          */
         public function getBuilds()
         {

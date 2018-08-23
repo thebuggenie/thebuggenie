@@ -112,6 +112,11 @@
             }
         }
 
+        public function getName()
+        {
+            return '';
+        }
+
         /**
          * Returns the object which the notification is for
          *

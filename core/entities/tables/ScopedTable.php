@@ -2,8 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
-    use thebuggenie\core\framework;
     use b2db\Table;
+    use thebuggenie\core\framework;
 
     /**
      * B2DB class that all  class extends, implementing scope access
