@@ -845,7 +845,7 @@
          */
         public function getName()
         {
-            return $this->_name;
+            return ($this->_name != '') ? $this->_name : $this->_manual_name;
         }
 
         /**
@@ -865,7 +865,7 @@
          */
         public function getManualName()
         {
-            return $this->_manual_name;
+            return ($this->_manual_name != '') ? $this->_manual_name : $this->_name;
         }
 
         /**

@@ -8,7 +8,7 @@
         b2db\Criteria;
 
     /**
-     * @method \thebuggenie\modules\publish\entities\tables\Articles getTable() Retrieves an instance of this table
+     * @static @method Articles getTable() Retrieves an instance of this table
      * @method \thebuggenie\modules\publish\entities\Article selectById(integer $id) Retrieves an article
      *
      * @Table(name="articles")
@@ -425,6 +425,14 @@
         public function getAllTemplates(\thebuggenie\core\entities\Project $project = null)
         {
             return $this->_getAllInNamespace('Template', $project);
+        }
+
+        public function fixArticleTypes()
+        {
+            $criteria = $this->getCriteria();
+            $criteria->addWhere('articles.article_type', 0);
+            $criteria->addUpdate('articles.article_type', Article::TYPE_WIKI);
+            $this->doUpdate($criteria);
         }
 
     }

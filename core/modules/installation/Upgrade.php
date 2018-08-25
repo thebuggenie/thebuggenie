@@ -7,6 +7,7 @@ use thebuggenie\core\entities\tables\UserSessions;
 use thebuggenie\core\framework;
 use thebuggenie\core\framework\cli\Command;
 use thebuggenie\core\modules\installation\upgrade_4112\UsersTable;
+use thebuggenie\modules\publish\entities\tables\Articles;
 
 class Upgrade
 {
@@ -215,6 +216,12 @@ class Upgrade
             $milestone->updateStatus();
             $milestone->save();
         }
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Updating/fixing article types.\n");
+        }
+
+        Articles::getTable()->fixArticleTypes();
 
         $admin_user = Users::getTable()->getByUsername($this->upgrade_options['4_1_13']['admin_username']);
         $admin_user->setPassword($this->upgrade_options['4_1_13']['admin_password']);
