@@ -303,7 +303,7 @@ header {
     padding: 10px 0 5px 0;
     border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
     color: #888;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.2em;
     margin: 0 7px;
     text-transform: uppercase;
@@ -2734,27 +2734,32 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     font-style: italic;
 }
 
-.syntax_picker_container, .textarea_container {
+.textarea_container {
     position: relative;
+}
+
+.syntax_picker_container {
+    top: 22px;
+    right: 0;
+    position: absolute;
 }
 
 .button.syntax_picker, .button.syntax_picker:hover {
     position: absolute;
     top: 0;
     right: 0;
-    margin-top: -2px;
-    margin-right: 0;
     padding: 3px 7px;
     font-size: 1em;
-}
-
-#report_form .button.syntax_picker, #report_form .button.syntax_picker:hover {
-    margin-top: -24px;
-    margin-right: 0;
+    white-space: nowrap;
+    text-align: right;
+    background: #FFF;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 0 5px;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .syntax_picker + ul {
-    margin-top: 22px;
+    margin-top: 26px;
     min-width: 200px;
 }
 
@@ -3405,6 +3410,7 @@ td.selected_red span {
 /* some table styling */
 .padded_table td {
     padding: 2px;
+    vertical-align: top;
 }
 
 .padded_table.compact {
@@ -9484,7 +9490,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
-    width: 360px;
+    width: 460px;
 }
 
 .fancydropdown + ul li {
@@ -9527,7 +9533,7 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .fancydropdown + ul li h1, .fancydropdown + ul li h1:first-child {
     font-weight: 300;
     font-size: 1.3em;
-    margin: 0 0 5px;
+    margin: 0;
     padding: 0;
     text-transform: uppercase;
     color: #999;
@@ -9536,6 +9542,8 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 .fancydropdown + ul li p {
     font-weight: 300;
     font-size: 1em;
+    line-height: 1.4em;
+    padding-bottom: 10px;
 }
 
 ul.milestone_issues_container, #project_dashboard ul, #associated_projects {
@@ -14594,37 +14602,15 @@ ul[id^='project_'][id$='_more_actions_dropdown'] {
     margin-left: 4px;
 }
 
-#project_config_popup_main_container .textarea_container {
-    margin-top: 25px;
-}
-
-#project_config_popup_main_container .syntax_picker_container {
-    top: -22px;
-}
-
 #project_config_popup_main_container .config_explanation {
     padding-left: 0;
     margin-left: -7px;
-}
-
-#project_description_input_syntax_picker {
-    margin-top: 44px;
-    min-width: 159px;
 }
 
 #project_info_indicator {
     position: absolute;
     margin-left: -23px;
     padding-top: 5px;
-}
-
-#project_description_input_toggle_syntax_button {
-    width: 145px;
-    height: 17px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    top: 22px;
 }
 
 #markItUpProject_description_input textarea {
@@ -17273,16 +17259,6 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr {
 }
 
 /* Report an issue */
-
-#reportissue_container #description_toggle_syntax_button,
-#reportissue_container #reproduction_steps_toggle_syntax_button {
-    margin-top: -2px;
-}
-
-#reportissue_container #description_syntax_picker,
-#reportissue_container #reproduction_steps_syntax_picker {
-    margin-top: 23px;
-}
 
 #reportissue_container .reportissue_additional_information_container,
 #reportissue_content .reportissue_additional_information_container {

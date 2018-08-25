@@ -35,7 +35,7 @@
                         <tr>
                             <td><label for="article-type-selector" id="article-type-label"><?php echo __('Article type'); ?></label></td>
                             <td style="position: relative;">
-                                <span id="article-type-name" class="fancydropdown <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article) echo ' changeable'; ?>"><?php echo ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_WIKI) ? __('Classic wiki page') : __('Page in a handbook'); ?></span>
+                                <span id="article-type-name" class="fancydropdown <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article) echo ' changeable'; ?>"><?php echo ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL) ? __('Page in a handbook') : __('Classic wiki page'); ?></span>
                                 <?php if (!$article->getParentArticle() instanceof \thebuggenie\modules\publish\entities\Article): ?>
                                     <ul class="article-type-selector" id="article-type-selector">
                                         <li data-article-type="<?php echo \thebuggenie\modules\publish\entities\Article::TYPE_WIKI; ?>" data-class-name="at-wiki" class="article-type <?php if ($article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_WIKI) echo 'selected'; ?>">
