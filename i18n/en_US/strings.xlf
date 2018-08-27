@@ -2803,19 +2803,19 @@
                 <source>URL</source>
             </trans-unit>
             <trans-unit id="89a36c9d6a7508f642992cbd8746d9b7">
-                <source>Enter the name of the article to link to here, along with an (optional) description, and press "%add_link" to add it to the menu.</source>
+                <source>Enter the name of the article to link to here, along with an (optional) description, and press "%add_item" to add it to the menu.</source>
             </trans-unit>
             <trans-unit id="32210b37e4d23029d6ee2f5149e9c3e1">
                 <source>Add link</source>
             </trans-unit>
             <trans-unit id="7d0c0cd95a3245aba95a57bedfb6406e">
-                <source>Enter the link URL here, along with an (optional) description, and press "%add_link" to add it to the menu.</source>
+                <source>Enter the link URL here, along with an (optional) description, and press "%add_item" to add it to the menu.</source>
             </trans-unit>
             <trans-unit id="fb45735a0ac6c52c953f4be031ebed46">
-                <source>To add free text, just enter text in the description - without any url - and press the "%add_link" button (Text will be parsed according to the %wiki_formatting).</source>
+                <source>To add free text, just enter text in the description - without any url - and press the "%add_item" button (Text will be parsed according to the %wiki_formatting).</source>
             </trans-unit>
             <trans-unit id="643daeb01ab2b7330646f80e43f87a34">
-                <source>To add a spacer, just press "%add_link", without any url or description.</source>
+                <source>To add a spacer, just press "%add_item", without any url or description.</source>
             </trans-unit>
             <trans-unit id="296580eedc2c4f68d401fc1ec7e8e161">
                 <source>%cancel or %attach_link</source>

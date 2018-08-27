@@ -8103,24 +8103,24 @@
                 <target>Nome articolo</target>
             </trans-unit>
             <trans-unit id="89a36c9d6a7508f642992cbd8746d9b7">
-                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Immetti qui il nome dell'articolo a cui inserire un collegamento, insieme a una descrizione (facoltativa), e clicca &quot;%add_link&quot; per aggiungerlo al menù.</target>
+                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Immetti qui il nome dell'articolo a cui inserire un collegamento, insieme a una descrizione (facoltativa), e clicca &quot;%add_item&quot; per aggiungerlo al menù.</target>
             </trans-unit>
             <trans-unit id="32210b37e4d23029d6ee2f5149e9c3e1">
                 <source>Add link</source>
                 <target>Aggiungi collegamento</target>
             </trans-unit>
             <trans-unit id="7d0c0cd95a3245aba95a57bedfb6406e">
-                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Immetti qui l'URL del collegamento, insieme a una descrizione (facoltativa), e clicca &quot;%add_link&quot; per aggiungerlo al menù.</target>
+                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Immetti qui l'URL del collegamento, insieme a una descrizione (facoltativa), e clicca &quot;%add_item&quot; per aggiungerlo al menù.</target>
             </trans-unit>
             <trans-unit id="fb45735a0ac6c52c953f4be031ebed46">
-                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_link&quot; button (Text will be parsed according to the %wiki_formatting).</source>
-                <target>Per aggiungere testo libero, immetti semplicemente del testo nella descrizione - senza alcun URL - e clicca il pulsante &quot;%add_link&quot; (il testo sarà analizzato in base alla %wiki_formatting).</target>
+                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_item&quot; button (Text will be parsed according to the %wiki_formatting).</source>
+                <target>Per aggiungere testo libero, immetti semplicemente del testo nella descrizione - senza alcun URL - e clicca il pulsante &quot;%add_item&quot; (il testo sarà analizzato in base alla %wiki_formatting).</target>
             </trans-unit>
             <trans-unit id="643daeb01ab2b7330646f80e43f87a34">
-                <source>To add a spacer, just press &quot;%add_link&quot;, without any url or description.</source>
-                <target>Per aggiungere un separatore, clicca &quot;%add_link&quot; senza immettere alcun URL o descrizione.</target>
+                <source>To add a spacer, just press &quot;%add_item&quot;, without any url or description.</source>
+                <target>Per aggiungere un separatore, clicca &quot;%add_item&quot; senza immettere alcun URL o descrizione.</target>
             </trans-unit>
             <trans-unit id="296580eedc2c4f68d401fc1ec7e8e161">
                 <source>%cancel or %attach_link</source>
