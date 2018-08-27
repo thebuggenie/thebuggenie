@@ -2557,7 +2557,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border-radius: 100%;
     display: inline-block;
     height: 32px;
-    line-height: 38px;
+    line-height: 32px;
     margin: 0 8px 0 0;
     padding: 3px;
     text-align: center;
@@ -2584,6 +2584,12 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     vertical-align: middle;
     margin: 0 10px;
     color: #777;
+    text-transform: lowercase;
+    background-color: rgba(150, 150, 150, 0.1);
+    font-size: 0.9em;
+    padding: 4px 6px;
+    line-height: 1em;
+    border-radius: 4px;
 }
 
 .project_strip .search_results {
@@ -6867,7 +6873,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     border-bottom: 1px solid #CCC;
     padding: 3px;
     margin-top: 5px;
-    font-weight: 300;
+    font-weight: 400;
     color: #888;
     font-size: 1.1em;
     text-transform: uppercase;
