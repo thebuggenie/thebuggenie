@@ -1485,10 +1485,6 @@ footer img {
     color: #555;
 }
 
-.project_overview .tab_menu ul {
-    width: 100%;
-}
-
 .project_overview .header .dropper_container {
     float: right;
     margin-right: 5px;
@@ -1500,6 +1496,10 @@ footer img {
     left: auto;
     font-size: 0.9em;
     text-transform: none;
+}
+
+.project_overview .tab_menu.inset {
+    margin-bottom: 0;
 }
 
 .commenttitle img.avatar {
@@ -1952,6 +1952,9 @@ div.autocomplete ul li > img:first-child {
     padding: 0;
     margin: 0;
     list-style: none;
+}
+.tab_menu:not(.main_menu) ul {
+    width: 100%;
 }
 #user_menu > ul {
     padding: 0;
@@ -4487,7 +4490,7 @@ input[type=submit].workflow_transition_submit_button, input[type=submit].workflo
 
 /* project list, client/team dashboard and overview */
 ul.project_list {
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
     text-align: left;
 }
 
@@ -4501,7 +4504,7 @@ ul.project_list > li {
     margin: 0;
     font-size: 1.0em;
     font-weight: 400;
-    padding: 10px 0;
+    padding: 10px 0 0 0;
     clear: both;
 }
 
@@ -6539,7 +6542,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .more_actions_dropdown .disabled .fa {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
 }
-.more_actions_dropdown .fa.mark_blocking, .more_actions_dropdown .fa.delete {
+.more_actions_dropdown .fa.mark_blocking, .more_actions_dropdown .fa.delete, .tab_menu_dropdown .fa.delete {
     color: rgb(225, 50, 50);
 }
 .more_actions_dropdown .fa.affected_items {
@@ -7350,15 +7353,15 @@ ul.attached_items {
     padding: 0;
 }
 
-.popup_box li.separator {
-    margin: 5px 0;
+.popup_box li.separator, .tab_menu_dropdown li.separator {
+    margin: 5px;
     padding: 0;
     height: 1px;
     min-height: 1px;
     border-top: 1px dotted rgba(100, 100, 100, 0.2);
 }
 
-.popup_box li.separator:hover {
+.popup_box li.separator:hover, .tab_menu_dropdown li.separator:hover {
     background-color: #FFF;
 }
 

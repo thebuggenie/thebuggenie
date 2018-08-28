@@ -177,7 +177,8 @@
 #article_attachments > h4, #article_comments > h4 { font-size: 17px; border-bottom: 1px dotted #CCC; }
 .article > .header .title_left_images:first-child img { margin-left: 0; }
 .article > .header { border: none; margin-bottom: 0; font-size: 1.8em; }
-.article .header .button-group { float: right; font-size:13px; vertical-align: middle; margin-top: 3px; }
+.article .header .button-group { float: right; font-size: 0.55em; vertical-align: middle; margin-top: 3px; }
+.article .header.edit .button-group { font-size: 0.7em; }
 .article .header .button-group .button { padding: 3px 7px; }
 .article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: auto; margin-right: 5px; vertical-align: middle; }
 
@@ -320,6 +321,9 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     -ms-transition: left 0.3s ease, top 0.3s ease, bottom 0.3s ease, right 0.3s ease;
     -o-transition: left 0.3s ease, top 0.3s ease, bottom 0.3s ease, right 0.3s ease;
     transition: left 0.3s ease, top 0.3s ease, bottom 0.3s ease, right 0.3s ease;
+}
+#article-editor-main-container .syntax_picker_container {
+    top: 23px;
 }
 #main_container.distraction-free > header,
 #main_container.distraction-free > footer,
