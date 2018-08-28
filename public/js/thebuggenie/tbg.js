@@ -2222,6 +2222,34 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Project.initializeFilterSearch = function () {
+            var si = filter.down('input[type=search]');
+            if (si != undefined)
+            {
+                si.dataset.previousValue = '';
+                if (si.dataset.callbackUrl !== undefined) {
+                    var fk = filter.dataset.filterKey;
+                    si.on('keyup', function (event, element) {
+                        if (TBG.ift_observers[fk])
+                            clearTimeout(TBG.ift_observers[fk]);
+                        if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
+                            TBG.ift_observers[fk] = setTimeout(function () {
+                                TBG.Search.getFilterValues(si);
+                                si.dataset.lastValue = si.getValue();
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    si.on('keyup', TBG.Search.filterFilterOptions);
+                }
+                si.on('click', function (event, element) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                });
+                filter.addClassName('searchable');
+            }
+        };
+
         TBG.Project.add = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'add_project_form',
@@ -2233,7 +2261,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     callback: TBG.Project.updateLinks
                 }
             });
-        }
+        };
 
         TBG.Project.remove = function (url, pid) {
             TBG.Main.Helpers.ajax(url, {

@@ -19,47 +19,63 @@
             <?php \thebuggenie\core\framework\Event::createNew('core', 'index_right_top')->trigger(); ?>
             <?php if ($show_project_list): ?>
                 <div class="project_overview">
-                    <div class="header">
-                        <span><?php echo __('Projects'); ?></span>
-                        <?php if ($tbg_user->isAuthenticated()): ?>
-                            <div class="button-group">
-                                <?php echo javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
-                            </div>
-                            <div class="dropper_container">
-                                <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?php echo fa_image_tag('cog'); ?></a>
-                                <ul class="more_actions_dropdown popup_box">
-                                    <?php if ($show_project_config_link): ?>
-                                        <li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
-                                    <?php endif; ?>
-                                    <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a></li>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <?php if ($project_count > 0): ?>
-                        <ul class="project_list simple_list">
-                        <?php foreach ($projects as $project): ?>
-                            <li><?php include_component('project/overview', array('project' => $project)); ?></li>
-                        <?php endforeach; ?>
+                    <div class="tab_menu inset">
+                        <ul id="frontpage_projects_list_tabs">
+                            <li id="tab_starred"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_starred', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('star-half-o') . __('Starred projects'); ?></a></li>
+                            <li id="tab_active" class="selected"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_active', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('diamond') . __('Active projects'); ?></a></li>
+                            <li id="tab_archived"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_archived', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('archive') . __('Archived projects'); ?></a></li>
+                            <li class="right">
+                                <?php /* if ($tbg_user->isAuthenticated()): ?>
+                                    <div class="button-group">
+                                        <?= javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
+                                    </div>
+                                    <div class="dropper_container">
+                                        <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?= fa_image_tag('cog'); ?></a>
+                                        <ul class="more_actions_dropdown popup_box">
+                                            <?php if ($show_project_config_link): ?>
+                                                <li><?= link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
+                                            <?php endif; ?>
+                                            <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?= __('Show archived projects'); ?></a></li>
+                                        </ul>
+                                    </div>
+                                <?php endif; */ ?>
+                            </li>
                         </ul>
-                        <?php if ($pagination->getTotalPages() > 1): ?>
-                            <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <div class="onboarding large">
-                            <?php echo image_tag('onboard_noprojects.png'); ?>
-                            <div class="helper-text">
-                                <?php if ($show_project_config_link): ?>
-                                    <?php echo __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
-                                <?php else: ?>
-                                    <?php echo __("You don't have access to any projects yet."); ?>
+                    </div>
+                    <div id="frontpage_projects_list_tabs_panes">
+                        <div id="tab_active_pane">
+                            <?php if ($project_count > 0): ?>
+                                <ul class="project_list simple_list">
+                                    <?php foreach ($projects as $project): ?>
+                                        <li><?php include_component('project/overview', array('project' => $project)); ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <?php if ($pagination->getTotalPages() > 1): ?>
+                                    <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
                                 <?php endif; ?>
-                            </div>
+                            <?php else: ?>
+                                <div class="onboarding large">
+                                    <?= image_tag('onboard_noprojects.png'); ?>
+                                    <div class="helper-text">
+                                        <?php if ($show_project_config_link): ?>
+                                            <?= __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
+                                        <?php else: ?>
+                                            <?= __("You don't have access to any projects yet."); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
             <?php endif; ?>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'index_right_bottom')->trigger(); ?>
         </td>
     </tr>
 </table>
+<script type="text/javascript">
+    require(['domReady', 'thebuggenie/tbg', 'prototype'], function (domReady, TBG, prototype) {
+        domReady(function () {
+        });
+    });
+</script>
