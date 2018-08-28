@@ -50,7 +50,7 @@
         /**
          * Project list cache
          *
-         * @var array
+         * @var Project[]
          */
         protected static $_projects = null;
 
@@ -531,6 +531,11 @@
             if (self::$_projects === null)
             {
                 self::$_projects = self::getB2DBTable()->getAll();
+                foreach (self::$_projects as $key => $project) {
+                    if (!$project->hasAccess()) {
+                        unset(self::$_projects[$key]);
+                    }
+                }
             }
         }
 

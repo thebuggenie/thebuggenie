@@ -3,9 +3,21 @@
     $tbg_response->setTitle(__('Frontpage'));
     $tbg_response->addBreadcrumb(__('Frontpage'), make_url('home'));
 
+/**
+ * @var \thebuggenie\core\entities\User $tbg_user
+ * @var \thebuggenie\core\helpers\Pagination $active_pagination
+ * @var \thebuggenie\core\helpers\Pagination $archived_pagination
+ * @var \thebuggenie\core\entities\Project[] $active_projects
+ * @var \thebuggenie\core\entities\Project[] $archived_projects
+ * @var int $active_project_count
+ * @var int $archived_project_count
+ * @var bool $show_project_config_link
+ * @var bool $show_project_list
+ */
+
 ?>
 <?php if ($show_project_config_link && $show_project_list): ?>
-    <?php if ($project_count == 1): ?>
+    <?php if ($active_project_count == 1): ?>
         <?php include_component('main/hideableInfoBoxModal', array('key' => 'index_single_project_mode', 'title' => __('Only using The Bug Genie to track issues for one project?'), 'template' => 'main/intro_index_single_tracker')); ?>
     <?php endif; ?>
 <?php endif; ?>
@@ -21,37 +33,50 @@
                 <div class="project_overview">
                     <div class="tab_menu inset">
                         <ul id="frontpage_projects_list_tabs">
-                            <li id="tab_starred"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_starred', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('star-half-o') . __('Starred projects'); ?></a></li>
-                            <li id="tab_active" class="selected"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_active', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('diamond') . __('Active projects'); ?></a></li>
-                            <li id="tab_archived"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_archived', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('archive') . __('Archived projects'); ?></a></li>
-                            <li class="right">
-                                <?php /* if ($tbg_user->isAuthenticated()): ?>
-                                    <div class="button-group">
-                                        <?= javascript_link_tag(__('Create project'), array('class' => 'button button-silver project-quick-edit', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config'))."');")); ?>
-                                    </div>
-                                    <div class="dropper_container">
-                                        <a href="javascript:void(0);" class="dropper dynamic_menu_link"><?= fa_image_tag('cog'); ?></a>
-                                        <ul class="more_actions_dropdown popup_box">
-                                            <?php if ($show_project_config_link): ?>
-                                                <li><?= link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
-                                            <?php endif; ?>
-                                            <li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?= __('Show archived projects'); ?></a></li>
-                                        </ul>
-                                    </div>
-                                <?php endif; */ ?>
-                            </li>
+                            <?php /* <li id="tab_starred"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_starred', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('star-half-o') . __('Starred projects'); ?></a></li> */ ?>
+                            <li id="tab_active" class="<?= ($project_list_mode == 'active') ? 'selected' : ''; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_active', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('diamond') . __('Active projects'); ?></a></li>
+                            <li id="tab_archived" class="<?= ($project_list_mode == 'archived') ? 'selected' : ''; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_archived', 'frontpage_projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('archive') . __('Archived projects'); ?></a></li>
+                            <?php if ($tbg_user->isAuthenticated()): ?>
+                                <li class="right">
+                                    <?= link_tag(make_url('configure_projects'), fa_image_tag('cog'), ['class' => 'button-icon']); ?>
+                                    <button class="button button-silver project-quick-edit" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', ['key' => 'project_config']); ?>');"><?= __('Create project'); ?></button>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <div id="frontpage_projects_list_tabs_panes">
-                        <div id="tab_active_pane">
-                            <?php if ($project_count > 0): ?>
+                        <div id="tab_active_pane" style="<?= ($project_list_mode != 'active') ? 'display: none;' : ''; ?>">
+                            <?php if ($active_project_count > 0): ?>
                                 <ul class="project_list simple_list">
-                                    <?php foreach ($projects as $project): ?>
+                                    <?php foreach ($active_projects as $project): ?>
                                         <li><?php include_component('project/overview', array('project' => $project)); ?></li>
                                     <?php endforeach; ?>
                                 </ul>
-                                <?php if ($pagination->getTotalPages() > 1): ?>
-                                    <?php include_component('main/pagination', ['pagination' => $pagination]); ?>
+                                <?php if ($active_pagination->getTotalPages() > 1): ?>
+                                    <?php include_component('main/pagination', ['pagination' => $active_pagination]); ?>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <div class="onboarding large">
+                                    <?= image_tag('onboard_noprojects.png'); ?>
+                                    <div class="helper-text">
+                                        <?php if ($show_project_config_link): ?>
+                                            <?= __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
+                                        <?php else: ?>
+                                            <?= __("You don't have access to any projects yet."); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div id="tab_archived_pane" style="<?= ($project_list_mode != 'archived') ? 'display: none;' : ''; ?>">
+                            <?php if ($archived_project_count > 0): ?>
+                                <ul class="project_list simple_list">
+                                    <?php foreach ($archived_projects as $project): ?>
+                                        <li><?php include_component('project/overview', array('project' => $project)); ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <?php if ($archived_pagination->getTotalPages() > 1): ?>
+                                    <?php include_component('main/pagination', ['pagination' => $archived_pagination]); ?>
                                 <?php endif; ?>
                             <?php else: ?>
                                 <div class="onboarding large">

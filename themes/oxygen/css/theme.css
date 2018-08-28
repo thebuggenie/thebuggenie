@@ -1948,6 +1948,7 @@ div.autocomplete ul li > img:first-child {
     padding: 0;
     margin: 0;
     list-style: none;
+    width: 100%;
 }
 #user_menu > ul {
     padding: 0;
@@ -2260,8 +2261,21 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border: 0;
 }
 
-.tab_menu.inset li.right {
+.tab_menu.inset li.right, .tab_menu.inset li.right:hover {
     float: right;
+    background: transparent;
+    margin-right: 5px;
+}
+
+.tab_menu.inset li.right a, .tab_menu.inset li.right a:hover {
+    display: inline-block;
+    float: none;
+    color: #333;
+    vertical-align: middle;
+}
+
+.tab_menu.inset li.right a:hover {
+   color: #555;
 }
 
 .tab_menu.inset li a {
@@ -2884,6 +2898,10 @@ a.shadowed:active {
 
 .button-group {
     position: relative;
+}
+.right .button-group .button {
+    float: none;
+    display: inline-block;
 }
 
 .profile_buttons {
@@ -4498,6 +4516,11 @@ ul.project_list > li {
 
 .client_dashboard {
     padding: 10px;
+}
+
+.project_overview .button.project-quick-edit {
+    padding: 5px 8px;
+    font-size: 1.1em;
 }
 
 .project_overview .button-group .button, .project_overview .button-group > .button-dropdown {

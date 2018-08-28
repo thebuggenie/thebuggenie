@@ -370,16 +370,18 @@ class Main extends framework\Action
         $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
         if ($this->show_project_list || $this->show_project_config_link)
         {
-            $projects = entities\Project::getAllRootProjects(false);
-            foreach ($projects as $k => $project)
-            {
-                if (!$project->hasAccess())
-                    unset($projects[$k]);
-            }
-            $pagination = new \thebuggenie\core\helpers\Pagination($projects, $this->getRouting()->generate('home'), $request);
-            $this->pagination = $pagination;
-            $this->projects = $pagination->getPageItems();
-            $this->project_count = count($this->projects);
+            $this->project_list_mode = $request->getParameter('project_list_mode', 'active');
+            $activeProjects = entities\Project::getAllRootProjects(false);
+            $activePagination = new \thebuggenie\core\helpers\Pagination($activeProjects, $this->getRouting()->generate('home', ['project_list_mode' => 'active']), $request);
+            $this->active_pagination = $activePagination;
+            $this->active_projects = $activePagination->getPageItems();
+            $this->active_project_count = count($this->active_projects);
+
+            $archivedProjects = entities\Project::getAllRootProjects(true);
+            $archivedPagination = new \thebuggenie\core\helpers\Pagination($archivedProjects, $this->getRouting()->generate('home', ['project_list_mode' => 'archived']), $request);
+            $this->archived_pagination = $archivedPagination;
+            $this->archived_projects = $archivedPagination->getPageItems();
+            $this->archived_project_count = count($this->archived_projects);
         }
     }
 
