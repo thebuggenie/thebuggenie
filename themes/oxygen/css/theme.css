@@ -2535,7 +2535,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 
 /* project front page menu */
 .project_strip {
-    display: block;
+    display: flex;
     border: 1px solid rgba(100, 100, 100, 0.15);
     box-shadow: 0 0 5px rgba(100, 100, 100, 0.1);
     padding: 10px;
@@ -2543,9 +2543,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .project_strip .project_information_block {
-    float: none;
     font-weight: 100;
-    display: inline-block;
     vertical-align: middle;
     box-sizing: border-box;
     width: 60%;
@@ -2553,8 +2551,6 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     line-height: 1.3em;
 }
 .project_strip .project_information_block .button-group {
-    float: none;
-    display: inline-block;
     vertical-align: middle;
     margin-left: 15px;
 }
@@ -2613,15 +2609,17 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 .project_strip .subprojects_list {
     clear: both;
     padding-top: 5px;
+    font-weight: 400;
+    text-transform: uppercase;
 }
 
 .project_strip .subprojects_list .subproject_link {
     font-weight: 100;
+    text-transform: none;
     margin-left: 10px;
 }
 
 .project_strip nav {
-    display: inline-block;
     vertical-align: middle;
     width: calc(40% - 48px);
     box-sizing: border-box;
@@ -2630,6 +2628,9 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     line-height: 1.3em;
     position: relative;
     text-align: right;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
 }
 
 .project_strip nav a.nav-button {
@@ -2641,7 +2642,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border: none;
     text-decoration: none;
     border-radius: 5px;
-    float: none;
+    white-space: nowrap;
 }
 
 .project_strip nav a.nav-button:hover {
@@ -5996,14 +5997,17 @@ ul.workflow_actions li:hover {
 
 #notfound_error {
     vertical-align: middle;
-    text-align: center;
+    text-align: left;
     padding: 15px;
     color: #B32626;
     font-size: 1.3em;
     width: 600px;
     margin: 25px auto 0 auto;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    background-color: rgba(255, 50, 50, 0.25);
+}
+
+.viewissue_info_header {
+    font-weight: 400;
+    text-transform: uppercase;
 }
 
 #notfound_error .content {
@@ -12966,6 +12970,10 @@ li.filtervalue .hidden {
     color: #888;
 }
 
+.team_dashboard .header .button, .project_overview .header .button {
+    padding: 5px 9px;
+}
+
 .project_overview .header .button-group {
     float: right;
     font-size: 0.8em;
@@ -13122,6 +13130,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     display: inline-block;
     vertical-align: middle;
     text-align: center;
+    text-transform: none;
 }
 
 .button:hover,

@@ -4903,7 +4903,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Config.Team.remove = function (url, team_id) {
             TBG.Config.Collection.remove(url, 'team', team_id, TBG.Config.Team.updateLinks);
-        }
+        };
 
         TBG.Config.Team.clone = function (url, team_id) {
             TBG.Config.Collection.clone(url, 'team', team_id, TBG.Config.Team.updateLinks);
