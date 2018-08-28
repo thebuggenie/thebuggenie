@@ -720,13 +720,14 @@ configure_users_clone_team:
     csrf_enabled: false
 
 configure_users_delete_team:
-    route: /configure/users/delete/team/:team_id
+    route: /configure/users/delete/team/:team_id/:csrf_token
     module: configuration
     action: deleteTeam
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_get_team_members:
     route: /configure/users/get/members/in/team/:team_id
@@ -738,22 +739,24 @@ configure_users_get_team_members:
     csrf_enabled: false
 
 configure_users_remove_team_member:
-    route: /configure/users/remove/:user_id/from/team/:team_id
+    route: /configure/users/remove/:user_id/from/team/:team_id/:csrf_token
     module: configuration
     action: removeTeamMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_team_member:
-    route: /configure/users/add/user/:user_id/to/team/:team_id
+    route: /configure/users/add/user/:user_id/to/team/:team_id/:csrf_token
     module: configuration
     action: addTeamMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_client:
     route: /configure/users/add/client
@@ -776,13 +779,14 @@ configure_users_edit_client:
     csrf_enabled: false
 
 configure_users_delete_client:
-    route: /configure/users/delete/client/:client_id
+    route: /configure/users/delete/client/:client_id/:csrf_token
     module: configuration
     action: deleteClient
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_get_client_members:
     route: /configure/users/get/members/in/client/:client_id
@@ -794,22 +798,24 @@ configure_users_get_client_members:
     csrf_enabled: false
 
 configure_users_remove_client_member:
-    route: /configure/users/remove/:user_id/from/client/:client_id
+    route: /configure/users/remove/:user_id/from/client/:client_id/:csrf_token
     module: configuration
     action: removeClientMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_client_member:
-    route: /configure/users/add/user/:user_id/to/client/:client_id
+    route: /configure/users/add/user/:user_id/to/client/:client_id/:csrf_token
     module: configuration
     action: addClientMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_update_user:
     route: /configure/users/update/user/:user_id

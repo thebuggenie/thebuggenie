@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Criteria;
     use b2db\Table;
     use thebuggenie\core\framework;
 
@@ -44,6 +45,14 @@
                 $row = $this->doSelectById($id);
             }
             return $row;
+        }
+
+        public function selectById($id, Criteria $crit = null, $join = 'all')
+        {
+            $crit = ($crit instanceof Criteria) ? $crit : $this->getCriteria();
+            $crit->addWhere(static::SCOPE, $this->getCurrentScopeID());
+
+            return parent::selectById($id, $crit, $join);
         }
 
         public function selectAll()

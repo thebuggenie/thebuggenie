@@ -483,6 +483,10 @@
                 }
                 $regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
 
+//                if ($options['csrf_enabled'] && !array_key_exists('csrf_token', $names_hash) && !$has_catch_all_parameter) {
+//                    throw new RoutingException("Route '{$name}' is marked as csrf protected, but does not have a :csrf_token route parameter'");
+//                }
+
                 $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $options, $methods, $overridden);
             }
         }

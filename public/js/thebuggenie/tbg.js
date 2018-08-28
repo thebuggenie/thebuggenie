@@ -4812,11 +4812,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 success: {
                     callback: function (json) {
                         TBG.Config.Collection.updateDetailsFromJSON(json, false);
-                        if ($(type + '_members_' + cid + '_list').down('ul').innerHTML != '') {
-                            if ($(type + '_members_' + cid + '_no_users'))
-                                $(type + '_members_' + cid + '_no_users').hide();
-                            $(type + '_members_' + cid + '_list').down('ul').insert({bottom: json[type + 'listitem']});
+                        var ul = $(type + '_members_' + cid + '_list').down('ul');
+                        if (ul != undefined && ul.childElements().size() == 0) {
+                            $(type + '_members_' + cid + '_no_users').hide();
                         }
+                        $(type + '_members_' + cid + '_list').down('ul').insert({bottom: json[type + 'listitem']});
                     }
                 }
             });
@@ -4853,19 +4853,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     }
                 });
             }
-        }
+        };
 
         TBG.Config.Group.add = function (url) {
             TBG.Config.Collection.add(url, 'group');
-        }
+        };
 
         TBG.Config.Group.remove = function (url, group_id) {
             TBG.Config.Collection.remove(url, 'group', group_id);
-        }
+        };
 
         TBG.Config.Group.clone = function (url, group_id) {
             TBG.Config.Collection.clone(url, 'group', group_id);
-        }
+        };
 
         TBG.Config.Group.showMembers = function (url, group_id) {
             TBG.Config.Collection.showMembers(url, 'group', group_id);

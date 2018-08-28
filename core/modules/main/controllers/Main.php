@@ -728,6 +728,12 @@ class Main extends framework\Action
         try
         {
             $this->client = entities\Client::getB2DBTable()->selectById($request['client_id']);
+
+            if (!$this->client instanceof entities\Client) {
+                return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
+            }
+            $this->forward403Unless($this->client->hasAccess());
+
             $projects = entities\Project::getAllByClientID($this->client->getID());
 
             $final_projects = array();
@@ -741,6 +747,8 @@ class Main extends framework\Action
             $this->projects = $final_projects;
 
             $this->forward403Unless($this->client->hasAccess());
+
+            $this->users = $this->client->getMembers();
         }
         catch (\Exception $e)
         {
@@ -759,6 +767,11 @@ class Main extends framework\Action
         try
         {
             $this->team = entities\Team::getB2DBTable()->selectById($request['team_id']);
+
+            if (!$this->team instanceof entities\Team) {
+                return $this->return404(framework\Context::getI18n()->__('This team does not exist'));
+            }
+
             $this->forward403Unless($this->team->hasAccess());
 
             $projects = array();

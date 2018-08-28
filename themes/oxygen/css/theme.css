@@ -12970,8 +12970,27 @@ li.filtervalue .hidden {
     color: #888;
 }
 
-.team_dashboard .header .button, .project_overview .header .button {
+.team_dashboard .header .button, .client_dashboard .header .button, .project_overview .header .button {
     padding: 5px 9px;
+}
+
+.team_dashboard_users .team_users .button-icon, .client_dashboard_users .client_users .button-icon {
+    float: right;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.team_dashboard_users .team_users li, .client_dashboard_users .client_users li {
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.team_dashboard_users .team_users li:hover, .client_dashboard_users .client_users li:hover {
+    background-color: rgba(200, 200, 200, 0.2);
+}
+
+.team_dashboard_users .team_users li:hover .button-icon, .client_dashboard_users .client_users li:hover .button-icon {
+    opacity: 1;
 }
 
 .project_overview .header .button-group {
