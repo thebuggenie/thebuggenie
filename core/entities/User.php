@@ -497,7 +497,7 @@
          */
         public static function identify(framework\Request $request, framework\Action $action, $auto = false)
         {
-            $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
+            $authentication_method = framework\Context::getRouting()->getCurrentRouteAuthenticationMethod($action);
             $authentication_backend = framework\Settings::getAuthenticationBackend();
             $user = null;
 

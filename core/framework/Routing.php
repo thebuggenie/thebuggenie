@@ -4,6 +4,7 @@
 
     use b2db\AnnotationSet,
         b2db\Annotation;
+    use thebuggenie\core\framework\exceptions\RoutingException;
 
     /**
      * Routing class
@@ -340,6 +341,7 @@
                     $route = $route_url_prefix . $route_annotation->getProperty('url');
                     $options['csrf_enabled'] = $annotationset->hasAnnotation('CsrfProtected');
                     $options['anonymous_route'] = $annotationset->hasAnnotation('AnonymousRoute');
+                    $options['authentication_method'] = ($annotationset->hasAnnotation('AuthenticationMethod')) ? $annotationset->getAnnotation('AuthenticationMethod') : '';
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 
@@ -374,8 +376,9 @@
                 $options = array();
                 $route = $details['route'];
                 $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
-                $options['csrf_enabled'] = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
-                $options['anonymous_route'] = (array_key_exists('anonymous_route', $details)) ? $details['anonymous_route'] : array();
+                $options['csrf_enabled'] = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : false;
+                $options['anonymous_route'] = (array_key_exists('anonymous_route', $details)) ? $details['anonymous_route'] : false;
+                $options['authentication_method'] = (array_key_exists('authentication_method', $details)) ? $details['authentication_method'] : false;
                 $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
                 $this->addRoute($name, $route, $module, $action, $params, $options, $methods);
@@ -403,6 +406,7 @@
             $names = array();
             $names_hash = array();
             $r = null;
+            $has_catch_all_parameter = false;
             $methods = (!is_array($allowed_methods)) ? array_filter(explode(',', $allowed_methods), function($element) { return trim(strtolower($element)); }) : $allowed_methods;
 
             if (($route == '') || ($route == '/'))
@@ -469,6 +473,7 @@
                     }
                     elseif (preg_match('/^\*$/', $element, $r))
                     {
+                        $has_catch_all_parameter = true;
                         $parsed[] = '(?:\/(.*))?';
                     }
                     else
@@ -740,6 +745,15 @@
                 $this->getRouteFromUrl(Context::getRequest()->getParameter('url', null, false));
             }
             return (bool)$this->_getCurrentRouteOption('csrf_enabled');
+        }
+
+        public function getCurrentRouteAuthenticationMethod(Action $action)
+        {
+            if ($this->_getCurrentRouteOption('authentication_method') != '') {
+                return constant('\thebuggenie\core\framework\Action::'.$this->_getCurrentRouteOption('authentication_method'));
+            }
+
+            return $action->getAuthenticationMethodForAction($this->getCurrentRouteAction());
         }
 
         /**
