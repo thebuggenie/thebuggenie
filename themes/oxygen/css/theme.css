@@ -1858,11 +1858,11 @@ div.autocomplete .extra.attached {
     height: 20px;
 }
 
-div.autocomplete .extra.attached span, div.autocomplete .extra.attached img {
+div.autocomplete .extra.attached span, div.autocomplete .extra.attached .fa {
     float: right;
 }
 
-div.autocomplete .extra.attached img {
+div.autocomplete .extra.attached .fa {
     margin-left: 3px;
     margin-right: 15px;
 }
@@ -2584,7 +2584,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     vertical-align: middle;
     margin: 0 10px;
     color: #777;
-    text-transform: lowercase;
+    text-transform: uppercase;
     background-color: rgba(150, 150, 150, 0.1);
     font-size: 0.9em;
     padding: 4px 6px;
