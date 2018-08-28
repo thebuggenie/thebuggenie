@@ -1485,6 +1485,10 @@ footer img {
     color: #555;
 }
 
+.project_overview .tab_menu ul {
+    width: 100%;
+}
+
 .project_overview .header .dropper_container {
     float: right;
     margin-right: 5px;
@@ -1948,7 +1952,6 @@ div.autocomplete ul li > img:first-child {
     padding: 0;
     margin: 0;
     list-style: none;
-    width: 100%;
 }
 #user_menu > ul {
     padding: 0;

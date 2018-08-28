@@ -31,6 +31,8 @@
 
         const B2DB_TABLE_VERSION = 1;
 
+        const SCOPE = 'agileboards.scope';
+
         public function getAvailableProjectBoards($user_id, $project_id)
         {
             $crit = $this->getCriteria();
