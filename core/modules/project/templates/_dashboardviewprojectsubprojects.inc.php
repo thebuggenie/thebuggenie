@@ -2,7 +2,7 @@
     <?php if (count($subprojects) > 0): ?>
         <ul class="project_list simple_list" style="margin: 0;">
         <?php foreach ($subprojects as $project): ?>
-            <li style="width: 100%; font-size: 1.1em; margin-top: 0;"><?php include_component('project/overview', array('project' => $project)); ?></li>
+            <li style="width: 100%; font-size: 1.1em; margin-top: 0;"><?php include_component('project/project', array('project' => $project)); ?></li>
         <?php endforeach; ?>
         </ul>
     <?php else: ?>

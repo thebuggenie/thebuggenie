@@ -854,10 +854,11 @@ header .logo { margin-right: 10px; }
 }
 
 #topmenu-container {
-    height: 100%;
-    display: inline-block;
     vertical-align: middle;
-    float: right;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 #quicksearchform {

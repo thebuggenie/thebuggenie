@@ -1,4 +1,4 @@
-<td valign="top" class="project_information_sidebar">
+<div class="project_information_sidebar">
     <div class="sidebar_links">
     <?php foreach ($config_sections as $config_info): ?>
         <?php foreach ($config_info as $section => $info): ?>
@@ -23,4 +23,4 @@
         <?php endforeach;?>
     <?php endforeach;?>
     </div>
-</td>
+</div>

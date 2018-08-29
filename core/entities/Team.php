@@ -21,6 +21,8 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @static @method tables\Teams getB2DBTable()
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Teams")
      */
     class Team extends IdentifiableScoped
@@ -213,6 +215,46 @@
             }
 
             return $this->_associated_projects;
+        }
+
+        /**
+         * @return Project[][]
+         */
+        public function getProjects()
+        {
+            /** @var Project[] $projects */
+            $projects = [];
+
+            foreach (Project::getAllByOwner($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach (Project::getAllByLeader($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach (Project::getAllByQaResponsible($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach ($this->getAssociatedProjects() as $project_id => $project)
+            {
+                $projects[$project_id] = $project;
+            }
+
+            $active_projects = [];
+            $archived_projects = [];
+
+            foreach ($projects as $project_id => $project)
+            {
+                if ($project->isArchived()) {
+                    $archived_projects[$project_id] = $project;
+                } else {
+                    $active_projects[$project_id] = $project;
+                }
+            }
+
+            return [$active_projects, $archived_projects];
         }
 
         public function isOndemand()

@@ -766,4 +766,21 @@
             $this->savedsearches = tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), ($this->dashboard->getProject() instanceof entities\Project) ? $this->dashboard->getProject()->getID() : 0);
         }
 
+
+        public function componentProjectList()
+        {
+            $url_options = ['project_state' => 'active', 'list_mode' => $this->list_mode];
+
+            if ($this->list_mode == 'team') {
+                $url_options['team_id'] = $this->team_id;
+            } elseif ($this->list_mode == 'client') {
+                $url_options['client_id'] = $this->client_id;
+            }
+
+            $this->active_url = $this->getRouting()->generate('project_list', $url_options);
+            $url_options['project_state'] = 'archived';
+            $this->archived_url = $this->getRouting()->generate('project_list', $url_options);
+            $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
+        }
+
     }

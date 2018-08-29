@@ -88,10 +88,10 @@ foreach ($search_object->getIssues() as $issue):
                         <?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
                         <a class="issue_link" href="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
                             <?php if ($issue->countFiles()): ?>
-                                <?php echo image_tag('icon_attached_information.png', array('title' => __('This issue has %num attachments', array('%num' => $issue->countFiles())))); ?>
+                                <?php echo fa_image_tag('paperclip', array('title' => __('This issue has %num attachments', array('%num' => $issue->countFiles())))); ?>
                             <?php endif; ?>
                             <?php if ($issue->isLocked()): ?>
-                                <?php echo image_tag('icon_locked.png', array('title' => __('Access to this issue is restricted'))); ?>
+                                <?php echo fa_image_tag('lock', array('title' => __('Access to this issue is restricted'))); ?>
                             <?php endif; ?>
                             <span class="issue_no"><?php echo $issue->getFormattedIssueNo(true); ?></span><span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
                             <span class="issue_title sc_title"<?php echo $title_visible; ?>><span class="sc_dash"> - </span><?php echo $issue->getTitle(); ?></span>

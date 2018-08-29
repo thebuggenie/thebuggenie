@@ -295,4 +295,26 @@
             return $this->_dashboards;
         }
 
+        /**
+         * @return Project[][]
+         */
+        public function getProjects()
+        {
+            $projects = Project::getAllByClientID($this->getID());
+
+            $active_projects = [];
+            $archived_projects = [];
+
+            foreach ($projects as $project_id => $project)
+            {
+                if ($project->isArchived()) {
+                    $archived_projects[$project_id] = $project;
+                } else {
+                    $active_projects[$project_id] = $project;
+                }
+            }
+
+            return [$active_projects, $archived_projects];
+        }
+
     }

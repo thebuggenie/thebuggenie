@@ -295,7 +295,10 @@ img.smiley {
 header {
     background: #4E81AB;
     color: white;
-    height: 35px;
+    flex: 0 0 35px;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
 }
 
 .backdrop_detail_header, .backdrop_box h1 {
@@ -321,9 +324,6 @@ header {
     padding: 3px 7px;
 }
 
-header .main_menu {
-    float: left;
-}
 .project-context #main_menu {
     display: none;
 }
@@ -586,9 +586,6 @@ header #user_notifications_count.unread {
     display: none;
 }
 
-header #header_userinfo {
-    float: right;
-}
 header #header_userinfo > ul {
     display: inline-block;
     list-style: none;
@@ -696,12 +693,6 @@ img.avatar {
     height: 18px;
 }
 
-header nav > ul {
-    position: relative !important;
-    display: inline-block;
-    margin-right: 5px;
-}
-
 #usermenu_changestate_toggler {
     float: right;
     margin-left: 5px;
@@ -722,9 +713,8 @@ header nav > ul {
 
 #logo_container {
     padding: 0 0 0 10px;
-    float: left;
     margin: 5px;
-    display: block;
+    flex: 0 1 auto;
 }
 
 #logo_container .logo {
@@ -761,6 +751,43 @@ header nav > ul {
     display: none;
 }
 
+#topmenu-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#main_menu, #project_menu {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+#quicksearch-container {
+    flex: 0 0 300px;
+}
+
+.reportissue_button_container {
+    flex: 0 0 auto;
+    vertical-align: top;
+}
+
+.reportissue_button_container .button, .reportissue_button_container .button:hover {
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) !important;
+    font-weight: 400;
+    margin-top: 4px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
+    font-size: 1.1em !important;
+    padding: 4px 8px !important;
+    border: 0 !important;
+    border-radius: 1px !important;
+}
+
+.reportissue_button_container .button:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6) !important;
+}
+
 .submenu_strip .selected_project {
     font-size: 1em;
     font-weight: 400;
@@ -780,29 +807,28 @@ header nav > ul {
 }
 
 #quicksearchform {
-    display: inline-block;
-    float: right;
-    width: auto;
     text-align: right;
     position: relative;
     margin-right: 10px;
 }
 
-#quicksearchform button[type="submit"] {
+#quicksearchform button[type="submit"], #quicksearchform button[type="submit"]:hover {
     position: absolute;
-    right: 1px;
-    top: 3px;
+    right: 4px;
+    top: 0;
     padding: 4px;
     color: rgba(0, 0, 0, 0.4);
     font-size: 1.3em;
     background: transparent;
     border: none;
     text-shadow: none;
+    box-shadow: none;
+    line-height: 1;
 }
 
 #quicksearchform input[type="search"] {
-    margin: 4px 0 0 0;
-    width: 225px;
+    margin: 5px;
+    width: calc(100% - 10px);
     font-size: 14px;
     padding: 4px;
     box-sizing: border-box;
@@ -816,10 +842,9 @@ header nav > ul {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 2px;
-    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 }
 #quicksearchform input[type="search"]:focus {
-    width: 320px;
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -937,10 +962,12 @@ input[type=checkbox].semi-checked {
 #main_container {
     position: relative;
     width: 100%;
-    min-height: 100%;
-    min-width: 1020px;
+    min-height: 100vh;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 #main_container.fullscreen header, #main_container.fullscreen .project_header {
@@ -949,77 +976,36 @@ input[type=checkbox].semi-checked {
 
 /* main page layout dimensions and details */
 #content_container {
-    padding-bottom: 20px;
-    height: auto;
-    margin-bottom: 30px;
+    padding: 0;
+    margin: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
-#main-table {
-    margin-top: 0;
-    table-layout: fixed;
-    width: 100%;
-}
-
-.page-project_settings #content_container,
-.page-project_release_center #content_container,
-.page-vcs_commitspage #content_container,
-.page-project_timeline #content_container,
-.page-project_statistics #content_container,
-.page-project_team #content_container,
-.page-project_roadmap #content_container,
-.page-project_milestone_details #content_container,
-.page-project_releases #content_container,
-.page-account #content_container {
-    max-width: 1172px;
-    border: 1px solid #EAEAEA;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-    margin: 20px auto 60px;
-}
-
-.page-account #content_container {
-    padding-bottom: 50px;
-}
-
-.page-configure #content_container,
-.page-configure_scopes #content_container,
-.page-configure_settings #content_container,
-.page-configure_scope #content_container,
-.page-configuration_themes #content_container,
-.page-configure_roles #content_container,
-.page-configure_permissions #content_container,
-.page-configure_authentication #content_container,
-.page-configure_files #content_container,
-.page-import_home #content_container,
-.page-configure_projects #content_container,
-.page-configure_issuetypes #content_container,
-.page-configure_issuetypes_schemes #content_container,
-.page-configure_issuetypes_scheme #content_container,
-.page-configure_issuefields #content_container,
-.page-configure_workflow #content_container,
-.page-configure_workflow_workflows #content_container,
-.page-configure_workflow_step #content_container,
-.page-configure_workflow_steps #content_container,
-.page-configure_workflow_transition #content_container,
-.page-configure_workflow_schemes #content_container,
-.page-configure_workflow_scheme #content_container,
-.page-configure_users #content_container,
-.page-configure_modules #content_container,
-.page-configure_module #content_container {
-    max-width: 1025px;
-    border: 1px solid #EAEAEA;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-    padding-top: 18px;
-    padding-bottom: 10px;
-    margin: 20px auto 60px;
+.project-context.page-project_dashboard #content_container,
+.project-context.page-project_releases #content_container,
+.project-context.page-project_release_center #content_container,
+.project-context.page-project_roadmap #content_container,
+.project-context.page-project_team #content_container,
+.project-context.page-project_statistics #content_container,
+.project-context.page-project_settings #content_container,
+.project-context.page-agile_index #content_container,
+.project-context.page-agile_whiteboard #content_container,
+.project-context.page-agile_board #content_container,
+.project-context.page-viewissue #content_container,
+.project-context.page-project_timeline #content_container {
+    flex-direction: column;
 }
 
 .side_bar {
-    width: 310px;
+    flex: 0 0 310px;
     background-color: transparent;
     vertical-align: top;
     padding: 5px;
     position: relative;
-    transition: width 0.3s ease;
+    transition: flex 0.3s ease;
     box-shadow: 10px 0 15px -17px rgba(0, 0, 0, 0.8);
     box-sizing: border-box;
 }
@@ -1045,20 +1031,16 @@ input[type=checkbox].semi-checked {
     text-align: left;
     vertical-align: top;
     padding: 10px 10px 10px 15px;
-    width: auto;
-    min-width: 700px;
+    flex: 1 1 700px;
 }
 
 /* end main page layout */
 
 /* footer section */
 footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    position: relative;
     vertical-align: middle;
-    height: 20px;
+    flex: 0 0 20px;
     background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
     background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%); /* W3C */
     border: 0;
@@ -1939,6 +1921,7 @@ div.autocomplete ul li > img:first-child {
     border: 0;
     position: relative;
     border-bottom: 1px solid #D0D0D0;
+    display: block;
 }
 
 #project_config_menu_panes .tab_menu {
@@ -1947,11 +1930,11 @@ div.autocomplete ul li > img:first-child {
 }
 
 .tab_menu ul {
-    position: absolute;
-    bottom: -1px;
+    display: flex;
     padding: 0;
     margin: 0;
     list-style: none;
+    height: 100%;
 }
 .tab_menu:not(.main_menu) ul {
     width: 100%;
@@ -2009,18 +1992,15 @@ div.autocomplete ul li > img:first-child {
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     padding: 3px 4px 3px 4px;
-    display: block;
+    flex: 0 0 auto;
 }
 
 .tab_menu li:hover {
     text-decoration: none;
     border-bottom: none;
-    display: block;
 }
 
 .tab_menu li {
-    float: left;
-    display: block;
     font-size: 0.9em;
     border: 0;
     margin: 0 0 0 5px;
@@ -2031,7 +2011,6 @@ div.autocomplete ul li > img:first-child {
 
 .tab_menu li.selected, .tab_menu li:hover {
     color: #444;
-    display: block;
     box-shadow: none;
 }
 
@@ -2234,11 +2213,15 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 .tab_menu.inset {
     margin: 15px 0;
     padding: 10px 5px 0;
-    height: 25px;
+    width: 100%;
 }
 
 .tab_menu.inset ul {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 
 .tab_menu.inset ul#usersteamsgroups_menu {
@@ -2250,25 +2233,25 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 }
 
 .tab_menu.inset li.selected {
-    margin-top: -4px;
-    padding: 2px 7px 3px 5px;
     border-bottom: 1px solid #FFF;
     border-left: 1px solid #CCC;
     border-right: 1px solid #DDC;
     border-top: 3px solid #4E81AB;
+    margin-bottom: -1px;
 }
 
 .tab_menu.inset li.selected a {
-    padding: 3px 8px 3px 5px;
+    padding: 5px 10px;
 }
 
 .tab_menu.inset li {
     padding: 0;
     border: 0;
+    flex: 0 0 auto;
 }
 
 .tab_menu.inset li.right, .tab_menu.inset li.right:hover {
-    float: right;
+    margin-left: auto;
     background: transparent;
     margin-right: 5px;
 }
@@ -2288,7 +2271,7 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     font-size: 1.1em !important;
-    padding: 5px 8px 4px 7px;
+    padding: 7px 10px;
     max-width: 200px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -2330,19 +2313,8 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 /* header tabbed menu */
 .header_menu {
     background-color: transparent;
-    width: auto;
-    height: 35px;
     color: #FFF;
     border-bottom: none;
-}
-
-/*.header_menu .selected, .header_menu li.selected:hover {*/
-    /*background-color: #ECF0F4;*/
-/*}*/
-
-.header_menu > ul {
-    height: 100%;
-    bottom: 0;
 }
 
 .header_menu > ul > li {
@@ -2420,27 +2392,6 @@ li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_men
 .header_menu .tab_menu_dropdown a:hover, .header_menu li.selected .tab_menu_dropdown a:hover {
     background-color: rgba(78, 129, 171, 0.75);
     color: #FFF !important;
-}
-
-.reportissue_button_container {
-    display: inline-block;
-    vertical-align: top;
-}
-
-.reportissue_button_container .button, .reportissue_button_container .button:hover {
-    color: rgba(0, 0, 0, 0.8);
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) !important;
-    font-weight: 400;
-    margin-top: 4px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
-    font-size: 1.1em !important;
-    padding: 4px 8px !important;
-    border: 0 !important;
-    border-radius: 1px !important;
-}
-
-.reportissue_button_container .button:hover {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* end header menu */
@@ -4508,7 +4459,15 @@ ul.project_list > li {
     clear: both;
 }
 
-.team_dashboard, .client_dashboard, .project_overview {
+.team_dashboard, .client_dashboard {
+    clear: both;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 1 1 auto;
+}
+
+.project_overview {
     clear: both;
 }
 
@@ -4549,10 +4508,6 @@ ul.project_list > li {
     border-top-right-radius: 0;
 }
 
-.team_dashboard {
-    padding: 10px;
-}
-
 .dashboard_client_info {
     margin-bottom: 10px;
     width: 100%;
@@ -4578,19 +4533,6 @@ ul.project_list > li {
 
 .dashboard_team_info .dashboard_team_viewusers {
     float: right;
-}
-
-.team_dashboard_table, .client_dashboard_table {
-    width: 100%;
-}
-
-.team_dashboard_table td.padded, .client_dashboard_table td.padded {
-    padding: 0 10px 10px;
-    vertical-align: top;
-}
-
-.team_dashboard_table td.team_dashboard_projects, .client_dashboard_table td.client_dashboard_projects {
-    padding-left: 0;
 }
 
 .team_dashboard_table td.team_dashboard_users, .client_dashboard_table td.client_dashboard_users {
@@ -5046,16 +4988,16 @@ a.friend {
 #issue_view {
     position: relative;
     z-index: 100;
+    display: flex;
 }
 
 #issue_main_container {
     float: none;
     box-sizing: border-box;
     /*overflow: hidden;*/
-    width: calc(100% - 375px);
+    flex: 1 1 auto;
     vertical-align: top;
-    display: inline-block;
-    transition: width 0.3s ease;
+    transition: flex 0.3s ease;
 }
 
 #issue_main_container.scroll-top, #issue_details_container.scroll-top {
@@ -5075,8 +5017,7 @@ a.friend {
 
 #issue_details_container {
     float: none;
-    display: inline-block;
-    width: 360px;
+    flex: 0 0 360px;
     padding: 0 10px;
     transition: width 0.3s ease;
     box-sizing: border-box;
@@ -5125,10 +5066,11 @@ a.friend {
     color: #777;
     display: block;
     font-size: 1.2em;
-    font-weight: 400;
+    font-weight: 100;
     padding: 30px 0 5px;
     width: 100%;
     border-bottom: 1px dotted #CCC;
+    text-transform: uppercase;
 }
 
 .viewissue_comments_header {
@@ -5886,7 +5828,9 @@ ul.workflow_actions li:hover {
 
 /* main issue view styling */
 .viewissue_container {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
     text-align: left;
     padding: 0 0 50px 0;
     margin: 10px 0 0;
@@ -7720,13 +7664,13 @@ table.issue_affects td img {
 }
 
 #dashboard_lefthand {
-    width: 250px;
+    flex: 0 0 250px;
     padding: 5px 10px 5px 0;
     border-right: 1px solid #DDD;
 }
 
 #dashboard_righthand {
-    width: 250px;
+    flex: 0 0 250px;
     padding: 5px 5px 5px 10px;
     box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3) inset;
     border-left: 1px dotted #DDD;
@@ -7737,12 +7681,12 @@ table.issue_affects td img {
 }
 
 #dashboard_lefthand.side_bar.collapsed {
-    width: 25px;
+    flex: 0 0 25px;
     margin: 0;
 }
 
 #dashboard_righthand.side_bar.collapsed {
-    width: 25px;
+    flex: 0 0 25px;
     border: none;
     padding: 0;
     margin: 0;
@@ -11223,8 +11167,7 @@ div.quickaddtask .close_micro_popup_link {
 .project_information_sidebar {
     vertical-align: top;
     border-right: 1px solid #E6E6E6;
-    height: 100%;
-    width: 255px;
+    flex: 0 0 255px;
     padding: 0 0 50px 10px;
     position: relative;
 }
@@ -11234,6 +11177,10 @@ div.quickaddtask .close_micro_popup_link {
     border-right: 1px solid #DDD;
     font-size: 1.1em;
     padding-top: 0;
+}
+
+.fa.rss-icon {
+    color: darkorange;
 }
 
 #search_sidebar .num_results_badge {

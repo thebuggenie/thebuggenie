@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Team;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -20,6 +21,8 @@
      *
      * @package thebuggenie
      * @subpackage tables
+     *
+     * @method Team selectById()
      *
      * @Table(name="teams")
      * @Entity(class="\thebuggenie\core\entities\Team")

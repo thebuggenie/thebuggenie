@@ -6,10 +6,14 @@ use thebuggenie\core\framework,
     thebuggenie\core\entities,
     thebuggenie\core\entities\tables,
     thebuggenie\modules\agile,
-    thebuggenie\core\entities\Comment;
+    thebuggenie\core\entities\Comment,
+    thebuggenie\core\helpers\Pagination;
 
 /**
  * @property entities\Project $selected_project
+ * @property entities\Client $client
+ * @property entities\Team $team
+ *
  * actions for the main module
  */
 class Main extends framework\Action
@@ -367,22 +371,46 @@ class Main extends framework\Action
         $this->forward403unless($this->getUser()->hasPageAccess('home'));
         $this->links = tables\Links::getTable()->getMainLinks();
         $this->show_project_list = framework\Settings::isFrontpageProjectListVisible();
-        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
-        if ($this->show_project_list || $this->show_project_config_link)
-        {
-            $this->project_list_mode = $request->getParameter('project_list_mode', 'active');
-            $activeProjects = entities\Project::getAllRootProjects(false);
-            $activePagination = new \thebuggenie\core\helpers\Pagination($activeProjects, $this->getRouting()->generate('home', ['project_list_mode' => 'active']), $request);
-            $this->active_pagination = $activePagination;
-            $this->active_projects = $activePagination->getPageItems();
-            $this->active_project_count = count($this->active_projects);
+    }
 
-            $archivedProjects = entities\Project::getAllRootProjects(true);
-            $archivedPagination = new \thebuggenie\core\helpers\Pagination($archivedProjects, $this->getRouting()->generate('home', ['project_list_mode' => 'archived']), $request);
-            $this->archived_pagination = $archivedPagination;
-            $this->archived_projects = $archivedPagination->getPageItems();
-            $this->archived_project_count = count($this->archived_projects);
+    /**
+     * @param framework\Request $request
+     * @Route(url="/projects/list/:list_mode/:project_state/*", name="project_list")
+     */
+    public function runProjectList(framework\Request $request)
+    {
+        $list_mode = $request->getParameter('list_mode', 'all');
+        $project_state = $request->getParameter('project_state', 'active');
+        $paginationOptions = [
+            'list_mode' => $list_mode,
+            'project_state' => $project_state
+        ];
+
+        switch ($list_mode) {
+            case 'all':
+                $projects = entities\Project::getAllRootProjects(($project_state === 'archived'));
+                break;
+            case 'team':
+                $paginationOptions['team_id'] = $request['team_id'];
+                $this->team = entities\Team::getB2DBTable()->selectById($request['team_id']);
+                list ($activeProjects, $archivedProjects) = $this->team->getProjects();
+                $projects = ($project_state === 'active') ? $activeProjects : $archivedProjects;
+                break;
+            case 'client':
+                $paginationOptions['client_id'] = $request['client_id'];
+                $this->client = entities\Client::getB2DBTable()->selectById($request['client_id']);
+                list ($activeProjects, $archivedProjects) = $this->client->getProjects();
+                $projects = ($project_state === 'active') ? $activeProjects : $archivedProjects;
+                break;
         }
+
+        $pagination = new Pagination($projects, $this->getRouting()->generate('project_list', $paginationOptions), $request);
+        $this->pagination = $pagination;
+        $this->projects = $pagination->getPageItems();
+        $this->project_count = count($projects);
+        $this->list_mode = $list_mode;
+        $this->project_state = $project_state;
+        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
     }
 
     public function runUserdata(framework\Request $request)
@@ -732,21 +760,7 @@ class Main extends framework\Action
             if (!$this->client instanceof entities\Client) {
                 return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
             }
-            $this->forward403Unless($this->client->hasAccess());
-
-            $projects = entities\Project::getAllByClientID($this->client->getID());
-
-            $final_projects = array();
-
-            foreach ($projects as $project)
-            {
-                if (!$project->isArchived()): $final_projects[] = $project;
-                endif;
-            }
-
-            $this->projects = $final_projects;
-
-            $this->forward403Unless($this->client->hasAccess());
+            $this->forward403unless($this->client->hasAccess());
 
             $this->users = $this->client->getMembers();
         }
@@ -772,35 +786,7 @@ class Main extends framework\Action
                 return $this->return404(framework\Context::getI18n()->__('This team does not exist'));
             }
 
-            $this->forward403Unless($this->team->hasAccess());
-
-            $projects = array();
-            foreach (entities\Project::getAllByOwner($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach (entities\Project::getAllByLeader($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach (entities\Project::getAllByQaResponsible($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach ($this->team->getAssociatedProjects() as $project_id => $project)
-            {
-                $projects[$project_id] = $project;
-            }
-
-            $final_projects = array();
-
-            foreach ($projects as $project)
-            {
-                if (!$project->isArchived()): $final_projects[] = $project;
-                endif;
-            }
-
-            $this->projects = $final_projects;
+            $this->forward403unless($this->team->hasAccess());
 
             $this->users = $this->team->getMembers();
         }
@@ -5202,7 +5188,7 @@ class Main extends framework\Action
             return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
         }
 
-        $this->forward403Unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+        $this->forward403unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
 
         if (! isset($request['todo']) || $request['todo'] == '')
         {

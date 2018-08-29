@@ -18,7 +18,7 @@
         <?php if ($project_count > 0): ?>
             <ul class="project_list simple_list">
             <?php foreach ($projects as $project): ?>
-                <li><?php include_component('project/overview', array('project' => $project)); ?></li>
+                <li><?php include_component('project/project', array('project' => $project)); ?></li>
             <?php endforeach; ?>
             </ul>
         <?php else: ?>

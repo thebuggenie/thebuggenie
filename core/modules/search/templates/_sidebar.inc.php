@@ -11,74 +11,74 @@
             <ul class="simple_list content" style="font-size: 1em;">
                 <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES; ?>" style="clear: both;">
-                        <?php echo link_tag(make_url('project_open_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_open_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_open_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Open issues for this project')); ?><span class="num_results_badge">-</span>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS; ?>" style="clear: both;">
-                        <?php echo link_tag(make_url('project_allopen_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_allopen_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_allopen_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Open issues (including subprojects)')); ?><span class="num_results_badge">-</span>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES; ?>" style="clear: both;">
-                        <?php echo link_tag(make_url('project_closed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_closed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_closed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Closed issues for this project')); ?>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS; ?>" style="clear: both;">
-                        <?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Closed issues (including subprojects)')); ?>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST; ?>" style="clear: both; margin-bottom: 15px;">
-                        <?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Project wishlist')); ?><span class="num_results_badge">-</span>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO; ?>">
-                        <?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Milestone todo-list for this project')); ?>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED; ?>" style="clear: both; margin-bottom: 15px;">
-                        <?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Most voted for issues')); ?>
                     </li>
                     <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH; ?>" style="clear: both;">
-                        <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                        <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                         <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Issues reported this month')); ?><span class="num_results_badge">-</span>
                     </li>
                     <?php if (!$tbg_user->isGuest()): ?>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Issues reported by me')); ?><span class="num_results_badge">-</span>
                         </li>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Open issues assigned to me')); ?><span class="num_results_badge">-</span>
                         </li>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><span class="num_results_badge">-</span>
                         </li>
                     <?php endif; ?>
                 <?php elseif (\thebuggenie\core\framework\Context::isProjectContext() || !$tbg_user->isGuest()): ?>
                     <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Issues reported this month')); ?><span class="num_results_badge">-</span>
                         </li>
                     <?php endif; ?>
                     <?php if (!$tbg_user->isGuest()): ?>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><span class="num_results_badge">-</span>
                         </li>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><span class="num_results_badge">-</span>
                         </li>
                         <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                            <?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                             <?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><span class="num_results_badge">-</span>
                         </li>
                         <?php if ($tbg_user->hasTeams()): ?>
                             <li class="savedsearch-item" data-search-id="predefined_<?php echo \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                                <?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                                <?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                 <?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><span class="num_results_badge">-</span>
                             </li>
                         <?php endif; ?>
@@ -94,7 +94,7 @@
                         <li id="saved_search_<?php echo $a_savedsearch->getID(); ?>_container" class="savedsearch-item" data-search-id="<?php echo $a_savedsearch->getID(); ?>">
                             <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
                                 <div style="clear: both;">
-                                    <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                                    <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <?php if (!\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()): ?>
                                         <div class="action_icons">
                                             <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
@@ -122,7 +122,7 @@
                                 <?php endif; ?>
                             <?php else: ?>
                                 <div style="clear: both;">
-                                    <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                                    <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <div class="action_icons">
                                         <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
                                         <?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
@@ -160,7 +160,7 @@
                         <li id="saved_search_<?php echo $a_savedsearch->getID(); ?>_container" class="savedsearch-item" data-search-id="<?php echo $a_savedsearch->getID(); ?>">
                             <div style="clear: both;">
                                 <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
-                                    <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                                    <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <?php if ($tbg_user->canCreatePublicSearches()): ?>
                                         <div class="action_icons">
                                             <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
@@ -170,7 +170,7 @@
                                     <span class="num_results_badge">-</span>
                                     <?php echo link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
                                 <?php else: ?>
-                                    <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+                                    <?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <?php if ($tbg_user->canCreatePublicSearches()): ?>
                                         <div class="action_icons">
                                             <?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>

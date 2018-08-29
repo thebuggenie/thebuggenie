@@ -573,7 +573,7 @@
         /**
          * Retrieve all projects by parent ID
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllByParentID($id)
         {
@@ -594,7 +594,7 @@
          *
          * @param bool $archived [optional] Show archived projects instead
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllRootProjects($archived = null)
         {
@@ -642,7 +642,7 @@
         /**
          * Retrieve all projects by client ID
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllByClientID($id)
         {
@@ -662,7 +662,7 @@
          * Retrieve all projects by leader
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByLeader($leader)
         {
@@ -686,7 +686,7 @@
          * Retrieve all projects by owner
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByOwner($owner)
         {
@@ -710,7 +710,7 @@
          * Retrieve all projects by qa
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByQaResponsible($qa)
         {
@@ -1200,7 +1200,7 @@
         /**
          * Returns an array of all the projects editions
          *
-         * @return array
+         * @return Edition[]
          */
         public function getEditions()
         {
@@ -1255,7 +1255,7 @@
         /**
          * Returns an array with all components
          *
-         * @return array
+         * @return Component[]
          */
         public function getComponents()
         {
@@ -1388,7 +1388,7 @@
          *
          * @param integer $days [optional] Number of days, default 21
          *
-         * @return array
+         * @return Milestone[]
          */
         public function getUpcomingMilestones($days = 21)
         {
@@ -1412,7 +1412,7 @@
          *
          * @param integer $days [optional] Number of days, default 21
          *
-         * @return array
+         * @return Mielstone[]
          */
         public function getStartingMilestones($days = 21)
         {
@@ -1579,7 +1579,7 @@
         /**
          * Returns an array with all builds
          *
-         * @return array
+         * @return Build[]
          */
         public function getBuilds()
         {
@@ -1692,7 +1692,7 @@
         /**
          * Returns an array with issues
          *
-         * @return array
+         * @return Issue[]
          */
         public function getIssuesWithoutMilestone()
         {
@@ -1703,7 +1703,7 @@
         /**
          * Returns an array with unassigned user stories
          *
-         * @return array
+         * @return Issue[]
          */
         public function getUnassignedStories()
         {
@@ -1742,7 +1742,7 @@
         /**
          * Returns all milestones visible in the project summary block
          *
-         * @return array
+         * @return Milestone[]
          */
         public function getVisibleMilestones()
         {
@@ -2501,7 +2501,7 @@
         /**
          * Return this projects most recent log items
          *
-         * @return array A list of log items
+         * @return LogItem[]
          */
         public function getRecentLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
         {
@@ -2690,7 +2690,7 @@
         /**
          * Return this projects 10 most recent issues
          *
-         * @return array A list of \thebuggenie\core\entities\Issues
+         * @return Issue[] A list of \thebuggenie\core\entities\Issues
          */
         public function getRecentIssues($issuetype)
         {

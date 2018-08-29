@@ -2332,6 +2332,19 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
+        TBG.Project.loadList = function (key, url) {
+            TBG.Main.Helpers.tabSwitcher('tab_' + key, 'projects_list_tabs', true);
+
+            if ($('tab_' + key + '_pane').innerHTML === '') {
+                TBG.Main.Helpers.ajax(url, {
+                    loading: {indicator: 'project_list_tab_' + key + '_indicator'},
+                    success: {
+                        update: {element: 'tab_' + key + '_pane'},
+                    }
+                });
+            }
+        };
+
         TBG.Project.Planning.initializeMilestoneDragDropSorting = function (milestone) {
             var milestone_issues = jQuery(milestone).find('.milestone_issues.jsortable');
             if (milestone_issues.hasClass('ui-sortable')) {
