@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Criteria;
+    use b2db\Row;
 
     /**
      * Issue spent times table
@@ -211,6 +212,47 @@
             $crit = $this->getCriteria();
             $crit->addUpdate(self::SPENT_HOURS, $row[self::SPENT_HOURS] * 100);
             $this->doUpdateById($crit, $row[self::ID]);
+        }
+
+        public function fixScopes()
+        {
+            $issue_scopes = [];
+            $issue_crit = Issues::getTable()->getCriteria();
+            $issue_crit->addSelectionColumn(Issues::SCOPE);
+            $issue_crit->addSelectionColumn(Issues::ID);
+
+            $issues_res = Issues::getTable()->doSelect($issue_crit);
+
+            if (!$issues_res) {
+                return;
+            }
+
+            while ($row = $issues_res->getNextRow()) {
+                $issue_scopes[$row->getID()] = $row->get(Issues::SCOPE);
+            }
+
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::ID);
+            $crit->addSelectionColumn(self::ISSUE_ID);
+            $crit->addWhere(self::SCOPE, 0);
+            $res = $this->doSelect($crit);
+
+            $fixRow = function (Row $row) use ($issue_scopes) {
+                $issue_id = $row->get(self::ISSUE_ID);
+                if (!isset($issue_scopes[$issue_id])) {
+                    return;
+                }
+
+                $crit = $this->getCriteria();
+                $crit->addUpdate(self::SCOPE, $issue_scopes[$issue_id]);
+                $this->doUpdateById($crit, $row->getID());
+            };
+
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $fixRow($row);
+                }
+            }
         }
 
         public function getSpentTimeSumsByIssueId($issue_id)

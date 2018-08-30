@@ -184,6 +184,7 @@
 
         protected function _preSave($is_new)
         {
+            parent::_preSave($is_new);
             if ($this->doesFileExistOnDisk()) {
                 $this->_size = filesize($this->getFullpath());
             }

@@ -2,6 +2,8 @@
 
 namespace thebuggenie\core\modules\installation;
 
+use thebuggenie\core\entities\tables\Files;
+use thebuggenie\core\entities\tables\IssueSpentTimes;
 use thebuggenie\core\entities\tables\Users;
 use thebuggenie\core\entities\tables\UserSessions;
 use thebuggenie\core\framework;
@@ -222,6 +224,16 @@ class Upgrade
         }
 
         Articles::getTable()->fixArticleTypes();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Fixing file scopes.\n");
+        }
+        Files::getTable()->fixScopes();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Fixing issue spent times scopes.\n");
+        }
+        IssueSpentTimes::getTable()->fixScopes();
 
         $admin_user = Users::getTable()->getByUsername($this->upgrade_options['4_1_13']['admin_username']);
         $admin_user->setPassword($this->upgrade_options['4_1_13']['admin_password']);

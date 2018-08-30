@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Criteria;
+    use b2db\Row;
     use b2db\Table;
     use thebuggenie\core\framework;
 
@@ -21,6 +22,8 @@
      *
      * @package thebuggenie
      * @subpackage tables
+     *
+     * @static @method Files getTable()
      *
      * @Table(name="files")
      * @Entity(class="\thebuggenie\core\entities\File")
@@ -136,6 +139,45 @@
 
             $result = $this->doSelectOne($crit);
             return $result['totalsize'];
+        }
+
+        public function fixScopes()
+        {
+            $issue_file_scopes = [];
+            $issue_files_crit = IssueFiles::getTable()->getCriteria();
+            $issue_files_crit->addSelectionColumn(IssueFiles::SCOPE);
+            $issue_files_crit->addSelectionColumn(IssueFiles::FILE_ID);
+
+            $issue_files_res = IssueFiles::getTable()->doSelect($issue_files_crit);
+
+            if (!$issue_files_res) {
+                return;
+            }
+
+            while ($row = $issue_files_res->getNextRow()) {
+                $issue_file_scopes[$row->get(IssueFiles::FILE_ID)] = $row->get(IssueFiles::SCOPE);
+            }
+
+            $crit = $this->getCriteria();
+            $crit->addSelectionColumn(self::ID);
+            $crit->addWhere(self::SCOPE, 0);
+            $res = $this->doSelect($crit);
+
+            $fixRow = function (Row $row) use ($issue_file_scopes) {
+                if (!isset($issue_file_scopes[$row->getID()])) {
+                    return;
+                }
+
+                $crit = $this->getCriteria();
+                $crit->addUpdate(self::SCOPE, $issue_file_scopes[$row->getID()]);
+                $this->doUpdateById($crit, $row->getID());
+            };
+
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $fixRow($row);
+                }
+            }
         }
 
     }
