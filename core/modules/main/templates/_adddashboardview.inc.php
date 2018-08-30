@@ -5,7 +5,10 @@
 
 ?>
 <div class="backdrop_box large" id="add_dashboard_views">
-    <div class="backdrop_detail_header"><?php echo __('Add dashboard view'); ?></div>
+    <div class="backdrop_detail_header">
+        <span><?php echo __('Add dashboard view'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();" class="button button-silver"><?php echo fa_image_tag('times'); ?></a>
+    </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="project_left">
             <ul class="simple_list" id="add_dashboard_views_menu">
@@ -48,9 +51,6 @@
                         <?php endforeach; ?>
     <?php endforeach; ?>
             </ul>
-        </div>
-        <div class="backdrop_detail_footer">
-            <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();" class="button button-silver"><?php echo __('Done'); ?></a>
         </div>
     </div>
 </div>

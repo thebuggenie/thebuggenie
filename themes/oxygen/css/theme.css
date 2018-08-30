@@ -360,6 +360,12 @@ header {
     vertical-align: middle;
     text-align: right;
 }
+.backdrop_details_submit + .backdrop_details_submit {
+    margin: 0 10px;
+    padding: 10px 0;
+    border-top: 1px dotted rgba(100, 100, 100, 0.1);
+}
+
 .backdrop_details_submit span.explanation {
     flex: 1 1 auto;
     text-align: left;
@@ -372,7 +378,10 @@ header {
     text-align: right;
 }
 
-.backdrop_details_submit input[type="submit"], .backdrop_details_submit input[type="submit"]:hover, .backdrop_details_submit input[type="button"], .backdrop_details_submit input[type="button"]:hover, .backdrop_details_submit button, .backdrop_details_submit button:hover {
+.backdrop_details_submit input[type="submit"], .backdrop_details_submit input[type="submit"]:hover,
+.backdrop_details_submit input[type="button"], .backdrop_details_submit input[type="button"]:hover,
+.backdrop_details_submit button, .backdrop_details_submit button:hover ,
+.backdrop_details_submit .button, .backdrop_details_submit .button:hover {
     font-weight: 100;
     font-size: 1.1em;
     padding: 5px 8px;
@@ -2900,6 +2909,7 @@ a.shadowed:active {
     color: #CCC;
     margin: 15px 0 0 0;
     line-height: 1.2;
+    flex: 0 0 auto;
 }
 
 #account_user_info:first-line {
@@ -2910,7 +2920,14 @@ a.shadowed:active {
 
 #account_info_container {
     width: 1100px;
-    margin: 35px auto -30px;
+    margin: 35px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+#account_details_container {
+    flex: 1 1 auto;
 }
 
 #username_unavailable {
@@ -5804,7 +5821,6 @@ ul.workflow_actions li:hover {
     font-weight: 100;
     font-size: 1.0em;
     padding: 5px;
-    background: transparent;
     text-align: left;
 }
 
@@ -12538,15 +12554,6 @@ li.filtervalue .hidden {
     float: left;
 }
 
-#search_button_bottom, #search_button_bottom:hover {
-    font-weight: 400 !important;
-}
-
-#find_issues button {
-    font-weight: 100;
-    padding: 2px 5px 1px 5px !important;
-}
-
 /* end boxes */
 
 #search_error, #search_message {
@@ -13012,21 +13019,6 @@ a:hover .issue_title {
 }
 
 /* import */
-.csv_import_data_box {
-    margin: 5px;
-    border: 1px solid #AAA;
-    width: 98%;
-    height: 200px;
-}
-
-.csv_import_dry {
-    float: left;
-}
-
-.csv_import_go {
-    float: right;
-}
-
 #csv_button_area {
     clear: both;
     padding-top: 5px;
@@ -13071,10 +13063,6 @@ a:hover .issue_title {
 
 .csv_data_box .header {
     padding-bottom: 5px;
-}
-
-#csv_import_control {
-    height: 20px
 }
 
 #config_scopes .nice_button {
@@ -16173,16 +16161,6 @@ form[id^='comp_'][id$='_auto_assign_form'] input[type=submit] {
     color: #AAA;
 }
 
-#owned_by_spinning,
-#lead_by_spinning,
-#qa_by_spinning,
-li[id^='edition_'][id$='_owned_by_spinning'],
-li[id^='edition_'][id$='_lead_by_spinning'],
-li[id^='edition_'][id$='_qa_by_spinning'],
-li[id^='comp_'][id$='_auto_assign_spinning'] {
-    margin-left: 5px;
-}
-
 #owned_by_change_error,
 #lead_by_change_error,
 #qa_by_change_error,
@@ -16536,12 +16514,6 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     padding: 4px 7px;
 }
 
-#viewissue_add_item_div #add_affected_spinning {
-    position: absolute;
-    margin-top: 13px;
-    margin-left: 8px;
-}
-
 /* Edit sprint details */
 
 #edit_milestone_container select[id^='starting_month_'],
@@ -16617,13 +16589,6 @@ form[id^='estimated_time_'][id$='_form'] input[name="estimated_time"] {
 
 form[id^='estimated_time_'][id$='_form'] .form_controls input[type=submit] {
     padding: 5px 17px;
-}
-
-ul[id^='estimated_time_'][id$='_change'] li[id^='estimated_time_'][id$='_spinning'] {
-    position: absolute;
-    margin-top: -32px !important;
-    margin-left: 5px;
-    font-size: 13px;
 }
 
 /* Issue time tracking - time spent */
@@ -16730,10 +16695,6 @@ ul[id^='popup_find_acl_'] input[type=submit] {
     margin-left: 2px;
 }
 
-ul[id^='popup_find_acl_'] li[id^='popup_find_acl_'][id$='_spinning'] {
-    padding-left: 6px;
-}
-
 ul[id^='popup_find_acl_'] li[id^='popup_find_acl_'][id$='_change_error'] {
     margin: 5px;
 }
@@ -16795,10 +16756,6 @@ ul[id^='popup_find_subscriber_'] input[id^='popup_find_subscriber_'][id$='_input
 ul[id^='popup_find_subscriber_'] input[type=submit] {
     padding: 3px;
     margin-left: 2px;
-}
-
-ul[id^='popup_find_subscriber_'] li[id^='popup_find_subscriber_'][id$='_spinning'] {
-    padding-left: 6px;
 }
 
 ul[id^='popup_find_subscriber_'] li[id^='popup_find_subscriber_'][id$='_change_error'] {
@@ -17130,22 +17087,6 @@ td.legendLabel {
     margin-top: 0;
 }
 
-#viewissue_add_item_div div > a.workflow_transition_submit_button {
-    padding: 4px 8px;
-    font-size: 1.1em;
-    margin-top: 10px;
-}
-
-#viewissue_add_item_div div > img[id^='transition_working_'][id$='_indicator'] {
-    margin-top: 15px !important;
-    margin-left: 8px !important;
-    position: absolute;
-}
-
-#bulk_workflow_transition_form {
-    margin-top: 10px;
-}
-
 #find_issues #search_results h5 {
     padding: 6px 0;
 }
@@ -17169,16 +17110,6 @@ ul[id^='transition_popup_comment_body_'][id$='_syntax_picker'] {
 
 ul[id^='transition_popup_comment_body_'][id$='_syntax_picker'] > li {
     padding: 3px;
-}
-
-.workflow_transition_submit_button {
-    margin-bottom: 5px !important;
-}
-
-#workflow_transition_form img[id^='transition_working_'][id$='_indicator'] {
-    position: absolute;
-    left: 0;
-    margin-top: 7px !important;
 }
 
 li[id^='transition_popup_set_stop_working_specify_log_div_'] {
@@ -18228,12 +18159,6 @@ div[id^='comment_reply_indicator_'],
     line-height: 2.2;
 }
 
-#add_application_password_indicator {
-    position: absolute;
-    margin-left: -30px;
-    margin-top: 3px;
-}
-
 #tab_settings_pane th {
     text-align: center;
 }
@@ -18242,12 +18167,6 @@ div[id^='comment_reply_indicator_'],
 
 #edit_agileboard_form input[id^='agileboard_description_'] {
     padding: 6px;
-}
-
-#agileboard_edit_indicator {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
 }
 
 .milestone_basic_container .milestone_name {

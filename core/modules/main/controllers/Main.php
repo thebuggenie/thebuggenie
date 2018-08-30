@@ -3786,28 +3786,6 @@ class Main extends framework\Action
                     $options['previous_route'] = $request['previous_route'];
                     $options['mandatory'] = true;
                     break;
-                case 'archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['mandatory'] = true;
-                    break;
-                case 'team_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'team';
-                    $options['id'] = $request['tid'];
-                    $options['mandatory'] = true;
-                    break;
-                case 'client_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'client';
-                    $options['id'] = $request['cid'];
-                    $options['mandatory'] = true;
-                    break;
-                case 'project_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'project';
-                    $options['id'] = $request['pid'];
-                    $options['mandatory'] = true;
-                    break;
                 case 'bulk_workflow':
                     $template_name = 'search/bulkworkflow';
                     $options['issue_ids'] = $request['issue_ids'];

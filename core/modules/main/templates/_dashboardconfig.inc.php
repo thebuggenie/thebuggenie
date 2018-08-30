@@ -1,6 +1,8 @@
 <div class="backdrop_box large">
     <div class="backdrop_detail_header">
-        <?php echo __('Configure dashboard'); ?>
+        <span><?php echo __('Configure dashboard'); ?></span>
+        <?php echo javascript_link_tag(fa_image_tag('plus'), array('onclick' => "TBG.Main.Dashboard.View.add();", 'class' => 'add_link')); ?>
+        <?php echo link_tag($previous_route, fa_image_tag('times'), ['class' => 'closer']); ?>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
@@ -35,17 +37,12 @@
             </li>
         </ul>
         <br style="clear: both;">
-        <div style="clear: both; margin: 20px auto; text-align: center;">
-            <?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Dashboard.View.add();", 'class' => 'button button-green')); ?>
-        </div>
-        <div id="save_dashboard" style="text-align: right; padding: 10px;">
-            <?php echo __("When you're happy, save your changes"); ?>
-            <button onclick="TBG.Main.Dashboard.save('<?php echo make_url('dashboard_save', array('target_type' => $target_type, 'tid' => $tid)); ?>');" class="button button-silver" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
-        </div>
-        <span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
     </div>
-    <div class="backdrop_detail_footer">
-        <?php echo link_tag($previous_route, __('Close and reload')); ?>
+    <div id="save_dashboard" class="backdrop_details_submit">
+        <span class="explanation"><?php echo __("When you're happy, save your changes"); ?></span>
+        <div class="submit_container">
+            <button onclick="TBG.Main.Dashboard.save('<?php echo make_url('dashboard_save', array('target_type' => $target_type, 'tid' => $tid)); ?>');" class="button button-silver"><?php echo image_tag('spinning_16.gif', array('id' => 'save_dashboard_indicator', 'style' => 'display: none;')) . __('Save dashboard'); ?></button>
+        </div>
     </div>
 </div>
 <script>Sortable.create('views_list', {constraint: ''});</script>

@@ -1,9 +1,10 @@
 <div class="backdrop_box large">
     <div class="backdrop_detail_header">
-        <?php echo __('Update project icons'); ?>
+        <span><?php echo __('Update project icons'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
-    <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('update_icons_indicator').show();return true;" enctype="multipart/form-data">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('update_icons_indicator').show();return true;" enctype="multipart/form-data">
+        <div id="backdrop_detail_content" class="backdrop_detail_content">
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <td style="width: 460px; padding-right: 10px;">
@@ -46,20 +47,14 @@
                     </td>
                 </tr>
             </table>
-            <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
-                <tr>
-                    <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-                        <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
-                            <?php echo __('When you are done, click "%update_icons" to upload the new project icons', array('%update_icons' => __('Update icons'))); ?>
-                        </div>
-                        <input class="button button-green" style="float: right;" type="submit" value="<?php echo __('Update icons'); ?>">
-                        <span id="update_icons_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <div class="backdrop_detail_footer">
-        <?php echo javascript_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
-    </div>
+        </div>
+        <div class="backdrop_details_submit">
+            <span class="explanation">
+                <?php echo __('When you are done, click "%update_icons" to upload the new project icons', array('%update_icons' => __('Update icons'))); ?>
+            </span>
+            <div class="submit_container">
+                <button class="button button-silver" type="submit"><?php echo image_tag('spinning_16.gif', array('id' => 'update_icons_indicator', 'style' => 'display: none;')) . __('Update icons'); ?></button>
+            </div>
+        </div>
+    </form>
 </div>

@@ -71,69 +71,6 @@
             }
         }
 
-        public function componentArchivedProjects()
-        {
-            if (!isset($this->target))
-            {
-                $this->projects = entities\Project::getAllRootProjects(true);
-                $this->project_count = count($this->projects);
-            }
-            elseif ($this->target == 'team')
-            {
-                $this->team = entities\Team::getB2DBTable()->selectById($this->id);
-                $projects = array();
-                foreach (entities\Project::getAllByOwner($this->team) as $project)
-                {
-                    $projects[$project->getID()] = $project;
-                }
-                foreach (entities\Project::getAllByLeader($this->team) as $project)
-                {
-                    $projects[$project->getID()] = $project;
-                }
-                foreach (entities\Project::getAllByQaResponsible($this->team) as $project)
-                {
-                    $projects[$project->getID()] = $project;
-                }
-                foreach ($this->team->getAssociatedProjects() as $project_id => $project)
-                {
-                    $projects[$project_id] = $project;
-                }
-
-                $final_projects = array();
-
-                foreach ($projects as $project)
-                {
-                    if ($project->isArchived()): $final_projects[] = $project;
-                    endif;
-                }
-
-                $this->projects = $final_projects;
-            }
-            elseif ($this->target == 'client')
-            {
-                $this->client = entities\Client::getB2DBTable()->selectById($this->id);
-                $projects = entities\Project::getAllByClientID($this->client->getID());
-
-                $final_projects = array();
-
-                foreach ($projects as $project)
-                {
-                    if (!$project->isArchived()): $final_projects[] = $project;
-                    endif;
-                }
-
-                $this->projects = $final_projects;
-            }
-            elseif ($this->target == 'project')
-            {
-                $this->parent = entities\Project::getB2DBTable()->selectById($this->id);
-                $this->projects = $this->parent->getChildren(true);
-                ;
-            }
-
-            $this->project_count = count($this->projects);
-        }
-
         public function componentTeamdropdown()
         {
             framework\Logging::log('team dropdown component');
