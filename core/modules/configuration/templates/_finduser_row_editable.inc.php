@@ -1,7 +1,10 @@
 <?php if ($user->isScopeConfirmed()): ?>
     <form action="<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>" method="post" onsubmit="TBG.Config.User.update('<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>', '<?php echo $user->getID(); ?>');return false;" id="edit_user_<?php echo $user->getID(); ?>_form" class="fullpage_backdrop">
         <div class="fullpage_backdrop_content backdrop_box large">
-            <div class="backdrop_detail_header"><?php echo __('Edit user'); ?></div>
+            <div class="backdrop_detail_header">
+                <span><?php echo __('Edit user'); ?></span>
+                <?= javascript_link_tag(fa_image_tag('times'), ['class' => 'closer', 'onclick' => "$('user_".$user->getID()."_edit_tr').hide();"]); ?>
+            </div>
             <div class="backdrop_detail_content">
                 <table style="width: 100%;">
                     <tr>
@@ -108,14 +111,13 @@
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="4" style="text-align: right; font-size: 13px; padding-top: 10px;">
-                            <div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?>&nbsp;<?php echo __('Please wait'); ?></span></div>
-                            <input type="submit" value="<?php echo __('Update user'); ?>" style="font-size: 13px; font-weight: bold;">
-                            <?php echo __('or %cancel', array('%cancel' => javascript_link_tag('<b>'.__('cancel').'</b>', array('onclick' => "$('user_".$user->getID()."_edit_tr').hide();")))); ?>
-                        </td>
-                    </tr>
                 </table>
+            </div>
+            <div class="backdrop_details_submit">
+                <span class="explanation"></span>
+                <div class="submit_container">
+                    <button type="submit" class="button button-silver"><?php echo image_tag('spinning_16.gif', ['id' => 'edit_user_' . $user->getID() . '_indicator', 'style' => 'display: none;']) . __('Update user'); ?></button>
+                </div>
             </div>
         </div>
     </form>

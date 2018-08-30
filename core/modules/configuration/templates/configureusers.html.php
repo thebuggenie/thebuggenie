@@ -66,12 +66,13 @@
                                 };
                             </script>
                             <div class="fullpage_backdrop_content backdrop_box medium">
-                                <div class="backdrop_detail_header"><?php echo __('Add a user'); ?></div>
-                                <div class="backdrop_detail_content">
-                                    <p>
+                                <div class="backdrop_detail_header">
+                                    <span><?php echo __('Add a user'); ?></span>
+                                    <?= javascript_link_tag(fa_image_tag('times'), array('class' => 'closer', 'onclick' => "$('adduser_div').toggle();")); ?>
+                                </div>
+                                <form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb);return false;" id="createuser_form">
+                                    <div class="backdrop_detail_content">
                                         <?php echo __('Enter details about the new user here'); ?>
-                                    </p>
-                                    <form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb);return false;" id="createuser_form">
                                         <dl>
                                             <dt><label for="adduser_username" class="required"><?php echo __('Username'); ?>:</label></dt>
                                             <dd>
@@ -116,13 +117,14 @@
                                                 <?php endforeach; ?>
                                             </dd>
                                         </dl>
-                                        <br style="clear: both;">
-                                        <div class="createuser_submit_container">
-                                            <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'createuser_form_indicator')); ?>
-                                            <input type="submit" value="<?php echo (\thebuggenie\core\framework\Context::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>" onclick="$('createuser_form_indicator').show()"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
+                                    </div>
+                                    <div class="backdrop_details_submit">
+                                        <span class="explanation"></span>
+                                        <div class="submit_container">
+                                            <button type="submit" class="button button-silver"><?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'createuser_form_indicator')) . ((\thebuggenie\core\framework\Context::getScope()->isDefault()) ? __('Create user') : __('Create or add user')); ?></button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <br style="clear:both;">

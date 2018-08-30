@@ -1,9 +1,10 @@
 <div class="backdrop_box large">
     <div class="backdrop_detail_header">
-        <?php echo ($build->getId()) ? __('Edit release details') : __('Add new release'); ?>
+        <span><?php echo ($build->getId()) ? __('Edit release details') : __('Add new release'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
-    <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
+        <div id="backdrop_detail_content" class="backdrop_detail_content">
             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
                     <td style="width: 200px;"><label for="build_name"><?php echo __('Release name:'); ?></label></td>
@@ -117,30 +118,24 @@
                     </td>
                 </table>
             </div>
-            <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
-                <tr>
-                    <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-                        <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
-                            <?php if ($build->getId()): ?>
-                                <?php echo __('When you are done, click "%update_release" to update the details for this release', array('%update_release' => __('Update release'))); ?>
-                            <?php else: ?>
-                                <?php echo __('When you are done, click "%add_release" to publish this release', array('%add_release' => __('Add release'))); ?>
-                            <?php endif; ?>
-                        </div>
-                        <?php if ($build->getID()): ?>
-                            <input type="hidden" name="build_id" value="<?php echo $build->getID(); ?>">
-                        <?php endif; ?>
-                        <?php if (!$build->getProject()->isEditionsEnabled() && !$build->getEdition() instanceof \thebuggenie\core\entities\Edition): ?>
-                            <input type="hidden" name="edition" value="0">
-                        <?php endif; ?>
-                            <input class="button button-green" style="float: right;" type="submit" value="<?php echo ($build->getId()) ? __('Update release') : __('Add release'); ?>">
-                        <span id="add_release_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <div class="backdrop_detail_footer">
-        <?php echo javascript_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
-    </div>
+        </div>
+        <div class="backdrop_details_submit">
+            <span class="explanation">
+                <?php if ($build->getId()): ?>
+                    <?php echo __('When you are done, click "%update_release" to update the details for this release', array('%update_release' => __('Update release'))); ?>
+                <?php else: ?>
+                    <?php echo __('When you are done, click "%add_release" to publish this release', array('%add_release' => __('Add release'))); ?>
+                <?php endif; ?>
+            </span>
+            <div class="submit_container">
+                <?php if ($build->getID()): ?>
+                    <input type="hidden" name="build_id" value="<?php echo $build->getID(); ?>">
+                <?php endif; ?>
+                <?php if (!$build->getProject()->isEditionsEnabled() && !$build->getEdition() instanceof \thebuggenie\core\entities\Edition): ?>
+                    <input type="hidden" name="edition" value="0">
+                <?php endif; ?>
+                <button class="button button-silver" type="submit"><?php echo image_tag('spinning_20.gif', ['id' => 'add_release_indicator', 'style' => 'display: none;']) . (($build->getId()) ? __('Update release') : __('Add release')); ?></button>
+            </div>
+        </div>
+    </form>
 </div>

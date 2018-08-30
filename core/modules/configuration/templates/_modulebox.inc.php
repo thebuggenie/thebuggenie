@@ -30,15 +30,16 @@
     <?php if ($module->getID() && $is_default_scope): ?>
         <div id="update_module_help_<?php echo $module->getID(); ?>" class="fullpage_backdrop" style="display: none;">
             <div class="backdrop_box medium">
-                <h1><?php echo __('Install downloaded module update file'); ?></h1>
-                <p>
+                <div class="backdrop_detail_header">
+                    <span><?php echo __('Install downloaded module update file'); ?></span>
+                    <a href="javascript:void(0);" class="closer" onclick="TBG.Core.cancelManualUpdatePoller();$('update_module_help_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('times'); ?></a>
+                </div>
+                <div class="backdrop_detail_content">
                     <?php echo __('Please click the download link below and download the update file. Place the downloaded file in the cache folder (%cache_folder) on this server. As soon as the file has been verified, the %update button below will be enabled, and you can press the button to update the module.',
                         array('%cache_folder' => '<span class="command_box">'.THEBUGGENIE_CACHE_PATH.$module->getName().'.zip</span>', '%update' => '"'.__('Update').'"'));
                     ?>
-                </p>
+                </div>
                 <form id="module_<?php echo $module->getName(); ?>_perform_update" style="display: inline-block; float: right; padding: 10px;" action="<?php echo make_url('configuration_module_update', array('module_key' => $module->getName())); ?>">
-                    <a href="javascript:void(0);" onclick="TBG.Core.cancelManualUpdatePoller();$('update_module_help_<?php echo $module->getID(); ?>').hide();"><?php echo __('Cancel'); ?></a>
-                    <?php echo __('%cancel or %update_module', array('%cancel' => '', '%update_module' => '')); ?>
                     <input type="submit" disabled value="<?php echo __('Update module'); ?>" class="button button-lightblue">
                 </form>
                 <div style="display: inline-block; float: none; padding: 10px;">

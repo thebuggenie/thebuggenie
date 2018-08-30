@@ -4629,6 +4629,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             f = (form !== undefined) ? form : 'createuser_form';
             TBG.Main.Helpers.ajax(url, {
                 form: f,
+                loading: {
+                    indicator: 'createuser_form_indicator'
+                },
                 success: {
                     hide: ['createuser_form_indicator', 'createuser_form_quick_indicator'],
                     update: 'users_results',

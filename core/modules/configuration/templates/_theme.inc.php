@@ -14,18 +14,19 @@
     <?php if ($is_default_scope): ?>
         <div id="update_theme_help_<?php echo $theme['key']; ?>" class="fullpage_backdrop" style="display: none;">
             <div class="backdrop_box medium">
-                <h1><?php echo __('Install downloaded theme update file'); ?></h1>
-                <p>
+                <div class="backdrop_detail_header">
+                    <span><?php echo __('Install downloaded theme update file'); ?></span>
+                    <a href="javascript:void(0);" class="closer" onclick="$('update_theme_help_<?php echo $theme['key']; ?>').hide();"><?php echo fa_image_tag('times'); ?></a>
+                </div>
+                <div class="backdrop_detail_content">
                     <?php echo __('Please click the download link below and download the update file. Unpack the downloaded archive in the theme folder (%theme_folder), overwriting the current theme (%current_theme_folder) on this server, replacing the old contents. When you are done, refresh this page.',
                         array(
                             '%theme_folder' => '<span class="command_box">'.THEBUGGENIE_PATH.'themes</span>',
                             '%current_theme_folder' => '<span class="command_box">'.THEBUGGENIE_PATH.'themes/'.$theme['key'].'</span>'
                         ));
                     ?>
-                </p>
-                <div style="display: inline-block; float: right; padding: 10px;">
-                    <a href="javascript:void(0);" onclick="$('update_theme_help_<?php echo $theme['key']; ?>').hide();"><?php echo __('Cancel'); ?></a>
-                    <?php echo __('%cancel or %download_update_file', array('%cancel' => '', '%download_update_file' => '')); ?>
+                </div>
+                <div class="backdrop_details_submit">
                     <a id="theme_<?php echo $theme['key']; ?>_download_location" class="button button-silver" href="#" target="_blank"><?php echo __('Download update file'); ?></a>
                 </div>
             </div>

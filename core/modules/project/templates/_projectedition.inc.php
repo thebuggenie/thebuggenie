@@ -1,6 +1,7 @@
 <div class="backdrop_box large">
     <div class="backdrop_detail_header">
-        <?php echo __('Edit edition details'); ?>
+        <span><?php echo __('Edit edition details'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="tab_menu inset">
@@ -243,8 +244,5 @@
             <?php endif; ?>
             </div>
         </div>
-    </div>
-    <div class="backdrop_detail_footer">
-        <?php echo javascript_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
     </div>
 </div>
