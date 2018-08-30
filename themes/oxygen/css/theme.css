@@ -179,6 +179,18 @@ input#login_button, input#register_button {
     position: absolute;
 }
 
+#elevated_login_container {
+    background: #FFF;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vh;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
 th {
     font-weight: 400;
     border-bottom: 1px solid #DDD;
@@ -303,25 +315,67 @@ header {
 
 .backdrop_detail_header, .backdrop_box h1 {
     box-shadow: none;
-    padding: 10px 0 5px 0;
-    border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
-    color: #888;
-    font-weight: 400;
-    font-size: 1.2em;
-    margin: 0 7px;
+    border-bottom: 1px solid #FFF;
+    color: #FFF;
+    font-weight: 100;
+    font-size: 1.3em;
+    margin: 0;
     text-transform: uppercase;
+    display: flex;
+    background-color: #4E81AB;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.backdrop_detail_header span {
+    flex: 1 1 auto;
+    padding: 10px;
+    text-align: left;
+}
+.backdrop_detail_header .closer, .backdrop_detail_header .back_link, .backdrop_detail_header .add_link {
+    flex: 0 0 auto;
+    padding: 10px;
+    vertical-align: middle;
+    transition: background-color 0.3s ease-in-out;
+}
+.backdrop_detail_header .closer:hover, .backdrop_detail_header .back_link:hover, .backdrop_detail_header .add_link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.backdrop_detail_header a {
+    color: #FFF;
+    border: none;
+    text-decoration: none;
+}
+.backdrop_detail_header .closer a:hover {
+    color: #FAA;
+}
+.backdrop_detail_header a:hover {
+    border: none;
+    text-decoration: none;
 }
 
 .backdrop_details_submit {
-    text-align: right;
+    display: flex;
     padding: 10px;
     vertical-align: middle;
+    text-align: right;
+}
+.backdrop_details_submit span.explanation {
+    flex: 1 1 auto;
+    text-align: left;
+    color: #888;
+    font-size: 1.1em;
+    font-style: italic;
+}
+.backdrop_details_submit span.submit_container {
+    flex: 0 0 auto;
+    text-align: right;
 }
 
-.backdrop_details_submit input[type="submit"], .backdrop_details_submit input[type="submit"]:hover, .backdrop_details_submit input[type="button"], .backdrop_details_submit input[type="button"]:hover {
+.backdrop_details_submit input[type="submit"], .backdrop_details_submit input[type="submit"]:hover, .backdrop_details_submit input[type="button"], .backdrop_details_submit input[type="button"]:hover, .backdrop_details_submit button, .backdrop_details_submit button:hover {
     font-weight: 100;
     font-size: 1.1em;
-    padding: 3px 7px;
+    padding: 5px 8px;
 }
 
 .project-context #main_menu {
@@ -570,7 +624,7 @@ header #user_notifications_count.unread {
     margin: 0;
 }
 
-#user_notifications_list li .user_popup .user_realname, #user_notifications_list li .user_popup .user_details {
+#user_notifications_list li .user_dropdown .user_realname, #user_notifications_list li .user_dropdown .user_details {
     color: #555 !important;
 }
 
@@ -1590,20 +1644,6 @@ footer img {
     border-bottom-color: #AAA;
 }
 
-.comment_controls,
-.todo_controls {
-    margin-top: 10px;
-    font-size: 1em;
-}
-
-.comment_controls .button,
-.comment_controls .button:hover,
-.todo_controls .button,
-.todo_controls .button:hover {
-    font-size: 1.1em;
-    padding: 4px 8px;
-}
-
 .comment_editsave, .comment_addsave {
     font-weight: 400;
 }
@@ -1633,12 +1673,16 @@ footer img {
     position: fixed;
     width: 650px;
     z-index: 120;
-    padding: 10px;
     bottom: 5px;
     right: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     background-color: #FFF;
     border: 0;
+}
+
+.comment_add_main,
+.todo_add_main {
+    padding: 10px;
 }
 
 .comment_editor .typeahead.dropdown-menu,
@@ -2770,7 +2814,7 @@ a.shadowed:active {
 }
 
 /* user popups */
-.user_popup {
+.user_dropdown {
     z-index: 100;
     width: 300px;
     margin-top: 10px;
@@ -2778,12 +2822,11 @@ a.shadowed:active {
     position: absolute;
 }
 
-.user_popup, #user_details_popup {
-    font-size: 0.9em;
+.user_dropdown, #user_details_popup {
     color: #555;
 }
 
-.user_popup .user_realname {
+.user_dropdown .user_realname {
     font-size: 1.2em;
     font-weight: 400;
     padding: 0;
@@ -2791,12 +2834,36 @@ a.shadowed:active {
     float: left;
 }
 
+.usercard_content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 0.8em;
+}
+
 #user_details_popup .user_realname {
     font-size: 1.5em;
     font-weight: 400;
     padding: 2px 0 0 0;
-    float: left;
     line-height: 1.2;
+}
+
+.usercard .user_profile {
+    font-size: 1.0em;
+    font-weight: 100;
+    padding: 10px;
+    flex: 0 0 250px;
+}
+
+.usercard .user_details {
+    line-height: 1.7;
+    font-weight: 100;
+    padding: 5px 15px;
+    margin-left: 10px;
+    clear: both;
+    flex: 1 1 auto;
+    border-left: 1px solid #DDD;
+    box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8);
 }
 
 .account_details {
@@ -3028,7 +3095,7 @@ label[for=profile_prefer_wiki_markdown] {
     color: #C4CAE9;
 }
 
-.user_popup .user_realname .user_status, .usercard .user_realname .user_status {
+.user_dropdown .user_realname .user_status, .usercard .user_realname .user_status {
     font-size: 0.8em;
     font-weight: 100;
     color: #AAA;
@@ -3055,27 +3122,7 @@ label[for=profile_prefer_wiki_markdown] {
     margin-left: -2px;
 }
 
-.usercard .user_details {
-    font-size: 1.1em;
-    line-height: 1.7;
-    font-weight: 100;
-    padding: 5px 15px;
-    clear: both;
-    width: 655px;
-    float: right;
-    border-left: 1px solid #DDD;
-    box-shadow: -10px 0 15px -18px rgba(0, 0, 0, 0.8);
-}
-
-.usercard .user_profile {
-    font-size: 1.0em;
-    font-weight: 100;
-    padding: 3px;
-    width: 180px;
-    float: left;
-}
-
-.user_popup .user_avatar {
+.user_dropdown .user_avatar {
     padding: 2px;
     width: 36px;
     height: 36px;
@@ -3086,7 +3133,7 @@ label[for=profile_prefer_wiki_markdown] {
     display: inline-block;
 }
 
-.user_popup .user_details {
+.user_dropdown .user_details {
     font-size: 0.8em;
     width: 230px;
     font-weight: 100;
@@ -3101,7 +3148,7 @@ label[for=profile_prefer_wiki_markdown] {
     vertical-align: top;
 }
 
-.user_popup .user_details:first-line {
+.user_dropdown .user_details:first-line {
     font-size: 1.7em;
     font-weight: 400;
 }
@@ -5714,7 +5761,14 @@ ul.workflow_actions li:hover {
     left: 50%;
     z-index: 100001;
     clear: both;
-    padding: 0 !important;
+    margin: 5px 0;
+    font-size: 1em;
+    display: block;
+    padding: 0;
+    background-color: #FFF;
+    border: none;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+    border-radius: 2px;
 }
 
 .backdrop_box#reportissue_container {
@@ -5744,10 +5798,6 @@ ul.workflow_actions li:hover {
 .backdrop_box.huge {
     width: 1010px;
     margin: 0 -500px 200px -500px;
-}
-
-.backdrop_box .backdrop_detail_header {
-    text-align: left;
 }
 
 .backdrop_detail_content {
@@ -6486,7 +6536,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .more_actions_dropdown .disabled .fa {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
 }
-.more_actions_dropdown .fa.mark_blocking, .more_actions_dropdown .fa.delete, .tab_menu_dropdown .fa.delete {
+.more_actions_dropdown .fa.mark_blocking, .more_actions_dropdown .fa.delete, .tab_menu_dropdown .fa.delete, .fa.delete {
     color: rgb(225, 50, 50);
 }
 .more_actions_dropdown .fa.affected_items {
@@ -7136,7 +7186,6 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 #viewissue_add_relation_div, #viewissue_add_item_div {
     text-align: left;
-    padding: 10px;
 }
 
 #viewissue_add_item_div .backdrop_detail_header .button.button-silver {
@@ -7210,6 +7259,20 @@ ul.attached_items {
 .attached_item:hover .removelink a:hover, .affected_item:hover .removelink a:hover, .relatedissue a.removelink:hover, .duplicatedissue a.removelink:hover {
     text-decoration: none;
     border: none;
+}
+
+.icon-link:hover, .icon-link {
+    color: #555;
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.icon-link:hover {
+    background-color: rgba(100, 100, 100, 0.1);
 }
 
 .attached_item .upload_details {
@@ -10448,11 +10511,11 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     padding-bottom: 5px;
 }
 
-.whiteboard-issue .issue_info .user_popup {
+.whiteboard-issue .issue_info .user_dropdown {
     text-align: initial;
 }
 
-.whiteboard-issue .issue_info .userdropdown .user_popup {
+.whiteboard-issue .issue_info .userdropdown .user_dropdown {
     margin-left: -23px;
     margin-top: 13px;
 }
@@ -10654,30 +10717,6 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 
 .infobox_modal .backdrop_detail_content {
     padding: 10px;
-}
-
-.infobox_modal .close_me {
-    padding: 10px;
-    text-align: right;
-}
-
-.infobox_modal .close_me label {
-    font-weight: 400;
-    vertical-align: middle;
-    font-size: 0.9em;
-}
-
-.infobox_modal .close_me .button {
-    font-size: 1.1em;
-    padding: 3px 7px;
-}
-
-.infobox_modal .close_me input[type=submit] {
-    font-size: 1.1em;
-}
-
-.infobox_modal .close_me input[type=checkbox] {
-    vertical-align: middle;
 }
 
 #scrum .infobox .content ul {
@@ -11080,7 +11119,7 @@ div.quickaddtask .close_micro_popup_link {
     margin: 0;
 }
 
-.dashboard_view_issues .issue_user_avatar_cell .user_popup {
+.dashboard_view_issues .issue_user_avatar_cell .user_dropdown {
     left: -14px;
 }
 
@@ -12867,18 +12906,6 @@ li.filtervalue .hidden {
 
 .saved_searches .container_div {
     margin-bottom: 10px;
-}
-
-.backdrop_box {
-    margin: 5px 0;
-    clear: both;
-    font-size: 1em;
-    display: block;
-    padding: 0 0 2px;
-    background-color: #FFF;
-    border: 1px solid #CCC;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
-    border-radius: 3px;
 }
 
 .side_bar .container_divs_wrapper {
@@ -16445,12 +16472,6 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     font-size: 14px;
 }
 
-#milestone_edit_indicator {
-    position: absolute;
-    left: 8px;
-    margin-top: 4px;
-}
-
 #milestone_details_overview > .milestone_details > h3 > a {
     margin-top: -7px;
 }
@@ -16625,7 +16646,14 @@ ul[id^='estimated_time_'][id$='_change'] li[id^='estimated_time_'][id$='_spinnin
 
 #timespent_list {
     border-spacing: 2px 5px;
-    margin-top: 0 !important;
+    margin-top: 0;
+    width: 100%;
+}
+#timespent_list th {
+    background-color: #FFF;
+    color: #555;
+    text-transform: uppercase;
+    font-size: 0.9em;
 }
 
 #timespent_list .button-group > a {
@@ -16832,7 +16860,7 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled {
     margin-bottom: 5px;
 }
 
-.dashboard_view_content .userdropdown .user_popup .header {
+.dashboard_view_content .userdropdown .user_dropdown .header {
     margin: 0 !important;
     padding: 7px 7px 0 7px !important;
     text-transform: none;
@@ -16899,14 +16927,14 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a {
     font-size: 1em;
 }
 
-#dashboard_lefthand .userdropdown .user_popup .header {
+#dashboard_lefthand .userdropdown .user_dropdown .header {
     margin: 0;
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
     padding: 7px 7px 0 7px;
 }
 
-.dashboard_view_issues .userdropdown .user_popup .header {
+.dashboard_view_issues .userdropdown .user_dropdown .header {
     margin: 0 !important;
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
@@ -17564,12 +17592,12 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr {
     padding: 5px 11px;
 }
 
-.user_popup > li > a,
-.user_popup > li > a:hover {
+.user_dropdown > li > a,
+.user_dropdown > li > a:hover {
     font-size: 13px;
 }
 
-.user_popup > li.header {
+.user_dropdown > li.header {
     margin-bottom: 3px;
     padding-bottom: 0;
 }
@@ -17896,13 +17924,13 @@ li.header div.user_avatar {
     margin-top: 8px;
 }
 
-#related_child_issues_inline .user_popup li,
-#related_duplicate_issues_inline .user_popup li {
+#related_child_issues_inline .user_dropdown li,
+#related_duplicate_issues_inline .user_dropdown li {
     width: initial !important;
 }
 
-#related_child_issues_inline .user_popup,
-#related_duplicate_issues_inline .user_popup {
+#related_child_issues_inline .user_dropdown,
+#related_duplicate_issues_inline .user_dropdown {
     top: initial !important;
     left: 80px !important;
 }
@@ -18285,17 +18313,17 @@ div[id^='comment_reply_indicator_'],
     opacity: 1;
 }
 
-.milestone_issue .user_popup {
+.milestone_issue .user_dropdown {
     margin-left: -263px;
     margin-top: 13px;
 }
 
-.milestone_issue .user_popup .user_realname {
+.milestone_issue .user_dropdown .user_realname {
     line-height: 20px;
 }
 
-.milestone_issue .user_popup.leftie:before,
-.milestone_issue .user_popup.leftie:after {
+.milestone_issue .user_dropdown.leftie:before,
+.milestone_issue .user_dropdown.leftie:after {
     left: 90%;
 }
 

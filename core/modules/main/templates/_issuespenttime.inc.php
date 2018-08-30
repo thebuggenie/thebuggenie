@@ -1,7 +1,10 @@
 <div class="backdrop_box large" id="viewissue_add_item_div">
-    <div class="backdrop_detail_header"><?php echo __('Issue time tracking - edit time spent entry'); ?></div>
+    <div class="backdrop_detail_header">
+        <a href="javascript:void(0);" class="back_link" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $entry->getIssue()->getID())); ?>');"><?= fa_image_tag('chevron-left'); ?></a>
+        <span><?php echo __('Issue time tracking - edit time spent entry'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
+    </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <h4 style="margin-top: 10px;"><?php echo __('Edit entry'); ?></h4>
         <form action="<?php echo make_url('issue_edittimespent', array('project_key' => $entry->getIssue()->getProject()->getKey(), 'issue_id' => $entry->getIssueID(), 'entry_id' => $entry->getID())); ?>" onsubmit="TBG.Issues.editTimeEntry(this);return false;">
             <ul class="simple_list issue_timespent_form">
                 <li>
@@ -58,13 +61,11 @@
                     <label for="issue_timespent_<?php echo $entry->getID(); ?>_comment" class="optional"><?php echo __('Comment (optional)'); ?></label>
                     <input id="issue_timespent_<?php echo $entry->getID(); ?>_comment" name="timespent_comment" type="text" style="width: 500px;" value="<?php echo htmlentities($entry->getComment(), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>">
                 </li>
-                <li style="text-align: right;">
-                    <input type="submit" class="button button-silver" value="<?php echo __('Update entry'); ?>">
-                </li>
             </ul>
+            <div class="backdrop_details_submit">
+                <span class="explanation"></span>
+                <div class="submit_container"><input type="submit" class="button button-silver" value="<?php echo __('Update entry'); ?>"></div>
+            </div>
         </form>
-    </div>
-    <div class="backdrop_detail_footer">
-        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $entry->getIssue()->getID())); ?>');"><?php echo __('Back'); ?></a>
     </div>
 </div>

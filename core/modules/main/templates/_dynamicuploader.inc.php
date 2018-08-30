@@ -1,24 +1,24 @@
 <?php if (isset($target)): ?>
-<form action="<?php echo make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;">
+<form action="<?= make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;">
     <div class="backdrop_detail_content">
 <?php endif; ?>
         <div class="upload_container" id="upload_drop_zone">
-            <span class="double"><?php echo __('Drop files on this area or %click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
-            <span class="single" style="display: none;"><?php echo __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
+            <span class="double"><?= __('Drop files on this area or %click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
+            <span class="single" style="display: none;"><?= __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
         </div>
         <div class="upload_file_listing">
-            <ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-preview-src="<?php echo image_url('icon_file_generic.png'); ?>">
+            <ul id="file_upload_list" data-filename-label="<?= htmlentities(__('File'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-label="<?= htmlentities(__('Description'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-description-placeholder="<?= htmlentities(__('Enter a short file description here'), ENT_COMPAT, \thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" data-preview-src="<?= image_url('icon_file_generic.png'); ?>">
                 <?php if (isset($existing_files)): ?>
                     <?php foreach ($existing_files as $file): ?>
                         <li>
                             <?php if ($file->isImage()): ?>
-                                <span class="imagepreview" title="<?php echo $file->getOriginalFilename(); ?>"><?php echo image_tag(make_url('showfile', array('id' => $file->getID())), array(), true); ?></span>
+                                <span class="imagepreview" title="<?= $file->getOriginalFilename(); ?>"><?= image_tag(make_url('showfile', array('id' => $file->getID())), array(), true); ?></span>
                             <?php else: ?>
-                                <span class="imagepreview" title="<?php echo $file->getOriginalFilename(); ?>"><?php echo image_tag('icon_file_generic.png'); ?></span>
+                                <span class="imagepreview" title="<?= $file->getOriginalFilename(); ?>"><?= image_tag('icon_file_generic.png'); ?></span>
                             <?php endif; ?>                    
-                            <label><?php echo __('File'); ?></label><span class="filename"><?php echo $file->getOriginalFilename(); ?></span> <span class="filesize"><?php echo $file->getReadableFilesize(); ?></span><br>
-                            <label><?php echo __('Description'); ?></label><input type="text" class="file_description" name="file_description[<?php echo $file->getId(); ?>]" value="<?php echo $file->getDescription(); ?>" placeholder="<?php echo __('Enter a short file description here'); ?>">
-                            <input type="hidden" name="files[<?php echo $file->getId(); ?>]" value="<?php echo $file->getId(); ?>">
+                            <label><?= __('File'); ?></label><span class="filename"><?= $file->getOriginalFilename(); ?></span> <span class="filesize"><?= $file->getReadableFilesize(); ?></span><br>
+                            <label><?= __('Description'); ?></label><input type="text" class="file_description" name="file_description[<?= $file->getId(); ?>]" value="<?= $file->getDescription(); ?>" placeholder="<?= __('Enter a short file description here'); ?>">
+                            <input type="hidden" name="files[<?= $file->getId(); ?>]" value="<?= $file->getId(); ?>">
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?></ul>
@@ -41,11 +41,11 @@
         </script>
 <?php if (isset($target)): ?>
     </div>
-    <div class="backdrop_detail_footer">
-        <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.reset()"><?php echo __('Cancel'); ?></a>
-        <?php echo __('%cancel or %save_attachments', array('%cancel' => '', '%save_attachments' => '')); ?>
-        <?php echo image_tag('spinning_16.gif', array('id' => 'attachments_indicator', 'style' => 'display: none;')); ?>
-        <input type="submit" class="button button-silver" value="<?php echo __('Save attachments'); ?>" id="dynamic_uploader_submit">
+    <div class="backdrop_details_submit">
+        <span class="explanation"></span>
+        <div class="submit_container">
+            <button type="submit" class="button button-silver" id="dynamic_uploader_submit"><?= image_tag('spinning_16.gif', array('id' => 'attachments_indicator', 'style' => 'display: none;')) . __('Save attachments'); ?></button>
+        </div>
     </div>
 </form>
 <?php endif; ?>

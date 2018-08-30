@@ -6,7 +6,7 @@
         <?php echo image_tag('icon_team.png', array('class' => "avatar small team-avatar")); ?>
         <?php echo isset($displayname) && is_string($displayname) ? $displayname : $team->getName(); ?>
     </a>
-    <div id="team_<?php echo $team->getID() . '_' . $rnd_no; ?>" style="display: none;" class="rounded_box white shadowed user_popup popup_box dropdown_box leftie">
+    <div id="team_<?php echo $team->getID() . '_' . $rnd_no; ?>" style="display: none;" class="rounded_box white shadowed user_dropdown popup_box dropdown_box leftie">
         <div style="padding: 3px;">
             <div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
                 <?php echo image_tag('team_large.png', array('alt' => ' ', 'style' => "width: 36px; height: 36px;")); ?>

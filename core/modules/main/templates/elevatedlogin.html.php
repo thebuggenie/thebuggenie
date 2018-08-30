@@ -3,7 +3,7 @@
     \thebuggenie\core\framework\Context::loadLibrary('ui');
 
 ?>
-<div id="login_backdrop">
+<div id="elevated_login_container">
     <div class="backdrop_box login_page login_popup" id="login_popup">
         <div id="backdrop_detail_content" class="backdrop_detail_content rounded_top login_content">
             <div class="logindiv regular active" id="regular_login_container">

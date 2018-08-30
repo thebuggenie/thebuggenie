@@ -334,17 +334,18 @@
                                 <?php include_component('main/todos', compact('issue')); ?>
                             </div>
                             <div id="todo_add" class="todo_add todo_editor" style="<?php if (!(isset($todo_error) && $todo_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
+                                <div class="backdrop_detail_header">
+                                    <span><?php echo __('Create a todo'); ?></span>
+                                    <?= javascript_link_tag(fa_image_tag('times'), ['onclick' => "$('todo_add').hide();$('todo_add_button').show();", 'class' => 'closer']); ?>
+                                </div>
                                 <div class="todo_add_main">
-                                    <div class="todo_add_title"><?php echo __('Create a todo'); ?></div>
                                     <form id="todo_form" accept-charset="<?php echo mb_strtoupper(\thebuggenie\core\framework\Context::getI18n()->getCharset()); ?>" action="<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" onSubmit="TBG.Issues.addTodo('<?php echo make_url('todo_add', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
                                         <label for="todo_bodybox"><?php echo __('Todo'); ?></label><br />
                                         <?php include_component('main/textarea', array('area_name' => 'todo_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'todo_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($todo_error) && $todo_error) ? $todo_error : ''))); ?>
-                                        <div id="todo_add_indicator" style="display: none;">
-                                            <?php echo image_tag('spinning_20.gif'); ?>
-                                        </div>
-                                        <div id="todo_add_controls" class="todo_controls">
-                                            <input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>">
-                                            <?php echo __('%create_todo or %cancel', array('%create_todo' => '<input type="submit" class="button button-green" value="'.__('Create todo').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick'=> "$('todo_add').hide();$('todo_add_button').show();")))); ?>
+                                        <input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>">
+                                        <div id="todo_add_controls" class="backdrop_details_submit">
+                                            <span class="explanation"></span>
+                                            <div class="submit_container"><button type="submit" class="button button-silver"><?= image_tag('spinning_16.gif', ['id' => 'todo_add_indicator', 'style' => 'display: none;']) . __('Create todo'); ?></button></div>
                                         </div>
                                     </form>
                                 </div>

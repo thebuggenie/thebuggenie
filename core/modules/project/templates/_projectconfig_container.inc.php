@@ -1,7 +1,8 @@
 <?php /** @var \thebuggenie\core\entities\Project $project */ ?>
 <div class="backdrop_box large" id="project_config_popup_main_container">
     <div class="backdrop_detail_header">
-        <?= ($project->getId()) ? __('Quick edit project') : __('Create new project'); ?>
+        <span><?= ($project->getId()) ? __('Quick edit project') : __('Create new project'); ?></span>
+        <a class="closer" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <?php if ($project->getId()): ?>
@@ -52,22 +53,13 @@
                     <?php endif; ?>
                 </td>
             </tr>
-        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-            <tr>
-                <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-                    <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?= ($project->getId()) ? __('When you are done, click "%save" to save your changes', ['%save' => __('Save')]) : __('When you are done, click "%create_project"', ['%create_project' => __('Create project')]); ?></div>
-                    <?= image_tag('spinning_16.gif', ['id' => 'project_info_indicator', 'style' => 'display: none; margin-right: 5px;']); ?>
-                    <div class="button button-green" id="project_submit_settings_button" onclick="TBG.Project.submitInfo('<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>', <?= $project->getID(); ?>);"><span><?= ($project->getId()) ? __('Save') : __('Create project'); ?></span></div>
-                </td>
-            </tr>
-        <?php endif; ?>
         </table>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+            <div class="backdrop_details_submit">
+                <span class="explanation"><?= ($project->getId()) ? __('When you are done, click "%save" to save your changes', ['%save' => __('Save')]) : __('When you are done, click "%create_project"', ['%create_project' => __('Create project')]); ?></span>
+                <div class="submit_container"><button class="button button-silver" id="project_submit_settings_button" onclick="TBG.Project.submitInfo('<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>', <?= $project->getID(); ?>);"><?= image_tag('spinning_16.gif', ['id' => 'project_info_indicator', 'style' => 'display: none;']) . (($project->getId()) ? __('Save') : __('Create project')); ?></button></div>
+            </div>
         </form>
         <?php endif; ?>
-    </div>
-    <div class="backdrop_detail_footer">
-        <?= image_tag('spinning_32.gif', ['id' => 'backdrop_detail_indicator', 'style' => 'display: none; float: right; margin-left: 5px;']); ?>
-        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= __('Close'); ?></a>
     </div>
 </div>

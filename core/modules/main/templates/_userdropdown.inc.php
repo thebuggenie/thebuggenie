@@ -12,7 +12,7 @@
         <?php endif; ?>
         <?php echo (isset($displayname)) ? $displayname : $user->getNameWithUsername(); ?>
     </a>
-    <ul class="rounded_box white shadowed user_popup popup_box dropdown_box <?php if (isset($class)) echo $class; ?> leftie more_actions_dropdown">
+    <ul class="rounded_box white shadowed user_dropdown popup_box dropdown_box <?php if (isset($class)) echo $class; ?> leftie more_actions_dropdown">
         <li class="header">
             <div class="user_avatar">
                 <?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>

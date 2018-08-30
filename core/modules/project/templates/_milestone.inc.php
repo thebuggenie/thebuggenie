@@ -14,7 +14,10 @@
 
 ?>
 <div class="backdrop_box large sectioned" id="edit_milestone_container" style="<?php if (isset($starthidden) && $starthidden) echo 'display: none;'; ?>">
-    <div class="backdrop_detail_header"><?php echo $milestoneheader; ?></div>
+    <div class="backdrop_detail_header">
+        <span><?php echo $milestoneheader; ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
+    </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php if (!isset($includeform) || $includeform): ?>
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo $action_url; ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.save(this);return false;">
@@ -102,13 +105,12 @@
             <?php if (isset($milestone_type)): ?>
                 <input id="milestone_type" value="<?php echo $milestone_type; ?>" name="milestone_type" type="hidden">
             <?php endif; ?>
+            <?php if ($milestone->getID()): ?>
+                <input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
+            <?php endif; ?>
             <div class="backdrop_details_submit">
-                <?php if ($milestone->getID()): ?>
-                        <input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
-                <?php endif; ?>
-                <?php echo __('%cancel or %save_milestone', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%save_milestone' => '')); ?>
-                <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                <input class="button button-silver" type="submit" value="<?php echo $savebuttonlabel; ?>">
+                <span class="explanation"></span>
+                <button class="button button-silver" type="submit"><?php echo image_tag('spinning_16.gif', ['id' => 'milestone_edit_indicator', 'style' => 'display: none;']) . $savebuttonlabel; ?></button>
             </div>
             <?php if (!isset($includeform) || $includeform): ?>
         </form>

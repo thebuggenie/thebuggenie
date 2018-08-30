@@ -200,7 +200,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             // });
             // if (visible_popups.size()) {
             //     visible_popups.each(function (element) {
-            //         if ($(element).hasClassName("user_popup"))
+            //         if ($(element).hasClassName("user_dropdown"))
             //             return;
             //         var max_bottom = document.viewport.getHeight();
             //         var element_height = $(element).getHeight();
@@ -739,6 +739,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         if ($(options.loading.indicator)) {
                             $(options.loading.indicator).show();
                         }
+                        if ($(options.loading.disable)) {
+                            $(options.loading.disabled).disable();
+                        }
                         TBG.Core._processCommonAjaxPostEvents(options.loading);
                         if (options.loading.callback) {
                             options.loading.callback();
@@ -844,6 +847,9 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         TBG.updateDebugInfo();
                     }
                     $(options.loading.indicator).hide();
+                    if ($(options.loading.disable)) {
+                        $(options.loading.disabled).enable();
+                    }
                     if (options.complete) {
                         TBG.Core._processCommonAjaxPostEvents(options.complete);
                         if (options.complete.callback) {
@@ -1793,11 +1799,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 form: 'comment_form',
                 loading: {
                     indicator: 'comment_add_indicator',
-                    hide: 'comment_add_controls'
+                    disable: 'comment_add_button'
                 },
                 success: {
                     hide: ['comment_add_indicator', 'comment_add'],
-                    show: ['comment_add_button', 'comment_add_controls'],
                     clear: 'comment_bodybox',
                     callback: function (json) {
                         $('comments_box').insert({top: json.comment_data});
@@ -1809,9 +1814,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('comment_visibility').setValue(1);
                         $(commentcount_span).update(json.commentcount);
                     }
-                },
-                failure: {
-                    show: 'comment_add_controls'
                 }
             });
         };
@@ -4083,13 +4085,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
-        TBG.Project.edit = function (url) {
-            TBG.Main.Helpers.ajax(url, {
-                loading: {indicator: 'backdrop_detail_indicator'},
-                success: {update: 'backdrop_detail_content'}
-            });
-        }
-
         TBG.Project.workflow = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'workflow_form2',
@@ -6209,16 +6204,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 form: 'todo_form',
                 loading: {
                     indicator: 'todo_add_indicator',
-                    hide: 'todo_add_controls'
+                    disable: 'todo_add_button'
                 },
                 success: {
                     hide: ['todo_add_indicator', 'todo_add'],
-                    show: ['todo_add_button', 'todo_add_controls'],
                     clear: 'todo_bodybox',
                     update: 'viewissue_todos'
-                },
-                failure: {
-                    show: 'todo_add_controls'
                 }
             });
         };
