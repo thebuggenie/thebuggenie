@@ -22,7 +22,7 @@
     },
     "require" : {
         "php": "^7.0|^7.1|^7.2",
-        "thebuggenie/b2db" : "dev-master",
+        "thebuggenie/b2db" : "^2.0",
         "mrclay/minify" : "dev-master",
         "easybook/geshi" : "dev-master",
         "michelf/php-markdown" : "1.3",

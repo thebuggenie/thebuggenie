@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db71d2fbb103a3c0e1f10e05ff7b59c5",
+    "content-hash": "bab88ff7735c09dd70dbde1a90f22577",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1402,21 +1402,21 @@
         },
         {
             "name": "thebuggenie/b2db",
-            "version": "dev-master",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thebuggenie/b2db.git",
-                "reference": "ce8541e67fb8c7a6d1a2e2bec75aee8eb26fcc08"
+                "reference": "63a05f83e2e5482f94a4e14ccb3f61422ab7a905"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/ce8541e67fb8c7a6d1a2e2bec75aee8eb26fcc08",
-                "reference": "ce8541e67fb8c7a6d1a2e2bec75aee8eb26fcc08",
+                "url": "https://api.github.com/repos/thebuggenie/b2db/zipball/63a05f83e2e5482f94a4e14ccb3f61422ab7a905",
+                "reference": "63a05f83e2e5482f94a4e14ccb3f61422ab7a905",
                 "shasum": ""
             },
             "require": {
                 "ext-reflection": "*",
-                "php": ">=5.3.0"
+                "php": ">=7.0.0"
             },
             "type": "library",
             "autoload": {
@@ -1426,7 +1426,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MPL 2.0"
+                "MPL-2.0"
             ],
             "authors": [
                 {
@@ -1434,7 +1434,7 @@
                     "email": "zegenie@gmail.com"
                 }
             ],
-            "description": "B2DB is a lightweight PHP 5.3-based ORM",
+            "description": "B2DB is a lightweight ORM for modern PHP applications",
             "keywords": [
                 "database",
                 "db",
@@ -1443,7 +1443,7 @@
                 "orm",
                 "postgres"
             ],
-            "time": "2018-01-17T10:46:51+00:00"
+            "time": "2018-08-31T14:52:48+00:00"
         },
         {
             "name": "tubalmartin/cssmin",
@@ -2617,7 +2617,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.44",
+            "version": "v2.8.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -2735,7 +2735,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.44",
+            "version": "v2.8.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -2950,7 +2950,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "thebuggenie/b2db": 20,
         "mrclay/minify": 20,
         "easybook/geshi": 20,
         "webit/eval-math": 20,
