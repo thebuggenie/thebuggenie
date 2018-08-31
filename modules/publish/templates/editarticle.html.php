@@ -85,14 +85,16 @@
     </form>
     <form id="parent_selector_container" class="fullpage_backdrop" style="display: none;" onsubmit="TBG.Main.loadParentArticles(this);return false;" action="<?php echo make_url('publish_article_parents', array('article_name' => $article->getName())); ?>">
         <div class="backdrop_box medium">
-            <div class="backdrop_detail_header"><?php echo __('Select parent article'); ?></div>
+            <div class="backdrop_detail_header">
+                <span><?php echo __('Select parent article'); ?></span>
+                <a href="javascript:void(0);" onclick="$('parent_selector_container').hide();" class="closer"><?php echo fa_image_tag('times'); ?></a>
+            </div>
             <div class="backdrop_detail_content">
                 <input type="search" name="find_article" id="parent_article_name_search">
                 <input type="submit" class="button button-silver" value="<?php echo __('Find'); ?>">
                 <?php echo image_tag('spinning_32.gif', array('id' => 'parent_selector_container_indicator', 'style' => 'display: none;')); ?>
                 <ul id="parent_articles_list"></ul>
                 <div class="publish_article_actions">
-                    <a href="javascript:void(0);" onclick="$('parent_selector_container').hide();"><?php echo __('Cancel'); ?></a>
                 </div>
             </div>
         </div>

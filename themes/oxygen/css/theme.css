@@ -313,7 +313,7 @@ header {
     flex-wrap: nowrap;
 }
 
-.backdrop_detail_header, .backdrop_box h1 {
+.backdrop_detail_header {
     box-shadow: none;
     border-bottom: 1px solid #FFF;
     color: #FFF;
@@ -373,8 +373,11 @@ header {
     font-size: 1.1em;
     font-style: italic;
 }
-.backdrop_details_submit span.submit_container {
+.backdrop_details_submit span.explanation + .submit_container {
     flex: 0 0 auto;
+}
+.backdrop_details_submit .submit_container {
+    flex: 1 1 auto;
     text-align: right;
 }
 
@@ -1403,6 +1406,11 @@ footer img {
 
 .tooltip.from-above:after, .dropdown_box:after {
     border-bottom: 10px solid #FFF;
+    top: -10px;
+}
+.userdropdown_container .dropdown_box:after,
+.teamdropdown_container .dropdown_box:after {
+    border-bottom: 10px solid rgb(253, 250, 223);
     top: -10px;
 }
 
@@ -3172,10 +3180,6 @@ label[for=profile_prefer_wiki_markdown] {
 
 .user_details ul.teamlist {
     list-style-type: none;
-}
-
-.user_details ul.teamlist li {
-    margin: 0 0 0 10px;
 }
 
 /* end user popups */
@@ -5611,10 +5615,6 @@ a.dropper.dropdown_link:hover {
     font-size: 1em;
 }
 
-#issue_details fieldset .userdropdown {
-    position: inherit;
-}
-
 .issue_detail_field {
     font-size: 1.1em;
     margin-bottom: 2px;
@@ -6448,7 +6448,8 @@ dd {
     display: block;
 }
 
-.userdropdown .more_actions_dropdown, .article .userdropdown .more_actions_dropdown {
+.userdropdown_container .more_actions_dropdown,
+.teamdropdown_container .more_actions_dropdown {
     right: auto;
     font-size: 1em;
 }
@@ -7023,10 +7024,34 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     text-decoration: line-through;
 }
 
-.userdropdown {
+.userdropdown_container,
+.teamdropdown_container {
     display: inline-block;
     position: relative;
 }
+.teamdropdown_container .header {
+    display: flex;
+}
+.team_image_container {
+    flex: 0 0 40px;
+    padding: 2px;
+    height: 40px;
+    background: #FFF;
+    border: 1px solid #DDD;
+}
+.teamdropdown_container .team_name_container {
+    flex: 1 1 auto;
+    line-height: 1em;
+    padding-left: 5px;
+}
+.team_name_container .team_name {
+    vertical-align: middle;
+}
+.team_name_container .team_status {
+    display: block;
+    font-size: 0.7em;
+}
+
 
 #viewissue_affected {
     margin: 5px 0 0 0;
@@ -7105,7 +7130,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     left: 0;
     top: 4px;
 }
-#viewissue_log_items ul li div.userdropdown {
+#viewissue_log_items ul li div.userdropdown_container {
     font-size: 0.85em;
     display: inline-block;
     width: 150px;
@@ -7658,7 +7683,7 @@ table.issue_affects td img {
     padding: 4px 0 0 0 !important;
 }
 
-.dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand .header, #dashboard_righthand .header {
+.dashboard.layout_standard ul.dashboard_column > li .header, #dashboard_lefthand > .header, #dashboard_righthand > .header {
     margin: 2px 5px;
     padding: 3px 3px 5px 2px;
     font-weight: 400;
@@ -10531,7 +10556,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     text-align: initial;
 }
 
-.whiteboard-issue .issue_info .userdropdown .user_dropdown {
+.whiteboard-issue .issue_info .userdropdown_container .user_dropdown {
     margin-left: -23px;
     margin-top: 13px;
 }
@@ -11104,7 +11129,7 @@ div.quickaddtask .close_micro_popup_link {
     margin-left: 0;
 }
 
-.project_team_list.teams li .userdropdown {
+.project_team_list.teams li .userdropdown_container {
     display: inline-block;
     width: 250px;
 }
@@ -15357,30 +15382,13 @@ input[type=checkbox][name=send_login_details] {
     font-size: 1.1em;
 }
 
-#user_details_popup .user_details ul > li {
+#user_details_popup .user_issues_list li {
     margin-bottom: 5px;
     margin-left: 7px;
 }
 
 #user_details_popup .teamlist {
     padding: 0;
-    margin-top: 5px;
-}
-
-#user_details_popup .teamlist .userdropdown > div > div > div:nth-child(3) {
-    font-size: 13px;
-}
-
-#user_details_popup .teamlist .userdropdown .user_realname {
-    font-size: 15px;
-    font-weight: 400;
-    margin-top: -1px;
-    margin-left: -4px;
-}
-
-#user_details_popup .teamlist .userdropdown .user_status {
-    font-size: 12px;
-    display: block;
     margin-top: 5px;
 }
 
@@ -15499,15 +15507,6 @@ div[id^='clone_group_'] .dropdown_header {
 #clientconfig_list button {
     padding: 3px 11px;
     margin-top: -4px;
-}
-
-div[id^='team_members_'][id$='_list'] > ul > li,
-div[id^='client_members_'][id$='_list'] > ul > li {
-    padding: 8px 5px;
-}
-
-div[id^='team_members_'][id$='_list'] > ul > li > .userdropdown > ul > li.header {
-    padding: 7px 7px 0 7px;
 }
 
 #teamconfig_list ul > li > button,
@@ -15942,36 +15941,10 @@ select[id^='edition_'][id$='_release_year'] {
     padding: 0;
 }
 
-#change_workflow_box h3 {
-    font-size: 14px;
-    font-weight: 400;
-}
-
 #change_workflow_box select {
     padding: 0;
     margin-left: 10px;
     margin-top: -3px
-}
-
-#change_workflow_box .button {
-    padding: 5px 10px;
-    float: right;
-    font-size: 13px;
-    margin-bottom: 5px;
-}
-
-#change_workflow_spinner {
-    position: absolute;
-    bottom: 0;
-}
-
-#change_workflow_table input.button.button-green {
-    padding: 4px 7px;
-}
-
-#change_workflow_table #update_workflow_indicator {
-    margin-top: 3px;
-    margin-right: 10px;
 }
 
 #project_editions .faded_out,
@@ -16197,24 +16170,12 @@ img[id^='component_'][id$='_indicator'] {
     padding: 3px 10px;
 }
 
-#project_team_teams .userdropdown {
-    font-size: 13px;
-}
-
 #no_project_team_users {
     padding-left: 15px !important;
 }
 
 #find_dev_results .faded_out {
     padding: 10px 2px 5px 2px !important;
-}
-
-.userdropdown > div[id^='team_'] .user_realname {
-    padding-left: 5px;
-}
-
-.userdropdown > div[id^='team_'] > div > div:first-child {
-    margin-bottom: 5px;
 }
 
 #tab_permissions_pane > div[id^='project'][id$='_settings_roles'] > .content.faded_out {
@@ -16271,14 +16232,6 @@ img[id^='component_'][id$='_indicator'] {
     padding-bottom: 5px;
 }
 
-#incoming_email_account_form table:nth-child(3) td {
-    padding: 20px 0 0 0 !important;
-}
-
-#incoming_email_account_form input[type=submit] {
-    padding: 5px 10px;
-}
-
 #tab_mailing_other_pane .project_save_container .content {
     display: block;
     margin-bottom: 5px;
@@ -16322,10 +16275,6 @@ form#vcs div.config_explanation {
 img[id^='remove_assignee_user_'][id$='_indicator'],
 img[id^='remove_assignee_team_'][id$='_indicator'] {
     margin-top: -7px;
-}
-
-#project_team_teams .userdropdown > div > div > div:nth-child(3) {
-    font-size: 13px;
 }
 
 #add_account_indicator {
@@ -16435,12 +16384,7 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
 }
 
 .dashboard_team_header {
-    font-weight: 400 !important;
-}
-
-.team_dashboard_users .userdropdown .header {
-    margin: 0;
-    text-transform: none;
+    font-weight: 400;
 }
 
 /* Roadmap */
@@ -16817,11 +16761,12 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled {
     margin-bottom: 5px;
 }
 
-.dashboard_view_content .userdropdown .user_dropdown .header {
-    margin: 0 !important;
-    padding: 7px 7px 0 7px !important;
+.userdropdown_container .user_dropdown li.header,
+.userdropdown_container .user_dropdown li.header:hover,
+.teamdropdown_container .team_dropdown li.header,
+.teamdropdown_container .team_dropdown li.header:hover {
     text-transform: none;
-    background-color: rgb(253, 250, 223) !important;
+    background-color: rgb(253, 250, 223);
 }
 
 .dashboard_view_content .project_strip > div:first-child {

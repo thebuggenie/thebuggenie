@@ -120,7 +120,6 @@
                 </div>
             <?php endif; ?>
             <div class="backdrop_details_submit">
-                <span class="explanation"></span>
                 <div class="submit_container">
                     <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
                     <input class="button button-silver" id="mark_milestone_finished_submit" type="submit" value="<?php echo $savelabel; ?>">

@@ -1,6 +1,7 @@
 <div class="backdrop_box large transition-selector">
     <div class="backdrop_detail_header">
-        <?php echo __('Transition issue'); ?>
+        <span><?php echo __('Transition issue'); ?></span>
+        <a id="transition-selector-close-link" href="javascript:void(0);" class="closer"><?php echo fa_image_tag('times'); ?></a>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <div class="table whiteboard-columns transition-selector <?php echo ($board->usesSwimlanes()) ? ' swimlanes' : ' no-swimlanes'; ?>">
@@ -29,8 +30,5 @@
             </div>
             <?php $statuses_occurred[$status_id]++; ?>
         <?php endforeach; ?>
-    </div>
-    <div class="backdrop_detail_footer">
-        <a id="transition-selector-close-link" href="javascript:void(0);"><?php echo __('Cancel and close this pop-up'); ?></a>
     </div>
 </div>

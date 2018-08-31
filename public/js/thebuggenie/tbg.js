@@ -4093,24 +4093,21 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     TBG.Main.Helpers.Backdrop.reset();
                 }}
             });
-        }
+        };
 
         TBG.Project.workflowtable = function (url) {
             TBG.Main.Helpers.ajax(url, {
                 form: 'workflow_form',
                 loading: {
-                    indicator: 'change_workflow_spinner',
-                    hide: 'change_workflow_box'
+                    indicator: 'change_workflow_indicator'
                 },
                 success: {
                     update: 'change_workflow_table',
+                    hide: 'change_workflow_box',
                     show: 'change_workflow_table'
-                },
-                failure: {
-                    show: 'change_workflow_box'
                 }
             });
-        }
+        };
 
         TBG.Project.updatePrefix = function (url, project_id) {
             TBG.Main.Helpers.ajax(url, {

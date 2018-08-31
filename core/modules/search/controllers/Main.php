@@ -396,8 +396,9 @@ class Main extends framework\Action
         $showheader = false;
         $groupby_id = 0;
         $groupby_description = '';
-        if ($cc == 1)
+        if ($cc == 0)
             $showtablestart = true;
+
         if ($groupby != '')
         {
             switch ($groupby)

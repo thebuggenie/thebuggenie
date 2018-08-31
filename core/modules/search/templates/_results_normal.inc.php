@@ -9,7 +9,7 @@ foreach ($search_object->getIssues() as $issue):
         continue;
 
     list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = \thebuggenie\core\modules\search\controllers\Main::resultGrouping($issue, $search_object->getGroupBy(), $current_count, $prevgroup_id);
-    if (($showtablestart || $showheader) && $current_count > 1):
+    if (($showtablestart || $showheader) && $current_count > 0):
         echo '</tbody></table>';
         if (!isset($show_summary) || $show_summary) include_component('search/results_summary', compact('search_object', 'current_count', 'current_estimated_time', 'current_spent_time'));
         $current_count = 0;
@@ -69,142 +69,141 @@ foreach ($search_object->getIssues() as $issue):
             </thead>
             <tbody>
     <?php endif; ?>
-                <tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
-                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
-                        <td class="sca_actions">
-                            <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-                                <input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
-                            <?php endif; ?>
-                        </td>
-                    <?php endif; ?>
-                <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
-                    <td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
+            <tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
+                <?php if (!$tbg_user->isGuest() && $actionable): ?>
+                    <td class="sca_actions">
+                        <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+                            <input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
+                        <?php endif; ?>
+                    </td>
                 <?php endif; ?>
-                    <td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
-                        <?php echo ($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'); ?>
-                    </td>
-                    <td class="result_issue">
-                        <?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
-                        <a class="issue_link" href="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
-                            <?php if ($issue->countFiles()): ?>
-                                <?php echo fa_image_tag('paperclip', array('title' => __('This issue has %num attachments', array('%num' => $issue->countFiles())))); ?>
-                            <?php endif; ?>
-                            <?php if ($issue->isLocked()): ?>
-                                <?php echo fa_image_tag('lock', array('title' => __('Access to this issue is restricted'))); ?>
-                            <?php endif; ?>
-                            <span class="issue_no"><?php echo $issue->getFormattedIssueNo(true); ?></span><span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
-                            <span class="issue_title sc_title"<?php echo $title_visible; ?>><span class="sc_dash"> - </span><?php echo $issue->getTitle(); ?></span>
-                        </a>
-                    </td>
-                    <td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php if ($issue->isAssigned()): ?>
-                            <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
-                                <?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-                            <?php else: ?>
-                                <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
-                            <?php endif; ?>
-                        <?php else: ?>
-                            -
+            <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
+                <td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
+            <?php endif; ?>
+                <td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
+                    <?php echo ($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'); ?>
+                </td>
+                <td class="result_issue">
+                    <?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
+                    <a class="issue_link" href="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
+                        <?php if ($issue->countFiles()): ?>
+                            <?php echo fa_image_tag('paperclip', array('title' => __('This issue has %num attachments', array('%num' => $issue->countFiles())))); ?>
                         <?php endif; ?>
-                    </td>
-                    <td class="sc_posted_by<?php if (!$issue->isPostedBy()): ?> faded_out<?php endif; ?>"<?php if (!in_array('posted_by', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php if ($issue->isPostedBy()): ?>
-                            <?php echo include_component('main/userdropdown', array('user' => $issue->getPostedBy())); ?>
-                        <?php else: ?>
-                            -
+                        <?php if ($issue->isLocked()): ?>
+                            <?php echo fa_image_tag('lock', array('title' => __('Access to this issue is restricted'))); ?>
                         <?php endif; ?>
-                    </td>
-                    <td class="sc_status<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
-                            <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name" style="color: <?php echo $issue->getStatus()->getTextColor(); ?>;"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                        <span class="issue_no"><?php echo $issue->getFormattedIssueNo(true); ?></span><span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
+                        <span class="issue_title sc_title"<?php echo $title_visible; ?>><span class="sc_dash"> - </span><?php echo $issue->getTitle(); ?></span>
+                    </a>
+                </td>
+                <td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php if ($issue->isAssigned()): ?>
+                        <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
+                            <?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
                         <?php else: ?>
-                            -
+                            <?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
                         <?php endif; ?>
-                    </td>
-                    <td class="sc_resolution<?php if (!$issue->getResolution() instanceof \thebuggenie\core\entities\Resolution): ?> faded_out<?php endif; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
-                    </td>
-                    <td class="sc_category<?php if (!$issue->getCategory() instanceof \thebuggenie\core\entities\Category): ?> faded_out<?php endif; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getCategory() instanceof \thebuggenie\core\entities\Category) ? $issue->getCategory()->getName() : '-'; ?>
-                    </td>
-                    <td class="sc_severity<?php if (!$issue->getSeverity() instanceof \thebuggenie\core\entities\Severity): ?> faded_out<?php endif; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getSeverity() instanceof \thebuggenie\core\entities\Severity) ? $issue->getSeverity()->getName() : '-'; ?>
-                    </td>
-                    <td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
-                    </td>
-                    <td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability) ? $issue->getReproducability()->getName() : '-'; ?>
-                    </td>
-                    <td class="sc_priority<?php if (!$issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : '-'; ?>
-                    </td>
-                    <?php $component_names = $issue->getComponentNames(); ?>
-                    <td class="sc_components<?php if (!count($component_names)): ?> faded_out<?php endif; ?>"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (count($component_names)) ? join(', ', $component_names) : '-'; ?>
-                    </td>
-                    <td class="sc_milestone<?php if (!$issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone): ?> faded_out<?php endif; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
-                    </td>
-                    <td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)); ?>
-                    </td>
-                    <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                        <?php echo (!$issue->hasSpentTime() || !$issue->isSpentTimeVisible()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?>
-                    </td>
-                    <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
-                    <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
-                    <td class="smaller sc_time_spent" title="<?php echo $issue->getSumsSpentTime(); ?>"<?php if (!in_array('time_spent', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo $issue->getSumsSpentTime(); ?></td>
-                    <?php foreach ($custom_columns as $column): ?>
-                        <td class="smaller sc_<?php echo $column->getKey(); ?>" <?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php
-                            $value = $issue->getCustomField($column->getKey());
-                            switch ($column->getType()) {
-                                case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                    echo tbg_formatTime($value, 20);
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
-                                case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:
-                                echo ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $value->getValue() : '';
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
-                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
-                                case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
-                                    echo $value;
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
-                                    if ($value instanceof \thebuggenie\core\entities\Status):
-                                        ?><div class="sc_status_color status_badge" style="background-color: <?php echo $value->getColor(); ?>;"><span class="sc_status_name" style="color: <?php echo $value->getTextColor(); ?>;"><?php echo $value->getName(); ?></span></div><?php
-                                    endif;
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
-                                case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
-                                    echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
-                                    echo tbg_formatTime($value, 25);
-                                    break;
-                            }
-                        ?></td>
-                    <?php endforeach; ?>
-                    <td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
-                        <?php echo $issue->countUserComments(); ?>
-                    </td>
-                    <?php if (!$tbg_user->isGuest() && $actionable): ?>
-                        <td class="sc_actions">
-                            <div style="position: relative;">
-                                <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
-                                <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
-                            </div>
-                        </td>
+                    <?php else: ?>
+                        -
                     <?php endif; ?>
-                </tr>
-    <?php $current_count++; ?>
+                </td>
+                <td class="sc_posted_by<?php if (!$issue->isPostedBy()): ?> faded_out<?php endif; ?>"<?php if (!in_array('posted_by', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php if ($issue->isPostedBy()): ?>
+                        <?php echo include_component('main/userdropdown', array('user' => $issue->getPostedBy())); ?>
+                    <?php else: ?>
+                        -
+                    <?php endif; ?>
+                </td>
+                <td class="sc_status<?php if (!$issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php if ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype): ?>
+                        <div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name" style="color: <?php echo $issue->getStatus()->getTextColor(); ?>;"><?php echo $issue->getStatus()->getName(); ?></span></div>
+                    <?php else: ?>
+                        -
+                    <?php endif; ?>
+                </td>
+                <td class="sc_resolution<?php if (!$issue->getResolution() instanceof \thebuggenie\core\entities\Resolution): ?> faded_out<?php endif; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getResolution() instanceof \thebuggenie\core\entities\Resolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
+                </td>
+                <td class="sc_category<?php if (!$issue->getCategory() instanceof \thebuggenie\core\entities\Category): ?> faded_out<?php endif; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getCategory() instanceof \thebuggenie\core\entities\Category) ? $issue->getCategory()->getName() : '-'; ?>
+                </td>
+                <td class="sc_severity<?php if (!$issue->getSeverity() instanceof \thebuggenie\core\entities\Severity): ?> faded_out<?php endif; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getSeverity() instanceof \thebuggenie\core\entities\Severity) ? $issue->getSeverity()->getName() : '-'; ?>
+                </td>
+                <td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_component('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
+                </td>
+                <td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability) ? $issue->getReproducability()->getName() : '-'; ?>
+                </td>
+                <td class="sc_priority<?php if (!$issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : '-'; ?>
+                </td>
+                <?php $component_names = $issue->getComponentNames(); ?>
+                <td class="sc_components<?php if (!count($component_names)): ?> faded_out<?php endif; ?>"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo (count($component_names)) ? join(', ', $component_names) : '-'; ?>
+                </td>
+                <td class="sc_milestone<?php if (!$issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone): ?> faded_out<?php endif; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo ($issue->getMilestone() instanceof \thebuggenie\core\entities\Milestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
+                </td>
+                <td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo (!$issue->hasEstimatedTime()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getEstimatedTime(true, true)); ?>
+                </td>
+                <td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+                    <?php echo (!$issue->hasSpentTime() || !$issue->isSpentTimeVisible()) ? '-' : \thebuggenie\core\entities\Issue::getFormattedTime($issue->getSpentTime(true, true)); ?>
+                </td>
+                <td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
+                <td class="smaller sc_posted" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>"<?php if (!in_array('posted', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getPosted(), 20); ?></td>
+                <td class="smaller sc_time_spent" title="<?php echo $issue->getSumsSpentTime(); ?>"<?php if (!in_array('time_spent', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo $issue->getSumsSpentTime(); ?></td>
+                <?php foreach ($custom_columns as $column): ?>
+                    <td class="smaller sc_<?php echo $column->getKey(); ?>" <?php if (!in_array($column->getKey(), $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php
+                        $value = $issue->getCustomField($column->getKey());
+                        switch ($column->getType()) {
+                            case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                echo tbg_formatTime($value, 20);
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::DROPDOWN_CHOICE_TEXT:
+                            case \thebuggenie\core\entities\CustomDatatype::RADIO_CHOICE:
+                            echo ($value instanceof \thebuggenie\core\entities\CustomDatatypeOption) ? $value->getValue() : '';
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
+                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                echo $value;
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::STATUS_CHOICE:
+                                if ($value instanceof \thebuggenie\core\entities\Status):
+                                    ?><div class="sc_status_color status_badge" style="background-color: <?php echo $value->getColor(); ?>;"><span class="sc_status_name" style="color: <?php echo $value->getTextColor(); ?>;"><?php echo $value->getName(); ?></span></div><?php
+                                endif;
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::COMPONENTS_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::EDITIONS_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::MILESTONE_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::RELEASES_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
+                            case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
+                                echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                                echo tbg_formatTime($value, 25);
+                                break;
+                        }
+                    ?></td>
+                <?php endforeach; ?>
+                <td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
+                    <?php echo $issue->countUserComments(); ?>
+                </td>
+                <?php if (!$tbg_user->isGuest() && $actionable): ?>
+                    <td class="sc_actions">
+                        <div style="position: relative;">
+                            <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
+                            <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
+                        </div>
+                    </td>
+                <?php endif; ?>
+            </tr>
 <?php endforeach; ?>
 <?php if ($current_count > 0): ?>
         </tbody>

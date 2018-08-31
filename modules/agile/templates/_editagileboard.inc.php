@@ -5,7 +5,8 @@
 ?>
 <div class="backdrop_box large edit_agileboard sectioned">
     <div class="backdrop_detail_header">
-        <?php echo ($board->getId()) ? __('Edit agile board') : __('Add agile board'); ?>
+        <span><?php echo ($board->getId()) ? __('Edit agile board') : __('Add agile board'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
     <div id="backdrop_detail_content" class="backdrop_detail_content">
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_board', array('project_key' => $board->getProject()->getKey(), 'board_id' => $board->getID())); ?>" method="post" id="edit_agileboard_form" onsubmit="TBG.Project.Planning.saveAgileBoard(this);return false;" data-board-id="<?php echo (int) $board->getId(); ?>">
@@ -379,12 +380,12 @@
                 </tr>
             </table>
             <div class="backdrop_details_submit">
-                <?php if ($board->getID()): ?>
-                    <input type="hidden" name="board_id" value="<?php echo $board->getID(); ?>">
-                <?php endif; ?>
-                <?php echo __('%cancel or %save_board', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%save_board' => '')); ?>
-                <span id="agileboard_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                <input class="button button-silver" style="" type="submit" value="<?php echo __('Save board'); ?>" id="agileboard_save_button">
+                <div class="submit_container">
+                    <?php if ($board->getID()): ?>
+                        <input type="hidden" name="board_id" value="<?php echo $board->getID(); ?>">
+                    <?php endif; ?>
+                    <button class="button button-silver" type="submit" id="agileboard_save_button"><?php echo image_tag('spinning_16.gif', ['id' => 'agileboard_edit_indicator', 'style' => 'display: none;']) . __('Save board'); ?></button>
+                </div>
             </div>
         </form>
     </div>

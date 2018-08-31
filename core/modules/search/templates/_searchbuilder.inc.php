@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 <?php if (!$tbg_user->isGuest()): ?>
-                    <div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?= fa_image_tag('bookmark'); ?></div>
+                    <div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?= fa_image_tag('save'); ?></div>
                     <div class="interactive_filters_list interactive_menu">
                         <h1><?= __('Save or download search results'); ?></h1>
                         <div class="interactive_values_container">
@@ -185,7 +185,7 @@
                                     <?= fa_image_tag('file-excel-o', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('rss');">
-                                    <?= fa_image_tag('download', array('class' => 'icon')) . __('Download as RSS feed'); ?>
+                                    <?= fa_image_tag('rss', array('class' => 'icon')) . __('Download as RSS feed'); ?>
                                 </li>
                             </ul>
                         </div>

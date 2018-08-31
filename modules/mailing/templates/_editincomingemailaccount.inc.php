@@ -18,13 +18,12 @@
 </script>
 <div class="backdrop_box large">
     <div class="backdrop_detail_header">
-        <?php echo ($account->getId()) ? __('Edit incoming email account') : __('Add new incoming email account'); ?>
+        <span><?php echo ($account->getId()) ? __('Edit incoming email account') : __('Add new incoming email account'); ?></span>
+        <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
     </div>
-    <div id="backdrop_detail_content" class="backdrop_detail_content">
-        <div class="content" style="padding: 4px;">
+    <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
+        <div id="backdrop_detail_content" class="backdrop_detail_content">
             <?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
-        </div>
-        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
             <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
@@ -121,28 +120,22 @@
                     <td class="faded_out"><?php echo __('Any issues created will be set to this issuetype, and its first workflow step will be applied'); ?></td>
                 </tr>
             </table>
-            <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
-                <tr>
-                    <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-                        <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
-                            <?php if ($account->getId()): ?>
-                                <?php echo __('When you are done, click "%save_changes" to update the details for this account', array('%save_changes' => __('Save changes'))); ?>
-                            <?php else: ?>
-                                <?php echo __('When you are done, click "%add_account" to add this account', array('%add_account' => __('Add account'))); ?>
-                            <?php endif; ?>
-                        </div>
-                        <?php if ($account->getID()): ?>
-                            <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
-                            <input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
-                        <?php endif; ?>
-                        <input type="submit" class="button button-green" style="float: right;" value="<?php echo ($account->getId()) ? __('Save changes') : __('Add account'); ?>">
-                        <span id="add_account_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <div class="backdrop_detail_footer">
-        <?php echo javascript_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
-    </div>
+        </div>
+        <div class="backdrop_details_submit">
+            <span class="explanation">
+                <?php if ($account->getId()): ?>
+                    <?php echo __('When you are done, click "%save_changes" to update the details for this account', array('%save_changes' => __('Save changes'))); ?>
+                <?php else: ?>
+                    <?php echo __('When you are done, click "%add_account" to add this account', array('%add_account' => __('Add account'))); ?>
+                <?php endif; ?>
+            </span>
+            <div class="submit_container">
+                <?php if ($account->getID()): ?>
+                    <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
+                    <input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
+                <?php endif; ?>
+                <button type="submit" class="button button-silver"><?php echo image_tag('spinning_16.gif', ['id' => 'add_account_indicator', 'style' => 'display: none;']) . (($account->getId()) ? __('Save changes') : __('Add account')); ?></button>
+            </div>
+        </div>
+    </form>
 </div>

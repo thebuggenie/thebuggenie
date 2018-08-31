@@ -73,7 +73,7 @@
                     <?php echo link_tag(make_url('search', array('search' => true, 'fs[posted_by]' => array('o' => '=', 'v' => $user->getID()))), __('Show issues'), array('class' => 'button button-silver', 'title' => __('Show issues reported by this user'))); ?>
                     <?php $seen = 0; ?>
                     <h4><?php echo __('Last reported issues:') . ' '; ?></h4>
-                        <ul class="simple_list">
+                        <ul class="simple_list user_issues_list">
                         <?php foreach ($issues as $issue): ?>
                             <?php if ($issue->hasAccess()): ?>
                                 <li>
