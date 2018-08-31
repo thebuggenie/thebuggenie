@@ -13,7 +13,11 @@
         <div class="helper-text">
             <?php if ($list_mode == 'all'): ?>
                 <?php if ($show_project_config_link): ?>
-                    <?= __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
+                    <?php if ($project_state == 'archived'): ?>
+                        <?= __('There are no archived projects. You can archive a project from the settings menu inside the project.'); ?>
+                    <?php else: ?>
+                        <?= __('There are no projects. Get started by clicking the "%create_project" button', ['%create_project' => __('Create project')]); ?>
+                    <?php endif; ?>
                 <?php elseif ($project_state == 'archived'): ?>
                     <?= __("There are no archived projects."); ?>
                 <?php else: ?>

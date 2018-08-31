@@ -6019,6 +6019,8 @@ ul.workflow_actions li:hover {
     font-size: 1.3em;
     width: 600px;
     margin: 25px auto 0 auto;
+    justify-self: flex-start;
+    align-self: flex-start;
 }
 
 .viewissue_info_header {
@@ -14649,17 +14651,6 @@ ul[id^='project_'][id$='_more_actions_dropdown'] {
 
 #project_config_popup_main_container h5 {
     margin-left: 4px;
-}
-
-#project_config_popup_main_container .config_explanation {
-    padding-left: 0;
-    margin-left: -7px;
-}
-
-#project_info_indicator {
-    position: absolute;
-    margin-left: -23px;
-    padding-top: 5px;
 }
 
 #markItUpProject_description_input textarea {

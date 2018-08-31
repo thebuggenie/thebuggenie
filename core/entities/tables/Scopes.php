@@ -2,7 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
-    use thebuggenie\core\entities\tables\ScopedTable;
+    use b2db\Table;
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
@@ -28,7 +28,7 @@
      * @Entity(class="\thebuggenie\core\entities\Scope")
      * @Table(name="scopes")
      */
-    class Scopes extends ScopedTable
+    class Scopes extends Table
     {
 
         const B2DB_TABLE_VERSION = 2;

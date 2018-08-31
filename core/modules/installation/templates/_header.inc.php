@@ -74,7 +74,7 @@
                 -moz-border-radius-bottomright: 7px;
                 -webkit-border-bottom-left-radius: 7px;
                 -webkit-border-bottom-right-radius: 7px;
-                height: 60px !important;
+                height: 80px !important;
             }
 
             input[type=text] { padding: 4px; border: 1px solid #BEBEBE; border-radius: 4px;}
@@ -89,7 +89,7 @@
             .ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
             .error:first-line, .ok:first-line { font-weight: 600; }
 
-            .logo_small { font-size: 1.1em; color: white; white-space: nowrap; margin-top: 5px; }
+            .logo_small { font-size: 1.1em; color: white; white-space: nowrap; margin-top: 5px; display: inline-block; }
 
             fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
             legend { font-weight: 300; font-size: 1.1em; color: #555; text-transform: uppercase; padding: 5px 10px; }
@@ -97,9 +97,11 @@
             ul.outlined { margin-top: 5px; }
             ul.outlined li { font-weight: 600; }
 
-            #logo_container { line-height: 1em; }
-            #logo_container .logo { display: inline-block; vertical-align: middle; margin-right: 10px; }
-            #logo_container .logo_name { font-size: 1.5em; float: none; line-height: 1.1em; color: #ECF0F4; margin: 0; }
+            #logo_container { line-height: 1em; display: flex; padding: 10px; margin: 0; }
+            #logo_container .logo_image_container { flex: 0 0 55px; text-align: left;}
+            #logo_container .logo_name_container { flex: 1 1 auto; line-height: 1.1em; }
+            #logo_container .logo_name { font-size: 1.5em; display: block; color: #ECF0F4; margin: 0; }
+            #logo_container .logo_small { display: block; }
 
             .scope_upgrade { margin: 5px; padding: 0; font-size: 0.9em; }
             .scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; display: inline-block; width: 450px; }
@@ -147,11 +149,14 @@
     </head>
     <body>
         <table style="width: 1000px; height: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0 align="center">
-            <tr style="height: 60px;">
+            <tr style="height: 80px;">
                 <td valign="top" id="maintd" class="main_header_print">
                     <div id="logo_container" width="100%">
-                           <img width=48 height=48 SRC="images/logo_48.png" class="logo" alt="The Bug Genie - Installation">
-                           <div class="logo_name">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
+                        <div class="logo_image_container"><img src="images/logo_48.png" alt="The Bug Genie - Installation"></div>
+                        <div class="logo_name_container">
+                            <div class="logo_name">The Bug Genie</div>
+                            <div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
+                        </div>
                     </div>
                 </td>
             </tr>

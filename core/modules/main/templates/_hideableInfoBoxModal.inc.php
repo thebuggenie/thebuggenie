@@ -14,7 +14,7 @@
                         <label for="close_me_<?= $key; ?>"><?= __("Don't show this again"); ?></label>
                     </span>
                     <div class="submit_container">
-                        <button type="submit"><?= image_tag('spinning_16.gif', ['id' => "infobox_{$key}_indicator", 'style' => 'display: none']) . $button_label; ?>"></button>
+                        <button type="submit"><?= image_tag('spinning_16.gif', ['id' => "infobox_{$key}_indicator", 'style' => 'display: none']) . $button_label; ?></button>
                     </div>
                 </div>
             </form>
