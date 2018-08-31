@@ -16862,12 +16862,12 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a {
 
 .project_strip .button-group .button-report-issue {
     background-color: #FFF;
-    border: 1px solid rgba(58, 186, 69, 0.8);
-    color: rgba(58, 186, 69, 1);
+    border: 1px solid #1aaa55;
+    color: #1aaa55;
     padding: 9px;
 }
 .project_strip .button-group .button-report-issue:hover {
-    background-color: rgba(58, 186, 69, 1);
+    background-color: #1aaa55;
     color: #FFF;
 }
 
