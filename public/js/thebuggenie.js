@@ -9,20 +9,20 @@ define(['thebuggenie/tools', 'thebuggenie/tbg', 'domReady', 'jquery', 'mention']
                     TBG.Main.Profile.clearPopupsAndButtons();
                     if (!is_visible) {
                         TBG.Main.Helpers.toggler(jQuery(this));
-                        e.stopPropagation();
-                        e.preventDefault();
                     }
+                    e.stopPropagation();
+                    e.preventDefault();
                 });
-                jQuery("body").on("click", "#topmenu-container .menu_dropdown", function (e) {
-                    jQuery('#topmenu-container').toggleClass('active');
-                    var is_active = jQuery(this).parents('li').hasClass('active');
-                    jQuery(this).parents('ul').find('li').removeClass('active');
-                    if (is_active) {
-                        jQuery(this).parents('li').removeClass('active');
-                    } else {
-                        jQuery(this).parents('li').addClass('active');
-                    }
-                });
+                // jQuery("body").on("click", "#topmenu-container .with-dropdown", function (e) {
+                //     jQuery('#topmenu-container').toggleClass('active');
+                //     var is_active = jQuery(this).parents('li').hasClass('active');
+                //     jQuery(this).parents('ul').find('li').removeClass('active');
+                //     if (is_active) {
+                //         jQuery(this).parents('li').removeClass('active');
+                //     } else {
+                //         jQuery(this).parents('li').addClass('active');
+                //     }
+                // });
                 jQuery("body").on("click", ".fancydropdown", function (e) {
                     jQuery(this).toggleClass('selected');
                 });
