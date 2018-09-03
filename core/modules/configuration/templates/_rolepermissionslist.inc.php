@@ -2,10 +2,9 @@
 <?php if (count($role->getPermissions())): ?>
     <?php foreach ($role->getPermissions() as $permission): ?>
         <?php $permission_details = ($permission->getModule() == 'core') ? \thebuggenie\core\framework\Context::getPermissionDetails($permission->getPermission()) : \thebuggenie\core\framework\Context::getModule($permission->getModule())->getPermissionDetails($permission->getPermission()); ?>
+        <?php if ($permission_details === null) continue; ?>
         <li>
-            <?php if (!is_array($permission_details)): var_dump($permission_details, $permission); else: ?>
             <?php echo image_tag('action_ok.png', array('style' => 'margin: 2px 5px -2px 0;')); ?><?php echo (array_key_exists('description', $permission_details)) ? $permission_details['description'] : $permission; ?>
-            <?php endif; ?>
         </li>
     <?php endforeach; ?>
 <?php else: ?>

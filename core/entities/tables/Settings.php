@@ -140,31 +140,28 @@
 
             $settings = array();
             $settings[\thebuggenie\core\framework\Settings::SETTING_THEME_NAME] = 'oxygen';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_REQUIRE_LOGIN] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_DEFAULT_USER_IS_GUEST] = 1;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_REGISTRATION] = 1;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_REQUIRE_LOGIN] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_DEFAULT_USER_IS_GUEST] = true;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_REGISTRATION] = true;
             $settings[\thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGIN] = 'referer';
             $settings[\thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGOUT] = 'home';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW] = 1;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_USER_THEMES] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_UPLOADS] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS] = 1;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW] = true;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_USER_THEMES] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_UPLOADS] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS] = true;
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_RESTRICTION_MODE] = 'blacklist';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_EXTENSIONS_LIST] = 'exe,bat,php,asp,jsp';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_STORAGE] = 'files';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_LOCAL_PATH] = THEBUGGENIE_PATH . 'files/';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = 0;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = false;
             $settings[\thebuggenie\core\framework\Settings::SETTING_TBG_NAME] = 'The Bug Genie';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
             $settings[\thebuggenie\core\framework\Settings::SETTING_ICONSET] = 'oxygen';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SERVER_TIMEZONE] = date_default_timezone_get();
-            if ($scope->isDefault())
-            {
-                $settings[\thebuggenie\core\framework\Settings::SETTING_SALT] = sha1(time().mt_rand(1000, 10000));
-            }
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED] = true;
 
             $scope_id = $scope->getID();
             foreach ($settings as $settings_name => $settings_val)
