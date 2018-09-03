@@ -2,7 +2,7 @@
 
     namespace thebuggenie\modules\auth_ldap;
 
-    use thebuggenie\core\entities\common\AuthenticationProviderInterface;
+    use thebuggenie\core\framework\AuthenticationProviderInterface;
     use thebuggenie\core\entities\Module;
     use thebuggenie\core\framework;
 

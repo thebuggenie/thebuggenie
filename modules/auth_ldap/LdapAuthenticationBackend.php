@@ -2,10 +2,12 @@
 
     namespace thebuggenie\modules\auth_ldap;
 
-    use thebuggenie\core\entities\common\AuthenticationProviderInterface;
+    use thebuggenie\core\entities\UserSession;
+    use thebuggenie\core\framework\AuthenticationProviderInterface;
     use thebuggenie\core\entities\Module;
     use thebuggenie\core\entities\User;
     use thebuggenie\core\framework;
+    use thebuggenie\core\framework\Request;
 
     /**
      * LDAP Authentication
@@ -262,4 +264,31 @@
 
             return $user;
         }
+
+        function autoVerifyLogin($username, $password, $is_elevated = false)
+        {
+            // TODO: Implement autoVerifyLogin() method.
+        }
+
+        function autoVerifyToken($username, $token, $is_elevated = false)
+        {
+            // TODO: Implement autoVerifyToken() method.
+        }
+
+        function doExplicitLogin(Request $request)
+        {
+            // TODO: Implement doExplicitLogin() method.
+        }
+
+        function persistTokenSession(User $user, UserSession $token, $session_only)
+        {
+            // TODO: Implement persistTokenSession() method.
+        }
+
+        function persistPasswordSession(User $user, $password, $session_only)
+        {
+            // TODO: Implement persistPasswordSession() method.
+        }
+
+
     }
