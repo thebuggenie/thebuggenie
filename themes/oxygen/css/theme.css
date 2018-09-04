@@ -6654,10 +6654,15 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 /* end changed, merged, unmerged */
 
 #title_field {
-    font-size: 18px;
+    font-size: 1.3em;
     width: auto;
     padding: 8px 10px 8px 7px;
     min-width: 930px;
+}
+
+#title_name {
+    font-weight: 400;
+    font-size: 1.2em;
 }
 
 .viewissue_title {
