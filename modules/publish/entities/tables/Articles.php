@@ -191,21 +191,29 @@
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
                 $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
+                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", Criteria::DB_LIKE);
                 $crit->addWhere($ctn);
 
                 $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
+                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
                 $crit->addOr($ctn);
 
                 $ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
                 $ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
+                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
                 $crit->addOr($ctn);
             }
             else
             {
-                $crit->addWhere(self::NAME, "%{$content}%", Criteria::DB_LIKE);
-                $crit->addOr(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
+                $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
+                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+                $crit->addWhere($ctn);
+
+                $ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
+                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+                $crit->addOr($ctn);
             }
 
             $resultcount = $this->doCount($crit);

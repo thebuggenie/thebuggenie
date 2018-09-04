@@ -2194,7 +2194,11 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     text-transform: none;
 }
 .tab_menu_dropdown li.form-container {
-    padding: 5px;
+    padding: 0 5px 5px 5px;
+}
+.tab_menu_dropdown li.form-container input {
+    width: 100%;
+    padding: 6px;
 }
 .tab_menu_dropdown li a {
     display: block;
@@ -2215,6 +2219,11 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 }
 .tab_menu_dropdown .fa {
     margin: 0 .5em 0 0;
+}
+.tab_menu_dropdown img.icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
 }
 
 .tab_menu_dropdown li.disabled {
