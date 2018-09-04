@@ -32,7 +32,6 @@
             <input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
             <input type="hidden" name="include_clients" value="<?php echo (int) $include_clients; ?>">
             <input type="search" class="identifiable_lookup" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" placeholder="<?php echo $text_title; ?>">
-        </form>
         <?php if ($use_form): ?>
                 <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>">
             </form>
