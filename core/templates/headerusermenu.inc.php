@@ -50,7 +50,7 @@
                         <ul class="tab_menu_dropdown user_menu_dropdown popup_box" id="user_menu">
                             <li class="header userinfo">
                                 <span class="user_name"><?= $tbg_user->getRealname(); ?></span>
-                                <span class="user_username"><?= $tbg_user->getUsername(); ?></span>
+                                <span class="user_username">@<?= $tbg_user->getUsername(); ?></span>
                             </li>
                             <li><?= link_tag(make_url('dashboard'), fa_image_tag('columns').__('Your dashboard')); ?></li>
                             <?php if ($tbg_response->getPage() == 'dashboard'): ?>
