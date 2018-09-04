@@ -630,7 +630,8 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown {
     padding: 4px;
     border-radius: 3px;
     border: 1px solid transparent;
-    transition: border-color 0.3s ease-in-out;
+    background-color: transparent;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 .userlink:hover {
     text-decoration: none;
@@ -639,6 +640,8 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown {
 }
 .userlink.button-pressed, .userlink.button-pressed:hover {
     border: 1px solid rgba(100, 200, 100, 0.25);
+    background-color: rgb(253, 250, 223);
+    color: #555;
 }
 
 img.userstate {
@@ -1316,7 +1319,8 @@ footer img {
     position: absolute;
     bottom: 35px;
     left: -12px;
-    font-size: 1em;
+    text-align: left;
+    font-size: .9rem;
     opacity: 0;
     color: #333;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
@@ -1339,7 +1343,7 @@ footer img {
 .article .title_left_images .tooltip.from-above {
     top: 35px;
     left: -4px;
-    transition-delay: 1s;
+    transition-delay: .5s;
 }
 
 .tooltip.big {
@@ -2164,6 +2168,19 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 .tab_menu_dropdown li.header:first-child, .tab_menu_dropdown .header:first-child {
     padding-top: 0;
     margin-top: 0;
+}
+.tab_menu_dropdown li.header.userinfo {
+    text-transform: none;
+    font-size: 1.4em;
+    font-weight: 400;
+    padding: 10px 10px 20px 10px;
+}
+.tab_menu_dropdown li.header.userinfo span {
+    display: block;
+}
+.tab_menu_dropdown li.header.userinfo .user_username {
+    font-size: .7em;
+    font-weight: 100;
 }
 .tab_menu_dropdown .header.with-link {
     display: flex;
@@ -16638,6 +16655,7 @@ ul#subscribers_list > li {
 .teamdropdown_container .team_dropdown.more_actions_dropdown {
     padding-top: 0;
     min-width: 250px;
+    margin-top: 3px;
 }
 
 .dashboard_view_content .project_strip > div:first-child {

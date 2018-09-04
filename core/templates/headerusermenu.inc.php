@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @var \thebuggenie\core\entities\User $tbg_user
+ */
+
+?>
 <nav class="header_menu" id="header_userinfo">
     <?php if (!$tbg_user->isGuest()): ?>
     <?php endif; ?>
@@ -41,6 +48,10 @@
                 <?php if (\thebuggenie\core\framework\Event::createNew('core', 'header_usermenu_decider')->trigger()->getReturnValue() !== false): ?>
                     <?php if (!$tbg_user->isGuest()): ?>
                         <ul class="tab_menu_dropdown user_menu_dropdown popup_box" id="user_menu">
+                            <li class="header userinfo">
+                                <span class="user_name"><?= $tbg_user->getRealname(); ?></span>
+                                <span class="user_username"><?= $tbg_user->getUsername(); ?></span>
+                            </li>
                             <li><?= link_tag(make_url('dashboard'), fa_image_tag('columns').__('Your dashboard')); ?></li>
                             <?php if ($tbg_response->getPage() == 'dashboard'): ?>
                                 <li><?= javascript_link_tag(fa_image_tag('pencil-square-o').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});")); ?></li>
