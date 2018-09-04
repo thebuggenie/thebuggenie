@@ -6393,7 +6393,7 @@ dd {
     white-space: normal;
 }
 
-.more_actions_dropdown li:hover {
+.more_actions_dropdown li:hover a {
     background-color: #F1F1F1;
 }
 
@@ -6471,10 +6471,14 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     color: #FFF;
 }
 
-.more_actions_dropdown li.disabled a, .more_actions_dropdown li.disabled div {
-    color: #AAA !important;
+.more_actions_dropdown li.disabled a,
+.more_actions_dropdown li.disabled a:hover,
+.more_actions_dropdown li.disabled div,
+.more_actions_dropdown li.disabled:hover div {
+    color: #AAA;
     text-shadow: 1px 1px 0 #FFF;
     padding: 0 8px;
+    background: transparent;
 }
 
 .more_actions_dropdown li.form_container {
@@ -15460,58 +15464,6 @@ table[id^='clone_team_'][id$='_indicator'] {
     left: 8px;
 }
 
-/* Configure users, teams and clients -> Teams & Clients -> Add a member to this team */
-
-ul[id^='addmember_team_'] {
-    top: 20px !important;
-}
-
-form[id^='addmember_team_'][id$='_form'] input[type=submit],
-form[id^='addmember_client_'][id$='_form'] input[type=submit] {
-    padding: 4px;
-    margin-left: 4px;
-}
-
-input[id^='addmember_team_'][id$='_input'],
-input[id^='addmember_client_'][id$='_input'] {
-    padding: 4px !important;
-    width: 236px !important;
-}
-
-ul[id^='addmember_team_'] li > a,
-ul[id^='addmember_team_'] li > a:hover,
-ul[id^='addmember_team_'] li.disabled,
-ul[id^='addmember_client_'] li > a,
-ul[id^='addmember_client_'] li > a:hover,
-ul[id^='addmember_client_'] li.disabled {
-    font-size: 13px;
-}
-
-li[id^='addmember_team_'][id$='_change_error'],
-li[id^='addmember_client_'][id$='_change_error'] {
-    margin: 0;
-    padding: 5px;
-}
-
-li[id^='addmember_team_'][id$='_spinning'],
-li[id^='addmember_client_'][id$='_spinning'] {
-    padding-left: 5px;
-    padding-bottom: 5px;
-}
-
-ul[id^='addmember_client_'] {
-    margin-top: -2px;
-    width: 324px;
-}
-
-ul[id^='addmember_team_'] li.disabled,
-ul[id^='addmember_client_'] li.disabled,
-ul[id^='comp_'][id$='_auto_assign_change'] li.disabled {
-    font-size: 0.9em;
-    padding: 2px 7px;
-    color: #AAA;
-}
-
 /* Configure users, teams and clients -> Clients */
 
 #add_client label:first-child {
@@ -15984,17 +15936,6 @@ ul[id^='edition_'][id$='_qa_by_change'] {
     margin-top: 5px;
     margin-right: 10px;
     font-size: 14px;
-}
-
-ul[id^='edition_'][id$='_owned_by_change'] > li.disabled,
-ul[id^='edition_'][id$='_lead_by_change'] > li.disabled,
-ul[id^='edition_'][id$='_qa_by_change'] > li.disabled,
-#owned_by_change > li.disabled,
-#lead_by_change > li.disabled,
-#qa_by_change > li.disabled {
-    font-size: 0.9em;
-    padding: 2px 7px;
-    color: #AAA;
 }
 
 ul[id^='comp_'][id$='_auto_assign_change'] {

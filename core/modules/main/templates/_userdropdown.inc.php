@@ -19,12 +19,15 @@
             </div>
             <div class="user_details">
                 <?php echo $user->getRealname(); ?><br>
-                <?php if(!$user->getLastSeen()): ?>
-                    <b><?php echo __('This user has not logged in yet'); ?></b>
-                <?php else: ?>
-                    <b><?php echo __('Last seen online at %time', array('%time' => '')); ?></b><?php echo tbg_formatTime($user->getLastSeen(), 11); ?>
-                <?php endif; ?>
+                @<?= $user->getUsername(); ?><br>
             </div>
+        </li>
+        <li class="disabled">
+            <?php if(!$user->getLastSeen()): ?>
+                <a href="javascript:void(0);"><?php echo __('This user has not logged in yet'); ?></a>
+            <?php else: ?>
+                <a href="javascript:void(0);"><?php echo __('Last seen online at %time', ['%time' => tbg_formatTime($user->getLastSeen(), 11)]); ?></a>
+            <?php endif; ?>
         </li>
         <?php \thebuggenie\core\framework\Event::createNew('core', 'useractions_top', $user)->trigger(); ?>
         <?php if (\thebuggenie\core\entities\User::isThisGuest() == false && $user->getID() != $tbg_user->getID()): ?>

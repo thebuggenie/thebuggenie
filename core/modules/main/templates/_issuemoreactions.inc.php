@@ -3,7 +3,7 @@
     <?php if (isset($board)) $moreactions_url['board_id'] = $board->getID(); ?>
     <?php if (isset($estimator_mode)) $moreactions_url['estimator_mode'] = $estimator_mode; ?>
     <ul class="more_actions_dropdown popup_box dynamic_menu" data-menu-url="<?php echo make_url('issue_moreactions', $moreactions_url); ?>">
-        <li class="spinning disabled"><?php echo image_tag('spinning_32.gif'); ?></li>
+        <li class="spinning disabled"><a href="javascript:void(0);"><?php echo image_tag('spinning_32.gif'); ?></a></li>
     </ul>
 <?php else: ?>
     <ul class="more_actions_dropdown popup_box with-header">
