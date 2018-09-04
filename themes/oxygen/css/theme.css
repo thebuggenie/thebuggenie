@@ -851,6 +851,7 @@ img.avatar {
 }
 .header_menu > ul > li > a,
 .header_menu > ul > li > a:hover {
+    display: inline-block;
     color: #FFF;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
     padding: 4px 8px;
