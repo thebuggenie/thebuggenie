@@ -24,7 +24,7 @@
                     <ul style="margin-top: 28px; font-size: 1.1em;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).toggle();">
                         <li><?php echo javascript_link_tag(fa_image_tag('user-plus').__('Add member(s) to this client'), array('onclick' => '$(\'addmember_client_'.$client->getID().'\').toggle(\'block\');')); ?></li>
                         <li class="separator"></li>
-                        <li><?php echo javascript_link_tag(fa_image_tag('times', ['class' => 'delete']).__('Delete this client'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this client?')."', '".__('If you delete this client, then all users in this client will be lose the permissions given via this client')."', {yes: {click: function() {TBG.Config.Team.remove('".make_url('configure_users_delete_client', array('client_id' => $client->getID()))."', {$client->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?></li>
+                        <li class="delete"><?php echo javascript_link_tag(fa_image_tag('times').__('Delete this client'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this client?')."', '".__('If you delete this client, then all users in this client will be lose the permissions given via this client')."', {yes: {click: function() {TBG.Config.Team.remove('".make_url('configure_users_delete_client', array('client_id' => $client->getID()))."', {$client->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?></li>
                     </ul>
                 </div>
             <?php endif; ?>

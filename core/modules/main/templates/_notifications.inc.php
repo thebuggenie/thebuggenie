@@ -1,5 +1,5 @@
     <?php if ($num_unread + $num_read == 0 && ! $filter_first_notification): ?>
-        <li class="faded_out"><?php echo __('You have no notifications'); ?></li>
+        <li class="disabled"><?php echo __('You have no notifications'); ?></li>
     <?php else: ?>
         <?php foreach ($notifications as $notification): ?>
         <?php
