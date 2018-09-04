@@ -1,7 +1,6 @@
 <div class="project_overview">
     <div class="tab_menu inset">
         <ul id="projects_list_tabs">
-            <?php /* <li id="tab_starred"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_starred', 'projects_list_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('star-half-o') . __('Starred projects'); ?></a></li> */ ?>
             <li id="tab_active" class="selected"><a onclick="TBG.Project.loadList('active', '<?= $active_url; ?>');" href="javascript:void(0);"><?= fa_image_tag('diamond') . __('Active projects') . image_tag('spinning_16.gif', ['style' => 'display: none;', 'id' => 'project_list_tab_active_indicator']); ?></a></li>
             <li id="tab_archived" class=""><a onclick="TBG.Project.loadList('archived', '<?= $archived_url; ?>');" href="javascript:void(0);"><?= fa_image_tag('archive') . __('Archived projects') . image_tag('spinning_16.gif', ['style' => 'display: none;', 'id' => 'project_list_tab_archived_indicator']); ?></a></li>
             <?php if ($tbg_user->isAuthenticated()): ?>
