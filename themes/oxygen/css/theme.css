@@ -2470,7 +2470,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     display: inline-block;
     height: 32px;
     line-height: 32px;
-    margin: 0 8px 0 0;
+    margin: 3px 8px 0 0;
     padding: 3px;
     text-align: center;
     vertical-align: middle;
