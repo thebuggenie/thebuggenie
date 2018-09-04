@@ -51,7 +51,7 @@ $parent_prefix = isset($parent_issue) ? 'issue_'.$parent_issue->getID().'_child_
             <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png').$issue->getFormattedTitle(true, false), array('title' => $issue->getFormattedTitle(), 'target' => '_blank')); ?>
         </div>
         <div class="issue_more_actions_link_container">
-            <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $parent_prefix . $issue->getID(); ?>" id="<?php echo $parent_prefix; ?>more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo image_tag('action_dropdown_small.png'); ?></a>
+            <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $parent_prefix . $issue->getID(); ?>" id="<?php echo $parent_prefix; ?>more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo fa_image_tag('ellipsis-v'); ?></a>
             <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true, 'board' => $board)); ?>
         </div>
     </div>

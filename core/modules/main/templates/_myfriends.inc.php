@@ -3,7 +3,7 @@
     <?php foreach ($friends as $friend): ?>
         <div style="padding: 5px 0 7px 0; clear: both; font-size: 0.95em;">
             <div>
-                <?php echo include_component('main/userdropdown', array('user' => $friend, 'class' => 'leftie')); ?>
+                <?php echo include_component('main/userdropdown', array('user' => $friend)); ?>
             </div>
         </div>
     <?php endforeach; ?>

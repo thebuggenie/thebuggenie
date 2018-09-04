@@ -42,7 +42,7 @@
                 <?php foreach ($filter->getAvailableValues() as $value): ?>
                     <li data-value="<?php echo $value->getID(); ?>"
                         class="filtervalue<?php if ($filter->hasValue($value->getID())) echo ' selected'; ?>">
-                        <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                         <input type="checkbox" value="<?php echo $value->getID(); ?>"
                                name="filters_<?php echo $key; ?>_value_<?php echo $value->getID(); ?>"
                                data-text="<?php echo __($value->getName()); ?>"

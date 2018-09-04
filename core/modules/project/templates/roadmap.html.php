@@ -18,7 +18,7 @@
                 <div class="project_save_container" id="project_planning_action_strip">
                     <?php echo javascript_link_tag(__('New milestone'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');")); ?>
                     <?php echo image_tag('spinning_16.gif', array('id' => 'retrieve_indicator', 'class' => 'indicator', 'style' => 'display: none;')); ?>
-                    <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
+                    <?php echo fa_image_tag('cog', array('class' => 'dropper dropdown_link planning_board_settings_gear', 'id' => 'planning_board_settings_gear')); ?>
                     <ul class="more_actions_dropdown popup_box">
                         <li class="roadmap_sort_milestones_action"><?php echo javascript_link_tag(__('Sort milestones'), array('onclick' => "TBG.Project.Planning.toggleMilestoneSorting();")); ?></li>
                     </ul>

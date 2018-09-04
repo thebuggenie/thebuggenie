@@ -6,7 +6,7 @@
         <?php echo image_tag('icon_team.png', array('class' => "avatar small team-avatar")); ?>
         <?php echo isset($displayname) && is_string($displayname) ? $displayname : $team->getName(); ?>
     </a>
-    <ul style="display: none;" class="rounded_box white shadowed team_dropdown popup_box dropdown_box leftie more_actions_dropdown">
+    <ul class="rounded_box white shadowed team_dropdown popup_box dropdown_box more_actions_dropdown">
         <li class="header">
             <div class="team_image_container">
                 <?php echo image_tag('team_large.png', array('alt' => ' ', 'style' => "width: 36px; height: 36px;")); ?>

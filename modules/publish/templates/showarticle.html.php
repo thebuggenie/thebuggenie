@@ -71,7 +71,7 @@
                 <h4>
                     <?php echo __('Article comments (%count)', array('%count' => \thebuggenie\core\entities\Comment::countComments($article->getID(), \thebuggenie\core\entities\Comment::TYPE_ARTICLE))); ?>
                     <div class="dropper_container">
-                        <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
+                        <?php echo fa_image_tag('cog', array('class' => 'dropper')); ?>
                         <ul class="more_actions_dropdown dropdown_box popup_box leftie" id="comment_dropdown_options">
                             <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ARTICLE; ?>', '<?= $article->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
                         </ul>

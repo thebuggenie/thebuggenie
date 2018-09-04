@@ -1541,10 +1541,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var prev = $(element).previous('.button-pressed');
                 if (prev) {
                     prev.removeClassName('button-pressed');
-                } else if (element.id != '' && jQuery('.dropper[data-target='+element.id+']')) {
-                    jQuery('.dropper[data-target='+element.id+']').removeClass('button-pressed');
                 }
-                $(element).hide();
             });
         };
 
@@ -7740,11 +7737,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
 
         TBG.Main.Helpers.toggler = function (elm) {
             elm.toggleClass("button-pressed");
-            if (jQuery(elm).data('target')) {
-                jQuery('#'+jQuery(elm).data('target')).toggle();
-            } else {
-                elm.next().toggle();
-            }
         };
 
         TBG.Main.loadParentArticles = function (form) {

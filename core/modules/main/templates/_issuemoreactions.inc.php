@@ -6,7 +6,7 @@
         <li class="spinning"><?php echo image_tag('spinning_32.gif'); ?></li>
     </ul>
 <?php else: ?>
-    <ul class="more_actions_dropdown popup_box">
+    <ul class="more_actions_dropdown popup_box with-header">
         <?php if (!$issue->getProject()->isArchived() && $issue->canEditIssueDetails()): ?>
             <?php if (!isset($multi) || !$multi): ?>
                 <li class="header"><?php echo __('Workflow transition actions'); ?></li>

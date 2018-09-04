@@ -198,7 +198,7 @@ foreach ($search_object->getIssues() as $issue):
                 <?php if (!$tbg_user->isGuest() && $actionable): ?>
                     <td class="sc_actions">
                         <div style="position: relative;">
-                            <a title="<?php echo __('Show more actions'); ?>" class="image dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
+                            <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?= fa_image_tag('ellipsis-v'); ?></a>
                             <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true)); ?>
                         </div>
                     </td>
@@ -213,9 +213,6 @@ foreach ($search_object->getIssues() as $issue):
     <?php endif; ?>
 <?php endif; ?>
 <?php if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'bottom')); ?>
-<style type="text/css">
-.sc_actions .image { background-image:url(<?php echo image_url('action_dropdown_small.png'); ?>); }
-</style>
 <script type="text/javascript">
     require(['jquery', 'domReady', 'thebuggenie/tbg'], function (jQuery, domReady, tbgjs) {
         domReady(function () {

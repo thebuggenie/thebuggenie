@@ -180,7 +180,8 @@
 .article .header .button-group { float: right; font-size: 0.55em; vertical-align: middle; margin-top: 3px; }
 .article .header.edit .button-group { font-size: 0.7em; }
 .article .header .button-group .button { padding: 3px 7px; }
-.article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: auto; margin-right: 5px; vertical-align: middle; }
+.article .header .title_left_images { font-size: 0.6em; font-weight: 100; display: inline-block; height: 26px; width: auto; margin-right: 5px; vertical-align: middle; }
+.article .header .title_left_images .fa { font-size: 1.4rem; }
 
 .article .header.edit .parent_article_name { font-size: 0.7em; font-weight: normal; }
 .article .header.edit input[type=text] {

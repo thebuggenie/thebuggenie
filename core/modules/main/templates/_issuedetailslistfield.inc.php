@@ -17,7 +17,7 @@
                 <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
                     <li class="header"><?php echo $info['change_header']; ?></li>
                     <li>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo fa_image_tag('times') . $info['clear']; ?></a>
                     </li>
                     <?php if (count($info['choices'])): ?>
                         <li class="separator"></li>

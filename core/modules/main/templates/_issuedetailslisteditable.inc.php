@@ -1,4 +1,9 @@
-<?php /** @var \thebuggenie\core\entities\Issue $issue */ ?>
+<?php
+    /**
+     * @var \thebuggenie\core\entities\Issue $issue
+     * @var \thebuggenie\core\entities\Status[] $statuses
+     */
+?>
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
 <fieldset>
     <legend onclick="$('issue_details_fieldslist_basics').toggle();"><?php echo __('Issue basics'); ?></legend>
@@ -13,7 +18,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul id="issuetype_change" class="popup_box more_actions_dropdown">
+                        <ul id="issuetype_change" class="popup_box more_actions_dropdown with-header">
                             <li class="header"><?php echo __('Set issue type'); ?></li>
                             <?php foreach ($issuetypes as $issuetype): ?>
                                 <li>
@@ -42,7 +47,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>', 'shortname');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to edit issue label'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul id="shortname_change" class="popup_box more_actions_dropdown">
+                        <ul id="shortname_change" class="popup_box more_actions_dropdown with-header">
                             <li class="header"><?php echo __('Set issue label'); ?></li>
                             <li class="nohover">
                                 <form id="shortname_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')) ?>', 'shortname', 'shortname'); return false;">
@@ -73,15 +78,13 @@
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul class="popup_box more_actions_dropdown" id="status_change">
-                            <li class="header"><?php echo __('Set status'); ?></li>
                             <?php foreach ($statuses as $status): ?>
                                 <?php if (!$status->canUserSet($tbg_user)) continue; ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');">
-                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getTextColor() : '#333'; ?>;">
-                                            <span>&nbsp;&nbsp;</span>
+                                        <div class="status_badge" style="background-color: <?php echo $status->getColor(); ?>;color: <?php echo $status->getTextColor(); ?>;">
+                                            <span><?php echo __($status->getName()); ?></span>
                                         </div>
-                                        <?php echo __($status->getName()); ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>
@@ -106,7 +109,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to set percent completed'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="percent_complete_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="percent_complete_change">
                             <li class="header"><?php echo __('Set percent completed'); ?></li>
                             <li><a href="javascript:void(0);" onclick="TBG.Issues.Field.setPercent('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete', 'percent' => 0)); ?>', 'set');"><?php echo __('Clear percent completed'); ?></a></li>
                             <li class="separator"></li>
@@ -140,7 +143,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_bug_type_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage type of bug'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_bug_type_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_bug_type_change">
                             <li class="header"><?php echo __('Triage bug type'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => 0)); ?>', 'pain_bug_type');"><?php echo __('Clear bug type'); ?></a>
@@ -170,7 +173,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage likelihood'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_likelihood_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_likelihood_change">
                             <li class="header"><?php echo __('Triage likelihood'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => 0)); ?>', 'pain_likelihood');"><?php echo __('Clear likelihood'); ?></a>
@@ -200,7 +203,7 @@
                         <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage effect'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_effect_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_effect_change">
                             <li class="header"><?php echo __('Triage effect'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => 0)); ?>', 'pain_effect');"><?php echo __('Clear effect'); ?></a>
@@ -250,7 +253,7 @@
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value')) . "', 'posted_by');",
                                                                                 'base_id'            => 'posted_by',
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: inline;" id="posted_by_name">
                         <?php echo include_component('main/userdropdown', array('user' => $issue->getPostedBy())); ?>
@@ -276,7 +279,7 @@
                                                                                 'base_id'            => 'owned_by',
                                                                                 'include_teams'        => true,
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: <?php if ($issue->isOwned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
                         <?php if ($issue->getOwner() instanceof \thebuggenie\core\entities\User): ?>
@@ -306,7 +309,7 @@
                                                                                 'base_id'            => 'assigned_to',
                                                                                 'include_teams'        => true,
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="assigned_to_name">
                         <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
@@ -416,7 +419,7 @@
                                                                                             'base_id'            => $field,
                                                                                             'include_teams'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE): ?>
                                     <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a team'),
@@ -426,7 +429,7 @@
                                                                                             'include_teams'        => true,
                                                                                             'include_users'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE): ?>
                                     <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a client'),
@@ -437,9 +440,9 @@
                                                                                             'include_teams'        => false,
                                                                                             'include_users'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php else: ?>
-                                    <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
+                                    <ul class="popup_box more_actions_dropdown with-header" id="<?php echo $field; ?>_change">
                                         <li class="header"><?php echo $info['change_header']; ?></li>
                                         <li id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                                         <li id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></li>

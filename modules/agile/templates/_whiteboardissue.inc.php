@@ -13,7 +13,7 @@
     </div>
     <?php if (isset($swimlane)): ?>
         <div class="issue_more_actions_link_container">
-            <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo image_tag('action_dropdown_small.png'); ?></a>
+            <a title="<?php echo __('Show more actions'); ?>" class="dropper dynamic_menu_link" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"><?php echo fa_image_tag('ellipsis-v'); ?></a>
             <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true, 'dynamic' => true, 'estimator_mode' => 'left')); ?>
         </div>
     <?php endif; ?>
@@ -61,12 +61,12 @@
     <div class="issue_info">
         <?php if ($issue->countUserComments()): ?>
             <div class="comments-badge">
-                <?php echo image_tag('icon_comments.png') .'<span>'. $issue->countUserComments() .'</span>'; ?>
+                <?php echo fa_image_tag('comment-o') .'<span>'. $issue->countUserComments() .'</span>'; ?>
             </div>
         <?php endif; ?>
         <?php if ($issue->countFiles()): ?>
             <div class="attachments-badge">
-                <?php echo image_tag('icon_attached_information.png') .'<span>'. $issue->countFiles() .'</span>'; ?>
+                <?php echo fa_image_tag('paperclip') .'<span>'. $issue->countFiles() .'</span>'; ?>
             </div>
         <?php endif; ?>
         <?php echo image_tag('icon_block.png', array('class' => 'blocking', 'title' => __('This issue is marked as a blocker'))); ?>

@@ -14,8 +14,8 @@
                     <?= __('Click the star to toggle whether you want to be notified whenever this article updates or changes'); ?><br>
                 </div>
                 <?= image_tag('spinning_20.gif', array('id' => 'article_favourite_indicator_'.$article->getId(), 'style' => 'display: none;')); ?>
-                <?= image_tag('star_faded.png', array('id' => 'article_favourite_faded_'.$article->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
-                <?= image_tag('star.png', array('id' => 'article_favourite_normal_'.$article->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
+                <?= fa_image_tag('star-o', array('id' => 'article_favourite_faded_'.$article->getId(), 'class' => 'unsubscribed', 'style' => ($tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
+                <?= fa_image_tag('star', array('id' => 'article_favourite_normal_'.$article->getId(), 'class' => 'subscribed', 'style' => (!$tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>
