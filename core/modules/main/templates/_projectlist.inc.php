@@ -18,9 +18,16 @@
     </div>
 </div>
 <script type="text/javascript">
-    require(['domReady', 'thebuggenie/tbg', 'prototype'], function (domReady, TBG, prototype) {
-        domReady(function () {
-            TBG.Project.loadList('active', '<?= $active_url; ?>');
-        });
-    });
+ require(['domReady', 'thebuggenie/tbg', 'prototype'], function (domReady, TBG, prototype) {
+     domReady(function () {
+         // Default to active tab, unless archived tab was specified
+         // in URL.
+         if (window.location.hash === '#tab_archived') {
+             TBG.Project.loadList('archived', '<?= $archived_url; ?>');
+         }
+         else {
+             TBG.Project.loadList('active', '<?= $active_url; ?>');
+         }
+     });
+ });
 </script>
