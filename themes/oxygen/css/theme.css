@@ -311,6 +311,7 @@ header {
     display: flex;
     flex-flow: row;
     flex-wrap: nowrap;
+    font-size: 1rem;
 }
 
 .backdrop_detail_header {
@@ -2131,6 +2132,7 @@ div.dropdown_separator {
     padding: 5px 0;
     z-index: 10000;
     border-radius: 3px;
+    font-size: .9em;
 }
 
 .tab_menu_dropdown.two-columns {
@@ -2151,6 +2153,12 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     flex: 1 1 49%;
     padding: 0;
 }
+.tab_menu_dropdown.two-columns.wide-right ul:first-child {
+    min-width: 200px;
+}
+.tab_menu_dropdown.two-columns.wide-right ul:last-child {
+    min-width: 350px;
+}
 
 .tab_menu_dropdown li {
     padding: 0;
@@ -2160,7 +2168,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     padding: 15px 0 5px 0;
     margin: 5px;
     font-size: 1.1em;
-    font-weight: 100;
+    font-weight: 400;
     text-transform: uppercase;
     color: #444;
     border-bottom: 1px dotted #CCC;

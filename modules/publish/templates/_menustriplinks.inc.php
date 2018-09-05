@@ -5,7 +5,7 @@
     <?php else: ?>
         <?= link_tag($wiki_url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['target' => 'blank', 'class' => $dropper_class]) ?>
     <?php endif; ?>
-    <div id="wiki_dropdown_menu" class="tab_menu_dropdown popup_box two-columns">
+    <div id="wiki_dropdown_menu" class="tab_menu_dropdown popup_box two-columns wide-right">
         <ul>
             <li class="header"><?= __('Quick links'); ?></li>
             <li><?php echo link_tag($wiki_url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(false), ['target' => 'blank']) ?></li>
