@@ -934,7 +934,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     $(visibletab + '_pane').show();
                 }
                 if (change_hash) {
-                    window.location.hash = visibletab;
+                    if (history.replaceState) {
+                        window.history.replaceState(null, null, '#' + visibletab);
+                    }
+                    else {
+                        window.location.hash = visibletab;
+                    }
                 }
             }
         };
