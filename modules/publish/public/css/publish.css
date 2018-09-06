@@ -276,7 +276,10 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 #manual_sidebar ul li > ul li.child.level_1 { padding-left: 0; }
 #manual_sidebar li.selected { font-weight: bold; }
 #manual_sidebar li.parent { font-style: italic; font-weight: normal; }
-#manual_sidebar li img { display: inline-block; vertical-align: middle; margin: 2px 3px 6px 0; }
+#manual_sidebar li a { color: #333; padding: 5px; border: none; display: block; }
+#manual_sidebar li a:hover { color: #333; background-color: rgba(200, 200, 200, .2); border: none; }
+#manual_sidebar li img { display: inline-block; vertical-align: middle; margin: 0 3px 0 0; }
+#manual_sidebar li span { display: inline-block; vertical-align: middle; }
 /*#manual_sidebar.single_parent > ul > li.parent > img { display: none; }*/
 #manual_sidebar li img.branch { margin-right: 0; }
 

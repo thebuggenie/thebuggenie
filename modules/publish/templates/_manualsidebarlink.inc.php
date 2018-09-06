@@ -12,13 +12,15 @@
 
 ?>
 <li class="<?php echo (isset($level) && $level >= 1) ? 'child' : 'parent'; ?> <?php if ($is_parent && !$is_selected) echo 'parent'; ?> <?php if ($is_selected) echo 'selected'; ?> level_<?php echo $level; ?>" id="article_sidebar_link_<?php echo $article->getID(); ?>">
-    <?php if (isset($level) && $level >= 1) echo image_tag('icon_tree_child.png', array('class' => 'branch')); ?>
-    <?php if ($is_first && $main_article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL): ?>
-        <?php echo image_tag('icon-article-type-manual.small.png'); ?>
-    <?php else: ?>
-        <?php echo (!empty($children)) ? image_tag('icon_folder.png', array(), false, 'publish') : image_tag('icon_article.png', array(), false, 'publish'); ?>
-    <?php endif; ?>
-    <?php echo link_tag(make_url('publish_article', array('article_name' => $main_article->getName())), $main_article->getManualName()); ?>
+    <a href="<?= make_url('publish_article', array('article_name' => $main_article->getName())); ?>">
+        <?php if (isset($level) && $level >= 1) echo image_tag('icon_tree_child.png', array('class' => 'branch')); ?>
+        <?php if ($is_first && $main_article->getArticleType() == \thebuggenie\modules\publish\entities\Article::TYPE_MANUAL): ?>
+            <?php echo image_tag('icon-article-type-manual.small.png'); ?>
+        <?php else: ?>
+            <?php echo (!empty($children)) ? image_tag('icon_folder.png', array(), false, 'publish') : image_tag('icon_article.png', array(), false, 'publish'); ?>
+        <?php endif; ?>
+        <span><?php echo $main_article->getManualName(); ?></span>
+    </a>
     <?php if ($is_parent || $is_selected): ?>
         <ul>
             <?php foreach ($children as $child_article): ?>

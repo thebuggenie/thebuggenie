@@ -163,7 +163,7 @@
         </div>
         <div id="account_tabs_panes">
             <div id="tab_profile_pane" style="<?php if ($selected_tab != 'profile'): ?> display: none;<?php endif; ?>">
-                <div class="header" style="margin-bottom: 5px;">
+                <div class="header" style="display: none;">
                     <a href="javascript:void(0);" onclick="$('usermenu_changestate').toggle();" id="usermenu_changestate_toggler" class="button button-silver"><?= __('Change'); ?></a>
                     <?= image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'change_userstate_dropdown')); ?>
                     <?= __('You are: %userstate', array('%userstate' => '<span class="current_userstate userstate">'.__($tbg_user->getState()->getName()).'</span>')); ?>

@@ -355,7 +355,7 @@
 
                         <div class="tab_menu inset">
                             <ul id="viewissue_activity">
-                                <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><i class="fa fa-comments-o"></i><?= __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count"></span>')); ?></a></li>
+                                <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><i class="fa fa-comments-o"></i><?= __('Comments %count', array('%count' => '<span id="viewissue_comment_count" class="count-badge">' . $issue->countComments() . '</span>')); ?></a></li>
                                 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
                                 <li id="tab_viewissue_history"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_history', 'viewissue_activity');"><i class="fa fa-history"></i><?= __('History'); ?></a></li>
                             </ul>

@@ -7808,10 +7808,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     unl_data = unl.dataset;
                 if (unl) {
                     if (loadToTop && unl.down('li') != undefined) {
-                        var url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li').dataset.notificationId;
+                        var url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li:not(.disabled)').dataset.notificationId;
                     }
-                    else if (! loadToTop && unl.select("li:last-child") != undefined && unl.select("li:last-child")[0] != undefined) {
-                        var url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:last-child")[0].dataset.notificationId;
+                    else if (! loadToTop && unl.select("li:not(.disabled):last-child") != undefined && unl.select("li:not(.disabled):last-child")[0] != undefined) {
+                        var url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:not(.disabled):last-child")[0].dataset.notificationId;
                     }
                     if (url != undefined) {
                         TBG.Main.Helpers.ajax(url, {

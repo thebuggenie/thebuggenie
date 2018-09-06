@@ -9,6 +9,9 @@
         </div>
         <br style="clear: both;">
     <?php else: ?>
-        <div class="faded_out"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
+        <div class="no-items">
+            <?= fa_image_tag('th-list'); ?>
+            <span><?php echo __('As soon as something important happens it will appear here.'); ?></span>
+        </div>
     <?php endif; ?>
 </div>
