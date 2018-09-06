@@ -2,6 +2,7 @@
 
 namespace thebuggenie\core\modules\installation;
 
+use thebuggenie\core\entities\Datatype;
 use thebuggenie\core\entities\Issuetype;
 use thebuggenie\core\entities\IssuetypeScheme;
 use thebuggenie\core\entities\Scope;
@@ -243,17 +244,19 @@ class Upgrade
 
         foreach (Scope::getAll() as $scope) {
             list($bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id) = Issuetype::getDefaultItems($scope);
-            list($full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme) = IssuetypeScheme::loadFixtures($this, [$bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id]);
-            tables\IssueFields::getTable()->loadFixtures($this, $full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme, $bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id);
-            Datatype::loadFixtures($this);
+            list($full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme) = IssuetypeScheme::loadFixtures($scope, [$bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id]);
+            tables\IssueFields::getTable()->loadFixtures($scope, $full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme, $bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id);
+            Datatype::loadFixtures($scope);
 
             // Set up workflows
-            list ($multi_team_workflow, $balanced_workflow, $simple_workflow) = Workflow::loadFixtures($this);
-            list ($multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme) = WorkflowScheme::loadFixtures($this);
+            list ($multi_team_workflow, $balanced_workflow, $simple_workflow) = Workflow::loadFixtures($scope);
+            list ($multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme) = WorkflowScheme::loadFixtures($scope);
 
-            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $multi_team_workflow, $multi_team_workflow_scheme);
-            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $balanced_workflow, $balanced_workflow_scheme);
-            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $simple_workflow, $simple_workflow_scheme);
+            tables\WorkflowIssuetype::getTable()->loadFixtures($scope, $multi_team_workflow, $multi_team_workflow_scheme);
+            tables\WorkflowIssuetype::getTable()->loadFixtures($scope, $balanced_workflow, $balanced_workflow_scheme);
+            tables\WorkflowIssuetype::getTable()->loadFixtures($scope, $simple_workflow, $simple_workflow_scheme);
+
+            gc_collect_cycles();
         }
 
         $admin_user = Users::getTable()->getByUsername($this->upgrade_options['4_1_13']['admin_username']);

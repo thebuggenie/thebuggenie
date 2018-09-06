@@ -196,14 +196,6 @@
                 'editable'    => true,
                 'is_closed'   => false
             ];
-            $steps['reopened'] = [
-                'name'        => 'Reopened',
-                'description' => 'An issue that was previously resolved or closed',
-                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
-                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
-                'editable'    => true,
-                'is_closed'   => false
-            ];
             $steps['inprogress'] = [
                 'name'        => 'In progress',
                 'description' => 'An issue that is being worked on',
@@ -236,6 +228,14 @@
                 'editable'    => false,
                 'is_closed'   => true
             ];
+            $steps['reopened'] = [
+                'name'        => 'Reopened',
+                'description' => 'An issue that was previously resolved or closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
 
             $steps = self::loadWorkflowStepsAndTransitions($scope, $workflow, $steps);
             WorkflowTransition::loadBalancedWorkflowFixtures($scope, $workflow, $steps);
@@ -248,14 +248,6 @@
                 'name'        => 'Open',
                 'description' => 'A new issue, not yet handled',
                 'status_id'   => Status::getOrCreateByKeyish($scope, 'open', 'Open')->getID(),
-                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
-                'editable'    => true,
-                'is_closed'   => false
-            ];
-            $steps['reopened'] = [
-                'name'        => 'Reopened',
-                'description' => 'An issue that was previously resolved or closed',
-                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
                 'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
                 'editable'    => true,
                 'is_closed'   => false
@@ -283,6 +275,14 @@
                 'transitions' => ['reopenissue'],
                 'editable'    => false,
                 'is_closed'   => true
+            ];
+            $steps['reopened'] = [
+                'name'        => 'Reopened',
+                'description' => 'An issue that was previously resolved or closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
             ];
 
             $steps = self::loadWorkflowStepsAndTransitions($scope, $workflow, $steps);
