@@ -731,6 +731,7 @@ img.avatar {
 
 #logo_container .logo_name, #logo_container .logo_name:hover {
     font-size: 1.2em;
+    font-weight: 400;
     color: #ECF0F4;
     margin: 0 5px 0 0;
     padding: 4px 8px;
@@ -804,6 +805,7 @@ img.avatar {
     border: 1px solid transparent;
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
     text-decoration: none;
+    font-weight: 400;
 }
 .header_menu > ul > li > a:hover {
     background-color: rgba(0, 0, 0, 0.25);
@@ -818,6 +820,7 @@ img.avatar {
     color: #444;
     background-color: #FFF;
     text-shadow: none;
+    font-weight: 600;
 }
 .header_menu > ul > li > a > .fa {
     margin: 0 .5em 0 0;
@@ -2097,7 +2100,6 @@ a.not_clickable:hover {
 }
 
 #header_userinfo .tab_menu_dropdown a {
-    font-weight: 100;
     font-size: 1em;
 }
 
@@ -2163,6 +2165,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 .tab_menu_dropdown li {
     padding: 0;
     margin: 0;
+    font-weight: 400;
 }
 .tab_menu_dropdown li.header, .tab_menu_dropdown .header {
     padding: 15px 0 5px 0;
