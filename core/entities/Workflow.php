@@ -109,16 +109,31 @@
             return self::$_workflows;
         }
         
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
-            $workflow = new \thebuggenie\core\entities\Workflow();
-            $workflow->setName("Default workflow");
-            $workflow->setDescription("This is the default workflow. It is used by all projects with no specific workflow selected, and for issue types with no specific workflow specified. This workflow cannot be edited or removed.");
-            $workflow->setScope($scope->getID());
-            $workflow->save();
+            $multi_team_workflow = new Workflow();
+            $multi_team_workflow->setName("Multi-team workflow");
+            $multi_team_workflow->setDescription("This is a workflow well suited for projects with multiple teams. It uses an issue lifecycle involving triaging, testing and QA, and works well for large projects.");
+            $multi_team_workflow->setScope($scope->getID());
+            $multi_team_workflow->save();
 
-            \thebuggenie\core\framework\Settings::saveSetting(\thebuggenie\core\framework\Settings::SETTING_DEFAULT_WORKFLOW, $workflow->getID(), 'core', $scope->getID());
-            WorkflowStep::loadFixtures($scope, $workflow);
+            $balanced_workflow = new Workflow();
+            $balanced_workflow->setName("Balanced workflow");
+            $balanced_workflow->setDescription("This is a workflow used to handle medium-sized projects or small-team projects.");
+            $balanced_workflow->setScope($scope->getID());
+            $balanced_workflow->save();
+
+            $simple_workflow = new Workflow();
+            $simple_workflow->setName("Simple workflow");
+            $simple_workflow->setDescription("This is a simple workflow that can be used on projects with few people, or even just one person.");
+            $simple_workflow->setScope($scope->getID());
+            $simple_workflow->save();
+
+            WorkflowStep::loadMultiTeamWorkflowFixtures($scope, $multi_team_workflow);
+            WorkflowStep::loadBalancedWorkflowFixtures($scope, $balanced_workflow);
+            WorkflowStep::loadSimpleWorkflowFixtures($scope, $simple_workflow);
+
+            return [$multi_team_workflow, $balanced_workflow, $simple_workflow];
         }
 
         public static function getWorkflowsCount()
@@ -262,7 +277,7 @@
         
         public function copy($new_name)
         {
-            $new_workflow = new \thebuggenie\core\entities\Workflow();
+            $new_workflow = new Workflow();
             $new_workflow->setName($new_name);
             $new_workflow->save();
             $step_mapper = array();

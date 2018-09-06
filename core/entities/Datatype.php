@@ -78,7 +78,7 @@
          */
         const ACTIVITYTYPE = 'activitytype';
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             Category::loadFixtures($scope);
             Priority::loadFixtures($scope);

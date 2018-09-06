@@ -24,18 +24,18 @@
 
         protected $_abbreviation = null;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $priorities = array();
             $priorities['Critical'] = self::PRIORITY_1;
-            $priorities['Needs to be fixed'] = self::PRIORITY_2;
-            $priorities['Must fix before next release'] = self::PRIORITY_3;
-            $priorities['Normal'] = self::PRIORITY_4;
-            $priorities['Low'] = self::PRIORITY_5;
+            $priorities['High'] = self::PRIORITY_2;
+            $priorities['Normal'] = self::PRIORITY_3;
+            $priorities['Low'] = self::PRIORITY_4;
+            $priorities['Trivial'] = self::PRIORITY_5;
 
             foreach ($priorities as $name => $itemdata)
             {
-                $priority = new \thebuggenie\core\entities\Priority();
+                $priority = new Priority();
                 $priority->setName($name);
                 $priority->setItemdata($itemdata);
                 $priority->setScope($scope);

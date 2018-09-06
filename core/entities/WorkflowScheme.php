@@ -76,13 +76,25 @@
         
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-            $scheme = new \thebuggenie\core\entities\WorkflowScheme();
-            $scheme->setScope($scope);
-            $scheme->setName("Default workflow scheme");
-            $scheme->setDescription("This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
-            $scheme->save();
+            $multi_team_workflow_scheme = new WorkflowScheme();
+            $multi_team_workflow_scheme->setScope($scope);
+            $multi_team_workflow_scheme->setName("Multi-team workflow scheme");
+            $multi_team_workflow_scheme->setDescription("This is a workflow scheme well suited for projects with multiple teams. It uses the multi-team workflow for all issue types.");
+            $multi_team_workflow_scheme->save();
 
-            \thebuggenie\core\framework\Settings::saveSetting(\thebuggenie\core\framework\Settings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID(), 'core', $scope->getID());
+            $balanced_workflow_scheme = new WorkflowScheme();
+            $balanced_workflow_scheme->setScope($scope);
+            $balanced_workflow_scheme->setName("Balanced workflow scheme");
+            $balanced_workflow_scheme->setDescription("This is a workflow scheme used to handle medium-sized projects or small-team projects. It uses the balanced workflow for all issue types.");
+            $balanced_workflow_scheme->save();
+
+            $simple_workflow_scheme = new WorkflowScheme();
+            $simple_workflow_scheme->setScope($scope);
+            $simple_workflow_scheme->setName("Simple workflow scheme");
+            $simple_workflow_scheme->setDescription("This is a simple workflow scheme for projects with few people, or even just one person. It uses the simple workflow for all issue types.");
+            $simple_workflow_scheme->save();
+
+            return [$multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme];
         }
 
         protected function _preDelete()

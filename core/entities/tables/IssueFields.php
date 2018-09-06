@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\IssuetypeScheme;
+    use thebuggenie\core\entities\Scope;
     use thebuggenie\core\framework;
 
     /**
@@ -153,398 +155,215 @@
             $res = $this->doDelete($crit);
         }
 
-        public function loadFixtures(\thebuggenie\core\entities\Scope $scope, \thebuggenie\core\entities\IssuetypeScheme $scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id, $issue_type_epic_id)
+        public function loadFixtures(Scope $scope, IssuetypeScheme $full_range_scheme, IssuetypeScheme $balanced_scheme, IssuetypeScheme $balanced_agile_scheme, IssuetypeScheme $simple_scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id, $issue_type_epic_id)
         {
             $scope = $scope->getID();
-            $scheme = $scheme->getID();
+            $schemes = [
+                $full_range_scheme->getID() => [
+                    $issue_type_bug_report_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'reproduction_steps' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'edition' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'build' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'component' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'reproducability' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'resolution' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_feature_request_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_enhancement_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_task_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_idea_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_user_story_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => true, 'required' => false, 'additional' => true],
+                    ],
+                    $issue_type_epic_id => [
+                        'shortname' => ['reportable' => true, 'required' => true, 'additional' => false],
+                    ],
+                ],
+                $balanced_scheme->getID() => [
+                    $issue_type_bug_report_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'reproduction_steps' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'edition' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'build' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'component' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'reproducability' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'resolution' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_feature_request_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_task_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_idea_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                ],
+                $balanced_agile_scheme->getID() => [
+                    $issue_type_bug_report_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'reproduction_steps' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'edition' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'build' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'component' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'reproducability' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'resolution' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_feature_request_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_task_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_idea_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_user_story_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => true, 'required' => false, 'additional' => true],
+                    ],
+                    $issue_type_epic_id => [
+                        'shortname' => ['reportable' => true, 'required' => true, 'additional' => false],
+                    ],
+                ],
+                $simple_scheme->getID() => [
+                    $issue_type_bug_report_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'reproduction_steps' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'build' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'edition' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'component' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'reproducability' => ['reportable' => true, 'required' => false, 'additional' => false],
+                        'resolution' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'milestone' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_feature_request_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'milestone' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'percent_complete' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'votes' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                    $issue_type_task_id => [
+                        'description' => ['reportable' => true, 'required' => true, 'additional' => false],
+                        'category' => ['reportable' => true, 'required' => false, 'additional' => true],
+                        'estimated_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'spent_time' => ['reportable' => false, 'required' => false, 'additional' => false],
+                        'priority' => ['reportable' => false, 'required' => false, 'additional' => false],
+                    ],
+                ],
+            ];
 
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'reproduction_steps');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'edition');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, false);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'build');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, false);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'component');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'reproducability');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'resolution');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'percent_complete');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
-            $crit->addInsert(self::FIELD_KEY, 'votes');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'percent_complete');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'percent_complete');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'percent_complete');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'description');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::REQUIRED, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'milestone');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'category');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'estimated_time');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::ADDITIONAL, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'spent_time');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'percent_complete');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
-            $crit->addInsert(self::FIELD_KEY, 'priority');
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
-
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
-            $crit->addInsert(self::ISSUETYPE_ID, $issue_type_epic_id);
-            $crit->addInsert(self::FIELD_KEY, 'shortname');
-            $crit->addInsert(self::REPORTABLE, true);
-            $crit->addInsert(self::SCOPE, $scope);
-            $this->doInsert($crit);
+            foreach ($schemes as $scheme_id => $issuetypes) {
+                foreach ($issuetypes as $issuetype_id => $fields) {
+                    foreach ($fields as $field => $settings) {
+                        $crit = $this->getCriteria();
+                        $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+                        $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
+                        $crit->addInsert(self::FIELD_KEY, $field);
+                        $crit->addInsert(self::REPORTABLE, $settings['reportable']);
+                        $crit->addInsert(self::REQUIRED, $settings['required']);
+                        $crit->addInsert(self::ADDITIONAL, $settings['additional']);
+                        $crit->addInsert(self::SCOPE, $scope);
+                        $this->doInsert($crit);
+                    }
+                }
+            }
 
         }
 

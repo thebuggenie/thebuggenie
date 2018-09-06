@@ -80,30 +80,64 @@
             return self::$_schemes;
         }
         
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
-            $scheme = new IssuetypeScheme();
-            $scheme->setScope($scope->getID());
-            $scheme->setName("Default issuetype scheme");
-            $scheme->setDescription("This is the default issuetype scheme. It is used by all projects with no specific issuetype scheme selected. This scheme cannot be edited or removed.");
-            $scheme->save();
+            $full_range_scheme = new IssuetypeScheme();
+            $full_range_scheme->setScope($scope);
+            $full_range_scheme->setName("Full range issue type scheme");
+            $full_range_scheme->setDescription("This issuetype scheme enables a broad range of issue types. It is especially useful for projects with many different types of issues");
+            $full_range_scheme->save();
 
-            framework\Settings::saveSetting(framework\Settings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID(), 'core', $scope->getID());
-            
-            foreach (Issuetype::getAll() as $issuetype)
-            {
-                $scheme->setIssuetypeEnabled($issuetype);
-                if ($issuetype->getIcon() == 'developer_report')
-                {
-                    $scheme->setIssuetypeRedirectedAfterReporting($issuetype, false);
-                }
-                if (in_array($issuetype->getIcon(), array('task', 'developer_report', 'idea')))
-                {
-                    $scheme->setIssuetypeReportable($issuetype, false);
+            $balanced_scheme = new IssuetypeScheme();
+            $balanced_scheme->setScope($scope);
+            $balanced_scheme->setName("Balanced issue type scheme");
+            $balanced_scheme->setDescription("This issuetype scheme enables a variety of issue types. This is useful for most medium / small-sized projects");
+            $balanced_scheme->save();
+
+            $balanced_agile_scheme = new IssuetypeScheme();
+            $balanced_agile_scheme->setScope($scope);
+            $balanced_agile_scheme->setName("Balanced issue type scheme (agile)");
+            $balanced_agile_scheme->setDescription("This issuetype scheme enables a variety of issue types, including epics and stories. This is useful for most medium / small-sized agile projects");
+            $balanced_agile_scheme->save();
+
+            $simple_scheme = new IssuetypeScheme();
+            $simple_scheme->setScope($scope);
+            $simple_scheme->setName("Simple issue type scheme");
+            $simple_scheme->setDescription("This issuetype scheme enables a minimum number of issue types. This is useful for small-sized / one-person projects");
+            $simple_scheme->save();
+
+            $schemes = [
+                'full' => [
+                    'scheme' => $full_range_scheme,
+                    'types' => ['bug_report', 'feature_request', 'enhancement', 'epic', 'developer_report', 'task', 'idea'],
+                    'reportable' => ['bug_report', 'feature_request', 'enhancement', 'idea']
+                ],
+                'balanced' => [
+                    'scheme' => $balanced_scheme,
+                    'types' => ['bug_report', 'feature_request', 'task', 'idea'],
+                    'reportable' => ['bug_report', 'feature_request', 'task', 'idea']
+                ],
+                'balanced_agile' => [
+                    'scheme' => $balanced_agile_scheme,
+                    'types' => ['bug_report', 'feature_request', 'epic', 'developer_report', 'task'],
+                    'reportable' => ['bug_report', 'feature_request', 'task']
+                ],
+                'simple' => [
+                    'scheme' => $simple_scheme,
+                    'types' => ['bug_report', 'feature_request', 'task'],
+                    'reportable' => ['bug_report', 'feature_request', 'task']
+                ]
+            ];
+            foreach ($schemes as $scheme) {
+                foreach (Issuetype::getAll() as $issuetype) {
+                    if (in_array($issuetype->getIcon(), $scheme['types'])) {
+                        $scheme['scheme']->setIssueTypeEnabled($issuetype);
+                    }
+                    $scheme['scheme']->setIssuetypeReportable($issuetype, in_array($issuetype->getIcon(), $scheme['reportable']));
                 }
             }
-            
-            return $scheme;
+
+            return [$full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme];
         }
         
         /**

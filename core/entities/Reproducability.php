@@ -14,7 +14,7 @@
         
         protected $_itemtype = Datatype::REPRODUCABILITY;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $reproducabilities = array();
             $reproducabilities["Can't reproduce"] = '';
@@ -24,7 +24,7 @@
 
             foreach ($reproducabilities as $name => $itemdata)
             {
-                $reproducability = new \thebuggenie\core\entities\Reproducability();
+                $reproducability = new Reproducability();
                 $reproducability->setName($name);
                 $reproducability->setItemdata($itemdata);
                 $reproducability->setScope($scope);

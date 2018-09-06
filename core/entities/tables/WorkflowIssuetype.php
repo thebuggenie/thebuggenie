@@ -2,6 +2,9 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Scope;
+    use thebuggenie\core\entities\Workflow;
+    use thebuggenie\core\entities\WorkflowScheme;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -44,14 +47,14 @@
             parent::_addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable());
         }
 
-        public function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public function loadFixtures(Scope $scope, Workflow $workflow, WorkflowScheme $workflowScheme)
         {
             foreach (IssueTypes::getTable()->getAllIDsByScopeID($scope->getID()) as $issuetype_id)
             {
                 $crit = $this->getCriteria();
                 $crit->addInsert(self::SCOPE, $scope->getID());
-                $crit->addInsert(self::WORKFLOW_ID, \thebuggenie\core\framework\Settings::getCoreWorkflow()->getID());
-                $crit->addInsert(self::WORKFLOW_SCHEME_ID, \thebuggenie\core\framework\Settings::getCoreWorkflowScheme()->getID());
+                $crit->addInsert(self::WORKFLOW_ID, $workflow->getID());
+                $crit->addInsert(self::WORKFLOW_SCHEME_ID, $workflowScheme->getID());
                 $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
                 $this->doInsert($crit);
             }

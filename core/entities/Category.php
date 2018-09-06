@@ -14,7 +14,7 @@
 
         protected $_itemtype = Datatype::CATEGORY;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $categories = array('General' => '', 'Security' => '', 'User interface' => '');
             $categories['General'] = '#FFFFFF';
@@ -23,7 +23,7 @@
 
             foreach ($categories as $name => $color)
             {
-                $category = new \thebuggenie\core\entities\Category();
+                $category = new Category();
                 $category->setName($name);
                 $category->setColor($color);
                 $category->setScope($scope);
