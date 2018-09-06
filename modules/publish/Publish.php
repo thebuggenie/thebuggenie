@@ -88,7 +88,7 @@
         {
             framework\Context::setPermission('article_management', 0, 'publish', 0, 1, 0, true, $scope);
             $this->saveSetting('allow_camelcase_links', 1);
-            $this->saveSetting('require_change_reason', 1);
+            $this->saveSetting('require_change_reason', 0);
 
             framework\Context::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
             TextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));

@@ -179,6 +179,11 @@
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
+            if ($this->_article_type == self::TYPE_MANUAL) {
+                $this->_name = $this->_manual_name;
+            } else {
+                $this->_manual_name = $this->_name;
+            }
             $this->_date = NOW;
             $this->_author = framework\Context::getUser();
         }
@@ -845,7 +850,7 @@
          */
         public function getName()
         {
-            return ($this->_name != '') ? $this->_name : $this->_manual_name;
+            return $this->_name;
         }
 
         /**
@@ -865,7 +870,7 @@
          */
         public function getManualName()
         {
-            return ($this->_manual_name != '') ? $this->_manual_name : $this->_name;
+            return $this->_manual_name;
         }
 
         /**
