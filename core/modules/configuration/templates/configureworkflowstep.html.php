@@ -23,11 +23,9 @@
                         <div class="content">
                             <?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>
                             <?php echo __('You can add and remove transitions from this page, as well as manage properties for this step.'); ?><br>
-                            <?php if (!$step->isCore()): ?>
-                                <br>
-                                <b><?php echo javascript_link_tag(__('Edit this step'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b><br>
-                                <b><?php echo javascript_link_tag(__('Add outgoing transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?></b>
-                            <?php endif; ?>
+                            <br>
+                            <b><?php echo javascript_link_tag(__('Edit this step'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b><br>
+                            <b><?php echo javascript_link_tag(__('Add outgoing transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?></b>
                         </div>
                     </div>
                     <div class="lightyellowbox" id="workflow_browser_step">
@@ -91,43 +89,41 @@
                                 <?php endif; ?>
                             </dd>
                         </dl>
-                        <?php if (!$step->isCore()): ?>
-                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID(), 'mode' => 'edit')); ?>" id="step_details_form" style="display: none;" onsubmit="$('step_update_indicator').show();$('update_step_buttons').hide();">
-                                <dl>
-                                    <dt><label for="step_name"><?php echo __('Name'); ?></label></dt>
-                                    <dd><input type="text" name="name" id="step_name" value="<?php echo $step->getName(); ?>" style="width: 150px;"></dd>
-                                    <dt><label for="step_description"><?php echo __('Description'); ?></label></dt>
-                                    <dd><input type="text" name="description" id="step_description" value="<?php echo $step->getDescription(); ?>" style="width: 250px;"></dd>
-                                    <dt><label for="step_state"><?php echo __('State'); ?></label></dt>
-                                    <dd>
-                                        <select name="state" id="step_state" style="width: 125px;">
-                                            <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_OPEN; ?>"<?php if (!$step->isClosed()) echo " selected"; ?>><?php echo __('Open'); ?></option>
-                                            <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_CLOSED; ?>"<?php if ($step->isClosed()) echo " selected"; ?>><?php echo __('Closed'); ?></option>
-                                        </select>
-                                        <select name="is_editable" id="step_editable" style="width: 125px;">
-                                            <option value="1"<?php if ($step->isEditable()) echo " selected"; ?>><?php echo __('Editable'); ?></option>
-                                            <option value="0"<?php if (!$step->isEditable()) echo " selected"; ?>><?php echo __('Not editable'); ?></option>
-                                        </select>
-                                    </dd>
-                                    <dt><label for="step_status"><?php echo __('Connected status'); ?></label></dt>
-                                    <dd>
-                                        <select name="status_id" id="step_status">
-                                            <option value="0"<?php if (!$step->hasLinkedStatus()) echo " selected"; ?>><?php echo __('Not connected to a status'); ?></option>
-                                            <?php foreach (\thebuggenie\core\entities\Status::getAll() as $status): ?>
-                                            <option value="<?php echo $status->getID(); ?>"<?php if ($step->hasLinkedStatus() && $step->getLinkedStatus()->getID() == $status->getID()) echo " selected"; ?>><?php echo $status->getName(); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </dd>
-                                </dl>
-                                <br style="clear: both;">
-                                <div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_step_buttons">
-                                    <input type="submit" value="<?php echo __('Update step details'); ?>" name="edit">
-                                    <?php echo __('%update_step_details or %cancel', array('%update_step_details' => '', '%cancel' => '')); ?>
-                                    <b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b>
-                                </div>
-                                <div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="step_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
-                            </form>
-                        <?php endif; ?>
+                        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID(), 'mode' => 'edit')); ?>" id="step_details_form" style="display: none;" onsubmit="$('step_update_indicator').show();$('update_step_buttons').hide();">
+                            <dl>
+                                <dt><label for="step_name"><?php echo __('Name'); ?></label></dt>
+                                <dd><input type="text" name="name" id="step_name" value="<?php echo $step->getName(); ?>" style="width: 150px;"></dd>
+                                <dt><label for="step_description"><?php echo __('Description'); ?></label></dt>
+                                <dd><input type="text" name="description" id="step_description" value="<?php echo $step->getDescription(); ?>" style="width: 250px;"></dd>
+                                <dt><label for="step_state"><?php echo __('State'); ?></label></dt>
+                                <dd>
+                                    <select name="state" id="step_state" style="width: 125px;">
+                                        <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_OPEN; ?>"<?php if (!$step->isClosed()) echo " selected"; ?>><?php echo __('Open'); ?></option>
+                                        <option value="<?php echo \thebuggenie\core\entities\Issue::STATE_CLOSED; ?>"<?php if ($step->isClosed()) echo " selected"; ?>><?php echo __('Closed'); ?></option>
+                                    </select>
+                                    <select name="is_editable" id="step_editable" style="width: 125px;">
+                                        <option value="1"<?php if ($step->isEditable()) echo " selected"; ?>><?php echo __('Editable'); ?></option>
+                                        <option value="0"<?php if (!$step->isEditable()) echo " selected"; ?>><?php echo __('Not editable'); ?></option>
+                                    </select>
+                                </dd>
+                                <dt><label for="step_status"><?php echo __('Connected status'); ?></label></dt>
+                                <dd>
+                                    <select name="status_id" id="step_status">
+                                        <option value="0"<?php if (!$step->hasLinkedStatus()) echo " selected"; ?>><?php echo __('Not connected to a status'); ?></option>
+                                        <?php foreach (\thebuggenie\core\entities\Status::getAll() as $status): ?>
+                                        <option value="<?php echo $status->getID(); ?>"<?php if ($step->hasLinkedStatus() && $step->getLinkedStatus()->getID() == $status->getID()) echo " selected"; ?>><?php echo $status->getName(); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </dd>
+                            </dl>
+                            <br style="clear: both;">
+                            <div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_step_buttons">
+                                <input type="submit" value="<?php echo __('Update step details'); ?>" name="edit">
+                                <?php echo __('%update_step_details or %cancel', array('%update_step_details' => '', '%cancel' => '')); ?>
+                                <b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b>
+                            </div>
+                            <div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="step_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+                        </form>
                     </div>
                     <br style="clear: both;">
                 <?php else: ?>

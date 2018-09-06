@@ -175,17 +175,6 @@
         }
 
         /**
-         * Whether this is the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return ($this->getID() == \thebuggenie\core\framework\Settings::getCoreWorkflow()->getID());
-        }
-
-        /**
          * Whether this is the builtin workflow that cannot be edited or removed
          *
          * @return boolean

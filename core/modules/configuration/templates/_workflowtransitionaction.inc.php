@@ -154,197 +154,193 @@
                         <span class="generic_error_message"><?php echo __('Invalid transition configuration'); ?></span>
                     <?php endif; ?>
                 </td>
-                <?php if (!$action->getTransition()->isCore()): ?>
-                    <?php if (! ($action->isCustomSetAction() && in_array(\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType(), array(\thebuggenie\core\entities\CustomDatatype::USER_CHOICE, \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE, \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE)))): ?>
-                        <td id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit" style="display: none; padding: 2px;">
-                            <form action="<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Actions.update('<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>);return false;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_form">
-                                <input type="submit" value="<?php echo __('Update'); ?>" style="float: right;position: relative;z-index:1;">
-                                <label for="workflowtransitionaction_<?php echo $action->getID(); ?>_input">
-                                    <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS): ?>
-                                        <?php echo __('Set status to %status', array('%status' => '')); ?>
-                                    <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
-                                        <?php echo __('Set priority to %priority', array('%priority' => '')); ?>
-                                    <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT): ?>
-                                        <?php echo __('Set percent completed to %percentcompleted', array('%percentcompleted' => '')); ?>
-                                    <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
-                                        <?php echo __('Set resolution to %resolution', array('%resolution' => '')); ?>
-                                    <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
-                                        <?php echo __('Set reproducability to %reproducability', array('%reproducability' => '')); ?>
-                                    <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-                                        <?php echo __('Assign issue to %user', array('%user' => '')); ?>
-                                    <?php elseif ($action->isCustomSetAction()): ?>
-                                        <?php echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '')); ?>
-                                    <?php endif; ?>
-                                </label>
-                                <?php
+                <?php if (! ($action->isCustomSetAction() && in_array(\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType(), array(\thebuggenie\core\entities\CustomDatatype::USER_CHOICE, \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE, \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE)))): ?>
+                    <td id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit" style="display: none; padding: 2px;">
+                        <form action="<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Actions.update('<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>);return false;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_form">
+                            <input type="submit" value="<?php echo __('Update'); ?>" style="float: right;position: relative;z-index:1;">
+                            <label for="workflowtransitionaction_<?php echo $action->getID(); ?>_input">
+                                <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS): ?>
+                                    <?php echo __('Set status to %status', array('%status' => '')); ?>
+                                <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
+                                    <?php echo __('Set priority to %priority', array('%priority' => '')); ?>
+                                <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT): ?>
+                                    <?php echo __('Set percent completed to %percentcompleted', array('%percentcompleted' => '')); ?>
+                                <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
+                                    <?php echo __('Set resolution to %resolution', array('%resolution' => '')); ?>
+                                <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
+                                    <?php echo __('Set reproducability to %reproducability', array('%reproducability' => '')); ?>
+                                <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
+                                    <?php echo __('Assign issue to %user', array('%user' => '')); ?>
+                                <?php elseif ($action->isCustomSetAction()): ?>
+                                    <?php echo __('Set issue field %key to %value', array('%key' => $action->getCustomActionType(), '%value' => '')); ?>
+                                <?php endif; ?>
+                            </label>
+                            <?php
 
-                                    if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS)
-                                        $options = \thebuggenie\core\entities\Status::getAll();
-                                    elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY)
-                                        $options = \thebuggenie\core\entities\Priority::getAll();
-                                    elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT)
-                                        $options = range(1, 100);
-                                    elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION)
-                                        $options = \thebuggenie\core\entities\Resolution::getAll();
-                                    elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
-                                        $options = \thebuggenie\core\entities\Reproducability::getAll();
-                                    elseif ($action->isCustomAction()) {
-                                        $customfield = \thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType());
-                                        if ($customfield->getType() == \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD) {
-                                            $options = array();
-                                        } else {
-                                            $options = $customfield->getOptions();
-                                        }
+                                if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS)
+                                    $options = \thebuggenie\core\entities\Status::getAll();
+                                elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY)
+                                    $options = \thebuggenie\core\entities\Priority::getAll();
+                                elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT)
+                                    $options = range(1, 100);
+                                elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION)
+                                    $options = \thebuggenie\core\entities\Resolution::getAll();
+                                elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
+                                    $options = \thebuggenie\core\entities\Reproducability::getAll();
+                                elseif ($action->isCustomAction()) {
+                                    $customfield = \thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType());
+                                    if ($customfield->getType() == \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD) {
+                                        $options = array();
+                                    } else {
+                                        $options = $customfield->getOptions();
                                     }
+                                }
 
-                                ?>
-                                <?php if (isset($options) && count($options)): ?>
-                                    <select id="workflowtransitionaction_<?php echo $action->getID(); ?>_input" name="target_value">
-                                        <option value="0"<?php if ((int) $action->getTargetValue() == 0) echo ' selected'; ?> <?php if (!$action->getTransition()->hasTemplate()): ?>style="display: none;"<?php endif; ?>>
-                                            <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS): ?>
-                                                <?php echo __('Status provided by user'); ?>
-                                            <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
-                                                <?php echo __('Priority provided by user'); ?>
-                                            <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT): ?>
-                                                <?php echo __('Percentage provided by user'); ?>
-                                            <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
-                                                <?php echo __('Resolution provided by user'); ?>
-                                            <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
-                                                <?php echo __('Reproducability provided by user'); ?>
-                                            <?php elseif ($action->isCustomAction()): ?>
-                                                <?php echo __('Value provided by user'); ?>
-                                            <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-                                                <?php echo __('User or team specified during transition'); ?>
-                                            <?php endif; ?>
-                                        </option>
-                                        <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-                                            <optgroup label="<?php echo __('Available users'); ?>">
-                                                <?php foreach ($available_assignees_users as $option): ?>
-                                                    <option value="user_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
-                                                        <?php echo $option->getNameWithUsername(); ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </optgroup>
-                                            <optgroup label="<?php echo __('Available teams'); ?>">
-                                                <?php foreach ($available_assignees_teams as $option): ?>
-                                                    <option value="team_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
-                                                        <?php echo $option->getName(); ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </optgroup>
-                                        <?php else: ?>
-                                            <?php foreach ((isset($options) ? $options : array()) as $option): ?>
-                                                <option value="<?php echo ($option instanceof \thebuggenie\core\entities\common\Identifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
-                                                    <?php if ($option instanceof \thebuggenie\core\entities\User): ?>
-                                                        <?php echo $option->getNameWithUsername(); ?>
-                                                    <?php elseif ($option instanceof \thebuggenie\core\entities\Milestone || $option instanceof \thebuggenie\core\entities\Build || $option instanceof \thebuggenie\core\entities\Component): ?>
-                                                        <?php echo $option->getProject()->getName() . ' - ' . $option->getName(); ?>
-                                                    <?php elseif ($option instanceof \thebuggenie\core\entities\common\Identifiable): ?>
-                                                        <?php echo $option->getName(); ?>
-                                                    <?php else: ?>
-                                                        <?php echo $option; ?>
-                                                    <?php endif; ?>
+                            ?>
+                            <?php if (isset($options) && count($options)): ?>
+                                <select id="workflowtransitionaction_<?php echo $action->getID(); ?>_input" name="target_value">
+                                    <option value="0"<?php if ((int) $action->getTargetValue() == 0) echo ' selected'; ?> <?php if (!$action->getTransition()->hasTemplate()): ?>style="display: none;"<?php endif; ?>>
+                                        <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS): ?>
+                                            <?php echo __('Status provided by user'); ?>
+                                        <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
+                                            <?php echo __('Priority provided by user'); ?>
+                                        <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_PERCENT): ?>
+                                            <?php echo __('Percentage provided by user'); ?>
+                                        <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
+                                            <?php echo __('Resolution provided by user'); ?>
+                                        <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
+                                            <?php echo __('Reproducability provided by user'); ?>
+                                        <?php elseif ($action->isCustomAction()): ?>
+                                            <?php echo __('Value provided by user'); ?>
+                                        <?php elseif ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
+                                            <?php echo __('User or team specified during transition'); ?>
+                                        <?php endif; ?>
+                                    </option>
+                                    <?php if ($action->getActionType() == \thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
+                                        <optgroup label="<?php echo __('Available users'); ?>">
+                                            <?php foreach ($available_assignees_users as $option): ?>
+                                                <option value="user_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
+                                                    <?php echo $option->getNameWithUsername(); ?>
                                                 </option>
                                             <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                <?php else: ?>
-                                    <?php if ($action->isCustomSetAction()): ?>
-                                    <?php
-                                        switch (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType()) {
-                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
-                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
-                                                echo include_component('main/textarea', array('area_name' => 'target_value', 'target_type' => 'workflowtransitionaction', 'target_id' => $action->getID(), 'area_id' => 'workflowtransitionaction_'. $action->getID() .'_value', 'height' => '100px', 'width' => '100%', 'value' => $action->getTargetValue()));
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                            case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER: ?>
-                                                <input type="hidden" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ? date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $action->getTargetValue()) : ''); ?>">
-                                                <div id="customfield_<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_calendar_container"></div>
-                                                <script type="text/javascript">
-                                                    Calendar.setup({
-                                                        dateField: "<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_value_1",
-                                                        parentElement: "customfield_<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_calendar_container"
-                                                    });
-                                                </script>
-                                                <?php
-                                                break;
-                                            case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
-                                            case \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD: ?>
-                                                <input type="text" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ?: ''); ?>" style="width: 400px;">
-                                                <?php
-                                                break;
-                                        }
-                                    ?>
+                                        </optgroup>
+                                        <optgroup label="<?php echo __('Available teams'); ?>">
+                                            <?php foreach ($available_assignees_teams as $option): ?>
+                                                <option value="team_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
+                                                    <?php echo $option->getName(); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </optgroup>
+                                    <?php else: ?>
+                                        <?php foreach ((isset($options) ? $options : array()) as $option): ?>
+                                            <option value="<?php echo ($option instanceof \thebuggenie\core\entities\common\Identifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof \thebuggenie\core\entities\common\Identifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
+                                                <?php if ($option instanceof \thebuggenie\core\entities\User): ?>
+                                                    <?php echo $option->getNameWithUsername(); ?>
+                                                <?php elseif ($option instanceof \thebuggenie\core\entities\Milestone || $option instanceof \thebuggenie\core\entities\Build || $option instanceof \thebuggenie\core\entities\Component): ?>
+                                                    <?php echo $option->getProject()->getName() . ' - ' . $option->getName(); ?>
+                                                <?php elseif ($option instanceof \thebuggenie\core\entities\common\Identifiable): ?>
+                                                    <?php echo $option->getName(); ?>
+                                                <?php else: ?>
+                                                    <?php echo $option; ?>
+                                                <?php endif; ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     <?php endif; ?>
-                                    <?php  ?>
+                                </select>
+                            <?php else: ?>
+                                <?php if ($action->isCustomSetAction()): ?>
+                                <?php
+                                    switch (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType()) {
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_MAIN:
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
+                                            echo include_component('main/textarea', array('area_name' => 'target_value', 'target_type' => 'workflowtransitionaction', 'target_id' => $action->getID(), 'area_id' => 'workflowtransitionaction_'. $action->getID() .'_value', 'height' => '100px', 'width' => '100%', 'value' => $action->getTargetValue()));
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                        case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER: ?>
+                                            <input type="hidden" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ? date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $action->getTargetValue()) : ''); ?>">
+                                            <div id="customfield_<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_calendar_container"></div>
+                                            <script type="text/javascript">
+                                                Calendar.setup({
+                                                    dateField: "<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_value_1",
+                                                    parentElement: "customfield_<?php echo 'workflowtransitionaction_'. $action->getID(); ?>_calendar_container"
+                                                });
+                                            </script>
+                                            <?php
+                                            break;
+                                        case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXT:
+                                        case \thebuggenie\core\entities\CustomDatatype::CALCULATED_FIELD: ?>
+                                            <input type="text" id="workflowtransitionaction_<?php echo $action->getID(); ?>_value_1" name="target_value" value="<?php echo ($action->getTargetValue() ?: ''); ?>" style="width: 400px;">
+                                            <?php
+                                            break;
+                                    }
+                                ?>
                                 <?php endif; ?>
-                                <?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_' . $action->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
-                            </form>
-                        </td>
-                    <?php endif; ?>
+                                <?php  ?>
+                            <?php endif; ?>
+                            <?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_' . $action->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
+                        </form>
+                    </td>
                 <?php endif; ?>
                 <?php
                 break;
         }
 
     ?>
-    <?php if (!$action->getTransition()->isCore()): ?>
-        <td style="width: 100px; text-align: right;">
-            <div style="position: relative;">
-                <?php if ($show_edit): ?>
-                    <?php if ($action->isCustomSetAction() && in_array(\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType(), array(\thebuggenie\core\entities\CustomDatatype::USER_CHOICE, \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE, \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE))): ?>
-                        <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" class="dropper"><?php echo __('Edit'); ?></button>
-                        <?php
-                            switch (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType()) {
-                                case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
-                                     echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
-                                                                            'header'          => __('Select a user'),
-                                                                                'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
-                                                                                'clear_link_text' => __('Clear currently selected user'),
-                                                                                'base_id'         => 'workflowtransitionaction_'. $action->getID(),
-                                                                                'include_users'   => true,
-                                                                                'include_teams'   => false,
-                                                                                'include_clients' => false,
-                                                                                'absolute'        => true,
-                                                                                'hidden'          => false,
-                                                                                'classes'         => 'leftie popup_box more_actions_dropdown'));
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
-                                     echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
-                                                                            'header'          => __('Select a team'),
-                                                                                'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
-                                                                                'clear_link_text' => __('Clear currently selected team'),
-                                                                                'base_id'         => 'workflowtransitionaction_'. $action->getID(),
-                                                                                'include_users'   => false,
-                                                                                'include_teams'   => true,
-                                                                                'include_clients' => false,
-                                                                                'absolute'        => true,
-                                                                                'hidden'          => false,
-                                                                                'classes'         => 'leftie popup_box more_actions_dropdown'));
-                                    break;
-                                case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
-                                     echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
-                                                                            'header'          => __('Select a client'),
-                                                                                'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
-                                                                                'clear_link_text' => __('Clear currently selected client'),
-                                                                                'base_id'         => 'workflowtransitionaction_'. $action->getID(),
-                                                                                'include_users'   => false,
-                                                                                'include_teams'   => false,
-                                                                                'include_clients' => true,
-                                                                                'absolute'        => true,
-                                                                                'hidden'          => false,
-                                                                                'classes'         => 'leftie popup_box more_actions_dropdown'));
-                                    break;
-                            } ?>
-                    <?php else: ?>
-                        <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
-                    <?php endif; ?>
+    <td style="width: 100px; text-align: right;">
+        <div style="position: relative;">
+            <?php if ($show_edit): ?>
+                <?php if ($action->isCustomSetAction() && in_array(\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType(), array(\thebuggenie\core\entities\CustomDatatype::USER_CHOICE, \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE, \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE))): ?>
+                    <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" class="dropper"><?php echo __('Edit'); ?></button>
+                    <?php
+                        switch (\thebuggenie\core\entities\CustomDatatype::getByKey($action->getCustomActionType())->getType()) {
+                            case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
+                                 echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
+                                                                        'header'          => __('Select a user'),
+                                                                            'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
+                                                                            'clear_link_text' => __('Clear currently selected user'),
+                                                                            'base_id'         => 'workflowtransitionaction_'. $action->getID(),
+                                                                            'include_users'   => true,
+                                                                            'include_teams'   => false,
+                                                                            'include_clients' => false,
+                                                                            'absolute'        => true,
+                                                                            'hidden'          => false,
+                                                                            'classes'         => 'leftie popup_box more_actions_dropdown'));
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE:
+                                 echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
+                                                                        'header'          => __('Select a team'),
+                                                                            'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
+                                                                            'clear_link_text' => __('Clear currently selected team'),
+                                                                            'base_id'         => 'workflowtransitionaction_'. $action->getID(),
+                                                                            'include_users'   => false,
+                                                                            'include_teams'   => true,
+                                                                            'include_clients' => false,
+                                                                            'absolute'        => true,
+                                                                            'hidden'          => false,
+                                                                            'classes'         => 'leftie popup_box more_actions_dropdown'));
+                                break;
+                            case \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE:
+                                 echo include_component('main/identifiableselector', array('html_id'        => 'workflowtransitionaction_'. $action->getID().'_edit',
+                                                                        'header'          => __('Select a client'),
+                                                                            'callback' => "TBG.Config.Workflows.Transition.Actions.update('". make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())) ."?target_value=%identifiable_value', '". $action->getID() ."')",
+                                                                            'clear_link_text' => __('Clear currently selected client'),
+                                                                            'base_id'         => 'workflowtransitionaction_'. $action->getID(),
+                                                                            'include_users'   => false,
+                                                                            'include_teams'   => false,
+                                                                            'include_clients' => true,
+                                                                            'absolute'        => true,
+                                                                            'hidden'          => false,
+                                                                            'classes'         => 'leftie popup_box more_actions_dropdown'));
+                                break;
+                        } ?>
+                <?php else: ?>
+                    <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
                 <?php endif; ?>
-                <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this transition action?'); ?>', '<?php echo __('Please confirm that you really want to delete this transition action.'); ?>', {yes: {click: function() {TBG.Config.Workflows.Transition.Actions.remove('<?php echo make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>, '<?php echo $action->getActionType(); ?>'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});"><?php echo __('Delete'); ?></button>
-                <?php if ($show_edit): ?>
-                    <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
-                <?php endif; ?>
-            </div>
-        </td>
-    <?php endif; ?>
+            <?php endif; ?>
+            <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this transition action?'); ?>', '<?php echo __('Please confirm that you really want to delete this transition action.'); ?>', {yes: {click: function() {TBG.Config.Workflows.Transition.Actions.remove('<?php echo make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>, '<?php echo $action->getActionType(); ?>'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});"><?php echo __('Delete'); ?></button>
+            <?php if ($show_edit): ?>
+                <button id="workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
+            <?php endif; ?>
+        </div>
+    </td>
 </tr>

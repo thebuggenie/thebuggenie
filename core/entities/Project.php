@@ -760,11 +760,6 @@
             {
                 throw new \InvalidArgumentException("A project with this key already exists");
             }
-            if ($is_new)
-            {
-                if (!$this->_issuetype_scheme_id) $this->setIssuetypeScheme(framework\Settings::getCoreIssuetypeScheme());
-                if (!$this->_workflow_scheme_id) $this->setWorkflowScheme(framework\Settings::getCoreWorkflowScheme());
-            }
         }
 
         protected function _postSave($is_new)

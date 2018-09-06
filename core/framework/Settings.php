@@ -69,9 +69,13 @@
         const SETTING_DEFAULT_LANGUAGE = 'language';
         const SETTING_DEFAULT_USER_IS_GUEST = 'defaultisguest';
         const SETTING_DEFAULT_USER_ID = 'defaultuserid';
-        const SETTING_DEFAULT_WORKFLOW = 'defaultworkflow';
-        const SETTING_DEFAULT_WORKFLOWSCHEME = 'defaultworkflowscheme';
-        const SETTING_DEFAULT_ISSUETYPESCHEME = 'defaultissuetypescheme';
+        const SETTING_MULTI_TEAM_WORKFLOW_SCHEME = 'multi_team_workflow_scheme';
+        const SETTING_BALANCED_WORKFLOW_SCHEME = 'balanced_workflow_scheme';
+        const SETTING_SIMPLE_WORKFLOW_SCHEME = 'simple_workflow_scheme';
+        const SETTING_FULL_RANGE_ISSUETYPE_SCHEME = 'full_range_issuetype_scheme';
+        const SETTING_BALANCED_ISSUETYPE_SCHEME = 'balanced_issuetype_scheme';
+        const SETTING_BALANCED_AGILE_ISSUETYPE_SCHEME = 'balanced_agile_issuetype_scheme';
+        const SETTING_SIMPLE_ISSUETYPE_SCHEME = 'simple_issuetype_scheme';
         const SETTING_ENABLE_UPLOADS = 'enable_uploads';
         const SETTING_ENABLE_GRAVATARS = 'enable_gravatars';
         const SETTING_FAVICON_TYPE = 'icon_fav';
@@ -142,6 +146,8 @@
         const SETTING_MAINTENANCE_MODE = 'offline';
         const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
         const SETTING_ICONSET = 'iconset';
+
+        const SETTING_ENABLE_SCOPES = 'enable_scopes';
 
         const USER_RSS_KEY = 'rsskey';
 
@@ -998,46 +1004,9 @@
             return (self::getAuthenticationBackendIdentifier() !== null && self::getAuthenticationBackendIdentifier() !== 'tbg');
         }
 
-        /**
-         * Return the core workflow
-         *
-         * @return \thebuggenie\core\entities\Workflow
-         */
-        public static function getCoreWorkflow()
+        public static function isScopesFunctionalityEnabled()
         {
-            if (self::$_core_workflow === null)
-            {
-                self::$_core_workflow = new \thebuggenie\core\entities\Workflow(self::get(self::SETTING_DEFAULT_WORKFLOW));
-            }
-            return self::$_core_workflow;
-        }
-
-        /**
-         * Return the core workflow scheme
-         *
-         * @return \thebuggenie\core\entities\WorkflowScheme
-         */
-        public static function getCoreWorkflowScheme()
-        {
-            if (self::$_core_workflowscheme === null)
-            {
-                self::$_core_workflowscheme = new \thebuggenie\core\entities\WorkflowScheme(self::get(self::SETTING_DEFAULT_WORKFLOWSCHEME));
-            }
-            return self::$_core_workflowscheme;
-        }
-
-        /**
-         * Return the core issue type scheme
-         *
-         * @return \thebuggenie\core\entities\IssuetypeScheme
-         */
-        public static function getCoreIssuetypeScheme()
-        {
-            if (self::$_core_issuetypescheme === null)
-            {
-                self::$_core_issuetypescheme = new \thebuggenie\core\entities\IssuetypeScheme(self::get(self::SETTING_DEFAULT_ISSUETYPESCHEME));
-            }
-            return self::$_core_issuetypescheme;
+            return (bool) self::get(self::SETTING_ENABLE_SCOPES);
         }
 
         /**

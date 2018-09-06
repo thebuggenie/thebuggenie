@@ -37,13 +37,13 @@
                                 <label class="optional" for="add_project_workflow_scheme"><?php echo __('Workflow scheme'); ?></label>
                                 <select name="workflow_scheme_id" id="add_project_workflow_scheme">
                                     <?php foreach (\thebuggenie\core\entities\WorkflowScheme::getAll() as $workflowscheme): ?>
-                                        <option value="<?php echo $workflowscheme->getID(); ?>" <?php if (\thebuggenie\core\framework\Settings::getCoreWorkflowScheme()->getID() == $workflowscheme->getID()) echo ' selected'; ?>><?php echo $workflowscheme->getName(); ?></option>
+                                        <option value="<?php echo $workflowscheme->getID(); ?>"><?php echo $workflowscheme->getName(); ?></option>
                                     <?php endforeach; ?>
                                 </select><br>
                                 <label class="optional" for="add_project_issuetype_scheme"><?php echo __('Issue type scheme'); ?></label>
                                 <select name="issuetype_scheme_id" id="add_project_issuetype_scheme">
                                     <?php foreach (\thebuggenie\core\entities\IssuetypeScheme::getAll() as $issuetypescheme): ?>
-                                        <option value="<?php echo $issuetypescheme->getID(); ?>" <?php if (\thebuggenie\core\framework\Settings::getCoreIssuetypeScheme()->getID() == $issuetypescheme->getID()) echo ' selected'; ?>><?php echo $issuetypescheme->getName(); ?></option>
+                                        <option value="<?php echo $issuetypescheme->getID(); ?>"><?php echo $issuetypescheme->getName(); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

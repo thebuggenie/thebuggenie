@@ -14,9 +14,7 @@
             <div class="content" style="width: 730px;" id="workflow_step_container">
                 <?php if ($transition instanceof \thebuggenie\core\entities\WorkflowTransition): ?>
                     <h3>
-                        <?php if (!$transition->isCore()): ?>
-                            <?php echo javascript_link_tag(__('Edit details'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();", 'class' => 'button button-silver')); ?>
-                        <?php endif; ?>
+                        <?php echo javascript_link_tag(__('Edit details'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();", 'class' => 'button button-silver')); ?>
                         <?php echo __('Transition "%transition_name"', array('%transition_name' => $transition->getName())); ?>
                     </h3>
                     <div class="workflow_step_intro">
@@ -62,69 +60,65 @@
                             <dt><?php echo __('Outgoing step'); ?></dt>
                             <dd><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $transition->getOutgoingStep()->getWorkflow()->getID(), 'step_id' => $transition->getOutgoingStep()->getID())), $transition->getOutgoingStep()->getName()); ?></dd>
                         </dl>
-                        <?php if (!$transition->isCore()): ?>
-                            <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_edit_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
-                                <dl>
-                                    <?php if (!$transition->isInitialTransition()): ?>
-                                        <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
-                                        <dd>
-                                            <input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_name" name="transition_name" style="width: 300px;" value="<?php echo $transition->getName(); ?>"><br>
-                                            <div class="faded_out"><?php echo __('This name will be presented to the user as a link'); ?></div>
-                                        </dd>
-                                        <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_description" class="optional"><?php echo __('Description'); ?></label></dt>
-                                        <dd>
-                                            <input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_description" name="transition_description" style="width: 300px;" value="<?php echo $transition->getDescription(); ?>">
-                                            <div class="faded_out"><?php echo __('This optional description will be presented to the user'); ?></div>
-                                        </dd>
-                                        <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
-                                        <dd>
-                                            <select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
-                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransition::getTemplates() as $template_key => $template_name): ?>
-                                                    <option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </dd>
-                                    <?php else: ?>
-                                        <dt><?php echo __('Name'); ?></dt>
-                                        <dd><?php echo $transition->getName(); ?></dd>
-                                        <dt><?php echo __('Description'); ?></dt>
-                                        <dd class="description"><?php echo $transition->getDescription(); ?></dd>
-                                        <dt><?php echo __('Template'); ?></dt>
-                                        <dd><?php echo __('No template used - transition happens instantly'); ?></dd>
-                                    <?php endif; ?>
-                                    <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id"><?php echo __('Outgoing step'); ?></label></dt>
+                        <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_edit_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
+                            <dl>
+                                <?php if (!$transition->isInitialTransition()): ?>
+                                    <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
                                     <dd>
-                                        <select id="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id" name="outgoing_step_id">
-                                            <?php foreach ($transition->getWorkflow()->getSteps() as $workflow_step): ?>
-                                                <option value="<?php echo $workflow_step->getID(); ?>"<?php if ($workflow_step->getID() == $transition->getOutgoingStep()->getID()): ?> selected<?php endif; ?>><?php echo $workflow_step->getName(); ?></option>
+                                        <input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_name" name="transition_name" style="width: 300px;" value="<?php echo $transition->getName(); ?>"><br>
+                                        <div class="faded_out"><?php echo __('This name will be presented to the user as a link'); ?></div>
+                                    </dd>
+                                    <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_description" class="optional"><?php echo __('Description'); ?></label></dt>
+                                    <dd>
+                                        <input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_description" name="transition_description" style="width: 300px;" value="<?php echo $transition->getDescription(); ?>">
+                                        <div class="faded_out"><?php echo __('This optional description will be presented to the user'); ?></div>
+                                    </dd>
+                                    <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
+                                    <dd>
+                                        <select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
+                                            <?php foreach (\thebuggenie\core\entities\WorkflowTransition::getTemplates() as $template_key => $template_name): ?>
+                                                <option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </dd>
-                                </dl>
-                                <br style="clear: both;">
-                                <div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_transition_buttons">
-                                    <input type="submit" value="<?php echo __('Update transition details'); ?>" name="edit">
-                                    <?php echo __('%update_transition_details or %cancel', array('%update_transition_details' => '', '%cancel' => '')); ?>
-                                    <b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
-                                </div>
-                                <div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="transition_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
-                            </form>
-                        <?php endif; ?>
+                                <?php else: ?>
+                                    <dt><?php echo __('Name'); ?></dt>
+                                    <dd><?php echo $transition->getName(); ?></dd>
+                                    <dt><?php echo __('Description'); ?></dt>
+                                    <dd class="description"><?php echo $transition->getDescription(); ?></dd>
+                                    <dt><?php echo __('Template'); ?></dt>
+                                    <dd><?php echo __('No template used - transition happens instantly'); ?></dd>
+                                <?php endif; ?>
+                                <dt><label for="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id"><?php echo __('Outgoing step'); ?></label></dt>
+                                <dd>
+                                    <select id="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id" name="outgoing_step_id">
+                                        <?php foreach ($transition->getWorkflow()->getSteps() as $workflow_step): ?>
+                                            <option value="<?php echo $workflow_step->getID(); ?>"<?php if ($workflow_step->getID() == $transition->getOutgoingStep()->getID()): ?> selected<?php endif; ?>><?php echo $workflow_step->getName(); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </dd>
+                            </dl>
+                            <br style="clear: both;">
+                            <div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_transition_buttons">
+                                <input type="submit" value="<?php echo __('Update transition details'); ?>" name="edit">
+                                <?php echo __('%update_transition_details or %cancel', array('%update_transition_details' => '', '%cancel' => '')); ?>
+                                <b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
+                            </div>
+                            <div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="transition_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+                        </form>
                     </div>
                     <br style="clear: both;">
                     <div id="workflow_transition_actions_validations">
                         <div id="pre_validation_tab_pane">
                             <h3>
-                                <?php if (!$transition->isCore()): ?>
-                                    <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
-                                    <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_pre_validation_rule">
-                                        <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePreValidationRules() as $key => $description): ?>
-                                            <li <?php if ($transition->hasPreValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>">
-                                                <a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre', 'rule' => $key)); ?>', 'pre', '<?php echo $key; ?>');"><?php echo $description; ?></a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php endif; ?>
+                                <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
+                                <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_pre_validation_rule">
+                                    <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePreValidationRules() as $key => $description): ?>
+                                        <li <?php if ($transition->hasPreValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>">
+                                            <a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre', 'rule' => $key)); ?>', 'pre', '<?php echo $key; ?>');"><?php echo $description; ?></a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
                                 <?php echo __('Pre-transition validation rules'); ?>
                                 <?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionprevalidationrule_add_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
                             </h3>
@@ -146,7 +140,7 @@
                         </div>
                         <div id="post_validation_tab_pane">
                             <h3>
-                                <?php if (!$transition->isCore() && $transition->hasTemplate()): ?>
+                                <?php if ($transition->hasTemplate()): ?>
                                     <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
                                     <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_validation_rule">
                                         <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePostValidationRules() as $key => $description): ?>
@@ -175,35 +169,33 @@
                         </div>
                         <div id="actions_tab_pane">
                             <h3>
-                                <?php if (!$transition->isCore()): ?>
-                                    <a href="javascript:void(0);" class="button button-silver dropper">Add transition action</a>
-                                    <div class="rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_action">
-                                        <div class="column">
-                                            <h1><?php echo __('Set issue fields'); ?></h1>
-                                            <ul class="simple_list">
-                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('set') as $key => $description): ?>
-                                                    <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                        <div class="column">
-                                            <h1><?php echo __('Clear issue fields'); ?></h1>
-                                            <ul class="simple_list">
-                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('clear') as $key => $description): ?>
-                                                    <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                        <div class="column">
-                                            <h1><?php echo __('Special actions'); ?></h1>
-                                            <ul class="simple_list">
-                                                <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('special') as $key => $description): ?>
-                                                    <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
+                                <a href="javascript:void(0);" class="button button-silver dropper">Add transition action</a>
+                                <div class="rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_action">
+                                    <div class="column">
+                                        <h1><?php echo __('Set issue fields'); ?></h1>
+                                        <ul class="simple_list">
+                                            <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('set') as $key => $description): ?>
+                                                <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
                                     </div>
-                                <?php endif; ?>
+                                    <div class="column">
+                                        <h1><?php echo __('Clear issue fields'); ?></h1>
+                                        <ul class="simple_list">
+                                            <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('clear') as $key => $description): ?>
+                                                <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                    <div class="column">
+                                        <h1><?php echo __('Special actions'); ?></h1>
+                                        <ul class="simple_list">
+                                            <?php foreach (\thebuggenie\core\entities\WorkflowTransitionAction::getAvailableTransitionActions('special') as $key => $description): ?>
+                                                <li <?php if ($transition->hasAction($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionaction_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'action_type' => $key)); ?>', '<?php echo $key; ?>');" title="<?php echo $description; ?>"><?php echo $description; ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <?php echo __('Post-transition actions'); ?>
                                 <?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_add_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
                             </h3>

@@ -14,12 +14,10 @@
                     <?php if (\thebuggenie\core\framework\Context::getScope()->isCustomWorkflowsEnabled()): ?>
                         <a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-silver"><?php echo fa_image_tag('clone', array('title' => __('Create a copy of this workflow scheme'))); ?></a>
                     <?php endif; ?>
-                    <?php if (!$scheme->isCore()): ?>
-                        <?php if ($scheme->isInUse()): ?>
-                            <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects project(s)', array('%number_of_projects' => $scheme->getNumberOfProjects())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
-                        <?php else: ?>
-                            <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this workflow scheme?'); ?>', '<?php echo __('Please confirm that you want to completely remove this workflow scheme.'); ?>', {yes: {click: function() { TBG.Config.Workflows.Scheme.remove('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow scheme'))); ?></a>
-                        <?php endif; ?>
+                    <?php if ($scheme->isInUse()): ?>
+                        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects project(s)', array('%number_of_projects' => $scheme->getNumberOfProjects())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
+                    <?php else: ?>
+                        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this workflow scheme?'); ?>', '<?php echo __('Please confirm that you want to completely remove this workflow scheme.'); ?>', {yes: {click: function() { TBG.Config.Workflows.Scheme.remove('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow scheme'))); ?></a>
                     <?php endif; ?>
                 </div>
             </td>

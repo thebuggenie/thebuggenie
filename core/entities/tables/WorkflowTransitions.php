@@ -105,28 +105,4 @@
             }
         }
 
-        public function upgradeFrom3dot1()
-        {
-            $wcrit = Settings::getTable()->getCriteria();
-            $wcrit->addWhere(Settings::NAME, \thebuggenie\core\framework\Settings::SETTING_DEFAULT_WORKFLOW);
-
-            $workflows = array();
-            if ($res = Settings::getTable()->doSelect($wcrit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $workflow_id = (int) $row->get(Settings::VALUE);
-                    $workflows[$workflow_id] = $workflow_id;
-                }
-            }
-            if (count($workflows))
-            {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::NAME, '%reject%', \b2db\Criteria::DB_LIKE);
-                $crit->addWhere(self::WORKFLOW_ID, $workflows, \b2db\Criteria::DB_IN);
-                $crit->addUpdate(self::TEMPLATE, 'main/updateissueproperties');
-                $this->doUpdate($crit);
-            }
-        }
-
     }

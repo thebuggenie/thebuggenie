@@ -7,12 +7,10 @@
     <div class="header" style="font-size: 1.1em;">
         <span id="issuetype_<?php echo $type->getID(); ?>_name_span"><?php echo $type->getName(); ?></span>&nbsp;
         <?php if (isset($scheme)): ?>
-            <?php if (!$scheme->isCore()): ?>
-                <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_enable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'enable');return false;"<?php if ($scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_enable"><?php echo __('Enable issue type for this scheme'); ?></a>
-                <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_disable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'disable');return false;"<?php if (!$scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_disable"><?php echo __('Disable issue type for this scheme'); ?></a>
-            <?php endif; ?>
+            <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_enable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'enable');return false;"<?php if ($scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_enable"><?php echo __('Enable issue type for this scheme'); ?></a>
+            <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_disable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'disable');return false;"<?php if (!$scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_disable"><?php echo __('Disable issue type for this scheme'); ?></a>
         <?php endif; ?>
-        <?php if (!isset($scheme) || !$scheme->isCore()): ?>
+        <?php if (!isset($scheme)): ?>
             <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
             <div class="button-group" style="margin-top: -3px; float: right;">
                 <a class="button button-silver" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();"><?php echo fa_image_tag('edit'); ?></a>
@@ -30,7 +28,7 @@
     <?php endif; ?>
     <?php if (!isset($scheme)): ?>
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_issuetype', array('id' => $type->getID())); ?>" onsubmit="TBG.Config.Issuetype.update('<?php echo make_url('configure_issuetypes_update_issuetype', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>);return false;" id="edit_issuetype_<?php echo $type->getID(); ?>_form" style="display: none;">
-    <?php elseif (!$scheme->isCore()): ?>
+    <?php else: ?>
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Issuetype.update('<?php echo make_url('configure_issuetypes_update_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);return false;" id="edit_issuetype_<?php echo $type->getID(); ?>_form" style="display: none;">
     <?php endif; ?>
             <div class="rounded_box white borderless" style="clear: both; margin: 5px; font-size: 12px;">
@@ -60,45 +58,33 @@
                     </tr>
                 <?php else: ?>
                     <tr>
-                        <?php if (!$scheme->isCore()): ?>
-                            <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_reportable"><?php echo __('Reportable'); ?></label></td>
-                        <?php endif; ?>
+                        <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_reportable"><?php echo __('Reportable'); ?></label></td>
                         <td style="padding-left: 2px;">
-                            <?php if ($scheme->isCore()): ?>
-                                <?php echo ($scheme->isIssuetypeReportable($type)) ? __('Users can report new issues with this issue type') : __('Users cannot report new issues with this issue type, but may choose it when editing an issue'); ?>
-                            <?php else: ?>
-                                <select name="reportable" id="issuetype_<?php echo $type->getID(); ?>_reportable" style="width:100%">
-                                    <option value="1"<?php if ($scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users can report new issues with this issue type'); ?></option>
-                                    <option value="0"<?php if (!$scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users cannot report new issues with this issue type, but may choose it when editing an issue'); ?></option>
-                                </select>
-                                <div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether this issue type is enabled for reporting or not'); ?>.</div>
-                            <?php endif; ?>
+                            <select name="reportable" id="issuetype_<?php echo $type->getID(); ?>_reportable" style="width:100%">
+                                <option value="1"<?php if ($scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users can report new issues with this issue type'); ?></option>
+                                <option value="0"<?php if (!$scheme->isIssuetypeReportable($type)): ?> selected<?php endif; ?>><?php echo __('Users cannot report new issues with this issue type, but may choose it when editing an issue'); ?></option>
+                            </select>
+                            <div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether this issue type is enabled for reporting or not'); ?>.</div>
                         </td>
                     </tr>
                     <tr>
-                        <?php if (!$scheme->isCore()): ?>
-                            <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_redirect"><?php echo __('Redirect'); ?></label></td>
-                        <?php endif; ?>
+                        <td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_redirect"><?php echo __('Redirect'); ?></label></td>
                         <td style="padding-left: 2px;">
-                            <?php if ($scheme->isCore()): ?>
-                                <?php echo ($scheme->isIssuetypeRedirectedAfterReporting($type)) ? __('The user is redirected to the reported issue after it has been reported') : __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?>
-                            <?php else: ?>
-                                <select name="redirect_after_reporting" id="issuetype_<?php echo $type->getID(); ?>_redirect" style="width:100%">
-                                    <option value="1"<?php if ($scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('The user is redirected to the reported issue after it has been reported'); ?></option>
-                                    <option value="0"<?php if (!$scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?></option>
-                                </select>
-                                <div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
-                            <?php endif; ?>
+                            <select name="redirect_after_reporting" id="issuetype_<?php echo $type->getID(); ?>_redirect" style="width:100%">
+                                <option value="1"<?php if ($scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('The user is redirected to the reported issue after it has been reported'); ?></option>
+                                <option value="0"<?php if (!$scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?></option>
+                            </select>
+                            <div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
                         </td>
                     </tr>
                 <?php endif; ?>
             </table>
-            <?php if (!isset($scheme) || !$scheme->isCore()): ?>
+            <?php if (!isset($scheme)): ?>
                 <input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
                 <?php echo __('%update_details or %cancel', array('%update_details' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
             <?php endif; ?>
         </div>
-    <?php if (!isset($scheme) || !$scheme->isCore()): ?>
+    <?php if (!isset($scheme)): ?>
         </form>
         <?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_issuetype_' . $type->getID() . '_indicator')); ?>
     <?php endif; ?>

@@ -498,17 +498,6 @@
             $this->_workflow_id = $workflow;
         }
 
-        /**
-         * Whether this is a transition in the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return $this->getWorkflow()->isCore();
-        }
-
         public function getTemplate()
         {
             return $this->_template;

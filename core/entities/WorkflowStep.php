@@ -337,17 +337,6 @@
         }
         
         /**
-         * Whether this is a step in the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return $this->getWorkflow()->isCore();
-        }
-
-        /**
          * Return this steps linked status if any
          * 
          * @return \thebuggenie\core\entities\Status

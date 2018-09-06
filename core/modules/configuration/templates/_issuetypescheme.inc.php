@@ -18,12 +18,10 @@
                 <div class="button-group" style="float: right;">
                     <?php echo link_tag(make_url('configure_issuetypes_scheme', array('scheme_id' => $scheme->getID())), fa_image_tag('list-alt', array('title' => __('Show / edit issue type associations'))), array('class' => 'button button-silver')); ?>
                     <a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-silver"><?php echo fa_image_tag('clone', array('title' => __('Create a copy of this issue type scheme'))); ?></a>
-                    <?php if (!$scheme->isCore()): ?>
-                        <?php if ($scheme->isInUse()): ?>
-                            <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete issuetype scheme'); ?>', '<?php echo __('This issuetype scheme can not be deleted as it is being used by %number_of_projects project(s)', array('%number_of_projects' => $scheme->getNumberOfProjects())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
-                        <?php else: ?>
-                            <a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
-                        <?php endif; ?>
+                    <?php if ($scheme->isInUse()): ?>
+                        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete issuetype scheme'); ?>', '<?php echo __('This issuetype scheme can not be deleted as it is being used by %number_of_projects project(s)', array('%number_of_projects' => $scheme->getNumberOfProjects())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
+                    <?php else: ?>
+                        <a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this issue type scheme'))); ?></a>
                     <?php endif; ?>
                 </div>
             </td>
@@ -44,7 +42,7 @@
         </form>
     </div>
 </li>
-<?php if (!$scheme->isCore() && !$scheme->isInUse()): ?>
+<?php if (!$scheme->isInUse()): ?>
     <li class="rounded_box white shadowed" id="delete_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
         <div class="header"><?php echo __('Are you sure?'); ?></div>
         <div class="content">
