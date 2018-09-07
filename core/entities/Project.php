@@ -3481,7 +3481,7 @@
                     $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
                     $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
                     $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
-                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
                     break;
                 case 'open-source':
                     $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
@@ -3508,7 +3508,7 @@
                     $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
                     $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
                     $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
-                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
                     break;
                 case 'agile':
                     $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
@@ -3522,7 +3522,8 @@
                     $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
                     $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
                     $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
-                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_FEATURE_REQUEST)];
                     break;
                 case 'service-desk':
                     $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME));
@@ -3534,7 +3535,7 @@
 
                     $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
                     $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
-                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 1, 'order' => 3, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
                     $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_PRIORITY] = ['column' => 2, 'order' => 1];
                     $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_STATUS] = ['column' => 2, 'order' => 2];
                     break;
@@ -3549,7 +3550,7 @@
 
                     $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
                     $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 2];
-                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 1, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_TASK)];
                     break;
             }
 

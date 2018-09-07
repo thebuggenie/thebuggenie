@@ -113,6 +113,14 @@
         const SETTING_UPLOAD_ALLOW_IMAGE_CACHING = 'upload_allow_image_caching';
         const SETTING_UPLOAD_DELIVERY_USE_XSEND = 'upload_delivery_use_xsend';
 
+        const SETTING_ISSUETYPE_BUG_REPORT = 'issuetype_bug_report';
+        const SETTING_ISSUETYPE_FEATURE_REQUEST = 'issuetype_feature_request';
+        const SETTING_ISSUETYPE_ENHANCEMENT = 'issuetype_enhancement';
+        const SETTING_ISSUETYPE_TASK = 'issuetype_task';
+        const SETTING_ISSUETYPE_USER_STORY = 'issuetype_user_story';
+        const SETTING_ISSUETYPE_EPIC = 'issuetype_epic';
+        const SETTING_ISSUETYPE_IDEA = 'issuetype_idea';
+
         const SETTING_USER_COMMENT_ORDER = 'comment_order';
 
         const SETTING_USER_DISPLAYNAME_FORMAT = 'user_displayname_format';

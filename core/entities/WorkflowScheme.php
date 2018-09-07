@@ -89,14 +89,14 @@
             $balanced_workflow_scheme->setName("Balanced workflow scheme");
             $balanced_workflow_scheme->setDescription("This is a workflow scheme used to handle medium-sized projects or small-team projects. It uses the balanced workflow for all issue types.");
             $balanced_workflow_scheme->save();
-            Settings::saveSetting(Settings::SETTING_BALANCED_WORKFLOW_SCHEME, $multi_team_workflow_scheme->getID(), 'core', $scope->getID());
+            Settings::saveSetting(Settings::SETTING_BALANCED_WORKFLOW_SCHEME, $balanced_workflow_scheme->getID(), 'core', $scope->getID());
 
             $simple_workflow_scheme = new WorkflowScheme();
             $simple_workflow_scheme->setScope($scope);
             $simple_workflow_scheme->setName("Simple workflow scheme");
             $simple_workflow_scheme->setDescription("This is a simple workflow scheme for projects with few people, or even just one person. It uses the simple workflow for all issue types.");
             $simple_workflow_scheme->save();
-            Settings::saveSetting(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME, $multi_team_workflow_scheme->getID(), 'core', $scope->getID());
+            Settings::saveSetting(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME, $simple_workflow_scheme->getID(), 'core', $scope->getID());
 
             return [$multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme];
         }

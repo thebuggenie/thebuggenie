@@ -1138,6 +1138,7 @@ class Main extends helpers\ProjectActions
                 $this->selected_project->save();
                 if ($apply_template) {
                     $this->selected_project->applyTemplate($request['project_type']);
+                    $this->selected_project->save();
                 }
                 $response = ['message' => $this->getI18n()->__('Settings saved')];
 
