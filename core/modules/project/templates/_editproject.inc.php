@@ -38,21 +38,44 @@
                         <div style="float: right; margin-right: 5px;" class="faded_out"><?= __('This is a part of all urls referring to this project'); ?></div>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2"><label for="project_description_input"><?= __('Project description'); ?></label></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                            <?php include_component('main/textarea', ['area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '200px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true]); ?>
+                        <?php elseif ($project->hasDescription()): ?>
+                            <?= $project->getDescription(); ?>
+                        <?php else: ?>
+                            <span class="faded_out"><?= __('No description set'); ?></span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php else: ?>
+                <tr>
+                    <td colspan="2">
+                        <label><?= __('Select type of project'); ?></label>
+                        <div class="config_explanation">
+                            <?= __('Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.'); ?>
+                        </div>
+                        <div class="fancylabels">
+                            <input type="radio" name="project_type" value="team" id="project_edit_type_team_project">
+                            <label for="project_edit_type_team_project"><?= fa_image_tag('users'); ?><span><h1><?= __('Distributed teams project'); ?></h1><?= __('For projects with multiple teams, often distributed across locations'); ?></span></label>
+                            <input type="radio" name="project_type" value="open-source" id="project_edit_type_open_source_regular">
+                            <label for="project_edit_type_open_source_regular"><?= fa_image_tag('code-fork'); ?><span><h1><?= __('Classic open source'); ?></h1><?= __('For medium/small open source projects without multiple teams'); ?></span></label>
+                            <input type="radio" name="project_type" value="classic" id="project_edit_type_regular">
+                            <label for="project_edit_type_regular"><?= fa_image_tag('code'); ?><span><h1><?= __('Classic software project'); ?></h1><?= __('Classic project template without specific settings'); ?></span></label>
+                            <input type="radio" name="project_type" value="agile" id="project_edit_type_agile">
+                            <label for="project_edit_type_agile"><?= fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']); ?><span><h1><?= __('Agile software project'); ?></h1><?= __('For projects with an agile methodology like e.g. scrum or kanban'); ?></span></label>
+                            <input type="radio" name="project_type" value="service-desk" id="project_edit_type_service_desk">
+                            <label for="project_edit_type_service_desk"><?= fa_image_tag('phone'); ?><span><h1><?= __('Helpdesk / support'); ?></h1><?= __('For helpdesk or support projects without a traditional software development cycle'); ?></span></label>
+                            <input type="radio" name="project_type" value="personal" id="project_edit_type_personal_todo">
+                            <label for="project_edit_type_personal_todo"><?= fa_image_tag('th-list'); ?><span><h1><?= __('Personal todo-list'); ?></h1><?= __('A project acting like a personal todo-list. No fuzz, no headache.'); ?></span></label>
+                        </div>
+                    </td>
+                </tr>
             <?php endif; ?>
-            <tr>
-                <td colspan="2"><label for="project_description_input"><?= __('Project description'); ?></label></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                        <?php include_component('main/textarea', ['area_name' => 'description', 'target_type' => 'project', 'target_id' => $project->getID(), 'area_id' => 'project_description_input', 'height' => '200px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true]); ?>
-                    <?php elseif ($project->hasDescription()): ?>
-                        <?= $project->getDescription(); ?>
-                    <?php else: ?>
-                        <span class="faded_out"><?= __('No description set'); ?></span>
-                    <?php endif; ?>
-                </td>
-            </tr>
         </table>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <div class="backdrop_details_submit">

@@ -6,6 +6,7 @@ use thebuggenie\core\framework,
     thebuggenie\core\helpers,
     thebuggenie\core\entities,
     thebuggenie\core\entities\tables;
+use thebuggenie\core\framework\Settings;
 
 /**
  * actions for the project module
@@ -998,12 +999,12 @@ class Main extends helpers\ProjectActions
         {
             $this->forward403unless($this->getUser()->canEditProjectDetails($this->selected_project), framework\Context::getI18n()->__('You do not have access to update these settings'));
 
-            $release_date = null;
             if ($request['has_release_date'])
             {
+                $release_date = null;
                 $release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
+                $this->selected_project->setReleaseDate($release_date);
             }
-            $this->selected_project->setReleaseDate($release_date);
 
             $old_key = $this->selected_project->getKey();
 
@@ -1131,8 +1132,13 @@ class Main extends helpers\ProjectActions
             if ($request->hasParameter('time_units'))
                 $this->selected_project->setTimeUnits($request['time_units']);
 
+            $apply_template = (!$this->selected_project->getID());
+
             try {
                 $this->selected_project->save();
+                if ($apply_template) {
+                    $this->selected_project->applyTemplate($request['project_type']);
+                }
                 $response = ['message' => $this->getI18n()->__('Settings saved')];
 
                 if (!$request['project_id'] && !$request['project_key']) {

@@ -3755,7 +3755,7 @@ class Main extends framework\Action
                     $template_name = 'configuration/siteicons';
                     break;
                 case 'project_config':
-                    $template_name = 'project/projectconfig_container';
+                    $template_name = 'project/editproject';
                     if ($request['project_id']) {
                         $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
                     } else {

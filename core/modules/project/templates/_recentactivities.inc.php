@@ -20,6 +20,9 @@
         <?php endforeach; ?>
         </table>
     <?php else: ?>
-        <div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __($empty); ?></div>
+        <div class="no-items">
+            <?= fa_image_tag('files-o'); ?>
+            <?php echo __($empty); ?>
+        </div>
     <?php endif; ?>
 </div>

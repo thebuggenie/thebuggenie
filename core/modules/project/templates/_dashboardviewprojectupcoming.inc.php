@@ -14,5 +14,8 @@
 <?php endforeach; ?>
 </div>
 <?php if ($milestone_cc == 0): ?>
-    <div class="faded_out"><?php echo __('This project has no upcoming milestones.'); ?></div>
+    <div class="no-items">
+        <?= fa_image_tag('calendar-plus-o'); ?>
+        <?php echo __('Upcoming milestones appear here'); ?>
+    </div>
 <?php endif; ?>

@@ -2560,7 +2560,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     position: relative;
     text-align: right;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-end;
 }
 
@@ -2574,6 +2574,10 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     text-decoration: none;
     border-radius: 5px;
     white-space: nowrap;
+    margin-left: 5px;
+}
+.project_strip nav a.nav-button:first-child {
+    margin-left: 0;
 }
 
 .project_strip nav a.nav-button:hover {
@@ -8668,6 +8672,55 @@ dl.info {
     margin-left: 25px;
 }
 
+.fancylabels {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.fancylabels label {
+    display: flex;
+    flex: 0 0 calc(50% - 10px);
+    margin: 5px;
+    padding: 15px;
+    border: 1px solid rgba(225, 225, 225, .1);
+    transition: border-color .2s ease-in-out, background-color .2s ease-in-out;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: 300;
+    text-transform: none;
+    box-sizing: border-box;
+}
+.fancylabels label .fa {
+    flex: 0 0 60px;
+    font-size: 2.5em;
+    padding: 15px;
+    color: #888;
+    text-align: center;
+}
+.fancylabels label span {
+    flex: 1 1 auto;
+    font-size: 1em;
+    padding: 15px 5px;
+    color: #555;
+    line-height: 1em;
+}
+.fancylabels label span h1 {
+    font-size: 1.2em;
+}
+
+.fancylabels input:checked + label {
+    border-color: rgba(225, 225, 225, .3);
+    background-color: rgba(200, 200, 200, .1);
+    box-shadow: inset 0 0 4px rgba(100, 100, 100, .3);
+}
+
+.fancylabels input {
+    display: none;
+}
+
 .fancydropdown + ul li dl.info {
     display: inline-block;
     margin-left: 0;
@@ -10658,17 +10711,26 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     padding: 0;
 }
 
-.menu_links .content a, .menu_links .content i {
+.menu_links .content a {
+    font-weight: 500;
+    display: block;
+    padding: 3px 5px;
+    color: #555;
+    border-radius: 3px;
+}
+.menu_links .content i:not(.fa) {
     font-weight: 300;
     display: block;
     padding: 3px 5px;
-    color: #333;
-    border-radius: 3px;
+    color: #555;
 }
 .menu_links .content a:hover {
     background-color: rgba(200, 200, 200, .1);
     border: none;
     text-decoration: none;
+}
+.menu_links .content .fa {
+    margin-right: 5px;
 }
 
 .menu_links .content a.selected {
@@ -11063,13 +11125,13 @@ div.quickaddtask .close_micro_popup_link {
 
 .project_role .label {
     font-weight: 500;
-    float: left;
+    display: inline-block;
     margin: 0 10px 0 0;
 }
 
 .project_role .value {
     width: auto;
-    display: table-cell;
+    display: inline-block;
     clear: none;
     padding: 0 10px 0 0;
 }
@@ -16658,15 +16720,22 @@ ul#subscribers_list > li {
 }
 
 .dashboard_view_content .dashboard_subprojects .project_strip {
-    padding-right: 0;
+    box-shadow: none;
+    border: none;
+    font-size: 1.1em;
 }
-
-.dashboard_view_content .dashboard_subprojects .project_strip .button-group {
-    margin-right: 0;
+.dashboard_view_content .dashboard_subprojects .project_list > li {
+    border-top: 1px solid rgba(200, 200, 200, 0.3);
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    background-color: rgba(200, 200, 200, 0);
+    border-radius: 3px;
 }
-
-.dashboard_view_content .dashboard_subprojects .project_strip .button-dropdown {
-    float: left;
+.dashboard_view_content .dashboard_subprojects .project_list > li:first-child {
+    border-top: none;
+}
+.dashboard_view_content .dashboard_subprojects .project_list > li:hover {
+    background-color: rgba(200, 200, 200, .1);
+    border-color: transparent;
 }
 
 .dashboard_view_content .release_item {

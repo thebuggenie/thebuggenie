@@ -17,7 +17,10 @@
     
     if ($found == false)
     {
-        ?><p class="content faded_out"><?php echo __('There are no downloadable releases at the moment'); ?></p><?php
+        ?><div class="content no-items">
+            <?= fa_image_tag('download'); ?>
+            <?php echo __('There are no downloadable releases at the moment'); ?>
+        </div><?php
     }
     
 ?>

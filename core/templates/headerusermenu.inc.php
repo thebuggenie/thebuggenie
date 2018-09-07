@@ -9,6 +9,11 @@
     <?php if (!$tbg_user->isGuest()): ?>
     <?php endif; ?>
     <ul>
+        <?php if ($tbg_user->canAccessConfigurationPage()): ?>
+            <li id="header_config_link" class="<?php if (in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteModule(), ['configuration', 'import'])) echo ' selected'; ?>">
+                <?= link_tag(make_url('configure'), fa_image_tag('cog')); ?>
+            </li>
+        <?php endif; ?>
         <?php if (!$tbg_user->isGuest()): ?>
             <li class="user_notifications_container" id="user_notifications_container">
                 <div id="user_notifications_count" class="notifications-indicator" data-callback-url=""><?= image_tag('spinning_16_white.gif'); ?></div>
@@ -25,11 +30,6 @@
                     </div>
                     <?= image_tag('spinning_32.gif', array('id' => 'user_notifications_loading_indicator')); ?>
                 </div>
-            </li>
-        <?php endif; ?>
-        <?php if ($tbg_user->canAccessConfigurationPage()): ?>
-            <li id="header_config_link" class="<?php if (in_array(\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteModule(), ['configuration', 'import'])) echo ' selected'; ?>">
-                <?= link_tag(make_url('configure'), fa_image_tag('cog')); ?>
             </li>
         <?php endif; ?>
         <li class="with-dropdown <?php if ($tbg_request->hasCookie('original_username')): ?>temporarily_switched<?php endif; ?>" id="header_usermenu_link">

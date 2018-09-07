@@ -179,7 +179,7 @@
             $this->editions = $active_builds;
         }
 
-        public function componentProjectConfig_Container()
+        public function componentEditProject()
         {
             $this->access_level = ($this->getUser()->canEditProjectDetails(framework\Context::getCurrentProject())) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
             $this->section = isset($this->section) ? $this->section : 'info';

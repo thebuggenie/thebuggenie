@@ -5,6 +5,7 @@
     use thebuggenie\core\entities\common\QaLeadable,
         thebuggenie\core\helpers\MentionableProvider,
         thebuggenie\core\framework;
+    use thebuggenie\core\framework\Settings;
 
     /**
      * Project class
@@ -46,6 +47,10 @@
          * @static integer
          */
         const ISSUES_LOCK_TYPE_RESTRICTED = 2;
+
+        const SUMMARY_TYPE_MILESTONES = 'milestones';
+        const SUMMARY_TYPE_ISSUELIST = 'issuelist';
+        const SUMMARY_TYPE_ISSUETYPES = 'issuetypes';
 
         /**
          * Project list cache
@@ -3458,6 +3463,109 @@
         public function hasTimeUnit($time_unit)
         {
             return in_array($time_unit, $this->getTimeUnits());
+        }
+
+        public function applyTemplate($template)
+        {
+            $dashboard_views = [];
+            switch ($template) {
+                case 'team':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_MULTI_TEAM_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_FULL_RANGE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(true);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'open-source':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'classic':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'agile':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_AGILE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'service-desk':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+                    $this->setFrontpageSummaryType(Project::SUMMARY_TYPE_ISSUELIST);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_PRIORITY] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_STATUS] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'personal':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_SIMPLE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(false);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+                    $this->setChangeIssuesWithoutWorkingOnThem(true);
+                    $this->setFrontpageSummaryType(Project::SUMMARY_TYPE_ISSUELIST);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 1];
+                    break;
+            }
+
+            $dashboard = $this->getDefaultDashboard();
+
+            foreach ($dashboard_views as $view_type => $details) {
+                $view = new DashboardView();
+                $view->setDashboard($dashboard);
+                $view->setType($view_type);
+                if (isset($details['subtype'])) {
+                    $view->setDetail($details['subtype']);
+                }
+                $view->setColumn($details['column']);
+                $view->setSortOrder($details['order']);
+                $view->save();
+            }
         }
 
     }
