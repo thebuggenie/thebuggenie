@@ -215,7 +215,7 @@
         /**
          * Get all steps in this workflow
          *
-         * @return array An array of \thebuggenie\core\entities\WorkflowStep objects
+         * @return WorkflowStep[] An array of \thebuggenie\core\entities\WorkflowStep objects
          */
         public function getSteps()
         {

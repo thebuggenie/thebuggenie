@@ -126,7 +126,7 @@
                     break;
                 case entities\DashboardView::VIEW_PROJECT_STATISTICS_STATUS:
                     $counts = framework\Context::getCurrentProject()->getStatusCount();
-                    $items = entities\Status::getAll();
+                    $items = framework\Context::getCurrentProject()->getAvailableStatuses();
                     $key = 'status';
                     break;
                 case entities\DashboardView::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
