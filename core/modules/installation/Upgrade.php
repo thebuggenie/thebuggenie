@@ -242,7 +242,20 @@ class Upgrade
         }
         IssueSpentTimes::getTable()->fixScopes();
 
-        foreach (Scope::getAll() as $scope) {
+        $scopes = Scope::getAll();
+        $cc = 1;
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Implementing new workflows.\n");
+        }
+        $prev_percentage = 0;
+        foreach ($scopes as $scope) {
+            if (defined('TBG_CLI')) {
+                $percentage = floor(($cc / count($scopes)) * 100);
+                if ($percentage != $prev_percentage && $percentage % 5 == 0) {
+                    $prev_percentage = $percentage;
+                    echo $percentage . '%' . "\n";
+                }
+            }
             list($bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id) = Issuetype::getDefaultItems($scope);
             list($full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme) = IssuetypeScheme::loadFixtures($scope, [$bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id]);
             tables\IssueFields::getTable()->loadFixtures($scope, $full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme, $bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id);
@@ -257,6 +270,7 @@ class Upgrade
             tables\WorkflowIssuetype::getTable()->loadFixtures($scope, $simple_workflow, $simple_workflow_scheme);
 
             gc_collect_cycles();
+            $cc++;
         }
 
         $admin_user = Users::getTable()->getByUsername($this->upgrade_options['4_1_13']['admin_username']);
