@@ -7109,6 +7109,9 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin: 5px 10px;
     padding: 0;
 }
+.comment_log_items .fa {
+    margin-right: 5px;
+}
 
 .comment_log_items span.date {
     display: none;
