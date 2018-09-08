@@ -6,6 +6,15 @@
 
 ?>
 <div id="project_releases" class="project_info_container">
+    <div class="project_left_container">
+        <div class="project_left">
+            <h3><?php echo __('Release selection'); ?></h3>
+            <ul class="simple_list">
+                <li class="selected"><a href="javascript:void(0);" onclick="$$('.releases_list').each(function (r) { (r.hasClassName('active_releases')) ? r.show() : r.hide() }); TBG.Project.toggleLeftSelection(this);"><?php echo __('All active releases'); ?></a></li>
+                <li ><a href="javascript:void(0);" onclick="$$('.releases_list').each(function (r) { (r.hasClassName('archived_releases')) ? r.show() : r.hide() }); TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
+            </ul>
+        </div>
+    </div>
     <div class="project_right_container">
         <div class="project_right" id="project_releases_container">
             <div class="active_releases releases_list">
@@ -62,14 +71,4 @@
             </div>
         </div>
     </div>
-    <div class="project_left_container">
-        <div class="project_left">
-            <h3><?php echo __('Release selection'); ?></h3>
-            <ul class="simple_list">
-                <li class="selected"><a href="javascript:void(0);" onclick="$$('.releases_list').each(function (r) { (r.hasClassName('active_releases')) ? r.show() : r.hide() }); TBG.Project.toggleLeftSelection(this);"><?php echo __('All active releases'); ?></a></li>
-                <li ><a href="javascript:void(0);" onclick="$$('.releases_list').each(function (r) { (r.hasClassName('archived_releases')) ? r.show() : r.hide() }); TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
-            </ul>
-        </div>
-    </div>
-    <br style="clear: both;">
 </div>

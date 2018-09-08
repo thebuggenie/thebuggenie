@@ -1059,6 +1059,7 @@ input[type=checkbox].semi-checked {
 .project-context.page-project_releases #content_container,
 .project-context.page-project_release_center #content_container,
 .project-context.page-project_roadmap #content_container,
+.project-context.page-project_milestone_details #content_container,
 .project-context.page-project_team #content_container,
 .project-context.page-project_statistics #content_container,
 .project-context.page-project_settings #content_container,
@@ -10917,21 +10918,13 @@ div.quickaddtask .close_micro_popup_link {
     position: relative;
     z-index: 100;
     overflow: visible;
-    height: auto;
+    flex: 1 1 auto;
+    display: flex;
 }
 
 .project_info_container .project_right_container {
-    float: left;
     overflow: visible;
-    width: 100%;
-    height: auto;
-    margin: 0;
-}
-
-.project_info_container .project_right_container .project_right {
-    margin: 0 0 0 361px;
-    overflow: visible;
-    transition: margin 0.3s ease;
+    flex: 1 1 auto;
 }
 
 #project_planning.project_info_container.left_toggled .project_right_container .project_right {
@@ -11011,32 +11004,24 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .project_info_container .project_left_container {
-    float: left;
-    width: 360px;
-    margin: 0 0 0 -100%;
-    transition: width 0.3s ease;
-}
-
-.project_info_container .project_left_container:after {
-    content: '';
-    clear: both;
-    display: block;
+    flex: 0 0 360px;
+    transition: width 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
 }
 
 #project_planning.project_info_container .project_left_container {
-    width: 530px;
+    flex: 0 0 530px;
     overflow: visible;
 }
 
 #project_planning.project_info_container.left_toggled .project_left_container {
-    width: 40px;
+    flex: 0 0 40px;
 }
 
 .project_info_container .project_left_container .project_left {
-    display: inline-block;
-    float: left;
-    width: 340px;
-    min-height: 63px;
     margin: 0 10px 0 0;
     padding: 0 10px;
     vertical-align: top;
@@ -11045,6 +11030,7 @@ div.quickaddtask .close_micro_popup_link {
     overflow: visible;
     position: relative;
     transition: width 0.3s ease, margin 0.3s ease;
+    flex: 1 1 auto;
 }
 
 #project_planning.project_info_container .project_left_container .project_left {
@@ -18472,16 +18458,6 @@ div[id^='wiki_'][id$='_no_links'] {
 }
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */
-
-.cf:before,
-.cf:after {
-    content: " ";
-    display: table;
-}
-
-.cf:after {
-    clear: both;
-}
 
 #thebuggenie_failuremessage_content ul {
     margin-top: 5px;
