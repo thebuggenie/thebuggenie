@@ -22,7 +22,7 @@
     <?php else: ?>
         <div class="no-items">
             <?= fa_image_tag('files-o'); ?>
-            <?php echo __($empty); ?>
+            <span><?php echo __($empty); ?></span>
         </div>
     <?php endif; ?>
 </div>

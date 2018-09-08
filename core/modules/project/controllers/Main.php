@@ -1135,6 +1135,7 @@ class Main extends helpers\ProjectActions
             $apply_template = (!$this->selected_project->getID());
 
             try {
+                $this->selected_project->setOwner($this->getUser());
                 $this->selected_project->save();
                 if ($apply_template) {
                     $this->selected_project->applyTemplate($request['project_type']);

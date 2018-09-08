@@ -10989,6 +10989,10 @@ div.quickaddtask .close_micro_popup_link {
     box-sizing: border-box;
 }
 
+#project_info .project_type_container {
+    padding-top: 25px;
+}
+
 .project_save_container .button, .project_save_container .button:hover {
     font-size: 1.1em;
     padding: 6px 12px;
@@ -11275,6 +11279,7 @@ div.quickaddtask .close_micro_popup_link {
 
 #project_description.none {
     color: #AAA;
+    margin: 10px;
 }
 
 .project_information_sidebar {
@@ -16863,26 +16868,27 @@ td.legendLabel {
     padding: 10px !important;
 }
 
-.dashboard_view_container .no-projects, .dashboard_view_container .no-items {
+.dashboard_view_container .no-items {
     font-size: 1.5em;
     text-align: center;
     padding: 25px;
     color: #AAA;
 }
-.dashboard_view_container .no-projects span, .dashboard_view_container .no-items span {
+.dashboard_view_container .no-items span {
     display: block;
     padding-bottom: 15px;
 }
-.dashboard_view_container .no-projects button {
+.dashboard_view_container .no-items .button {
     font-size: .6em;
+    padding: 5px 8px;
 }
-.dashboard_view_container .no-projects .fa, .dashboard_view_container .no-items .fa {
+.dashboard_view_container .no-items .fa {
     font-size: 2.5em;
     display: block;
     padding: 0 0 25px 0;
     color: #CCC;
 }
-.dashboard_view_container .no-projects .fa {
+.dashboard_view_container .no-items.no-projects .fa {
     color: orange;
 }
 

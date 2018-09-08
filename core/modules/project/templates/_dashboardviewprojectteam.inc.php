@@ -15,5 +15,11 @@
         </div>
     <?php endforeach; ?>
 <?php else: ?>
-    <p class="content faded_out"><?php echo __('No users or teams assigned'); ?>.</p>
+    <p class="no-items">
+        <?= fa_image_tag('users'); ?>
+        <span><?php echo __('No users or teams assigned to this project'); ?></span>
+        <?php if ($tbg_user->canEditProjectDetails($project)): ?>
+            <a href="<?= make_url('project_settings', ['project_key' => $project->getKey()]); ?>" class="button button-silver project-quick-edit"><?= __('Set up project team'); ?></a>
+        <?php endif; ?>
+    </p>
 <?php endif; ?>

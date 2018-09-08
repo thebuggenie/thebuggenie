@@ -54,7 +54,7 @@
                 </tr>
             <?php else: ?>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" class="project_type_container">
                         <label><?= __('Select type of project'); ?></label>
                         <div class="config_explanation">
                             <?= __('Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.'); ?>
@@ -64,7 +64,7 @@
                             <label for="project_edit_type_team_project"><?= fa_image_tag('users'); ?><span><h1><?= __('Distributed teams project'); ?></h1><?= __('For projects with multiple teams, often distributed across locations'); ?></span></label>
                             <input type="radio" name="project_type" value="open-source" id="project_edit_type_open_source_regular">
                             <label for="project_edit_type_open_source_regular"><?= fa_image_tag('code-fork'); ?><span><h1><?= __('Classic open source'); ?></h1><?= __('For medium/small open source projects without multiple teams'); ?></span></label>
-                            <input type="radio" name="project_type" value="classic" id="project_edit_type_regular">
+                            <input type="radio" name="project_type" value="classic" checked id="project_edit_type_regular">
                             <label for="project_edit_type_regular"><?= fa_image_tag('code'); ?><span><h1><?= __('Classic software project'); ?></h1><?= __('Classic project template without specific settings'); ?></span></label>
                             <input type="radio" name="project_type" value="agile" id="project_edit_type_agile">
                             <label for="project_edit_type_agile"><?= fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']); ?><span><h1><?= __('Agile software project'); ?></h1><?= __('For projects with an agile methodology like e.g. scrum or kanban'); ?></span></label>

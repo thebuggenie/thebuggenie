@@ -147,25 +147,30 @@
 
         public function componentDashboardViewProjectUpcoming()
         {
-
+            $this->project = framework\Context::getCurrentProject();
+            $this->upcoming_milestones = $this->project->getUpcomingMilestones(21);
+            $this->starting_milestones = $this->project->getStartingMilestones(21);
         }
 
         public function componentDashboardViewProjectRecentIssues()
         {
-            $this->issues = framework\Context::getCurrentProject()->getRecentIssues($this->view->getDetail());
+            $this->project = framework\Context::getCurrentProject();
+            $this->issues = $this->project->getRecentIssues($this->view->getDetail());
         }
 
         public function componentDashboardViewProjectRecentActivities()
         {
-            $this->recent_activities = framework\Context::getCurrentProject()->getRecentActivities(10, false, null, true);
+            $this->project = framework\Context::getCurrentProject();
+            $this->recent_activities = $this->project->getRecentActivities(10, false, null, true);
         }
 
         public function componentDashboardViewProjectDownloads()
         {
-            $builds = framework\Context::getCurrentProject()->getBuilds();
+            $this->project = framework\Context::getCurrentProject();
+            $builds = $this->project->getBuilds();
             $active_builds = array();
 
-            foreach (framework\Context::getCurrentProject()->getEditions() as $edition_id => $edition)
+            foreach ($this->project->getEditions() as $edition_id => $edition)
             {
                 $active_builds[$edition_id] = array();
             }

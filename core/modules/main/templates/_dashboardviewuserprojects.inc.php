@@ -23,11 +23,11 @@
         <?php endforeach; ?>
     </ul>
 <?php else: ?>
-    <div class="no-projects">
+    <div class="no-items no-projects">
         <?= fa_image_tag('star-half-o'); ?>
         <span><?php echo __('You are not associated with any projects'); ?></span>
         <?php if ($tbg_user->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable()): ?>
-            <button class="button button-silver project-quick-edit" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', ['key' => 'project_config']); ?>');"><?= __('Create project'); ?></button>
+            <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', ['key' => 'project_config']); ?>');"><?= __('Create project'); ?></button>
         <?php endif; ?>
     </div>
 <?php endif; ?>
