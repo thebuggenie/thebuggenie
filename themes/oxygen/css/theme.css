@@ -3464,6 +3464,11 @@ table.cleantable th {
     font-weight: 300;
 }
 
+.config_explanation .important {
+    display: block;
+    font-weight: 500;
+}
+
 .config_buttons, .config_badges {
     list-style: none;
     padding: 0;
@@ -6087,9 +6092,28 @@ ul.workflow_actions li:hover {
 }
 
 #vote_up, #vote_down {
-    width: 16px;
     text-align: center;
-    padding: 2px;
+}
+#vote_up a, #vote_down a {
+    display: block;
+    color: #555;
+    transition: color .2s ease-in-out;
+    line-height: 1em;
+}
+#vote_down a:hover {
+    color: darkred;
+}
+#vote_up a:hover {
+    color: darkolivegreen;
+}
+#vote_up .fa, #vote_down .fa {
+    padding: 5px;
+    font-size: 1.5em;
+    transition: background-color .2s ease-in-out;
+    background-color: transparent;
+}
+#vote_up .fa:hover, #vote_down .fa:hover {
+    background-color: rgba(200, 200, 200, .2);
 }
 
 .user_pain_calculated {
@@ -6212,7 +6236,12 @@ ul.workflow_actions li:hover {
     border-right: 1px solid rgba(100, 100, 100, 0.3);
 }
 
-.issue_navigation a {
+.issue_navigation a, .issue_navigation a:hover {
+    color: #555;
+    font-weight: 500;
+    font-size: 1.3em;
+    border: none;
+    text-decoration: none;
     display: block;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -8728,6 +8757,27 @@ dl.info {
 }
 
 .fancylabels input {
+    display: none;
+}
+
+.fancycheckbox {
+    display: none;
+}
+.fancycheckbox + label {
+    display: inline-block;
+    color: #555;
+    transition: color .2s ease-in-out;
+}
+.fancycheckbox:checked + label {
+    color: #585;
+}
+.fancycheckbox + label .fa.unchecked,
+.fancycheckbox:checked + label .fa.checked {
+    display: inline-block;
+    margin-right: 5px;
+}
+.fancycheckbox + label .fa.checked,
+.fancycheckbox:checked + label .fa.unchecked {
     display: none;
 }
 
@@ -14382,10 +14432,6 @@ span.config_explanation > span.tooltip.from-above.leftie {
     margin-left: 5px;
 }
 
-.config_explanation br:nth-of-type(2) {
-    display: none;
-}
-
 .more_than_one_project_warning {
     margin-top: 5px;
     display: block;
@@ -15770,10 +15816,6 @@ form > .config_header {
     position: relative;
 }
 
-#config_scopes .config_explanation {
-    padding-bottom: 10px;
-}
-
 #config_scopes label {
     padding: 0;
 }
@@ -15835,10 +15877,6 @@ form > .config_header {
     padding: 0 !important;
 }
 
-#publish_tab_settings_pane .config_explanation {
-    padding-bottom: 10px !important;
-}
-
 #publish_tab_settings_pane input[type=radio] {
     margin-top: -2px;
 }
@@ -15870,10 +15908,6 @@ form > .config_header {
 
 #mailnotification_settings_container td > label {
     padding: 0 !important;
-}
-
-#mailnotification_settings_container .config_explanation {
-    padding-bottom: 10px !important;
 }
 
 #mailnotification_settings_container input[type=radio] {

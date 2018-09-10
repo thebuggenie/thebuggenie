@@ -15,7 +15,7 @@
             <ul class="interactive_menu_values">
                 <?php foreach ($categories as $category_id => $category): ?>
                     <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (in_array($category_id, $selected_category_notifications)) echo ' selected'; ?>">
-                        <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                         <input type="checkbox" value="<?= $category_id; ?>" name="mailing_<?= $category_key; ?>_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="mailing_<?= $category_key; ?>_value_<?= $category_id; ?>" <?php if (in_array($category_id, $selected_category_notifications)) echo 'checked'; ?>>
                         <label for="mailing_<?= $category_key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                     </li>

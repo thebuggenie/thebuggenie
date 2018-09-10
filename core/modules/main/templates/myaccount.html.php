@@ -367,7 +367,7 @@
                                                     <ul class="interactive_menu_values">
                                                         <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
                                                             <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (false && $filter->hasValue($category_id)) echo ' selected'; ?>">
-                                                                <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                                                 <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $key; ?>_value_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $key; ?>_value_<?= $category_id; ?>" <?php if (false && $filter->hasValue($category_id)) echo 'checked'; ?>>
                                                                 <label for="core_<?= $key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                             </li>
@@ -401,14 +401,14 @@
                                         <div class="interactive_values_container">
                                             <ul class="interactive_menu_values">
                                                 <li data-value="0" class="filtervalue <?php if ($all_projects_subscription) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
-                                                    <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                    <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                                     <input type="checkbox" value="all" name="core_<?= $project_issues_key; ?>_all" data-text="<?= __('All my projects'); ?>" id="core_<?= $project_issues_key; ?>_value_all" <?php if ($all_projects_subscription) echo 'checked'; ?>>
                                                     <label for="core_<?= $project_issues_key; ?>_value_all"><?= __('All my projects'); ?></label>
                                                 </li>
                                                 <li class="separator"></li>
                                                 <?php foreach ($projects as $project_id => $project): ?>
                                                     <li data-value="<?= $project_id; ?>" class="filtervalue<?php if (in_array($project_id, $selected_project_subscriptions)) echo ' selected'; ?>" data-selection-group="2" data-exclude-group="1">
-                                                        <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                                         <input type="checkbox" value="<?= $project_id; ?>" name="core_<?= $project_issues_key; ?>_<?= $project_id; ?>" data-text="<?= __($project->getName()); ?>" id="core_<?= $project_issues_key; ?>_value_<?= $project_id; ?>" <?php if (in_array($project_id, $selected_project_subscriptions)) echo 'checked'; ?>>
                                                         <label for="core_<?= $project_issues_key; ?>_value_<?= $project_id; ?>"><?= __($project->getName()); ?></label>
                                                     </li>
@@ -436,7 +436,7 @@
                                             <ul class="interactive_menu_values">
                                                 <?php foreach ($categories as $category_id => $category): ?>
                                                     <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (in_array($category_id, $selected_category_subscriptions)) echo ' selected'; ?>">
-                                                        <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                                         <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $category_key; ?>_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $category_key; ?>_value_<?= $category_id; ?>" <?php if (in_array($category_id, $selected_category_subscriptions)) echo 'checked'; ?>>
                                                         <label for="core_<?= $category_key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                     </li>
@@ -496,7 +496,7 @@
                                             <ul class="interactive_menu_values">
                                                 <?php foreach ($categories as $category_id => $category): ?>
                                                     <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (in_array($category_id, $selected_category_notifications)) echo ' selected'; ?>">
-                                                        <?= image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                                         <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $category_key; ?>_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $category_key; ?>_value_<?= $category_id; ?>" <?php if (in_array($category_id, $selected_category_notifications)) echo 'checked'; ?>>
                                                         <label for="core_<?= $category_key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                     </li>
