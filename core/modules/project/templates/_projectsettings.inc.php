@@ -210,9 +210,8 @@
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
                     <?php foreach (\thebuggenie\core\entities\common\Timeable::getUnits() as $time_unit): ?>
-                        <label>
-                            <input type="checkbox" name="time_units[]" value="<?php echo $time_unit; ?>"<?php if ($project->hasTimeUnit($time_unit)): ?> checked<?php endif; ?>> <?php echo __($time_unit); ?>
-                        </label>
+                        <input type="checkbox" name="time_units[]" value="<?php echo $time_unit; ?>"<?php if ($project->hasTimeUnit($time_unit)): ?> checked<?php endif; ?> class="fancycheckbox" id="time_unit_<?= $time_unit; ?>">
+                        <label for="time_unit_<?= $time_unit; ?>"><?php echo fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __($time_unit); ?></label>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <?php echo implode(', ', $project->getTimeUnits()); ?>

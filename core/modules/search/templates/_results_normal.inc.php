@@ -35,7 +35,7 @@ foreach ($search_object->getIssues() as $issue):
             <thead>
                 <tr>
                     <?php if (!$tbg_user->isGuest() && $actionable): ?>
-                        <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" /></th>
+                        <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" id="results_issue_all_checkbox" class="fancycheckbox"><label for="results_issue_all_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label></th>
                     <?php endif; ?>
                     <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
                         <th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
@@ -73,7 +73,7 @@ foreach ($search_object->getIssues() as $issue):
                 <?php if (!$tbg_user->isGuest() && $actionable): ?>
                     <td class="sca_actions">
                         <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-                            <input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
+                            <input type="checkbox" class="fancycheckbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>" id="update_issue_<?= $issue->getID(); ?>_checkbox"><label for="update_issue_<?= $issue->getID(); ?>_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
                         <?php endif; ?>
                     </td>
                 <?php endif; ?>

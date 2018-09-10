@@ -367,7 +367,7 @@
                                                     <ul class="interactive_menu_values">
                                                         <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
                                                             <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (false && $filter->hasValue($category_id)) echo ' selected'; ?>">
-                                                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) ?>
                                                                 <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $key; ?>_value_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $key; ?>_value_<?= $category_id; ?>" <?php if (false && $filter->hasValue($category_id)) echo 'checked'; ?>>
                                                                 <label for="core_<?= $key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                             </li>
@@ -379,7 +379,7 @@
                                     </td>
                                 <?php else: ?>
                                     <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>>
+                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
                                     </td>
                                 <?php endif; ?>
                             </tr>
@@ -469,7 +469,7 @@
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle"></td>
                                 <?php else: ?>
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, $key == Settings::SETTINGS_USER_NOTIFY_MENTIONED, 'core')->isOn()) echo ' checked'; ?>>
+                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, $key == Settings::SETTINGS_USER_NOTIFY_MENTIONED, 'core')->isOn()) echo ' checked'; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
                                     </td>
                                     <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_cell')->trigger(compact('key')); ?>
                                 <?php endif; ?>
@@ -528,9 +528,9 @@
                     </table>
                     <table class="padded_table desktop-notifications-settings" cellpadding=0 cellspacing=0>
                         <tr>
-                            <td><label for="profile_enable_desktop_notifications_new_tab"><?= __('Open desktop notifications in new tab'); ?></label></td>
                             <td>
-                                <input type="checkbox" name="enable_desktop_notifications_new_tab" value="1" id="profile_enable_desktop_notifications_new_tab"<?php if ($tbg_user->isDesktopNotificationsNewTabEnabled()): ?> checked<?php endif; ?>>
+                                <input type="checkbox" class="fancycheckbox" name="enable_desktop_notifications_new_tab" value="1" id="profile_enable_desktop_notifications_new_tab"<?php if ($tbg_user->isDesktopNotificationsNewTabEnabled()): ?> checked<?php endif; ?>>
+                                <label for="profile_enable_desktop_notifications_new_tab"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Open desktop notifications in new tab'); ?></label>
                             </td>
                         </tr>
                         <tr>
