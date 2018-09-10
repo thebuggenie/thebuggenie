@@ -10,16 +10,14 @@
             <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_enable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'enable');return false;"<?php if ($scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_enable"><?php echo __('Enable issue type for this scheme'); ?></a>
             <a href="#" onclick="TBG.Config.Issuetype.toggleForScheme('<?php echo make_url('configure_issuetypes_disable_issuetype_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>, <?php echo $scheme->getID(); ?>, 'disable');return false;"<?php if (!$scheme->isSchemeAssociatedWithIssuetype($type)): ?> style="display: none;"<?php endif; ?> class="issuetype_scheme_associate_link" id="type_toggle_<?php echo $type->getID(); ?>_disable"><?php echo __('Disable issue type for this scheme'); ?></a>
         <?php endif; ?>
-        <?php if (!isset($scheme)): ?>
-            <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
-            <div class="button-group" style="margin-top: -3px; float: right;">
-                <a class="button button-silver" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();"><?php echo fa_image_tag('edit'); ?></a>
-                <?php if (isset($scheme)): ?>
-                    <a class="button button-icon button-silver" title="<?php echo __('Show / edit available choices'); ?>" href="javascript:void(0);" onclick="TBG.Config.Issuetype.showOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" class="image"><?php echo image_tag('action_dropdown_small.png'); ?></a>
-                <?php endif; ?>
-                <button class="button button-silver destroy-link" title="<?php echo __('Remove issuetype'); ?>" onclick="<?php if (!$type->isAssociatedWithAnySchemes()): ?>TBG.Main.Helpers.Dialog.show('<?php echo __('Delete this issue type?'); ?>', '<?php echo __('Do you really want to delete this issue type? Issues with this issue type will be unavailable.').'<br><b>'.__('This action cannot be reverted').'</b>'; ?>', {yes: {click: function() {TBG.Config.Issuetype.remove('<?php echo make_url('configure_issuetypes_delete', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});<?php else: ?>TBG.Main.Helpers.Message.error('<?php echo __('Cannot remove this issue type'); ?>', '<?php echo __('Issue types associated with an issue type scheme cannot be removed'); ?>');<?php endif; ?>"><?php echo fa_image_tag('times'); ?></button>
-            </div>
-        <?php endif; ?>
+        <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
+        <div class="button-group" style="margin-top: -3px; float: right;">
+            <a class="button button-silver" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();"><?php echo fa_image_tag('penci'); ?></a>
+            <?php if (isset($scheme)): ?>
+                <a class="button button-icon button-silver" title="<?php echo __('Show / edit available choices'); ?>" href="javascript:void(0);" onclick="TBG.Config.Issuetype.showOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" class="image"><?php echo fa_image_tag('check-square-o'); ?></a>
+            <?php endif; ?>
+            <button class="button button-silver destroy-link" title="<?php echo __('Remove issuetype'); ?>" onclick="<?php if (!$type->isAssociatedWithAnySchemes()): ?>TBG.Main.Helpers.Dialog.show('<?php echo __('Delete this issue type?'); ?>', '<?php echo __('Do you really want to delete this issue type? Issues with this issue type will be unavailable.').'<br><b>'.__('This action cannot be reverted').'</b>'; ?>', {yes: {click: function() {TBG.Config.Issuetype.remove('<?php echo make_url('configure_issuetypes_delete', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});<?php else: ?>TBG.Main.Helpers.Message.error('<?php echo __('Cannot remove this issue type'); ?>', '<?php echo __('Issue types associated with an issue type scheme cannot be removed'); ?>');<?php endif; ?>"><?php echo fa_image_tag('times'); ?></button>
+        </div>
     </div>
     <?php if (!isset($scheme)): ?>
         <div id="issuetype_<?php echo $type->getID(); ?>_info" class="issuetype_description">
@@ -79,14 +77,10 @@
                     </tr>
                 <?php endif; ?>
             </table>
-            <?php if (!isset($scheme)): ?>
-                <input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
-                <?php echo __('%update_details or %cancel', array('%update_details' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
-            <?php endif; ?>
+            <input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
+            <?php echo __('%update_details or %cancel', array('%update_details' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
         </div>
-    <?php if (!isset($scheme)): ?>
-        </form>
-        <?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_issuetype_' . $type->getID() . '_indicator')); ?>
-    <?php endif; ?>
+    </form>
+    <?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_issuetype_' . $type->getID() . '_indicator')); ?>
     <div class="content" id="issuetype_<?php echo $type->getID(); ?>_content" style="display: none;"> </div>
 </div>
