@@ -188,6 +188,17 @@
         {
             $this->access_level = ($this->getUser()->canEditProjectDetails(framework\Context::getCurrentProject())) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
             $this->section = isset($this->section) ? $this->section : 'info';
+            $this->roles = entities\Role::getAll();
+            $assignee = $this->getUser();
+            $this->assignee_name = $assignee->getRealname();
+            if ($this->assignee_type && $this->assignee_id) {
+                if ($this->assignee_type == 'team') {
+                    $assignee = tables\Teams::getTable()->selectById($this->assignee_id);
+                    $this->assignee_name = $assignee->getName();
+                }
+            }
+            $this->assignee_type = ($assignee instanceof entities\User) ? 'user' : 'team';
+            $this->assignee_id = $assignee->getID();
         }
 
         public function componentProjectConfig()

@@ -11,8 +11,8 @@ use thebuggenie\core\framework;
             <?php if ($tbg_user->isAuthenticated()): ?>
                 <li class="right">
                     <?= link_tag(make_url('configure_projects'), fa_image_tag('cog'), ['class' => 'button-icon']); ?>
-                    <?php if ($tbg_user->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable()): ?>
-                        <button class="button button-silver project-quick-edit" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', ['key' => 'project_config']); ?>');"><?= __('Create project'); ?></button>
+                    <?php if ($list_mode !== 'client' && $tbg_user->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable()): ?>
+                        <button class="button button-silver project-quick-edit" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', $partial_options); ?>');"><?= __('Create project'); ?></button>
                     <?php endif; ?>
                 </li>
             <?php endif; ?>

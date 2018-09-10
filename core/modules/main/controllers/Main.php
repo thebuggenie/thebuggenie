@@ -3762,6 +3762,8 @@ class Main extends framework\Action
                         $project = new entities\Project();
                         framework\Context::setCurrentProject($project);
                     }
+                    $options['assignee_type'] = $request['assignee_type'];
+                    $options['assignee_id'] = $request['assignee_id'];
                     $options['project'] = $project;
                     $options['section'] = $request->getParameter('section', 'info');
                     if ($request->hasParameter('edition_id'))

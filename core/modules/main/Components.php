@@ -708,15 +708,19 @@
         public function componentProjectList()
         {
             $url_options = ['project_state' => 'active', 'list_mode' => $this->list_mode];
+            $partial_options = ['key' => 'project_config'];
 
             if ($this->list_mode == 'team') {
                 $url_options['team_id'] = $this->team_id;
+                $partial_options['assignee_type'] = 'team';
+                $partial_options['assignee_id'] = $this->team_id;
             } elseif ($this->list_mode == 'client') {
                 $url_options['client_id'] = $this->client_id;
             }
 
             $this->active_url = $this->getRouting()->generate('project_list', $url_options);
             $url_options['project_state'] = 'archived';
+            $this->partial_options = $partial_options;
             $this->archived_url = $this->getRouting()->generate('project_list', $url_options);
             $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
         }

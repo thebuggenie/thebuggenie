@@ -1132,11 +1132,23 @@ class Main extends helpers\ProjectActions
             if ($request->hasParameter('time_units'))
                 $this->selected_project->setTimeUnits($request['time_units']);
 
+            if ($request->hasParameter('mark_as_owner'))
+                $this->selected_project->setOwner($this->getUser());
+
             $apply_template = (!$this->selected_project->getID());
 
             try {
-                $this->selected_project->setOwner($this->getUser());
                 $this->selected_project->save();
+
+                if ($request->hasParameter('assignee_id')) {
+                    $assignee = ($request['assignee_type'] == 'user') ? tables\Users::getTable()->selectById($request['assignee_id']) : tables\Teams::getTable()->selectById($request['assignee_id']);
+                    if ($request->hasParameter('role_id') && $request['role_id']) {
+                        $assignee_role = new entities\Role($request['role_id']);
+                        $this->selected_project->addAssignee($assignee, $assignee_role);
+                    }
+                }
+
+
                 if ($apply_template) {
                     $this->selected_project->applyTemplate($request['project_type']);
                     $this->selected_project->save();
