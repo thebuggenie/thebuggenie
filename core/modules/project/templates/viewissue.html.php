@@ -20,13 +20,13 @@
             <table cellpadding=0 cellspacing=0 class="title_area">
                 <tr>
                     <td class="issue_navigation" id="go_previous_open_issue">
-                        <?php echo link_tag(make_url('previousopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_open_issue.png'), array('class' => 'image')); ?>
+                        <?php echo link_tag(make_url('previousopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), fa_image_tag('angle-double-left'), array('class' => 'image')); ?>
                         <div class="tooltip from-above leftie">
                             <?php echo __('Go to the previous open issue'); ?>
                         </div>
                     </td>
                     <td class="issue_navigation" id="go_previous_issue">
-                        <?php echo link_tag(make_url('previousissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_issue.png'), array('class' => 'image')); ?>
+                        <?php echo link_tag(make_url('previousissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), fa_image_tag('angle-left')); ?>
                         <div class="tooltip from-above leftie">
                             <?php echo __('Go to the previous issue (open or closed)'); ?>
                         </div>
@@ -89,7 +89,7 @@
                                     <td id="vote_down">
                                         <?php $vote_down_options = ($issue->getProject()->isArchived() || $issue->hasUserVoted($tbg_user, false)) ? 'display: none;' : ''; ?>
                                         <?php $vote_down_faded_options = ($vote_down_options == '') ? 'display: none;' : ''; ?>
-                                        <?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "TBG.Issues.voteDown('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
+                                        <?php echo javascript_link_tag(fa_image_tag('minus'), array('onclick' => "TBG.Issues.voteDown('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
                                         <?php echo image_tag('spinning_16.gif', array('id' => 'vote_down_indicator', 'style' => 'display: none;')); ?>
                                         <?php echo image_tag('action_vote_minus_faded.png', array('id' => 'vote_down_faded', 'style' => $vote_down_faded_options)); ?>
                                     </td>
@@ -100,7 +100,7 @@
                                     <td id="vote_up">
                                         <?php $vote_up_options = ($issue->getProject()->isArchived() || $issue->hasUserVoted($tbg_user, true)) ? 'display: none;' : ''; ?>
                                         <?php $vote_up_faded_options = ($vote_up_options == '') ? 'display: none;' : ''; ?>
-                                        <?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "TBG.Issues.voteUp('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
+                                        <?php echo javascript_link_tag(fa_image_tag('plus'), array('onclick' => "TBG.Issues.voteUp('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
                                         <?php echo image_tag('spinning_16.gif', array('id' => 'vote_up_indicator', 'style' => 'display: none;')); ?>
                                         <?php echo image_tag('action_vote_plus_faded.png', array('id' => 'vote_up_faded', 'style' => $vote_up_faded_options)); ?>
                                     </td>
@@ -115,13 +115,13 @@
                         </div>
                     </td>
                     <td class="issue_navigation" id="go_next_issue">
-                        <?php echo link_tag(make_url('nextissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_issue.png'), array('class' => 'image')); ?>
+                        <?php echo link_tag(make_url('nextissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), fa_image_tag('angle-right'), array('class' => 'image')); ?>
                         <div class="tooltip from-above rightie">
                             <?php echo __('Go to the next issue (open or closed)'); ?>
                         </div>
                     </td>
                     <td class="issue_navigation" id="go_next_open_issue">
-                        <?php echo link_tag(make_url('nextopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_open_issue.png'), array('class' => 'image')); ?>
+                        <?php echo link_tag(make_url('nextopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), fa_image_tag('angle-double-right'), array('class' => 'image')); ?>
                         <div class="tooltip from-above rightie">
                             <?php echo __('Go to the next open issue'); ?>
                         </div>
