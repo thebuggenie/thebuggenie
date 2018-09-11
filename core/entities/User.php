@@ -2205,7 +2205,7 @@
          */
         public function canViewComments()
         {
-            return $this->_dualPermissionsCheck('canviewcomments', 0, 'canpostandeditcomments', 0, framework\Settings::isPermissive());
+            return $this->_dualPermissionsCheck('canviewcomments', 0, 'canpostseeandeditallcomments', 0, framework\Settings::isPermissive());
         }
 
         /**
@@ -2215,7 +2215,7 @@
          */
         public function canPostComments()
         {
-            return $this->_dualPermissionsCheck('canpostcomments', 0, 'canpostandeditcomments', 0, framework\Settings::isPermissive());
+            return $this->_dualPermissionsCheck('canpostcomments', 0, 'canpostseeandeditallcomments', 0, framework\Settings::isPermissive());
         }
 
         /**
