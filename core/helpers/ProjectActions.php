@@ -3,7 +3,8 @@
     namespace thebuggenie\core\helpers;
 
     use thebuggenie\core\framework,
-        thebuggenie\core\entities;
+        thebuggenie\core\entities,
+        thebuggenie\core\entities\tables;
 
     /**
      * actions for the project module
