@@ -12,7 +12,7 @@
         <?php endif; ?>
         <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
         <div class="button-group" style="margin-top: -3px; float: right;">
-            <a class="button button-silver" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();"><?php echo fa_image_tag('penci'); ?></a>
+            <a class="button button-silver" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();"><?php echo fa_image_tag('pencil'); ?></a>
             <?php if (isset($scheme)): ?>
                 <a class="button button-icon button-silver" title="<?php echo __('Show / edit available choices'); ?>" href="javascript:void(0);" onclick="TBG.Config.Issuetype.showOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" class="image"><?php echo fa_image_tag('check-square-o'); ?></a>
             <?php endif; ?>

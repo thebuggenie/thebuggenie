@@ -1263,12 +1263,6 @@ footer img {
     display: block;
 }
 
-.login_formlist input[type=checkbox] {
-    display: inline;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
 .login_formlist label.login_fieldlabel {
     clear: none;
     display: inline-block;
@@ -8771,6 +8765,13 @@ dl.info {
 .fancycheckbox:checked + label {
     color: #585;
 }
+.fancycheckbox:disabled + label {
+    color: #DDD;
+}
+.fancycheckbox:focus + label {
+    color: #558;
+    box-shadow: 0 0 3px rgba(150, 150, 210, 1);
+}
 .fancycheckbox + label .fa.unchecked,
 .fancycheckbox:checked + label .fa.checked {
     display: inline-block;
@@ -15912,10 +15913,6 @@ form > .config_header {
 
 #mailnotification_settings_container input[type=radio] {
     margin-top: -2px;
-}
-
-#mailnotification_settings_container input[type=checkbox] {
-    width: auto !important;
 }
 
 #config_modules #submit_settings_button {

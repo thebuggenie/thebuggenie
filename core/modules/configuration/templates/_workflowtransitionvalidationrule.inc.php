@@ -50,8 +50,9 @@
                 <td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit" style="display: none; padding: 2px;">
                     <form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.update('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
                         <input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
+                        <input type="checkbox" class="fancycheckbox" onclick="var set_checked = $(this).checked; $(this).up('form').select('input[type=checkbox]').each(function (chk) { chk.checked = set_checked; } );">
                         <label>
-                            <input type="checkbox" onclick="var set_checked = $(this).checked; $(this).up('form').select('input[type=checkbox]').each(function (chk) { chk.checked = set_checked; } );">
+                            <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                             <?php if ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
                                 <?php echo __('Status must be any of these values'); ?>
                             <?php elseif ($rule->getRule() == \thebuggenie\core\entities\WorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
@@ -71,8 +72,10 @@
                             <?php endif; ?>
                         </label>
                         <?php foreach ($rule->getRuleOptions() as $option): ?>
-                            <br><input type="checkbox" style="margin-left: 25px;" name="rule_value[<?php echo $option->getID(); ?>]" value="<?php echo $option->getID(); ?>"<?php if ($rule->isValueValid($option->getID())) echo ' checked'; ?> id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>">
-                            <label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>" style="font-weight: normal;">
+                            <br>
+                            <input type="checkbox" class="fancycheckbox" name="rule_value[<?php echo $option->getID(); ?>]" value="<?php echo $option->getID(); ?>"<?php if ($rule->isValueValid($option->getID())) echo ' checked'; ?> id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>">
+                            <label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input_<?php echo $option->getID(); ?>">
+                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
                                 <?php if ($option instanceof \thebuggenie\core\entities\User): ?>
                                     <?php echo $option->getNameWithUsername(); ?>
                                 <?php elseif ($option instanceof \thebuggenie\core\entities\Milestone || $option instanceof \thebuggenie\core\entities\Build || $option instanceof \thebuggenie\core\entities\Component): ?>
