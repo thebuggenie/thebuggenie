@@ -61,12 +61,14 @@
                 ]
             ); ?>
         <?php endif; ?>
-        <div class="todo-comment-author">
-            <span><?php echo __('from comment %comment_number by %user',
-                [
-                    '%comment_number' => link_tag("#comment_{$comment->getID()}", '#' . $comment->getCommentNumber()),
-                    '%user' => get_component_html('main/userdropdown', ['user' => $comment->getPostedBy(), 'size' => 'small'])
-                ]); ?></span>
-        </div>
+        <?php if (isset($comment)): ?>
+            <div class="todo-comment-author">
+                <span><?php echo __('from comment %comment_number by %user',
+                    [
+                        '%comment_number' => link_tag("#comment_{$comment->getID()}", '#' . $comment->getCommentNumber()),
+                        '%user' => get_component_html('main/userdropdown', ['user' => $comment->getPostedBy(), 'size' => 'small'])
+                    ]); ?></span>
+            </div>
+        <?php endif; ?>
     </div>
 </li>
