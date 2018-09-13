@@ -2958,7 +2958,7 @@
         {
             if ($custom)
             {
-                return (bool) ($this->permissionCheck('caneditcustomfields'.$field) || $this->permissionCheck('caneditissuecustomfields'));
+                return (bool) ($this->permissionCheck('caneditissuecustomfields'.$field) || $this->permissionCheck('caneditissuecustomfields'));
             }
             elseif (in_array($field, array('title', 'shortname', 'description', 'reproduction_steps')))
             {

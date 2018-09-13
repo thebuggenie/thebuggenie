@@ -69,7 +69,7 @@
         The Bug Genie is written using a flexible, module-based architecture, that lets you easily add extra functionality. Even core functionality such as version control integration, email communication and the agile sections are provided using modules, and can be enabled / disabled from the configuration panel.<br>
         <br>
         <div class="feature">
-            Find additional modules online, at <a href="http://thebuggenie.com/add-ons">www.thebuggenie.com &raquo; Addons</a><br>
+            Find additional modules online, at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
         </div>
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and set up the default user and default modules</label>

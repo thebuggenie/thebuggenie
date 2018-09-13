@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,500,500i,700,700i|Source+Sans+Pro:300,300i,400,400i,600,6002,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,500,500i,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
 
 /* General styles */
 body, td, th {
@@ -1696,6 +1696,10 @@ footer img {
 .todo_editor .typeahead.dropdown-menu {
     overflow-y: scroll;
     max-height: 100px;
+}
+
+.comment.commit {
+    margin-bottom: 0;
 }
 
 .commit_header {
@@ -14493,142 +14497,6 @@ span.config_explanation > span.tooltip.from-above.leftie {
     margin-bottom: 10px;
 }
 
-#permissions_team_configurator_tabs_panes ul,
-div[id^='permissions_user_'][id$='_tabs_panes'] ul,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul {
-    margin: 5px;
-}
-
-#permissions_team_configurator_tabs_panes ul > li,
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li {
-    padding-left: 5px;
-    padding-right: 5px;
-    line-height: 20px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li {
-    line-height: 24px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li a,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li a {
-    padding: 0;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul {
-    margin-left: 12px;
-    width: 698px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li > ul,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li > ul {
-    margin-left: 12px;
-    width: 748px !important;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul > li {
-    padding-left: 5px;
-    padding-right: 5px;
-    line-height: 18px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li > ul > li,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li > ul > li {
-    padding-left: 5px;
-    padding-right: 5px;
-    line-height: 24px;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul > li > ul {
-    width: 681px;
-    margin-left: 12px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li > ul > li > ul,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li > ul > li > ul {
-    width: 731px !important;
-    margin-left: 12px;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul > li > ul > li {
-    padding-left: 5px;
-    padding-right: 5px;
-    line-height: 18px;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul > li > ul > li > ul {
-    width: 664px;
-    font-size: 12px;
-    margin-left: 12px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] ul > li > ul > li > ul > li > ul,
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] ul > li > ul > li > ul > li > ul {
-    width: 714px !important;
-    font-size: 12px;
-    margin-left: 12px;
-}
-
-#permissions_team_configurator_tabs_panes ul > li > ul > li > ul > li > ul > li {
-    padding-left: 5px;
-    padding-right: 5px;
-    line-height: 18px;
-}
-
-img[id^='team_configurator'][id$='_details_indicator'] {
-    margin-top: 6px;
-    margin-left: 15px;
-}
-
-img[id^='permissions_'][id$='_indicator'] {
-    float: right;
-    margin-top: 0;
-    margin-right: 21px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-div[id^='permissions_user_'][id$='_tabs_panes'] img[id^='permissions_'][id$='_indicator'],
-div[id^='team_'][id$='_permissions'] div[id^='permissions_team_'][id$='_tabs_panes'] img[id^='permissions_'][id$='_indicator'] {
-    float: right;
-    margin-top: 0;
-    margin-bottom: 5px;
-    margin-right: 1px;
-    padding-top: 4px;
-    padding-bottom: 2px;
-}
-
-div[id^='user_'][id$='_tab_projects_pane'] ul > li > a > img,
-div[id^='team_'][id$='_permissions'] div[id^='team_'][id$='_tab_projects_pane'] ul > li > a > img {
-    margin-top: 6px !important;
-}
-
-div[id^='user_'][id$='_tab_modules_pane'] ul > li > a > img,
-div[id^='team_'][id$='_permissions'] div[id^='team_'][id$='_tab_modules_pane'] ul > li > a > img {
-    margin-top: 6px !important;
-}
-
-#team_configurator_tab_projects_pane > ul > li > a > img {
-    margin-top: 4px !important;
-}
-
-div[id^='team_'][id$='_tab_projects_pane'] img[id$='_details_indicator'] {
-    position: absolute;
-    margin-left: -45px !important;
-    margin-top: -25px;
-}
-
-#team_configurator_tab_projects_pane img[id^='configuratorproject_'][id$='_details_indicator'] {
-    position: inherit;
-    margin-left: 16px !important;
-    margin-top: 3px !important;
-}
-
-img[id^='team_'][id$='_permissions_indicator'] {
-    margin-top: 10px;
-}
 
 /* Configure roles */
 
@@ -14646,30 +14514,6 @@ img[id^='team_'][id$='_permissions_indicator'] {
 #global_roles_list input[type=submit] {
     padding: 3px 14px;
     margin-top: 10px;
-}
-
-img[id^='role_'][id$='_form_indicator'] {
-    margin-top: 14px;
-}
-
-form[id^='role_'][id$='_form'] ul li:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-form[id^='role_'][id$='_form'] ul li a:hover {
-    border-bottom: none;
-}
-
-/* Backdrop -> Permission details */
-
-span[id^='permissions_'] a {
-    display: block;
-    margin-top: 3px;
-}
-
-img[id^='permissions_'][id$='_indicator'] {
-    margin-top: 1px;
-    margin-bottom: 2px;
 }
 
 /* Configure projects */
@@ -14715,18 +14559,6 @@ img[id^='permissions_'][id$='_indicator'] {
 
 #project_add_indicator {
     float: left;
-}
-
-button[id^='project_'][id$='_more_actions'] {
-    padding: 3px 14px;
-    margin-top: -4px;
-    margin-right: -5px;
-}
-
-ul[id^='project_'][id$='_more_actions_dropdown'] {
-    top: 21px !important;
-    width: auto !important;
-    margin-right: -5px;
 }
 
 /* Backdrop -> Update header icon and favicon */
@@ -14777,21 +14609,6 @@ ul[id^='project_'][id$='_more_actions_dropdown'] {
 
 /* Backdrop -> Edit project permissions */
 
-div[id^='project'][id$='_settings_roles'] .content.faded_out {
-    padding-left: 5px;
-    width: 780px !important;
-}
-
-div[id^='project'][id$='_settings_roles'] h4 {
-    padding-left: 5px;
-    width: 780px !important;
-}
-
-div[id^='project'][id$='_settings_roles'] .project_roles_list {
-    padding-left: 5px;
-    width: 780px !important;
-}
-
 #global_roles_list .greybox,
 .project_roles_list .greybox {
     padding: 6px 10px !important;
@@ -14830,67 +14647,8 @@ div[id^='project'][id$='_settings_roles'] .project_roles_list {
     margin-left: -23px;
 }
 
-div[id^='project'][id$='_settings_advanced_permissions'] h3,
-div[id^='project'][id$='_settings_advanced_permissions'] .content.faded_out {
-    margin: 0 5px;
-    width: auto;
-}
-
-div[id^='project'][id$='_settings_advanced_permissions'] .content.faded_out {
-    margin-top: 5px;
-}
-
-div[id^='new_project'][id$='role'] {
-    top: 15px;
-    right: auto !important;
-    left: 15px;
-}
-
 .project_save_container ul {
     margin-top: -1px !important;
-}
-
-form[id^='new_project'][id$='role_form'] > label {
-    margin-top: 1px;
-    display: block;
-    float: left;
-    margin-right: 5px;
-}
-
-form[id^='new_project'][id$='role_form'] > input[type=text] {
-    width: 260px !important;
-}
-
-ul[id^='project_permission_details_'] {
-    width: auto;
-    padding: 0 5px;
-}
-
-ul[id^='project_permission_details_'] > li {
-    line-height: 27px;
-    padding: 0 5px;
-}
-
-ul[id^='project_permission_details_'] > li a {
-    padding: 0;
-}
-
-ul[id^='project_permission_details_'] > li > ul {
-    width: 762px;
-    margin: 0 0 0 13px;
-}
-
-ul[id^='project_permission_details_'] > li > ul > li {
-    padding: 0 5px;
-}
-
-ul[id^='project_permission_details_'] > li > ul > li > ul {
-    width: 745px;
-    margin: 0 0 0 12px;
-}
-
-ul[id^='project_permission_details_'] > li > ul > li > ul > li {
-    padding: 0 5px;
 }
 
 /* Configure uploads & attachments */
@@ -14955,17 +14713,6 @@ ul[id^='project_permission_details_'] > li > ul > li > ul > li {
     margin-top: 5px;
 }
 
-form[id^='edit_issuetype_'][id$='_form'] > div {
-    font-size: 13px !important;
-    text-align: right;
-}
-
-img[id^='edit_issuetype_'][id$='_indicator'] {
-    float: right;
-    margin-top: -35px;
-    margin-right: 180px;
-}
-
 #issuetypes_list .button-group > a:first-child {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -14975,41 +14722,7 @@ img[id^='edit_issuetype_'][id$='_indicator'] {
     padding-bottom: 10px;
 }
 
-form[id^='edit_issuetype_'][id$='_form'] > div {
-    margin: 15px 0 0 0 !important;
-    padding: 10px;
-}
-
-form[id^='edit_issuetype_'][id$='_form'] input[type=submit] {
-    padding: 4px 6px;
-    font-weight: 300 !important;
-}
-
-#issuetypes_list div[id^='issuetype_'][id$='_box'] .button-group {
-    margin-top: 0 !important;
-    margin-right: 0;
-    margin-bottom: 5px;
-}
-
 /* Configure issue types -> Issue type schemes & Configure workflows */
-
-.issuetype_scheme_list div[id^='issuetype_'][id$='_box'] .button-group {
-    margin-top: -6px !important;
-    margin-right: -1px;
-    margin-bottom: 5px;
-}
-
-div[id^='issuetype_'][id$='_box'] .button-group > a,
-div[id^='issuetype_'][id$='_box'] .button-group > button,
-div[id^='issuetype_'][id$='_box'] .button-group > a:hover,
-div[id^='issuetype_'][id$='_box'] .button-group > button:hover {
-    padding: 6px 8px;
-}
-
-div[id^='issuetype_'][id$='_box'] .button-group > a {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;;
-}
 
 #issuetype_schemes_list .rounded_box.white.shadowed,
 #workflow_schemes_list .rounded_box.white.shadowed,
@@ -15019,27 +14732,6 @@ div[id^='issuetype_'][id$='_box'] .button-group > a {
 
 #issuetype_schemes_list .rounded_box.white.shadowed .content {
     padding: 0 0 5px 0 !important;
-}
-
-img[id^='issuetype_'][id$='_indicator'] {
-    position: absolute;
-    margin-left: 382px !important;
-}
-
-img[id^='copy_issuetype_scheme_'][id$='_indicator'],
-img[id^='delete_issuetype_scheme_'][id$='_indicator'] {
-    margin-top: 5px;
-    position: absolute;
-    margin-left: -23px;
-}
-
-.issuetype_scheme_list img[id^='edit_issuetype_'][id$='_indicator'] {
-    margin-top: -28px !important;
-}
-
-span[id^='update_'][id$='_choices_indicator'] {
-    margin-right: 5px !important;
-    margin-top: 2px;
 }
 
 #issuetype_schemes_list .rounded_box.white.shadowed .header,
@@ -15117,39 +14809,6 @@ span[id^='update_'][id$='_choices_indicator'] {
     margin-right: 5px;
 }
 
-form[id^='edit_custom_type_'][id$='_form'] input[type=submit] {
-    padding: 4px 6px !important;
-    font-weight: 300 !important;
-}
-
-img[id^='edit_custom_type_'][id$='_indicator'] {
-    position: absolute;
-    margin-top: 2px;
-    margin-left: 12px !important;
-}
-
-#config_issuefields img[id^='add_'][id$='_indicator'] {
-    margin-top: 5px;
-    margin-left: 3px;
-    position: absolute;
-}
-
-#config_issuefields img[id^='edit_status_'][id$='_indicator'] {
-    position: absolute;
-    margin-left: -25px;
-    margin-top: 4px;
-}
-
-#custom_types_list > div[id^='item_'] > img[id$='_indicator'] {
-    margin-right: 64px;
-    margin-top: 18px;
-}
-
-#add_custom_type_indicator {
-    margin-left: -29px !important;
-    margin-top: -20px !important;
-}
-
 #new_custom_field_type {
     width: 350px !important;
 }
@@ -15218,47 +14877,16 @@ img[id^='edit_custom_type_'][id$='_indicator'] {
     display: none;
 }
 
-form[id^='delete_workflow_'][id$='_form'] input[type=submit] {
-    padding: 3px 11px;
-}
-
-img[id^='delete_workflow_'][id$='_indicator'],
-img[id^='copy_workflow_'][id$='_indicator'] {
-    margin-top: 4px;
-    position: absolute;
-    margin-left: -26px;
-}
-
-#workflow_steps_container > .rounded_box.shadowed.white,
-#workflow_steps_list div[id^='step_'][id$='_delete'],
-div[id^='step_'][id$='_transition_add'] {
+#workflow_steps_container > .rounded_box.shadowed.white {
     box-sizing: border-box;
     padding: 10px !important;
 }
 
-#workflow_steps_list div[id^='step_'][id$='_delete'],
-div[id^='step_'][id$='_transition_add'] {
-    margin-left: 3px !important;
-    z-index: 1;
-}
-
-#workflow_steps_container > .rounded_box.shadowed.white > .header,
-#workflow_steps_list div[id^='step_'][id$='_delete'] > .header,
-div[id^='step_'][id$='_transition_add'] .header {
+#workflow_steps_container > .rounded_box.shadowed.white > .header {
     margin-bottom: 10px;
 }
 
-div[id^='step_'][id$='_transition_add'] .content input[type=radio] {
-    margin-top: -3px;
-}
-
-div[id^='step_'][id$='_transition_add'] .content > form > div {
-    text-align: right !important;
-}
-
-#workflow_steps_container > .rounded_box.shadowed.white input[type=submit],
-#workflow_steps_list div[id^='step_'][id$='_delete'] input[type=submit],
-div[id^='step_'][id$='_transition_add'] input[type=submit] {
+#workflow_steps_container > .rounded_box.shadowed.white input[type=submit] {
     padding: 3px 11px;
 }
 
@@ -15271,22 +14899,12 @@ div[id^='step_'][id$='_transition_add'] input[type=submit] {
     width: 430px;
 }
 
-#workflow_steps_list div[id^='step_'][id$='_transition_add'] dl > dt {
-    text-align: left;
-}
-
-#workflow_steps_list div[id^='step_'][id$='_transition_add'] dl > dd {
-    margin-bottom: 5px;
-}
-
-#step_update_indicator,
-div[id^='step_'][id$='_delete_indicator'] {
+#step_update_indicator {
     margin-top: 15px !important;
     padding: 0 !important;
 }
 
-#step_update_indicator img,
-div[id^='step_'][id$='_delete_indicator'] img {
+#step_update_indicator img {
     margin-left: 5px;
 }
 
@@ -15326,67 +14944,20 @@ div[id^='step_'][id$='_delete_indicator'] img {
     margin-left: -26px;
 }
 
-tr[id^='workflowtransitionvalidationrule_'],
 #workflowtransitionactions_list tr {
     height: 31px;
 }
 
-tr[id^='workflowtransitionvalidationrule_'] > td:first-child,
 #workflowtransitionactions_list tr > td:first-child {
     padding: 0 5px !important;
 }
 
-tr[id^='workflowtransitionvalidationrule_'] > td:last-child,
 #workflowtransitionactions_list tr > td:last-child {
     padding: 0 5px !important;
 }
 
-tr[id^='workflowtransitionvalidationrule_'] button,
 #workflowtransitionactions_list tr button {
     margin-top: 5px;
-}
-
-tr[id^='workflowtransitionvalidationrule_'] td,
-tr[id^='workflowtransitionaction_'] td {
-    vertical-align: top;
-}
-
-td[id^='workflowtransitionvalidationrule_'][id$='_description'],
-td[id^='workflowtransitionaction_'][id$='_description'] {
-    vertical-align: middle;
-}
-
-button[id^='workflowtransitionvalidationrule_'][id$='_cancel_button'] {
-    margin-top: 5px;
-}
-
-form[id^='workflowtransitionvalidationrule_'][id$='_form'],
-form[id^='workflowtransitionaction_'][id$='_form'] {
-    padding: 1px 0;
-}
-
-form[id^='workflowtransitionvalidationrule_'][id$='_form'] input[type=submit],
-form[id^='workflowtransitionaction_'][id$='_form'] input[type=submit] {
-    margin-right: -58px;
-    margin-top: 2px;
-}
-
-form[id^='workflowtransitionvalidationrule_'][id$='_form'] > br,
-form[id^='workflowtransitionaction_'][id$='_form'] > br {
-    display: block;
-    content: "";
-    margin-top: 5px;
-}
-
-form[id^='workflowtransitionvalidationrule_'][id$='_form'] input[type=checkbox],
-form[id^='workflowtransitionaction_'][id$='_form'] input[type=checkbox] {
-    margin-top: -2px;
-}
-
-img[id^='workflowtransitionvalidationrule_'][id$='_indicator'],
-img[id^='workflowtransitionaction_'][id$='_indicator'] {
-    position: absolute;
-    margin-top: 2px;
 }
 
 .workflow_browser_step_transition a > img {
@@ -15418,10 +14989,6 @@ img[id^='workflowtransitionaction_'][id$='_indicator'] {
 
 #createuser_form_quick a {
     margin-top: 5px;
-}
-
-ul[id^='user_'][id$='_more_actions_dropdown'] {
-    width: auto !important;
 }
 
 #tab_users_pane img.userstate {
@@ -15524,31 +15091,6 @@ td > input[type=radio][name=enabled] {
     margin-top: -3px;
 }
 
-div[id^='edit_user_'] + input[type=submit] {
-    padding: 4px 12px;
-}
-
-div[id^='edit_user_'][id$='_indicator'] {
-    position: absolute;
-}
-
-/* Configure users, teams and clients -> Scopes available to this user */
-
-form[id^='edit_user_'][id$='_scopes_form'] input[type=checkbox] {
-    margin-top: 3px;
-}
-
-form[id^='edit_user_'][id$='_scopes_form'] input[type=submit] {
-    padding: 4px 12px;
-    margin-bottom: 5px;
-}
-
-img[id^='edit_user_'][id$='_scopes_form_indicator'] {
-    position: absolute;
-    right: 67px;
-    margin-top: 5px;
-}
-
 /* Configure users, teams and clients -> Teams & Clients & Groups */
 
 #create_team_form label {
@@ -15560,28 +15102,6 @@ img[id^='edit_user_'][id$='_scopes_form_indicator'] {
 #create_team_form input[type=submit] {
     padding: 3px 14px;
     margin-top: 0;
-}
-
-ul[id^='team_'][id$='_more_actions_dropdown'] {
-    width: auto !important;
-    margin-top: -2px !important;
-}
-
-div[id^='team_members_'][id$='_container'],
-div[id^='client_members_'][id$='_container'],
-div[id^='group_members_'][id$='_container'] {
-    margin: 0 5px 5px 5px;
-}
-
-div[id^='clone_team_'],
-div[id^='clone_group_'] {
-    margin: 5px 0 0 0 !important;
-    padding: 10px;
-}
-
-div[id^='clone_team_'] .dropdown_header,
-div[id^='clone_group_'] .dropdown_header {
-    padding: 2px 2px 7px 2px;
 }
 
 #teamconfig_list #add_team input[name=clone_permissions],
@@ -15630,17 +15150,6 @@ div[id^='clone_group_'] .dropdown_header {
     font-weight: 300 !important;
 }
 
-div[id^='team_members_'][id$='_no_users'],
-div[id^='client_members_'][id$='_no_users'] {
-    padding-left: 8px;
-}
-
-table[id^='clone_team_'][id$='_indicator'] {
-    position: absolute;
-    bottom: 10px;
-    left: 8px;
-}
-
 /* Configure users, teams and clients -> Clients */
 
 #add_client label:first-child {
@@ -15658,19 +15167,6 @@ table[id^='clone_team_'][id$='_indicator'] {
     margin-bottom: 5px;
 }
 
-div[id^='clientbox_'] > div > div > .more_actions_dropdown {
-    margin-top: -2px !important;
-    width: auto !important;
-}
-
-input[id^='edit_client_'][id$='_save_button'] {
-    padding: 4px 14px !important;
-}
-
-table[id^='edit_client_'][id$='_indicator'] img {
-    margin-right: 5px;
-}
-
 /* Configure users, teams and clients -> Groups */
 
 #create_group_form label {
@@ -15681,40 +15177,6 @@ table[id^='edit_client_'][id$='_indicator'] img {
 
 #create_group_form input[type=submit] {
     padding: 3px 14px;
-}
-
-button[id^='group_'][id$='_more_actions'] {
-    padding: 3px 11px;
-    margin-top: -4px;
-}
-
-input[id^='clone_group_'][id$='_permissions'] {
-    position: relative;
-    top: 11px;
-}
-
-#add_group label[for^='clone_group_'][for$='_permissions'] {
-    margin-left: 14px;
-    margin-top: -7px;
-}
-
-ul[id^='group_'][id$='_more_actions_dropdown'] {
-    margin-top: -2px !important;
-    width: auto !important;
-}
-
-div[id^='clone_group_'] .dropdown_content div:nth-child(2) {
-    font-size: 13px !important;
-}
-
-table[id^='clone_group_'][id$='_indicator'] {
-    position: absolute;
-    bottom: 10px;
-    left: 8px;
-}
-
-table[id^='clone_group_'][id$='_indicator'] img {
-    margin-right: 5px;
 }
 
 #groupconfig_list #add_group label:last-child {
@@ -15955,18 +15417,15 @@ form > .config_header {
     margin-left: -29px;
 }
 
-#project_settings #release_day,
-select[id^='edition_'][id$='_release_day'] {
+#project_settings #release_day {
     width: 50px !important;
 }
 
-#project_settings #release_month,
-select[id^='edition_'][id$='_release_month'] {
+#project_settings #release_month {
     width: 100px !important;
 }
 
-#project_settings #release_year,
-select[id^='edition_'][id$='_release_year'] {
+#project_settings #release_year {
     width: 65px !important;
 }
 
@@ -16091,29 +15550,11 @@ ul#edition_table > li > div.faded_out {
     padding: 2px 0;
 }
 
-ul[id^='edition_'][id$='_owned_by_change'],
-ul[id^='edition_'][id$='_lead_by_change'],
-ul[id^='edition_'][id$='_qa_by_change'] {
-    margin-top: 5px;
-    margin-right: 10px;
-    font-size: 14px;
-}
-
-ul[id^='comp_'][id$='_auto_assign_change'] {
-    margin-top: -73px;
-    margin-right: 7px;
-    font-size: 14px;
-}
-
 #owned_by_change .nohover, #lead_by_change .nohover, #qa_by_change .nohover {
     margin-left: 5px;
 }
 
-#owned_by_input, #lead_by_input, #qa_by_input,
-input[id^='edition_'][id$='_owned_by_input'],
-input[id^='edition_'][id$='_lead_by_input'],
-input[id^='edition_'][id$='_qa_by_input'],
-input[id^='comp_'][id$='_auto_assign_input'] {
+#owned_by_input, #lead_by_input, #qa_by_input {
     margin: 0 !important;
     padding: 3px !important;
 }
@@ -16126,11 +15567,7 @@ input[id^='comp_'][id$='_auto_assign_input'] {
 
 #owned_by_form input[type=submit],
 #lead_by_form input[type=submit],
-#qa_by_form input[type=submit],
-form[id^='edition_'][id$='_owned_by_form'] input[type=submit],
-form[id^='edition_'][id$='_lead_by_form'] input[type=submit],
-form[id^='edition_'][id$='_qa_by_form'] input[type=submit],
-form[id^='comp_'][id$='_auto_assign_form'] input[type=submit] {
+#qa_by_form input[type=submit] {
     padding: 3px;
     margin-left: 3px;
 }
@@ -16158,38 +15595,12 @@ form[id^='comp_'][id$='_auto_assign_form'] input[type=submit] {
 
 #owned_by_change_error,
 #lead_by_change_error,
-#qa_by_change_error,
-li[id^='edition_'][id$='_owned_by_change_error'],
-li[id^='edition_'][id$='_lead_by_change_error'],
-li[id^='edition_'][id$='_qa_by_change_error'],
-li[id^='comp_'][id$='_auto_assign_change_error'] {
+#qa_by_change_error {
     margin: 5px;
 }
 
 #component_table .component_name, #edition_table .edition_name {
     display: inline;
-}
-
-form[id^='edit_component_'][id$='_form'] input[type=submit] {
-    padding: 4px 18px;
-    float: right;
-    margin-bottom: 8px;
-}
-
-img[id^='component_'][id$='_indicator'] {
-    position: absolute;
-    right: 82px;
-    margin-top: 3px;
-}
-
-#find_dev_results div[id^='assign_team_'],
-#find_dev_results div[id^='assign_user_'] {
-    margin-bottom: 5px;
-}
-
-#find_dev_results div[id^='assign_team_'] button,
-#find_dev_results div[id^='assign_user_'] button {
-    padding: 3px 10px;
 }
 
 #no_project_team_users {
@@ -16198,26 +15609,6 @@ img[id^='component_'][id$='_indicator'] {
 
 #find_dev_results .faded_out {
     padding: 10px 2px 5px 2px !important;
-}
-
-#tab_permissions_pane > div[id^='project'][id$='_settings_roles'] > .content.faded_out {
-    width: auto !important;
-    padding: 0 15px;
-}
-
-#tab_permissions_pane > div[id^='project'][id$='_settings_roles'] > h4 {
-    width: auto !important;
-    padding: 10px 0 0 0;
-    margin-bottom: 10px;
-}
-
-#tab_permissions_pane > div[id^='project'][id$='_settings_roles'] > .project_roles_list {
-    width: auto !important;
-    padding: 0 15px;
-}
-
-#tab_permissions_pane form[id^='new_project'][id$='role_form'] > label {
-    margin-top: 3px;
 }
 
 #tab_permissions_pane > .permission_list > h3 {
@@ -16292,11 +15683,6 @@ img[id^='component_'][id$='_indicator'] {
 
 form#vcs div.config_explanation {
     padding-top: 8px !important;
-}
-
-img[id^='remove_assignee_user_'][id$='_indicator'],
-img[id^='remove_assignee_team_'][id$='_indicator'] {
-    margin-top: -7px;
 }
 
 #add_account_indicator {
@@ -16480,18 +15866,6 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     padding: 4px 7px;
 }
 
-/* Edit sprint details */
-
-#edit_milestone_container select[id^='starting_month_'],
-#edit_milestone_container select[id^='sch_month_'] {
-    width: 110px !important;
-}
-
-#edit_milestone_container select[id^='starting_day_'],
-#edit_milestone_container select[id^='sch_day_'] {
-    width: 50px !important;
-}
-
 /* Find related issues */
 
 #viewissue_add_relation_div input[type=submit] {
@@ -16521,40 +15895,6 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     position: absolute;
     right: 155px;
     margin-top: 3px;
-}
-
-/* Estimate this issue */
-
-form[id^='estimated_time_'][id$='_form'] input[id^='estimated_time_'][id$='_input'] {
-    padding: 4px !important;
-    margin-right: 3px;
-}
-
-form[id^='estimated_time_'][id$='_form'] > input[type=submit] {
-    padding: 3px;
-    margin-top: 4px;
-}
-
-form[id^='estimated_time_'][id$='_form'] table {
-    margin-left: -1px;
-}
-
-form[id^='estimated_time_'][id$='_form'] td {
-    text-align: center;
-}
-
-form[id^='estimated_time_'][id$='_form'] input[id^='estimated_time_'] {
-    margin-right: 1px;
-    margin-left: 1px;
-}
-
-form[id^='estimated_time_'][id$='_form'] input[name="estimated_time"] {
-    margin: 0;
-    width: 260px !important;
-}
-
-form[id^='estimated_time_'][id$='_form'] .form_controls input[type=submit] {
-    padding: 5px 17px;
 }
 
 /* Issue time tracking - time spent */
@@ -16591,92 +15931,14 @@ form[id^='estimated_time_'][id$='_form'] .form_controls input[type=submit] {
     margin-left: 2px;
 }
 
-form[id^='acl_'][id$='_publicform'] input[type=submit],
-form[id^='acl_'][id$='_restrictedform'] input[type=submit] {
-    padding: 4px 8px;
-}
-
 .issue_timespent_form .tooltip {
     transition-delay: 1s;
 }
 
 /* Issue access policy */
 
-div[id^='acl_'][id$='_restricted'] h4 {
-    margin-left: 4px;
-    font-weight: 500;
-}
-
 .issue_access_list > .faded_out {
     margin-left: -6px;
-}
-
-div[id^='acl_'][id$='_restricted'] > h4 > a {
-    padding: 2px 5px;
-}
-
-ul[id^='popup_find_acl_'].more_actions_dropdown {
-    font-size: 1.1em;
-    margin-top: -6px;
-    margin-right: 8px;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown {
-    font-size: 1.2em;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown {
-    margin-right: 15px;
-    margin-top: -7px;
-}
-
-ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input'] {
-    padding: 3px !important;
-    margin-left: 2px;
-    width: 235px !important;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'] input[id^='popup_find_acl_'][id$='_input'] {
-    padding: 2px !important;
-    font-size: 1em !important;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label {
-    padding: 6px !important;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown label[for=popup_find_acl__input] {
-    margin-left: -4px;
-}
-
-.report-issue-custom-access-check ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled,
-.issue_access_policy_box ul[id^='popup_find_acl_'].more_actions_dropdown > li.disabled {
-    font-size: 0.9em;
-    padding: 2px 8px;
-    color: #AAA;
-}
-
-ul[id^='popup_find_acl_'] input[type=submit] {
-    padding: 3px;
-    margin-left: 2px;
-}
-
-ul[id^='popup_find_acl_'] li[id^='popup_find_acl_'][id$='_change_error'] {
-    margin: 5px;
-}
-
-ul[id^='popup_find_acl_'][id$='_results'] > li {
-    margin: 0 5px;
-}
-
-ul[id^='popup_find_acl_'][id$='_results'] > li.nohover {
-    margin: 0;
-}
-
-ul[id^='popup_find_acl_'][id$='_results'] > li.disabled {
-    font-size: 0.9em;
-    padding: 2px 5px;
-    color: #AAA;
 }
 
 .issue_access_list {
@@ -16830,10 +16092,6 @@ ul#subscribers_list > li {
 
 .dashboard_view_content .project_client_info table {
     margin-top: 5px;
-}
-
-div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a {
-    font-size: 1em;
 }
 
 #dashboard_lefthand .userdropdown .user_dropdown .header {
@@ -17644,14 +16902,6 @@ li.header div.user_avatar {
     margin: -3px 0 0 5px;
 }
 
-#issue_details form[id^='estimated_time_'][id$='_form'] > input[id^='estimated_time_'][id$='_input'] {
-    width: 241px !important;
-}
-
-#issue_details form[id^='estimated_time_'][id$='_form'] > input[type=submit] {
-    margin-top: 0;
-}
-
 #issue_details .upload_details .filename {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -17753,51 +17003,6 @@ li.header div.user_avatar {
     margin-right: 5px;
 }
 
-li[id^='transition_popup_assignee_div_'] > a:first-of-type {
-    float: none !important;
-}
-
-li[id^='transition_popup_assignee_div_'] > a:first-of-type img {
-    margin: 0 !important;
-    position: relative;
-    top: 3px;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] {
-    top: 55px !important;
-    left: 160px !important;
-    width: 330px !important;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] > li > a {
-    font-size: 1em;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] > li.nohover > label {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] ul[id^='popup_assigned_to_'][id$='_results'] > li > a {
-    font-size: 1em;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] input[id^='popup_assigned_to_'][id$='_input'] {
-    padding: 5px !important;
-}
-
-div[id^='issue_transition_container_'] ul[id^='popup_assigned_to_change_'] input[type=submit] {
-    padding: 4px;
-    margin-left: 4px;
-}
-
-li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicator_'] img {
-    float: none !important;
-    margin-left: 130px !important;
-    margin-top: -23px;
-    position: absolute;
-}
-
 #issue_main #description_form_value_syntax_picker {
     margin-top: 22px;
 }
@@ -17859,9 +17064,7 @@ li[id^='transition_popup_assignee_div_'] div[id^='popup_assigned_to_name_indicat
     margin-top: 25px;
 }
 
-#issue_main #comment_bodybox_syntax_picker,
-ul[id^='comment_edit_'][id$='_bodybox_syntax_picker'],
-ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
+#issue_main #comment_bodybox_syntax_picker
 #issue_main #todo_bodybox_syntax_picker {
     margin-top: 22px;
 }
@@ -17886,13 +17089,6 @@ ul[id^='comment_reply_'][id$='_bodybox_syntax_picker']
 #issue_main .commentcontent .image_container.thumb img.image {
     max-width: 500px;
     width: initial;
-}
-
-#comment_add_indicator,
-div[id^='comment_edit_indicator_'],
-div[id^='comment_reply_indicator_'],
-#todo_add_indicator {
-    margin-top: 13px;
 }
 
 .typeahead.dropdown-menu {
@@ -18043,26 +17239,8 @@ div[id^='comment_reply_indicator_'],
 
 /* Agile */
 
-#edit_agileboard_form input[id^='agileboard_description_'] {
-    padding: 6px;
-}
-
 .milestone_basic_container .milestone_name {
     vertical-align: inherit;
-}
-
-#planning_container div[id^='milestone_'][id$='_header'] button > img {
-    width: 12px;
-    height: 12px;
-    margin-top: -3px;
-}
-
-#milestone_finish_container select[id^='reached_month_'] {
-    width: 100px !important;
-}
-
-#milestone_finish_container select[id^='reached_day_'] {
-    width: 50px !important;
 }
 
 .milestone_issue .issue_container img.avatar {
@@ -18229,26 +17407,18 @@ div[id^='comment_reply_indicator_'],
 
 /* Frontpage & Wiki */
 
-#attach_link_main_menu_0_url,
-input[id^='attach_link_wiki_'][id$='_url'] {
+#attach_link_main_menu_0_url {
     margin-bottom: 9px;
 }
 
-#attach_link_main_menu_0_form > div:last-child > br,
-form[id^='attach_link_wiki_'][id$='_form'] > div:last-child > br {
+#attach_link_main_menu_0_form > div:last-child > br {
     display: block;
     content: "";
     margin-top: 5px;
 }
 
-#attach_link_main_menu_0_form,
-form[id^='attach_link_wiki_'][id$='_form'] {
+#attach_link_main_menu_0_form {
     margin-bottom: -7px;
-}
-
-#attach_link_main_menu_0_form div:last-child input[type=submit],
-div[id^='attach_link_wiki_'] div:last-child input[type=submit] {
-    padding: 4px 9px;
 }
 
 .side_bar li hr, .side_bar .content hr {
@@ -18259,10 +17429,6 @@ div[id^='attach_link_wiki_'] div:last-child input[type=submit] {
 }
 
 /* Wiki */
-
-img[id^='article_favourite_indicator_'] {
-    padding: 0 1px;
-}
 
 #article-editor-main-container .article.syntax_mw {
     margin-left: 5px;
@@ -18289,11 +17455,6 @@ img[id^='article_favourite_indicator_'] {
 .page-publish_article_permissions .rounded_box.verylightyellow button,
 .page-publish_article_permissions .rounded_box.invisible.borderless button {
     padding: 5px 7px;
-}
-
-.page-publish_article_permissions .rounded_box.verylightyellow div[id^='publish_'],
-.page-publish_article_permissions .rounded_box.invisible.borderless div[id^='publish_'][id$='_readarticle_permissions'] {
-    width: initial !important;
 }
 
 .page-publish_article_permissions .rounded_box.verylightyellow table,
@@ -18324,10 +17485,6 @@ img[id^='article_favourite_indicator_'] {
 #article_comments #comment_bodybox_syntax_picker {
     font-size: 1em;
     margin-top: 10px;
-}
-
-div[id^='wiki_'][id$='_no_links'] {
-    padding-left: 0 !important;
 }
 
 #parent_article_name_span {
@@ -18371,17 +17528,6 @@ div[id^='wiki_'][id$='_no_links'] {
 }
 
 /* VCS integration */
-
-#viewissue_vcs_integration_commits > div[id^='commit_'] {
-    padding: 0;
-    border-top: 0;
-    margin-top: 0;
-    border-bottom: 1px dashed #EAEAEA;
-}
-
-#viewissue_vcs_integration_commits > div[id^='commit_'] a:hover {
-    border-bottom: none;
-}
 
 .commit_main {
     line-height: 1.6;

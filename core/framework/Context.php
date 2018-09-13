@@ -1692,9 +1692,16 @@ class Context
                 self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['candeleteissues'.$suffix] = array('description' => $i18n->__('Can delete issue'));
             }
 
+            foreach ($arr as $suffix => $description) {
+                self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix] = [
+                    'description' => $i18n->__('Can edit custom fields for issues'),
+                    'details' => []
+                ];
+            }
+
             foreach (CustomDatatype::getAll() as $cdf) {
                 foreach ($arr as $suffix => $description) {
-                    self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
+                    self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
                 }
 
                 // Set permissions for custom option types
