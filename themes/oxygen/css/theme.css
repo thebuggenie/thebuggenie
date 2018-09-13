@@ -1113,8 +1113,8 @@ footer {
     position: relative;
     vertical-align: middle;
     flex: 0 0 20px;
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%); /* W3C */
+    background: -webkit-linear-gradient(top, #FFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom, #FFF 0%, #F1F1F1 100%); /* W3C */
     border: 0;
     text-align: center;
     font-size: 0.9em;
@@ -5455,8 +5455,8 @@ a.dropper.dropdown_link:hover {
     box-sizing: border-box;
     border: 1px solid rgba(150, 150, 150, 0.3);
     border-radius: 2px;
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%);
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%);
+    background: -webkit-linear-gradient(top, #FFF 0%, #F1F1F1 100%);
+    background: linear-gradient(to bottom, #FFF 0%, #F1F1F1 100%);
     vertical-align: middle;
     position: relative;
 }
@@ -5992,15 +5992,15 @@ ul.workflow_actions li:hover {
     width: 100%;
     border-bottom: 1px solid #CCC;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%); /* W3C */
+    background: -webkit-linear-gradient(top, #FFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom, #FFF 0%, #F1F1F1 100%); /* W3C */
 }
 
 .blocking #viewissue_header_container table.title_area {
     border-bottom-color: #C59494;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F4D1D1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F4D1D1 100%); /* W3C */
+    background: -webkit-linear-gradient(top, #FFF 0%, #F4D1D1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom, #FFF 0%, #F4D1D1 100%); /* W3C */
 }
 
 @-webkit-keyframes top_slide {
@@ -8555,7 +8555,7 @@ table.issue_affects td img {
     text-align: center;
     font-size: 0.8em;
     margin-bottom: 8px;
-    color: #555555;
+    color: #555;
 }
 
 .milestone_box .header {
@@ -12056,8 +12056,8 @@ div.quickaddtask .close_micro_popup_link {
     margin-right: 5px;
     border: 1px solid rgba(200, 200, 200, 0.6);
     border-radius: 2px;
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F5F5F5 100%);
+    background: -webkit-linear-gradient(top, #FFF 0%, #F5F5F5 100%);
+    background: linear-gradient(to bottom, #FFF 0%, #F5F5F5 100%);
     padding: 3px 25px 3px 5px;
     transition: border 0.3s ease;
     max-width: 300px;
@@ -13158,8 +13158,8 @@ li.filtervalue .hidden {
     padding: 2px 5px;
     border: none;
     border-bottom: 1px solid #CCC;
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%); /* W3C */
+    background: -webkit-linear-gradient(top, #FFF 0%, #F1F1F1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom, #FFF 0%, #F1F1F1 100%); /* W3C */
 }
 
 /* end search styling */
