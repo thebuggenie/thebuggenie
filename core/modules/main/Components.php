@@ -11,6 +11,7 @@
      * Main action components
      *
      * @property entities\Issue $issue The issue
+     * @property entities\WorkflowTransition $transition
      *
      */
     class Components extends framework\ActionComponent
@@ -210,6 +211,19 @@
                 $fields_list['severity']['choices'] = entities\Severity::getAll();
                 $fields_list['milestone'] = array();
                 $fields_list['milestone']['choices'] = $this->project->getMilestonesForIssues();
+
+                if (isset($this->issues)) {
+                    $all_statuses = [];
+                    $project_statuses = $this->project->getAvailableStatuses();
+                    foreach ($this->issues as $issue) {
+                        $statuses = ($this->project->isFreelancingAllowed()) ? $project_statuses : $issue->getAvailableStatuses();
+                        foreach ($statuses as $status_id => $status) {
+                            $all_statuses[$status_id] = $status;
+                        }
+                    }
+                    $this->statuses = $all_statuses;
+                }
+
             }
 
             $this->fields_list = $fields_list;
