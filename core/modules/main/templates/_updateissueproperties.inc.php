@@ -251,11 +251,11 @@
                         <input type="hidden" name="did" id="transition_popup_set_stop_working_no_log_<?= $transition->getID(); ?>" value="nothing">
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
-                <li style="margin-top: 10px;">
-                    <label for="transition_popup_comment_body"><?= __('Write a comment if you want it to be added'); ?></label><br>
-                    <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => 'issue', 'target_id' => $issue->getID(), 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => '')); ?>
-                </li>
+                <?php if ($issue instanceof \thebuggenie\core\entities\Issue || isset($issues)): ?>
+                    <li style="margin-top: 10px;">
+                        <label for="transition_popup_comment_body"><?= __('Write a comment if you want it to be added'); ?></label><br>
+                        <?php include_component('main/textarea', array('area_name' => 'comment_body', 'target_type' => 'issue', 'target_id' => (isset($issue)) ? $issue->getID() : 0, 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '790px', 'value' => '')); ?>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>
