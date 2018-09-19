@@ -240,14 +240,16 @@
         
         public function toJSON($detailed = true)
         {
-            return array(
-            		'id' => $this->getID(),
-            		'key' => $this->getKey(),
-            		'name' => $this->getName(),
-            		'icon' => $this->getIcon(),
-            		'is_task' => $this->isTask(),
-            		'description' => $this->getDescription()
+            $json = array(
+                'id' => $this->getID(),
+                'key' => $this->getKey(),
+                'name' => $this->getName(),
+                'icon' => $this->getIcon(),
+                'is_task' => $this->isTask(),
+                'description' => $this->getDescription()
             );
+
+            return $json;
         }
 
     }

@@ -23,7 +23,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method Files getTable()
+     * @method static Files getTable()
      *
      * @Table(name="files")
      * @Entity(class="\thebuggenie\core\entities\File")

@@ -338,7 +338,7 @@
                     $actionName = substr($method->name, 3);
                     $action = $controller . '::' . $actionName;
                     $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($actionName));
-                    $route = $route_url_prefix . $route_annotation->getProperty('url');
+                    $route = rtrim($route_url_prefix . $route_annotation->getProperty('url'), '/');
                     $options['csrf_enabled'] = $annotationset->hasAnnotation('CsrfProtected');
                     $options['anonymous_route'] = $annotationset->hasAnnotation('AnonymousRoute');
                     $options['authentication_method'] = ($annotationset->hasAnnotation('AuthenticationMethod')) ? $annotationset->getAnnotation('AuthenticationMethod') : '';

@@ -23,7 +23,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method Projects getTable() Retrieves an instance of this table
+     * @method static Projects getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Project selectById(integer $id) Retrieves a project
      *
      * @Table(name="projects")

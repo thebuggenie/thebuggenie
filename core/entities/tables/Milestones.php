@@ -23,7 +23,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method Milestones getTable() Retrieves an instance of this table
+     * @method static Milestones getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Milestone selectById(integer $id) Retrieves a milestone
      *
      * @Table(name="milestones")

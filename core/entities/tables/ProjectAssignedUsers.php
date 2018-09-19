@@ -18,6 +18,7 @@
     /**
      * Project assigned users table
      *
+     * @method static ProjectAssignedUsers getTable()
      * @package thebuggenie
      * @subpackage tables
      *
@@ -92,7 +93,7 @@
                 {
                     $uid = $row['uid'];
                     if (!array_key_exists($uid, $users))
-                        $users[$uid] = new \thebuggenie\core\entities\User($uid);
+                        $users[$uid] = Users::getTable()->selectById($uid);
                     // Only one user is needed since only one can be inserted in method "addUserToProject".
                     break;
                 }
@@ -115,7 +116,7 @@
                 {
                     $pid = $row['pid'];
                     if (!array_key_exists($pid, $projects))
-                        $projects[$pid] = new Project($pid);
+                        $projects[$pid] = Projects::getTable()->selectById($pid);
                 }
             }
 
@@ -141,7 +142,7 @@
             {
                 while ($row = $res->getNextRow())
                 {
-                    $roles[$row->get(self::USER_ID)][] = new \thebuggenie\core\entities\Role($row->get(self::ROLE_ID));
+                    $roles[$row->get(self::USER_ID)][] = ListTypes::getTable()->selectById($row->get(self::ROLE_ID));
                 }
             }
 
@@ -162,7 +163,7 @@
                 {
                     $uid = $row['uid'];
                     if (!array_key_exists($uid, $users))
-                        $users[$uid] = new \thebuggenie\core\entities\User($uid);
+                        $users[$uid] = Users::getTable()->selectById($uid);
                 }
             }
 

@@ -23,7 +23,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method WorkflowTransitionValidationRules getTable() Return an instance of this table
+     * @method static WorkflowTransitionValidationRules getTable() Return an instance of this table
      * @method \thebuggenie\core\entities\WorkflowTransitionValidationRule selectById() Return a WorkflowTransitionValidationRule object
      *
      * @Table(name="workflow_transition_validation_rules")

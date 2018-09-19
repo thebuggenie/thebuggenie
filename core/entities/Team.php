@@ -21,7 +21,7 @@
      * @package thebuggenie
      * @subpackage main
      *
-     * @static @method tables\Teams getB2DBTable()
+     * @method static tables\Teams getB2DBTable()
      *
      * @Table(name="\thebuggenie\core\entities\tables\Teams")
      */

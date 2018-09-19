@@ -23,7 +23,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method Issues getTable() Retrieves an instance of this table
+     * @method static Issues getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Issue selectById(integer $id, Criteria $crit = null, $join = 'all') Retrieves an issue
      *
      * @Entity(class="\thebuggenie\core\entities\Issue")

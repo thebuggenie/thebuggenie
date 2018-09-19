@@ -10,8 +10,14 @@
     /**
      * Main action components
      *
-     * @property entities\Issue $issue The issue
+     * @property entities\User $user
+     * @property entities\Issue $issue
+     * @property entities\Client $client
+     * @property entities\Team $team
+     * @property entities\Issue[] $issues
+     * @property entities\Project $project
      * @property entities\WorkflowTransition $transition
+     * @property entities\LogItem $item
      *
      */
     class Components extends framework\ActionComponent

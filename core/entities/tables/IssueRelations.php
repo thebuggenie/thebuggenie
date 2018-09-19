@@ -19,7 +19,7 @@
     /**
      * Issue relations table
      *
-     * @static @method IssueRelations getTable() Retrieves an instance of this table
+     * @method static IssueRelations getTable() Retrieves an instance of this table
      * @package thebuggenie
      * @subpackage tables
      *
