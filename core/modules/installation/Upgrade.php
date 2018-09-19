@@ -186,7 +186,7 @@ class Upgrade
             Command::cli_echo("\n");
             Command::cli_echo("We're continuously adjusting and improving user security. As a result, this version ");
             Command::cli_echo("changes the way passwords are handled and stored.\n", Command::COLOR_WHITE, Command::STYLE_UNDERLINE);
-            Command::cli_echo("All users will require password resets after the upgrade process.\n\n");
+            Command::cli_echo("All users will require password resets after the upgrade process, and application-specific passwords must be regenerated.\n\n");
 
             Command::cli_echo("Because of the improved password handling, we need to set a password for the admin account");
             Command::cli_echo(" {$admin_username}\n", Command::COLOR_WHITE, Command::STYLE_BOLD);

@@ -88,7 +88,7 @@
                         <?php include_component('main/percentbar', array('percent' => 50, 'height' => 5)); ?>
                         <h2>Improved security</h2>
                         We're continuously adjusting and improving user security. As a result, this version <u>changes the way passwords are handled and stored</u>.<br>
-                        All users will require password resets after the upgrade is completed.<br>
+                        All users will require password resets after the upgrade is completed, and application-specific passwords must be regenerated.<br>
                         <br>
                         If you want to read about the technical details about the change, click here:<br>
                         <a href="https://www.brandonsavage.net/please-stop-hashing-passwords-yourself/" target="_blank">https://www.brandonsavage.net/please-stop-hashing-passwords-yourself/</a><br>
