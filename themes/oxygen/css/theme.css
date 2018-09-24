@@ -2574,6 +2574,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     border-radius: 5px;
     white-space: nowrap;
     margin-left: 5px;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out;
 }
 .project_strip nav a.nav-button:first-child {
     margin-left: 0;
@@ -16130,9 +16131,10 @@ ul#subscribers_list > li {
 
 .project_strip .button-group .button-report-issue {
     background-color: #FFF;
-    border: 1px solid #1aaa55;
+    border: none;
     color: #1aaa55;
     padding: 9px;
+    font-weight: 500;
 }
 .project_strip .button-group .button-report-issue:hover {
     background-color: #1aaa55;
