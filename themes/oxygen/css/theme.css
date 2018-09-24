@@ -10989,18 +10989,6 @@ div.quickaddtask .close_micro_popup_link {
     flex: 1 1 auto;
 }
 
-#project_planning.project_info_container.left_toggled .project_right_container .project_right {
-    margin-left: 61px;
-}
-
-#project_planning.project_info_container.whiteboard .project_right_container .project_right {
-    margin-left: 0;
-}
-
-#project_planning.project_info_container .project_right_container .project_right {
-    margin-left: 551px;
-}
-
 .project_save_container {
     display: block;
     box-sizing: border-box;
