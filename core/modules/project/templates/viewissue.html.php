@@ -381,11 +381,6 @@
                                     <div id="viewissue_comments">
                                         <?php include_component('main/comments', array('target_id' => $issue->getID(), 'mentionable_target_type' => 'issue', 'target_type' => \thebuggenie\core\entities\Comment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
                                     </div>
-                                    <script type="text/javascript">
-                                        require(['prototype'], function ($) {
-                                            $('viewissue_comment_count').update($('comments_box').select('.comment').size());
-                                        });
-                                    </script>
                                 </fieldset>
                             </div>
                             <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
