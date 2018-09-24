@@ -158,7 +158,7 @@
 
         public function verify()
         {
-            $password = User::createPassword(20);
+            $password = User::createPassword(30);
             $this->_password = password_hash($password, PASSWORD_DEFAULT);
             $this->useOnce();
 

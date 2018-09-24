@@ -43,7 +43,7 @@
         "ext-Reflection" : "*",
         "lib-pcre" : "8.*",
         "net/http" : "dev-master",
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "^6.3",
         "scrivo/highlight.php": "v9.12.0.1",
         "ramsey/uuid": "^3.7"
     },

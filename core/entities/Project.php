@@ -3382,7 +3382,7 @@
                 'url_wiki' => $this->getWikiURL(),
                 'prefix_used' => $this->doesUsePrefix(),
                 'prefix' => $this->getPrefix(),
-                'parent' => $this->hasParent() ? $this->getParent()->toJSON() : null,
+                'parent_id' => $this->hasParent() ? $this->getParent()->getID() : null,
                 'leader' => $this->hasLeader() ? $this->getLeader()->toJSON(false) : null,
                 'owner' => $this->hasOwner() ? $this->getOwner()->toJSON(false) : null,
                 'qa_responsible' => $this->hasQaResponsible() ? $this->getQaResponsible()->toJSON(false) : null,

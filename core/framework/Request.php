@@ -23,10 +23,10 @@
     class Request implements \ArrayAccess
     {
 
-        const POST = 'post';
-        const GET = 'get';
-        const PUT = 'put';
-        const DELETE = 'delete';
+        const POST = 'POST';
+        const GET = 'GET';
+        const PUT = 'PUT';
+        const DELETE = 'DELETE';
 
         protected $_request_parameters = array();
         protected $_post_parameters = array();
@@ -517,20 +517,8 @@
          */
         public function getMethod()
         {
-            switch (mb_strtolower($_SERVER['REQUEST_METHOD']))
-            {
-                case 'get':
-                    return self::GET;
-                    break;
-                case 'post':
-                    return self::POST;
-                    break;
-                case 'delete':
-                    return self::DELETE;
-                    break;
-                case 'put':
-                    return self::PUT;
-                    break;
+            if (in_array($_SERVER['REQUEST_METHOD'], [self::GET, self::POST, self::DELETE, self::PUT])) {
+                return $_SERVER['REQUEST_METHOD'];
             }
         }
 
@@ -633,4 +621,23 @@
             return $this->_querystring;
         }
 
+        public function getAuthorizationHeader()
+        {
+            $headers = "";
+
+            if (isset($_SERVER['Authorization'])) {
+                $headers = $_SERVER["Authorization"];
+            } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+                $headers = $_SERVER["HTTP_AUTHORIZATION"];
+            } elseif (function_exists('apache_request_headers')) {
+                $apache_headers = apache_request_headers();
+                if (isset($apache_headers['Authorization'])) {
+                    $headers = $apache_headers['Authorization'];
+                } elseif (isset($apache_headers['authorization'])) {
+                    $headers = $apache_headers['authorization'];
+                }
+            }
+
+            return trim($headers);
+        }
     }

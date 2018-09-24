@@ -774,7 +774,7 @@
                     }
                     else
                     {
-                        if ($filter_key == 'project_id' && in_array('subprojects', $filters)) return null;
+                        if ($filter_key == 'project_id' && in_array('subprojects', $filters, true)) return null;
 
                         $values = $this->getValues();
                         $num_values = 0;

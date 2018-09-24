@@ -530,4 +530,12 @@
             }
         }
 
+        public function toJSON($detailed = true)
+        {
+            return [
+                'name' => $this->getRule(),
+                'values' => $this->getRuleValueAsJoinedString()
+            ];
+        }
+
     }

@@ -870,5 +870,22 @@
         {
             return ($this->getWorkflow()->getInitialTransition()->getID() == $this->getID());
         }
-        
+
+        public function toJSON($detailed = true)
+        {
+            $details = [
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'template' => $this->getTemplate(),
+                'post_validations' => []
+            ];
+
+            foreach ($this->getPostValidationRules() as $rule)
+            {
+                $details['post_validations'][] = $rule->toJSON();
+            }
+
+            return $details;
+        }
+
     }

@@ -6055,6 +6055,7 @@
                 'issue_no' => $this->getFormattedIssueNo(),
                 'state' => $this->getState(),
                 'closed' => $this->isClosed(),
+                'deleted' => $this->isDeleted(),
                 'created_at' => $this->getPosted(),
                 'created_at_iso' => date('c', $this->getPosted()),
                 'updated_at' => $this->getLastUpdatedTime(),

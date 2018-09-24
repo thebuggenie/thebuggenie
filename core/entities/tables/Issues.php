@@ -908,7 +908,6 @@
 
                         $sums[$row->get(self::ID)] = $sum;
                     }
-                    $ids = array_reverse($ids);
 
                     $crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
                     foreach ($sortfields as $field => $sortorder)

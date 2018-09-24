@@ -500,6 +500,7 @@
             $authentication_method = framework\Context::getRouting()->getCurrentRouteAuthenticationMethod($action);
             $authentication_backend = framework\Settings::getAuthenticationBackend();
             $user = null;
+            framework\Logging::log("Using auth method {$authentication_method}", 'auth', framework\Logging::LEVEL_INFO);
 
             switch ($authentication_method)
             {
@@ -544,27 +545,40 @@
                     $user = self::getB2DBTable()->getByRssKey($request['rsskey']);
                     break;
                 case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
-                case framework\Action::AUTHENTICATION_METHOD_BASIC:
-                    framework\Logging::log("Using auth method {$authentication_method}", 'auth', framework\Logging::LEVEL_INFO);
 
-                    // If we have HTTP basic auth, use that. Else, fall back to parameters.
+                    $authorization_header = $request->getAuthorizationHeader();
+                    if (!$authorization_header || strlen($authorization_header) < 7) {
+                        throw new \Exception('Cannot read authorization headers');
+                    }
 
-                    $username = $_SERVER['PHP_AUTH_USER'] ?? $request['api_username'];
+                    $authorization_header = substr($authorization_header, 7);
+                    $header_details = explode('.', $authorization_header);
+
+                    if (count($header_details) != 2) {
+                        throw new \Exception('Incorrect data in authorization header');
+                    }
+
+                    $username = $header_details[0];
+                    $token = $header_details[1];
+
                     framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
                     $user = self::getB2DBTable()->getByUsername($username);
 
                     if ($user instanceof User)
                     {
-                        if ($authentication_method == framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD)
-                        {
-                            $token = $_SERVER['PHP_AUTH_PW'] ?? $request['api_token'];
-                            if (!$user->authenticateApplicationPassword($token)) $user = null;
-                        }
-                        else
-                        {
-                            $token = $_SERVER['PHP_AUTH_PW'] ?? $request['api_password'];
-                            if (!hash_equals($token, $user->getHashPassword())) $user = null;
-                        }
+                        if (!$user->authenticateApplicationPassword($token)) $user = null;
+                    }
+
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_BASIC:
+
+                    $username = $_SERVER['PHP_AUTH_USER'];
+                    framework\Logging::log("Fetching user by username", 'auth', framework\Logging::LEVEL_INFO);
+                    $user = self::getB2DBTable()->getByUsername($username);
+
+                    if ($user instanceof User)
+                    {
+                        if (!$user->hasPassword($_SERVER['PHP_AUTH_PW'])) $user = null;
                     }
 
                     break;
