@@ -8,7 +8,7 @@
         b2db\Criteria;
 
     /**
-     * @static @method Articles getTable() Retrieves an instance of this table
+     * @method static Articles getTable() Retrieves an instance of this table
      * @method \thebuggenie\modules\publish\entities\Article selectById(integer $id) Retrieves an article
      *
      * @Table(name="articles")
@@ -439,6 +439,18 @@
         {
             $criteria = $this->getCriteria();
             $criteria->addWhere('articles.article_type', 0);
+            $criteria->addUpdate('articles.article_type', Article::TYPE_WIKI);
+            $this->doUpdate($criteria);
+        }
+
+        public function fixArticleNames()
+        {
+            $criteria = $this->getCriteria();
+            $criteria->addWhere('articles.article_type', Article::TYPE_WIKI);
+            $ctn = $criteria->returnCriterion('articles.name', '');
+            $ctn->addOr('articles.name', '', Criteria::DB_IS_NULL);
+            $criteria->addWhere($ctn);
+
             $criteria->addUpdate('articles.article_type', Article::TYPE_WIKI);
             $this->doUpdate($criteria);
         }
