@@ -56,14 +56,14 @@ class Context
     /**
      * List of modules
      *
-     * @var array|\thebuggenie\core\entities\Module
+     * @var Module[]
      */
     protected static $_modules = array();
 
     /**
      * List of internal modules
      *
-     * @var array|string
+     * @var string[]
      */
     protected static $_internal_modules = array();
 
@@ -1054,7 +1054,7 @@ class Context
     /**
      * Adds a module to the module list
      *
-     * @param \thebuggenie\core\entities\Module $module
+     * @param Module $module
      */
     public static function addModule($module, $module_name)
     {
@@ -1082,7 +1082,7 @@ class Context
     /**
      * Returns an array of modules
      *
-     * @return array
+     * @return Module[]
      */
     public static function getModules()
     {
@@ -1114,7 +1114,7 @@ class Context
     /**
      * Get uninstalled modules
      *
-     * @return array|\thebuggenie\core\entities\Module
+     * @return Module[]
      */
     public static function getUninstalledModules()
     {
@@ -1141,7 +1141,7 @@ class Context
      *
      * @param string $module_name
      *
-     * @return \thebuggenie\core\entities\Module
+     * @return Module
      */
     public static function getModule($module_name)
     {

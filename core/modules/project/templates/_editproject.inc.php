@@ -18,6 +18,7 @@
                 <?= __('Only showing basic project details. More settings available in the main project configuration.'); ?>
             </h5>
         <?php endif; ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'project/editproject::above_content')->trigger(compact('project')); ?>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>" method="post" onsubmit="TBG.Project.submitInfo('<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>', <?= $project->getID(); ?>); return false;" id="project_info">
         <?php endif; ?>

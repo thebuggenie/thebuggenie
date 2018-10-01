@@ -152,7 +152,7 @@
                 <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
                 <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
                     <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= $module->getAccountSettingsLogo().__($module->getAccountSettingsName()); ?></a></li>
+                        <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag($module->getAccountSettingsLogo()).__($module->getAccountSettingsName()); ?></a></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('lock').__('Security'); ?></a></li>

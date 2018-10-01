@@ -1203,13 +1203,10 @@ class Main extends framework\Action
             $this->autopassword = framework\Context::getMessage('auto_password');
         }
 
-        if ($request->isPost() && $request->hasParameter('mode'))
-        {
-            switch ($request['mode'])
-            {
+        if ($request->isPost() && $request->hasParameter('mode')) {
+            switch ($request['mode']) {
                 case 'information':
-                    if (!$request['buddyname'] || !$request['email'])
-                    {
+                    if (!$request['buddyname'] || !$request['email']) {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please fill out all the required fields')));
                     }
@@ -1221,10 +1218,8 @@ class Main extends framework\Action
                     $this->getUser()->setTimezone($request->getRawParameter('timezone'));
                     $this->getUser()->setLanguage($request['profile_language']);
 
-                    if ($this->getUser()->getEmail() != $request['email'])
-                    {
-                        if (\thebuggenie\core\framework\Event::createNew('core', 'changeEmail', $this->getUser(), array('email' => $request['email']))->triggerUntilProcessed()->isProcessed() == false)
-                        {
+                    if ($this->getUser()->getEmail() != $request['email']) {
+                        if (\thebuggenie\core\framework\Event::createNew('core', 'changeEmail', $this->getUser(), array('email' => $request['email']))->triggerUntilProcessed()->isProcessed() == false) {
                             $this->getUser()->setEmail($request['email']);
                         }
                     }
@@ -1306,18 +1301,18 @@ class Main extends framework\Action
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Notification settings saved')));
                     break;
                 case 'module':
-                    foreach (framework\Context::getModules() as $module_name => $module)
-                    {
-                        if ($request['target_module'] == $module_name && $module->hasAccountSettings())
-                        {
-                            if ($module->postAccountSettings($request))
-                            {
-                                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
-                            }
-                            else
-                            {
+                    foreach (framework\Context::getModules() as $module_name => $module) {
+                        if ($request['target_module'] == $module_name && $module->hasAccountSettings()) {
+                            try {
+                                if ($module->postAccountSettings($request)) {
+                                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
+                                } else {
+                                    $this->getResponse()->setHttpStatus(400);
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                                }
+                            } catch (\Exception $e) {
                                 $this->getResponse()->setHttpStatus(400);
-                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
                             }
                         }
                     }
