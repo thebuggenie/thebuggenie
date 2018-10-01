@@ -9706,9 +9706,12 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     float: left;
     margin: 10px 15px 20px 0;
 }
+.fancydropdown + ul li .fa {
+    margin-right: .35em;
+}
 
 .fancydropdown + ul li h1, .fancydropdown + ul li h1:first-child {
-    font-weight: 500;
+    font-weight: 300;
     font-size: 1.3em;
     margin: 0;
     padding: 0;

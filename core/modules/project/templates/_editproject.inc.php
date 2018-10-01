@@ -80,22 +80,48 @@
                 <tr>
                     <td colspan="2" class="project_type_container">
                         <label><?= __('Select type of project'); ?></label>
+                        <input type="hidden" name="project_type" value="classic" id="edit_project_type_input">
+                        <a href="javascript:void(0)" class="fancydropdown changeable" id="edit_project_type"><?= __('Classic software project'); ?></a>
+                        <ul data-input="edit_project_type_input" class="fancydropdown-list">
+                            <li data-input-value="classic" data-display-name="<?php echo __('Classic software project'); ?>" class="fancydropdown-item selected">
+                                <h1><?php echo fa_image_tag('code') . __('Classic software project'); ?></h1>
+                                <p>
+                                    <?php echo __('Classic project template without specific settings'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="team" data-display-name="<?php echo __('Distributed teams project'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('users') . __('Distributed teams project'); ?></h1>
+                                <p>
+                                    <?php echo __('For projects with multiple teams, often distributed across locations'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="open-source" data-display-name="<?php echo __('Classic open source'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('code-fork') . __('Classic open source'); ?></h1>
+                                <p>
+                                    <?php echo __('For medium/small open source projects without multiple teams'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="agile" data-display-name="<?php echo __('Agile software project'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']) . __('Agile software project'); ?></h1>
+                                <p>
+                                    <?php echo __('For projects with an agile methodology like e.g. scrum or kanban'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="service-desk" data-display-name="<?php echo __('Helpdesk / support'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('phone') . __('Helpdesk / support'); ?></h1>
+                                <p>
+                                    <?php echo __('For helpdesk or support projects without a traditional software development cycle'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="personal" data-display-name="<?php echo __('Personal todo-list'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('th-list') . __('Personal todo-list'); ?></h1>
+                                <p>
+                                    <?php echo __('A project acting like a personal todo-list. No fuzz, no headache.'); ?>
+                                </p>
+                            </li>
+                        </ul>
                         <div class="config_explanation">
                             <?= __('Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.'); ?>
-                        </div>
-                        <div class="fancylabels">
-                            <input type="radio" name="project_type" value="team" id="project_edit_type_team_project">
-                            <label for="project_edit_type_team_project"><?= fa_image_tag('users'); ?><span><h1><?= __('Distributed teams project'); ?></h1><?= __('For projects with multiple teams, often distributed across locations'); ?></span></label>
-                            <input type="radio" name="project_type" value="open-source" id="project_edit_type_open_source_regular">
-                            <label for="project_edit_type_open_source_regular"><?= fa_image_tag('code-fork'); ?><span><h1><?= __('Classic open source'); ?></h1><?= __('For medium/small open source projects without multiple teams'); ?></span></label>
-                            <input type="radio" name="project_type" value="classic" checked id="project_edit_type_regular">
-                            <label for="project_edit_type_regular"><?= fa_image_tag('code'); ?><span><h1><?= __('Classic software project'); ?></h1><?= __('Classic project template without specific settings'); ?></span></label>
-                            <input type="radio" name="project_type" value="agile" id="project_edit_type_agile">
-                            <label for="project_edit_type_agile"><?= fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']); ?><span><h1><?= __('Agile software project'); ?></h1><?= __('For projects with an agile methodology like e.g. scrum or kanban'); ?></span></label>
-                            <input type="radio" name="project_type" value="service-desk" id="project_edit_type_service_desk">
-                            <label for="project_edit_type_service_desk"><?= fa_image_tag('phone'); ?><span><h1><?= __('Helpdesk / support'); ?></h1><?= __('For helpdesk or support projects without a traditional software development cycle'); ?></span></label>
-                            <input type="radio" name="project_type" value="personal" id="project_edit_type_personal_todo">
-                            <label for="project_edit_type_personal_todo"><?= fa_image_tag('th-list'); ?><span><h1><?= __('Personal todo-list'); ?></h1><?= __('A project acting like a personal todo-list. No fuzz, no headache.'); ?></span></label>
                         </div>
                     </td>
                 </tr>
