@@ -63,9 +63,16 @@ class Context
     /**
      * List of internal modules
      *
-     * @var string[]
+     * @var CoreModule[]
      */
     protected static $_internal_modules = array();
+
+    /**
+     * List of internal modules
+     *
+     * @var string[]
+     */
+    protected static $_internal_module_paths = array();
 
     /**
      * List of permissions
@@ -996,13 +1003,22 @@ class Context
                 if (in_array($modulename, array('.', '..')) || !is_dir(THEBUGGENIE_INTERNAL_MODULES_PATH . $modulename))
                     continue;
 
-                self::$_internal_modules[$modulename] = $modulename;
+                self::$_internal_module_paths[$modulename] = $modulename;
             }
+
+            self::getCache()->add(Cache::KEY_INTERNAL_MODULES, $modules, false);
         }
         else
         {
             Logging::log('Loading cached modules');
-            self::$_internal_modules = $modules;
+            self::$_internal_module_paths = $modules;
+        }
+
+        foreach (self::$_internal_module_paths as $modulename)
+        {
+            $classname = "\\thebuggenie\\core\\modules\\{$modulename}\\" . ucfirst($modulename);
+            self::$_internal_modules[$modulename] = new $classname();
+            self::$_internal_modules[$modulename]->initialize();
         }
 
         Logging::log('...done (loading internal modules)');

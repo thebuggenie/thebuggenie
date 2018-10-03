@@ -223,11 +223,6 @@
             framework\Context::clearPermissionsCache();
         }
 
-        public function getClassname()
-        {
-            return $this->_classname;
-        }
-
         public function __toString()
         {
             return $this->_name;
