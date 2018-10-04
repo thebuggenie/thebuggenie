@@ -25,7 +25,7 @@
      *
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    abstract class Module extends IdentifiableScoped
+    abstract class Module extends IdentifiableScoped implements framework\interfaces\ModuleInterface
     {
 
         /**
@@ -230,7 +230,7 @@
 
         public function __call($func, $args)
         {
-            throw new \Exception('Trying to call function ' . $func . '() in module ' . $this->_shortname . ', but the function does not exist');
+            throw new \Exception('Trying to call function ' . $func . '() in module ' . $this->_name . ', but the function does not exist');
         }
 
         public function setLongName($name)

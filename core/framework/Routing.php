@@ -199,11 +199,10 @@
             return $this->component_override_map[$component];
         }
 
-        public function loadRoutes($module_name, $module_type = null)
+        public function loadRoutes($module_name)
         {
-            if ($module_type === null) $module_type = (Context::isInternalModule($module_name)) ? 'internal' : 'external';
-
-            $module_routes_filename = (($module_type == 'internal') ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH) . $module_name . DS . 'configuration' . DS . 'routes.yml';
+            $module_path_prefix = (Context::isInternalModule($module_name)) ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH;
+            $module_routes_filename = $module_path_prefix . $module_name . DS . 'configuration' . DS . 'routes.yml';
             if (file_exists($module_routes_filename))
             {
                 $this->loadYamlRoutes($module_routes_filename, $module_name);

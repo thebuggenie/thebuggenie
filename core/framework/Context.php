@@ -32,6 +32,9 @@ use thebuggenie\core\helpers\TextParserMarkdown;
 class Context
 {
 
+    const INTERNAL_MODULES = 'internal_modules';
+    const EXTERNAL_MODULES = 'external_modules';
+
     protected static $_environment = 2;
     protected static $_debug_mode = true;
     protected static $debug_id = null;
@@ -68,7 +71,7 @@ class Context
     protected static $_internal_modules = array();
 
     /**
-     * List of internal modules
+     * List of internal module paths
      *
      * @var string[]
      */
@@ -718,15 +721,26 @@ class Context
         Logging::log('... done (loading event listeners)');
     }
 
+    /**
+     * @return interfaces\ModuleInterface[][]
+     */
+    public static function getAllModules()
+    {
+        return [
+            self::INTERNAL_MODULES => self::$_internal_modules,
+            self::EXTERNAL_MODULES => self::getModules()
+        ];
+    }
+
     protected static function loadRoutes()
     {
         Logging::log('Loading routes from routing files', 'routing');
 
-        foreach (array('internal' => self::$_internal_modules, 'external' => self::getModules()) as $module_type => $modules)
+        foreach (self::getAllModules() as $modules)
         {
             foreach ($modules as $module_name => $module)
             {
-                self::getRouting()->loadRoutes($module_name, $module_type);
+                self::getRouting()->loadRoutes($module_name);
             }
         }
         self::getRouting()->loadYamlRoutes(\THEBUGGENIE_CONFIGURATION_PATH . 'routes.yml');

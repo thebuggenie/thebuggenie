@@ -18,9 +18,18 @@
      * @package thebuggenie
      * @subpackage mvc
      */
-    class CoreModule
+    class CoreModule implements interfaces\ModuleInterface
     {
 
+        public function hasAccountSettings()
+        {
+            return false;
+        }
+
         public function initialize() {}
+
+        public function getAccountSettingsLogo() {}
+
+        public function getAccountSettingsName() {}
 
     }

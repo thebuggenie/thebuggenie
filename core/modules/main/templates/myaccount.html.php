@@ -150,10 +150,12 @@
                 <li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('cog').__('Settings'); ?></a></li>
                 <li id="tab_notificationsettings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_notificationsettings', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('bell').__('Notification settings'); ?></a></li>
                 <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
-                <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
-                    <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag($module->getAccountSettingsLogo()).__($module->getAccountSettingsName()); ?></a></li>
-                    <?php endif; ?>
+                <?php foreach (\thebuggenie\core\framework\Context::getAllModules() as $modules): ?>
+                    <?php foreach ($modules as $module_name => $module): ?>
+                        <?php if ($module->hasAccountSettings()): ?>
+                            <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag($module->getAccountSettingsLogo()).__($module->getAccountSettingsName()); ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
                 <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('lock').__('Security'); ?></a></li>
                 <?php if (count($tbg_user->getScopes()) > 1): ?>
@@ -578,14 +580,16 @@
                 </ul>
             </div>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tab_panes')->trigger(); ?>
-            <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
-                <?php if ($module->hasAccountSettings()): ?>
-                    <div id="tab_settings_<?= $module_name; ?>_pane" style="display: none;">
-                        <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?= $module_name; ?>'); return false;" method="post" id="profile_<?= $module_name; ?>_form">
-                            <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
-                        </form>
-                    </div>
-                <?php endif; ?>
+            <?php foreach (\thebuggenie\core\framework\Context::getAllModules() as $modules): ?>
+                <?php foreach ($modules as $module_name => $module): ?>
+                    <?php if ($module->hasAccountSettings()): ?>
+                        <div id="tab_settings_<?= $module_name; ?>_pane" style="display: none;">
+                            <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?= $module_name; ?>'); return false;" method="post" id="profile_<?= $module_name; ?>_form">
+                                <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
+                            </form>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             <?php endforeach; ?>
             <?php if (count($tbg_user->getScopes()) > 1): ?>
                 <div id="tab_scopes_pane" style="display: none;">

@@ -5,7 +5,7 @@
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables;
-    use thebuggenie\core\framework\AuthenticationProviderInterface;
+    use thebuggenie\core\framework\interfaces\AuthenticationProvider;
 
     /**
      * Main action components
@@ -487,7 +487,7 @@
             if (framework\Settings::isLoginRequired())
             {
                 $authentication_backend = framework\Settings::getAuthenticationBackend();
-                if ($authentication_backend->getAuthenticationMethod() == AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN)
+                if ($authentication_backend->getAuthenticationMethod() == AuthenticationProvider::AUTHENTICATION_TYPE_TOKEN)
                 {
                     framework\Context::getResponse()->deleteCookie('username');
                     framework\Context::getResponse()->deleteCookie('session_token');

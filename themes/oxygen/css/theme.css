@@ -11042,8 +11042,8 @@ div.quickaddtask .close_micro_popup_link {
     box-sizing: border-box;
 }
 
-#project_info .project_type_container {
-    padding-top: 25px;
+#project_info .project_type_container td {
+    vertical-align: middle;
 }
 
 .project_save_container .button, .project_save_container .button:hover {
@@ -17898,4 +17898,83 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 .todo-checkbox {
     margin-right: 3px;
     color: #AAA;
+}
+
+.fa.tbg-livelink { color: #1aaa55; margin-right: .35em; font-weight: 500; }
+.livelink-banner {
+    border: 1px solid rgba(200, 200, 200, .3);
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: rgba(225, 225, 225, .2);
+}
+.livelink-banner .button, .livelink_connector_accounts .button {
+    padding: 5px 8px;
+    font-size: 1em;
+}
+.livelink-header {
+    text-transform: uppercase;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+.livelink-intro {
+    font-size: 1.1em;
+}
+.livelink-intro + .livelink-intro {
+    padding-top: 25px;
+}
+.livelink-import-list, .livelink_connector_accounts {
+    list-style: none;
+    margin: 0;
+    padding: 25px 0 0 0;
+    font-size: 1.1em;
+}
+.livelink-import-list li, .livelink_connector_accounts li {
+    padding: 10px 0;
+    border-bottom: 1px dotted #DDD;
+    display: flex;
+    font-size: .9em;
+}
+.livelink_connector_accounts li {
+    padding: 10px;
+    font-size: 1em;
+    transition: background-color .2s ease-in-out;
+    background-color: rgba(225, 225, 225, 0);
+}
+.livelink_connector_accounts li:hover {
+    background-color: rgba(225, 225, 225, .15);
+    border-radius: 3px;
+}
+.livelink-import-list li:last-child, .livelink_connector_accounts li:last-child {
+    border-bottom: none;
+}
+.livelink-import-list li .description, .livelink_connector_accounts li .description {
+    flex: 1 1 auto;
+    font-size: 1em;
+}
+.livelink-import-list li .description .fa, .livelink_connector_accounts li .description .fa {
+    color: #555;
+    margin-right: .35em;
+}
+.livelink-import-list li .button, .livelink_connector_accounts li .button {
+    flex: 0 0 auto;
+}
+.livelink-separator {
+    border: 0;
+    border-top: 1px dotted rgba(0, 0, 0, 0.3);
+    padding: 5px 100px;
+    width: 450px;
+    display: block;
+    margin: 5px auto 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+.livelink-separator legend {
+    text-align: center;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 300px;
+    white-space: nowrap;
+    background-color: transparent;
 }

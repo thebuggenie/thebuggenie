@@ -3,7 +3,7 @@
     namespace thebuggenie\modules\auth_ldap;
 
     use thebuggenie\core\entities\UserSession;
-    use thebuggenie\core\framework\AuthenticationProviderInterface;
+    use thebuggenie\core\framework\interfaces\AuthenticationProvider;
     use thebuggenie\core\entities\Module;
     use thebuggenie\core\entities\User;
     use thebuggenie\core\framework;
@@ -27,7 +27,7 @@
      *
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    class LdapAuthenticationBackend implements AuthenticationProviderInterface
+    class LdapAuthenticationBackend implements AuthenticationProvider
     {
 
         /**
@@ -53,7 +53,7 @@
 
         public function getAuthenticationMethod()
         {
-            return AuthenticationProviderInterface::AUTHENTICATION_TYPE_PASSWORD;
+            return AuthenticationProvider::AUTHENTICATION_TYPE_PASSWORD;
         }
 
         /**
