@@ -10103,7 +10103,7 @@ Folgender Kommentar wurde hinzugefügt: %comment</target>
             </trans-unit>
             <trans-unit id="4623ffe0a44ba918a2b65142f01308f0">
                 <source>Data that has been changed is highlighted in red below. Undo your changes to see the updated information</source>
-                <target>Geänderte Daten werden in rot gekennzeichnet.</target>
+                <target>Geänderte Daten werden in rot gekennzeichnet. Machen Sie Ihre Änderungungen rückgängig, um die aktualisierten Informationen zu sehen.</target>
             </trans-unit>
             <trans-unit id="7ff980d8d1d9c3d5c12d67215b5ffd1c">
                 <source>Add comment and save changes</source>
