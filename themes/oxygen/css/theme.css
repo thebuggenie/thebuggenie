@@ -390,6 +390,8 @@ header {
     font-size: 1.1em;
     padding: 5px 8px;
 }
+.button .indicator, button .indicator { display: none; margin-right: .35em; }
+.submitting .button .indicator, .submitting button .indicator, .button.submitting .indicator, button.submitting .indicator { display: inline-block; }
 
 .project-context #main_menu {
     display: none;
@@ -8766,6 +8768,10 @@ dl.info {
     display: inline-block;
     color: #555;
     transition: color .2s ease-in-out;
+}
+.fancycheckbox:disabled + label,
+.fancycheckbox:disabled + label + .explanation {
+    color: #DDD;
 }
 .fancycheckbox:checked + label {
     color: #585;
@@ -17755,10 +17761,10 @@ table.desktop-notifications-settings tr:first-child > td:last-child {
     vertical-align: middle;
     height: 20px;
 }
-.address-container img.verified {
+.address-container .fa.verified-ok {
     display: none;
 }
-.address-container.verified img.verified {
+.address-container.verified .fa.verified-ok {
     display: block;
     position: absolute;
     right: 10px;
@@ -17776,7 +17782,7 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 .address-settings {
     display: block;
-    padding: 5px 15px;
+    padding: 0 5px;
     margin: 0;
 }
 #config_modules .address-settings {
@@ -17929,6 +17935,13 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     padding: 25px 0 0 0;
     font-size: 1.1em;
 }
+.livelink-import-list li .live_import_type {
+    display: block;
+    /*margin-left: 16px;*/
+}
+.livelink-import-list li .project_name {
+    font-weight: 500;
+}
 .livelink-import-list li, .livelink_connector_accounts li {
     padding: 10px 0;
     border-bottom: 1px dotted #DDD;
@@ -17945,12 +17958,45 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     background-color: rgba(225, 225, 225, .15);
     border-radius: 3px;
 }
+.livelink_connector_accounts li .connected-ok {
+    display: none;
+    color: #1aaa55;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-left: 15px;
+    font-size: .8em;
+}
+.livelink_connector_accounts li .connected-ok .fa {
+    color: #1aaa55;
+    font-weight: 500;
+}
+.livelink_connector_accounts li .not-connected {
+    display: inline-block;
+    color: #888;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-left: 15px;
+    font-size: .8em;
+}
+.livelink_connector_accounts li .not-connected .fa {
+    color: #888;
+    font-weight: 300;
+}
+.livelink_connector_accounts li.connected .not-connected,
+.livelink_connector_accounts li:not(.connected) .button-disconnect-livelink-connector,
+.livelink_connector_accounts li.connected .button-connect-livelink-connector {
+    display: none;
+}
+.livelink_connector_accounts li.connected .connected-ok {
+    display: inline-block;
+}
 .livelink-import-list li:last-child, .livelink_connector_accounts li:last-child {
     border-bottom: none;
 }
 .livelink-import-list li .description, .livelink_connector_accounts li .description {
     flex: 1 1 auto;
     font-size: 1em;
+    line-height: 1.2em;
 }
 .livelink-import-list li .description .fa, .livelink_connector_accounts li .description .fa {
     color: #555;
@@ -17977,4 +18023,38 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     width: 300px;
     white-space: nowrap;
     background-color: transparent;
+}
+.livelink_integration_settings {
+    padding: 15px 0;
+    display: none;
+}
+.repo-verified .livelink_integration_settings {
+    display: block;
+}
+.livelink_integration_settings .integrations_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.livelink_integration_settings .integrations_list li {
+    padding: 5px;
+}
+.livelink_integration_settings .integrations_list .explanation {
+    padding: 5px;
+    display: block;
+}
+.step-form .visible-step {
+    display: none;
+}
+.step-form.step-1 .visible-step.step-1 {
+    display: initial;
+}
+.step-form.step-2 .visible-step.step-2 {
+    display: initial;
+}
+.step-form.step-3 .visible-step.step-3 {
+    display: initial;
+}
+.step-form.step-4 .visible-step.step-4 {
+    display: initial;
 }

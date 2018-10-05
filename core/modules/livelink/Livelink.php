@@ -107,7 +107,43 @@
          */
         public function listen_project_template(framework\Event $event)
         {
-            include_component('livelink/projectconfig_template', array('project' => $event->getParameter('project'), 'module' => $this));
+            $request = framework\Context::getRequest();
+            $options = [
+                'project' => $event->getParameter('project'),
+                'module' => $this,
+                'partial_options' => $this->getCurrentPartialOptions()
+            ];
+
+            if ($request->hasParameter('connector')) {
+                $options['connector'] = $this->getModule()->getConnectorModule($request['connector']);
+                $options['display_name'] = $options['connector']->getImportDisplayNameForProjectEdit($request);
+                $options['input'] = $options['connector']->getInputOptionsForProjectEdit($request);
+                $event->getParameter('project')->setName($options['connector']->getImportProjectNameForProjectEdit($request));
+            }
+
+            include_component('livelink/projectconfig_template', $options);
+
+        }
+
+        /**
+         * @Listener(module='core', identifier='project/editproject::additional_form_elements')
+         * @param framework\Event $event
+         */
+        public function listen_project_template_additional_form_elements(framework\Event $event)
+        {
+            $request = framework\Context::getRequest();
+            if ($request->hasParameter('connector')) {
+                $options = [
+                    'project' => $event->getParameter('project'),
+                    'module' => $this,
+                ];
+
+                $options['connector'] = $this->getModule()->getConnectorModule($request['connector']);
+                $options['input'] = $options['connector']->getInputOptionsForProjectEdit($request);
+
+                include_component('livelink/projectconfig_template_additional_form_elements', $options);
+            }
+
         }
 
         /**
@@ -125,24 +161,18 @@
          */
         public function listen_projectconfig_panel(framework\Event $event)
         {
-            include_component('livelink/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
+            $options = [
+                'selected_tab' => $event->getParameter('selected_tab'),
+                'access_level' => $event->getParameter('access_level'),
+                'project' => $event->getParameter('project'),
+                'connector' => $event->getParameter('connector')
+            ];
+
+            include_component('livelink/projectconfig_panel', $options);
         }
 
-        public function postAccountSettings(framework\Request $request)
+        public function postConnectorSettings(framework\Request $request)
         {
-            $token = trim($request['github_token']);
-            $client = new GithubClient();
-            $client->authenticate($token, null, GithubClient::AUTH_HTTP_TOKEN);
-            try {
-                $client->currentUser()->emails()->all();
-                framework\Settings::saveUserSetting(framework\Context::getUser()->getID(), 'github_token', $token, $this->getName());
-            } catch (\Exception $e) {
-                if ($e->getCode() == 401) {
-                    throw new \Exception('Could not authenticate with GitHub using the provided token');
-                } else {
-                    throw $e;
-                }
-            }
 
             return true;
         }
@@ -163,7 +193,7 @@
 
         /**
          * @param $key
-         * @return Module
+         * @return ConnectorProvider
          */
         public function getConnectorModule($key)
         {
@@ -186,6 +216,21 @@
         public function hasConnectors()
         {
             return (bool) count($this->_connectors);
+        }
+
+        public function getCurrentPartialOptions()
+        {
+            $partial_options = ['key' => 'project_config'];
+            $request = framework\Context::getRequest();
+
+            if ($request->hasParameter('assignee_type')) {
+                $partial_options['assignee_type'] = $request['assignee_type'];
+            }
+            if ($request->hasParameter('assignee_id')) {
+                $partial_options['assignee_id'] = $request['assignee_id'];
+            }
+
+            return $partial_options;
         }
 
     }

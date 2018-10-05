@@ -22,6 +22,7 @@
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>" method="post" onsubmit="TBG.Project.submitInfo('<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>', <?= $project->getID(); ?>); return false;" id="project_info">
         <?php endif; ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'project/editproject::additional_form_elements')->trigger(compact('project')); ?>
         <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
             <tr>
                 <td style="width: 200px;"><label for="project_name_input" style="font-size: 1.15em;"><?= __('Project name'); ?></label></td>

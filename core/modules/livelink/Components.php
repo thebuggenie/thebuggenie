@@ -20,9 +20,8 @@
             return framework\Context::getModule('livelink');
         }
 
-        public function componentConfigureConnector()
+        public function componentProjectConfig_template()
         {
-            $this->connector = $this->getModule()->getConnector('connector_key');
         }
 
     }

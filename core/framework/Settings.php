@@ -335,12 +335,12 @@
             return [$current_version, $upgrade_available];
         }
 
-        public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
+        public static function getUserSetting($user_id, $name, $module = 'core', $scope = 0)
         {
             return self::get($name, $module, $scope, $user_id);
         }
 
-        public static function hasUserSetting($user_id, $name, $module = 'core', $scope = null)
+        public static function hasUserSetting($user_id, $name, $module = 'core', $scope = 0)
         {
             return self::getUserSetting($name, $module, $scope, $user_id) !== null;
         }
@@ -350,7 +350,7 @@
             return self::saveSetting($name, $value, $module, $scope, $user_id);
         }
 
-        public static function deleteUserSetting($user_id, $setting, $module = 'core', $scope = null)
+        public static function deleteUserSetting($user_id, $setting, $module = 'core', $scope = 0)
         {
             return self::deleteSetting($setting, $module, $scope, $user_id);
         }
@@ -404,10 +404,6 @@
             $crit = new \b2db\Criteria();
             $crit->addWhere(tables\Settings::NAME, $name);
             $crit->addWhere(tables\Settings::MODULE, $module);
-            if ($scope == 0)
-            {
-                throw new \Exception('The Bug Genie has not been correctly installed. Please check that the default scope exists');
-            }
             $crit->addWhere(tables\Settings::SCOPE, $scope);
             $res = tables\Settings::getTable()->doSelect($crit);
             if ($res)

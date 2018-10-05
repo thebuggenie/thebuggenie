@@ -22,4 +22,6 @@
 
         abstract public function doesSupportLinkIssues();
 
+        abstract public function isConfigured();
+
     }

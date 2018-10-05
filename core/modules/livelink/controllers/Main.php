@@ -22,7 +22,47 @@
         }
 
         /**
-         * @Route(name="configure_livelink_settings", url="/configure/project/:project_id/livelink"
+         * @Route(name="configure_livelink_connector", url="/livelink/connector/:connector")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runConfigureLivelinkConnector(framework\Request $request)
+        {
+            $connector = $request['connector'];
+            try {
+                $livelink = $this->getModule();
+                $connector_module = $livelink->getConnectorModule($connector);
+
+                return $this->renderJSON($connector_module->postConnectorSettings($request));
+            } catch (\Exception $e) {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
+            }
+        }
+
+        /**
+         * @Route(name="disconnect_livelink_connector", url="/livelink/disconnect")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runDisconnectLivelinkConnector(framework\Request $request)
+        {
+            $connector = $request['connector'];
+            try {
+                $livelink = $this->getModule();
+                $connector_module = $livelink->getConnectorModule($connector);
+
+                return $this->renderJSON($connector_module->removeConnectorSettings($request));
+            } catch (\Exception $e) {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
+            }
+        }
+
+        /**
+         * @Route(name="configure_livelink_settings", url="/configure/project/:project_id/livelink")
          * @Parameters(config_module="core", section=15)
          *
          * @param framework\Request $request

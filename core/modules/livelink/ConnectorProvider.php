@@ -12,6 +12,14 @@ interface ConnectorProvider
      */
     public function getConnector();
 
-    public function postImportProject(Request $request);
+    public function postConnectorSettings(Request $request);
+
+    public function removeConnectorSettings(Request $request);
+
+    public function getInputOptionsForProjectEdit(Request $request);
+
+    public function getImportDisplayNameForProjectEdit(Request $request);
+
+    public function getImportProjectNameForProjectEdit(Request $request);
 
 }

@@ -351,7 +351,7 @@
                     }
                     elseif ($this->hasRoute($name))
                     {
-                        throw new exceptions\RoutingException('A route that overrides another route must have an @Override annotation');
+                        throw new exceptions\RoutingException("Trying to override route '{$name}' in {$module}/{$action}. A route that overrides another route must have an @Override annotation");
                     }
                     else
                     {

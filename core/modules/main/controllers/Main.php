@@ -1301,18 +1301,20 @@ class Main extends framework\Action
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Notification settings saved')));
                     break;
                 case 'module':
-                    foreach (framework\Context::getModules() as $module_name => $module) {
-                        if ($request['target_module'] == $module_name && $module->hasAccountSettings()) {
-                            try {
-                                if ($module->postAccountSettings($request)) {
-                                    return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
-                                } else {
+                    foreach (framework\Context::getAllModules() as $modules) {
+                        foreach ($modules as $module_name => $module) {
+                            if ($request['target_module'] == $module_name && $module->hasAccountSettings()) {
+                                try {
+                                    if ($module->postAccountSettings($request)) {
+                                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
+                                    } else {
+                                        $this->getResponse()->setHttpStatus(400);
+                                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                                    }
+                                } catch (\Exception $e) {
                                     $this->getResponse()->setHttpStatus(400);
-                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
                                 }
-                            } catch (\Exception $e) {
-                                $this->getResponse()->setHttpStatus(400);
-                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
                             }
                         }
                     }

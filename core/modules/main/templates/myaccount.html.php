@@ -584,9 +584,7 @@
                 <?php foreach ($modules as $module_name => $module): ?>
                     <?php if ($module->hasAccountSettings()): ?>
                         <div id="tab_settings_<?= $module_name; ?>_pane" style="display: none;">
-                            <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?= $module_name; ?>'); return false;" method="post" id="profile_<?= $module_name; ?>_form">
-                                <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
-                            </form>
+                            <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
