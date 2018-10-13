@@ -405,6 +405,11 @@
             return $this->_files;
         }
 
+        public function getInput()
+        {
+            return file_get_contents('php://input');
+        }
+
         /**
          * Get all parameters from the request
          *

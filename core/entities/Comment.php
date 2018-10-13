@@ -680,6 +680,11 @@
             return $this->_posted;
         }
 
+        public function setPosted($timestamp)
+        {
+            $this->_posted = $timestamp;
+        }
+
         public function isSystemComment()
         {
             return $this->_system_comment;

@@ -5,6 +5,7 @@
     use thebuggenie\core\framework;
 
     /**
+     * @method static Priority getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Priority extends Datatype

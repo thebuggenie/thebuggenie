@@ -291,25 +291,25 @@
         /**
          * Shortcut for the global settings function
          *
-         * @param string  $setting the name of the setting
+         * @param string  $name the name of the setting
          * @param integer $uid     the uid for the user to check
          *
          * @return mixed
          */
-        public function getSetting($setting, $uid = 0)
+        public function getSetting($name, $uid = 0)
         {
-            return framework\Settings::get($setting, $this->getName(), framework\Context::getScope()->getID(), $uid);
+            return framework\Settings::get($name, $this->getName(), framework\Context::getScope()->getID(), $uid);
         }
 
-        public function saveSetting($setting, $value, $uid = 0, $scope = null)
+        public function saveSetting($name, $value, $uid = 0, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            return framework\Settings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
+            framework\Settings::saveSetting($name, $value, $this->getName(), $scope, $uid);
         }
 
-        public function deleteSetting($setting, $uid = 0, $scope = null)
+        public function deleteSetting($name, $uid = 0, $scope = null)
         {
-            return framework\Settings::deleteSetting($setting, $this->getName(), $scope, $uid);
+            framework\Settings::deleteSetting($name, $this->getName(), $scope, $uid);
         }
 
         /**

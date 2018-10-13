@@ -18,6 +18,8 @@
     /**
      * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
      *
+     * @method static Commits getTable()
+     *
      * @package thebuggenie
      * @subpackage vcs_integration
      *

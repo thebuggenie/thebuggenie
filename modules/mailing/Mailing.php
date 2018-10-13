@@ -94,6 +94,8 @@
         protected $_tls_encryption_available;
         protected $mailer = null;
 
+        protected $enabled = true;
+
         /**
          * Get an instance of this module
          *
@@ -348,7 +350,11 @@ EOT;
 
         public function listen_registerUser(framework\Event $event)
         {
-            if ($this->isActivationNeeded() && $this->isOutgoingNotificationsEnabled())
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
+            if ($this->isActivationNeeded())
             {
                 $user = $event->getSubject();
                 $password = User::createPassword(8);
@@ -376,74 +382,74 @@ EOT;
 
         public function listen_addScope(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
 //                The following line is included for the i18n parser to pick up the translatable string:
 //                __('Your account in The Bug Genie has been added to a new scope');
-                $subject = 'Your account in The Bug Genie has been added to a new scope';
-                $user = $event->getSubject();
-                $scope = $event->getParameter('scope');
-                $parameters = compact('user', 'scope');
-                $messages = $this->getTranslatedMessages('addtoscope', $parameters, array($user), $subject);
+            $subject = 'Your account in The Bug Genie has been added to a new scope';
+            $user = $event->getSubject();
+            $scope = $event->getParameter('scope');
+            $parameters = compact('user', 'scope');
+            $messages = $this->getTranslatedMessages('addtoscope', $parameters, array($user), $subject);
 
-                foreach ($messages as $message)
-                {
-                    $this->sendMail($message);
-                }
-                $event->setProcessed();
+            foreach ($messages as $message)
+            {
+                $this->sendMail($message);
             }
+            $event->setProcessed();
         }
 
         public function listen_forgottenPassword(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
 //                The following line is included for the i18n parser to pick up the translatable string:
 //                __('Password reset');
-                $subject = 'Password reset';
-                $user = $event->getSubject();
-                $parameters = array('user' => $user, 'password' => $event->getParameter('password'));
-                $messages = $this->getTranslatedMessages('passwordreset', $parameters, array($user), $subject);
+            $subject = 'Password reset';
+            $user = $event->getSubject();
+            $parameters = array('user' => $user, 'password' => $event->getParameter('password'));
+            $messages = $this->getTranslatedMessages('passwordreset', $parameters, array($user), $subject);
 
-                foreach ($messages as $message)
-                {
-                    $this->sendMail($message);
-                }
+            foreach ($messages as $message)
+            {
+                $this->sendMail($message);
             }
         }
 
         public function sendforgottenPasswordEmail($user)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
 //                The following line is included for the i18n parser to pick up the translatable string:
 //                __('Forgot your password?');
-                $subject = 'Forgot your password?';
-                $parameters = compact('user');
-                $messages = $this->getTranslatedMessages('forgottenpassword', $parameters, array($user), $subject);
+            $subject = 'Forgot your password?';
+            $parameters = compact('user');
+            $messages = $this->getTranslatedMessages('forgottenpassword', $parameters, array($user), $subject);
 
-                foreach ($messages as $message)
-                {
-                    $this->sendMail($message);
-                }
+            foreach ($messages as $message)
+            {
+                $this->sendMail($message);
             }
         }
 
         public function sendTestEmail($email_address)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
-                $subject = framework\Context::getI18n()->__('Test email');
-                $body_parts = $this->getEmailTemplates('testemail');
-                $message = $this->getSwiftMessage($subject, $body_parts[0], $body_parts[1]);
-                $message->addTo($email_address);
-                return $this->sendMail($message);
-            }
-            else
-            {
+            if (!$this->isOutgoingNotificationsEnabled()) {
                 throw new \Exception(framework\Context::getI18n()->__('The email module is not configured for outgoing emails'));
             }
-        }
+
+            $subject = framework\Context::getI18n()->__('Test email');
+            $body_parts = $this->getEmailTemplates('testemail');
+            $message = $this->getSwiftMessage($subject, $body_parts[0], $body_parts[1]);
+            $message->addTo($email_address);
+            return $this->sendMail($message);
+    }
 
         protected function _getArticleRelatedUsers(Article $article, User $triggered_by_user = null)
         {
@@ -524,35 +530,40 @@ EOT;
 
         public function listen_issueCreate(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
+            $issue = $event->getSubject();
+            if ($issue instanceof Issue)
             {
-                $issue = $event->getSubject();
-                if ($issue instanceof Issue)
+                $subject = '[' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
+                $parameters = compact('issue');
+                $to_users = $issue->getRelatedUsers();
+                if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
+                    unset($to_users[framework\Context::getUser()->getID()]);
+
+                foreach ($to_users as $uid => $user)
                 {
-                    $subject = '[' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                    $parameters = compact('issue');
-                    $to_users = $issue->getRelatedUsers();
-                    if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
-                        unset($to_users[framework\Context::getUser()->getID()]);
+                    if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user) || ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->isOn() && ($issue->getCategory() instanceof \thebuggenie\core\entities\Category && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, 0, 'mailing')->getValue() != $issue->getCategory()->getID()))) unset($to_users[$uid]);
+                    if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive()) unset($to_users[$uid]);
+                }
+                $messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
 
-                    foreach ($to_users as $uid => $user)
-                    {
-                        if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff() || !$issue->hasAccess($user) || ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, false, 'mailing')->isOn() && ($issue->getCategory() instanceof \thebuggenie\core\entities\Category && $user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY, 0, 'mailing')->getValue() != $issue->getCategory()->getID()))) unset($to_users[$uid]);
-                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive()) unset($to_users[$uid]);
-                    }
-                    $messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
-
-                    foreach ($messages as $message)
-                    {
-                        $this->_addProjectEmailAddress($message, $issue->getProject());
-                        $this->sendMail($message);
-                    }
+                foreach ($messages as $message)
+                {
+                    $this->_addProjectEmailAddress($message, $issue->getProject());
+                    $this->sendMail($message);
                 }
             }
         }
 
         public function listen_Article_doSave(framework\Event $event)
         {
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
             $article = $event->getSubject();
             $change_reason = $event->getParameter('reason');
             $revision = $event->getParameter('revision');
@@ -579,41 +590,42 @@ EOT;
 
         public function listen_thebuggenie_core_entities_Comment_createNew(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
-                $comment = $event->getSubject();
-                if ($comment instanceof Comment)
-                {
-                    switch ($comment->getTargetType())
-                    {
-                        case Comment::TYPE_ISSUE:
-                            $issue = $event->getParameter('issue');
-                            $project = $issue->getProject();
-                            $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                            $parameters = compact('issue', 'comment');
-                            $to_users = $this->_getIssueRelatedUsers($issue, $comment->getPostedBy());
-                            $this->_markIssueSent($issue, $to_users);
-                            $messages = $this->getTranslatedMessages('issuecomment', $parameters, $to_users, $subject);
-                            break;
-                        case Comment::TYPE_ARTICLE:
-                            $article = $event->getParameter('article');
-                            $project = $article->getProject();
-                            $subject = 'Comment posted on article %article_name';
-                            $parameters = compact('article', 'comment');
-                            $to_users = $this->_getArticleRelatedUsers($article, $comment->getPostedBy());
-                            $this->_markArticleSent($article, $to_users);
-                            $messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset())));
-                            break;
-                    }
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
 
-                    foreach ($messages as $message)
+            $comment = $event->getSubject();
+            if ($comment instanceof Comment)
+            {
+                switch ($comment->getTargetType())
+                {
+                    case Comment::TYPE_ISSUE:
+                        $issue = $event->getParameter('issue');
+                        $project = $issue->getProject();
+                        $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
+                        $parameters = compact('issue', 'comment');
+                        $to_users = $this->_getIssueRelatedUsers($issue, $comment->getPostedBy());
+                        $this->_markIssueSent($issue, $to_users);
+                        $messages = $this->getTranslatedMessages('issuecomment', $parameters, $to_users, $subject);
+                        break;
+                    case Comment::TYPE_ARTICLE:
+                        $article = $event->getParameter('article');
+                        $project = $article->getProject();
+                        $subject = 'Comment posted on article %article_name';
+                        $parameters = compact('article', 'comment');
+                        $to_users = $this->_getArticleRelatedUsers($article, $comment->getPostedBy());
+                        $this->_markArticleSent($article, $to_users);
+                        $messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset())));
+                        break;
+                }
+
+                foreach ($messages as $message)
+                {
+                    if (isset($project) && $project instanceof Project)
                     {
-                        if (isset($project) && $project instanceof Project)
-                        {
-                            $this->_addProjectEmailAddress($message, $project);
-                        }
-                        $this->sendMail($message);
+                        $this->_addProjectEmailAddress($message, $project);
                     }
+                    $this->sendMail($message);
                 }
             }
         }
@@ -654,56 +666,58 @@ EOT;
 
         public function listen_issueSave(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
+            $issue = $event->getSubject();
+            if ($issue instanceof Issue)
             {
-                $issue = $event->getSubject();
-                if ($issue instanceof Issue)
+                $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
+                $parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
+                $to_users = $this->_getIssueRelatedUsers($issue, $parameters['updated_by']);
+                if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
+                    unset($to_users[framework\Context::getUser()->getID()]);
+
+                foreach ($to_users as $uid => $user)
                 {
-                    $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                    $parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
-                    $to_users = $this->_getIssueRelatedUsers($issue, $parameters['updated_by']);
-                    if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, framework\Context::getUser()->getID()))
-                        unset($to_users[framework\Context::getUser()->getID()]);
+                    if (!$issue->hasAccess($user))
+                        unset($to_users[$uid]);
+                    if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
+                        unset($to_users[$uid]);
+                }
+                $this->_markIssueSent($issue, $to_users);
+                $messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
 
-                    foreach ($to_users as $uid => $user)
-                    {
-                        if (!$issue->hasAccess($user))
-                            unset($to_users[$uid]);
-                        if ($user->getNotificationSetting(self::NOTIFY_NOT_WHEN_ACTIVE, false, 'mailing')->isOn() && $user->isActive())
-                            unset($to_users[$uid]);
-                    }
-                    $this->_markIssueSent($issue, $to_users);
-                    $messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
-
-                    foreach ($messages as $message)
-                    {
-                        $this->_addProjectEmailAddress($message, $issue->getProject());
-                        $this->sendMail($message);
-                    }
+                foreach ($messages as $message)
+                {
+                    $this->_addProjectEmailAddress($message, $issue->getProject());
+                    $this->sendMail($message);
                 }
             }
         }
 
         public function listen_issueSubscribeUser(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
-                $issue = $event->getSubject();
-                $user = $event->getParameter('user');
-                if ($issue instanceof Issue)
-                {
-                    $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
-                    $parameters = array('issue' => $issue);
-                    $to_users = array($user);
-                    $messages = $this->getTranslatedMessages('issuesubscribed', $parameters, $to_users, $subject);
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
 
-                    foreach ($messages as $message)
-                    {
-                        $this->_addProjectEmailAddress($message, $issue->getProject());
-                        $this->sendMail($message);
-                    }
-                    $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing');
+            $issue = $event->getSubject();
+            $user = $event->getParameter('user');
+            if ($issue instanceof Issue)
+            {
+                $subject = 'Re: [' . $issue->getProject()->getKey() . '] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, framework\Context::getI18n()->getCharset());
+                $parameters = array('issue' => $issue);
+                $to_users = array($user);
+                $messages = $this->getTranslatedMessages('issuesubscribed', $parameters, $to_users, $subject);
+
+                foreach ($messages as $message)
+                {
+                    $this->_addProjectEmailAddress($message, $issue->getProject());
+                    $this->sendMail($message);
                 }
+                $user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing');
             }
         }
 
@@ -802,7 +816,11 @@ EOT;
 
         public function listen_configCreateuserSave(framework\Event $event)
         {
-            if ($this->isOutgoingNotificationsEnabled() && framework\Context::getRequest()->getParameter('send_login_details'))
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
+            }
+
+            if (framework\Context::getRequest()->getParameter('send_login_details'))
             {
                 $user = $event->getSubject();
                 if ($user instanceof User)
@@ -961,25 +979,36 @@ EOT;
 
         public function sendMail(Swift_Message $email)
         {
-            if ($this->isOutgoingNotificationsEnabled())
-            {
-                if ($this->usesEmailQueue())
-                {
-                    MailQueueTable::getTable()->addMailToQueue($email);
-                    return true;
-                }
-                else
-                {
-                    $retval = $this->mail($email);
-                }
-
-                return $retval;
+            if (!$this->isOutgoingNotificationsEnabled()) {
+                return;
             }
+
+            if ($this->usesEmailQueue())
+            {
+                MailQueueTable::getTable()->addMailToQueue($email);
+                return true;
+            }
+            else
+            {
+                $retval = $this->mail($email);
+            }
+
+            return $retval;
+        }
+
+        public function temporarilyDisable()
+        {
+            $this->enabled = false;
+        }
+
+        public function removeTemporarilyDisable()
+        {
+            $this->enabled = true;
         }
 
         public function isOutgoingNotificationsEnabled()
         {
-            return (bool) $this->getSetting('enable_outgoing_notifications');
+            return (bool) $this->getSetting('enable_outgoing_notifications') && $this->enabled;
         }
 
         public function isActivationNeeded()

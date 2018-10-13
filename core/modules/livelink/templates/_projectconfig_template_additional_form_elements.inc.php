@@ -1,2 +1,3 @@
-<input type="hidden" name="repository_url" value="<?= $input['repository_url']; ?>">
-<input type="hidden" name="live_link" value="<?= $input['live_link']; ?>">
+<?php foreach ($inputs as $input_key => $input_value): ?>
+    <input type="hidden" name="<?= $input_key; ?>" value="<?= $input_value; ?>">
+<?php endforeach; ?>

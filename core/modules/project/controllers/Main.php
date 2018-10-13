@@ -1148,11 +1148,13 @@ class Main extends helpers\ProjectActions
                     }
                 }
 
-
                 if ($apply_template) {
                     $this->selected_project->applyTemplate($request['project_type']);
                     $this->selected_project->save();
                 }
+
+                framework\Event::createNew('core', 'projectActions::configureProjectSettings::postSave', $this->selected_project)->trigger(['request' => $request]);
+
                 $response = ['message' => $this->getI18n()->__('Settings saved')];
 
                 if (!$request['project_id'] && !$request['project_key']) {

@@ -5,6 +5,7 @@
     use thebuggenie\core\entities\common\QaLeadable,
         thebuggenie\core\helpers\MentionableProvider,
         thebuggenie\core\framework;
+    use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\framework\Settings;
 
     /**
@@ -535,7 +536,7 @@
         {
             if (self::$_projects === null)
             {
-                self::$_projects = self::getB2DBTable()->getAll();
+                self::$_projects = Projects::getTable()->getAll();
                 foreach (self::$_projects as $key => $project) {
                     if (!$project->hasAccess()) {
                         unset(self::$_projects[$key]);
@@ -760,10 +761,11 @@
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
-            $project = self::getByKey($this->getKey());
+            $key = $this->getKey();
+            $project = self::getByKey($key);
             if ($project instanceof Project && $project->getID() != $this->getID())
             {
-                throw new \InvalidArgumentException("A project with this key already exists");
+                throw new \InvalidArgumentException("A project with this key ({$key}, {$this->getID()}) already exists ({$project->getID()})");
             }
         }
 
@@ -774,9 +776,9 @@
                 self::$_num_projects = null;
                 self::$_projects = null;
 
-                                $dashboard = new \thebuggenie\core\entities\Dashboard();
-                                $dashboard->setProject($this);
-                                $dashboard->save();
+                $dashboard = new \thebuggenie\core\entities\Dashboard();
+                $dashboard->setProject($this);
+                $dashboard->save();
 
                 framework\Context::setPermission("canseeproject", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canseeprojecthierarchy", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);

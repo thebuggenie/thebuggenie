@@ -1069,7 +1069,8 @@ input[type=checkbox].semi-checked {
 .project-context.page-agile_whiteboard #content_container,
 .project-context.page-agile_board #content_container,
 .project-context.page-viewissue #content_container,
-.project-context.page-project_timeline #content_container {
+.project-context.page-project_timeline #content_container,
+.project-context.page-livelink_project_commits #content_container {
     flex-direction: column;
 }
 
@@ -18058,3 +18059,6 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 .step-form.step-4 .visible-step.step-4 {
     display: initial;
 }
+.livelink_project_badge, .livelink_project_badge:hover { display: inline-block; font-size: .65em; padding: 7px; font-weight: 300; background: rgba(225, 225, 225, .3); color: #777; border-radius: 5px; margin-left: .35em; border: none; text-decoration: none; }
+.livelink_project_badge:hover { background: rgba(195, 235, 195, .35); }
+.livelink_project_badge .fa:not(.tbg_livelink) { margin-right: .35em; }

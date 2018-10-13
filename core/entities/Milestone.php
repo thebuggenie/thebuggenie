@@ -193,6 +193,20 @@
             $this->_reached = ($this->_reacheddate > 0);
         }
 
+        protected function _preSave($is_new)
+        {
+            parent::_preSave($is_new);
+            if ($is_new)
+            {
+                if (!$this->_itemtype) {
+                    $this->_itemtype = self::TYPE_REGULAR;
+                }
+                if (!$this->_percentage_type) {
+                    $this->_percentage_type = self::PERCENTAGE_TYPE_REGULAR;
+                }
+            }
+        }
+
         protected function _postSave($is_new)
         {
             if ($is_new)

@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Issue;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -361,6 +362,11 @@
             return ($issue_no < 1) ? 1 : $issue_no;
         }
 
+        /**
+         * @param $prefix
+         * @param $issue_no
+         * @return Issue
+         */
         public function getByPrefixAndIssueNo($prefix, $issue_no)
         {
             $crit = $this->getCriteria();
@@ -373,6 +379,11 @@
             return $this->selectOne($crit, false);
         }
 
+        /**
+         * @param $project_id
+         * @param $issue_no
+         * @return Issue
+         */
         public function getByProjectIDAndIssueNo($project_id, $issue_no)
         {
             $crit = $this->getCriteria();

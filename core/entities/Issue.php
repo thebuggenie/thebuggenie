@@ -917,7 +917,7 @@
          *
          * @param string $text Text that should be parsed for issue numbers and transitions.
          *
-         * @return An array with two elements, one denoting the matched issues, one
+         * @return array An array with two elements, one denoting the matched issues, one
          * denoting the transitions for issues. These elements can be accessed using
          * keys 'issues', and 'transitions'. The key 'issues' can be used for
          * accessing an array made-up of \thebuggenie\core\entities\Issue instances. The key 'transitions'
@@ -929,15 +929,15 @@
         public static function getIssuesFromTextByRegex($text)
         {
             $issue_match_regexes = \thebuggenie\core\helpers\TextParser::getIssueRegex();
-            $issue_numbers = array(); // Issue numbers
-            $issues = array(); // Issue objects
-            $transitions = array(); // Transition information
+            $issue_numbers = []; // Issue numbers
+            $issues = []; // Issue objects
+            $transitions = []; // Transition information
 
             // Iterate over all regular expressions that should be used for
             // issue/transition matching in commit message.
             foreach ($issue_match_regexes as $issue_match_regex)
             {
-                $matched_issue_data = array(); // All data from regexp
+                $matched_issue_data = []; // All data from regexp
 
                 $lines = explode("\n", $text);
                 foreach ($lines as $line)
@@ -962,11 +962,11 @@
                             // overwrite it. Use issue number as key for transitions.
                             if (!array_key_exists($issue_number, $transitions))
                             {
-                                $transitions[$issue_number] = array();
+                                $transitions[$issue_number] = [];
                             }
 
                             // Add the transition information (if any) for an issue.
-                            if ($matched_issue_transitions )
+                            if ($matched_issue_transitions)
                             {
                                 // Parse the transition information. Each transition string is in
                                 // format:
@@ -977,7 +977,7 @@
                                     $transition_data = explode(": ", $transition);
                                     $transition_command = $transition_data[0];
                                     // Set-up array that will contain parameters
-                                    $transition_parameters = array();
+                                    $transition_parameters = [];
 
                                     // Process parameters if they were present.
                                     if (count($transition_data) == 2)
@@ -994,7 +994,7 @@
                                         }
                                     }
                                     // Append the transition information for the current issue number.
-                                    $transitions[$issue_number][] = array($transition_command, $transition_parameters);
+                                    $transitions[$issue_number][] = [$transition_command, $transition_parameters];
                                 }
                             }
 
@@ -1020,7 +1020,7 @@
             // Return array consisting out of two arrays - one with Issue
             // instances, and the second one with transition information for those
             // issues.
-            return array("issues" => $issues, "transitions" => $transitions);
+            return compact('issues', 'transitions');
         }
 
         /**
@@ -2742,7 +2742,7 @@
         /**
          * Set the status
          *
-         * @param integer $status_id The status ID to change to
+         * @param integer|Status $status_id The status ID to change to
          */
         public function setStatus($status_id)
         {
@@ -3220,11 +3220,12 @@
         /**
          * Set issue poster
          *
-         * @param common\Identifiable $poster The user/team you want to have posted the issue
+         * @param common\Identifiable|integer $poster The user/team you want to have posted the issue
          */
-        public function setPostedBy(common\Identifiable $poster)
+        public function setPostedBy($poster)
         {
-            $this->_addChangedProperty('_posted_by', $poster->getID());
+            $posted_by_id = ($poster instanceof common\Identifiable) ? $poster->getID() : $poster;
+            $this->_addChangedProperty('_posted_by', $posted_by_id);
         }
 
         /**
@@ -4406,10 +4407,12 @@
          * @param string $text The text to log
          * @param boolean $system Whether this is a user entry or a system entry
          */
-        public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
+        public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null, $uid = null)
         {
             if (!$this->should_log_entry) return;
-            $uid = ($system) ? 0 : framework\Context::getUser()->getID();
+            if ($uid === null) {
+                $uid = ($system) ? 0 : framework\Context::getUser()->getID();
+            }
             $log_item = new LogItem();
             $log_item->setChangeType($change_type);
             $log_item->setText($text);
@@ -5719,7 +5722,7 @@
                         if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
                     }
                 }
-                $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
+                $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, null, null, false, $this->getPosted(), $this->getPostedByID());
 
                 if ($this->shouldAutomaticallySubscribeUser(framework\Context::getUser())) $this->addSubscriber(framework\Context::getUser()->getID());
 

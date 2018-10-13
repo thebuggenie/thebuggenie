@@ -209,7 +209,7 @@
      * @param string    $component    name of component to load, or module/component to load
      * @param array     $params      key => value pairs of parameters for the template
      */
-    function get_component_html($component, $params = array())
+    function get_component_html($component, $params = [])
     {
         return Action::returnComponentHTML($component, $params);
     }
@@ -223,7 +223,7 @@
      *
      * @return string
      */
-    function make_url($name, $params = array(), $relative = true)
+    function make_url($name, $params = [], $relative = true)
     {
         return \thebuggenie\core\framework\Context::getRouting()->generate($name, $params, $relative);
     }
@@ -237,7 +237,7 @@
      */
     function parseHTMLoptions($options)
     {
-        $option_strings = array();
+        $option_strings = [];
         if (!is_array($options))
         {
             throw new \Exception('Invalid HTML options. Must be an array with key => value pairs corresponding to html attributes');

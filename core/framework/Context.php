@@ -999,7 +999,7 @@ class Context
     {
         self::setUser($user);
         Settings::forceSettingsReload();
-        self::cacheAllPermissions();
+        self::reloadPermissionsCache();
     }
 
     /**
@@ -1031,7 +1031,7 @@ class Context
         foreach (self::$_internal_module_paths as $modulename)
         {
             $classname = "\\thebuggenie\\core\\modules\\{$modulename}\\" . ucfirst($modulename);
-            self::$_internal_modules[$modulename] = new $classname();
+            self::$_internal_modules[$modulename] = new $classname($modulename);
             self::$_internal_modules[$modulename]->initialize();
         }
 
@@ -1318,6 +1318,15 @@ class Context
     {
         self::getCache()->delete(Cache::KEY_PERMISSIONS_CACHE, true, true);
         self::getCache()->fileDelete(Cache::KEY_PERMISSIONS_CACHE, true, true);
+    }
+
+    public static function reloadPermissionsCache()
+    {
+        self::$_available_permission_paths = null;
+        self::$_available_permissions = null;
+
+        self::_cacheAvailablePermissions();
+        self::cacheAllPermissions();
     }
 
     /**

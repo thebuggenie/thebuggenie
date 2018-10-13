@@ -163,7 +163,7 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 2;
+        protected static $_ver_mn = 3;
         protected static $_ver_rev = 0;
         protected static $_ver_name = "On the road again";
         protected static $_defaultscope;
@@ -240,6 +240,16 @@
             tables\Settings::getTable()->deleteModuleSettings($module_name, $scope);
         }
 
+        /**
+         * Save a setting
+         *
+         * @param string $name The settings key / name of the setting to store
+         * @param mixed $value The value to store
+         * @param string $module The name / key of the module storing the setting
+         * @param int $scope A scope id (or 0 to apply to all scopes)
+         * @param int $uid A user id to save settings for
+         * @throws \Exception
+         */
         public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)
         {
             if ($scope == 0 && $name != 'defaultscope' && $module == 'core')

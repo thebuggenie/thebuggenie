@@ -2123,12 +2123,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
-        TBG.Project.showBranchCommits = function (url, branchname, gitlab_repos_nss) {
+        TBG.Project.showBranchCommits = function (url, branch) {
             $$('body')[0].setStyle({'overflow': 'auto'});
 
             TBG.Main.Helpers.ajax(url, {
                 url_method: 'post',
-                additional_params: "offset=0" + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
+                additional_params: "branch=" + branch,
                 loading: {
                     indicator: 'fullpage_backdrop',
                     show: 'fullpage_backdrop_indicator',
@@ -2141,10 +2141,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
-        TBG.Project.Commits.update = function (url, branchname, gitlab_repos_nss) {
+        TBG.Project.Commits.update = function (url, branch) {
             TBG.Main.Helpers.ajax(url, {
                 url_method: 'post',
-                additional_params: "offset=" + $('commits_offset').getValue() + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
+                additional_params: "from_commit=" + $('from_commit').getValue() + "&branch=" + branch,
                 loading: {
                     indicator: 'commits_indicator',
                     hide: 'commits_more_link'
@@ -2153,7 +2153,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     update: {element: 'commits', insertion: true},
                     show: 'commits_more_link',
                     callback: function (json) {
-                        $('commits_offset').setValue(json.offset)
+                        $('from_commit').setValue(json.last_commit)
                     }
                 }
             });
