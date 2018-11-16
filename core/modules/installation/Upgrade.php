@@ -288,9 +288,19 @@ class Upgrade
     protected function _upgradeFrom4dot2()
     {
         if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating branches table.\n");
+        }
+        tables\Branches::getTable()->create();
+
+        if (defined('TBG_CLI')) {
             Command::cli_echo("Creating commits table.\n");
         }
         tables\Commits::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating commit_files table.\n");
+        }
+        tables\CommitFiles::getTable()->create();
 
         if (defined('TBG_CLI')) {
             Command::cli_echo("Creating issuecommits table.\n");

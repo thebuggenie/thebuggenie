@@ -1,16 +1,5 @@
 <div id="tab_livelink_pane"<?php if ($selected_tab != 'livelink'): ?> style="display: none;"<?php endif; ?>>
-    <h3><?= __('Connect with Github');?></h3>
-    <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-        <div class="rounded_box red" style="margin-top: 10px;">
-            <?= __('You do not have the relevant permissions to access VCS Integration settings'); ?>
-        </div>
-    <?php else: ?>
-        <div class="address-settings">
-            <form action="<?= make_url('configure_livelink_settings', array('project_id' => $project->getID())); ?>" accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('configure_livelink_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="return false;" id="livelink_form">
-                <?php include_component('livelink/setupstep1'); ?>
-            </form>
-        </div>
-    <?php endif; ?>
+    <?php include_component('livelink/projectconfig_template', ['project' => $project]); ?>
 </div>
 <script>
     require(['domReady', 'thebuggenie/tbg', 'jquery'], function (domReady, tbgjs, $) {

@@ -42,6 +42,14 @@
         protected $_old_rev;
 
         /**
+         * Previous commit
+         * @var \thebuggenie\core\entities\Commit
+         * @Relates(class="\thebuggenie\core\entities\Commit")
+         * @Column(type="integer")
+         */
+        protected $_previous_commit_id;
+
+        /**
          * Revision number/hash of this commit
          * @var string/integer
          * @Column(type="string", length=40)
@@ -98,6 +106,14 @@
          */
         protected $_project = null;
 
+        /**
+         * Whether the commit is imported
+         *
+         * @var boolean
+         * @Column(type="boolean", default="false")
+         */
+        protected $_is_imported = false;
+
         public function _addNotifications()
         {
             $parser = new TextParser($this->_log);
@@ -120,7 +136,7 @@
 
         protected function _preSave($is_new)
         {
-            if ($is_new)
+            if ($is_new && !$this->_date)
             {
                 $this->_date = NOW;
             }
@@ -207,16 +223,6 @@
         }
 
         /**
-         * Get the previous commit
-         *
-         * @return Commit
-         */
-        public function getPreviousCommit()
-        {
-            return tables\Commits::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
-        }
-
-        /**
          * Get the author of this commit
          *
          * @return User
@@ -244,21 +250,6 @@
         public function getMiscData()
         {
             return $this->_data;
-        }
-
-        /**
-         * Get any other data for this comment, is parsed to array
-         *
-         * @return array
-         */
-        public function getMiscDataArray()
-        {
-            if (is_null($this->_data_array))
-            {
-                $this->_data_array = $this->_parseMiscDataToArray();
-            }
-
-            return $this->_data_array;
         }
 
         /**
@@ -321,6 +312,16 @@
         public function setPreviousRevision($revno)
         {
             $this->_old_rev = $revno;
+        }
+
+        public function setPreviousCommit(Commit $commit)
+        {
+            $this->_previous_commit_id = $commit;
+        }
+
+        public function getPreviousCommit()
+        {
+            return $this->_b2dbLazyload('_previous_commit_id');
         }
 
         /**
@@ -428,6 +429,16 @@
             }
 
             return $base_url.'/merge_requests/'.$merge_request_id;
+        }
+
+        public function isImported()
+        {
+            return $this->_is_imported;
+        }
+
+        public function setIsImported($is_imported = true)
+        {
+            $this->_is_imported = $is_imported;
         }
 
     }

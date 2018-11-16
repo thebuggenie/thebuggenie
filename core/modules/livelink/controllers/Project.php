@@ -47,9 +47,9 @@
 
                 $commit = Commits::getTable()->getCommitByRef($from_commit_ref, $this->selected_project);
             }
-            $this->commits = $branch->getCommits($commit);
+            $commits = $branch->getCommits($commit);
 
-            return $this->renderJSON(['content' => $this->getComponentHTML('livelink/projectcommitsbox', ['commits' => $this->commits, 'selected_project' => $this->selected_project, 'branch' => $branch])]);
+            return $this->renderJSON(['content' => $this->getComponentHTML('livelink/projectcommitsbox', ['commits' => $commits, 'selected_project' => $this->selected_project, 'branch' => $branch])]);
         }
 
         /**

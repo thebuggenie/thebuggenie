@@ -54,7 +54,7 @@
                     $current += 1;
                     Context::setScope($import->getScope());
                     Context::switchUserContext($import->getUser());
-                    Livelink::getModule()->performImport($import->getProject());
+                    Livelink::getModule()->performImport($import);
 
                     $this->cliEcho("Done!\n\n", 'white', 'bold');
 

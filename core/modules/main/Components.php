@@ -674,6 +674,7 @@
         {
             $routing = $this->getRouting();
             $i18n = $this->getI18n();
+            framework\Context::loadLibrary('ui');
             $links = array(
                 array('url' => $routing->generate('project_open_issues', array('project_key' => '%project_key%')), 'text' => $i18n->__('Issues')),
                 array('url' => $routing->generate('project_roadmap', array('project_key' => '%project_key%')), 'text' => $i18n->__('Roadmap')),

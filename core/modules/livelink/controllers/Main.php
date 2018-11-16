@@ -66,6 +66,52 @@
         }
 
         /**
+         * @Route(name="get_project_connector_template", url="/livelink/project/:project_id", methods="GET")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runGetProjectConnectorTemplate(framework\Request $request)
+        {
+            $project = Projects::getTable()->selectById($request['project_id']);
+            if (!$project instanceof Project) {
+                throw new \Exception('Invalid project id');
+            }
+
+            $options = [
+                'selected_tab' => 'livelink',
+                'access_level' => framework\Settings::getAccessLevel(framework\Settings::CONFIGURATION_SECTION_PROJECTS),
+                'project' => $project,
+                'connector' => $this->getModule()->getProjectConnector($project)
+            ];
+
+            return $this->renderComponent('livelink/projectconfig_panel', $options);
+        }
+
+        /**
+         * @Route(name="livelink_remove_project_connector", url="/livelink/project/:project_id", methods="POST")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runRemoveProjectLivelinkConnector(framework\Request $request)
+        {
+            $project = Projects::getTable()->selectById($request['project_id']);
+            if (!$project instanceof Project) {
+                throw new \Exception('Invalid project id');
+            }
+
+            try {
+                $this->getModule()->removeProjectLiveLinkSettings($project);
+
+                return $this->renderJSON(['removed' => 'ok']);
+            } catch (\Exception $e) {
+                $this->getResponse()->setHttpStatus(400);
+                return $this->renderJSON(['error' => framework\Context::getI18n()->__($e->getMessage())]);
+            }
+        }
+
+        /**
          * @Route(name="configure_livelink_connector", url="/livelink/connector/:connector")
          *
          * @param framework\Request $request

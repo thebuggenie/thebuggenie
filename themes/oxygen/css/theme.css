@@ -836,6 +836,9 @@ img.avatar {
 .header_menu > ul > li > a > .fa {
     margin: 0 .5em 0 0;
 }
+.header_menu > ul > li > a > .fa:last-child {
+    margin: 0;
+}
 .header_menu > ul > li > a > .fa.dropdown-indicator {
     margin: 0 0 0 .5em;
 }
@@ -17651,9 +17654,8 @@ li.header div.user_avatar {
 
 #vcs_integration_getcommit_backdrop_box .commit .commenttitle,
 #project_commits .commit .commenttitle {
-    font-weight: 500;
-    line-height: 1.9em;
-    margin-top: -4px;
+    display: flex;
+    align-items: center;
 }
 
 #vcs_integration_getcommit_backdrop_box .commit .commenttitle .commitrepos,
@@ -17663,10 +17665,6 @@ li.header div.user_avatar {
 
 .commit_expander > a {
     color: rgb(85, 85, 85);
-}
-
-#project_commits .comment {
-    margin-top: -90px;
 }
 
 /* Micro clearfix hack - http://nicolasgallagher.com/micro-clearfix-hack/ */

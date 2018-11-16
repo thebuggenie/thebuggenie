@@ -997,6 +997,10 @@ class Context
 
     public static function switchUserContext(User $user)
     {
+        if (self::getUser() instanceof User && $user->getID() == self::getUser()->getID()) {
+            return;
+        }
+
         self::setUser($user);
         Settings::forceSettingsReload();
         self::reloadPermissionsCache();

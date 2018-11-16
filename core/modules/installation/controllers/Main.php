@@ -452,7 +452,7 @@ class Main extends framework\Action
 
         $this->upgrade_complete = false;
         $this->adminusername = UsersTable::getTable()->getAdminUsername();
-        $this->requires_password_reset = true;
+        $this->requires_password_reset = $this->current_version != '4.2.0';
         try
         {
             if ($this->upgrade_available)

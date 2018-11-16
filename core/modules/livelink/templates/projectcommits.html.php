@@ -14,7 +14,6 @@
         <div class="project_left">
             <h3><?php echo __('Branch filters'); ?></h3>
             <ul class="simple_list">
-                <li><a href="javascript:void(0);" onclick="TBG.Project.showBranchCommits('<?php echo make_url('livelink_project_commits', array('project_key' => $selected_project->getKey())); ?>'); TBG.Project.toggleLeftSelection(this);"><?php echo __('All branches'); ?></a></li>
                 <?php foreach ($branches as $branch): ?>
                     <li><a href="javascript:void(0);" onclick="TBG.Project.showBranchCommits('<?php echo make_url('livelink_project_commits', array('project_key' => $selected_project->getKey())); ?>', '<?php echo $branch->getName(); ?>'); TBG.Project.toggleLeftSelection(this);"><?php echo $branch->getName(); ?></a></li>
                 <?php endforeach; ?>

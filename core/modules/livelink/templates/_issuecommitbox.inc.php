@@ -1,5 +1,5 @@
 <?php
-    $base_url = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
+    $base_url = \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('browser_url_' . $projectId);
 
     if (mb_strstr($commit->getRevision(), ':'))
     {
@@ -37,7 +37,7 @@
         }
     }
 
-    $misc_data_array = $commit->getMiscDataArray();
+    $misc_data_array = $commit->getMiscData();
     $reposname = null;
 
     if (array_key_exists('gitlab_repos_ns', $misc_data_array))
@@ -53,7 +53,7 @@
                 <?php include_component('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'large')); ?>
             </div>
             <div class="comment_hash">
-                <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())); ?>');"><?php echo $commit->getRevisionString(); ?></a>
+                <a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'livelink_getcommit', 'commit_id' => $commit->getID())); ?>');"><?php echo $commit->getRevisionString(); ?></a>
             </div>
             <div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date">
                 <?php echo tbg_formattime($commit->getDate(), 9); ?>

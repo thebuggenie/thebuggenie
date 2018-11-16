@@ -2,7 +2,7 @@
 
     switch ($notification->getNotificationType())
     {
-        case \thebuggenie\modules\vcs_integration\Vcs_integration::NOTIFICATION_COMMIT_MENTIONED:
+        case \thebuggenie\modules\livelink\Vcs_integration::NOTIFICATION_COMMIT_MENTIONED:
             ?>
                 <?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?>
                 <?php echo __('%user_name mentioned you in commit %rev', array(

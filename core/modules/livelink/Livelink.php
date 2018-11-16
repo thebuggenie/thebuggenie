@@ -8,6 +8,7 @@
     use thebuggenie\core\entities\CommitFile;
     use thebuggenie\core\entities\Issue;
     use thebuggenie\core\entities\IssueCommit;
+    use thebuggenie\core\entities\LivelinkImport;
     use thebuggenie\core\entities\Module;
     use thebuggenie\core\entities\Priority;
     use thebuggenie\core\entities\Project;
@@ -159,6 +160,24 @@
             /** @var framework\Request $request */
             $request = $event->getParameter('request');
 
+            $this->saveProjectLiveLinkSettings($project, $request);
+        }
+
+        public function removeProjectLiveLinkSettings(Project $project)
+        {
+            $connector_key = $this->getProjectConnector($project);
+            $connector = $this->getConnectorModule($connector_key);
+
+            if ($connector instanceof ConnectorProvider) {
+                $secret = $this->getProjectSecret($project);
+                $connector->removeProjectConnectorSettings($project, $secret);
+                $this->deleteSetting(self::SETTINGS_PROJECT_CONNECTOR . $project->getID());
+                $this->deleteSetting(self::SETTINGS_PROJECT_CONNECTOR_SECRET . $project->getID());
+            }
+        }
+
+        public function saveProjectLiveLinkSettings(Project $project, framework\Request $request)
+        {
             $connector = $this->getConnectorModule($request['connector']);
 
             if ($connector instanceof ConnectorProvider) {
@@ -372,7 +391,21 @@
             return (bool) $this->getSetting(self::SETTINGS_WORKFLOW_ACTIONS . $project->getID());
         }
 
-        public function processCommit(Project $project, Branch $branch, $message, $author, $previous_hash, $current_hash, $changes, $additional_data = [])
+        /**
+         * @param Project $project
+         * @param Branch $branch
+         * @param $message
+         * @param $author
+         * @param \DateTime $date
+         * @param $previous_hash
+         * @param $current_hash
+         * @param $changes
+         * @param $update_branch
+         * @param array $additional_data
+         *
+         * @return Commit
+         */
+        public function processCommit(Project $project, Branch $branch, $message, $author, \DateTime $date, $previous_hash, $current_hash, $changes, $update_branch, $additional_data = [])
         {
             if ($project->isArchived())
                 return;
@@ -390,9 +423,7 @@
             $workflow_actions_enabled = $this->isWorkflowActionsEnabledForProject($project);
             $user = $this->getUserByCommitAuthor($author);
 
-            framework\Context::setUser($user);
-            framework\Settings::forceSettingsReload();
-            framework\Context::reloadPermissionsCache();
+            framework\Context::switchUserContext($user);
 
             framework\Logging::log('[' . $project->getKey() . '] Commit to be logged by user ' . $user->getName(), $this->getName());
 
@@ -401,11 +432,15 @@
             $commit->setAuthor($user);
             $commit->setLog($message);
             if ($previous_hash) {
+                $commit->setPreviousRevision($previous_hash);
                 $previous_commit = Commits::getTable()->getCommitByRef($previous_hash, $project);
-                $commit->setPreviousRevision($previous_commit);
+                if ($previous_commit instanceof Commit) {
+                    $commit->setPreviousCommit($previous_commit);
+                }
             }
             $commit->setRevision($current_hash);
             $commit->setProject($project);
+            $commit->setDate($date->getTimestamp());
 
             if (!empty($additional_data))
             {
@@ -414,7 +449,10 @@
 
             $commit->save();
 
-            $branch->setLatestCommit($commit);
+            if ($update_branch) {
+                $branch->setLatestCommit($commit);
+                $branch->save();
+            }
 
             framework\Logging::log('[' . $project->getKey() . '] Commit logged with revision ' . $commit->getRevision(), $this->getName());
 
@@ -506,10 +544,27 @@
             }
         }
 
-        public function performImport(Project $project)
+        public function performImport(LivelinkImport $import)
         {
+            $project = $import->getProject();
+            $user = $import->getUser();
             $connector = $this->getProjectConnector($project);
-            return $this->getConnectorModule($connector)->importProject($project);
+            $module = $this->getConnectorModule($connector);
+
+            if ($module instanceof ConnectorProvider) {
+                return $this->getConnectorModule($connector)->importProject($project, $user);
+            }
+        }
+
+        /**
+         * @param Project $project
+         * @return bool
+         */
+        public function isLiveLinkEnabledForProject(Project $project)
+        {
+            $setting = $this->getSetting(Livelink::SETTINGS_PROJECT_LIVELINK_ENABLED . $project->getID());
+
+            return (bool) $setting;
         }
 
         public function setLiveLinkEnabledForProject(Project $project, $enabled = true)

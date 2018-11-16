@@ -27,6 +27,7 @@
         const ACTION_UPDATED = 'U';
         const ACTION_MODIFIED = 'M';
         const ACTION_DELETED = 'D';
+        const ACTION_RENAMED = 'R';
 
         /**
          * File path
@@ -46,10 +47,10 @@
          * Associated commit
          * @var Commit
          *
-         * @Column(type="integer", name="commit_id")
+         * @Column(type="integer")
          * @Relates(class="\thebuggenie\core\entities\Commit")
          */
-        protected $_commit = null;
+        protected $_commit_id = null;
 
         /**
          * Get the file path
@@ -75,7 +76,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit');
+            return $this->_b2dbLazyload('_commit_id');
         }
 
         /**
@@ -102,7 +103,7 @@
          */
         public function setCommit(Commit $commit)
         {
-            $this->_commit = $commit;
+            $this->_commit_id = $commit;
         }
 
     }

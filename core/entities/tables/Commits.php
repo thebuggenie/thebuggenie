@@ -85,6 +85,24 @@
         }
 
         /**
+         * Get unlinked commits
+         *
+         * @param Project $project
+         *
+         * @return Commit[]
+         */
+        public function getUnprocessedCommitsByProject(Project $project)
+        {
+            $crit = new Criteria();
+
+            $crit->addWhere(self::PROJECT_ID, $project->getID());
+            $crit->addWhere(self::OLD_REV, '', Criteria::DB_NOT_EQUALS);
+            $crit->addWhere('commits.previous_commit_id', 0);
+
+            return $this->select($crit);
+        }
+
+        /**
          * Whether a commit is already processed
          * @param string $id
          * @param integer $project

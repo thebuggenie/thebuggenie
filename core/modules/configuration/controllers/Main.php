@@ -2201,7 +2201,7 @@
 
         public function getAccessLevel($section, $module)
         {
-            return (framework\Context::getUser()->canSaveConfiguration($section, $module)) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
+            return framework\Settings::getAccessLevel($section, $module);
         }
 
         public function runAddClient(framework\Request $request)

@@ -1,5 +1,10 @@
 <?php
-    $base_url = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
+
+    /** @var \thebuggenie\core\entities\Branch $branch */
+    /** @var \thebuggenie\core\entities\Commit $commit */
+    /** @var \thebuggenie\core\entities\Project $project */
+
+    $base_url = \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('browser_url_' . $project->getID());
 
     if (mb_strstr($commit->getRevision(), ':'))
     {
@@ -21,51 +26,23 @@
         $oldrevision = $commit->getPreviousRevision();
     }
 
-    $misc_data = explode('|', $commit->getMiscData());
+    $link_base = \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('commit_url_' . $project->getID());
+    $link_base = str_replace('%branch', $branch->getName(), $link_base);
 
-    $branchname = null;
-
-    foreach ($misc_data as $data)
-    {
-        if (mb_strstr($data, 'branch'))
-        {
-            $branch = explode(':', $data);
-            if (count($branch) == 2)
-            {
-                $branchname = $branch[1];
-            }
-        }
-    }
-
-    $link_base = \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('commit_url_' . $projectId);
-
-    if ($branchname !== null)
-    {
-        $link_base = str_replace('%branch', $branchname, $link_base);
-    }
-
-    $misc_data_array = $commit->getMiscDataArray();
-    $reposname = null;
-
-    if (array_key_exists('gitlab_repos_ns', $misc_data_array))
-    {
-        $reposname = $misc_data_array['gitlab_repos_ns'];
-        $base_url = rtrim($base_url, '/').'/'.$reposname;
-    }
+    $misc_data_array = $commit->getMiscData();
 
     $link_rev = $base_url.str_replace('%revno', $revision, $link_base);
     $link_old = $base_url.str_replace('%revno', $oldrevision, $link_base);
 
 
 ?>
-<div class="comment commit <?php if ($branchname !== null): ?>branch_<?php echo $branchname; ?><?php endif; ?>" id="commit_<?php echo $commit->getID(); ?>">
+<div class="comment commit branch_<?php echo $branch->getName(); ?>" id="commit_<?php echo $commit->getID(); ?>">
     <div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">
         <div id="commit_<?php echo $commit->getID(); ?>_header" class="commentheader">
             <a href="<?php echo $link_rev; ?>" class="comment_hash" target="_blank"><?php if (!is_numeric($commit->getRevision())): echo mb_substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
             <div class="commenttitle">
                 <div class="commit_repos_branch">
-                    <?php if ($reposname !== null): ?><span class="commitrepos"><?php echo $reposname; ?>/</span> <?php endif; ?>
-                    <?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?>
+                    <span class="commitbranch"><?php echo $branch->getName(); ?></span>
                 </div>
                 <div class="commitrev"><?php echo __('Revision %rev', array('%rev' => '<a href="'.$link_rev.'" target="_blank">'.$commit->getRevision().'</a>')); ?></div>
                 <div class="commitauthor"><?php echo __('By %user', array('%user' => get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'large')))); ?></div>
@@ -76,8 +53,8 @@
         <div class="commentbody article commit_main" id="commit_<?php echo $commit->getID(); ?>_body">
             <pre><?php echo trim($commit->getLog()); ?></pre>
             <div class="commit_expander" style="<?php if (isset($expanded) && $expanded == true) echo 'display: none;'; ?>">
-                <a href="javascript:void(0);" style="padding-right: 5px;" id="checkin_expand_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').show(); $('checkin_expand_<?php echo $commit->getID(); ?>').hide(); $('checkin_collapse_<?php echo $commit->getID(); ?>').show();"><?php echo image_tag('expand.png'); ?> <?php echo __("Show more details"); ?></a>
-                <a href="javascript:void(0);" style="display: none; padding-right: 5px;" id="checkin_collapse_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').hide(); $('checkin_expand_<?php echo $commit->getID(); ?>').show(); $('checkin_collapse_<?php echo $commit->getID(); ?>').hide();"><?php echo image_tag('collapse.png'); ?> <?php echo __("Hide details"); ?></a>
+                <a href="javascript:void(0);" style="padding-right: 5px;" id="checkin_expand_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').show(); $('checkin_expand_<?php echo $commit->getID(); ?>').hide(); $('checkin_collapse_<?php echo $commit->getID(); ?>').show();"><?php echo fa_image_tag('plus-square-o'); ?> <?php echo __("Show more details"); ?></a>
+                <a href="javascript:void(0);" style="display: none; padding-right: 5px;" id="checkin_collapse_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').hide(); $('checkin_expand_<?php echo $commit->getID(); ?>').show(); $('checkin_collapse_<?php echo $commit->getID(); ?>').hide();"><?php echo fa_image_tag('minus-square-o'); ?> <?php echo __("Hide details"); ?></a>
                 <div id="checkin_details_<?php echo $commit->getID(); ?>" style="<?php if (!isset($expanded) || $expanded == false) echo 'display: none;'; ?>">
                     <?php
                     if (! array_key_exists('gitlab_repos_ns', $misc_data_array))
@@ -99,37 +76,38 @@
                                         echo '<tr>';
 
                                         $action = $file->getAction();
-                                        if ($action == 'M'): $action = 'U'; endif;
-
-                                        echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', array(), false, 'vcs_integration') . '</td>';
-
-                                        $link_file = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
-                                        $link_file = str_replace('%oldrev', $oldrevision, $link_file);
-
-                                        if ($branchname !== null)
-                                        {
-                                            $link_file = str_replace('%branch', $branchname, $link_file);
+                                        switch ($action) {
+                                            case \thebuggenie\core\entities\CommitFile::ACTION_ADDED:
+                                                $image = 'plus';
+                                                break;
+                                            case \thebuggenie\core\entities\CommitFile::ACTION_MODIFIED:
+                                                $image = 'pencil';
+                                                break;
+                                            case \thebuggenie\core\entities\CommitFile::ACTION_DELETED:
+                                                $image = 'minus';
+                                                break;
+                                            case \thebuggenie\core\entities\CommitFile::ACTION_RENAMED:
+                                                $image = 'files-o';
+                                                break;
                                         }
+
+                                        echo '<td class="imgtd">' . fa_image_tag($image) . '</td>';
+
+                                        $link_file = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('log_url_' . $project->getID()));
+                                        $link_file = str_replace('%oldrev', $oldrevision, $link_file);
+                                        $link_file = str_replace('%branch', $branch->getName(), $link_file);
 
                                         $link_file = $base_url.str_replace('%file', $file->getFile(), $link_file);
 
-                                        $link_diff = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
+                                        $link_diff = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('diff_url_' . $project->getID()));
                                         $link_diff = str_replace('%oldrev', $oldrevision, $link_diff);
-
-                                        if ($branchname !== null)
-                                        {
-                                            $link_diff = str_replace('%branch', $branchname, $link_diff);
-                                        }
+                                        $link_diff = str_replace('%branch', $branch->getName(), $link_diff);
 
                                         $link_diff = $base_url.str_replace('%file', $file->getFile(), $link_diff);
 
-                                        $link_view = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
+                                        $link_view = str_replace('%revno', $revision, \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('blob_url_' . $project->getID()));
                                         $link_view = str_replace('%oldrev', $oldrevision, $link_view);
-
-                                        if ($branchname !== null)
-                                        {
-                                            $link_view = str_replace('%branch', $branchname, $link_view);
-                                        }
+                                        $link_view = str_replace('%branch', $branch->getName(), $link_view);
 
                                         $link_view = $base_url.str_replace('%file', $file->getFile(), $link_view);
 

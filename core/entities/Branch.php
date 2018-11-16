@@ -23,6 +23,14 @@
         protected $_name;
 
         /**
+         * Whether the branch is deleted
+         *
+         * @var boolean
+         * @Column(type="boolean", default="false")
+         */
+        protected $_is_deleted = false;
+
+        /**
          * Project
          * @var \thebuggenie\core\entities\Commit
          * @Relates(class="\thebuggenie\core\entities\Commit")
@@ -126,6 +134,22 @@
             }
 
             return $this->_commits;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isDeleted()
+        {
+            return $this->_is_deleted;
+        }
+
+        /**
+         * @param bool $is_deleted
+         */
+        public function setIsDeleted($is_deleted = true)
+        {
+            $this->_is_deleted = $is_deleted;
         }
 
     }

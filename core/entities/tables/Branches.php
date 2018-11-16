@@ -43,6 +43,7 @@
 
             $crit->addWhere(self::PROJECT_ID, $project->getID());
             $crit->addOrderBy('branches.name', Criteria::SORT_ASC);
+            $crit->addWhere('branches.is_deleted', false);
 
             return $this->select($crit);
         }
@@ -53,6 +54,7 @@
 
             $crit->addWhere(self::PROJECT_ID, $project->getID());
             $crit->addWhere('branches.name', $name);
+            $crit->addWhere('branches.is_deleted', false);
 
             $branch = $this->selectOne($crit);
 

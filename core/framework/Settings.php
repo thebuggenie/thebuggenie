@@ -1082,4 +1082,9 @@
             return $config_sections;
         }
 
+        public static function getAccessLevel($section, $module = 'core')
+        {
+            return (Context::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+        }
+
     }

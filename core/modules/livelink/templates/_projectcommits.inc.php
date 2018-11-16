@@ -6,5 +6,5 @@
     
     foreach ($commits as $commit)
     {
-        include_component('vcs_integration/commitbox', array("projectId" => $selected_project->getID(), "commit" => $commit));
+        include_component('livelink/commitbox', array('project' => $selected_project, 'commit' => $commit, 'branch' => $branch));
     }
