@@ -53,8 +53,8 @@
         <div class="commentbody article commit_main" id="commit_<?php echo $commit->getID(); ?>_body">
             <pre><?php echo trim($commit->getLog()); ?></pre>
             <div class="commit_expander" style="<?php if (isset($expanded) && $expanded == true) echo 'display: none;'; ?>">
-                <a href="javascript:void(0);" style="padding-right: 5px;" id="checkin_expand_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').show(); $('checkin_expand_<?php echo $commit->getID(); ?>').hide(); $('checkin_collapse_<?php echo $commit->getID(); ?>').show();"><?php echo fa_image_tag('plus-square-o'); ?> <?php echo __("Show more details"); ?></a>
-                <a href="javascript:void(0);" style="display: none; padding-right: 5px;" id="checkin_collapse_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').hide(); $('checkin_expand_<?php echo $commit->getID(); ?>').show(); $('checkin_collapse_<?php echo $commit->getID(); ?>').hide();"><?php echo fa_image_tag('minus-square-o'); ?> <?php echo __("Hide details"); ?></a>
+                <a href="javascript:void(0);" style="padding-right: 5px;" id="checkin_expand_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').show(); $('checkin_expand_<?php echo $commit->getID(); ?>').hide(); $('checkin_collapse_<?php echo $commit->getID(); ?>').show();"><?php echo fa_image_tag('plus-square'); ?> <?php echo __("Show more details"); ?></a>
+                <a href="javascript:void(0);" style="display: none; padding-right: 5px;" id="checkin_collapse_<?php echo $commit->getID(); ?>" onclick="$('checkin_details_<?php echo $commit->getID(); ?>').hide(); $('checkin_expand_<?php echo $commit->getID(); ?>').show(); $('checkin_collapse_<?php echo $commit->getID(); ?>').hide();"><?php echo fa_image_tag('minus-square'); ?> <?php echo __("Hide details"); ?></a>
                 <div id="checkin_details_<?php echo $commit->getID(); ?>" style="<?php if (!isset($expanded) || $expanded == false) echo 'display: none;'; ?>">
                     <?php
                     if (! array_key_exists('gitlab_repos_ns', $misc_data_array))
@@ -87,7 +87,7 @@
                                                 $image = 'minus';
                                                 break;
                                             case \thebuggenie\core\entities\CommitFile::ACTION_RENAMED:
-                                                $image = 'files-o';
+                                                $image = 'copy';
                                                 break;
                                         }
 

@@ -1,6 +1,6 @@
     <?php if ($num_unread + $num_read == 0 && ! $filter_first_notification): ?>
         <li class="disabled no-notifications">
-            <?= fa_image_tag('sun-o'); ?>
+            <?= fa_image_tag('sun'); ?>
             <?= __('You have no notifications'); ?>
         </li>
     <?php else: ?>

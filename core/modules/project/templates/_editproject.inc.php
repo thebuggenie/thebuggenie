@@ -83,7 +83,7 @@
                                 </p>
                             </li>
                             <li data-input-value="open-source" data-display-name="<?php echo __('Classic open source'); ?>" class="fancydropdown-item">
-                                <h1><?php echo fa_image_tag('code-fork') . __('Classic open source'); ?></h1>
+                                <h1><?php echo fa_image_tag('code-branch') . __('Classic open source'); ?></h1>
                                 <p>
                                     <?php echo __('For medium/small open source projects without multiple teams'); ?>
                                 </p>
@@ -122,9 +122,9 @@
                         <div class="config_explanation">
                             <?= __('Choose the initial set of permissions and roles to apply. Permissions can be configured afterwards.'); ?>
                         </div>
-                        <input type="checkbox" checked class="fancycheckbox" id="project_set_owner_checkbox" name="mark_as_owner" value="1"><label for="project_set_owner_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Set myself as project owner'); ?></label><br>
+                        <input type="checkbox" checked class="fancycheckbox" id="project_set_owner_checkbox" name="mark_as_owner" value="1"><label for="project_set_owner_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Set myself as project owner'); ?></label><br>
                         <input type="hidden" name="assignee_type" value="<?= $assignee_type; ?>">
-                        <input type="checkbox" checked class="fancycheckbox" id="project_role_checkbox" name="assignee_id" value="<?= $assignee_id; ?>" onchange="($('project_role_checkbox').checked) ? $('project_role_input').enable() : $('project_role_input').disable();"><label for="project_role_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('%name has the following role in this project: %list_of_roles', ['%name' => $assignee_name, '%list_of_roles' => '']); ?></label>
+                        <input type="checkbox" checked class="fancycheckbox" id="project_role_checkbox" name="assignee_id" value="<?= $assignee_id; ?>" onchange="($('project_role_checkbox').checked) ? $('project_role_input').enable() : $('project_role_input').disable();"><label for="project_role_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('%name has the following role in this project: %list_of_roles', ['%name' => $assignee_name, '%list_of_roles' => '']); ?></label>
                         <select name="role_id" id="project_role_input">
                             <?php foreach ($roles as $role): ?>
                                 <option value="<?= $role->getID(); ?>"><?= $role->getName(); ?></option>

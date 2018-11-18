@@ -1672,7 +1672,7 @@
 
                 foreach (Issuetype::getAll() as $issuetype)
                 {
-                    if ($issuetype->getIcon() == 'developer_report')
+                    if ($issuetype->getType() == Issuetype::TYPE_USER_STORY)
                     {
                         $issuetypes[] = $issuetype->getID();
                     }

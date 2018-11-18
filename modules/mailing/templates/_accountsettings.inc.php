@@ -6,7 +6,7 @@
             <tr>
                 <td style="width: auto; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes"><?php echo $description ?></label></td>
                 <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                    <input type="checkbox" class="fancycheckbox" name="mailing_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, false, 'mailing')->isOn()): ?> checked<?php endif; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
+                    <input type="checkbox" class="fancycheckbox" name="mailing_<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, false, 'mailing')->isOn()): ?> checked<?php endif; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -106,7 +106,7 @@
             </li>
         <?php endif; ?>
         <li onclick="tbg_debug_show_menu_tab('log_messages', $(this));" style="cursor: pointer;">
-            <?php echo fa_image_tag('file-text-o'); ?>
+            <?php echo fa_image_tag('file-alt'); ?>
             <span>Log</span>
         </li>
         <li onclick="setTimeout(function() { $('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="minimizer">

@@ -39,14 +39,14 @@
         return "<img " . parseHTMLoptions($params) . '>';
     }
 
-    function fa_image_tag($image, $params = [])
+    function fa_image_tag($image, $params = [], $mode = 'fas')
     {
         if (!isset($params['class']))
             $params['class'] = [];
         elseif (!is_array($params['class']))
             $params['class'] = [$params['class']];
 
-        $params['class'][] = 'fa';
+        $params['class'][] = $mode;
         $params['class'][] = 'fa-'.$image;
 
         return '<i ' . parseHTMLoptions($params) . '></i>';

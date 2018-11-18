@@ -16,6 +16,8 @@
 
         abstract public function getLogo();
 
+        abstract public function getLogoStyle();
+
         abstract public function getProjectTemplateDescription();
 
         abstract public function doesSupportImportIssues();

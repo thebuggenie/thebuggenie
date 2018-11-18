@@ -27,7 +27,7 @@
                 'closed' => $is_closed,
                 'text' => $matches['text']
             ];
-            $image = ($is_closed) ? 'check-square' : 'square-o';
+            $image = ($is_closed) ? 'check-square' : 'square';
 
             return '<br>' . fa_image_tag($image, ['class' => 'todo-checkbox']) . $this->_parse_line($matches['text'], $this->options);
         }

@@ -2,6 +2,7 @@
     /**
      * @var \thebuggenie\core\entities\Issue $issue
      * @var \thebuggenie\core\entities\Status[] $statuses
+     * @var \thebuggenie\core\entities\Issuetype[] $issuetypes
      */
 ?>
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
@@ -23,7 +24,7 @@
                             <?php foreach ($issuetypes as $issuetype): ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');">
-                                        <?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?>
+                                        <?php echo fa_image_tag($issuetype->getFontAwesomeIcon()); ?>
                                         <?php echo __($issuetype->getName()); ?>
                                     </a>
                                 </li>

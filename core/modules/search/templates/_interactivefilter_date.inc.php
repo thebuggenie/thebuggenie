@@ -38,7 +38,7 @@
                     <li data-value="&lt;="
                         class="filtervalue<?php if ($filter->getOperator() == '<=') echo ' selected'; ?>" data-operator
                         data-exclusive data-selection-group="1">
-                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                         <input type="checkbox" value="&lt;=" name="filters_<?php echo $key; ?>_operator_before"
                                data-text="<?php echo __('Before %time', array('%time' => '')); ?>"
                                class="filters_<?php echo $key; ?>_operator_before" <?php if ($filter->getOperator() == '<=') echo 'checked'; ?>>
@@ -48,7 +48,7 @@
                     <li data-value="&gt;="
                         class="filtervalue<?php if ($filter->getOperator() == '>=') echo ' selected'; ?>" data-operator
                         data-exclusive data-selection-group="1">
-                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                         <input type="checkbox" value="&gt;=" name="filters_<?php echo $key; ?>_operator_after"
                                data-text="<?php echo __('After %time', array('%time' => '')); ?>"
                                class="filters_<?php echo $key; ?>_operator_after" <?php if ($filter->getOperator() == '>=') echo 'checked'; ?>>

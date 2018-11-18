@@ -20,7 +20,7 @@
                 <input type="password" id="tbg_password" name="password"><br>
             </li>
             <li>
-                <input type="checkbox" class="fancycheckbox" name="rememberme" value="1" id="tbg_rememberme"><label class="login_fieldlabel" for="tbg_rememberme"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Keep me logged in'); ?></label>
+                <input type="checkbox" class="fancycheckbox" name="rememberme" value="1" id="tbg_rememberme"><label class="login_fieldlabel" for="tbg_rememberme"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Keep me logged in'); ?></label>
             </li>
         </ul>
         <div class="login_button_container">

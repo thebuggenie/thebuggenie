@@ -397,7 +397,8 @@ header {
     display: none;
 }
 
-#header_config_link .fa {
+#header_config_link .fas,
+#header_config_link .far {
     margin-right: 0;
 }
 
@@ -610,7 +611,7 @@ header #user_notifications_count.unread {
     text-align: center;
     padding: 25px;
 }
-#user_notifications_list li.no-notifications .fa {
+#user_notifications_list li.no-notifications .fas {
     font-size: 2.5em;
     color: orange;
     display: block;
@@ -666,23 +667,31 @@ img.userstate {
     margin: 1px 2px 2px 0;
     vertical-align: middle;
 }
-.fa.userstate {
+.fas.userstate,
+.far.userstate {
     display: inline-block;
     width: 12px;
 }
-.fa.userstate.online {
+.fas.userstate.online,
+.far.userstate.online {
     color: rgb(50, 150, 50);
 }
-.fa.userstate.busy, .fa.userstate.unavailable {
+.fas.userstate.busy,
+.fas.userstate.unavailable,
+.far.userstate.busy,
+.far.userstate.unavailable {
     color: rgb(200, 50, 50);
 }
-.fa.userstate.in-meeting {
+.fas.userstate.in-meeting,
+.far.userstate.in-meeting {
     color: rgb(50, 50, 200);
 }
-.fa.userstate.absent {
+.fas.userstate.absent,
+.far.userstate.absent {
     color: rgb(200, 200, 0);
 }
-.fa.userstate.offline {
+.fas.userstate.offline,
+.far.userstate.offline {
     color: rgb(200, 200, 200);
 }
 
@@ -833,13 +842,13 @@ img.avatar {
     background-color: #FFF;
     text-shadow: none;
 }
-.header_menu > ul > li > a > .fa {
+.header_menu > ul > li > a > .fas, .header_menu > ul > li > a > .far {
     margin: 0 .5em 0 0;
 }
-.header_menu > ul > li > a > .fa:last-child {
+.header_menu > ul > li > a > .fas:last-child, .header_menu > ul > li > a > .far:last-child {
     margin: 0;
 }
-.header_menu > ul > li > a > .fa.dropdown-indicator {
+.header_menu > ul > li > a > .fas.dropdown-indicator, .header_menu > ul > li > a > .far.dropdown-indicator {
     margin: 0 0 0 .5em;
 }
 
@@ -1905,11 +1914,11 @@ div.autocomplete .extra.attached {
     height: 20px;
 }
 
-div.autocomplete .extra.attached span, div.autocomplete .extra.attached .fa {
+div.autocomplete .extra.attached span, div.autocomplete .extra.attached .fas, div.autocomplete .extra.attached .far {
     float: right;
 }
 
-div.autocomplete .extra.attached .fa {
+div.autocomplete .extra.attached .fas, div.autocomplete .extra.attached .far {
     margin-left: 3px;
     margin-right: 15px;
 }
@@ -2024,7 +2033,7 @@ div.autocomplete ul li > img:first-child {
     vertical-align: middle;
     margin-top: -2px;
 }
-.tab_menu li .fa {
+.tab_menu li .fas, .tab_menu li .far {
     margin-right: 6px;
     font-size: 1.1em;
 }
@@ -2100,7 +2109,7 @@ a.not_clickable:hover {
 .user_menu_dropdown a {
     font-size: 0.9em;
 }
-.user_menu_dropdown a .fa {
+.user_menu_dropdown a .fas, .user_menu_dropdown a .far {
     font-size: 1.2em;
 }
 
@@ -2242,7 +2251,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     color: #FFF;
     background-color: #4E81AB;
 }
-.tab_menu_dropdown .fa {
+.tab_menu_dropdown .fas, .tab_menu_dropdown .far {
     margin: 0 .5em 0 0;
 }
 .tab_menu_dropdown img.icon {
@@ -2352,7 +2361,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 .tab_menu.inset li a img:last-child {
     margin: 0 0 0 10px;
 }
-.tab_menu.inset li .fa {
+.tab_menu.inset li .fas, .tab_menu.inset li .far {
     vertical-align: middle;
     font-size: 1.2em;
     display: inline-block;
@@ -2591,7 +2600,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     text-decoration: none;
 }
 
-.project_strip nav a.nav-button .fa {
+.project_strip nav a.nav-button .fas, .project_strip nav a.nav-button .far {
     margin-right: 5px;
 }
 
@@ -3552,13 +3561,13 @@ table.cleantable th {
     color: #555;
 }
 
-.config_badges a .fa {
+.config_badges a .fas, .config_badges a .far {
     color: #555;
     width: 16px;
     text-align: center;
     margin-right: 3px;
 }
-.button.destroy-link .fa {
+.button.destroy-link .fas, .button.destroy-link .far {
     color: #cb1a00;
 }
 
@@ -4556,12 +4565,84 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     margin: 0;
 }
 
-.project_commits_box {
-    margin-right: 10px;
+.project_commits_box #commits {
+    margin: 0 10px;
 }
 
-.commit_box {
-    margin-top: 5px
+.project_commits_box .row-header {
+    padding: 5px 8px;
+    font-size: 1em;
+    background-color: rgba(225, 225, 225, .1);
+    border-bottom: 1px solid rgba(200, 200, 200, .3);
+}
+.project_commits_box .commit {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+.project_commits_box .commit .message-author-container {
+    flex: 1 1 auto;
+}
+.project_commits_box .commit .message-author-container .commit-message {
+    font-weight: 500;
+}
+.project_commits_box .commit .message-author-container .commit-author {
+    font-size: .9em;
+}
+.project_commits_box .commit .commit-branches .branch {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.project_commits_box .commit .commit-branches .branch {
+    margin: 5px;
+    background-color: rgba(78, 129, 171, .7);
+    color: #FFF;
+    border: 1px solid rgba(78, 129, 171, .4);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+.project_commits_box .commit .commit-branches .branch i {
+    margin: 0 3px;
+    font-weight: 500;
+}
+.project_commits_box .commit .commit-branches .branch i,
+.project_commits_box .commit .commit-branches .branch span
+{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1.4em;
+}
+.project_commits_box .commit .commit-sha {
+    flex: 0 0 auto;
+    margin: 0 10px;
+    border: 1px solid #4E81AB;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+.project_commits_box .commit .commit-actions {
+    flex: 0 0 100px;
+    text-align: right;
+}
+.project_commits_box .commit .commit-actions .button {
+    padding: 4px 7px;
+}
+.simple_list.branch-list .branch-name {
+    display: block;
+    color: #555;
+    font-weight: 300;
+}
+.simple_list.branch-list .selected .branch-name {
+    font-weight: 500;
+}
+.simple_list.branch-list .branch-last-updated {
+    display: block;
+    font-size: .8em;
+    color: #888;
+}
+.simple_list.branch-list .branch-last-updated .fas, .simple_list.branch-list .branch-last-updated .far {
+    margin: 0 3px;
 }
 
 #global_roles_list .button-group .button, .project_roles_list .button-group .button {
@@ -6111,13 +6192,13 @@ ul.workflow_actions li:hover {
 #vote_up a:hover {
     color: darkolivegreen;
 }
-#vote_up .fa, #vote_down .fa {
+#vote_up .fas, #vote_down .fas {
     padding: 5px;
     font-size: 1.5em;
     transition: background-color .2s ease-in-out;
     background-color: transparent;
 }
-#vote_up .fa:hover, #vote_down .fa:hover {
+#vote_up .fas:hover, #vote_down .fas:hover {
     background-color: rgba(200, 200, 200, .2);
 }
 
@@ -6293,7 +6374,7 @@ img.dropdown {
     cursor: pointer;
     margin-top: 6px;
 }
-.fa.dropdown {
+.fas.dropdown, .far.dropdown {
     transform: scaleX(0);
     margin-right: -16px;
     font-size: 16px;
@@ -6310,14 +6391,15 @@ dd:hover img.dropdown, .hoverable:hover img.dropdown {
     margin-right: 5px;
     display: inline;
 }
-dd:hover .fa.dropdown, .hoverable:hover .fa.dropdown {
+dd:hover .fas.dropdown, .hoverable:hover .fas.dropdown,
+dd:hover .far.dropdown, .hoverable:hover .far.dropdown {
     transform: scaleX(1);
     margin-right: 5px;
     cursor: pointer;
     padding: 5px;
     border-radius: 3px;
 }
-.fa.dropdown:hover {
+.fas.dropdown:hover, .far.dropdown:hover {
     background-color: rgba(200, 200, 200, .3);
 }
 
@@ -6503,7 +6585,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-right: 5px;
 }
 
-.more_actions_dropdown .fa {
+.more_actions_dropdown .fas, .more_actions_dropdown .far {
     display: inline-block;
     margin-right: 8px;
     width: 18px;
@@ -6512,36 +6594,53 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-top: -1px;
     color: #555;
 }
-.more_actions_dropdown .disabled .fa {
+.more_actions_dropdown .disabled .fas, .more_actions_dropdown .disabled .far {
     text-shadow: 1px 1px 1px rgb(255, 255, 255);
 }
-.more_actions_dropdown li.mark_blocking .fa, .more_actions_dropdown li.delete .fa, .tab_menu_dropdown li.delete .fa, .fa.delete {
+.more_actions_dropdown li.mark_blocking .fas,
+.more_actions_dropdown li.mark_blocking .far,
+.more_actions_dropdown li.delete .fas,
+.more_actions_dropdown li.delete .far,
+.tab_menu_dropdown li.delete .fas,
+.tab_menu_dropdown li.delete .far,
+.fas.delete,
+.far.delete {
     color: rgb(225, 50, 50);
 }
-.more_actions_dropdown li.mark_blocking:hover .fa,
+.more_actions_dropdown li.mark_blocking:hover .fas,
+.more_actions_dropdown li.mark_blocking:hover .far,
 .more_actions_dropdown li.mark_blocking:hover a,
-.more_actions_dropdown li.delete:hover .fa,
+.more_actions_dropdown li.delete:hover .fas,
+.more_actions_dropdown li.delete:hover .far,
 .more_actions_dropdown li.delete:hover a,
-.tab_menu_dropdown li.delete:hover .fa,
+.tab_menu_dropdown li.delete:hover .fas,
+.tab_menu_dropdown li.delete:hover .far,
 .tab_menu_dropdown li.delete:hover a,
-.fa.delete:hover {
+.far.delete:hover,
+.fas.delete:hover {
     background-color: rgb(225, 50, 50);
     color: #FFF;
 }
-.more_actions_dropdown li.affected_items .fa {
+.more_actions_dropdown li.affected_items .fas,
+.more_actions_dropdown li.affected_items .far {
     color: rgb(25, 150, 25);
 }
-.more_actions_dropdown li.affected_items:hover .fa {
+.more_actions_dropdown li.affected_items:hover .fas,
+.more_actions_dropdown li.affected_items:hover .far {
     background-color: rgb(25, 150, 25);
     color: #FFF;
 }
-.more_actions_dropdown li.help .fa,
-.tab_menu_dropdown li.help .fa {
+.more_actions_dropdown li.help .fas,
+.more_actions_dropdown li.help .far,
+.tab_menu_dropdown li.help .fas,
+.tab_menu_dropdown li.help .far {
     color: darkblue;
 }
-.more_actions_dropdown li.help:hover .fa,
+.more_actions_dropdown li.help:hover .fas,
+.more_actions_dropdown li.help:hover .far,
 .more_actions_dropdown li.help:hover a,
-.tab_menu_dropdown li.help:hover .fa,
+.tab_menu_dropdown li.help:hover .fas,
+.tab_menu_dropdown li.help:hover .far,
 .tab_menu_dropdown li.help:hover a {
     background-color: darkblue;
     color: #FFF;
@@ -7085,7 +7184,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin: 3px 5px -3px 5px;
 }
 
-#viewissue_log_items .fa {
+#viewissue_log_items .fas, #viewissue_log_items .far {
     position: absolute;
     top: 3px;
     left: 153px;
@@ -7102,19 +7201,28 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin: 0;
 }
 
-.fa.log_issue_created, .fa.log_issue_closed {
+.fas.log_issue_created,
+.far.log_issue_created,
+.fas.log_issue_closed,
+.far.log_issue_closed {
     color: forestgreen;
 }
-.fa.log_issue_priority {
+.fas.log_issue_priority,
+.far.log_issue_priority {
     color: darkorange;
 }
-.fa.log_issue_blocked {
+.fas.log_issue_blocked,
+.far.log_issue_blocked {
     color: darkred;
 }
-.fa.log_issue_affected_item_delete, .fa.log_issue_unblocked {
+.fas.log_issue_affected_item_delete,
+.far.log_issue_affected_item_delete,
+.fas.log_issue_unblocked,
+.far.log_issue_unblocked {
     color: rgb(200, 200, 200);
 }
-#viewissue_log_items ul li .fa.log_issue_status {
+#viewissue_log_items ul li .fas.log_issue_status,
+#viewissue_log_items ul li .far.log_issue_status {
     padding: 4px;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -7150,7 +7258,8 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin: 5px 10px;
     padding: 0;
 }
-.comment_log_items .fa {
+.comment_log_items .fas,
+.comment_log_items .far {
     margin-right: 5px;
 }
 
@@ -7318,7 +7427,8 @@ ul.attached_items {
 .icon-link:hover {
     background-color: rgba(100, 100, 100, 0.1);
 }
-.icon-link .fa {
+.icon-link .fas,
+.icon-link .far {
     margin: 0;
 }
 
@@ -8051,19 +8161,27 @@ table.issue_affects td img {
     left: 20px;
 }
 
-#issue_details .collapser_link .collapser, #issue_details .collapser_link .fa.collapser {
+#issue_details .collapser_link .collapser,
+#issue_details .collapser_link .fas.collapser,
+#issue_details .collapser_link .far.collapser {
     display: inline-block;
 }
 
-#issue_details .collapser_link .expander, #issue_details .collapser_link .fa.expander {
+#issue_details .collapser_link .expander,
+#issue_details .collapser_link .fas.expander,
+#issue_details .collapser_link .far.expander {
     display: none;
 }
 
-#issue_details_container.collapsed .collapser_link .collapser, #issue_details_container.collapsed .collapser_link .fa.collapser {
+#issue_details_container.collapsed .collapser_link .collapser,
+#issue_details_container.collapsed .collapser_link .fas.collapser,
+#issue_details_container.collapsed .collapser_link .far.collapser {
     display: none;
 }
 
-#issue_details_container.collapsed .collapser_link .expander, #issue_details_container.collapsed .collapser_link .fa.expander {
+#issue_details_container.collapsed .collapser_link .expander,
+#issue_details_container.collapsed .collapser_link .fas.expander,
+#issue_details_container.collapsed .collapser_link .far.expander {
     display: inline-block;
 }
 
@@ -8737,7 +8855,8 @@ dl.info {
     text-transform: none;
     box-sizing: border-box;
 }
-.fancylabels label .fa {
+.fancylabels label .fas,
+.fancylabels label .far {
     flex: 0 0 60px;
     font-size: 2.5em;
     padding: 15px;
@@ -8787,13 +8906,17 @@ dl.info {
     color: #558;
     box-shadow: 0 0 3px rgba(150, 150, 210, 1);
 }
-.fancycheckbox + label .fa.unchecked,
-.fancycheckbox:checked + label .fa.checked {
+.fancycheckbox + label .fas.unchecked,
+.fancycheckbox + label .far.unchecked,
+.fancycheckbox:checked + label .fas.checked,
+.fancycheckbox:checked + label .far.checked {
     display: inline-block;
     margin-right: 5px;
 }
-.fancycheckbox + label .fa.checked,
-.fancycheckbox:checked + label .fa.unchecked {
+.fancycheckbox + label .fas.checked,
+.fancycheckbox + label .far.checked,
+.fancycheckbox:checked + label .fas.unchecked,
+.fancycheckbox:checked + label .far.unchecked {
     display: none;
 }
 
@@ -9250,7 +9373,7 @@ dl.info dt {
 }
 
 .whiteboard-issue .epic_badge {
-  font-weight: normal;
+  font-weight: 300;
   font-size: 1em;
 }
 
@@ -9507,6 +9630,12 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
 #project_planning td {
     vertical-align: top;
 }
+#project_planning .recent_activities td.imgtd {
+    /*vertical-align: middle;*/
+}
+#project_planning td.imgtd {
+    font-size: 1.3em;
+}
 
 .project_boards_list {
     padding: 10px;
@@ -9716,7 +9845,8 @@ a.dynamic_menu_link.button-pressed, a.dynamic_menu_link.button-pressed:hover {
     float: left;
     margin: 10px 15px 20px 0;
 }
-.fancydropdown + ul li .fa {
+.fancydropdown + ul li .fas,
+.fancydropdown + ul li .far {
     margin-right: .35em;
 }
 
@@ -10797,7 +10927,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     color: #555;
     border-radius: 3px;
 }
-.menu_links .content i:not(.fa) {
+.menu_links .content i:not(.fas):not(.far) {
     font-weight: 300;
     display: block;
     padding: 3px 5px;
@@ -10808,7 +10938,8 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     border: none;
     text-decoration: none;
 }
-.menu_links .content .fa {
+.menu_links .content .fas,
+.menu_links .content .far {
     margin-right: 5px;
 }
 
@@ -11129,25 +11260,12 @@ div.quickaddtask .close_micro_popup_link {
 .project_left ul.simple_list li {
     position: relative;
     box-sizing: border-box;
-    border: 1px solid transparent;
-    border-left: none;
-    border-right: none;
-}
-
-.project_left ul.simple_list li.selected:after {
-    content: '';
-    position: absolute;
-    right: -14px;
-    top: 0;
-    width: 0;
-    border-top: 14px solid transparent;
-    border-bottom: 14px solid transparent;
-    border-left: 14px solid #FFF;
-    transition: box-shadow 0.3s ease;
+    border: none;
+    border-radius: 5px;
 }
 
 .project_left ul.simple_list li.selected {
-    box-shadow: 8px 0 10px -2px rgba(0, 0, 0, 0.2);
+    background-color: rgba(78, 129, 171, .2);
 }
 
 .project_left ul.simple_list li.selected a, .project_left ul.simple_list li.selected a:hover {
@@ -11165,12 +11283,17 @@ div.quickaddtask .close_micro_popup_link {
 }
 
 .project_left ul.simple_list li a, .project_left ul.simple_list li a:hover {
+    border: 1px solid transparent;
+    border-radius: 5px;
     display: block;
     color: #999;
-    border: none;
     padding: 3px;
     font-size: 1.1em;
-    transition: color 0.3s ease;
+    transition: border-color .2s ease-in-out, background-color .2s ease-in-out, color 0.3s ease;
+    margin-bottom: 3px;
+}
+.project_left ul.simple_list li:not(.selected) a:hover {
+    border-color: rgba(78, 129, 171, .2);
 }
 
 .dashboard_view_content .project_role {
@@ -11360,7 +11483,8 @@ div.quickaddtask .close_micro_popup_link {
     padding-top: 0;
 }
 
-.fa.rss-icon {
+.fas.rss-icon,
+.far.rss-icon {
     color: darkorange;
 }
 
@@ -11616,7 +11740,8 @@ div.quickaddtask .close_micro_popup_link {
     height: 100%;
 }
 
-.project_information_sidebar .sidebar_links .fa {
+.project_information_sidebar .sidebar_links .fas,
+.project_information_sidebar .sidebar_links .far {
     font-size: 1.1em;
     width: 16px;
     text-align: center;
@@ -12068,11 +12193,15 @@ div.quickaddtask .close_micro_popup_link {
     text-align: left;
 }
 
-.interactive_plus_button .fa, .filter_remove_button .fa {
+.interactive_plus_button .fas,
+.interactive_plus_button .far,
+.filter_remove_button .fas,
+.filter_remove_button .far {
     vertical-align: middle;
     font-size: 1.1em;
 }
-.filter_remove_button .fa {
+.filter_remove_button .fas,
+.filter_remove_button .far {
     color: #EB0000;
     width: 16px;
     text-align: center;
@@ -12460,7 +12589,8 @@ li.filtervalue .hidden {
     height: 16px;
     vertical-align: text-top;
 }
-.interactive_menu .fa {
+.interactive_menu .fas,
+.interactive_menu .far {
     display: inline-block;
     margin: 0 3px 0 0;
     width: 16px;
@@ -12468,19 +12598,23 @@ li.filtervalue .hidden {
     text-align: center;
 }
 
-.interactive_menu li .fa.checked {
+.interactive_menu li .fas.checked,
+.interactive_menu li .far.checked {
     display: none;
     color: #FFF;
 }
-.interactive_menu li .fa.unchecked {
+.interactive_menu li .fas.unchecked,
+.interactive_menu li .far.unchecked {
     display: inline-block;
     color: #555;
 }
 
-.interactive_menu li.selected .fa.unchecked {
+.interactive_menu li.selected .fas.unchecked,
+.interactive_menu li.selected .far.unchecked {
     display: none;
 }
-.interactive_menu li.selected .fa.checked {
+.interactive_menu li.selected .fas.checked,
+.interactive_menu li.selected .far.checked {
     display: inline-block;
 }
 
@@ -12819,7 +12953,8 @@ li.filtervalue .hidden {
     display: inline-block;
     vertical-align: middle;
 }
-.search_results th .fa {
+.search_results th .fas,
+.search_results th .far {
     vertical-align: middle;
 }
 
@@ -13314,12 +13449,14 @@ input.button-silver[type=submit]:hover,
     vertical-align: middle;
 }
 
-.button .fa {
+.button .fas,
+.button .far {
     margin: 0 5px 0 0;
     vertical-align: middle;
 }
 
-.button .fa + span {
+.button .fas + span,
+.button .far + span {
     vertical-align: middle;
     display: inline-block;
 }
@@ -15972,11 +16109,13 @@ form#vcs div.config_explanation {
 ul#subscribers_list > li {
     margin-bottom: 5px;
 }
-.fa.subscribed {
+.fas.subscribed,
+.far.subscribed {
     color: orange;
     cursor: pointer;
 }
-.fa.unsubscribed {
+.fas.unsubscribed,
+.far.unsubscribed {
     cursor: pointer;
     color: #AAA;
 }
@@ -16203,13 +16342,15 @@ td.legendLabel {
     font-size: .6em;
     padding: 5px 8px;
 }
-.dashboard_view_container .no-items .fa {
+.dashboard_view_container .no-items .fas,
+.dashboard_view_container .no-items .far {
     font-size: 2.5em;
     display: block;
     padding: 0 0 25px 0;
     color: #CCC;
 }
-.dashboard_view_container .no-items.no-projects .fa {
+.dashboard_view_container .no-items.no-projects .fas,
+.dashboard_view_container .no-items.no-projects .far {
     color: orange;
 }
 
@@ -17272,8 +17413,10 @@ li.header div.user_avatar {
     margin-right: 2px;
 }
 
-.whiteboard-issue .comments-badge .fa,
-.whiteboard-issue .attachments-badge .fa {
+.whiteboard-issue .comments-badge .fas,
+.whiteboard-issue .comments-badge .far,
+.whiteboard-issue .attachments-badge .fas,
+.whiteboard-issue .attachments-badge .far {
     margin-right: 5px;
 }
 
@@ -17760,10 +17903,12 @@ table.desktop-notifications-settings tr:first-child > td:last-child {
     vertical-align: middle;
     height: 20px;
 }
-.address-container .fa.verified-ok {
+.address-container .fas.verified-ok,
+.address-container .far.verified-ok {
     display: none;
 }
-.address-container.verified .fa.verified-ok {
+.address-container.verified .fas.verified-ok,
+.address-container.verified .far.verified-ok {
     display: block;
     position: absolute;
     right: 10px;
@@ -17895,7 +18040,7 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 .todo-comment-author > span {
     color: #AAA;
-    font-weight: normal;
+    font-weight: 300;
     font-size: 0.9em;
     display: inline-block;
     margin-left: 2px;
@@ -17905,7 +18050,11 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     color: #AAA;
 }
 
-.fa.tbg-livelink { color: #1aaa55; margin-right: .35em; font-weight: 500; }
+.fas.fa-leaf,
+.far.fa-leaf {
+    color: #1aaa55;
+    margin-right: .35em;
+}
 .livelink-banner {
     border: 1px solid rgba(200, 200, 200, .3);
     padding: 10px;
@@ -17933,6 +18082,10 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     margin: 0;
     padding: 25px 0 0 0;
     font-size: 1.1em;
+}
+.livelink_connector_accounts li .connector_logo,
+.livelink-import-list li .connector_logo {
+    margin-right: 3px;
 }
 .livelink-import-list li .live_import_type {
     display: block;
@@ -17965,7 +18118,8 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     margin-left: 15px;
     font-size: .8em;
 }
-.livelink_connector_accounts li .connected-ok .fa {
+.livelink_connector_accounts li .connected-ok .fas,
+.livelink_connector_accounts li .connected-ok .far {
     color: #1aaa55;
     font-weight: 500;
 }
@@ -17977,7 +18131,8 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     margin-left: 15px;
     font-size: .8em;
 }
-.livelink_connector_accounts li .not-connected .fa {
+.livelink_connector_accounts li .not-connected .fas,
+.livelink_connector_accounts li .not-connected .far {
     color: #888;
     font-weight: 300;
 }
@@ -17997,7 +18152,10 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
     font-size: 1em;
     line-height: 1.2em;
 }
-.livelink-import-list li .description .fa, .livelink_connector_accounts li .description .fa {
+.livelink-import-list li .description .fas,
+.livelink-import-list li .description .far,
+.livelink_connector_accounts li .description .fas,
+.livelink_connector_accounts li .description .far {
     color: #555;
     margin-right: .35em;
 }
@@ -18059,4 +18217,8 @@ form.disabled .address-container + input[type=submit], .address-container ~ .cha
 }
 .livelink_project_badge, .livelink_project_badge:hover { display: inline-block; font-size: .65em; padding: 7px; font-weight: 300; background: rgba(225, 225, 225, .3); color: #777; border-radius: 5px; margin-left: .35em; border: none; text-decoration: none; }
 .livelink_project_badge:hover { background: rgba(195, 235, 195, .35); }
-.livelink_project_badge .fa:not(.tbg_livelink) { margin-right: .35em; }
+.livelink_project_badge .fas,
+.livelink_project_badge .fab,
+.livelink_project_badge .far {
+    margin-right: .35em;
+}

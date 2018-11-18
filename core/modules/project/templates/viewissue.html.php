@@ -44,12 +44,12 @@
                                 <?php echo __('If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.', array('%more_actions' => __('More actions'))); ?>
                             </div>
                             <?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
-                            <?php echo fa_image_tag('star-o', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'class' => 'unsubscribed', 'style' => ($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
+                            <?php echo fa_image_tag('star', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'class' => 'unsubscribed', 'style' => ($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
                             <?php echo fa_image_tag('star', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'class' => 'subscribed', 'style' => (!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
                         <?php endif; ?>
                     </td>
                     <td class="title_left_images">
-                        <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('id' => 'issuetype_image')); ?>
+                        <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'file'), ['id' => 'issuetype_image']); ?>
                     </td>
                     <td id="title_field" class="<?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?> hoverable">
                         <div class="viewissue_title">
@@ -355,7 +355,7 @@
 
                         <div class="tab_menu inset">
                             <ul id="viewissue_activity">
-                                <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><i class="fa fa-comments-o"></i><?= __('Comments %count', array('%count' => '<span id="viewissue_comment_count" class="count-badge">' . $issue->countComments() . '</span>')); ?></a></li>
+                                <li id="tab_viewissue_comments" class="selected"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_comments', 'viewissue_activity');"><?= fa_image_tag('comments') . __('Comments %count', array('%count' => '<span id="viewissue_comment_count" class="count-badge">' . $issue->countComments() . '</span>')); ?></a></li>
                                 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
                                 <li id="tab_viewissue_history"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('tab_viewissue_history', 'viewissue_activity');"><i class="fa fa-history"></i><?= __('History'); ?></a></li>
                             </ul>

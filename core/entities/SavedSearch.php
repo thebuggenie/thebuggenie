@@ -716,6 +716,10 @@
             list ($this->_issues, $this->_total_number_of_issues) = Issue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getSortFields(), $include_deleted);
         }
 
+        /**
+         * @param bool $include_deleted
+         * @return Issue[]
+         */
         public function getIssues($include_deleted = false)
         {
             if ($this->hasQuickfoundIssues()) {

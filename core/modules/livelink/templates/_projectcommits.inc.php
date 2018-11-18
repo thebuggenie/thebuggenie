@@ -1,10 +1,8 @@
-<?php
-    if (!is_array($commits))
-    {
-        return; // silently quit
-    }
-    
-    foreach ($commits as $commit)
-    {
-        include_component('livelink/commitbox', array('project' => $selected_project, 'commit' => $commit, 'branch' => $branch));
-    }
+<?php $first = true; ?>
+<?php foreach ($commits as $commit): ?>
+    <?php if ($first || !$commit->getPreviousCommit() instanceof \thebuggenie\core\entities\Commit || date('ymd', $commit->getDate()) != date('ymd', $commit->getPreviousCommit()->getDate())): ?>
+        <?php include_component('livelink/commitrowheader', ['commit' => $commit]); ?>
+    <?php endif; ?>
+    <?php include_component('livelink/commitrow', array('project' => $selected_project, 'commit' => $commit, 'branch' => $branch, 'branches' => $branches)); ?>
+    <?php $first = false; ?>
+<?php endforeach; ?>

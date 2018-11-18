@@ -1,3 +1,10 @@
+<?php
+
+    /**
+     * @var \thebuggenie\core\entities\Issuetype[] $issuetypes
+     */
+
+?>
 <?php if (!empty($errors) || !(empty($permission_errors))): ?>
     <div class="rounded_box report_issue_desc red borderless" style="margin-bottom: 5px;">
         <strong><?= __('One or more errors occured when trying to file your issue'); ?>:</strong>
@@ -226,7 +233,7 @@
                 <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
                 <?php if (isset($board) && $issuetype->getID() == $board->getEpicIssuetypeID()) continue; ?>
                 <a class="button button-silver" data-key="<?= $issuetype->getKey(); ?>" data-id="<?= $issuetype->getID(); ?>" href="javascript:void(0);">
-                    <?= image_tag($issuetype->getIcon() . '.png'); ?>
+                    <?= fa_image_tag($issuetype->getFontAwesomeIcon()); ?>
                     <span><?= __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?></span>
                 </a>
             <?php endforeach; ?>
@@ -769,7 +776,7 @@
             <?php if ($selected_project instanceof \thebuggenie\core\entities\Project && $selected_project->permissionCheck('canlockandeditlockedissues')): ?>
                 <div class="report-issue-custom-access-check">
                     <?= image_tag('action_update_access_policy.png'); ?>
-                    <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" class="fancycheckbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Custom access policy'); ?></label>
+                    <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" class="fancycheckbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Custom access policy'); ?></label>
                     <div class="report-issue-custom-access-container" style="display:none;">
                         <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' checked'; ?>><label for="issue_access_public"><?= __('Available to anyone with access to project'); ?></label><br>
                         <input type="radio" name="issue_access" id="issue_access_public_category" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public_category');" value="public_category"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC_CATEGORY) echo ' checked'; ?>><label for="issue_access_public_category"><?= __('Available to anyone with access to project, category and those listed below'); ?></label><br>

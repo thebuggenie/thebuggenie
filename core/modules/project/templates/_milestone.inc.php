@@ -58,7 +58,7 @@
                 <tr>
                     <td>
                         <input type="checkbox" class="fancycheckbox" value="1" name="is_starting" id="starting_date_<?= $milestone->getID(); ?>" onchange="if ($('starting_date_<?= $milestone->getID(); ?>').getValue() == '1') { $('starting_month_<?= $milestone->getID(); ?>').enable(); $('starting_day_<?= $milestone->getID(); ?>').enable(); $('starting_year_<?= $milestone->getID(); ?>').enable(); } else { $('starting_month_<?= $milestone->getID(); ?>').disable(); $('starting_day_<?= $milestone->getID(); ?>').disable(); $('starting_year_<?= $milestone->getID(); ?>').disable(); } " <?php if ($milestone->isStarting()) echo 'checked'; ?>>
-                        <label for="starting_date_<?= $milestone->getID(); ?>"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Planned start date'); ?></label>
+                        <label for="starting_date_<?= $milestone->getID(); ?>"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Planned start date'); ?></label>
                     </td>
                     <td style="width: auto;">
                         <select style="width: 90px;" name="starting_month" id="starting_month_<?= $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
@@ -81,7 +81,7 @@
                 <tr>
                     <td>
                         <input type="checkbox" class="fancycheckbox" value="1" name="is_scheduled" id="sch_date_<?= $milestone->getID(); ?>" onchange="if ($('sch_date_<?= $milestone->getID(); ?>').getValue() == '1') { $('sch_month_<?= $milestone->getID(); ?>').enable(); $('sch_day_<?= $milestone->getID(); ?>').enable(); $('sch_year_<?= $milestone->getID(); ?>').enable(); } else { $('sch_month_<?= $milestone->getID(); ?>').disable(); $('sch_day_<?= $milestone->getID(); ?>').disable(); $('sch_year_<?= $milestone->getID(); ?>').disable(); } " <?php if ($milestone->isScheduled()) echo 'checked'; ?>>
-                        <label for="sch_date_<?= $milestone->getID(); ?>"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Planned end date'); ?></label>
+                        <label for="sch_date_<?= $milestone->getID(); ?>"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Planned end date'); ?></label>
                     </td>
                     <td style="width: auto;">
                         <select style="width: 90px;" name="sch_month" id="sch_month_<?= $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>

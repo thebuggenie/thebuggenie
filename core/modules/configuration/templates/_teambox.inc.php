@@ -31,9 +31,9 @@
                         <label for="clone_team_<?= $team->getID(); ?>_new_name"><?= __('New team name'); ?></label>
                         <input type="text" id="clone_team_<?= $team->getID(); ?>_new_name" name="team_name"><br />
                         <input type="checkbox" class="fancycheckbox" id="clone_team_<?= $team->getID(); ?>_permissions" name="clone_permissions" value="1" checked />
-                        <label for="clone_team_<?= $team->getID(); ?>_permissions" style="font-weight: normal;"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Clone permissions from the old team for the new team'); ?></label><br />
+                        <label for="clone_team_<?= $team->getID(); ?>_permissions" style="font-weight: normal;"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Clone permissions from the old team for the new team'); ?></label><br />
                         <input type="checkbox" class="fancycheckbox" id="clone_team_<?= $team->getID(); ?>_memberships" name="clone_memberships" value="1" checked />
-                        <label for="clone_team_<?= $team->getID(); ?>_memberships" style="font-weight: normal;"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Clone memberships (make members in the old team also members in the new, cloned team)'); ?></label>
+                        <label for="clone_team_<?= $team->getID(); ?>_memberships" style="font-weight: normal;"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Clone memberships (make members in the old team also members in the new, cloned team)'); ?></label>
                     </div>
                 </form>
                 <div style="text-align: right;">

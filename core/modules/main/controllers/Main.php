@@ -2371,6 +2371,7 @@ class Main extends framework\Action
                                 {
                                     framework\Context::loadLibrary('ui');
                                     $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png');
+                                    $field['fa_icon'] = $issue->getIssueType()->getFontAwesomeIcon();
                                 }
 
                                 if (!$issue->$is_changed_function_name())
@@ -2635,9 +2636,9 @@ class Main extends framework\Action
                 break;
             case 'issuetype':
                 $issue->revertIssuetype();
-                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? ['id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png'), 'fa_icon' => $issue->getIssueType()->getFontAwesomeIcon()] : array('id' => 0);
                 $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields));
+                return $this->renderJSON(['ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields]);
                 break;
             case 'milestone':
                 $issue->revertMilestone();

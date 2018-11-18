@@ -8,22 +8,22 @@
 ?>
 <div class="livelink-banner">
     <h2 class="livelink-header">
-        <?= fa_image_tag('leaf tbg-livelink') . __('TBG Live Link'); ?>
+        <?= fa_image_tag('leaf') . __('TBG Live Link'); ?>
     </h2>
     <p class="livelink-intro">
-        <?= __('Import and/or link an existing project from %github, %gitlab, %bitbucket and more with %tbg_live_link.', ['%github' => fa_image_tag('github') . ' GitHub', '%gitlab' => fa_image_tag('gitlab') . ' GitLab', '%bitbucket' => fa_image_tag('bitbucket') . ' BitBucket', '%tbg_live_link' => link_tag('https://thebuggenie.com/features/livelink', fa_image_tag('leaf tbg-livelink') . 'TBG Live Link', ['target' => '_blank'])]); ?>
+        <?= __('Import and/or link an existing project from %github, %gitlab, %bitbucket and more with %tbg_live_link.', ['%github' => fa_image_tag('github', [], 'fab') . ' GitHub', '%gitlab' => fa_image_tag('gitlab', [], 'fab') . ' GitLab', '%bitbucket' => fa_image_tag('bitbucket', [], 'fab') . ' BitBucket', '%tbg_live_link' => link_tag('https://thebuggenie.com/features/livelink', fa_image_tag('leaf') . 'TBG Live Link', ['target' => '_blank'])]); ?>
     </p>
     <?php if (isset($connector)): ?>
         <ul class="livelink-import-list">
             <li>
                 <?php if ($project->getID()): ?>
                     <span class="description">
-                        <?= __('Linked to %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo()) . $display_name . '</span>']); ?>
+                        <?= __('Linked to %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>
                     </span>
                     <button class="button button-silver" id="project_remove_livelink_button"><?php echo __('Remove'); ?></button>
                 <?php else: ?>
                     <span class="description">
-                        <?= __('Linking / importing %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo()) . $display_name . '</span>']); ?>
+                        <?= __('Linking / importing %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>
                         <span class="live_import_type">
                             <input type="checkbox" class="fancycheckbox" checked>
                             <?php if ($input['live_link'] == 'import'): ?>
@@ -41,14 +41,14 @@
         <ul class="livelink-import-list">
             <?php foreach ($module->getConnectorModules() as $connector_key => $connector_module): ?>
                 <li>
-                    <span class="description"><?= fa_image_tag($connector_module->getConnector()->getLogo()) . $connector_module->getConnector()->getProjectTemplateDescription(); ?></span>
+                    <span class="description"><?= fa_image_tag($connector_module->getConnector()->getLogo(), [], $connector_provider->getConnector()->getLogoStyle()) . $connector_module->getConnector()->getProjectTemplateDescription(); ?></span>
                     <button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', ['key' => 'livelink-import_project', 'connector' => $connector_key, 'project_id' => $project->getID()]); ?>');"><?php echo __('Import / link'); ?></button>
                 </li>
             <?php endforeach; ?>
         </ul>
     <?php else: ?>
         <p class="livelink-intro">
-            <?= __('%tbg_live_link requires integration plugins, available via a paid subscription. If you already have a subscription, download the integration plugins from %configure_modules or visit %thebuggenie_com to get started.', ['%tbg_live_link' => link_tag('https://thebuggenie.com/features/livelink', fa_image_tag('leaf tbg-livelink') . 'TBG Live Link', ['target' => '_blank']), '%thebuggenie_com' => link_tag('https://thebuggenie.com/register/self-hosted', fa_image_tag('globe') . ' thebuggenie.com'), '%configure_modules' => link_tag(make_url('configure_modules'), __('Configuration center') . '&nbsp;&raquo;&nbsp;' . __('Modules'))]); ?>
+            <?= __('%tbg_live_link requires integration plugins, available via a paid subscription. If you already have a subscription, download the integration plugins from %configure_modules or visit %thebuggenie_com to get started.', ['%tbg_live_link' => link_tag('https://thebuggenie.com/features/livelink', fa_image_tag('leaf') . 'TBG Live Link', ['target' => '_blank']), '%thebuggenie_com' => link_tag('https://thebuggenie.com/register/self-hosted', fa_image_tag('globe') . ' thebuggenie.com'), '%configure_modules' => link_tag(make_url('configure_modules'), __('Configuration center') . '&nbsp;&raquo;&nbsp;' . __('Modules'))]); ?>
         </p>
     <?php endif; ?>
 </div>

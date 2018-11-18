@@ -129,7 +129,7 @@
                     $types = array();
                     foreach (framework\Context::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
                     {
-                        if (in_array($issuetype->getIcon(), array('feature_request', 'enhancement')))
+                        if (in_array($issuetype->getType(), [Issuetype::TYPE_FEATURE, Issuetype::TYPE_ENHANCEMENT]))
                             $types[] = $issuetype->getID();
                     }
                     if (count($types))

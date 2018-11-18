@@ -9,7 +9,6 @@
     use thebuggenie\core\entities\Issue;
     use thebuggenie\core\entities\IssueCommit;
     use thebuggenie\core\entities\LivelinkImport;
-    use thebuggenie\core\entities\Module;
     use thebuggenie\core\entities\Priority;
     use thebuggenie\core\entities\Project;
     use thebuggenie\core\entities\Resolution;
@@ -18,18 +17,7 @@
     use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\entities\tables\Users;
     use thebuggenie\core\entities\User;
-    use thebuggenie\core\framework,
-        Github\Client as GithubClient;
-
-    /**
-     * TBG Live link module
-     *
-     * @author
-     * @version 0.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package livelink
-     * @subpackage core
-     */
+    use thebuggenie\core\framework;
 
     /**
      * TBG Live link module
@@ -43,13 +31,9 @@
     {
 
         const SETTINGS_WORKFLOW_ACTIONS = 'workflow_actions_';
-
         const SETTINGS_PROJECT_CONNECTOR = 'connector_project_';
-
         const SETTINGS_PROJECT_LIVELINK_ENABLED = 'connector_livelink_enabled_project_';
-
         const SETTINGS_PROJECT_CONNECTOR_SECRET = 'connector_secret_project_';
-
         const NOTIFICATION_COMMIT_MENTIONED = 'commit_mentioned';
 
         /**
@@ -74,7 +58,7 @@
 
         public function getAccountSettingsLogo()
         {
-            return 'leaf tbg-livelink';
+            return 'leaf';
         }
 
         public function getAccountSettingsName()

@@ -89,7 +89,7 @@
                             <?php foreach (\thebuggenie\core\entities\Team::getAll() as $team): ?>
                                 <div class="teamlist_container">
                                     <input type="checkbox" class="fancycheckbox" name="teams[<?= $team->getID(); ?>]" id="team_<?= $user->getID(); ?>_<?= $team->getID(); ?>" value="<?= $team->getID(); ?>"<?php if ($user->isMemberOfTeam($team)): ?> checked<?php endif; ?>>
-                                    <label for="team_<?= $user->getID(); ?>_<?= $team->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . $team->getName(); ?></label>&nbsp;&nbsp;
+                                    <label for="team_<?= $user->getID(); ?>_<?= $team->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . $team->getName(); ?></label>&nbsp;&nbsp;
                                 </div>
                             <?php endforeach; ?>
                             <?php if (count(\thebuggenie\core\entities\Team::getAll()) == 0): ?>
@@ -103,7 +103,7 @@
                             <?php foreach (\thebuggenie\core\entities\Client::getAll() as $client): ?>
                                 <div>
                                     <input type="checkbox" class="fancycheckbox" name="clients[<?= $client->getID(); ?>]" id="client_<?= $user->getID(); ?>_<?= $client->getID(); ?>" value="<?= $client->getID(); ?>"<?php if ($user->isMemberOfClient($client)): ?> checked<?php endif; ?>>
-                                    <label for="client_<?= $user->getID(); ?>_<?= $client->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . $client->getName(); ?></label>&nbsp;&nbsp;
+                                    <label for="client_<?= $user->getID(); ?>_<?= $client->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . $client->getName(); ?></label>&nbsp;&nbsp;
                                 </div>
                             <?php endforeach; ?>
                             <?php if (count(\thebuggenie\core\entities\Client::getAll()) == 0): ?>

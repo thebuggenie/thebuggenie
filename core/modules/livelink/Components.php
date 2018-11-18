@@ -2,8 +2,8 @@
 
     namespace thebuggenie\core\modules\livelink;
 
+    use thebuggenie\core\entities\Project;
     use thebuggenie\core\framework;
-    use thebuggenie\core\modules\project\Project;
 
     /**
      * actions for the livelink module

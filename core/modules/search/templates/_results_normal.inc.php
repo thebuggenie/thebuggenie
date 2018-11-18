@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @var \thebuggenie\core\entities\SavedSearch $search_object
+ */
+
 if (!$tbg_user->isGuest() && $actionable) include_component('search/bulkactions', array('mode' => 'top'));
 $current_count = 0;
 $current_estimated_time = \thebuggenie\core\entities\common\Timeable::getZeroedUnitsWithPoints();
@@ -25,7 +30,7 @@ foreach ($search_object->getIssues() as $issue):
 ?>
         <h5>
             <?php if ($search_object->getGroupBy() == 'issuetype'): ?>
-                <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
+                <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'file'), ['title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'))]); ?>
             <?php endif; ?>
             <?php echo $groupby_description; ?>
         </h5>
@@ -35,7 +40,7 @@ foreach ($search_object->getIssues() as $issue):
             <thead>
                 <tr>
                     <?php if (!$tbg_user->isGuest() && $actionable): ?>
-                        <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" id="results_issue_all_checkbox" class="fancycheckbox"><label for="results_issue_all_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label></th>
+                        <th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" id="results_issue_all_checkbox" class="fancycheckbox"><label for="results_issue_all_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label></th>
                     <?php endif; ?>
                     <?php if (!\thebuggenie\core\framework\Context::isProjectContext() && $show_project == true): ?>
                         <th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
@@ -73,7 +78,7 @@ foreach ($search_object->getIssues() as $issue):
                 <?php if (!$tbg_user->isGuest() && $actionable): ?>
                     <td class="sca_actions">
                         <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-                            <input type="checkbox" class="fancycheckbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>" id="update_issue_<?= $issue->getID(); ?>_checkbox"><label for="update_issue_<?= $issue->getID(); ?>_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
+                            <input type="checkbox" class="fancycheckbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>" id="update_issue_<?= $issue->getID(); ?>_checkbox"><label for="update_issue_<?= $issue->getID(); ?>_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
                         <?php endif; ?>
                     </td>
                 <?php endif; ?>
@@ -81,7 +86,7 @@ foreach ($search_object->getIssues() as $issue):
                 <td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
             <?php endif; ?>
                 <td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                    <?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
+                    <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'file'), ['title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'))]); ?>
                     <?php echo ($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'); ?>
                 </td>
                 <td class="result_issue">

@@ -14,7 +14,7 @@
                     <?= __('Click the star to toggle whether you want to be notified whenever this article updates or changes'); ?><br>
                 </div>
                 <?= image_tag('spinning_20.gif', array('id' => 'article_favourite_indicator_'.$article->getId(), 'style' => 'display: none;')); ?>
-                <?= fa_image_tag('star-o', array('id' => 'article_favourite_faded_'.$article->getId(), 'class' => 'unsubscribed', 'style' => ($tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
+                <?= fa_image_tag('star', array('id' => 'article_favourite_faded_'.$article->getId(), 'class' => 'unsubscribed', 'style' => ($tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
                 <?= fa_image_tag('star', array('id' => 'article_favourite_normal_'.$article->getId(), 'class' => 'subscribed', 'style' => (!$tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : '', 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
             <?php endif; ?>
         </div>
@@ -38,7 +38,7 @@
                         <?php if ($mode == 'edit'): ?>
                             <li><a href="javascript:void(0);" onclick="$('main_container').toggleClassName('distraction-free');"><?= fa_image_tag('arrows-alt') . __('Toggle distraction-free writing'); ?></a></li>
                             <li class="separator"></li>
-                            <li class="parent_article_selector_menu_entry"><a href="javascript:void(0);" onclick="$('parent_selector_container').toggle();TBG.Main.loadParentArticles();"><?= fa_image_tag('newspaper-o') . __('Select parent article'); ?></a></li>
+                            <li class="parent_article_selector_menu_entry"><a href="javascript:void(0);" onclick="$('parent_selector_container').toggle();TBG.Main.loadParentArticles();"><?= fa_image_tag('newspaper') . __('Select parent article'); ?></a></li>
                         <?php endif; ?>
                         <?php if ($article->getID()): ?>
                             <li<?php if ($mode == 'history'): ?> class="selected"<?php endif; ?>><?= link_tag(make_url('publish_article_history', array('article_name' => $article_name)), fa_image_tag('history') . __('History')); ?></li>

@@ -20,7 +20,7 @@
         </div>
         <div class="backdrop_details_submit" id="csv_import_control">
             <span class="explanation">
-                <input type="checkbox" class="fancycheckbox" name="csv_dry_run" id="csv_dry_run" checked="checked"><label for="csv_dry_run"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Test the import (dry-run)'); ?></label>
+                <input type="checkbox" class="fancycheckbox" name="csv_dry_run" id="csv_dry_run" checked="checked"><label for="csv_dry_run"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Test the import (dry-run)'); ?></label>
             </span>
             <div class="submit_container"><input type="submit" value="<?= __('Import'); ?>"></div>
         </div>

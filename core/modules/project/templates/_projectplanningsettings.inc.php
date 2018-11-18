@@ -18,7 +18,7 @@ $all_columns = $selected_project->getIssueFields(false, array('status', 'milesto
                         <?php foreach ($all_columns as $fieldname => $fieldopts): ?>
                             <li class="pcs_<?= $fieldname; ?>">
                                 <input type="checkbox" class="fancycheckbox" id="planning_column_<?= $fieldname; ?>" name="planning_column[<?= $fieldname; ?>]" value="<?= $fieldname; ?>" <?php if (isset($selected_columns[$fieldname])): ?> checked<?php endif; ?>/>
-                                <label for="planning_column_<?= $fieldname; ?>"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Show %fieldlabel', array('%fieldlabel' => $fieldopts['label'])); ?>
+                                <label for="planning_column_<?= $fieldname; ?>"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Show %fieldlabel', array('%fieldlabel' => $fieldopts['label'])); ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>

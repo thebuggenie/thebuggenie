@@ -2,6 +2,8 @@
 
 namespace thebuggenie\core\modules\livelink;
 
+use thebuggenie\core\entities\Branch;
+use thebuggenie\core\entities\Commit;
 use thebuggenie\core\entities\Project;
 use thebuggenie\core\entities\User;
 use thebuggenie\core\framework\Request;
@@ -35,5 +37,7 @@ interface ConnectorProvider
     public function webhook(Request $request, Project $project);
 
     public function importProject(Project $project, User $user);
+
+    public function getCommitUrl(Commit $commit, Branch $branch);
 
 }

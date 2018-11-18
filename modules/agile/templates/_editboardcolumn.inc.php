@@ -33,7 +33,7 @@
                     <ul class="interactive_menu_values">
                         <?php foreach ($statuses as $status): ?>
                             <li data-value="<?php echo $status->getID(); ?>" class="filtervalue<?php if ($column->hasStatusId($status->getID())) echo ' selected'; ?><?php if ($column->isStatusIdTaken($status->getID())) echo ' disabled'; ?>">
-                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                 <input type="checkbox" value="<?php echo $status->getID(); ?>" name="editagileboard_column_<?php echo $column_id; ?>_statuss_<?php echo $status->getID(); ?>" id="editagileboard_column_<?php echo $column_id; ?>_statuss_<?php echo $status->getID(); ?>" data-text="<?php echo __($status->getName()); ?>" id="filters_status_value_<?php echo $status->getID(); ?>" <?php if ($column->hasStatusId($status->getID())) echo 'checked'; ?>>
                                 <label name="editagileboard_column_<?php echo $column_id; ?>_status_<?php echo $status->getID(); ?>"><?php echo __($status->getName()); ?></label>
                             </li>

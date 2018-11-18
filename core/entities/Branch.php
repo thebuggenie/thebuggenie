@@ -107,6 +107,20 @@
         }
 
         /**
+         * Get the latest commit for this branch
+         *
+         * @return int
+         */
+        public function getLatestCommitId()
+        {
+            if ($this->_latest_commit_id instanceof Commit) {
+                return $this->_latest_commit_id->getID();
+            } else {
+                return $this->_latest_commit_id;
+            }
+        }
+
+        /**
          * Set the latest commit on this branch
          *
          * @param Commit $commit

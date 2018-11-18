@@ -1396,7 +1396,7 @@ EOT;
 
         public function getFontAwesomeIcon()
         {
-            return 'envelope-o';
+            return 'envelope';
         }
 
         public function getFontAwesomeColor()

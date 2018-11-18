@@ -26,6 +26,16 @@
     class Issuetype extends Keyable
     {
 
+        const TYPE_BUG = 'bug_report';
+        const TYPE_DOCUMENTATION = 'documentation_request';
+        const TYPE_SUPPORT = 'support_request';
+        const TYPE_FEATURE = 'feature_request';
+        const TYPE_ENHANCEMENT = 'enhancement';
+        const TYPE_EPIC = 'epic';
+        const TYPE_USER_STORY = 'developer_report';
+        const TYPE_TASK = 'task';
+        const TYPE_IDEA = 'idea';
+
         /**
          * The name of the object
          *
@@ -181,14 +191,48 @@
             $this->_task = (bool) $val;
         }
 
-        public function getIcon()
+        public function getType()
         {
             return $this->_icon;
         }
 
+        public function setType($type)
+        {
+            $this->_icon = $type;
+        }
+
+        public function getIcon()
+        {
+            return $this->getType();
+        }
+
         public function setIcon($icon)
         {
-            $this->_icon = $icon;
+            $this->setType($icon);
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->getType()) {
+                case self::TYPE_BUG:
+                    return 'file-medical-alt';
+                case self::TYPE_DOCUMENTATION:
+                    return 'file-signature';
+                case self::TYPE_ENHANCEMENT:
+                    return 'file-upload';
+                case self::TYPE_EPIC:
+                    return 'file-invoice';
+                case self::TYPE_FEATURE:
+                    return 'file-medical';
+                case self::TYPE_IDEA:
+                    return 'lightbulb';
+                case self::TYPE_SUPPORT:
+                    return 'headset';
+                case self::TYPE_TASK:
+                    return 'file-code';
+                case self::TYPE_USER_STORY:
+                    return 'file-alt';
+            }
         }
 
         public function getDescription()
@@ -245,6 +289,7 @@
                 'key' => $this->getKey(),
                 'name' => $this->getName(),
                 'icon' => $this->getIcon(),
+                'type' => $this->getType(),
                 'is_task' => $this->isTask(),
                 'description' => $this->getDescription()
             );

@@ -23,7 +23,7 @@
                 <div id="comment_add_controls" class="backdrop_details_submit">
                     <span class="explanation">
                         <?php if ($target_type == \thebuggenie\core\entities\Comment::TYPE_ISSUE): ?>
-                            <input type="checkbox" name="comment_save_changes" class="fancycheckbox" id="comment_save_changes" value="1"<?php if ($save_changes_checked): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Save my changes with this comment'); ?></label>
+                            <input type="checkbox" name="comment_save_changes" class="fancycheckbox" id="comment_save_changes" value="1"<?php if ($save_changes_checked): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Save my changes with this comment'); ?></label>
                         <?php endif; ?>
                         <input type="hidden" name="forward_url" value="<?= $forward_url; ?>">
                     </span>

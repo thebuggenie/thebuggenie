@@ -2,7 +2,7 @@
     <tr>
         <td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
-                <?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('style' => 'position: absolute; margin-top: -8px; margin-left: -6px;')); ?>
+                <?php echo fa_image_tag($issue->getIssueType()->getFontAwesomeIcon()); ?>
             <?php endif; ?>
         </td>
         <td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-bottom: <?php echo (isset($extra_padding) && $extra_padding) ? 15 : 10; ?>px;<?php endif; ?>">

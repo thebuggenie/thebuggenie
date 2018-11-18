@@ -432,6 +432,11 @@
             return 'puzzle-piece';
         }
 
+        public function getFontAwesomeStyle()
+        {
+            return 'fas';
+        }
+
         public function getFontAwesomeColor()
         {
             return 'mediumseagreen';

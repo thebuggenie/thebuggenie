@@ -12,7 +12,7 @@
             <a href="<?= $url; ?>"<?php if ($is_selected): ?> class="selected"<?php endif; ?>>
                 <?php if (isset($info['fa_icon'])): ?>
                     <?php $style = (isset($info['fa_color'])) ? 'color: ' . $info['fa_color'] : ''; ?>
-                    <?= fa_image_tag($info['fa_icon'], ['style' => $style]); ?>
+                    <?= fa_image_tag($info['fa_icon'], ['style' => $style], $info['fa_style']); ?>
                 <?php elseif (isset($info['module']) && $info['module'] != 'core'): ?>
                     <?= image_tag('cfg_icon_'.$info['icon'].'.png', array(), false, $info['module']); ?>
                 <?php else: ?>

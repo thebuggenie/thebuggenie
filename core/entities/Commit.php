@@ -319,6 +319,9 @@
             $this->_previous_commit_id = $commit;
         }
 
+        /**
+         * @return Commit
+         */
         public function getPreviousCommit()
         {
             return $this->_b2dbLazyload('_previous_commit_id');
