@@ -1,7 +1,7 @@
 <div style="margin-top: 5px;" class="tab_menu inset">
     <ul id="publish_settings_menu">
         <li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('cog'); ?><span><?= __('General wiki settings'); ?></span></a></li>
-        <li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('sign-in'); ?><span><?= __('Import wiki articles'); ?></span></a></li>
+        <li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('sign-in-alt'); ?><span><?= __('Import wiki articles'); ?></span></a></li>
     </ul>
 </div>
 <div id="publish_settings_menu_panes">

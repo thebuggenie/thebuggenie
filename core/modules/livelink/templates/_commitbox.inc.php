@@ -4,8 +4,6 @@
     /** @var \thebuggenie\core\entities\Commit $commit */
     /** @var \thebuggenie\core\entities\Project $project */
 
-    $base_url = \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('browser_url_' . $project->getID());
-
     if (mb_strstr($commit->getRevision(), ':'))
     {
         $revision = explode(':', $commit->getRevision());
@@ -31,9 +29,8 @@
 
     $misc_data_array = $commit->getMiscData();
 
-    $link_rev = $base_url.str_replace('%revno', $revision, $link_base);
-    $link_old = $base_url.str_replace('%revno', $oldrevision, $link_base);
-
+    $link_rev = $link_base.str_replace('%revno', $revision, $link_base);
+    $link_old = $link_base.str_replace('%revno', $oldrevision, $link_base);
 
 ?>
 <div class="comment commit branch_<?php echo $branch->getName(); ?>" id="commit_<?php echo $commit->getID(); ?>">

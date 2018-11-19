@@ -168,4 +168,8 @@
 
         abstract function isBuiltin();
 
+        abstract function getFontAwesomeIcon();
+
+        abstract function getFontAwesomeIconStyle();
+
     }

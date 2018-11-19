@@ -24,11 +24,9 @@
                 <?php endif; ?>
                 <?php if ($type == 'priority'): ?>
                     <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('No.'); ?></label>
-                    <select name="itemdata" id="add_option_<?php echo $type; ?>_itemdata" style="width: 45px;">
-                        <?php foreach (\thebuggenie\core\entities\Priority::getAvailableValues() as $value): ?>
-                            <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <?php foreach (\thebuggenie\core\entities\Priority::getAvailableValues() as $value => $icon): ?>
+                        <label><input type="radio" name="itemdata" value="<?php echo $value; ?>"><?php echo fa_image_tag($icon); ?></label>
+                    <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>
                     <label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Value'); ?></label>

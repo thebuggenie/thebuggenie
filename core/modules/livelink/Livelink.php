@@ -14,6 +14,7 @@
     use thebuggenie\core\entities\Resolution;
     use thebuggenie\core\entities\Status;
     use thebuggenie\core\entities\tables\Commits;
+    use thebuggenie\core\entities\tables\IssueCommits;
     use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\entities\tables\Users;
     use thebuggenie\core\entities\User;
@@ -225,6 +226,33 @@
                 include_component('livelink/projectconfig_template_additional_form_elements', $options);
             }
 
+        }
+
+        /**
+         * @Listener(module='core', identifier='viewissue_before_tabs')
+         * @param framework\Event $event
+         */
+        public function listen_viewissue_panel_tab(framework\Event $event)
+        {
+            if (!$this->getProjectConnector($event->getSubject()->getProject()))
+                return;
+
+            $commits_count = IssueCommits::getTable()->countByIssueID($event->getSubject()->getID());
+            include_component('livelink/viewissue_activities_tab', array('count' => $commits_count));
+        }
+
+        /**
+         * @Listener(module='core', identifier='viewissue_after_tabs')
+         * @param framework\Event $event
+         */
+        public function listen_viewissue_panel(framework\Event $event)
+        {
+            if (!$this->getProjectConnector($event->getSubject()->getProject()))
+                return;
+
+            $commits = IssueCommits::getTable()->getByIssueID($event->getSubject()->getID());
+            $commits_count = IssueCommits::getTable()->countByIssueID($event->getSubject()->getID());
+            include_component('livelink/viewissue_commits', array('issue' => $event->getSubject(), 'commits' => $commits, 'commits_count' => $commits_count, 'selected_project' => $event->getSubject()->getProject()));
         }
 
         /**

@@ -1,5 +1,8 @@
 <?php
-    $base_url = \thebuggenie\core\framework\Context::getModule('livelink')->getSetting('browser_url_' . $projectId);
+
+    /** @var \thebuggenie\core\entities\Branch $branch */
+    /** @var \thebuggenie\core\entities\Commit $commit */
+    /** @var \thebuggenie\core\entities\Project $project */
 
     if (mb_strstr($commit->getRevision(), ':'))
     {
@@ -21,30 +24,6 @@
         $oldrevision = $commit->getPreviousRevision();
     }
 
-    $misc_data = explode('|', $commit->getMiscData());
-
-    $branchname = null;
-
-    foreach ($misc_data as $data)
-    {
-        if (mb_strstr($data, 'branch'))
-        {
-            $branch = explode(':', $data);
-            if (count($branch) == 2)
-            {
-                $branchname = $branch[1];
-            }
-        }
-    }
-
-    $misc_data_array = $commit->getMiscData();
-    $reposname = null;
-
-    if (array_key_exists('gitlab_repos_ns', $misc_data_array))
-    {
-        $reposname = $misc_data_array['gitlab_repos_ns'];
-    }
-
 ?>
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
     <div id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">
@@ -57,10 +36,6 @@
             </div>
             <div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date">
                 <?php echo tbg_formattime($commit->getDate(), 9); ?>
-            </div>
-            <div class="commit_repos_branch">
-                <?php if ($reposname !== null): ?><span class="commitrepos"><?php echo $reposname; ?>/</span> <?php endif; ?>
-                <?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?>
             </div>
         </div>
 

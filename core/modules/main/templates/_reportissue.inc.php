@@ -775,7 +775,7 @@
             <?php \thebuggenie\core\framework\Event::createNew('core', 'reportissue.prefile')->trigger(); ?>
             <?php if ($selected_project instanceof \thebuggenie\core\entities\Project && $selected_project->permissionCheck('canlockandeditlockedissues')): ?>
                 <div class="report-issue-custom-access-check">
-                    <?= image_tag('action_update_access_policy.png'); ?>
+                    <?= fa_image_tag('user-lock'); ?>
                     <input type="checkbox" name="custom_issue_access" id="report-issue-custom-access-checkbox" class="fancycheckbox" onchange="TBG.Issues.ACL.toggle_custom_access(this);" value="1"><label for="report-issue-custom-access-checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Custom access policy'); ?></label>
                     <div class="report-issue-custom-access-container" style="display:none;">
                         <input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, '', 'public');" value="public"<?php if ($selected_project->getIssuesLockType() === \thebuggenie\core\entities\Project::ISSUES_LOCK_TYPE_PUBLIC) echo ' checked'; ?>><label for="issue_access_public"><?= __('Available to anyone with access to project'); ?></label><br>
@@ -844,7 +844,7 @@
                                     <option value="<?= $status->getID(); ?>"<?php if ($selected_status instanceof \thebuggenie\core\entities\Datatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?= $status->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="edition_additional" style="display: none;">
@@ -857,7 +857,7 @@
                                     <option value="<?= $selected_edition->getID(); ?>"><?= $selected_edition->getName(); ?> (<?= $selected_edition->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('edition_link').show();$('edition_additional_div').hide();$('edition_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('edition_link').show();$('edition_additional_div').hide();$('edition_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="build_additional" style="display: none;">
@@ -870,7 +870,7 @@
                                     <option value="<?= $selected_build->getID(); ?>"><?= $selected_build->getName(); ?> (<?= $selected_build->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('build_link').show();$('build_additional_div').hide();$('build_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('build_link').show();$('build_additional_div').hide();$('build_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="component_additional" style="display: none;">
@@ -883,7 +883,7 @@
                                     <option value="<?= $selected_component->getID(); ?>"><?= $selected_component->getName(); ?> (<?= $selected_component->getVersion(); ?>)</option>
                                 <?php endif; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('component_link').show();$('component_additional_div').hide();$('component_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('component_link').show();$('component_additional_div').hide();$('component_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <?php if (!isset($selected_milestone)): ?>
@@ -897,7 +897,7 @@
                                         <option value="<?= $selected_milestone->getID(); ?>"><?= $selected_milestone->getName(); ?></option>
                                     <?php endif; ?>
                                 </select>
-                                <a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                                <a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                             </div>
                         </li>
                     <?php endif; ?>
@@ -912,7 +912,7 @@
                                     <option value="<?= $category->getID(); ?>"<?php if ($selected_category instanceof \thebuggenie\core\entities\Datatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?= $category->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="estimated_time_additional" style="display: none;">
@@ -920,7 +920,7 @@
                         <div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?= __('Estimate time'); ?></a></div>
                         <div id="estimated_time_additional_div"<?php if ($selected_estimated_time === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="estimated_time" id="estimated_time_id_additional" style="width: 100px;">
-                            <a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="spent_time_additional" style="display: none;">
@@ -928,7 +928,7 @@
                         <div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?= __('Time spent on fix'); ?></a></div>
                         <div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
-                            <a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="percent_complete_additional" style="display: none;">
@@ -936,7 +936,7 @@
                         <div id="percent_complete_link"<?php if ($selected_percent_complete != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('percent_complete_link').hide();$('percent_complete_additional_div').show();"><?= __('Set percent completed'); ?></a></div>
                         <div id="percent_complete_additional_div"<?php if ($selected_percent_complete === null): ?> style="display: none;"<?php endif; ?>>
                             <input name="percent_complete" id="percent_complete_id_additional" style="width: 30px;"<?php if ($selected_percent_complete !== null): ?> value="<?= $selected_percent_complete; ?>"<?php endif; ?>>
-                            <a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="priority_additional" style="display: none;">
@@ -949,7 +949,7 @@
                                     <option value="<?= $priority->getID(); ?>"><?= $priority->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('priority_link').show();$('priority_additional_div').hide();$('priority').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('priority_link').show();$('priority_additional_div').hide();$('priority').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="reproducability_additional" style="display: none;">
@@ -962,7 +962,7 @@
                                     <option value="<?= $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof \thebuggenie\core\entities\Datatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?= $reproducability->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="resolution_additional" style="display: none;">
@@ -975,7 +975,7 @@
                                     <option value="<?= $resolution->getID(); ?>"><?= $resolution->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('resolution_link').show();$('resolution_additional_div').hide();$('resolution_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('resolution_link').show();$('resolution_additional_div').hide();$('resolution_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <li id="severity_additional" style="display: none;">
@@ -988,7 +988,7 @@
                                     <option value="<?= $severity->getID(); ?>"><?= $severity->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                            <a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                         </div>
                     </li>
                     <?php foreach (\thebuggenie\core\entities\CustomDatatype::getAll() as $customdatatype): ?>
@@ -1094,13 +1094,13 @@
                                     if (!$customdatatype->hasCustomOptions())
                                     {
                                         ?>
-                                        <a href="javascript:void(0);" class="img" onclick="$('<?= $customdatatype->getKey(); ?>_link').show();$('<?= $customdatatype->getKey(); ?>_additional_div').hide();$('<?= $customdatatype->getKey(); ?>_value_additional').setValue('');"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                                        <a href="javascript:void(0);" class="img" onclick="$('<?= $customdatatype->getKey(); ?>_link').show();$('<?= $customdatatype->getKey(); ?>_additional_div').hide();$('<?= $customdatatype->getKey(); ?>_value_additional').setValue('');"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                                         <?php
                                     }
                                     else
                                     {
                                         ?>
-                                        <a href="javascript:void(0);" class="img" onclick="$('<?= $customdatatype->getKey(); ?>_link').show();$('<?= $customdatatype->getKey(); ?>_additional_div').hide();$('<?= $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?= image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+                                        <a href="javascript:void(0);" class="img" onclick="$('<?= $customdatatype->getKey(); ?>_link').show();$('<?= $customdatatype->getKey(); ?>_additional_div').hide();$('<?= $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?= fa_image_tag('undo-alt', ['style' => 'float: none; margin-left: 5px;'], 'fas'); ?></a>
                                         <?php
                                     }
                                     ?>

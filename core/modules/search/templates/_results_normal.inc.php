@@ -28,9 +28,11 @@ foreach ($search_object->getIssues() as $issue):
     foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += ($spenttime[$key]);
     if ($showheader):
 ?>
-        <h5>
+        <h5 class="<?php if ($search_object->getGroupby() == 'priority' && $issue->getPriority() instanceof \thebuggenie\core\entities\Priority) echo 'priority_' . $issue->getPriority()->getItemdata(); ?>">
             <?php if ($search_object->getGroupBy() == 'issuetype'): ?>
                 <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'file'), ['title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'))]); ?>
+            <?php elseif ($search_object->getGroupBy() == 'priority'): ?>
+                <?php echo fa_image_tag((($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getFontAwesomeIcon() : 'question'), ['title' => (($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : __('Unknown priority'))], (($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getFontAwesomeIconStyle() : 'fas')); ?>
             <?php endif; ?>
             <?php echo $groupby_description; ?>
         </h5>
@@ -143,7 +145,7 @@ foreach ($search_object->getIssues() as $issue):
                     <?php echo ($issue->getReproducability() instanceof \thebuggenie\core\entities\Reproducability) ? $issue->getReproducability()->getName() : '-'; ?>
                 </td>
                 <td class="sc_priority<?php if (!$issue->getPriority() instanceof \thebuggenie\core\entities\Priority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-                    <?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : '-'; ?>
+                    <?php echo ($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? fa_image_tag($issue->getPriority()->getFontAwesomeIcon(), [], $issue->getPriority()->getFontAwesomeIconStyle()) . $issue->getPriority()->getName() : '-'; ?>
                 </td>
                 <?php $component_names = $issue->getComponentNames(); ?>
                 <td class="sc_components<?php if (!count($component_names)): ?> faded_out<?php endif; ?>"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>>

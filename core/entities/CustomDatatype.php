@@ -398,5 +398,21 @@
             return false;
         }
 
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->_itemtype) {
+                default:
+                    return 'question-mark';
+            }
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            switch ($this->_itemtype) {
+                default:
+                    return 'fas';
+            }
+        }
+
     }
 

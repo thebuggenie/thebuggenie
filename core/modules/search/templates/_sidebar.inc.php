@@ -97,7 +97,7 @@
                                     <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <?php if (!\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()): ?>
                                         <div class="action_icons">
-                                            <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('pencil'), array('title' => __('Edit saved search'))); ?>
+                                            <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('edit'), array('title' => __('Edit saved search'))); ?>
                                             <?= javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
                                         </div>
                                     <?php endif; ?>
@@ -124,7 +124,7 @@
                                 <div style="clear: both;">
                                     <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <div class="action_icons">
-                                        <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('pencil'), array('title' => __('Edit saved search'))); ?>
+                                        <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('edit'), array('title' => __('Edit saved search'))); ?>
                                         <?= javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
                                     </div>
                                     <span class="num_results_badge">-</span>
@@ -163,7 +163,7 @@
                                     <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
                                     <?php if ($tbg_user->canCreatePublicSearches()): ?>
                                         <div class="action_icons">
-                                            <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('pencil'), array('title' => __('Edit saved search'))); ?>
+                                            <?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('edit'), array('title' => __('Edit saved search'))); ?>
                                             <?= javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
                                         </div>
                                     <?php endif; ?>
@@ -174,7 +174,7 @@
                                     <?php if ($tbg_user->canCreatePublicSearches()): ?>
                                         <div class="action_icons">
                                             <?= javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-                                            <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('pencil'), array('title' => __('Edit saved search'))); ?>
+                                            <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)).'#edit_modal', fa_image_tag('edit'), array('title' => __('Edit saved search'))); ?>
                                         </div>
                                     <?php endif; ?>
                                     <?= link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>

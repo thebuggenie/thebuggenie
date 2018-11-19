@@ -1202,4 +1202,14 @@
             return $returnJSON;
         }
 
+        public function getFontAwesomeIcon()
+        {
+            return 'compact-disc';
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return 'fas';
+        }
+
     }

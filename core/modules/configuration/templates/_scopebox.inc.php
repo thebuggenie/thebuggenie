@@ -1,7 +1,7 @@
 <div class="<?php if ($scope->isDefault()): ?> bluebox<?php else: ?> greybox<?php endif; ?>" style="margin-bottom: 5px; min-height: 25px;">
     <?php if (!$scope->isDefault()): ?>
         <div class="button-group" style="float: right;">
-            <?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), fa_image_tag('pencil', array('title' => __('Edit scope settings'))), array('class' => 'button button-silver button-icon')); ?>
+            <?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), fa_image_tag('edit', array('title' => __('Edit scope settings'))), array('class' => 'button button-silver button-icon')); ?>
             <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this scope?'); ?>', '<?php echo __('Deleting this scope will destroy all data that exists inside this scope.'); ?> <i><?php echo __('This action cannot be undone.'); ?></i>', {yes: {click: function() {$('delete_scope_<?php echo $scope->getID(); ?>_form').submit();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
         </div>
     <?php endif; ?>

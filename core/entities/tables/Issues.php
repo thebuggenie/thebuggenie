@@ -779,6 +779,7 @@
                         case 'status':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::STATUS);
                             $crit->addSelectionColumn(self::STATUS);
+                            $crit->addSelectionColumn(ListTypes::ORDER);
                             $crit->addOrderBy(ListTypes::ORDER, Criteria::SORT_DESC);
                             $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::STATUS);
                             $crit3->addOrderBy(ListTypes::ORDER, Criteria::SORT_DESC);
@@ -820,6 +821,7 @@
                         case 'severity':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
                             $crit->addSelectionColumn(self::SEVERITY);
+                            $crit->addSelectionColumn(ListTypes::ORDER);
                             $crit->addOrderBy(ListTypes::ORDER, $grouporder);
                             $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
                             $crit3->addOrderBy(ListTypes::ORDER, $grouporder);
@@ -837,6 +839,7 @@
                         case 'resolution':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
                             $crit->addSelectionColumn(self::RESOLUTION);
+                            $crit->addSelectionColumn(ListTypes::ORDER);
                             $crit->addOrderBy(ListTypes::ORDER, $grouporder);
                             $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
                             $crit3->addOrderBy(ListTypes::ORDER, $grouporder);
@@ -844,6 +847,7 @@
                         case 'priority':
                             $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
                             $crit->addSelectionColumn(self::PRIORITY);
+                            $crit->addSelectionColumn(ListTypes::ORDER);
                             $crit->addOrderBy(ListTypes::ORDER, $grouporder);
                             $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
                             $crit3->addOrderBy(ListTypes::ORDER, $grouporder);

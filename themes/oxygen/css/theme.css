@@ -4605,7 +4605,6 @@ ul.client_users li, ul.team_users li, ul.project_users li {
 }
 .project_commits_box .commit .commit-branches .branch i {
     margin: 0 3px;
-    font-weight: 500;
 }
 .project_commits_box .commit .commit-branches .branch i,
 .project_commits_box .commit .commit-branches .branch span
@@ -4705,9 +4704,10 @@ a.friend {
 }
 
 .issuetype_list .button span, .issuetype_list .button:hover span {
-    display: block;
     padding: 5px 0;
     text-align: left;
+    width: auto;
+    min-width: 250px;
 }
 
 .issuetype_list .button span:first-line, .issuetype_list .button:hover span:first-line {
@@ -5511,6 +5511,12 @@ a.dropper.dropdown_link:hover {
     vertical-align: middle;
     padding: 0;
     line-height: 1em;
+}
+#issue_details fieldset dd .fa,
+#issue_details fieldset dd .fas,
+#issue_details fieldset dd .far,
+#issue_details fieldset dd .fab {
+    margin-right: 3px;
 }
 
 #issue_details fieldset #issue_percent_complete {
@@ -6403,17 +6409,22 @@ dd:hover .far.dropdown, .hoverable:hover .far.dropdown {
     background-color: rgba(200, 200, 200, .3);
 }
 
-.issue_detail_changed img.undo, .issue_detail_unmerged img.undo {
-    float: left;
+.issue_detail_changed .fas.undo,
+.issue_detail_changed .fas.undo:hover,
+.issue_detail_unmerged .fas.undo,
+.issue_detail_unmerged .fas.undo:hover {
     margin-right: 5px;
-    display: inline;
+    display: inline-block;
+    color: #555;
+    text-decoration: none;
+    border: none;
 }
 
-img.undo {
+.fas.undo {
     display: none;
 }
 
-#viewissue_left_box_issuetype img.undo, #viewissue_left_box_issuetype img.dropdown {
+#viewissue_left_box_issuetype .dropdown {
     margin-top: 7px;
 }
 
@@ -6881,18 +6892,18 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 .affected_item .icon_affected_type {
-    display: block;
-    float: left;
-    margin: 10px 10px 0 5px;
+    margin: 0 5px 2px 0;
+    font-size: 1.1em;
     vertical-align: middle;
-    width: 22px;
+    display: inline-block;
 }
 
 .affected_item .affected_name {
-    display: block;
-    font-size: 1em;
+    display: inline-block;
+    font-size: 1.1em;
     margin-bottom: 2px;
-    width: 300px;
+    width: 250px;
+    vertical-align: middle;
 }
 
 .affected_state {
@@ -13056,6 +13067,39 @@ li.filtervalue .hidden {
     margin-right: 3px;
 }
 
+.search_results .sc_priority .fas,
+.search_results .sc_priority .far {
+    margin-right: 3px;
+}
+
+.search_results tr.priority_1 td.sc_priority,
+.search_results h5.priority_1,
+#issue_details fieldset dd.priority_1 {
+    color: #C30000;
+    font-weight: 500;
+}
+.search_results tr.priority_2 td.sc_priority,
+.search_results h5.priority_2,
+#issue_details fieldset dd.priority_2 {
+    color: #FA0;
+    font-weight: 500;
+}
+.search_results tr.priority_4 td.sc_priority,
+.search_results h5.priority_4,
+#issue_details fieldset dd.priority_4,
+.search_results tr.priority_5 td.sc_priority,
+.search_results h5.priority_5,
+#issue_details fieldset dd.priority_5 {
+    color: #070;
+    font-weight: 300;
+}
+
+.search_results h5.priority_4,
+.search_results h5.priority_5 {
+    font-weight: 500;
+}
+
+
 .search_results td.result_issue img {
     float: left;
     margin-right: 3px;
@@ -13459,6 +13503,7 @@ input.button-silver[type=submit]:hover,
 .button .far + span {
     vertical-align: middle;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .button-icon img, .button-icon:hover img {
@@ -17000,10 +17045,6 @@ li.header div.user_avatar {
     margin-top: 4px;
 }
 
-#title_field #issue_title img.undo {
-    margin-top: 5px;
-}
-
 #issue_details #status_table {
     margin-top: -4px;
 }
@@ -17178,11 +17219,6 @@ li.header div.user_avatar {
 #issue_main .issue_inline_description ul,
 #issue_main .issue_inline_description ol {
     padding-left: 30px;
-}
-
-#issue_main #description_header img.undo,
-#issue_main #reproduction_steps_header img.undo {
-    margin-top: 8px;
 }
 
 #issue_main #description_change,

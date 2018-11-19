@@ -92,4 +92,13 @@
             return parent::getItemtype();
         }
 
+        public function getFontAwesomeIcon()
+        {
+            return $this->getCustomdatatype()->getFontAwesomeIcon();
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return $this->getCustomdatatype()->getFontAwesomeIconStyle();
+        }
     }

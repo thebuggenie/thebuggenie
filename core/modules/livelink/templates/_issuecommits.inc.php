@@ -1,2 +1,4 @@
-<?php foreach ($links as $link) include_component('livelink/issuecommitbox', array("projectId" => $projectId, "commit" => $link->getCommit())); ?>
+<?php foreach ($commits as $commit): ?>
+    <?php include_component('livelink/issuecommitbox', array("project" => $project, "commit" => $commit->getCommit())); ?>
+<?php endforeach; ?>
 

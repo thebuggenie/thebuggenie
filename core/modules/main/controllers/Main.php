@@ -2358,7 +2358,12 @@ class Main extends framework\Action
                             {
                                 if (isset($parameter))
                                 {
-                                    $name = $parameter->getName();
+                                    if ($parameter instanceof entities\Priority) {
+                                        framework\Context::loadLibrary('ui');
+                                        $name = fa_image_tag($parameter->getFontAwesomeIcon(), [], $parameter->getFontAwesomeIconStyle()) . $parameter->getName();
+                                    } else {
+                                        $name = $parameter->getName();
+                                    }
                                 }
                                 else
                                 {
@@ -2611,8 +2616,9 @@ class Main extends framework\Action
                 $field = ($issue->getReproducability() instanceof entities\Reproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
                 break;
             case 'priority':
+                framework\Context::loadLibrary('ui');
                 $issue->revertPriority();
-                $field = ($issue->getPriority() instanceof entities\Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
+                $field = ($issue->getPriority() instanceof entities\Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => fa_image_tag($this->issue->getPriority()->getFontAwesomeIcon(), [], $this->issue->getPriority()->getFontAwesomeIconStyle()) . $issue->getPriority()->getName()) : array('id' => 0);
                 break;
             case 'percent_complete':
                 $issue->revertPercentCompleted();
