@@ -4,8 +4,10 @@
 
     use Ramsey\Uuid\Uuid;
     use thebuggenie\core\entities\Branch;
+    use thebuggenie\core\entities\BranchCommit;
     use thebuggenie\core\entities\Commit;
     use thebuggenie\core\entities\CommitFile;
+    use thebuggenie\core\entities\CommitFileDiff;
     use thebuggenie\core\entities\Issue;
     use thebuggenie\core\entities\IssueCommit;
     use thebuggenie\core\entities\LivelinkImport;
@@ -13,8 +15,10 @@
     use thebuggenie\core\entities\Project;
     use thebuggenie\core\entities\Resolution;
     use thebuggenie\core\entities\Status;
+    use thebuggenie\core\entities\tables\BranchCommits;
     use thebuggenie\core\entities\tables\Commits;
     use thebuggenie\core\entities\tables\IssueCommits;
+    use thebuggenie\core\entities\tables\LivelinkImports;
     use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\entities\tables\Users;
     use thebuggenie\core\entities\User;
@@ -417,13 +421,18 @@
          *
          * @return Commit
          */
-        public function processCommit(Project $project, Branch $branch, $message, $author, \DateTime $date, $previous_hash, $current_hash, $changes, $update_branch, $additional_data = [])
+        public function processCommit(Project $project, Branch $branch, $message, $author, \DateTime $date, $previous_hash, $current_hash, $changes, $update_branch, $additional_data = [], $force = false)
         {
             if ($project->isArchived())
                 return;
 
-            if (Commits::getTable()->isProjectCommitProcessed($current_hash, $project->getID()))
-                return;
+            if (Commits::getTable()->isProjectCommitProcessed($current_hash, $project->getID())) {
+                if (!$force) {
+                    return;
+                } else {
+                    $commit = Commits::getTable()->getCommitByHash($current_hash, $project);
+                }
+            }
 
             framework\Context::setCurrentProject($project);
 
@@ -440,12 +449,14 @@
             framework\Logging::log('[' . $project->getKey() . '] Commit to be logged by user ' . $user->getName(), $this->getName());
 
             // Create the commit data
-            $commit = new Commit();
+            if (!isset($commit)) {
+                $commit = new Commit();
+            }
             $commit->setAuthor($user);
             $commit->setLog($message);
             if ($previous_hash) {
                 $commit->setPreviousRevision($previous_hash);
-                $previous_commit = Commits::getTable()->getCommitByRef($previous_hash, $project);
+                $previous_commit = Commits::getTable()->getCommitByHash($previous_hash, $project);
                 if ($previous_commit instanceof Commit) {
                     $commit->setPreviousCommit($previous_commit);
                 }
@@ -461,6 +472,13 @@
 
             $commit->save();
 
+            if ($branch->getID() && !BranchCommits::getTable()->hasBranchCommitSha($branch, $current_hash)) {
+                $branchCommit = new BranchCommit();
+                $branchCommit->setCommit($commit);
+                $branchCommit->setBranch($branch);
+                $branchCommit->save();
+            }
+
             if ($update_branch) {
                 $branch->setLatestCommit($commit);
                 $branch->save();
@@ -471,10 +489,10 @@
             // Iterate over affected issues and update them.
             foreach ($issues as $issue)
             {
-                $inst = new IssueCommit();
-                $inst->setIssue($issue);
-                $inst->setCommit($commit);
-                $inst->save();
+                $commit_file = new IssueCommit();
+                $commit_file->setIssue($issue);
+                $commit_file->setCommit($commit);
+                $commit_file->save();
 
                 if ($workflow_actions_enabled) {
                     // Process all commit-message transitions for an issue.
@@ -494,14 +512,39 @@
             // Create file links
             foreach ($changes as $change)
             {
-                $inst = new CommitFile();
-                $inst->setAction($change['action']);
-                $inst->setFile($change['filename']);
-                $inst->setCommit($commit);
-                $inst->save();
+                $commit_file = new CommitFile();
+                $commit_file->setAction($change['action']);
+                $commit_file->setPath($change['filename']);
+                $commit_file->setCommit($commit);
+                if (isset($change['previous_filename'])) {
+                    $commit_file->setData([
+                        'previous_filename' => $change['previous_filename']
+                    ]);
+                }
+                $commit_file->save();
 
                 framework\Logging::log('[' . $project->getKey() . '] Added with action ' . $change['action'] . ' file ' . $change['filename'], $this->getName());
+
+                if (isset($change['diff'])) {
+                    $diffs = preg_split('/^@@/m', $change['diff']);
+
+//                    var_dump($change['action']);
+                    foreach ($diffs as $single_diff) {
+                        if (trim($single_diff)) {
+                            try {
+                                $diff = new CommitFileDiff();
+                                $diff->setCommitFile($commit_file);
+                                $diff->setDiff('@@' . $single_diff);
+                                $diff->save();
+                            } catch (\Exception $e) {
+                                $diff->setDiff('');
+                                $diff->save();
+                            }
+                        }
+                    }
+                }
             }
+//            die();
 
             framework\Event::createNew('livelink', 'commit', $commit)->trigger();
 
@@ -586,6 +629,11 @@
             } else {
                 $this->deleteSetting(Livelink::SETTINGS_PROJECT_LIVELINK_ENABLED . $project->getID());
             }
+        }
+
+        public function isProjectImportInProgress(Project $project)
+        {
+            return LivelinkImports::getTable()->hasPendingByProject($project);
         }
 
     }

@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use thebuggenie\core\entities\LivelinkImport;
+    use thebuggenie\core\entities\Project;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -43,6 +44,15 @@
             $res = $this->select($crit, false);
 
             return $res;
+        }
+
+        public function hasPendingByProject(Project $project)
+        {
+            $crit = $this->getCriteria();
+            $crit->addWhere('livelink_imports.completed_at', 0);
+            $crit->addWhere('livelink_imports.project_id', $project->getID());
+
+            return (bool) $this->doCount($crit);
         }
 
     }

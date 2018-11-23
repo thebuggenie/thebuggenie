@@ -2,11 +2,12 @@
 
     use thebuggenie\core\entities\Branch;
 
-    $tbg_response->addBreadcrumb(__('Commits'), make_url('vcs_commitspage', array('project_key' => $selected_project->getKey())));
+    /** @var Branch[] $branches */
+    /** @var \thebuggenie\core\entities\Project $selected_project */
+    /** @var \thebuggenie\core\framework\Response $tbg_response */
+
     $tbg_response->setTitle(__('"%project_name" commits', array('%project_name' => $selected_project->getName())));
     include_component('project/projectheader', array('selected_project' => $selected_project, 'subpage' => __('Project commits')));
-
-    /** @var Branch[] $branches */
 
 ?>
 <div id="project_commits_overview" class="project_info_container">
@@ -27,6 +28,13 @@
     </div>
     <div class="project_right_container">
         <div class="project_right" id="project_commits_center_container">
+            <?php if ($is_importing): ?>
+                <div class="warning-box">
+                    <span class="message">
+                        <?= fa_image_tag('spinner', ['class' => 'fa-spin']) . __('This repository is still being imported and may not be fully up-to-date yet.'); ?>
+                    </span>
+                </div>
+            <?php endif; ?>
             <div id="project_commits">
                 <p class="faded_out"><?php echo __('Choose branch on the left to filter commits for this project'); ?></p>
             </div>

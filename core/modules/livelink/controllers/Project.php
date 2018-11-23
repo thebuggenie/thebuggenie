@@ -3,7 +3,10 @@
     namespace thebuggenie\core\modules\livelink\controllers;
 
     use thebuggenie\core\entities\Branch;
+    use thebuggenie\core\entities\Comment;
+    use thebuggenie\core\entities\Commit;
     use thebuggenie\core\entities\tables\Branches;
+    use thebuggenie\core\entities\tables\Comments;
     use thebuggenie\core\entities\tables\Commits,
         thebuggenie\core\framework,
         thebuggenie\core\helpers\ProjectActions,
@@ -13,6 +16,9 @@
 
     /**
      * Main controller for the livelink module
+     *
+     * @property Commit $commit
+     * @property Branch $branch
      */
     class Project extends ProjectActions
     {
@@ -45,10 +51,14 @@
                     $this->return404('Invalid commit ref');
                 }
 
-                $commit = Commits::getTable()->getCommitByRef($from_commit_ref, $this->selected_project);
+                $commit = Commits::getTable()->getCommitByHash($from_commit_ref, $this->selected_project);
             }
             $commits = $branch->getCommits($commit);
-            $branch_points = Branches::getTable()->getByCommitsAndProject($commits, $this->selected_project);
+            $commit_ids = array_reduce($commits, function ($ids, $commit) {
+                $ids[] = $commit->getID();
+            }, []);
+            $branch_points = Branches::getTable()->getByCommitsAndProject($commit_ids, $this->selected_project);
+            Comments::getTable()->preloadCommentCounts(Comment::TYPE_COMMIT, $commit_ids);
 
             return $this->renderJSON(['content' => $this->getComponentHTML('livelink/projectcommitsbox', ['commits' => $commits, 'branches' => $branch_points, 'selected_project' => $this->selected_project, 'branch' => $branch])]);
         }
@@ -65,6 +75,65 @@
 
             $branches = Branches::getTable()->getByProject($this->selected_project);
             $this->branches = $branches;
+            $this->is_importing = $this->getModule()->isProjectImportInProgress($this->selected_project);
+        }
+
+        /**
+         * @Route(name="livelink_project_commit_import", url="/:project_key/commits/:commit_hash/import/*", methods="GET")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runProjectImportCommit(framework\Request $request)
+        {
+            $this->forward403unless($this->_checkProjectPageAccess('project_commits'));
+
+            $this->commit = Commits::getTable()->getCommitByHash($request['commit_hash'], $this->selected_project);
+            if (!$this->commit instanceof Commit || $this->commit->isImported()) {
+                $this->return404('Invalid commit');
+            }
+
+            if ($request->hasParameter('branch')) {
+                $this->branch = Branches::getTable()->getByBranchNameAndProject($request['branch'], $this->selected_project);
+                if (!$this->branch instanceof Branch) {
+                    $this->return404('Invalid branch');
+                }
+            }
+
+            $connector = $this->getModule()->getConnectorModule($this->getModule()->getProjectConnector($this->selected_project));
+            $connector->importSingleCommit($this->selected_project, $this->commit);
+
+            $options = ['project_key' => $this->selected_project->getKey(), 'commit_hash' => $this->commit->getRevision()];
+            if (isset($this->branch)) {
+                $options['branch'] = $this->branch->getName();
+            }
+
+            $this->forward($this->getRouting()->generate('livelink_project_commit', $options));
+        }
+
+        /**
+         * @Route(name="livelink_project_commit", url="/:project_key/commits/:commit_hash/*", methods="GET")
+         *
+         * @param framework\Request $request
+         * @return bool
+         */
+        public function runProjectCommit(framework\Request $request)
+        {
+            $this->forward403unless($this->_checkProjectPageAccess('project_commits'));
+
+            if ($request->hasParameter('branch')) {
+                $this->branch = Branches::getTable()->getByBranchNameAndProject($request['branch'], $this->selected_project);
+                if (!$this->branch instanceof Branch) {
+                    $this->return404('Invalid branch');
+                }
+            }
+
+            $this->commit = Commits::getTable()->getCommitByHash($request['commit_hash'], $this->selected_project);
+            if (!$this->commit instanceof Commit) {
+                $this->return404('Invalid commit');
+            }
+
+            $this->is_importing = $this->getModule()->isProjectImportInProgress($this->selected_project);
         }
 
         /**
@@ -89,7 +158,7 @@
                     $this->return404('Invalid commit ref');
                 }
 
-                $commit = Commits::getTable()->getCommitByRef($from_commit_ref, $this->selected_project);
+                $commit = Commits::getTable()->getCommitByHash($from_commit_ref, $this->selected_project);
             }
             $this->commits = $branch->getCommits($commit);
 

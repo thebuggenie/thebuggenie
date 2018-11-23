@@ -2,25 +2,17 @@
 
     namespace thebuggenie\core\entities;
 
-    /**
-     * File class, vcs_integration
-     *
-     * @author Philip Kent <kentphilip@gmail.com>
-     * @version 3.2
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage core
-     */
+    use thebuggenie\core\helpers\Diffable;
 
     /**
-     * File class, vcs_integration
+     * Commit file
      *
      * @package thebuggenie
-     * @subpackage core
+     * @subpackage livelink
      *
      * @Table(name="\thebuggenie\core\entities\tables\CommitFiles")
      */
-    class CommitFile extends common\IdentifiableScoped
+    class CommitFile extends common\IdentifiableScoped implements Diffable
     {
 
         const ACTION_ADDED = 'A';
@@ -53,10 +45,29 @@
         protected $_commit_id = null;
 
         /**
+         * Associated commit
+         * @var CommitFileDiff[]
+         *
+         * @Relates(class="\thebuggenie\core\entities\CommitFileDiff", collection=true, foreign_column="commit_file_id", orderby="id")
+         */
+        protected $_commit_file_diffs = null;
+
+        /**
+         * Misc data
+         * @var array
+         * @Column(type="serializable", length=500)
+         */
+        protected $_data = [];
+
+        protected $_lines_removed;
+
+        protected $_lines_added;
+
+        /**
          * Get the file path
          * @return string
          */
-        public function getFile()
+        public function getPath()
         {
             return $this->_file_name;
         }
@@ -81,11 +92,21 @@
 
         /**
          * Set the file path
-         * @param string $file
+         * @param string $path
          */
-        public function setFile($file)
+        public function setPath($path)
         {
-            $this->_file_name = $file;
+            $this->_file_name = $path;
+        }
+
+        public function getFilename()
+        {
+            return basename($this->_file_name);
+        }
+
+        public function getDirectory()
+        {
+            return trim(dirname($this->_file_name), " /");
         }
 
         /**
@@ -104,6 +125,109 @@
         public function setCommit(Commit $commit)
         {
             $this->_commit_id = $commit;
+        }
+
+        protected function getExtension()
+        {
+            return substr(strrchr($this->getPath(), '.'), 1);
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->getExtension()) {
+                case 'png':
+                case 'webp':
+                case 'bpg':
+                case 'jpg':
+                case 'jpeg':
+                case 'gif':
+                case 'bmp':
+                case 'tiff':
+                case 'raw':
+                    return 'file-image';
+                case 'xls':
+                case 'xlsx':
+                case 'ods':
+                    return 'file-excel';
+                case 'doc':
+                case 'docx':
+                case 'odt':
+                    return 'file-word';
+                case 'ppt':
+                case 'pptx':
+                case 'odp':
+                    return 'file-powerpoint';
+                case 'pdf':
+                    return 'file-pdf';
+                case 'wav':
+                case 'ogg':
+                case 'mp3':
+                    return 'file-audio';
+                default:
+                    return 'file-code';
+            }
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return 'far';
+        }
+
+        /**
+         * @return CommitFileDiff[]
+         */
+        public function getDiffs()
+        {
+            return $this->_b2dbLazyload('_commit_file_diffs');
+        }
+
+        public function getCommitFileDiffs()
+        {
+            return $this->getDiffs();
+        }
+
+        /**
+         * @return array
+         */
+        public function getData()
+        {
+            return $this->_data;
+        }
+
+        /**
+         * @param array $data
+         */
+        public function setData($data)
+        {
+            $this->_data = $data;
+        }
+
+        /**
+         * @return int
+         */
+        public function getLinesRemoved()
+        {
+            if ($this->_lines_removed === null) {
+                $this->_lines_removed = 0;
+                foreach ($this->getDiffs() as $diff) {
+                    $this->_lines_removed += $diff->getLinesRemoved();
+                }
+            }
+            return $this->_lines_removed;
+        }
+
+        /**
+         * @return int
+         */
+        public function getLinesAdded()
+        {
+            if ($this->_lines_added === null) {
+                $this->_lines_added = 0;
+                foreach ($this->getDiffs() as $diff) {
+                    $this->_lines_added += $diff->getLinesAdded();
+                }
+            }
+            return $this->_lines_added;
         }
 
     }

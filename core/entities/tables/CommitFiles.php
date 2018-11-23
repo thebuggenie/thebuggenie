@@ -4,16 +4,6 @@
 
     use \thebuggenie\core\framework;
 
-/**
-     * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
-     *
-     * @author Philip Kent <kentphilip@gmail.com>
-     * @version 3.2
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage vcs_integration
-     */
-
     /**
      * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
      *

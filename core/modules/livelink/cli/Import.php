@@ -45,18 +45,23 @@
                 $imports = LivelinkImports::getTable()->getPending();
                 Mailing::getModule()->temporarilyDisable();
 
-                $current = 1;
+                $current = 0;
 
                 foreach ($imports as $import) {
+                    $current += 1;
                     $this->cliEcho("Running import {$current} of ".count($imports)."\n");
                     $this->cliEcho("---------\n");
-                    $this->cliEcho("Importing project ".$import->getProject()->getName()." in scope " . $import->getScope()->getID() . "\n");
-                    $current += 1;
-                    Context::setScope($import->getScope());
-                    Context::switchUserContext($import->getUser());
-                    Livelink::getModule()->performImport($import);
 
-                    $this->cliEcho("Done!\n\n", 'white', 'bold');
+                    if ($import->getProject()->isDeleted()) {
+                        $this->cliEcho("Project ".$import->getProject()->getName()." is deleted. Skipping.\n\n");
+                    } else {
+                        $this->cliEcho("Importing project ".$import->getProject()->getName()." in scope " . $import->getScope()->getID() . "\n");
+                        Context::setScope($import->getScope());
+                        Context::switchUserContext($import->getUser());
+                        Livelink::getModule()->performImport($import);
+
+                        $this->cliEcho("Done!\n\n", 'white', 'bold');
+                    }
 
                     $import->setCompletedAt(NOW);
                     $import->save();

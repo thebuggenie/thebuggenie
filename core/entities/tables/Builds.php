@@ -11,20 +11,13 @@
     /**
      * Builds table
      *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
-
-    /**
-     * Builds table
-     *
      * @package thebuggenie
      * @subpackage tables
      *
-     * @method Build selectById()
+     * @method static Builds getTable() Retrieves an instance of this table
+     *
+     * @method Build selectById($id)
+     *
      * @Table(name="builds")
      * @Entity(class="\thebuggenie\core\entities\Build")
      */
@@ -133,6 +126,9 @@
             return $this->select($crit);
         }
 
+        /**
+         * @return Build[]
+         */
         public function selectAll()
         {
             $crit = $this->getCriteria();

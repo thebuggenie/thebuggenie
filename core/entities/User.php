@@ -2394,7 +2394,7 @@
          */
         public function getLatestActions($number = 10)
         {
-            $items = tables\Log::getTable()->getByUserID($this->getID(), $number);
+            $items = tables\LogItems::getTable()->getByUserID($this->getID(), $number);
             return $items;
         }
 

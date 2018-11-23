@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\tables\LogItems;
     use thebuggenie\core\framework;
 
     /**
@@ -207,6 +208,31 @@
             }
         }
 
+        public function generateLogItems()
+        {
+            $dates = [
+                LogItem::ACTION_MILESTONE_STARTED => $this->_startingdate,
+                LogItem::ACTION_MILESTONE_REACHED => $this->_reacheddate
+            ];
+
+            foreach ($dates as $type => $date) {
+                $log_item = LogItems::getTable()->getByTargetAndChangeAndType($this->getID(), $type);
+                if ($date) {
+                    if (!$log_item instanceof LogItem) {
+                        $log_item = new LogItem();
+                        $log_item->setTargetType(LogItem::TYPE_MILESTONE);
+                        $log_item->setTarget($this->getID());
+                        $log_item->setChangeType($type);
+                        $log_item->setProject($this->getProject()->getID());
+                    }
+                    $log_item->setTime($date);
+                    $log_item->save();
+                } elseif ($log_item instanceof LogItem) {
+                    $log_item->delete();
+                }
+            }
+        }
+
         protected function _postSave($is_new)
         {
             if ($is_new)
@@ -214,6 +240,8 @@
                 framework\Context::setPermission("canseemilestone", $this->getID(), "core", 0, framework\Context::getUser()->getGroup()->getID(), 0, true);
                 \thebuggenie\core\framework\Event::createNew('core', 'Milestone::_postSave', $this)->trigger();
             }
+
+            $this->generateLogItems();
         }
 
         public static function doesIDExist($id)

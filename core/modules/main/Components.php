@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\modules\main;
 
+    use thebuggenie\core\entities\LogItem;
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
         thebuggenie\core\entities\tables;
@@ -418,17 +419,7 @@
 
         public function componentLogitem()
         {
-            if ($this->log_action['target_type'] == tables\Log::TYPE_ISSUE)
-            {
-                try
-                {
-                    $this->issue = entities\Issue::getB2DBTable()->selectById($this->log_action['target']);
-                }
-                catch (\Exception $e)
-                {
-
-                }
-            }
+            $this->issue = $this->item->getIssue();
         }
 
         public function componentCommentitem()
@@ -667,25 +658,7 @@
 
         public function componentDashboardViewLoggedActions()
         {
-            list($actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, null, true);
-
-            if (count($limit_to_target) != 10)
-            {
-                $i = 0;
-                while (true)
-                {
-                    list($more_actions, $limit_to_target) = tables\Log::getTable()->getByUserID($this->getUser()->getID(), 10, 10 * $i + 10, $limit_to_target);
-                    $i++;
-
-                    if (!count($more_actions)) break;
-
-                    $actions = array_merge($actions, $more_actions);
-
-                    if (count($limit_to_target) >= 10) break;
-                }
-            }
-
-            $this->actions = $actions;
+            $this->log_items = tables\LogItems::getTable()->getByUserID($this->getUser()->getID(), 10);
         }
 
         public function componentDashboardViewUserProjects()

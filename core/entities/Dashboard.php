@@ -82,7 +82,7 @@
         /**
          * Dashboard views
          *
-         * @var array|\thebuggenie\core\entities\DashboardView
+         * @var \thebuggenie\core\entities\DashboardView[]
          * @Relates(class="\thebuggenie\core\entities\DashboardView", collection=true, foreign_column="dashboard_id", orderby="sort_order")
          */
         protected $_dashboard_views = null;

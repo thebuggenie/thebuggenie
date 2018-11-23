@@ -72,7 +72,7 @@
             </span>
         </li>
         <li onclick="tbg_debug_show_menu_tab('log_timing', $(this));" title="Click to toggle timing overview">
-            <?php echo fa_image_tag('tachometer'); ?>
+            <?php echo fa_image_tag('tachometer-alt'); ?>
             <span>
                 <?php echo $tbg_summary['load_time']; ?> <span title="Time spent by php loading session data">(<?= $tbg_summary['session_initialization_time']; ?>)</span> /
                 <?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
@@ -110,10 +110,10 @@
             <span>Log</span>
         </li>
         <li onclick="setTimeout(function() { $('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="minimizer">
-            <?php echo fa_image_tag('arrows'); ?>
+            <?php echo fa_image_tag('arrows-alt-h'); ?>
         </li>
         <li onclick="event.preventDefault(); event.stopPropagation(); setTimeout(function() { $('debug-bar').toggleClassName('minimized');$('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="maximizer">
-            <?php echo fa_image_tag('arrows-h'); ?>
+            <?php echo fa_image_tag('arrows-alt-h'); ?>
         </li>
     </ul>
     <ul id="debug-frames-container">

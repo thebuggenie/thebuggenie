@@ -144,7 +144,7 @@ class Upgrade
         \thebuggenie\core\entities\tables\WorkflowTransitionActions::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\WorkflowStepTransitions::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\Links::getTable()->createIndexes();
-        \thebuggenie\core\entities\tables\Log::getTable()->createIndexes();
+        tables\LogItems::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\Teams::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\IssueCustomFields::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\ListTypes::getTable()->createIndexes();
@@ -285,7 +285,7 @@ class Upgrade
         }
     }
 
-    protected function _upgradeFrom4dot2()
+    protected function _upgradeFrom4dot2dot1()
     {
         if (defined('TBG_CLI')) {
             Command::cli_echo("Creating branches table.\n");
@@ -303,6 +303,16 @@ class Upgrade
         tables\CommitFiles::getTable()->create();
 
         if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating branch_commits table.\n");
+        }
+        tables\BranchCommits::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating commit_file_diffs table.\n");
+        }
+        tables\CommitFileDiffs::getTable()->create();
+
+        if (defined('TBG_CLI')) {
             Command::cli_echo("Creating issuecommits table.\n");
         }
         tables\IssueCommits::getTable()->create();
@@ -316,6 +326,12 @@ class Upgrade
             Command::cli_echo("Creating livelink_imports table.\n");
         }
         tables\LivelinkImports::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Upgrading log table. This may take a few minutes.\n");
+        }
+
+        tables\LogItems::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_421\LogItem::getB2DBTable());
     }
 
     /**
@@ -384,7 +400,8 @@ class Upgrade
                 case '4.1.14':
                     $this->_upgradeFrom4dot1dot13();
                 case '4.2.0':
-                    $this->_upgradeFrom4dot2();
+                case '4.2.1':
+                    $this->_upgradeFrom4dot2dot1();
                 default:
                     $this->upgrade_complete = true;
                     break;

@@ -41,6 +41,11 @@
         const TYPE_ARTICLE = 2;
 
         /**
+         * Commit comment
+         */
+        const TYPE_COMMIT = 3;
+
+        /**
          * @Column(type="text")
          */
         protected $_content;

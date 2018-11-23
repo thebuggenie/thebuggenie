@@ -46,42 +46,24 @@
         protected function _setupIndexes()
         {
             $this->_addIndex('project', self::PROJECT_ID);
+            $this->_addIndex('project_commit', [self::PROJECT_ID, self::NEW_REV]);
         }
 
         /**
          * Get commit for a given commit id
-         * @param string $id
-         * @param integer $project
-         */
-        public function getCommitByCommitId($id, $project)
-        {
-            $crit = new Criteria();
-
-            $crit->addWhere(self::NEW_REV, $id);
-            $crit->addWhere(self::PROJECT_ID, $project);
-
-            return $this->selectOne($crit);
-        }
-
-        /**
-         * Get commit for a given ref hash
-         * @param string $ref
+         * @param string $hash
          * @param Project $project
+         *
+         * @return Commit
          */
-        public function getCommitByRef($ref, Project $project)
+        public function getCommitByHash($hash, Project $project)
         {
             $crit = new Criteria();
 
-            $ctn = $crit->returnCriterion('commits.new_rev', $ref);
-            $ctn->addOr('commits.new_rev', $ref);
-            $crit->addWhere($ctn);
+            $crit->addWhere(self::NEW_REV, $hash);
             $crit->addWhere(self::PROJECT_ID, $project->getID());
 
-            $commits = $this->doCount($crit);
-
-            if ($commits == 1) {
-                return $this->selectOne($crit);
-            }
+            return $this->selectOne($crit);
         }
 
         /**

@@ -16,6 +16,7 @@
     use thebuggenie\core\entities\Comment;
     use thebuggenie\core\entities\Datatype;
     use thebuggenie\core\entities\DatatypeBase;
+    use thebuggenie\core\entities\LogItem;
     use thebuggenie\core\entities\Scope;
     use thebuggenie\core\entities\tables\Comments;
     use thebuggenie\core\entities\tables\CustomFields;
@@ -33,7 +34,7 @@
     use thebuggenie\core\entities\tables\IssueSpentTimes;
     use thebuggenie\core\entities\tables\Links;
     use thebuggenie\core\entities\tables\ListTypes;
-    use thebuggenie\core\entities\tables\Log;
+    use thebuggenie\core\entities\tables\LogItems;
     use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\entities\tables\Scopes;
     use thebuggenie\core\entities\tables\UserIssues;
@@ -195,11 +196,11 @@
             $this->cliEcho(" done\n");
 
             $this->cliEcho("Moving log items... ");
-            $logs_crit = Log::getTable()->getCriteria();
+            $logs_crit = LogItems::getTable()->getCriteria();
             $logs_crit->addUpdate('log.scope', $to_scope_id);
             $logs_crit->addWhere('log.target', $issue_ids, Criteria::DB_IN);
-            $logs_crit->addWhere('log.target_type', Log::TYPE_ISSUE);
-            Log::getTable()->doUpdate($logs_crit);
+            $logs_crit->addWhere('log.target_type', LogItem::TYPE_ISSUE);
+            LogItems::getTable()->doUpdate($logs_crit);
             $this->cliEcho(" done\n");
 
             $this->cliEcho("Moving attachments... ");

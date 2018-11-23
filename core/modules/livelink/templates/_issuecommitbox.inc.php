@@ -4,26 +4,6 @@
     /** @var \thebuggenie\core\entities\Commit $commit */
     /** @var \thebuggenie\core\entities\Project $project */
 
-    if (mb_strstr($commit->getRevision(), ':'))
-    {
-        $revision = explode(':', $commit->getRevision());
-        $revision = $revision[1];
-    }
-    else
-    {
-        $revision = $commit->getRevision();
-    }
-
-    if (mb_strstr($commit->getPreviousRevision(), ':'))
-    {
-        $oldrevision = explode(':', $commit->getPreviousRevision());
-        $oldrevision = $oldrevision[1];
-    }
-    else
-    {
-        $oldrevision = $commit->getPreviousRevision();
-    }
-
 ?>
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
     <div id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">

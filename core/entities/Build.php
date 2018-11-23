@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\Releaseable;
+    use thebuggenie\core\entities\tables\LogItems;
     use thebuggenie\core\framework;
 
     /**
@@ -138,6 +139,24 @@
          */
         protected $_num_issues = null;
 
+        public function generateLogItems()
+        {
+            $log_item = LogItems::getTable()->getByTargetAndChangeAndType($this->getID(), LogItem::ACTION_BUILD_RELEASED);
+            if ($this->_release_date) {
+                if (!$log_item instanceof LogItem) {
+                    $log_item = new LogItem();
+                    $log_item->setTargetType(LogItem::TYPE_BUILD);
+                    $log_item->setTarget($this->getID());
+                    $log_item->setChangeType(LogItem::ACTION_BUILD_RELEASED);
+                    $log_item->setProject($this->getProject()->getID());
+                }
+                $log_item->setTime($this->_release_date);
+                $log_item->save();
+            } elseif ($log_item instanceof LogItem) {
+                $log_item->delete();
+            }
+        }
+
         protected function _postSave($is_new)
         {
             if ($is_new)
@@ -145,6 +164,8 @@
                 framework\Context::setPermission("canseebuild", $this->getID(), "core", 0, framework\Context::getUser()->getGroup()->getID(), 0, true);
                 \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Build::_postSave', $this)->trigger();
             }
+
+            $this->generateLogItems();
         }
 
         /**

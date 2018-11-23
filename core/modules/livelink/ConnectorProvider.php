@@ -38,6 +38,8 @@ interface ConnectorProvider
 
     public function importProject(Project $project, User $user);
 
-    public function getCommitUrl(Commit $commit, Branch $branch);
+    public function importSingleCommit(Project $project, Commit $commit);
+
+    public function getCommitUrl(Commit $commit);
 
 }

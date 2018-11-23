@@ -8,7 +8,7 @@
 
 ?>
 <div class="project_commits_box">
-    <div id="commits">
+    <div id="commits" class="commits-list">
         <?php include_component('livelink/projectcommits', ['selected_project' => $selected_project, 'commits' => $commits, 'branch' => $branch, 'branches' => $branches]); ?>
     </div>
 

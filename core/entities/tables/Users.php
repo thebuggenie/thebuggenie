@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Table;
+    use thebuggenie\core\entities\User;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -151,6 +152,10 @@
             return $this->select($crit);
         }
 
+        /**
+         * @param $userid
+         * @return User
+         */
         public function getByUserID($userid)
         {
             $crit = $this->getCriteria();

@@ -1813,7 +1813,7 @@
             }
             if (empty($this->_issuecounts['last15']))
             {
-                list ($closed, $open) = tables\Log::getTable()->getLast15IssueCountsByProjectID($this->getID());
+                list ($closed, $open) = tables\LogItems::getTable()->getLast15IssueCountsByProjectID($this->getID());
                 $this->_issuecounts['last15']['open'] = $open;
                 $this->_issuecounts['last15']['closed'] = $closed;
             }
@@ -2447,7 +2447,7 @@
             return framework\Context::getUser()->hasPermission('canseeproject', $this->getID());
         }
 
-        protected function _populateLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateLogItems($limit = null, $important = true, $offset = null)
         {
             $varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
             if ($this->$varname === null)
@@ -2455,47 +2455,11 @@
                 $this->$varname = array();
                 if ($important)
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
+                    $this->$varname = tables\LogItems::getTable()->getImportantByProjectID($this->getID(), $limit, $offset);
                 }
                 else
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
-                }
-                if ($res)
-                {
-                    $this->$varname = $res;
+                    $this->$varname = tables\LogItems::getTable()->getByProjectID($this->getID(), $limit, $offset);
                 }
             }
         }
@@ -2503,11 +2467,14 @@
         /**
          * Return this projects most recent log items
          *
+         * @param null $limit
+         * @param bool $important
+         * @param null $offset
          * @return LogItem[]
          */
-        public function getRecentLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        public function getRecentLogItems($limit = null, $important = true, $offset = null)
         {
-            $this->_populateLogItems($limit, $important, $offset, $limit_to_target);
+            $this->_populateLogItems($limit, $important, $offset);
             return ($important) ? $this->_recentimportantlogitems : $this->_recentlogitems;
         }
 
@@ -2701,60 +2668,21 @@
             return $this->_recentissues[$issuetype_id];
         }
 
-        protected function _populateRecentActivities($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
         {
             if ($this->_recentactivities === null)
             {
                 $this->_recentactivities = array();
-                foreach ($this->getRecentLogItems($limit, $important, $offset, $limit_to_target) as $log_item)
+                foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
                 {
-                    if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
+                    if (!array_key_exists($log_item->getTime(), $this->_recentactivities))
                     {
-                        $this->_recentactivities[$log_item['timestamp']] = array();
+                        $this->_recentactivities[$log_item->getTime()] = array();
                     }
-                    $this->_recentactivities[$log_item['timestamp']][] = $log_item;
+                    $this->_recentactivities[$log_item->getTime()][] = $log_item;
                 }
 
                 ksort($this->_recentactivities, SORT_NUMERIC);
-                end($this->_recentactivities);
-                $max_timestamp = key($this->_recentactivities);
-                reset($this->_recentactivities);
-                $min_timestamp = key($this->_recentactivities);
-
-                foreach ($this->getBuilds() as $build)
-                {
-                    if ($build->isReleased() && $build->getReleaseDate() <= NOW && $build->getReleaseDate() >= $min_timestamp && $build->getReleaseDate() <= $max_timestamp)
-                    {
-                        if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$build->getReleaseDate()] = array();
-                        }
-                        $this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
-                    }
-                }
-                foreach ($this->getMilestones() as $milestone)
-                {
-                    if ($milestone->isStarting() && $milestone->isSprint())
-                    {
-                        if ($milestone->getStartingDate() > NOW || $milestone->getStartingDate() < $min_timestamp || $milestone->getStartingDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getStartingDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getStartingDate()][] = array('change_type' => 'sprint_start', 'info' => $milestone->getName());
-                    }
-                    if ($milestone->isScheduled() && $milestone->isReached())
-                    {
-                        if ($milestone->getReachedDate() > NOW || $milestone->getReachedDate() < $min_timestamp || $milestone->getReachedDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getReachedDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
-                    }
-                }
-
-                krsort($this->_recentactivities, SORT_NUMERIC);
             }
         }
 
@@ -2762,11 +2690,13 @@
          * Return a list of recent activity for the project
          *
          * @param integer $limit Limit number of activities
+         * @param bool $important
+         * @param null $offset
          * @return array
          */
-        public function getRecentActivities($limit = null, $important = false, $offset = null, $limit_to_target = false)
+        public function getRecentActivities($limit = null, $important = false, $offset = null)
         {
-            $this->_populateRecentActivities($limit, $important, $offset, $limit_to_target);
+            $this->_populateRecentActivities($limit, $important, $offset);
             if ($limit !== null)
             {
                 $recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
@@ -2777,11 +2707,6 @@
             }
 
             return $recent_activities;
-        }
-
-        public function getRecentImportantActivities($limit = null, $offset = null, $limit_to_target = false)
-        {
-            return $this->getRecentActivities($limit, true, $offset, $limit_to_target);
         }
 
         public function clearRecentActivities()

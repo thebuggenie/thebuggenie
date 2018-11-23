@@ -42,6 +42,21 @@
          */
         protected $_commit = null;
 
+        protected function _preSave($is_new)
+        {
+            parent::_preSave($is_new);
+
+            if ($is_new) {
+                $log_item = new LogItem();
+                $log_item->setChangeType(LogItem::ACTION_ISSUE_UPDATE_COMMIT);
+                $log_item->setTarget($this->getID());
+                $log_item->setTargetType(LogItem::TYPE_ISSUE_COMMIT);
+                $log_item->setProject($this->getCommit()->getProject());
+                $log_item->setUser($this->getCommit()->getAuthor()->getID());
+                $log_item->save();
+            }
+        }
+
         /**
          * Get the issue for this link
          * @return Issue
@@ -76,28 +91,6 @@
         public function setCommit(Commit $commit)
         {
             $this->_commit = $commit;
-        }
-
-        /**
-         * Return all commits for a given issue
-         * @param \thebuggenie\core\entities\Issue $issue
-         * @param integer $limit
-         * @param integer $offset
-         * @return IssueCommit[]
-         */
-        public static function getCommitsByIssue(\thebuggenie\core\entities\Issue $issue, $limit = null, $offset = null)
-        {
-            return tables\IssueCommits::getTable()->getByIssueID($issue->getID(), null, $limit, $offset);
-        }
-
-        /**
-         * Return all issues for a given commit
-         * @param \thebuggenie\modules\vcs_integration\entities\Commit $commit
-         * @return array
-         */
-        public static function getIssuesByCommit(Commit $commit)
-        {
-            return tables\IssueCommits::getTable()->getByCommitID($commit->getID());
         }
 
     }

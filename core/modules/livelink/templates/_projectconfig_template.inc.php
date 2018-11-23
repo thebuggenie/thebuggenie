@@ -17,10 +17,16 @@
         <ul class="livelink-import-list">
             <li>
                 <?php if ($project->getID()): ?>
-                    <span class="description">
-                        <?= __('Linked to %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>
-                    </span>
-                    <button class="button button-silver" id="project_remove_livelink_button"><?php echo __('Remove'); ?></button>
+                    <?php if ($module->isProjectImportInProgress($project)): ?>
+                        <span class="description">
+                            <?= fa_image_tag('spinner', ['class' => 'fa-spin']) . __('Importing from %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="description">
+                            <?= __('Linked to %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>
+                        </span>
+                        <button class="button button-silver" id="project_remove_livelink_button"><?php echo __('Remove'); ?></button>
+                    <?php endif; ?>
                 <?php else: ?>
                     <span class="description">
                         <?= __('Linking / importing %project_name', ['%project_name' => '<span class="project_name">' . fa_image_tag($connector->getConnector()->getLogo(), ['class' => 'connector_logo'], $connector->getConnector()->getLogoStyle()) . $display_name . '</span>']); ?>

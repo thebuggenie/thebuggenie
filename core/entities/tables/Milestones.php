@@ -2,20 +2,11 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Milestone;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
-
-    /**
-     * Milestones table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
 
     /**
      * Milestones table
@@ -93,6 +84,9 @@
             return $this->select($crit);
         }
 
+        /**
+         * @return Milestone[]
+         */
         public function selectAll()
         {
             $crit = $this->getCriteria();

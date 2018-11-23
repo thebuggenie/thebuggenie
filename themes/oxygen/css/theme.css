@@ -1082,7 +1082,8 @@ input[type=checkbox].semi-checked {
 .project-context.page-agile_board #content_container,
 .project-context.page-viewissue #content_container,
 .project-context.page-project_timeline #content_container,
-.project-context.page-livelink_project_commits #content_container {
+.project-context.page-livelink_project_commits #content_container,
+.project-context.page-livelink_project_commit #content_container {
     flex-direction: column;
 }
 
@@ -4565,37 +4566,66 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     margin: 0;
 }
 
-.project_commits_box #commits {
+.commits-list {
     margin: 0 10px;
 }
 
-.project_commits_box .row-header {
+.commits-list .row-header {
     padding: 5px 8px;
     font-size: 1em;
     background-color: rgba(225, 225, 225, .1);
     border-bottom: 1px solid rgba(200, 200, 200, .3);
 }
-.project_commits_box .commit {
+.commits-list .commit {
     padding: 10px;
     display: flex;
     align-items: center;
 }
-.project_commits_box .commit .message-author-container {
+.commits-list .commit .message-author-container {
     flex: 1 1 auto;
 }
-.project_commits_box .commit .message-author-container .commit-message {
+.commits-list .commit .message-author-container .commit-message,
+.commits-list .commit .message-author-container .commit-message:hover {
     font-weight: 500;
+    color: #555;
 }
-.project_commits_box .commit .message-author-container .commit-author {
+.commits-list .commit .message-author-container .commit-author {
     font-size: .9em;
 }
-.project_commits_box .commit .commit-branches .branch {
+.commit-message .overflow {
+    display: block;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: rgba(225, 225, 225, .2);
+    border: 1px solid rgba(200, 200, 200, .4);
+    font-family: 'Fira Mono';
+    font-size: 1em;
+}
+.commit-author {
+    display: flex;
+    align-items: baseline;
+}
+.commit-details-list .commit-sha {
+    font-size: 1em;
+    padding: 3px 7px;
+    font-weight: 500;
+    margin-left: 0;
+    display: inline-block;
+}
+.commit-details-list .branch-badge {
+    font-size: 1em;
+    padding: 3px 7px;
+    margin-left: 0;
+    display: inline-block;
+}
+.commits-list .commit .commit-branches .branch {
     display: flex;
     flex: 0 0 auto;
     flex-direction: row;
     align-items: flex-end;
 }
-.project_commits_box .commit .commit-branches .branch {
+.commits-list .commit .commit-branches .branch,
+.branch-badge {
     margin: 5px;
     background-color: rgba(78, 129, 171, .7);
     color: #FFF;
@@ -4603,28 +4633,45 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     padding: 2px 4px;
     border-radius: 3px;
 }
-.project_commits_box .commit .commit-branches .branch i {
+.branch-badge {
+    display: inline-block;
+}
+.commits-list .commit .commit-branches .branch i,
+.branch-badge i {
     margin: 0 3px;
 }
-.project_commits_box .commit .commit-branches .branch i,
-.project_commits_box .commit .commit-branches .branch span
-{
+.commits-list .commit .commit-branches .branch i,
+.branch-badge i,
+.commits-list .commit .commit-branches .branch span,
+.branch-badge span {
     display: inline-block;
     vertical-align: middle;
     line-height: 1.4em;
 }
-.project_commits_box .commit .commit-sha {
-    flex: 0 0 auto;
+.commit-sha {
     margin: 0 10px;
     border: 1px solid #4E81AB;
     padding: 2px 4px;
     border-radius: 3px;
 }
-.project_commits_box .commit .commit-actions {
-    flex: 0 0 100px;
+.commits-list .commit .commit-sha {
+    flex: 0 0 auto;
+}
+.commits-list .commit .commit-details {
+    flex: 0 0 130px;
     text-align: right;
 }
-.project_commits_box .commit .commit-actions .button {
+.commits-list .commit .commit-details .not-imported {
+    color: rgb(229, 225, 148);
+    margin-right: 5px;
+}
+.commits-list .commit .commit-details .commit-comments {
+    margin-right: 7px;
+}
+.commits-list .commit .commit-details .commit-comments .fa-comments {
+    margin-right: 3px;
+}
+.commits-list .commit .commit-details .button {
     padding: 4px 7px;
 }
 .simple_list.branch-list .branch-name {
@@ -4639,6 +4686,161 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     display: block;
     font-size: .8em;
     color: #888;
+}
+.commit-files-summary {
+    font-weight: 300;
+    padding: 15px;
+    color: #888;
+    vertical-align: middle;
+}
+.commit-files-summary .summary {
+    vertical-align: middle;
+    margin-left: 7px;
+}
+.commit-files-summary .summary .num_changes {
+    font-weight: 500;
+    color: rgb(78, 129, 171, .7);
+}
+.commit-files-summary .summary .num_files {
+    font-weight: 500;
+}
+.commit-files-summary .fas {
+    vertical-align: middle;
+    font-size: 1.2em;
+    color: #AAA;
+}
+.commit-files .file-preview {
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 40px);
+    margin: 10px 20px 25px 20px;
+    border: 1px solid rgba(200, 200, 200, .3);
+    background: #FFF;
+    border-radius: 5px;
+    overflow: auto;
+}
+.commit-files .file-anchor:target + .file-preview {
+    border: 2px solid rgba(78, 129, 171, .7);
+}
+.commit-files .file-preview .filename {
+    padding: 10px;
+    background-color: rgba(225, 225, 225, .2);
+    font-family: 'Fira Mono';
+    font-size: .9em;
+}
+.commit-files .file-preview .filename .added-badge {
+    display: inline-block;
+    margin-left: 3px;
+    font-weight: 300;
+    padding: 3px 5px;
+    background-color: rgba(185, 225, 185, .4);
+    border: 1px solid rgba(100, 100, 100, .3);
+    border-radius: 3px;
+}
+.commit-files .file-preview.action_D .filename {
+    text-decoration: line-through;
+}
+.commit-files .file-preview:not(.action_R) .filename {
+    border-bottom: 1px solid rgba(200, 200, 200, .5);
+}
+.diff-summary {
+    display: inline-block;
+    margin-left: 7px;
+    font-weight: 500;
+    padding: 3px 5px;
+    background-color: rgba(225, 225, 225, .4);
+    border-radius: 3px;
+}
+.diff-summary .lines-removed {
+    color: #C44;
+    display: inline-block;
+}
+.diff-summary .lines-added {
+    color: #4A4;
+    display: inline-block;
+}
+.diff-summary .lines-removed + .lines-added {
+    margin-left: 5px;
+}
+.commit-files .far,
+.commit-files .fas {
+    margin-right: 5px;
+}
+.commit-files .diffs .diff-header {
+    white-space: nowrap;
+    font-family: 'Fira Mono';
+    padding: 5px;
+    background-color: rgba(199, 212, 224, .7);
+    color: rgba(0, 0, 0, .7);
+    font-size: .8em;
+}
+.commit-files .diffs .diff-preview {
+    width: 100%;
+    overflow: auto;
+    list-style: none;
+    margin: 0;
+    table-layout: auto;
+    white-space: nowrap;
+    padding: 0;
+    background-color: rgba(0, 0, 0, .7);
+}
+.commit-files .diffs .diff-preview td.text pre::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 3px;
+}
+.commit-files .diffs .diff-preview td {
+    font-family: 'Fira Mono';
+    font-size: .9em;
+}
+.commit-files .diffs .diff-preview td.line-number {
+    color: rgba(255, 255, 255, .7);
+    background-color: rgba(255, 255, 255, .1);
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+.commit-files .diffs .diff-preview td.text {
+    color: rgba(255, 255, 255, .7);
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+.commit-files .diffs .warning-box {
+    margin: 0;
+    border: none;
+    width: auto;
+}
+.commit-files .diffs .diff-preview pre {
+    padding: 2px;
+    margin: 0;
+    overflow: visible;
+    width: auto;
+}
+.commit-files .diffs .diff-preview td.text pre {
+    padding-left: 16px;
+}
+.commit-files .diffs .diff-preview td.line-number pre {
+    padding: 2px 8px;
+}
+.commit-files .diffs .diff-preview .add pre {
+    background-color: rgba(100, 225, 100, .25);
+    color: rgba(255, 255, 255, .9);
+}
+.commit-files .diffs .diff-preview .add td.text pre::before {
+    content: '+';
+}
+.commit-files .diffs .diff-preview .remove pre {
+    background-color: rgba(225, 100, 100, .25);
+    color: rgba(255, 255, 255, .9);
+}
+.commit-files .diffs .diff-preview .remove td.text pre::before {
+    content: '-';
 }
 .simple_list.branch-list .branch-last-updated .fas, .simple_list.branch-list .branch-last-updated .far {
     margin: 0 3px;
@@ -6556,6 +6758,7 @@ dd {
     padding: 5px;
     line-height: 1.3;
     white-space: nowrap;
+    width: 100%;
 }
 
 #issue_details .more_actions_dropdown li a, #issue_details .more_actions_dropdown li a:hover {
@@ -11142,6 +11345,7 @@ div.quickaddtask .close_micro_popup_link {
 .project_info_container .project_right_container {
     overflow: visible;
     flex: 1 1 auto;
+    max-width: calc(100% - 360px);
 }
 
 .project_save_container {
@@ -11263,6 +11467,166 @@ div.quickaddtask .close_micro_popup_link {
     margin-left: 15px;
     margin-right: 15px;
 }
+
+ul.property-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.property-list + ul.property-list {
+    margin: 15px 0 0 0;
+}
+ul.property-list li {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: baseline;
+    padding: 0;
+}
+ul.property-list li h1,
+ul.related-issues-list li h1,
+ul.files-list li h1 {
+    flex: 1 1 auto;
+    font-size: 1.3em;
+    font-weight: 300;
+}
+ul.property-list li .property {
+    flex: 0 0 35%;
+    padding: 5px;
+    font-weight: 500;
+}
+ul.property-list li .value {
+    flex: 0 0 65%;
+    padding: 5px;
+    font-weight: 300;
+}
+ul.property-list li .disabled {
+    color: #888;
+    padding: 5px;
+}
+ul.related-issues-list {
+    display: block;
+    margin: 20px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+ul.related-issues-list li {
+    padding: 0;
+    line-height: 1.4em;
+}
+ul.related-issues-list li .issue {
+    display: block;
+}
+ul.files-list {
+    display: block;
+    position: sticky;
+    top: 0;
+    margin: 20px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+ul.files-list .fas,
+ul.files-list .far {
+    color: #555;
+    margin-right: 4px;
+    font-size: .9em;
+}
+ul.files-list .action_D .fas,
+ul.files-list .action_D .far {
+    color: #C44;
+}
+ul.files-list .action_D {
+    color: #C44;
+    text-decoration: line-through;
+}
+ul.files-list li {
+    padding: 0;
+    line-height: 1.4em;
+}
+ul.files-list > li:not(:first-child) {
+    margin-left: 10px;
+    margin-right: -10px;
+}
+ul.files-list .foldername {
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    margin-left: -10px;
+}
+ul.files-list .foldername .fas,
+ul.files-list .foldername .far {
+    color: rgba(78, 129, 171, .7);
+    font-size: 1em;
+}
+ul.files-list .foldername .collapser,
+ul.files-list .foldername .expander {
+    color: #555;
+    font-size: .7em;
+    margin: 0 4px 3px 0;
+    vertical-align: middle;
+}
+ul.files-list .foldername.collapsed .expander,
+ul.files-list .foldername:not(.collapsed) .collapser {
+    display: inline-block;
+}
+ul.files-list .foldername:not(.collapsed) .expander,
+ul.files-list .foldername.collapsed .collapser {
+    display: none;
+}
+ul.files-list li.folder ul {
+    display: block;
+    margin-left: 16px;
+    list-style: none;
+    padding: 0;
+}
+ul.files-list li.folder .foldername.collapsed + ul {
+    display: none;
+}
+ul.files-list a,
+ul.files-list a:hover {
+    color: #555;
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 5px;
+    width: auto;
+    box-sizing: border-box;
+    position: relative;
+}
+ul.files-list a:hover {
+    background-color: rgba(225, 225, 225, .2);
+}
+ul.files-list a:focus {
+    background-color: rgba(78, 129, 171, .7);
+    color: #FFF;
+}
+ul.files-list a:focus .far,
+ul.files-list a:focus .fas {
+    color: #FFF;
+}
+ul.files-list .action_D .filename {
+    font-weight: 500;
+    color: #C44;
+    font-size: .95em;
+}
+/*ul.files-list .action_A .filename {*/
+    /*font-weight: 500;*/
+    /*font-size: .95em;*/
+/*}*/
+ul.files-list .action_A .filename::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: -12px;
+    top: 7px;
+    background-color: rgba(200, 240, 200, .5);
+    border: 1px solid rgba(100, 100, 100, .4);
+    border-radius: 2px;
+}
+
 
 .project_left ul.simple_list {
     margin-bottom: 30px;
@@ -14271,6 +14635,33 @@ table.sortable tr th.nosort {
     padding: 10px;
     border-radius: 3px;
 }
+.warning-box {
+    display: flex;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(249, 245, 178, 0.6);
+    border: 1px solid rgba(200, 200, 200, 0.7);
+    align-items: baseline;
+    border-radius: 3px;
+}
+.warning-box .fas,
+.warning-box .fab,
+.warning-box .far {
+    margin-right: 5px;
+}
+.warning-box .message {
+    flex: 1 1 auto;
+    font-size: 1.1em;
+    color: rgba(0, 0, 0, .4);
+}
+.warning-box .actions {
+    flex: 0 0 auto;
+}
+.warning-box .actions .button {
+    padding: 4px 7px;
+}
 
 .greenbox {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
@@ -15378,14 +15769,6 @@ li#tab_groups.selected {
 }
 
 /* Backdrop -> Configure advanced permissions */
-
-tr > td[id$='_permissions_container'] > .permissions_warning {
-    margin: 10px 5px;
-}
-
-tr > td[id$='_permissions_container'] > img {
-    margin: 0 5px;
-}
 
 .backdrop_detail_content.config_permissions .tab_menu.inset {
     margin: 0 !important;

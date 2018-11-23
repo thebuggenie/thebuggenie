@@ -4,27 +4,20 @@
 
     use b2db\Criteria,
         thebuggenie\core\framework;
-
-    /**
-     * Comments table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
+    use thebuggenie\core\entities\Comment;
 
     /**
      * Comments table
      *
      * @package thebuggenie
      * @subpackage tables
+     *
+     * @method static Comments getTable()
      *
      * @Table(name="comments")
      * @Entity(class="\thebuggenie\core\entities\Comment")
      * @Discriminator(column="target_type")
-     * @Discriminators(\thebuggenie\core\entities\Issue=1, \thebuggenie\core\entities\Article=2)
+     * @Discriminators(\thebuggenie\core\entities\Issue=1, \thebuggenie\core\entities\Article=2, \thebuggenie\core\entities\Commit=3)
      */
     class Comments extends ScopedTable
     {
@@ -47,7 +40,7 @@
         const SYSTEM_COMMENT = 'comments.system_comment';
         const HAS_ASSOCIATED_CHANGES = 'comments.has_associated_changes';
 
-        protected $_preloaded_issue_counts;
+        protected $_preloaded_counts = [];
 
         protected function _setupIndexes()
         {
@@ -70,7 +63,7 @@
                         }
                     }
 
-                    $log_table = Log::getTable();
+                    $log_table = LogItems::getTable();
                     $ids_count = count($ids);
                     if ($ids_count > 0) {
                         $step = ceil($ids_count / 100);
@@ -78,7 +71,7 @@
                         $pct = 0;
                         foreach ($ids as $id) {
                             $log_crit = $log_table->getCriteria();
-                            $log_crit->addWhere(Log::COMMENT_ID, $id);
+                            $log_crit->addWhere(LogItems::COMMENT_ID, $id);
                             if ($log_table->count($log_crit)) {
                                 $comment_crit = $this->getCriteria();
                                 $comment_crit->addUpdate(self::HAS_ASSOCIATED_CHANGES, true);
@@ -150,43 +143,44 @@
             return $this->doCount($crit);
         }
 
-        public function preloadIssueCommentCounts($target_ids)
+        public function preloadCommentCounts($target_type, $target_ids)
         {
             $crit = $this->getCriteria();
             $crit->addSelectionColumn(self::ID, 'num_comments', Criteria::DB_COUNT);
-            $crit->addSelectionColumn(self::TARGET_ID, 'issue_id');
+            $crit->addSelectionColumn(self::TARGET_ID, 'identifier');
             $crit->addWhere(self::TARGET_ID, $target_ids, Criteria::DB_IN);
-            $crit->addWhere(self::TARGET_TYPE, \thebuggenie\core\entities\Comment::TYPE_ISSUE);
+            $crit->addWhere(self::TARGET_TYPE, $target_type);
             $crit->addWhere(self::DELETED, 0);
             $crit->addWhere(self::SYSTEM_COMMENT, false);
             $crit->addGroupBy(self::TARGET_ID);
 
             $res = $this->doSelect($crit, false);
-            $this->_preloaded_issue_counts = array();
+            $this->_preloaded_counts[$target_type] = [];
             if ($res)
             {
                 while ($row = $res->getNextRow())
                 {
-                    $this->_preloaded_issue_counts[$row->get('issue_id')] = $row->get('num_comments');
+                    $this->_preloaded_counts[$target_type][$row->get('identifier')] = $row->get('num_comments');
                 }
             }
         }
 
-        public function clearPreloadedIssueCommentCounts()
+        public function clearPreloadedCommentCounts($target_type)
         {
-            $this->_preloaded_issue_counts = null;
+            unset($this->_preloaded_counts[$target_type]);
         }
 
-        public function getPreloadedIssueCommentCount($target_id)
+        public function getPreloadedCommentCount($target_type, $target_id)
         {
-            if (!is_array($this->_preloaded_issue_counts)) return null;
+            if (!array_key_exists($target_type, $this->_preloaded_counts) || !is_array($this->_preloaded_counts[$target_type])) return null;
 
-            if (isset($this->_preloaded_issue_counts[$target_id]))
+            if (isset($this->_preloaded_counts[$target_type][$target_id]))
             {
-                $val = $this->_preloaded_issue_counts[$target_id];
-                unset($this->_preloaded_issue_counts[$target_id]);
+                $val = $this->_preloaded_counts[$target_type][$target_id];
+                unset($this->_preloaded_counts[$target_type][$target_id]);
                 return $val;
             }
+
             return 0;
         }
 

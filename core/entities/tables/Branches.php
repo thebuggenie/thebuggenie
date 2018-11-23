@@ -51,17 +51,14 @@
 
         /**
          * Get all branches inside a project
-         * @param Commit[] $commits
+         * @param int[] $commit_ids
          * @param Project $project
          *
          * @return Branch[]
          */
-        public function getByCommitsAndProject($commits, Project $project)
+        public function getByCommitsAndProject($commit_ids, Project $project)
         {
             $crit = new Criteria();
-            $commit_ids = array_reduce($commits, function ($ids, $commit) {
-                $ids[] = $commit->getID();
-            }, []);
 
             $crit->addWhere(self::PROJECT_ID, $project->getID());
             $crit->addWhere('branches.latest_commit_id', $commit_ids, Criteria::DB_IN);
