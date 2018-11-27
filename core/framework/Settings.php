@@ -455,7 +455,7 @@
         {
             $format = self::get(self::SETTING_USER_DISPLAYNAME_FORMAT);
             if (!is_numeric($format))
-                $format = 0;
+                $format = self::USER_DISPLAYNAME_FORMAT_BUDDY;
             return (int) $format;
         }
 
@@ -577,7 +577,8 @@
 
         public static function isCommentTrailClean()
         {
-            return (bool) self::get(self::SETTING_KEEP_COMMENT_TRAIL_CLEAN);
+            return false;
+//            return (bool) self::get(self::SETTING_KEEP_COMMENT_TRAIL_CLEAN);
         }
 
         public static function isCommentImagePreviewEnabled()
@@ -597,7 +598,8 @@
 
         public static function isDefaultUserGuest()
         {
-            return (bool) self::get(self::SETTING_DEFAULT_USER_IS_GUEST);
+            return true;
+//            return (bool) self::get(self::SETTING_DEFAULT_USER_IS_GUEST);
         }
 
         public static function getDefaultUserID()

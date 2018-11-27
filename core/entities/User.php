@@ -2390,7 +2390,7 @@
          *
          * @param integer $number Limit to a number of changes
          *
-         * @return array
+         * @return LogItem[]
          */
         public function getLatestActions($number = 10)
         {
