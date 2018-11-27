@@ -16,7 +16,7 @@
             <label><?php echo __('Custom header and favicons'); ?></label>
         </td>
         <td>
-            <div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'site_icons')); ?>');"><span><?php echo __('Configure icons'); ?></span></div>
+            <div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', ['key' => 'site_icons']); ?>');"><span><?php echo __('Configure icons'); ?></span></div>
         </td>
     </tr>
     <tr>
@@ -34,22 +34,18 @@
     <tr>
         <td><label for="tbg_header_name_html"><?php echo __('Allow HTML in site title'); ?></label></td>
         <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>" id="tbg_header_name_html" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <option value=1<?php if (\thebuggenie\core\framework\Settings::isHeaderHtmlFormattingAllowed()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isHeaderHtmlFormattingAllowed()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-            </select>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>_yes" value=1<?php if (\thebuggenie\core\framework\Settings::isHeaderHtmlFormattingAllowed()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
             <?php echo config_explanation(
-                __('Enabling this setting allows a malicious admin user to potentially insert harmful code'), 'icon_important.png'
+                __('Enabling this setting allows a malicious admin user to potentially insert harmful code'), 'exclamation-triangle', 'fas'
             ); ?>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>_no" value=0<?php if (!\thebuggenie\core\framework\Settings::isHeaderHtmlFormattingAllowed()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_TBG_NAME_HTML; ?>_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
         </td>
     </tr>
     <tr>
         <td><label for="singleprojecttracker"><?php echo __('Single project tracker mode'); ?></label></td>
         <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>" id="singleprojecttracker" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <option value=1<?php if (\thebuggenie\core\framework\Settings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('Yes, behave as tracker for a single project'); ?></option>
-                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('No, use regular index page'); ?></option>
-            </select>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>_yes" value=1<?php if (\thebuggenie\core\framework\Settings::isSingleProjectTracker()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>_no" value=0<?php if (!\thebuggenie\core\framework\Settings::isSingleProjectTracker()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER; ?>_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
             <?php echo config_explanation(
                 __('In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page') .
                 "<br>" .
@@ -65,37 +61,18 @@
     <tr>
         <td><label for="showprojectsoverview"><?php echo __('Show project list on frontpage'); ?></label></td>
         <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>" id="showprojectsoverview" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <option value=1<?php if (\thebuggenie\core\framework\Settings::isFrontpageProjectListVisible()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isFrontpageProjectListVisible()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-            </select>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>_yes" value=1<?php if (\thebuggenie\core\framework\Settings::isFrontpageProjectListVisible()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>_no" value=0<?php if (!\thebuggenie\core\framework\Settings::isFrontpageProjectListVisible()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW; ?>_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
             <?php echo config_explanation(
                 __('Whether the project overview list should appear on the frontpage or not')
             ); ?>
         </td>
     </tr>
     <tr>
-        <td><label for="cleancomments"><?php echo __('Comment trail'); ?></label></td>
-        <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_KEEP_COMMENT_TRAIL_CLEAN; ?>" id="cleancomments" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <option value=1<?php if (\thebuggenie\core\framework\Settings::isCommentTrailClean()): ?> selected<?php endif; ?>><?php echo __("Don't post system comments when an issue is updated"); ?></option>
-                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isCommentTrailClean()): ?> selected<?php endif; ?>><?php echo __('Always post comments when an issue is updated'); ?></option>
-            </select>
-            <?php echo config_explanation(
-                __('To keep the comment trail clean in issues, you can select not to post system comments when an issue is updated.') .
-                "<br><br>(" .
-                __('The issue log will always be updated regardless of this setting.').
-                ")"
-            ); ?>
-        </td>
-    </tr>
-    <tr>
         <td><label for="previewcommentimages"><?php echo __('Preview images in comments'); ?></label></td>
         <td>
-            <select name="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>" id="previewcommentimages" style="width: 300px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <option value=0<?php if (!\thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled()): ?> selected<?php endif; ?>><?php echo __("Don't show image previews of attached images in comments"); ?></option>
-                <option value=1<?php if (\thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled()): ?> selected<?php endif; ?>><?php echo __('Show image previews of attached images in comments'); ?></option>
-            </select>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>_yes" value=1<?php if (\thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+            <input type="radio" name="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>_no" value=0<?php if (!\thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled()): ?> checked<?php endif; ?>><label for="<?php echo \thebuggenie\core\framework\Settings::SETTING_PREVIEW_COMMENT_IMAGES; ?>_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
             <?php echo config_explanation(
                 __('If you have problems with spam images, turn this off')
             ); ?>

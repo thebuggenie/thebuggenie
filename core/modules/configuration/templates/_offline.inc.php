@@ -3,10 +3,8 @@
         <td style="width: 200px;"><label for="offline"><?php echo __('Enable maintenance mode'); ?></label></td>
         <td>
             <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                <select name="offline" id="offline" style="width: 70px;">
-                    <option value=1<?php if (\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                    <option value=0<?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                </select>
+                <input type="radio" name="offline" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="offline_yes" value=1<?php if (\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> checked<?php endif; ?>><label for="offline_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                <input type="radio" name="offline" class="fancycheckbox" <?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?> id="offline_no" value=0<?php if (!\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()): ?> checked<?php endif; ?>><label for="offline_no"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
             <?php else: ?>
                 <?php echo (\thebuggenie\core\framework\Settings::isMaintenanceModeEnabled()) ? __('Yes') : __('No'); ?>
             <?php endif; ?>

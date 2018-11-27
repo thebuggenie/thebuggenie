@@ -6759,6 +6759,7 @@ dd {
     line-height: 1.3;
     white-space: nowrap;
     width: 100%;
+    box-sizing: border-box;
 }
 
 #issue_details .more_actions_dropdown li a, #issue_details .more_actions_dropdown li a:hover {
@@ -6866,7 +6867,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .more_actions_dropdown li.disabled:hover div {
     color: #AAA;
     text-shadow: 1px 1px 0 #FFF;
-    padding: 0 8px;
+    padding: 5px;
     background: transparent;
 }
 
@@ -9132,6 +9133,9 @@ dl.info {
 .fancycheckbox:checked + label .fas.unchecked,
 .fancycheckbox:checked + label .far.unchecked {
     display: none;
+}
+.fancycheckbox + label ~ .fancycheckbox + label {
+    margin-left: 10px;
 }
 
 .fancydropdown + ul li dl.info {
@@ -14967,6 +14971,12 @@ ul#editions_menu li.selected:after {
     background-color: #FFF;
     bottom: -7px;
     left: 0;
+}
+
+.configuration_page button,
+.configuration_page .button {
+    padding: 5px 8px;
+    font-size: 1em;
 }
 
 .config_badges > li > a > span {

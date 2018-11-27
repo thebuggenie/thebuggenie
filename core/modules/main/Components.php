@@ -658,7 +658,7 @@
 
         public function componentDashboardViewLoggedActions()
         {
-            $this->log_items = tables\LogItems::getTable()->getByUserID($this->getUser()->getID(), 10);
+            $this->log_items = tables\LogItems::getTable()->getByUserID($this->getUser()->getID(), 35);
         }
 
         public function componentDashboardViewUserProjects()

@@ -59,8 +59,8 @@
                             <td style="width: 200px;"><label for="enable_uploads_yes"><?php echo __('Enable uploads'); ?></label></td>
                             <td style="width: auto;">
                                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                                    <input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-                                    <input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
+                                    <input type="radio" name="enable_uploads" value="1" class="fancycheckbox" id="enable_uploads_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                                    <input type="radio" name="enable_uploads" value="0" class="fancycheckbox" id="enable_uploads_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -139,8 +139,8 @@
                             <td style="width: 200px;"><label for="upload_delivery_use_xsend_yes"><?php echo __('Use X-Sendfile for delivering files'); ?></label></td>
                             <td style="width: auto;">
                                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                                    <input type="radio" name="upload_delivery_use_xsend" value="1" id="upload_delivery_use_xsend_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-                                    <input type="radio" name="upload_delivery_use_xsend" value="0" id="upload_delivery_use_xsend_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_no"><?php echo __('No'); ?></label>
+                                    <input type="radio" name="upload_delivery_use_xsend" value="1" class="fancycheckbox" id="upload_delivery_use_xsend_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                                    <input type="radio" name="upload_delivery_use_xsend" value="0" class="fancycheckbox" id="upload_delivery_use_xsend_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsDeliveryUseXsend()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_delivery_use_xsend_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -154,8 +154,8 @@
                             <td style="width: 200px;"><label for="upload_allow_image_caching_yes"><?php echo __('Enable browser caching for images'); ?></label></td>
                             <td style="width: auto;">
                                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                                <input type="radio" name="upload_allow_image_caching" value="1" id="upload_allow_image_caching_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-                                <input type="radio" name="upload_allow_image_caching" value="0" id="upload_allow_image_caching_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_no"><?php echo __('No'); ?></label>
+                                <input type="radio" name="upload_allow_image_caching" value="1" class="fancycheckbox" id="upload_allow_image_caching_yes"<?php if (\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                                <input type="radio" name="upload_allow_image_caching" value="0" class="fancycheckbox" id="upload_allow_image_caching_no"<?php if (!\thebuggenie\core\framework\Settings::isUploadsImageCachingEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="upload_allow_image_caching_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                                 <?php endif; ?>
                             </td>
                         </tr>
