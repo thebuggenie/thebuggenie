@@ -7740,7 +7740,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Main.Helpers.toggler = function (elm) {
-            elm.toggleClass("button-pressed");
+            if (elm.data('target')) {
+                $(elm.data('target')).toggleClassName('force-active');
+            } else {
+                elm.toggleClass("button-pressed");
+            }
         };
 
         TBG.Main.loadParentArticles = function (form) {

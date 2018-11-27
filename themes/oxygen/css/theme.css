@@ -7002,7 +7002,8 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     margin-top: 5px;
 }
 
-.dropdown_content label {
+.dropdown_content label,
+.issuedetailspopup .identifiable_selector label {
     display: block;
     text-transform: uppercase;
     font-weight: 500;
@@ -7732,6 +7733,7 @@ ul.attached_items {
     opacity: 0;
     transform: scaleY(0);
     transform-origin: top;
+    text-align: left;
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
@@ -17161,6 +17163,7 @@ td.legendLabel {
 
 #posted_by_input,
 #assigned_to_input,
+.identifiable_lookup,
 #issue_details #owned_by_input,
 #estimated_time_1_input {
     padding: 5px !important;
@@ -17169,6 +17172,7 @@ td.legendLabel {
 
 #posted_by_form > input[type="submit"],
 #assigned_to_form > input[type="submit"],
+.identifiable_lookup + input[type="submit"],
 #issue_details #owned_by_form > input[type="submit"],
 #estimated_time_1_form > input[type="submit"],
 #estimated_time_1_form > div.form_controls > input {
