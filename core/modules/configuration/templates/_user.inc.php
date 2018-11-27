@@ -80,35 +80,11 @@
         </td>
     </tr>
     <tr>
-        <td><label for="defaultgroup"><?= __('Default user group'); ?></label></td>
+        <td><label for="<?= \thebuggenie\core\framework\Settings::SETTING_USER_GROUP; ?>"><?= __('Default user group'); ?></label></td>
         <td>
-            <select name="<?= \thebuggenie\core\framework\Settings::SETTING_USER_GROUP; ?>" id="defaultgroup" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+            <select name="<?= \thebuggenie\core\framework\Settings::SETTING_USER_GROUP; ?>" id="<?= \thebuggenie\core\framework\Settings::SETTING_USER_GROUP; ?>" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
                 <?php foreach (\thebuggenie\core\entities\Group::getAll() as $aGroup): ?>
                     <option value="<?php print $aGroup->getID(); ?>"<?php if (($default_group = \thebuggenie\core\framework\Settings::getDefaultGroup()) instanceof \thebuggenie\core\entities\Group && $default_group->getID() == $aGroup->getID()): ?> selected<?php endif; ?>><?php print $aGroup->getName(); ?></option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td><label for="returnfromlogin"><?= __('Redirect after login'); ?></label></td>
-        <td>
-            <select name="<?= \thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGIN; ?>" id="returnfromlogin" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <?php $return_routes = array('home' => __('Frontpage'), 'dashboard' => __('Dashboard'), 'account' => __('Account details'), 'referer' => __('Page before login')); ?>
-                <?php $return_routes = \thebuggenie\core\framework\Event::createNew('core', 'setting_returnfromlogin', null, array(), $return_routes)->trigger()->getReturnList(); ?>
-                <?php foreach ($return_routes as $route => $description): ?> 
-                    <option value="<?= $route; ?>"<?php if (\thebuggenie\core\framework\Settings::getLoginReturnRoute() == $route): ?> selected<?php endif; ?>><?= $description; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td><label for="returnfromlogout"><?= __('Redirect after logout'); ?></label></td>
-        <td>
-            <select name="<?= \thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGOUT; ?>" id="returnfromlogout" style="width: 400px;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                <?php $return_routes = array('home' => __('Frontpage')); ?>
-                <?php $return_routes = \thebuggenie\core\framework\Event::createNew('core', 'setting_returnfromlogout', null, array(), $return_routes)->trigger()->getReturnList(); ?>
-                <?php foreach ($return_routes as $route => $description): ?> 
-                    <option value="<?= $route; ?>"<?php if (\thebuggenie\core\framework\Settings::getLogoutReturnRoute() == $route): ?> selected<?php endif; ?>><?= $description; ?></option>
                 <?php endforeach; ?>
             </select>
         </td>

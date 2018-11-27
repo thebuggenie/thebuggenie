@@ -49,6 +49,7 @@
             <label><?php echo __('Select yourself or a friend below'); ?></label>
         </li>
         <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a></li>
+        <li class="separator"></li>
         <?php if (count($tbg_user->getFriends()) == 0): ?>
             <li class="disabled"><?php echo __("Your friends will appear here"); ?></li>
         <?php else: ?>

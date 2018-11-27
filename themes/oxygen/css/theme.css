@@ -3684,11 +3684,6 @@ table.cleantable th {
     display: inline-block;
 }
 
-.plugins-list .button, .plugins-list .button:hover {
-    font-size: 1.1em;
-    padding: 5px 8px;
-}
-
 .plugins-list .plugin-actions {
     position: absolute;
     top: 12px;
@@ -5914,7 +5909,7 @@ ul.workflow_actions li form {
     padding: 0;
 }
 
-ul.workflow_actions li input, ul.workflow_actions li:hover input {
+ul.workflow_actions li input:not(.button-pressed), ul.workflow_actions li:hover input:not(.button-pressed) {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
 }
 
@@ -8063,12 +8058,11 @@ table.issue_affects td img {
 .dashboard.layout_standard .dashboard_view_content .button-container {
     text-align: right;
     display: block;
+    padding-bottom: 6px;
 }
 
-.dashboard.layout_standard .dashboard_view_content .button {
-    padding: 3px 7px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+.dashboard_view_content .button {
+    padding: 5px 8px;
     font-size: 0.9em;
 }
 
@@ -11432,6 +11426,7 @@ div.quickaddtask .close_micro_popup_link {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: stretch;
+    overflow: hidden;
 }
 
 #project_planning.project_info_container .project_left_container {
@@ -11499,6 +11494,26 @@ ul.files-list li h1 {
     flex: 1 1 auto;
     font-size: 1.3em;
     font-weight: 300;
+    display: flex;
+}
+ul.files-list li h1 .header-text {
+    flex: 1 1 auto;
+}
+ul.files-list li h1 .action-buttons {
+    flex: 0 0 auto;
+    font-size: .8em;
+    text-align: right;
+    display: flex;
+}
+ul.files-list li h1 .action-buttons .action-button {
+    flex: 0 0 auto;
+    cursor: pointer;
+    background-color: rgba(225, 225, 225, 0);
+    border-radius: 3px;
+    padding: 5px;
+}
+ul.files-list li h1 .action-buttons .action-button:hover {
+    background-color: rgba(225, 225, 225, .2);
 }
 ul.property-list li .property {
     flex: 0 0 35%;
@@ -11541,9 +11556,14 @@ ul.files-list .far {
     margin-right: 4px;
     font-size: .9em;
 }
-ul.files-list .action_D .fas,
-ul.files-list .action_D .far {
+ul.files-list .action_D .action-icon {
     color: #C44;
+}
+ul.files-list .action_M .action-icon {
+    color: #CA3;
+}
+ul.files-list .action_A .action-icon {
+    color: olive;
 }
 ul.files-list .action_D {
     color: #C44;
@@ -11551,7 +11571,7 @@ ul.files-list .action_D {
 }
 ul.files-list li {
     padding: 0;
-    line-height: 1.4em;
+    line-height: 1.2em;
 }
 ul.files-list > li:not(:first-child) {
     margin-left: 10px;
@@ -11561,7 +11581,11 @@ ul.files-list .foldername {
     display: block;
     padding: 0;
     cursor: pointer;
-    margin-left: -10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: calc(100% - 5px);
+    width: auto;
 }
 ul.files-list .foldername .fas,
 ul.files-list .foldername .far {
@@ -11601,8 +11625,14 @@ ul.files-list a:hover {
     padding: 3px 5px;
     border-radius: 5px;
     width: auto;
+    text-align: left;
+    max-width: calc(100% - 5px);
     box-sizing: border-box;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1em;
 }
 ul.files-list a:hover {
     background-color: rgba(225, 225, 225, .2);
@@ -11624,17 +11654,17 @@ ul.files-list .action_D .filename {
     /*font-weight: 500;*/
     /*font-size: .95em;*/
 /*}*/
-ul.files-list .action_A .filename::after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    right: -12px;
-    top: 7px;
-    background-color: rgba(200, 240, 200, .5);
-    border: 1px solid rgba(100, 100, 100, .4);
-    border-radius: 2px;
-}
+/*ul.files-list .action_A .filename::after {*/
+    /*content: '';*/
+    /*width: 10px;*/
+    /*height: 10px;*/
+    /*position: absolute;*/
+    /*right: -12px;*/
+    /*top: 7px;*/
+    /*background-color: rgba(200, 240, 200, .5);*/
+    /*border: 1px solid rgba(100, 100, 100, .4);*/
+    /*border-radius: 2px;*/
+/*}*/
 
 
 .project_left ul.simple_list {
@@ -11853,11 +11883,13 @@ ul.files-list .action_A .filename::after {
 }
 
 .project_information_sidebar {
+    font-size: .95em;
     vertical-align: top;
-    border-right: 1px solid #E6E6E6;
     flex: 0 0 255px;
-    padding: 0 0 50px 10px;
+    padding: 0;
     position: relative;
+    box-sizing: border-box;
+    background-color: rgba(225, 225, 225, .15);
 }
 
 #search_sidebar {
@@ -12048,55 +12080,29 @@ ul.files-list .action_A .filename::after {
 
 .project_information_sidebar .sidebar_links a {
     display: block;
-    padding: 8px;
+    padding: 5px 8px;
     color: #555;
-    border-top: 1px dotted #DDD;
-    border-left: 1px dotted #DDD;
-    background-color: #FAFAFA;
-    margin: 0 -1px 0 7px;
-    box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset;
+    border: 1px solid transparent;
+    border-left-width: 3px;
+    background-color: transparent;
+    margin: 0;
+    box-shadow: none;
 }
 
-.project_information_sidebar .sidebar_links a:first-child {
-    border-top-left-radius: 3px;
-}
-
-.project_information_sidebar .sidebar_links a:last-child {
-    border-bottom: 1px dotted #DDD;
-    border-bottom-left-radius: 3px;
-}
-
-.project_information_sidebar .sidebar_links a:hover {
-    border-bottom: none;
-    background-color: #F1F1F1;
-    border-right-color: #CCC;
-}
-
-.project_information_sidebar .sidebar_links a:last-child:hover {
-    border-bottom: 1px dotted #DDD;
+.project_information_sidebar .sidebar_links a:not(.selected):hover {
+    background-color: rgba(225, 225, 225, .15);
 }
 
 .project_information_sidebar .sidebar_links a.selected {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-    border: 1px solid #E6E6E6;
+    border-left-color: #4E81AB;
     border-right-color: #FFF;
-    margin-left: 0;
-    padding: 12px;
+    margin-left: 5px;
+    padding: 7px 10px;
     font-weight: 500;
     background-color: #FFF;
     box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.1);
-}
-
-.project_information_sidebar .sidebar_links a.selected + a {
-    border-top: none;
-    box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.2) inset;
-}
-
-.project_information_sidebar .sidebar_links a.selected:hover {
-    border: 1px solid #CCC;
-    border-right-color: #FFF;
-    background-color: #FFF;
 }
 
 .project_information_sidebar .sidebar_links .simple_list {
@@ -12122,6 +12128,8 @@ ul.files-list .action_A .filename::after {
 .project_information_sidebar .sidebar_links {
     box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.3) inset;
     height: 100%;
+    box-sizing: border-box;
+    padding-top: 15px;
 }
 
 .project_information_sidebar .sidebar_links .fas,
@@ -14952,7 +14960,7 @@ button:focus, input:focus, select:focus {
 
 /* Configure */
 
-.configuration_page { table-layout: fixed; width: 100%; }
+.configuration_page { table-layout: fixed; flex: 1 1 auto; }
 .configuration_page .main_configuration_content { padding: 0 15px; }
 .configuration_page .tab_menu li.selected,
 .configuration_page .tab_menu li.selected:hover,

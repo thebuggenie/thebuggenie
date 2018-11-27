@@ -54,7 +54,15 @@
             <?php if ($commit->isImported()): ?>
                 <ul class="files-list">
                     <li>
-                        <h1><?= __('Files committed (%count)', ['%count' => count($commit->getFiles())]); ?></h1>
+                        <h1>
+                            <span class="header-text">
+                                <?= __('Files committed (%count)', ['%count' => count($commit->getFiles())]); ?>
+                            </span>
+                            <span class="action-buttons">
+                                <?= fa_image_tag('plus-square', ['title' => __('Expand all'), 'class' => 'expand-all-icon action-button'], 'far'); ?>
+                                <?= fa_image_tag('minus-square', ['title' => __('Collapse all'), 'class' => 'collapse-all-icon action-button'], 'far'); ?>
+                            </span>
+                        </h1>
                     </li>
                     <?php include_component('livelink/tree', ['structure' => $commit->getStructure()]); ?>
                 </ul>
@@ -89,18 +97,20 @@
                     <div class="overflow"><?= tbg_parse_text($commit->getMessage(), false, null, [], \thebuggenie\core\framework\Settings::SYNTAX_MD); ?></div>
                 <?php endif; ?>
             </div>
-            <div class="commit-files-summary">
-                <?= fa_image_tag('file-invoice'); ?>
-                <span class="summary">
-                    <?php if ($commit->getLinesAdded() && $commit->getLinesRemoved()): ?>
-                        <?= __('This commit has %num_additions_and_num_deletions across %num_files', ['%num_additions_and_num_deletions' => '<span class="num_changes">' . __('%num_a addition(s) and %num_d deletion(s)', ['%num_a' => $commit->getLinesAdded(), '%num_d' => $commit->getLinesRemoved()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
-                    <?php elseif ($commit->getLinesAdded()): ?>
-                        <?= __('This commit has %num_additions across %num_files', ['%num_additions' => '<span class="num_changes">' . __('%num addition(s)', ['%num' => $commit->getLinesAdded()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
-                    <?php else: ?>
-                        <?= __('This commit has %num_deletions across %num_files', ['%num_deletions' => '<span class="num_changes">' . __('%num deletion(s)', ['%num' => $commit->getLinesRemoved()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
-                    <?php endif; ?>
-                </span>
-            </div>
+            <?php if ($commit->isImported()): ?>
+                <div class="commit-files-summary">
+                    <?= fa_image_tag('file-invoice'); ?>
+                    <span class="summary">
+                        <?php if ($commit->getLinesAdded() && $commit->getLinesRemoved()): ?>
+                            <?= __('This commit has %num_additions_and_num_deletions across %num_files', ['%num_additions_and_num_deletions' => '<span class="num_changes">' . __('%num_a addition(s) and %num_d deletion(s)', ['%num_a' => $commit->getLinesAdded(), '%num_d' => $commit->getLinesRemoved()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
+                        <?php elseif ($commit->getLinesAdded()): ?>
+                            <?= __('This commit has %num_additions across %num_files', ['%num_additions' => '<span class="num_changes">' . __('%num addition(s)', ['%num' => $commit->getLinesAdded()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
+                        <?php else: ?>
+                            <?= __('This commit has %num_deletions across %num_files', ['%num_deletions' => '<span class="num_changes">' . __('%num deletion(s)', ['%num' => $commit->getLinesRemoved()]) . '</span>', '%num_files' => '<span class="num_files">' . __('%num file(s)', ['%num' => count($commit->getFiles())]) . '</span>']); ?>
+                        <?php endif; ?>
+                    </span>
+                </div>
+            <?php endif; ?>
             <div class="commit-files">
                 <?php foreach ($commit->getFiles() as $file): ?>
                     <a class="file-anchor" name="file_<?= $file->getID(); ?>"></a>
@@ -132,3 +142,15 @@
         </div>
     </div>
 </div>
+<script>
+    require(['domReady', 'jquery'], function (domReady, jquery) {
+        domReady(function () {
+            jquery('body').on('click', '.collapse-all-icon', function (e) {
+                jquery('.folder .foldername').addClass('collapsed');
+            });
+            jquery('body').on('click', '.expand-all-icon', function (e) {
+                jquery('.folder .foldername').removeClass('collapsed');
+            });
+        });
+    });
+</script>

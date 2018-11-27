@@ -133,7 +133,7 @@
             $project = $event->getSubject();
 
             $project_connector = $this->getSetting(self::SETTINGS_PROJECT_CONNECTOR . $project->getID());
-            if ($project_connector) {
+            if ($project_connector && $this->isLiveLinkEnabledForProject($project)) {
                 include_component($this->getConnectorModule($project_connector)->getName() . '/projectbadge', ['project' => $project]);
             }
         }
