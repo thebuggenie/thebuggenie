@@ -40,9 +40,11 @@
         </div>
     </div>
 <?php endif; ?>
-<?php if ($view->getProject()->hasHomepage()): ?>
-    <a class="button button-silver dash" href="<?php echo $view->getProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
-<?php endif; ?>
-<?php if ($view->getProject()->hasDocumentationURL()): ?>
-    <a class="button button-silver dash" href="<?php echo $view->getProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
-<?php endif; ?>
+<div class="button-container">
+    <?php if ($view->getProject()->hasHomepage()): ?>
+        <a class="button button-silver dash" href="<?php echo $view->getProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
+    <?php endif; ?>
+    <?php if ($view->getProject()->hasDocumentationURL()): ?>
+        <a class="button button-silver dash" href="<?php echo $view->getProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
+    <?php endif; ?>
+</div>

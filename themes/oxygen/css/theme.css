@@ -8060,10 +8060,15 @@ table.issue_affects td img {
     width: auto;
 }
 
-.dashboard.layout_standard .dashboard_view_content .button.dash {
-    float: right;
-    margin-left: 5px;
-    overflow: visible;
+.dashboard.layout_standard .dashboard_view_content .button-container {
+    text-align: right;
+    display: block;
+}
+
+.dashboard.layout_standard .dashboard_view_content .button {
+    padding: 3px 7px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 0.9em;
 }
 
@@ -16587,12 +16592,6 @@ ul#subscribers_list > li {
     margin-bottom: 10px;
     font-size: 0.9em;
     line-height: 1.5;
-}
-
-.dashboard_view_content .button.button-silver.dash {
-    padding: 3px 7px;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 .userdropdown_container .user_dropdown li.header,
