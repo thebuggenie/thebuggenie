@@ -1785,9 +1785,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: 'comment_edit_controls_' + cid
                 },
                 success: {
-                    hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
+                    hide: ['comment_edit_indicator_' + cid],
                     show: ['comment_view_' + cid, 'comment_edit_controls_' + cid, 'comment_add_button'],
-                    update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
+                    update: {element: 'comment_' + cid + '_content', from: 'comment_body'},
+                    callback: function () {
+                        $('comment_edit_' + cid).removeClassName('active');
+                        $('comment_' + cid + '_body').show();
+                    }
                 },
                 failure: {
                     show: ['comment_edit_controls_' + cid]
@@ -1827,12 +1831,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: 'comment_reply_controls_' + reply_comment_id
                 },
                 success: {
-                    hide: ['comment_reply_' + reply_comment_id],
                     clear: 'comment_reply_bodybox_' + reply_comment_id,
                     show: ['comment_reply_controls_' + reply_comment_id, 'comment_add_button'],
                     callback: function (json) {
-                        $('comments_box').insert({top: json.comment_data});
+                        $('comment_' + reply_comment_id + '_replies').insert({bottom: json.comment_data});
                         $('comment_reply_visibility_' + reply_comment_id).setValue(1);
+                        $('comment_reply_' + reply_comment_id).removeClassName('active');
                     }
                 },
                 failure: {

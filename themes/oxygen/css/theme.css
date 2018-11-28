@@ -649,6 +649,16 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown {
     background-color: transparent;
     transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
+.userlink.inline {
+    vertical-align: baseline;
+    padding: 2px 4px;
+    margin: 0;
+    color: #555;
+    font-weight: 500;
+}
+.userlink.inline:hover {
+    font-weight: 500;
+}
 .userlink:hover {
     text-decoration: none;
     border: 1px solid rgba(100, 100, 100, 0.15);
@@ -1487,10 +1497,39 @@ footer img {
 
 /* comments and commits styling */
 .comment {
-    padding-bottom: 10px;
+    padding: 0;
     clear: both;
-    border-bottom: 85px solid transparent;
-    margin-bottom: -85px;
+    display: block;
+    margin-bottom: 25px;
+    border: 1px solid rgba(225, 225, 225, .6);
+    border-radius: 10px;
+    position: relative;
+}
+.comment.system_comment {
+    border: none;
+    padding-left: 55px;
+    font-size: .9em;
+    line-height: 1em;
+}
+.comment:not(.system_comment) + .comment::before {
+    content: '';
+    display: block;
+    height: 25px;
+    width: 1px;
+    border-left: 3px solid rgba(225, 225, 225, .5);
+    position: absolute;
+    top: -26px;
+    left: 40px;
+}
+.comment.system_comment::after {
+    content: '';
+    display: block;
+    height: calc(100% + 26px);
+    width: 1px;
+    border-left: 3px solid rgba(225, 225, 225, .5);
+    position: absolute;
+    top: -1px;
+    left: 40px;
 }
 
 #article_comments .comment {
@@ -1501,13 +1540,13 @@ footer img {
 .comment_main {
     position: relative;
     overflow: visible;
-    padding: 5px;
+    padding: 0;
 }
 
 .comment:target .comment_main {
     border: 1px solid rgba(100, 100, 100, 0.2);
     background-color: rgba(240, 247, 255, 0.6);
-    border-radius: 2px;
+    border-radius: 10px;
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
 }
 
@@ -1522,6 +1561,20 @@ footer img {
 .commenttitle {
     font-weight: 500;
     display: inline-block;
+    line-height: 1.4em;
+}
+.reply-container {
+    padding: 10px;
+    border-top: 1px solid rgba(200, 200, 200, .3);
+}
+.reply-container > a {
+    border: 1px solid rgba(200, 200, 200, .3);
+    border-radius: 5px;
+    color: #AAA;
+    display: block;
+    padding: 5px;
+    font-size: .9em;
+    background-color: rgba(225, 225, 225, .1);
 }
 
 .dropper_container {
@@ -1534,14 +1587,20 @@ footer img {
 .dropper_container .dropper {
     cursor: pointer;
     color: #555;
-    margin-left: 5px;
-    opacity: 0.4;
-    transition: opacity 0.3s ease;
+    margin-right: 7px;
+    border: 1px solid rgba(200, 200, 200, .3);
+    border-radius: 3px;
+    padding: 4px 7px;
+}
+.dropper_container .dropper .fas {
+    margin-right: 5px;
 }
 
 .dropper_container .dropper:hover {
-    opacity: 1;
-    color: #555;
+    border-color: rgba(150, 150, 225, .6);
+}
+.dropper_container .dropper.button-pressed {
+    box-shadow: 0 0 6px rgba(150, 150, 150, 0.4) inset;
 }
 
 .project_overview .header .dropper_container {
@@ -1561,20 +1620,14 @@ footer img {
     margin-bottom: 0;
 }
 
-.commenttitle img.avatar {
-    position: absolute;
-    left: -40px;
-    top: 2px;
-}
-
-#issue_details .commenttitle img.avatar {
-    top: 3px;
-    left: 3px;
-}
-
 .commenttitle .userlink {
     margin-left: 0;
-    font-size: 1.1em;
+    font-size: 1em;
+    padding: 0;
+}
+.commenttitle img.avatar {
+    width: 16px;
+    height: 16px;
 }
 
 .comment_hash {
@@ -1605,6 +1658,11 @@ footer img {
     top: 35px;
 }
 
+.commentheader {
+    padding: 8px 8px 0 8px;
+    border: none;
+    position: relative;
+}
 .commentdate {
     color: #AAA;
     font-weight: 300;
@@ -1618,12 +1676,6 @@ footer img {
     margin-left: 0;
 }
 
-.commentheader {
-    padding: 0 0 1px 40px;
-    border: none;
-    position: relative;
-}
-
 .comment_add_title {
     font-size: 1.2em;
     font-weight: 500;
@@ -1634,9 +1686,8 @@ footer img {
 }
 
 .commentbody {
-    padding: 5px 5px 5px 40px;
+    padding: 3px 10px;
     font-size: 1em;
-    overflow: hidden;
 }
 
 #issue_details .commentbody {
@@ -1647,24 +1698,51 @@ footer img {
     width: 130px;
 }
 
+.commentcontent {
+    overflow: hidden;
+}
+
 .commenttools {
+    position: absolute;
+    top: -20px;
+    right: 10px;
+}
+.action-buttons.commenttools a.action-button {
+    color: rgba(200, 200, 200, .7);
+}
+.comment_main:hover > .commentheader .action-buttons.commenttools a.action-button {
+    color: rgba(100, 100, 100, .7);
+}
+
+.comment-replies .commentheader {
+    border-top: 1px solid rgba(200, 200, 200, .3);
+}
+
+.comment_reply,
+.comment_edit {
+    display: none;
+}
+.comment_reply.active,
+.comment_edit.active {
     display: block;
-    margin-top: 10px;
-    font-size: 0.9em;
-    text-align: left;
-    clear: left;
 }
-
-.commenttools a {
-    color: #AAA;
-    text-transform: uppercase;
-    display: inline-block;
-    margin: 0 10px 0 0;
-    border-bottom: 1px dotted transparent;
+.comment_edit.active + .commentbody,
+.comment_reply.active + .fake-reply {
+    display: none;
 }
-
-.commenttools a:hover {
-    border-bottom-color: #AAA;
+.comment_editor.comment_reply,
+.comment_editor.comment_edit {
+    position: relative;
+    left: auto;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    box-shadow: none;
+    background: transparent;
+    width: auto;
+}
+.comment_editor.comment_edit.active {
+    margin: 10px;
 }
 
 .comment_editsave, .comment_addsave {
@@ -1681,14 +1759,9 @@ footer img {
     margin-bottom: 8px;
 }
 
-.system_comment .comment_main {
-    background-color: #F7F7F7;
-    border: 1px solid #DDD;
-}
-
 .private_comment .comment_main {
     background-color: #E8F6E8;
-    border: 1px solid #D8E6D8;
+    border-radius: 10px;
 }
 
 .comment_editor,
@@ -2716,7 +2789,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 }
 
 .syntax_picker_container {
-    top: 22px;
+    top: 33px;
     right: 0;
     position: absolute;
 }
@@ -5289,6 +5362,9 @@ a.friend {
     vertical-align: top;
     margin: 0 10px;
 }
+#issue_main .tab_menu.inset {
+    margin-bottom: 0;
+}
 
 #issue_details_container {
     float: none;
@@ -5352,15 +5428,18 @@ a.friend {
     line-height: 2em;
     padding: 5px 0;
     position: relative;
-}
-#issue_main .viewissue_comments_header .button_container {
-    padding-top: 3px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(200, 200, 200, .3);
+    text-align: right;
 }
 #issue_main .viewissue_comments_header .button_container .button {
     font-size: 1em;
 }
 #issue_view fieldset:first-of-type legend, #issue_details_container fieldset legend {
     padding-top: 5px;
+}
+#issue_view #viewissue_activity_panes fieldset {
+    padding: 0;
 }
 
 .reportissue_error tr {
@@ -6335,12 +6414,16 @@ ul.workflow_actions li:hover {
 #comment_add_button,
 #todo_add_button {
     padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1.4em;
 }
 
 #issue_main .button_container {
     display: inline-block;
     float: right;
-    margin: -6px 0 0;
+    margin: 0;
+    vertical-align: middle;
     font-size: 1.1em;
 }
 
@@ -7464,10 +7547,18 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     width: 125px;
 }
 
+h5.change-list {
+    text-transform: uppercase;
+    font-size: .9em;
+    color: #AAA;
+    margin: 15px 0 0 25px;
+    padding: 0;
+}
 .comment_log_items {
     list-style: none;
-    margin: 5px 10px;
+    margin: 0 10px 25px 25px;
     padding: 0;
+    font-size: .9em;
 }
 .comment_log_items .fas,
 .comment_log_items .far {
@@ -11502,19 +11593,27 @@ ul.files-list li h1 .header-text {
     flex: 1 1 auto;
 }
 ul.files-list li h1 .action-buttons {
+    font-size: .8em;
+}
+.action-buttons {
     flex: 0 0 auto;
     font-size: .8em;
     text-align: right;
     display: flex;
 }
-ul.files-list li h1 .action-buttons .action-button {
+.action-buttons .action-button,
+.action-buttons a.action-button,
+.action-buttons a.action-button:hover {
     flex: 0 0 auto;
     cursor: pointer;
     background-color: rgba(225, 225, 225, 0);
     border-radius: 3px;
+    border: none;
+    text-decoration: none;
     padding: 5px;
+    color: #555;
 }
-ul.files-list li h1 .action-buttons .action-button:hover {
+.action-buttons .action-button:hover {
     background-color: rgba(225, 225, 225, .2);
 }
 ul.property-list li .property {
@@ -14297,7 +14396,11 @@ table.sortable tr th.nosort {
 .markItUpFooter {
     display: none;
 }
-
+.markItUpHeader {
+    height: 21px;
+    background: #FFFFFF;
+    padding: 6px 5px;
+}
 .markItUpResizeHandle {
     overflow: hidden;
     width: 22px;
@@ -15042,10 +15145,6 @@ span.config_explanation > span.tooltip.from-above.leftie {
     display: block;
 }
 
-#offline_msg_syntax_picker {
-    top: 10px;
-}
-
 #config_settings .greybox {
     padding: 7px 7px 7px 10px !important;
 }
@@ -15066,24 +15165,6 @@ span.config_explanation > span.tooltip.from-above.leftie {
 }
 
 /* Configure authentication */
-
-#tab_offline_settings_pane .button.syntax_picker,
-#config_auth .button.syntax_picker {
-    height: 17px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#config_auth .button.syntax_picker {
-    width: 28px;
-}
-
-#register_message_syntax_picker,
-#forgot_message_syntax_picker,
-#changepw_message_syntax_picker,
-#changedetails_message_syntax_picker {
-    top: 10px;
-}
 
 #offline_msg, #register_message, #forgot_message,
 #changepw_message, #changedetails_message {
@@ -15999,26 +16080,6 @@ form > .config_header {
 
 #project_settings #project_description_input_toggle_syntax_button {
     top: 0;
-}
-
-#project_settings #project_description_input_syntax_picker {
-    margin-top: 22px;
-}
-
-#project_settings #project_info_indicator {
-    margin-left: -29px;
-}
-
-#project_settings #release_day {
-    width: 50px !important;
-}
-
-#project_settings #release_month {
-    width: 100px !important;
-}
-
-#project_settings #release_year {
-    width: 65px !important;
 }
 
 #project_settings label {
@@ -17047,11 +17108,6 @@ td.legendLabel {
     margin-top: -2px;
 }
 
-#reportissue_content #description_syntax_picker,
-#reportissue_content #reproduction_steps_syntax_picker {
-    margin-top: 22px;
-}
-
 #reportissue_content .reportissue_additional_information_container {
     background-color: #F5F5F5;
     border-radius: 3px;
@@ -17592,10 +17648,6 @@ li.header div.user_avatar {
     margin-right: 5px;
 }
 
-#issue_main #description_form_value_syntax_picker {
-    margin-top: 22px;
-}
-
 #issue_main #description_header,
 #issue_main #reproduction_steps_header {
     padding-top: 0;
@@ -17646,11 +17698,6 @@ li.header div.user_avatar {
 
 #issue_main #reproduction_steps_field {
     margin-top: 25px;
-}
-
-#issue_main #comment_bodybox_syntax_picker
-#issue_main #todo_bodybox_syntax_picker {
-    margin-top: 22px;
 }
 
 #issue_main .issue_inline_description,
@@ -18066,11 +18113,6 @@ li.header div.user_avatar {
 #article_attachments .attached_item.file_image .upload_details .filename {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-#article_comments #comment_bodybox_syntax_picker {
-    font-size: 1em;
-    margin-top: 10px;
 }
 
 #parent_article_name_span {

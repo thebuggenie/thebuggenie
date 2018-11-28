@@ -546,7 +546,7 @@
                         {
                             $retval .= '<br>'.$caption;
                         }
-                        $retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open image in new window')));
+                        $retval .= link_tag($file_link, fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open image in new window')));
                         $retval .= '</div>';
                     }
                     else
@@ -555,10 +555,10 @@
                             $retval = $this->_parse_image($file_link, $caption, $options);
                         }
                         else if ($file_link == $filename) {
-                            $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
+                            $retval = $caption . fa_image_tag('calendar-times', ['title' => __('File no longer exists.')], 'far');
                         }
                         else {
-                            $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                            $retval = link_tag($file_link, $caption . fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
                         }
                     }
                 }

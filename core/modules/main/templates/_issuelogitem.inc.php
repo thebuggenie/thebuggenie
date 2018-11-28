@@ -45,7 +45,7 @@ if ($item instanceof \thebuggenie\core\entities\LogItem): ?>
                         break;
                     case LogItem::ACTION_ISSUE_UPDATE_DESCRIPTION:
                         echo fa_image_tag('edit', ['class' => 'log_issue_title']);
-                        echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . tbg_template_escape($item->getPreviousValue()) . '</strong>', '%new_value' => '<strong>' . tbg_template_escape($item->getCurrentValue()) . '</strong>'));
+                        echo __('Description updated');
                         break;
                     case LogItem::ACTION_ISSUE_UPDATE_STATUS:
                         $new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue());
