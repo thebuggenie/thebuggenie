@@ -58,7 +58,7 @@
                     <?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
                 <?php endif;*/ ?>
                 <h4>
-                    <?php echo __('Article attachments'); ?>
+                    <span class="header-text"><?php echo __('Article attachments'); ?></span>
                     <?php if (\thebuggenie\core\framework\Settings::isUploadsEnabled() && $article->canEdit()): ?>
                         <button class="button button-silver" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'article', 'article_name' => $article_name)); ?>');"><?php echo __('Attach a file'); ?></button>
                     <?php else: ?>
@@ -69,14 +69,18 @@
             </div>
             <div id="article_comments">
                 <h4>
-                    <?php echo __('Article comments (%count)', array('%count' => \thebuggenie\core\entities\Comment::countComments($article->getID(), \thebuggenie\core\entities\Comment::TYPE_ARTICLE))); ?>
-                    <div class="dropper_container">
-                        <?php echo fa_image_tag('cog', array('class' => 'dropper')); ?>
-                        <ul class="more_actions_dropdown dropdown_box popup_box leftie" id="comment_dropdown_options">
-                            <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ARTICLE; ?>', '<?= $article->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
-                        </ul>
+                    <span class="header-text">
+                        <?php echo __('Article comments (%count)', array('%count' => \thebuggenie\core\entities\Comment::countComments($article->getID(), \thebuggenie\core\entities\Comment::TYPE_ARTICLE))); ?>
+                    </span>
+                    <div class="action-buttons">
+                        <div class="dropper_container">
+                            <?php echo fa_image_tag('spinner', ['class' => 'fa-spin', 'style' => 'display: none;', 'id' => 'comments_loading_indicator']); ?>
+                            <span class="dropper"><?= fa_image_tag('cog') . __('Options'); ?></span>
+                            <ul class="more_actions_dropdown dropdown_box popup_box leftie" id="comment_dropdown_options">
+                                <li><a href="javascript:void(0);" onclick="TBG.Main.Comment.toggleOrder('<?= \thebuggenie\core\entities\Comment::TYPE_ARTICLE; ?>', '<?= $article->getID(); ?>');"><?php echo __('Sort comments in opposite direction'); ?></a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'comments_loading_indicator')); ?>
                     <?php if ($tbg_user->canPostComments() && ((\thebuggenie\core\framework\Context::isProjectContext() && !\thebuggenie\core\framework\Context::getCurrentProject()->isArchived()) || !\thebuggenie\core\framework\Context::isProjectContext())): ?>
                         <button id="comment_add_button" class="button button-silver" onclick="TBG.Main.Comment.showPost();"><?php echo __('Post comment'); ?></button>
                     <?php endif; ?>

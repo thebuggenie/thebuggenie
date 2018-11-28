@@ -239,7 +239,7 @@
 #article_diff tr:hover { background-color: #EEE; }
 INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; color: white; }
 
-.article .more_actions_dropdown { position: absolute; margin-top: 28px; width: auto; white-space: nowrap; top: 12px; right: 0; z-index: 1000; font-size: 1.1em; }
+.article .more_actions_dropdown { position: absolute; margin-top: 9px; width: auto; white-space: nowrap; top: 12px; right: 0; z-index: 1000; font-size: 1.1em; }
 .article .more_actions_dropdown li { padding: 2px; }
 .article .more_actions_dropdown li.separator { padding: 0 7px; }
 .article .content ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
@@ -255,7 +255,8 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .image_container a:hover { border-bottom: 1px dotted #AAA !important; }
 
 #article_comments, #article_attachments { margin: 20px 0 0 5px; }
-#article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; }
+#article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; display: flex; align-items: baseline; }
+#article_comments h4 .header-text, #article_attachments h4 .header-text { flex: 1 1 auto; }
 #article_comments button, #article_attachments button { float: right; font-weight: 300 !important; padding: 4px 8px !important; font-size: 0.8em !important; }
 #article_attachments a.downloadlink { width: initial; }
 #article_attachments .removelink { margin-top: 4px; position: absolute; }

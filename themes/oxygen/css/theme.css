@@ -1532,11 +1532,6 @@ footer img {
     left: 40px;
 }
 
-#article_comments .comment {
-    border-top: 0;
-    margin-top: 0;
-}
-
 .comment_main {
     position: relative;
     overflow: visible;
@@ -1664,11 +1659,15 @@ footer img {
     position: relative;
 }
 .commentdate {
-    color: #AAA;
+    color: rgba(0, 0, 0, .6);
     font-weight: 300;
     font-size: 0.9em;
     display: inline-block;
     margin-left: 5px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background-color: rgba(225, 225, 225, .3);
+    line-height: 1.6em;
 }
 
 #issue_details .commentdate, .comment.commit .commentdate {
@@ -7468,10 +7467,14 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 #viewissue_log_items > ul > li {
     list-style: none;
-    margin: 0 0 15px 0;
+    margin: 0;
     padding: 2px 0 0 180px;
     position: relative;
-    min-height: 55px;
+    vertical-align: top;
+    line-height: 1.6em;
+}
+#viewissue_log_items > ul > li.header-break:not(:first-child) {
+    margin-top: 15px;
 }
 
 #viewissue_log_items > ul > li > img {
@@ -7479,17 +7482,20 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 }
 
 #viewissue_log_items .fas, #viewissue_log_items .far {
-    position: absolute;
-    top: 3px;
-    left: 153px;
     padding: 4px;
     border: 1px solid transparent;
+    margin-right: 7px;
+    width: 16px;
 }
-#viewissue_comments .article ul li a.userlink, #viewissue_log_items a.userlink {
+#viewissue_comments .article ul li a.userlink,
+#viewissue_log_items a.userlink {
     white-space: normal;
     display: inline-block;
     vertical-align: baseline;
     margin: 0 7px;
+}
+#viewissue_log_items a.userlink {
+    vertical-align: middle;
 }
 .comment_log_items a.userlink img, #viewissue_log_items a.userlink img {
     margin: 0;
