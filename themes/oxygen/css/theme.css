@@ -681,6 +681,7 @@ img.userstate {
 .far.userstate {
     display: inline-block;
     width: 12px;
+    font-size: .8em;
 }
 .fas.userstate.online,
 .far.userstate.online {
@@ -1496,13 +1497,13 @@ footer img {
 }
 
 /* comments and commits styling */
-.comment {
+.comment:not(.reply) {
     padding: 0;
     clear: both;
     display: block;
     margin-bottom: 25px;
     border: 1px solid rgba(225, 225, 225, .6);
-    border-radius: 10px;
+    border-radius: 3px;
     position: relative;
 }
 .comment.system_comment {
@@ -1511,7 +1512,7 @@ footer img {
     font-size: .9em;
     line-height: 1em;
 }
-.comment:not(.system_comment) + .comment::before {
+.comment:not(.reply):not(.system_comment) + .comment:not(.reply)::before {
     content: '';
     display: block;
     height: 25px;
@@ -1520,6 +1521,9 @@ footer img {
     position: absolute;
     top: -26px;
     left: 40px;
+}
+.comment:not(.reply):not(.system_comment) + .comment.private_comment:not(.reply)::before {
+    border-left-color: rgb(232, 246, 232);
 }
 .comment.system_comment::after {
     content: '';
@@ -1539,9 +1543,11 @@ footer img {
 }
 
 .comment:target .comment_main {
-    border: 1px solid rgba(100, 100, 100, 0.2);
+    border-color: rgba(100, 100, 100, 0.2);
     background-color: rgba(240, 247, 255, 0.6);
-    border-radius: 10px;
+}
+.comment:not(.reply):target > .comment_main {
+    border-radius: 3px;
     box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
 }
 
@@ -1562,14 +1568,30 @@ footer img {
     padding: 10px;
     border-top: 1px solid rgba(200, 200, 200, .3);
 }
-.reply-container > a {
+.reply-container .fake-reply {
+    display: flex;
+    align-items: center;
+}
+.fake-reply > .avatar-container {
+    flex: 0 0 20px;
+    margin-right: 7px;
+}
+.fake-reply > img.avatar {
+    height: 20px;
+    width: 20px;
+    opacity: .8;
+}
+.fake-reply > a {
     border: 1px solid rgba(200, 200, 200, .3);
     border-radius: 5px;
     color: #AAA;
-    display: block;
+    flex: 1 1 auto;
     padding: 5px;
     font-size: .9em;
     background-color: rgba(225, 225, 225, .1);
+}
+.private_comment .fake-reply > a {
+    background-color: rgba(255, 255, 255, .7);
 }
 
 .dropper_container {
@@ -1647,16 +1669,11 @@ footer img {
     font-weight: 300;
 }
 
-.comment_restricted {
-    position: absolute;
-    left: 7px;
-    top: 35px;
-}
-
 .commentheader {
     padding: 8px 8px 0 8px;
     border: none;
     position: relative;
+    /*background-color: rgba(225, 225, 225, .1);*/
 }
 .commentdate {
     color: rgba(0, 0, 0, .6);
@@ -1760,7 +1777,7 @@ footer img {
 
 .private_comment .comment_main {
     background-color: #E8F6E8;
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 .comment_editor,
@@ -5398,6 +5415,7 @@ a.friend {
     transform: scaleX(1);
     transform-origin: left;
     transition: opacity 0.3s ease, transform 0.3s ease-in-out;
+    z-index: 10001;
 }
 
 #issue_details_container.collapsed .issue_details_fieldsets_wrapper {

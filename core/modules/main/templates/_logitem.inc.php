@@ -58,13 +58,13 @@
                         echo '<i>' . __('Issue created') . '</i>';
                         if (isset($include_details) && $include_details)
                         {
-                            echo '<div class="timeline_inline_details">'.nl2br(__e($issue->getDescription())).'</div>';
+                            echo '<div class="timeline_inline_details">'.nl2br(__e(tbg_truncateText($issue->getDescription(), 100))).'</div>';
                         }
                         break;
                     case LogItem::ACTION_COMMENT_CREATED:
                         $comment = \thebuggenie\core\entities\Comment::getB2DBTable()->selectById((int) $item->getText());
                         echo '<div class="timeline_inline_details">';
-                        echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent())));
+                        echo nl2br(tbg_truncateText(tbg_decodeUTF8(tbg_truncateText($comment->getContent(), 100))));
                         echo '</div>';
                         break;
                     case LogItem::ACTION_ISSUE_CLOSE:
@@ -74,7 +74,7 @@
                         echo '<i>' . __('Issue reopened') . '</i>';
                         break;
                     case LogItem::ACTION_ISSUE_UPDATE_FREE_TEXT:
-                        echo '<i>' . $item->getText() . '</i>';
+                        echo '<i>' . tbg_truncateText($item->getText(), 100) . '</i>';
                         break;
                     case LogItem::ACTION_ISSUE_UPDATE_PAIN_BUG_TYPE:
                         echo '<i>' . __('Triaged bug type: %text', array('%text' => $item->getText())) . '</i>';

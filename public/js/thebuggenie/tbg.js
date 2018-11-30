@@ -1810,11 +1810,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: ['comment_add_indicator', 'comment_add'],
                     clear: 'comment_bodybox',
                     callback: function (json) {
-                        $('comments_box').insert({top: json.comment_data});
+                        $('comments_box').insert({bottom: json.comment_data});
                         if ($('comment_form').serialize(true).comment_save_changes == '1') {
                             window.location = json.continue_url;
-                        } else if ($('comments_box').childElements().size() != 0) {
-                            $('comments_none').hide();
+                        } else {
+                            window.location.hash = "#comment_" + json.comment_id;
+                            if ($('comments_box').childElements().size() != 0) {
+                                $('comments_none').hide();
+                            }
                         }
                         $('comment_visibility').setValue(1);
                         $(commentcount_span).update(json.commentcount);

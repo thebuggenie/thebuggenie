@@ -2672,7 +2672,7 @@
         {
             if ($this->_recentactivities === null)
             {
-                $this->_recentactivities = array();
+                $this->_recentactivities = [];
                 foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
                 {
                     if (!array_key_exists($log_item->getTime(), $this->_recentactivities))
@@ -2682,7 +2682,7 @@
                     $this->_recentactivities[$log_item->getTime()][] = $log_item;
                 }
 
-                ksort($this->_recentactivities, SORT_NUMERIC);
+//                ksort($this->_recentactivities, SORT_NUMERIC);
             }
         }
 

@@ -836,11 +836,11 @@
             switch (framework\Settings::getUserDisplaynameFormat())
             {
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_REALNAME:
-                    return ($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username;
+                    return ($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username;
 
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_BUDDY:
                 default:
-                    return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username);
+                    return ($this->_buddyname) ? $this->_buddyname . ' (@' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username);
             }
         }
 
