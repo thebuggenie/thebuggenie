@@ -289,6 +289,11 @@
             else
             {
                 $hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+
+                if (array_key_exists('HTTP_X_FORWARDED_PROTO', $_SERVER)) {
+                    $hostprefix = $_SERVER["HTTP_X_FORWARDED_PROTO"];
+                }
+
                 $this->_is_secure = (bool) ($hostprefix == 'https');
                 if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]) && $_SERVER["HTTP_X_FORWARDED_HOST"]!="")
                 {
