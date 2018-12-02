@@ -129,21 +129,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('quicksearch_submit').enable();
                         $('quicksearch_submit').removeClassName('button-silver');
                         $('quicksearch_submit').addClassName('button-blue');
-                        $('quicksearch_clear').show();
                     },
                     afterUpdateElement: TBG.Core._extractAutocompleteValue,
                     onHide: function () {},
                     forceHide: function () {
                         new Effect.Fade($('searchfor_autocomplete_choices'),{duration:0.15});
-                        new Effect.Fade($('quicksearch_clear'),{duration:0.15});
                     }
                 }
             );
-            jQuery('#quicksearch_clear').on('click', function () {
-                TBG.autocompleter.options.forceHide();
-                $('searchfor').setValue('');
-                $('searchfor').focus();
-            });
         };
 
         /**
@@ -159,7 +152,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('quicksearch_submit').addClassName('button-silver');
                 $('searchfor').blur();
                 $('searchfor').setValue('');
-                $('quicksearch_clear').hide();
             } else {
                 var cb_elements = value.select('.backdrop');
                 if (cb_elements.size() == 1) {
@@ -168,7 +160,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     TBG.Main.Helpers.Backdrop.show(backdrop_url);
                     $('searchfor').blur();
                     $('searchfor').setValue('');
-                    $('quicksearch_clear').hide();
                     event.stopPropagation();
                     event.preventDefault();
                 }
