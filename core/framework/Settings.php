@@ -32,15 +32,16 @@
         const CONFIGURATION_SECTION_UPLOADS = 3;
         const CONFIGURATION_SECTION_ISSUEFIELDS = 4;
         const CONFIGURATION_SECTION_PERMISSIONS = 5;
-        const CONFIGURATION_SECTION_ROLES = 7;
         const CONFIGURATION_SECTION_ISSUETYPES = 6;
+        const CONFIGURATION_SECTION_ROLES = 7;
         const CONFIGURATION_SECTION_PROJECTS = 10;
         const CONFIGURATION_SECTION_SETTINGS = 12;
-        const CONFIGURATION_SECTION_THEMES = 18;
         const CONFIGURATION_SECTION_SCOPES = 14;
         const CONFIGURATION_SECTION_MODULES = 15;
         const CONFIGURATION_SECTION_IMPORT = 16;
         const CONFIGURATION_SECTION_AUTHENTICATION = 17;
+        const CONFIGURATION_SECTION_THEMES = 18;
+        const CONFIGURATION_SECTION_LICENSE = 19;
 
         const APPEARANCE_HEADER_THEME = 0;
         const APPEARANCE_HEADER_CUSTOM = 1;
@@ -87,6 +88,7 @@
         const SETTING_IS_PERMISSIVE_MODE = 'permissive';
         const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
         const SETTING_KEEP_COMMENT_TRAIL_CLEAN = 'cleancomments';
+        const SETTING_LICENSE_ID = 'license_identifier';
         const SETTING_NOTIFICATION_POLL_INTERVAL = 'notificationpollinterval';
         const SETTING_OFFLINESTATE = 'offlinestate';
         const SETTING_ONLINESTATE = 'onlinestate';
@@ -1054,6 +1056,7 @@
             if (Context::getScope()->getID() == 1)
                 $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'fa_style' => 'fas', 'fa_icon' => 'clone', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
+            $config_sections['general'][self::CONFIGURATION_SECTION_LICENSE] = array('route' => 'configure_license', 'description' => $i18n->__('License'), 'fa_style' => 'fas', 'fa_icon' => 'file-contract', 'details' => $i18n->__('Configure the license in this section'));
             $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'fa_style' => 'fas', 'fa_icon' => 'cog', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'fa_style' => 'fas', 'fa_icon' => 'paint-brush', 'details' => $i18n->__('Configure the selected theme from this section'));
             $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'fa_style' => 'fas', 'fa_icon' => 'user-md', 'details' => $i18n->__('Configure roles in this section'));
@@ -1088,6 +1091,16 @@
         public static function getAccessLevel($section, $module = 'core')
         {
             return (Context::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+        }
+
+        public static function getLicenseIdentifier()
+        {
+            return self::get(self::SETTING_LICENSE_ID);
+        }
+
+        public static function setLicenseIdentifier($license_id)
+        {
+            self::saveSetting(self::SETTING_LICENSE_ID, $license_id);
         }
 
     }

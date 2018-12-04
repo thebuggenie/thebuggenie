@@ -72,13 +72,13 @@
     <div class="project_right_container">
         <div class="project_right branch_<?php echo $branch->getName(); ?>" id="commit_<?php echo $commit->getID(); ?>">
             <?php if ($is_importing): ?>
-                <div class="warning-box">
+                <div class="message-box type-warning">
                     <span class="message">
                         <?= fa_image_tag('spinner', ['class' => 'fa-spin']) . __('This repository is still being imported and may not be fully up-to-date yet.'); ?>
                     </span>
                 </div>
             <?php elseif (!$commit->isImported()): ?>
-                <div class="warning-box">
+                <div class="message-box type-warning">
                     <span class="message">
                         <?= fa_image_tag('exclamation-triangle') . __('This commit was imported and does not contain all information. Press the "%update_commit"-button to load details.', ['%update_commit' => __('Update commit')]); ?>
                     </span>
@@ -118,7 +118,7 @@
                         <?php if ($file->getAction() == \thebuggenie\core\entities\CommitFile::ACTION_DELETED): ?>
                             <div class="filename"><?= fa_image_tag('trash-alt') . $file->getPath(); ?></div>
                             <div class="diffs">
-                                <div class="warning-box too-long"><?= fa_image_tag('trash') . __('This file was deleted in this commit'); ?></div>
+                                <div class="message-box type-warning too-long"><?= fa_image_tag('trash') . __('This file was deleted in this commit'); ?></div>
                             </div>
                         <?php elseif ($file->getAction() == \thebuggenie\core\entities\CommitFile::ACTION_RENAMED): ?>
                             <div class="filename"><?= fa_image_tag('edit', [], 'far') . $file->getData()['previous_filename'] . fa_image_tag('arrow-right-alt') . $file->getPath(); ?></div>

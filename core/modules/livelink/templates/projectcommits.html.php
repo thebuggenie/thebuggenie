@@ -29,7 +29,7 @@
     <div class="project_right_container">
         <div class="project_right" id="project_commits_center_container">
             <?php if ($is_importing): ?>
-                <div class="warning-box">
+                <div class="message-box type-warning">
                     <span class="message">
                         <?= fa_image_tag('spinner', ['class' => 'fa-spin']) . __('This repository is still being imported and may not be fully up-to-date yet.'); ?>
                     </span>

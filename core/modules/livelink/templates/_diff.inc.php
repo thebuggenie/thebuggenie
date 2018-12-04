@@ -1,7 +1,7 @@
 <?php /** @var \thebuggenie\core\entities\CommitFileDiff $diff */ ?>
 <div class="diff-header"><?= fa_image_tag('crosshairs') . $diff->getDiffHeader(); ?></div>
 <?php if ($too_long): ?>
-    <div class="warning-box too-long"><?= fa_image_tag('exclamation-circle') . __('This diff is too long to be shown here'); ?></div>
+    <div class="message-box type-warning too-long"><?= fa_image_tag('exclamation-circle') . __('This diff is too long to be shown here'); ?></div>
 <?php else: ?>
     <table class="diff-preview" cellspacing="0" cellpadding="0">
         <?php foreach ($lines as $line): ?>

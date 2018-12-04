@@ -8,7 +8,7 @@
 <div valign="top" class="main_area main_configuration_content">
     <div style="width: 730px;" id="config_authentication">
         <h3><?php echo __('Configure authentication'); ?></h3>
-        <div class="warning-box">
+        <div class="message-box type-warning">
             <?= fa_image_tag('exclamation-circle') . '<span>'.__('Please remember to install and configure your chosen authentication backend before setting it here. Changing settings on this page will result in you being logged out. If you find yourself unable to log in, use the %tbg_cli command line client to revert these settings.', ['%tbg_cli' => '<span class="command_box">tbg_cli</span>']).'</span>'; ?>
         </div>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>

@@ -4888,7 +4888,7 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     margin: 0;
     position: relative;
 }
-.commit-files .diffs .warning-box {
+.commit-files .diffs .message-box {
     margin: 0;
     border: none;
     width: auto;
@@ -14774,31 +14774,36 @@ table.sortable tr th.nosort {
     padding: 10px;
     border-radius: 3px;
 }
-.warning-box {
+.message-box {
     display: flex;
     width: calc(100% - 20px);
     box-sizing: border-box;
     margin: 10px;
     padding: 10px;
-    background-color: rgba(249, 245, 178, 0.6);
     border: 1px solid rgba(200, 200, 200, 0.7);
     align-items: baseline;
     border-radius: 3px;
 }
-.warning-box .fas,
-.warning-box .fab,
-.warning-box .far {
+.message-box.type-warning {
+    background-color: rgba(249, 245, 178, 0.6);
+}
+.message-box.type-info {
+    background-color: rgba(177, 210, 143, 0.3);
+}
+.message-box .fas,
+.message-box .fab,
+.message-box .far {
     margin-right: 5px;
 }
-.warning-box .message {
+.message-box .message {
     flex: 1 1 auto;
     font-size: 1.1em;
     color: rgba(0, 0, 0, .4);
 }
-.warning-box .actions {
+.message-box .actions {
     flex: 0 0 auto;
 }
-.warning-box .actions .button {
+.message-box .actions .button {
     padding: 4px 7px;
 }
 

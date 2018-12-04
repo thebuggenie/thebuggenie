@@ -734,6 +734,17 @@
         }
 
         /**
+         * Configure the license
+         *
+         * @param framework\Request $request
+         * @Route(name="configure_license", url="/configure/license")
+         * @Parameters(config_module="core", section=19)
+         */
+        public function runConfigureLicense(framework\Request $request)
+        {
+        }
+
+        /**
          * Configure the selected theme
          *
          * @param framework\Request $request
