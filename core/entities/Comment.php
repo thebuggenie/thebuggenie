@@ -166,7 +166,7 @@
          * @param string $sort_order
          * @return Comment[]
          */
-        public static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
+        public static function getComments($target_id, $target_type, $sort_order = \b2db\QueryColumnSort::SORT_ASC)
         {
             $comments = tables\Comments::getTable()->getComments($target_id, $target_type, $sort_order);
 

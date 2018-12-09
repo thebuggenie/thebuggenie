@@ -23,9 +23,9 @@
         const FILE_NAME = 'commitfiles.file_name';
         const ACTION = 'commitfiles.action';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('commit', self::COMMIT_ID);
+            $this->addIndex('commit', self::COMMIT_ID);
         }
 
         /**
@@ -35,11 +35,11 @@
         public function getByCommitID($id, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::COMMIT_ID, $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::COMMIT_ID, $id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

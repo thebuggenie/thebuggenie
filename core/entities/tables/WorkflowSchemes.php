@@ -39,30 +39,30 @@
         public function getAll($scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->addOrderBy(self::ID, \b2db\QueryColumnSort::SORT_ASC);
 
-            $res = $this->select($crit);
+            $res = $this->select($query);
 
             return $res;
         }
 
         public function getByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $row = $this->doSelectById($id, $crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $row = $this->rawSelectById($id, $query, false);
             return $row;
         }
 
         public function getFirstIdByScope($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'id');
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addOrderBy(self::ID);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'id');
+            $query->where(self::SCOPE, $scope_id);
+            $query->addOrderBy(self::ID);
+            $row = $this->rawSelectOne($query);
             return ($row) ? $row->get('id') : 0;
         }
 

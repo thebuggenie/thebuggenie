@@ -27,9 +27,9 @@
         const SCOPE = 'branches.scope';
         const PROJECT_ID = 'branches.project_id';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('project', self::PROJECT_ID);
+            $this->addIndex('project', self::PROJECT_ID);
         }
 
         /**
@@ -40,13 +40,13 @@
          */
         public function getByProject(Project $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::PROJECT_ID, $project->getID());
-            $crit->addOrderBy('branches.name', Criteria::SORT_ASC);
-            $crit->addWhere('branches.is_deleted', false);
+            $query->where(self::PROJECT_ID, $project->getID());
+            $query->where('branches.is_deleted', false);
+            $query->addOrderBy('branches.name', \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -58,14 +58,14 @@
          */
         public function getByCommitsAndProject($commit_ids, Project $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::PROJECT_ID, $project->getID());
-            $crit->addWhere('branches.latest_commit_id', $commit_ids, Criteria::DB_IN);
-            $crit->addWhere('branches.is_deleted', false);
+            $query->where(self::PROJECT_ID, $project->getID());
+            $query->where('branches.latest_commit_id', $commit_ids, \b2db\Criterion::IN);
+            $query->where('branches.is_deleted', false);
 
             $branches = [];
-            foreach ($this->select($crit) as $branch) {
+            foreach ($this->select($query) as $branch) {
                 if (!isset($branches[$branch->getLatestCommitId()])) {
                     $branches[$branch->getLatestCommitId()] = [];
                 }
@@ -77,13 +77,13 @@
 
         public function getByBranchNameAndProject($name, Project $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::PROJECT_ID, $project->getID());
-            $crit->addWhere('branches.name', $name);
-            $crit->addWhere('branches.is_deleted', false);
+            $query->where(self::PROJECT_ID, $project->getID());
+            $query->where('branches.name', $name);
+            $query->where('branches.is_deleted', false);
 
-            $branch = $this->selectOne($crit);
+            $branch = $this->selectOne($query);
 
             return $branch;
         }

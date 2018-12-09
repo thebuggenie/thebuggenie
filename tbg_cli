@@ -7,23 +7,20 @@
     define('TBG_CLI', true);
 
     $path = realpath(getcwd());
-    defined('DS') || define('DS', DIRECTORY_SEPARATOR);
-    require $path . DS . "vendor" . DS . "autoload.php";
+    require $path . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
 
-    defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
-    defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
-    defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+    defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 
     if (!defined('THEBUGGENIE_CONFIG_PATH')) {
-        if (file_exists(getenv('HOME') . DS . '.remote_server'))
-            define('THEBUGGENIE_CONFIG_PATH', getenv('HOME') . DS);
+        if (file_exists(getenv('HOME') . DIRECTORY_SEPARATOR . '.remote_server'))
+            define('THEBUGGENIE_CONFIG_PATH', getenv('HOME') . DIRECTORY_SEPARATOR);
         else
             define('THEBUGGENIE_CONFIG_PATH', THEBUGGENIE_PATH);
     }
 
     try {
         // Include the "engine" script, which initializes and sets up stuff
-        require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
+        \thebuggenie\core\framework\Context::bootstrap();
     } catch (Exception $e) {
         framework\cli\Command::cli_echo("An error occured when trying to initialize the command line client:\n", 'white', 'bold');
         framework\cli\Command::cli_echo($e->getMessage() . "\n", 'red', 'bold');
@@ -36,7 +33,7 @@
         if (in_array($module_name, array('.', '..')) || !is_dir(THEBUGGENIE_INTERNAL_MODULES_PATH . $module_name))
             continue;
 
-        $module_cli_path = THEBUGGENIE_INTERNAL_MODULES_PATH . $module_name . DS . 'cli' . DS;
+        $module_cli_path = THEBUGGENIE_INTERNAL_MODULES_PATH . $module_name . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
         if (file_exists($module_cli_path)) {
             $command_paths[$module_name] = $module_cli_path;
         }
@@ -45,7 +42,7 @@
         framework\Context::checkInstallMode();
 
         foreach (framework\Context::getModules() as $module_name => $module) {
-            $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DS . 'cli' . DS;
+            $module_cli_path = THEBUGGENIE_MODULES_PATH . $module_name . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
             if (file_exists($module_cli_path)) {
                 $command_paths[$module_name] = $module_cli_path;
             }

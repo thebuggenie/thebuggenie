@@ -990,7 +990,7 @@
                     }
                 default :
                     $args = func_get_args();
-                    $args[1] = sfToolkit::arrayDeepMerge($args[0], $args[1]);
+                    $args[1] = self::arrayDeepMerge($args[0], $args[1]);
                     array_shift($args);
                     return call_user_func_array(array('self', 'arrayDeepMerge'), $args);
                     break;

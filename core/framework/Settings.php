@@ -401,23 +401,23 @@
             $scope = ($scope === null) ? Context::getScope()->getID() : $scope;
             $uid = ($uid === null) ? Context::getUser()->getID() : $uid;
 
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Settings::NAME, $name);
-            $crit->addWhere(tables\Settings::MODULE, $module);
-            $crit->addWhere(tables\Settings::SCOPE, $scope);
-            $crit->addWhere(tables\Settings::UID, $uid);
+            $query = tables\Settings::getTable()->getQuery();
+            $query->where(tables\Settings::NAME, $name);
+            $query->where(tables\Settings::MODULE, $module);
+            $query->where(tables\Settings::SCOPE, $scope);
+            $query->where(tables\Settings::UID, $uid);
 
-            tables\Settings::getTable()->doDelete($crit);
+            tables\Settings::getTable()->rawDelete($query);
             unset(self::$_settings[$module][$name][$uid]);
         }
 
         private static function _loadSetting($name, $module = 'core', $scope = 0)
         {
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Settings::NAME, $name);
-            $crit->addWhere(tables\Settings::MODULE, $module);
-            $crit->addWhere(tables\Settings::SCOPE, $scope);
-            $res = tables\Settings::getTable()->doSelect($crit);
+            $query = tables\Settings::getTable()->getQuery();
+            $query->where(tables\Settings::NAME, $name);
+            $query->where(tables\Settings::MODULE, $module);
+            $query->where(tables\Settings::SCOPE, $scope);
+            $res = tables\Settings::getTable()->rawSelect($query);
             if ($res)
             {
                 $retarr = array();

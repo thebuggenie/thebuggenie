@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities;
 
+    use b2db\Update;
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\entities\tables\Modules;
     use thebuggenie\core\entities\tables\Settings;
@@ -193,9 +194,9 @@
 
         public function enable()
         {
-            $crit = new \b2db\Criteria();
-            $crit->addUpdate(tables\Modules::ENABLED, 1);
-            tables\Modules::getTable()->doUpdateById($crit, $this->getID());
+            $update = new Update();
+            $update->add(tables\Modules::ENABLED, 1);
+            tables\Modules::getTable()->rawUpdateById($update, $this->getID());
             $this->_enabled = true;
         }
 

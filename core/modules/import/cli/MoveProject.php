@@ -52,10 +52,10 @@
         protected function _getProjects()
         {
             $table = Projects::getTable();
-            $crit = $table->getCriteria();
-            $crit->addWhere('projects.scope', $this->getProvidedArgument('scope_id'));
-            $crit->addOrderBy('projects.id', Criteria::SORT_ASC);
-            $projects = $table->select($crit);
+            $query = $table->getCriteria();
+            $query->where('projects.scope', $this->getProvidedArgument('scope_id'));
+            $query->addOrderBy('projects.id', \b2db\QueryColumnSort::SORT_ASC);
+            $projects = $table->select($query);
 
             return $projects;
         }
@@ -85,26 +85,26 @@
         protected function updateCustomFields($issue_ids, $to_scope_id)
         {
             $this->cliEcho("Moving custom fields... ");
-            $crit = IssueCustomFields::getTable()->getCriteria();
-            $crit->addWhere('issuecustomfields.issue_id', $issue_ids, Criteria::DB_IN);
-            $crit->addSelectionColumn('issuecustomfields.customfieldoption_id', 'option_id');
-            $crit->addSelectionColumn('issuecustomfields.customfields_id', 'customfield_id');
+            $query = IssueCustomFields::getTable()->getCriteria();
+            $query->where('issuecustomfields.issue_id', $issue_ids, \b2db\Criterion::IN);
+            $query->addSelectionColumn('issuecustomfields.customfieldoption_id', 'option_id');
+            $query->addSelectionColumn('issuecustomfields.customfields_id', 'customfield_id');
             $customfields = [];
             $customfieldoptions = [];
-            if ($res = IssueCustomFields::getTable()->doSelect($crit)) {
+            if ($res = IssueCustomFields::getTable()->rawSelect($query)) {
                 while ($row = $res->getNextRow()) {
                     $customfields[] = $row['customfield_id'];
                 }
             }
 
             $customfields_criteria = CustomFields::getTable()->getCriteria();
-            $customfields_criteria->addWhere('customfields.scope', $to_scope_id);
+            $customfields_criteria->where('customfields.scope', $to_scope_id);
             $customfields_criteria->indexBy('customfields.key');
 
             $to_scope_customfields = CustomFields::getTable()->select($customfields_criteria);
 
             $customfields_criteria = CustomFields::getTable()->getCriteria();
-            $customfields_criteria->addWhere('customfields.scope', $this->from_scope);
+            $customfields_criteria->where('customfields.scope', $this->from_scope);
             $customfields_criteria->indexBy('customfields.key');
 
             $from_scope_customfields = CustomFields::getTable()->select($customfields_criteria);
@@ -146,21 +146,21 @@
 
             if (count($customfields)) {
                 foreach ($customfields as $old_id => $new_id) {
-                    $crit = IssueCustomFields::getTable()->getCriteria();
-                    $crit->addWhere('issuecustomfields.customfields_id', $old_id);
-                    $crit->addUpdate('issuecustomfields.customfields_id', $new_id);
-                    $crit->addUpdate('issuecustomfields.scope', $to_scope_id);
-                    IssueCustomFields::getTable()->doUpdate($crit);
+                    $query = IssueCustomFields::getTable()->getCriteria();
+                    $query->where('issuecustomfields.customfields_id', $old_id);
+                    $query->addUpdate('issuecustomfields.customfields_id', $new_id);
+                    $query->addUpdate('issuecustomfields.scope', $to_scope_id);
+                    IssueCustomFields::getTable()->doUpdate($query);
                 }
             }
 
             if (count($customfieldoptions)) {
                 foreach ($customfieldoptions as $old_id => $new_id) {
-                    $crit = IssueCustomFields::getTable()->getCriteria();
-                    $crit->addWhere('issuecustomfields.customfieldoption_id', $old_id);
-                    $crit->addUpdate('issuecustomfields.customfieldoption_id', $new_id);
-                    $crit->addUpdate('issuecustomfields.scope', $to_scope_id);
-                    IssueCustomFields::getTable()->doUpdate($crit);
+                    $query = IssueCustomFields::getTable()->getCriteria();
+                    $query->where('issuecustomfields.customfieldoption_id', $old_id);
+                    $query->addUpdate('issuecustomfields.customfieldoption_id', $new_id);
+                    $query->addUpdate('issuecustomfields.scope', $to_scope_id);
+                    IssueCustomFields::getTable()->doUpdate($query);
                 }
             }
             $this->cliEcho(" done\n");
@@ -168,12 +168,12 @@
 
         protected function moveIssues($project_id, $to_scope_id)
         {
-            $crit = Issues::getTable()->getCriteria();
-            $crit->addWhere('issues.project_id', $project_id);
-            $crit->addSelectionColumn('issues.id', 'id');
+            $query = Issues::getTable()->getCriteria();
+            $query->where('issues.project_id', $project_id);
+            $query->addSelectionColumn('issues.id', 'id');
 
             $issue_ids = [];
-            if ($res = Issues::getTable()->doSelect($crit)) {
+            if ($res = Issues::getTable()->rawSelect($query)) {
                 while ($row = $res->getNextRow()) {
                     $issue_ids[] = $row['id'];
                 }
@@ -190,27 +190,27 @@
             $this->cliEcho("Moving comments... ");
             $comments_crit = Comments::getTable()->getCriteria();
             $comments_crit->addUpdate('comments.scope', $to_scope_id);
-            $comments_crit->addWhere('comments.target_id', $issue_ids, Criteria::DB_IN);
-            $comments_crit->addWhere('comments.target_type', Comment::TYPE_ISSUE);
+            $comments_crit->where('comments.target_id', $issue_ids, \b2db\Criterion::IN);
+            $comments_crit->where('comments.target_type', Comment::TYPE_ISSUE);
             Comments::getTable()->doUpdate($comments_crit);
             $this->cliEcho(" done\n");
 
             $this->cliEcho("Moving log items... ");
             $logs_crit = LogItems::getTable()->getCriteria();
             $logs_crit->addUpdate('log.scope', $to_scope_id);
-            $logs_crit->addWhere('log.target', $issue_ids, Criteria::DB_IN);
-            $logs_crit->addWhere('log.target_type', LogItem::TYPE_ISSUE);
+            $logs_crit->where('log.target', $issue_ids, \b2db\Criterion::IN);
+            $logs_crit->where('log.target_type', LogItem::TYPE_ISSUE);
             LogItems::getTable()->doUpdate($logs_crit);
             $this->cliEcho(" done\n");
 
             $this->cliEcho("Moving attachments... ");
             $file_ids_crit = IssueFiles::getTable()->getCriteria();
-            $file_ids_crit->addWhere('issuefiles.issue_id', $issue_ids, Criteria::DB_IN);
+            $file_ids_crit->where('issuefiles.issue_id', $issue_ids, \b2db\Criterion::IN);
             $file_ids_crit->addSelectionColumn('issuefiles.file_id', 'file_id');
             $file_ids_crit->addSelectionColumn('issuefiles.id', 'id');
             $file_ids = [];
             $issue_file_ids = [];
-            if ($res = IssueFiles::getTable()->doSelect($file_ids_crit)) {
+            if ($res = IssueFiles::getTable()->rawSelect($file_ids_crit)) {
                 while ($row = $res->getNextRow()) {
                     $file_ids[] = $row['file_id'];
                     $issue_file_ids[] = $row['id'];
@@ -220,12 +220,12 @@
             if (count($file_ids)) {
                 $file_crit = Files::getTable()->getCriteria();
                 $file_crit->addUpdate('files.scope', $to_scope_id);
-                $file_crit->addWhere('files.id', $file_ids, Criteria::DB_IN);
+                $file_crit->where('files.id', $file_ids, \b2db\Criterion::IN);
                 Files::getTable()->doUpdate($file_crit);
 
                 $issue_file_crit = IssueFiles::getTable()->getCriteria();
                 $issue_file_crit->addUpdate('issuefiles.scope', $to_scope_id);
-                $issue_file_crit->addWhere('issuefiles.id', $issue_file_ids, Criteria::DB_IN);
+                $issue_file_crit->where('issuefiles.id', $issue_file_ids, \b2db\Criterion::IN);
                 IssueFiles::getTable()->doUpdate($issue_file_crit);
             }
             $this->cliEcho(" done\n");
@@ -233,12 +233,12 @@
             $this->cliEcho("Moving calculations and estimations... ");
             $estimates_crit = IssueEstimates::getTable()->getCriteria();
             $estimates_crit->addUpdate('issue_estimates.scope', $to_scope_id);
-            $estimates_crit->addWhere('issue_estimates.issue_id', $issue_ids, Criteria::DB_IN);
+            $estimates_crit->where('issue_estimates.issue_id', $issue_ids, \b2db\Criterion::IN);
             IssueEstimates::getTable()->doUpdate($estimates_crit);
 
             $spent_crit = IssueSpentTimes::getTable()->getCriteria();
             $spent_crit->addUpdate('issue_spenttimes.scope', $to_scope_id);
-            $spent_crit->addWhere('issue_spenttimes.issue_id', $issue_ids, Criteria::DB_IN);
+            $spent_crit->where('issue_spenttimes.issue_id', $issue_ids, \b2db\Criterion::IN);
             IssueSpentTimes::getTable()->doUpdate($spent_crit);
             $this->cliEcho(" done\n");
 
@@ -249,43 +249,43 @@
                 '\thebuggenie\core\entities\tables\IssueAffectsEdition' => 'issueaffectsedition',
             ];
             foreach ($tables as $class_name => $table_name) {
-                $crit = $class_name::getTable()->getCriteria();
-                $crit->addUpdate($table_name.'.scope', $to_scope_id);
-                $crit->addWhere($table_name.'.issue', $issue_ids, Criteria::DB_IN);
-                $class_name::getTable()->doUpdate($crit);
+                $query = $class_name::getTable()->getCriteria();
+                $query->addUpdate($table_name.'.scope', $to_scope_id);
+                $query->where($table_name.'.issue', $issue_ids, \b2db\Criterion::IN);
+                $class_name::getTable()->doUpdate($query);
             }
 
             $links_crit = Links::getTable()->getCriteria();
             $links_crit->addUpdate('links.scope', $to_scope_id);
-            $links_crit->addWhere('links.target_id', $issue_ids, Criteria::DB_IN);
-            $links_crit->addWhere('links.target_type', 'issue');
+            $links_crit->where('links.target_id', $issue_ids, \b2db\Criterion::IN);
+            $links_crit->where('links.target_type', 'issue');
             Links::getTable()->doUpdate($links_crit);
 
             $related_crit = IssueRelations::getTable()->getCriteria();
             $related_crit->addUpdate('issuerelations.scope', $to_scope_id);
-            $ctn = $related_crit->returnCriterion('issuerelations.child_id', $issue_ids, Criteria::DB_IN);
-            $ctn->addOr('issuerelations.parent_id', $issue_ids, Criteria::DB_IN);
-            $related_crit->addWhere($ctn);
+            $ctn = $related_crit->returnCriterion('issuerelations.child_id', $issue_ids, \b2db\Criterion::IN);
+            $ctn->or('issuerelations.parent_id', $issue_ids, \b2db\Criterion::IN);
+            $related_crit->where($ctn);
 
             $votes_crit = Votes::getTable()->getCriteria();
             $votes_crit->addUpdate('votes.scope', $to_scope_id);
-            $votes_crit->addWhere('votes.target', $issue_ids, Criteria::DB_IN);
+            $votes_crit->where('votes.target', $issue_ids, \b2db\Criterion::IN);
             Votes::getTable()->doUpdate($votes_crit);
             $this->cliEcho(" done\n");
 
             $this->cliEcho("Updating user issue bookmarks");
             $user_issues_crit = UserIssues::getTable()->getCriteria();
             $user_issues_crit->addUpdate('userissues.scope', $to_scope_id);
-            $user_issues_crit->addWhere('userissues.issue', $issue_ids, Criteria::DB_IN);
+            $user_issues_crit->where('userissues.issue', $issue_ids, \b2db\Criterion::IN);
             UserIssues::getTable()->doUpdate($user_issues_crit);
             $this->cliEcho(" done\n");
 
             $this->updateCustomFields($issue_ids, $to_scope_id);
 
-            $crit = Issues::getTable()->getCriteria();
-            $crit->addUpdate('issues.scope', $to_scope_id);
-            $crit->addWhere('issues.id', $issue_ids, Criteria::DB_IN);
-            Issues::getTable()->doUpdate($crit);
+            $query = Issues::getTable()->getCriteria();
+            $query->addUpdate('issues.scope', $to_scope_id);
+            $query->where('issues.id', $issue_ids, \b2db\Criterion::IN);
+            Issues::getTable()->doUpdate($query);
 
             $this->cliEcho("------------------\n");
             $this->cliEcho("Done moving issues\n");
@@ -296,7 +296,7 @@
         {
             $this->cliEcho("Moving datatypes...");
             $datatype_criteria = ListTypes::getTable()->getCriteria();
-            $datatype_criteria->addWhere('listtypes.scope', $to_scope_id);
+            $datatype_criteria->where('listtypes.scope', $to_scope_id);
 
             $to_scope_datatypes = [];
             $listtypes = ListTypes::getTable()->select($datatype_criteria);
@@ -308,7 +308,7 @@
             }
 
             $datatype_criteria = ListTypes::getTable()->getCriteria();
-            $datatype_criteria->addWhere('listtypes.scope', $this->from_scope);
+            $datatype_criteria->where('listtypes.scope', $this->from_scope);
 
             $todo_datatypes = [];
             $listtypes = ListTypes::getTable()->select($datatype_criteria);
@@ -355,12 +355,12 @@
                 }
                 if ($field !== false) {
                     foreach ($types as $current_type_id => $new_type_id) {
-                        $crit = Issues::getTable()->getCriteria();
-                        $crit->addWhere('issues.project_id', $project_id);
-                        $crit->addWhere($field, $current_type_id);
-                        $crit->addUpdate($field, $new_type_id);
+                        $query = Issues::getTable()->getCriteria();
+                        $query->where('issues.project_id', $project_id);
+                        $query->where($field, $current_type_id);
+                        $query->addUpdate($field, $new_type_id);
 
-                        Issues::getTable()->doUpdate($crit);
+                        Issues::getTable()->doUpdate($query);
                     }
                 }
             }
@@ -381,20 +381,20 @@
                 '\thebuggenie\core\entities\tables\Builds' => 'builds',
             ];
             foreach ($tables as $class_name => $table_name) {
-                $crit = $class_name::getTable()->getCriteria();
-                $crit->addUpdate($table_name.'.scope', $to_scope_id);
-                $crit->addWhere($table_name.'.project', $project_id);
-                $class_name::getTable()->doUpdate($crit);
+                $query = $class_name::getTable()->getCriteria();
+                $query->addUpdate($table_name.'.scope', $to_scope_id);
+                $query->where($table_name.'.project', $project_id);
+                $class_name::getTable()->doUpdate($query);
             }
 
             $edition_criteria = Editions::getTable()->getCriteria();
-            $edition_criteria->addWhere('editions.project', $project_id);
+            $edition_criteria->where('editions.project', $project_id);
             $edition_criteria->addSelectionColumn('editions.id', 'id');
-            if ($res = Editions::getTable()->doSelect($edition_criteria)) {
+            if ($res = Editions::getTable()->rawSelect($edition_criteria)) {
                 while ($row = $res->getNextRow()) {
                     $edition_id = $row['id'];
                     $edition_criteria = EditionComponents::getTable()->getCriteria();
-                    $edition_criteria->addWhere('editioncomponents.edition', $edition_id);
+                    $edition_criteria->where('editioncomponents.edition', $edition_id);
                     $edition_criteria->addUpdate('editioncomponents.scope', $to_scope_id);
                     EditionComponents::getTable()->doUpdate($edition_criteria);
                 }
@@ -402,21 +402,21 @@
             $this->cliEcho(" done\n");
             $this->cliEcho("Moving project dashboard...");
             $dashboard_criteria = Dashboards::getTable()->getCriteria();
-            $dashboard_criteria->addWhere('dashboards.project_id', $project_id);
+            $dashboard_criteria->where('dashboards.project_id', $project_id);
             $dashboard_criteria->addSelectionColumn('dashboards.id', 'id');
             $dashboard_ids = [];
-            if ($res = Dashboards::getTable()->doSelect($dashboard_criteria)) {
+            if ($res = Dashboards::getTable()->rawSelect($dashboard_criteria)) {
                 while ($row = $res->getNextRow()) {
                     $dashboard_ids[] = $row['id'];
                 }
 
                 $dashboardviews_criteria = DashboardViews::getTable()->getCriteria();
-                $dashboardviews_criteria->addWhere('dashboard_views.dashboard_id', $dashboard_ids, Criteria::DB_IN);
+                $dashboardviews_criteria->where('dashboard_views.dashboard_id', $dashboard_ids, \b2db\Criterion::IN);
                 $dashboardviews_criteria->addUpdate('dashboards.scope', $to_scope_id);
                 DashboardViews::getTable()->doUpdate($dashboardviews_criteria);
 
                 $dashboard_criteria = Dashboards::getTable()->getCriteria();
-                $dashboard_criteria->addWhere('dashboards.project_id', $project_id);
+                $dashboard_criteria->where('dashboards.project_id', $project_id);
                 $dashboard_criteria->addUpdate('dashboards.scope', $to_scope_id);
                 Dashboards::getTable()->doUpdate($dashboard_criteria);
             }
@@ -424,9 +424,9 @@
 
             $this->moveDatatypes($project_id, $to_scope_id);
 
-            $crit = Projects::getTable()->getCriteria();
-            $crit->addUpdate('projects.scope', $to_scope_id);
-            Projects::getTable()->doUpdateById($crit, $project_id);
+            $query = Projects::getTable()->getCriteria();
+            $query->addUpdate('projects.scope', $to_scope_id);
+            Projects::getTable()->doUpdateById($query, $project_id);
 
             $this->cliEcho("-------------------\n");
             $this->cliEcho("Done moving project\n");

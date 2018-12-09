@@ -33,14 +33,14 @@
         const VALUE = 'settings.value';
         const UID = 'settings.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 45);
-            parent::_addVarchar(self::MODULE, 45);
-            parent::_addVarchar(self::VALUE, 200);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 45);
+            parent::addVarchar(self::MODULE, 45);
+            parent::addVarchar(self::VALUE, 200);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

@@ -38,19 +38,19 @@
         const CONTENTS = 'notifications.contents';
         const STATUS = 'notifications.status';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::MODULE_NAME, 50);
-            parent::_addInteger(self::NOTIFY_TYPE, 5);
-            parent::_addInteger(self::TARGET_ID, 10);
-            parent::_addVarchar(self::TITLE, 100);
-            parent::_addText(self::CONTENTS, false);
-            parent::_addInteger(self::STATUS, 5);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::GID, 10);
-            parent::_addInteger(self::TID, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::MODULE_NAME, 50);
+            parent::addInteger(self::NOTIFY_TYPE, 5);
+            parent::addInteger(self::TARGET_ID, 10);
+            parent::addVarchar(self::TITLE, 100);
+            parent::addText(self::CONTENTS, false);
+            parent::addInteger(self::STATUS, 5);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::GID, 10);
+            parent::addInteger(self::TID, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

@@ -46,16 +46,16 @@
             if (!count($component_ids))
                 return;
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $component_ids, Criteria::DB_IN);
-            $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::ID, $component_ids, \b2db\Criterion::IN);
+            $this->select($query);
         }
 
         public function getByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
-            $res = $this->doSelect($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT, $project_id);
+            $res = $this->rawSelect($query, false);
             return $res;
         }
 
@@ -63,22 +63,22 @@
         {
             if (empty($ids)) return array();
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ID, $ids, \b2db\Criterion::IN);
+            return $this->select($query);
         }
 
         public function selectAll()
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
 
-            $crit->addJoin(Projects::getTable(), Projects::ID, self::PROJECT);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(Projects::NAME, Criteria::SORT_ASC);
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
+            $query->join(Projects::getTable(), Projects::ID, self::PROJECT);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(Projects::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

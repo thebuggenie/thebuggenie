@@ -435,12 +435,12 @@
                         if (array_key_exists($request['type'], $types))
                         {
                             $classname = $types[$request['type']];
-                            $item = $classname::getB2DBTable()->doDeleteById($request['id']);
+                            $item = $classname::getB2DBTable()->rawDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                         else
                         {
-                            tables\CustomFieldOptions::getTable()->doDeleteById($request['id']);
+                            tables\CustomFieldOptions::getTable()->rawDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                     }

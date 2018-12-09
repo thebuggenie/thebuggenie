@@ -506,11 +506,6 @@ class Context
             $starttime = explode(' ', microtime());
             define('NOW', (integer) $starttime[1]);
 
-            // Set up error and exception handling
-            set_exception_handler(array('\thebuggenie\core\framework\Context', 'exceptionHandler'));
-            set_error_handler(array('\thebuggenie\core\framework\Context', 'errorHandler'));
-            error_reporting(E_ALL | E_NOTICE | E_STRICT);
-
             // Set the start time
             self::setLoadStart($starttime[1] + $starttime[0]);
 
@@ -1215,36 +1210,36 @@ class Context
      */
     public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
     {
-        $crit = new \b2db\Criteria();
-        $crit->addWhere(Permissions::SCOPE, self::getScope()->getID());
-        $crit->addWhere(Permissions::PERMISSION_TYPE, $type);
+        $query = Permissions::getTable()->getQuery();
+        $query->where(Permissions::SCOPE, self::getScope()->getID());
+        $query->where(Permissions::PERMISSION_TYPE, $type);
 
         if (($uid + $tid + $gid) == 0 && !$all)
         {
-            $crit->addWhere(Permissions::UID, $uid);
-            $crit->addWhere(Permissions::TID, $tid);
-            $crit->addWhere(Permissions::GID, $gid);
+            $query->where(Permissions::UID, $uid);
+            $query->where(Permissions::TID, $tid);
+            $query->where(Permissions::GID, $gid);
         }
         else
         {
             switch (true)
             {
                 case ($uid != 0):
-                    $crit->addWhere(Permissions::UID, $uid);
+                    $query->where(Permissions::UID, $uid);
                 case ($tid != 0):
-                    $crit->addWhere(Permissions::TID, $tid);
+                    $query->where(Permissions::TID, $tid);
                 case ($gid != 0):
-                    $crit->addWhere(Permissions::GID, $gid);
+                    $query->where(Permissions::GID, $gid);
             }
         }
         if ($target_id !== null)
         {
-            $crit->addWhere(Permissions::TARGET_ID, $target_id);
+            $query->where(Permissions::TARGET_ID, $target_id);
         }
 
         $permissions = array();
 
-        if ($res = Permissions::getTable()->doSelect($crit))
+        if ($res = Permissions::getTable()->rawSelect($query))
         {
             while ($row = $res->getNextRow())
             {
@@ -2538,6 +2533,34 @@ class Context
             Logging::log("Cannot find the method {$actionToRunName}() in class {$actionClassName}.", 'core', Logging::LEVEL_FATAL);
             throw new exceptions\ActionNotFoundException("Cannot find the method {$actionToRunName}() in class {$actionClassName}. Make sure the method exists.");
         }
+    }
+
+    public static function bootstrap()
+    {
+        // Set up error and exception handling
+        set_exception_handler([self::class, 'exceptionHandler']);
+        set_error_handler([self::class, 'errorHandler']);
+        error_reporting(E_ALL | E_NOTICE | E_STRICT);
+
+        if (PHP_VERSION_ID < 70100)
+            die('This software requires PHP 7.1.0 or newer. Please upgrade to a newer version of php to use The Bug Genie.');
+
+        gc_enable();
+        date_default_timezone_set('UTC');
+
+        if (!defined('THEBUGGENIE_PATH'))
+            die('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
+
+        defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+        defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
+        defined('THEBUGGENIE_VENDOR_PATH') || define('THEBUGGENIE_VENDOR_PATH', THEBUGGENIE_PATH . 'vendor' . DS);
+        defined('THEBUGGENIE_CACHE_PATH') || define('THEBUGGENIE_CACHE_PATH', THEBUGGENIE_PATH . 'cache' . DS);
+        defined('THEBUGGENIE_CONFIGURATION_PATH') || define('THEBUGGENIE_CONFIGURATION_PATH', THEBUGGENIE_CORE_PATH . 'config' . DS);
+        defined('THEBUGGENIE_INTERNAL_MODULES_PATH') || define('THEBUGGENIE_INTERNAL_MODULES_PATH', THEBUGGENIE_CORE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+
+        self::initialize();
     }
 
     /**

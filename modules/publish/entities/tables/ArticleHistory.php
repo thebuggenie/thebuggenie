@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
         thebuggenie\core\entities\tables\Projects,
@@ -30,63 +31,63 @@
 
         protected function _initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::ARTICLE_NAME, 255);
-            parent::_addText(self::OLD_CONTENT, false);
-            parent::_addText(self::NEW_CONTENT, false);
-            parent::_addVarchar(self::REASON, 255);
-            parent::_addInteger(self::DATE, 10);
-            parent::_addInteger(self::REVISION, 10);
-            parent::_addForeignKeyColumn(self::AUTHOR, Users::getTable(), Users::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::ARTICLE_NAME, 255);
+            parent::addText(self::OLD_CONTENT, false);
+            parent::addText(self::NEW_CONTENT, false);
+            parent::addVarchar(self::REASON, 255);
+            parent::addInteger(self::DATE, 10);
+            parent::addInteger(self::REVISION, 10);
+            parent::addForeignKeyColumn(self::AUTHOR, Users::getTable(), Users::ID);
         }
 
         protected function _getNextRevisionNumberForArticle($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::REVISION, 'next_revision', Criteria::DB_MAX, '', '+1');
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::REVISION, 'next_revision', \b2db\Query::DB_MAX, '', '+1');
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
             return ($row->get('next_revision')) ? $row->get('next_revision') : 1;
         }
 
         public function deleteHistoryByArticle($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
         {
             if (!Core::isTransactionActive()) $transaction = Core::startTransaction();
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ARTICLE_NAME, $article_name);
-            $crit->addInsert(self::AUTHOR, $user_id);
+            $insertion = new Insertion();
+            $insertion->add(self::ARTICLE_NAME, $article_name);
+            $insertion->add(self::AUTHOR, $user_id);
             $revision_number = $this->_getNextRevisionNumberForArticle($article_name);
-            $crit->addInsert(self::REVISION, $revision_number);
+            $insertion->add(self::REVISION, $revision_number);
 
             if (!($revision_number == 1 && $old_content == $new_content))
             {
-                $crit->addInsert(self::OLD_CONTENT, $old_content);
+                $insertion->add(self::OLD_CONTENT, $old_content);
             }
             else
             {
-                $crit->addInsert(self::OLD_CONTENT, '');
+                $insertion->add(self::OLD_CONTENT, '');
             }
-            $crit->addInsert(self::NEW_CONTENT, $new_content);
+            $insertion->add(self::NEW_CONTENT, $new_content);
 
             if ($reason !== null)
             {
-                $crit->addInsert(self::REASON, $reason);
+                $insertion->add(self::REASON, $reason);
             }
 
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::DATE, NOW);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::DATE, NOW);
 
-            $res = $this->doInsert($crit);
+            $res = $this->rawInsert($insertion);
             if (isset($transaction)) $transaction->commitAndEnd();
 
             return $revision_number;
@@ -94,24 +95,24 @@
 
         public function getHistoryByArticleName($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::REVISION, 'desc');
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::REVISION, 'desc');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getUserIDsByArticleName($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addSelectionColumn(self::AUTHOR);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addSelectionColumn(self::AUTHOR);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $uids = array();
 
             if ($res)
@@ -129,25 +130,27 @@
 
         public function getRevisionContentFromArticleName($article_name, $from_revision, $to_revision = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $ctn = $crit->returnCriterion(self::REVISION, $from_revision);
-            if ($to_revision !== null)
-            {
-                $ctn->addOr(self::REVISION, $to_revision);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            if ($to_revision !== null) {
+                $criteria = new Criteria();
+                $criteria->or(self::REVISION, $to_revision);
+                $criteria->where(self::REVISION, $from_revision);
+                $query->where($criteria);
+            } else {
+                $query->where(self::REVISION, $from_revision);
             }
-            $crit->addWhere($ctn);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             if ($res)
             {
-                $retval = array();
+                $retval = [];
                 while ($row = $res->getNextRow())
                 {
                     $author = ($row->get(self::AUTHOR)) ? new \thebuggenie\core\entities\User($row->get(self::AUTHOR)) : null;
-                    $retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => $author);
+                    $retval[$row->get(self::REVISION)] = ['old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => $author];
                 }
 
                 return ($to_revision !== null) ? $retval : $retval[$from_revision];
@@ -160,11 +163,11 @@
 
         public function removeArticleRevisionsSince($article_name, $revision)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::REVISION, $revision, Criteria::DB_GREATER_THAN);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::REVISION, $revision, \b2db\Criterion::GREATER_THAN);
+            $res = $this->rawDelete($query);
         }
 
         /**
@@ -176,11 +179,11 @@
          */
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::DATE, 'desc');
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::DATE, 'desc');
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -195,12 +198,12 @@
          */
         public function getByUser($user)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::AUTHOR, $user->getID());
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::DATE, 'desc');
+            $query = $this->getQuery();
+            $query->where(self::AUTHOR, $user->getID());
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::DATE, 'desc');
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -228,12 +231,12 @@
          */
         public function getByAuthorUsernameAndCurrentUserAccess($author_username)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
             if ($author_username === "")
             {
-                $crit->addWhere(self::AUTHOR, 0);
+                $query->where(self::AUTHOR, 0);
             }
             elseif ($author_username !== null)
             {
@@ -244,12 +247,12 @@
                     return [];
                 }
 
-                $crit->addWhere(self::AUTHOR, $author->getID());
+                $query->where(self::AUTHOR, $author->getID());
             }
 
-            $crit->addOrderBy(self::DATE, 'desc');
+            $query->addOrderBy(self::DATE, 'desc');
 
-            $history = $this->select($crit);
+            $history = $this->select($query);
 
             $result = [];
 
@@ -277,12 +280,12 @@
          */
         public function getFromFixtures()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::AUTHOR, 0);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::DATE, 'desc');
+            $query = $this->getQuery();
+            $query->where(self::AUTHOR, 0);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::DATE, 'desc');
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -302,10 +305,10 @@
             // All user IDs will get stored here.
             $result = [];
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addSelectionColumn(self::AUTHOR);
-            $crit->setDistinct();
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addSelectionColumn(self::AUTHOR);
+            $query->setIsDistinct();
 
             // If we need to look-up global wiki contributions, then we must
             // fetch list of all projects and exclude them from search.
@@ -314,25 +317,25 @@
                 $projects_table = Projects::getTable();
 
                 $project_crit = $projects_table->getCriteria();
-                $project_crit->addWhere(Projects::SCOPE, framework\Context::getScope()->getID());
+                $project_crit->where(Projects::SCOPE, framework\Context::getScope()->getID());
                 $project_crit->addSelectionColumn(Projects::KEY);
 
-                $project_res = $projects_table->doSelect($project_crit);
+                $project_res = $projects_table->rawSelect($project_crit);
 
                 if ($project_res)
                 {
                     while ($project_row = $project_res->getNextRow())
                     {
-                        $crit->addWhere(self::ARTICLE_NAME, "{$project_row[Projects::KEY]}:%", Criteria::DB_NOT_LIKE);
+                        $query->where(self::ARTICLE_NAME, "{$project_row[Projects::KEY]}:%", \b2db\Criterion::NOT_LIKE);
                     }
                 }
             }
             else
             {
-                $crit->addWhere(self::ARTICLE_NAME, "{$project->getKey()}:%", Criteria::DB_LIKE);
+                $query->where(self::ARTICLE_NAME, "{$project->getKey()}:%", \b2db\Criterion::LIKE);
             }
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             if ($res)
             {

@@ -24,6 +24,8 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method static tables\Projects getB2DBTable()
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Projects")
      */
     class Project extends QaLeadable implements MentionableProvider

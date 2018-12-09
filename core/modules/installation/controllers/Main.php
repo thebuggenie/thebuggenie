@@ -225,10 +225,10 @@ class Main extends framework\Action
         {
             if ($this->username = $request['db_username'])
             {
-                \b2db\Core::setUname($this->username);
+                \b2db\Core::setUsername($this->username);
                 \b2db\Core::setTablePrefix($request['db_prefix']);
                 if ($this->password = $request->getRawParameter('db_password'))
-                    \b2db\Core::setPasswd($this->password);
+                    \b2db\Core::setPassword($this->password);
 
                 if ($this->selected_connection_detail == 'dsn')
                 {
@@ -241,9 +241,9 @@ class Main extends framework\Action
                 {
                     if ($this->db_type = $request['db_type'])
                     {
-                        \b2db\Core::setDBtype($this->db_type);
+                        \b2db\Core::setDriver($this->db_type);
                         if ($this->db_hostname = $request['db_hostname'])
-                            \b2db\Core::setHost($this->db_hostname);
+                            \b2db\Core::setHostname($this->db_hostname);
                         else
                             throw new \Exception('You must provide a database hostname');
 
@@ -251,7 +251,7 @@ class Main extends framework\Action
                             \b2db\Core::setPort($this->db_port);
 
                         if ($this->db_databasename = $request['db_name'])
-                            \b2db\Core::setDBname($this->db_databasename);
+                            \b2db\Core::setDatabaseName($this->db_databasename);
                         else
                             throw new \Exception('You must provide a database to use');
                     }

@@ -44,12 +44,12 @@
 
         public function getByTransitionID($transition_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRANSITION_ID, $transition_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRANSITION_ID, $transition_id);
             
             $actions = array('pre' => array(), 'post' => array());
-            if ($res = $this->select($crit, false))
+            if ($res = $this->select($query, false))
             {
                 foreach ($res as $rule)
                 {
@@ -60,9 +60,9 @@
             return $actions;
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
+            $this->addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
         }
 
     }

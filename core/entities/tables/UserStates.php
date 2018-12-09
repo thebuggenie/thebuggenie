@@ -43,10 +43,10 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
         
     }

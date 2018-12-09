@@ -53,16 +53,16 @@
             if (!count($edition_ids))
                 return;
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $edition_ids, Criteria::DB_IN);
-            $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::ID, $edition_ids, \b2db\Criterion::IN);
+            $this->select($query);
         }
 
         public function getByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT, $project_id);
+            $res = $this->rawSelect($query);
             return $res;
         }
 
@@ -70,10 +70,10 @@
         {
             if (count($edition_ids))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::ID, $edition_ids, Criteria::DB_IN);
+                $query = $this->getQuery();
+                $query->where(self::ID, $edition_ids, \b2db\Criterion::IN);
                 $edition_ids = array();
-                if ($res = $this->doSelect($crit))
+                if ($res = $this->rawSelect($query))
                 {
                     while ($row = $res->getNextRow())
                     {
@@ -88,10 +88,10 @@
         {
             if (empty($ids)) return array();
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ID, $ids, \b2db\Criterion::IN);
+            return $this->select($query);
         }
 
     }

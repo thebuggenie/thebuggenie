@@ -3056,7 +3056,7 @@
                 }
                 $this->touch();
                 $related_issue->touch();
-                tables\IssueRelations::getTable()->doDeleteById($relation_id);
+                tables\IssueRelations::getTable()->rawDeleteById($relation_id);
             }
         }
 
@@ -4874,18 +4874,12 @@
         public function whenClosed()
         {
             if (!$this->isClosed()) return false;
-            $crit = new \b2db\Criteria();
-            $crit->addSelectionColumn(tables\LogItems::TIME);
-            $crit->addWhere(tables\LogItems::TARGET, $this->_id);
-            $crit->addWhere(tables\LogItems::TARGET_TYPE, 1);
-            $crit->addWhere(tables\LogItems::CHANGE_TYPE, 14);
-            $crit->addOrderBy(tables\LogItems::TIME, 'desc');
-            $res = tables\LogItems::getTable()->doSelect($crit);
 
-            $ret_arr = array();
+            $item = tables\LogItems::getTable()->getByTargetAndChangeAndType($this->_id, LogItem::ACTION_ISSUE_CLOSE, LogItem::TYPE_ISSUE);
 
-            $row = $res->getNextRow();
-            return($row->get(tables\LogItems::TIME));
+            if ($item instanceof LogItem) {
+                return $item->getTime();
+            }
         }
 
         /**
@@ -4896,23 +4890,11 @@
         public function whenReopened()
         {
             if ($this->isClosed()) return false;
-            $crit = new \b2db\Criteria();
-            $crit->addSelectionColumn(tables\LogItems::TIME);
-            $crit->addWhere(tables\LogItems::TARGET, $this->_id);
-            $crit->addWhere(tables\LogItems::TARGET_TYPE, 1);
-            $crit->addWhere(tables\LogItems::CHANGE_TYPE, 22);
-            $crit->addOrderBy(tables\LogItems::TIME, 'desc');
-            $res = tables\LogItems::getTable()->doSelect($crit);
+            $item = tables\LogItems::getTable()->getByTargetAndChangeAndType($this->_id, LogItem::ACTION_ISSUE_REOPEN, LogItem::TYPE_ISSUE);
 
-            $ret_arr = array();
-
-            if (count($res) == 0)
-            {
-                return false;
+            if ($item instanceof LogItem) {
+                return $item->getTime();
             }
-
-            $row = $res->getNextRow();
-            return($row->get(tables\LogItems::TIME));
         }
 
         protected function _saveCustomFieldValues()

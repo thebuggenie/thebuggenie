@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
         b2db\Criteria;
@@ -22,61 +23,61 @@
 
         protected function _initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::ARTICLE_NAME, 300);
-            parent::_addBoolean(self::ARTICLE_IS_CATEGORY);
-            parent::_addVarchar(self::CATEGORY_NAME, 300);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::ARTICLE_NAME, 300);
+            parent::addBoolean(self::ARTICLE_IS_CATEGORY);
+            parent::addVarchar(self::CATEGORY_NAME, 300);
         }
 
         public function deleteCategoriesByArticle($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function addArticleCategory($article_name, $category_name, $is_category)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ARTICLE_NAME, $article_name);
-            $crit->addInsert(self::ARTICLE_IS_CATEGORY, $is_category);
-            $crit->addInsert(self::CATEGORY_NAME, $category_name);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::ARTICLE_NAME, $article_name);
+            $insertion->add(self::ARTICLE_IS_CATEGORY, $is_category);
+            $insertion->add(self::CATEGORY_NAME, $category_name);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
         }
 
         public function getArticleCategories($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::CATEGORY_NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::CATEGORY_NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getCategoryArticles($category_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CATEGORY_NAME, $category_name);
-            $crit->addWhere(self::ARTICLE_IS_CATEGORY, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::ARTICLE_NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::CATEGORY_NAME, $category_name);
+            $query->where(self::ARTICLE_IS_CATEGORY, false);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::ARTICLE_NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getSubCategories($category_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CATEGORY_NAME, $category_name);
-            $crit->addWhere(self::ARTICLE_IS_CATEGORY, true);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::CATEGORY_NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::CATEGORY_NAME, $category_name);
+            $query->where(self::ARTICLE_IS_CATEGORY, true);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::CATEGORY_NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
 
             return $res;
         }

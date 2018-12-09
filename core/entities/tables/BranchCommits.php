@@ -27,28 +27,28 @@
         const COMMIT_ID = 'branchcommits.commit_id';
         const COMMIT_SHA = 'branchcommits.commit_sha';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('commit', self::COMMIT_ID);
-            $this->_addIndex('branch', self::BRANCH_ID);
+            $this->addIndex('commit', self::COMMIT_ID);
+            $this->addIndex('branch', self::BRANCH_ID);
         }
 
         public function hasBranchCommitSha(Branch $branch, $commit_sha)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('branchcommits.branch_id', $branch->getID());
-            $crit->addWhere('branchcommits.commit_sha', $commit_sha);
+            $query = $this->getQuery();
+            $query->where('branchcommits.branch_id', $branch->getID());
+            $query->where('branchcommits.commit_sha', $commit_sha);
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
         public function hasCommitInDifferentBranch(Commit $commit, Branch $branch)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('branchcommits.branch_id', $branch->getID(), Criteria::DB_NOT_EQUALS);
-            $crit->addWhere('branchcommits.commit_id', $commit->getID());
+            $query = $this->getQuery();
+            $query->where('branchcommits.branch_id', $branch->getID(), \b2db\Criterion::NOT_EQUALS);
+            $query->where('branchcommits.commit_id', $commit->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
     }

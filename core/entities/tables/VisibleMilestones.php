@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -35,38 +36,38 @@
         const PROJECT_ID = 'visible_milestones.project_id';
         const MILESTONE_ID = 'visible_milestones.milestone_id';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::MILESTONE_ID, Milestones::getTable(), Milestones::ID);
-            parent::_addForeignKeyColumn(self::PROJECT_ID, Projects::getTable(), Projects::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::MILESTONE_ID, Milestones::getTable(), Milestones::ID);
+            parent::addForeignKeyColumn(self::PROJECT_ID, Projects::getTable(), Projects::ID);
         }
         
         public function getAllByProjectID($project_id)
         {
             $milestones = array();
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addOrderBy(Milestones::SCHEDULED, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->addOrderBy(Milestones::SCHEDULED, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
             return $res;
         }
         
         public function clearByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $this->rawDelete($query);
             return true;
         }
         
         public function addByProjectIDAndMilestoneID($project_id, $milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::PROJECT_ID, $project_id);
-            $crit->addInsert(self::MILESTONE_ID, $milestone_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::PROJECT_ID, $project_id);
+            $insertion->add(self::MILESTONE_ID, $milestone_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
             return true;
         }
         

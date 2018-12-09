@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Query;
+    use b2db\Update;
     use thebuggenie\core\entities\LogItem;
     use thebuggenie\core\entities\Scope;
     use thebuggenie\core\framework;
@@ -45,11 +47,11 @@
          */
         public function getByIssueID($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TARGET, $issue_id);
-            $crit->addWhere(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
-            $crit->addOrderBy(self::TIME, Criteria::SORT_ASC);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::TARGET, $issue_id);
+            $query->where(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
+            $query->addOrderBy(self::TIME, \b2db\QueryColumnSort::SORT_ASC);
+            return $this->select($query);
         }
 
         /**
@@ -58,30 +60,32 @@
          * @param int $project_id
          * @param int $user_id
          *
-         * @return Criteria
+         * @return Query
          */
-        protected function getCriteriaForProjectOrUser($limit, $offset, $project_id = null, $user_id = null)
+        protected function getQueryWithCriteriaForProjectOrUser($limit, $offset, $project_id = null, $user_id = null)
         {
-            $crit = $this->getCriteria();
+            $criteria = new Criteria();
             if ($project_id !== null) {
-                $crit->addWhere('log.project_id', $project_id);
+                $criteria->where('log.project_id', $project_id);
             }
             if ($user_id !== null) {
-                $crit->addWhere(self::UID, $user_id);
+                $criteria->where(self::UID, $user_id);
             }
 
-            $crit->addWhere(self::TIME, NOW, Criteria::DB_LESS_THAN_EQUAL);
+            $criteria->where(self::TIME, NOW, \b2db\Criterion::LESS_THAN_EQUAL);
 
+            $query = $this->getQuery();
+            $query->where($criteria);
             if ($limit !== null) {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
             }
             if ($offset !== null) {
-                $crit->setOffset($offset);
+                $query->setOffset($offset);
             }
 
-            $crit->addOrderBy(self::TIME, Criteria::SORT_DESC);
+            $query->addOrderBy(self::TIME, \b2db\QueryColumnSort::SORT_DESC);
 
-            return $crit;
+            return $query;
         }
 
         /**
@@ -93,8 +97,9 @@
          */
         public function getByUserID($user_id, $limit = null, $offset = null)
         {
-            $crit = $this->getCriteriaForProjectOrUser($limit, $offset, null, $user_id);
-            return $this->select($crit);
+            $query = $this->getQueryWithCriteriaForProjectOrUser($limit, $offset, null, $user_id);
+
+            return $this->select($query);
         }
 
         /**
@@ -106,15 +111,15 @@
          */
         public function getByProjectID($project_id, $limit = 20, $offset = null)
         {
-            $crit = $this->getCriteriaForProjectOrUser($limit, $offset, $project_id);
-            return $this->select($crit);
+            $query = $this->getQueryWithCriteriaForProjectOrUser($limit, $offset, $project_id);
+            return $this->select($query);
         }
 
         public function getImportantByProjectID($project_id, $limit = 20, $offset = null)
         {
-            $crit = $this->getCriteriaForProjectOrUser($limit, $offset, $project_id);
-            $crit->addWhere(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), Criteria::DB_IN);
-            return $this->select($crit);
+            $query = $this->getQueryWithCriteriaForProjectOrUser($limit, $offset, $project_id);
+            $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), \b2db\Criterion::IN);
+            return $this->select($query);
         }
 
         public function getLast15IssueCountsByProjectID($project_id)
@@ -123,20 +128,19 @@
 
             for ($cc = 15; $cc >= 0; $cc--)
             {
-                $crit = $this->getCriteria();
-                $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET, array(array(Issues::PROJECT_ID, $project_id), array(Issues::DELETED, false)));
-                $crit->addWhere(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), Criteria::DB_IN);
-                $crit->addWhere(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
-                $crit->addWhere(Issues::DELETED, false);
-                $crit->addWhere('log.project_id', $project_id);
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), Criteria::DB_GREATER_THAN_EQUAL);
-                $ctn->addWhere(self::TIME, NOW - (86400 * $cc), Criteria::DB_LESS_THAN_EQUAL);
-                $crit->addWhere($ctn);
+                $query = $this->getQuery();
+                $query->join(Issues::getTable(), Issues::ID, self::TARGET, array(array(Issues::PROJECT_ID, $project_id), array(Issues::DELETED, false)));
+                $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), \b2db\Criterion::IN);
+                $query->where(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
+                $query->where(Issues::DELETED, false);
+                $query->where('log.project_id', $project_id);
+                $query->where(self::SCOPE, framework\Context::getScope()->getID());
+                $query->where(self::TIME, NOW - (86400 * ($cc + 1)), \b2db\Criterion::GREATER_THAN_EQUAL);
+                $query->where(self::TIME, NOW - (86400 * $cc), \b2db\Criterion::LESS_THAN_EQUAL);
 
                 $closed_count = array();
                 $open_count = array();
-                if ($res = $this->doSelect($crit)) {
+                if ($res = $this->rawSelect($query)) {
                     while ($row = $res->getNextRow()) {
                         if ($row[self::CHANGE_TYPE] == LogItem::ACTION_ISSUE_CLOSE) {
                             $closed_count[$row->get(self::TARGET)] = true;
@@ -151,12 +155,12 @@
             return $retarr;
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('commentid', array(self::COMMENT_ID));
-            $this->_addIndex('targettype_time', array(self::TARGET_TYPE, self::TIME));
-            $this->_addIndex('targettype_changetype', array(self::TARGET_TYPE, self::CHANGE_TYPE));
-            $this->_addIndex('target_uid_commentid_scope', array(self::TARGET, self::UID, self::COMMENT_ID, self::SCOPE));
+            $this->addIndex('commentid', array(self::COMMENT_ID));
+            $this->addIndex('targettype_time', array(self::TARGET_TYPE, self::TIME));
+            $this->addIndex('targettype_changetype', array(self::TARGET_TYPE, self::CHANGE_TYPE));
+            $this->addIndex('target_uid_commentid_scope', array(self::TARGET, self::UID, self::COMMENT_ID, self::SCOPE));
         }
 
         public function _migrateData(\b2db\Table $old_table)
@@ -164,15 +168,15 @@
             switch ($old_table::B2DB_TABLE_VERSION)
             {
                 case 2:
-                    $crit = $this->getCriteria();
-                    $crit->setDistinct();
-                    $crit->addSelectionColumn(self::TARGET);
-                    $crit->addJoin(Issues::getTable(), Issues::ID, self::TARGET, [[Issues::DELETED, false]]);
-                    $crit->addSelectionColumn(Issues::PROJECT_ID);
-                    $crit->addWhere(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
+                    $query = $this->getCriteria();
+                    $query->setIsDistinct();
+                    $query->addSelectionColumn(self::TARGET);
+                    $query->join(Issues::getTable(), Issues::ID, self::TARGET, [[Issues::DELETED, false]]);
+                    $query->addSelectionColumn(Issues::PROJECT_ID);
+                    $query->where(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
 
                     $issue_ids = [];
-                    if ($res = $this->doSelect($crit)) {
+                    if ($res = $this->rawSelect($query)) {
                         while ($row = $res->getNextRow()) {
                             $project_id = $row->get(Issues::PROJECT_ID);
 
@@ -187,11 +191,14 @@
 
                     if (count($issue_ids)) {
                         foreach ($issue_ids as $project_id => $issues) {
-                            $crit = $this->getCriteria();
-                            $crit->addWhere(self::TARGET, $issues, Criteria::DB_IN);
-                            $crit->addUpdate('log.project_id', $project_id);
+                            $query = $this->getQuery();
+                            $update = new Update();
 
-                            $this->doUpdate($crit);
+                            $update->add('log.project_id', $project_id);
+
+                            $query->where(self::TARGET, $issues, \b2db\Criterion::IN);
+
+                            $this->rawUpdate($query, $query);
                         }
                     }
 
@@ -219,15 +226,15 @@
          */
         public function getByTargetAndChangeAndType($target, $change, $target_type = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TARGET, $target);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TARGET, $target);
             if ($target_type !== null) {
-                $crit->addWhere(self::TARGET_TYPE, $target_type);
+                $query->where(self::TARGET_TYPE, $target_type);
             }
-            $crit->addWhere(self::CHANGE_TYPE, $change);
+            $query->where(self::CHANGE_TYPE, $change);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
     }

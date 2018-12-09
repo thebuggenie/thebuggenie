@@ -43,10 +43,10 @@
         const DATA = 'commits.data';
         const PROJECT_ID = 'commits.project_id';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('project', self::PROJECT_ID);
-            $this->_addIndex('project_commit', [self::PROJECT_ID, self::NEW_REV]);
+            $this->addIndex('project', self::PROJECT_ID);
+            $this->addIndex('project_commit', [self::PROJECT_ID, self::NEW_REV]);
         }
 
         /**
@@ -58,12 +58,12 @@
          */
         public function getCommitByHash($hash, Project $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::NEW_REV, $hash);
-            $crit->addWhere(self::PROJECT_ID, $project->getID());
+            $query->where(self::NEW_REV, $hash);
+            $query->where(self::PROJECT_ID, $project->getID());
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         /**
@@ -75,13 +75,13 @@
          */
         public function getUnprocessedCommitsByProject(Project $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::PROJECT_ID, $project->getID());
-            $crit->addWhere(self::OLD_REV, '', Criteria::DB_NOT_EQUALS);
-            $crit->addWhere('commits.previous_commit_id', 0);
+            $query->where(self::PROJECT_ID, $project->getID());
+            $query->where(self::OLD_REV, '', \b2db\Criterion::NOT_EQUALS);
+            $query->where('commits.previous_commit_id', 0);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -91,12 +91,12 @@
          */
         public function isProjectCommitProcessed($id, $project)
         {
-            $crit = new Criteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::NEW_REV, $id);
-            $crit->addWhere(self::PROJECT_ID, $project);
+            $query->where(self::NEW_REV, $id);
+            $query->where(self::PROJECT_ID, $project);
 
-            return (bool) $this->count($crit);
+            return (bool) $this->count($query);
         }
 
     }

@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Criteria;
+    use b2db\Insertion;
     use thebuggenie\core\entities\Issue;
     use thebuggenie\core\framework;
 
@@ -38,12 +39,12 @@
 
         protected $_relations_cache = [];
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addBoolean(self::MUSTFIX);
-            parent::_addForeignKeyColumn(self::PARENT_ID, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::CHILD_ID, Issues::getTable(), Issues::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addBoolean(self::MUSTFIX);
+            parent::addForeignKeyColumn(self::PARENT_ID, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::CHILD_ID, Issues::getTable(), Issues::ID);
         }
 
         public function preloadIssueRelations($issue_ids)
@@ -65,12 +66,15 @@
 
             if (count($issue_ids))
             {
-                $crit = $this->getCriteria();
-                $ctn = $crit->returnCriterion(self::PARENT_ID, $issue_ids, Criteria::DB_IN);
-                $ctn->addOr(self::CHILD_ID, $issue_ids, Criteria::DB_IN);
-                $crit->addWhere($ctn);
-                $crit->addWhere(Issues::DELETED, 0);
-                $res = $this->doSelect($crit);
+                $query = $this->getQuery();
+                $query->where(Issues::DELETED, 0);
+
+                $criteria = new Criteria();
+                $criteria->where(self::PARENT_ID, $issue_ids, \b2db\Criterion::IN);
+                $criteria->or(self::CHILD_ID, $issue_ids, \b2db\Criterion::IN);
+                $query->and($criteria);
+
+                $res = $this->rawSelect($query);
 
                 $issues_table = Issues::getTable();
                 if ($res)
@@ -112,74 +116,83 @@
 
         public function getIssueRelation($this_issue_id, $related_issue_id)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::PARENT_ID, $this_issue_id);
-            $ctn->addOr(self::CHILD_ID, $this_issue_id);
-            $crit->addWhere($ctn);
-            $ctn = $crit->returnCriterion(self::PARENT_ID, $related_issue_id);
-            $ctn->addOr(self::CHILD_ID, $related_issue_id);
-            $crit->addWhere($ctn);
-            $crit->addWhere(Issues::DELETED, 0);
-            $res = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(Issues::DELETED, 0);
+
+            $criteria = new Criteria();
+            $criteria->where(self::PARENT_ID, $this_issue_id);
+            $criteria->or(self::CHILD_ID, $this_issue_id);
+            $query->and($criteria);
+
+            $criteria = new Criteria();
+            $criteria->where(self::PARENT_ID, $related_issue_id);
+            $criteria->or(self::CHILD_ID, $related_issue_id);
+            $query->and($criteria);
+
+            $res = $this->rawSelectOne($query);
             return $res;
         }
 
         public function addParentIssue($issue_id, $parent_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::CHILD_ID, $issue_id);
-            $crit->addInsert(self::PARENT_ID, $parent_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::CHILD_ID, $issue_id);
+            $insertion->add(self::PARENT_ID, $parent_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
             return $res;
         }
 
         public function removeParentIssue($issue_id, $parent_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CHILD_ID, $issue_id);
-            $crit->addWhere(self::PARENT_ID, $parent_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::CHILD_ID, $issue_id);
+            $query->where(self::PARENT_ID, $parent_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
             return $res;
         }
 
         public function addChildIssue($issue_id, $child_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::PARENT_ID, $issue_id);
-            $crit->addInsert(self::CHILD_ID, $child_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::PARENT_ID, $issue_id);
+            $insertion->add(self::CHILD_ID, $child_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
             return $res;
         }
 
         public function removeChildIssue($issue_id, $child_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PARENT_ID, $issue_id);
-            $crit->addWhere(self::CHILD_ID, $child_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PARENT_ID, $issue_id);
+            $query->where(self::CHILD_ID, $child_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
             return $res;
         }
 
         public function countChildIssues($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PARENT_ID, $issue_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->count($crit);
+            $query = $this->getQuery();
+            $query->where(self::PARENT_ID, $issue_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->count($query);
         }
 
         public function removeIssueRelations($issue_id)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::PARENT_ID, $issue_id);
-            $ctn->addOr(self::CHILD_ID, $issue_id);
-            $crit->addWhere($ctn);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $criteria = new Criteria();
+            $criteria->where(self::PARENT_ID, $issue_id);
+            $criteria->or(self::CHILD_ID, $issue_id);
+
+            $query->and($criteria);
+
+            $res = $this->rawDelete($query);
             return $res;
         }
 

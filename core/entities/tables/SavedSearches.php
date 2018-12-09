@@ -31,19 +31,22 @@
 
         public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $ctn = $crit->returnCriterion(self::UID, $user_id);
-            $ctn->addOr(self::UID, 0);
-            $crit->addWhere($ctn);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $criteria = new Criteria();
+            $criteria->where(self::UID, $user_id);
+            $criteria->or(self::UID, 0);
+            $query->and($criteria);
+
             if ($project_id !== 0 )
             {
-                $crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
+                $query->where(self::APPLIES_TO_PROJECT, $project_id);
             }
 
             $retarr = array('user' => array(), 'public' => array());
 
-            if ($res = $this->select($crit, 'none'))
+            if ($res = $this->select($query, 'none'))
             {
                 foreach ($res as $id => $search)
                 {

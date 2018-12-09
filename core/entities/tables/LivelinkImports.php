@@ -39,20 +39,20 @@
          */
         public function getPending()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('livelink_imports.completed_at', 0);
-            $res = $this->select($crit, false);
+            $query = $this->getQuery();
+            $query->where('livelink_imports.completed_at', 0);
+            $res = $this->select($query, false);
 
             return $res;
         }
 
         public function hasPendingByProject(Project $project)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('livelink_imports.completed_at', 0);
-            $crit->addWhere('livelink_imports.project_id', $project->getID());
+            $query = $this->getQuery();
+            $query->where('livelink_imports.completed_at', 0);
+            $query->where('livelink_imports.project_id', $project->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
     }
