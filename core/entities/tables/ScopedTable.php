@@ -20,6 +20,8 @@
     /**
      * B2DB class that all  class extends, implementing scope access
      *
+     * @method static static getTable()
+     *
      * @package thebuggenie
      * @subpackage mvc
      */

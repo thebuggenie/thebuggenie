@@ -45,7 +45,6 @@
         
         public function getAllByProjectID($project_id)
         {
-            $milestones = array();
             $query = $this->getQuery();
             $query->where(self::PROJECT_ID, $project_id);
             $query->addOrderBy(Milestones::SCHEDULED, \b2db\QueryColumnSort::SORT_ASC);
