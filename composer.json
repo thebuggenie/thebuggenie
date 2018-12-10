@@ -13,7 +13,7 @@
         "irc" : "irc://irc.freenode.org/thebuggenie"
     },
     "license" : [
-        "MPL 2.0"
+        "MPL-2.0"
     ],
     "config": {
         "platform": {
@@ -23,11 +23,10 @@
     "require" : {
         "php": "^7.0|^7.1|^7.2",
         "thebuggenie/b2db" : "^2.0",
-        "mrclay/minify" : "dev-master",
-        "easybook/geshi" : "dev-master",
+        "easybook/geshi" : "^1.0",
         "michelf/php-markdown" : "1.3",
         "swiftmailer/swiftmailer" : "4.2.*",
-        "webit/eval-math" : "dev-master",
+        "webit/eval-math" : "^1.0",
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "phpoffice/phpexcel": "~1.8",
@@ -42,7 +41,7 @@
         "ext-xml" : "*",
         "ext-Reflection" : "*",
         "lib-pcre" : "8.*",
-        "net/http" : "dev-master",
+        "net/http" : "^1.1",
         "guzzlehttp/guzzle": "^6.3",
         "scrivo/highlight.php": "v9.12.0.1",
         "ramsey/uuid": "^3.7"
