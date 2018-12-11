@@ -1294,7 +1294,7 @@ EOT;
                                     $issue->setTitle(mb_decode_mimeheader($email->subject));
                                     $issue->setDescription($data);
                                     $issue->setPostedBy($user);
-                                    $issue->setIssuetype($account->getIssuetype());
+                                    $issue->setIssuetype($account->getIssuetype()->getID());
                                     $issue->save();
                                     // Append the new issue to the list of affected issues. This
                                     // is necessary in order to process the attachments properly.
