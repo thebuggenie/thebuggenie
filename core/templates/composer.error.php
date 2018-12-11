@@ -54,7 +54,7 @@
     </head>
     <body>
         <div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
-            <h1><img src="/images/logo_48.png"><span>External libraries not initialized</span></h1>
+            <h1><img src="images/logo_48.png"><span>External libraries not initialized</span></h1>
             <div class="error_content">
                 <h2>Error loading external libraries</h2>
                 <p>
