@@ -63,6 +63,16 @@
             More information is available at <a href="http://php.net/manual/en/book.mbstring.php" target="_blank">php.net</a>
             </div>
         <?php endif; ?>
+        <?php if ($dom_ok): ?>
+            <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP DOMDocument class is available</div>
+        <?php else: ?>
+            <div class="install_progress prereq_fail">
+                <b>PHP Class "DOMDocument" is not available</b><br>
+                The Bug Genie 3 requires the PHP Class "DOMDocument". For most distributions, the extension which contains this class is called "php-xml".<br/>
+                More information is available at <a href="http://php.net/manual/en/book.dom.php" target="_blank">php.net</a>
+            </div>
+        <?php endif; ?>
+
         <?php if ($gd_ok): ?>
             <div class="install_progress prereq_ok"><?php echo image_tag('images/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
         <?php else: ?>
