@@ -20,13 +20,19 @@
         public function fetch()
         {
             $structure = imap_fetchstructure($this->connection, $this->messageNumber);
+
             if (!$structure)
             {
                 return false;
             }
             else
             {
-                $this->recurse($structure->parts);
+                if (property_exists($structure, "parts"))
+                {
+                    $this->recurse($structure->parts);
+                } else {
+                    $this->recurse([$structure]);
+                }
                 return true;
             }
         }
