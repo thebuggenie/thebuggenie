@@ -40,7 +40,8 @@
         "ext-pcre" : "*",
         "ext-xml" : "*",
         "ext-Reflection" : "*",
-        "ext-zip" : "*"
+        "ext-zip" : "*",
+        "easybook/geshi": "v1.0.8.19"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",

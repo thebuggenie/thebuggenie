@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bd37867065270b3666a532be8ea9242",
+    "content-hash": "9dbd027ec87603e9c865bec970da4635",
     "packages": [
+        {
+            "name": "easybook/geshi",
+            "version": "v1.0.8.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easybook/geshi.git",
+                "reference": "b4df5fa84a44d4e12eff67263a701eac7e157241"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easybook/geshi/zipball/b4df5fa84a44d4e12eff67263a701eac7e157241",
+                "reference": "b4df5fa84a44d4e12eff67263a701eac7e157241",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nigel McNie",
+                    "email": "nigel@geshi.org"
+                },
+                {
+                    "name": "Benny Baumann",
+                    "email": "BenBE@geshi.org"
+                }
+            ],
+            "description": "GeSHi - Generic Syntax Highlighter. This is an unmodified port of GeSHi project code found on SourceForge.",
+            "homepage": "http://qbnz.com/highlighter",
+            "keywords": [
+                "highlight",
+                "highlighter",
+                "syntax"
+            ],
+            "time": "2018-04-20T18:19:44+00:00"
+        },
         {
             "name": "erusev/parsedown",
             "version": "1.7.1",
